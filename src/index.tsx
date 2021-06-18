@@ -1,6 +1,8 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
+import { Provider } from 'react-redux'
 import ThemeProvider from "./theme/theme";
+import store from './state/state';
 
 import "./index.css";
 import App from "./App";
@@ -8,9 +10,11 @@ import reportWebVitals from "./reportWebVitals";
 
 ReactDOM.render(
   <StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider>
+        <App />
+      </ThemeProvider>
+    </Provider>
   </StrictMode>,
   document.getElementById("root")
 );
