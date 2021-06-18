@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
-import styled, { 
-  createGlobalStyle,
+import { 
   css,
   DefaultTheme,
   ThemeProvider as StyledComponentsThemeProvider
@@ -9,10 +8,10 @@ import { useIsDarkMode } from "../state/user/hooks";
 import { Colors } from "./styled";
 
 export const MEDIA_WIDTHS = {
-  sm: 576,
-  md: 768,
-  lg: 992,
-  xl: 1400
+  upToExtraSmall: 576,
+  upToSmall: 768,
+  upToMedium: 992,
+  upToLarge: 1400
 };
 
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
