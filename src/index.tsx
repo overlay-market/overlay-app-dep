@@ -1,19 +1,27 @@
 import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
 import { Provider } from 'react-redux'
+import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
+import { NetworkContextName } from './constants/misc';
 import ThemeProvider from "./theme/theme";
 import store from './state/state';
-
+import getLibrary from './utils/getLibrary'
 import "./index.css";
-import App from "./App";
+import App from "./pages/App";
 import reportWebVitals from "./reportWebVitals";
+
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
 ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <Web3ProviderNetwork getLibrary={getLibrary}>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </Web3ProviderNetwork>
+      </Web3ReactProvider>
     </Provider>
   </StrictMode>,
   document.getElementById("root")
