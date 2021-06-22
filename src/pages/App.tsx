@@ -1,10 +1,12 @@
 import './App.css';
 import React, { useState } from 'react';
+import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager';
 import { useWeb3React } from '@web3-react/core';
+import { useActiveWeb3React } from '../hooks/web3';
 import { injected } from '../connectors/connectors';
 
 export const Wallet = () => {
-  const { chainId, account, activate, active } = useWeb3React();
+  const { chainId, account, activate, active } = useActiveWeb3React();
 
   const onClick = () => {
     activate(injected);
@@ -27,7 +29,9 @@ export const Wallet = () => {
 
 const App = () => {
   return (
-    <Wallet />
+    <Web3ReactManager>
+      <Wallet />
+    </Web3ReactManager>
   )
 }
 export default App;
