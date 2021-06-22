@@ -18,7 +18,7 @@ export default function Header() {
       <div>Positions</div>
 
       <div className={styles["accountContainer"]}>
-       {chainId && chainId !== SupportedChainId.MAINNET && NETWORK_LABELS[chainId] && (
+       {chainId && NETWORK_LABELS[chainId] && (
               <div>{NETWORK_LABELS[chainId]}</div>
         )}
         <div>{account}</div>
