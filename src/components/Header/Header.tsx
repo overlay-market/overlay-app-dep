@@ -2,6 +2,7 @@ import React from 'react';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { SupportedChainId } from '../../constants/chains';
 import { useDarkModeManager } from '../../state/user/hooks';
+import { NavLink } from 'react-router-dom';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import styles from './Header.module.scss';
 import styled from 'styled-components/macro';
@@ -45,8 +46,12 @@ export default function Header() {
       <LogoContainer>
         <img src={OverlayLogo} alt={'Overlay Logo'}/>
       </LogoContainer>
-      <div>Markets</div>
-      <div>Positions</div>
+      <NavLink to={'/Markets'}>
+        Markets
+      </NavLink>
+      <NavLink to={'/Positions'}>
+        Positions
+      </NavLink>
 
       <div className={styles["accountContainer"]}>
        {chainId && NETWORK_LABELS[chainId] && (
