@@ -43,7 +43,7 @@ export default function Header() {
   return (
     <HeaderContainer>
       <LogoContainer>
-        <img src={OverlayLogo} />
+        <img src={OverlayLogo} alt={'Overlay Logo'}/>
       </LogoContainer>
       <div>Markets</div>
       <div>Positions</div>
