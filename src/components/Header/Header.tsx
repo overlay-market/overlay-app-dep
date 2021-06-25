@@ -1,9 +1,8 @@
 import React from 'react';
 import { useActiveWeb3React } from '../../hooks/web3';
-import { SupportedChainId } from '../../constants/chains';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { NavLink  } from 'react-router-dom';
-import { Wallet } from '../Wallet/Wallet';
+import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
 import styles from './Header.module.scss';
@@ -53,13 +52,7 @@ export const StyledLink = styled(NavLink).attrs({
   }
 `
 
-const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
-  [SupportedChainId.MAINNET]: 'Mainnet',
-  [SupportedChainId.KOVAN]: 'Kovan',
-}
-
 export default function Header() {
-  const { account, chainId, active } = useActiveWeb3React();
   const [darkMode, toggleDarkMode] = useDarkModeManager();
 
   return (
@@ -79,13 +72,7 @@ export default function Header() {
       </StyledLink>
 
       <div className={styles["accountContainer"]}>
-       {chainId && NETWORK_LABELS[chainId] && (
-              <div>{NETWORK_LABELS[chainId]}</div>
-        )}
-        {active ? 
-          (<div>{account}</div>) :
-          (<Wallet />)
-         }
+         <Web3Status/>
         <StyledMenuButton onClick={() => toggleDarkMode()}>
           {darkMode ? 'Dark Mode' : 'Light Mode'}
         </StyledMenuButton>
