@@ -17,6 +17,17 @@ export const StyledContainer = styled.div`
   margin-top: 70px;
 `
 
+export const StyledTableCell = styled(TableCell)`
+  background: ${({theme}) => theme.bg1};
+  font-size: 14px;
+  font-weight: 700 !important;
+  color: ${({theme}) => theme.text1} !important;
+`
+
+export const StyledTableCellThin = styled(StyledTableCell)`
+  font-weight: 400 !important;
+`
+
 function createData(market: string, price: number, updatePeriod: string, positions: string) {
   return {market, price, updatePeriod, positions};
 }
@@ -37,21 +48,21 @@ const Markets: React.FC = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Market</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Update period</TableCell>
-              <TableCell>Positions</TableCell>
+              <StyledTableCell>Market</StyledTableCell>
+              <StyledTableCell>Price</StyledTableCell>
+              <StyledTableCell>Update period</StyledTableCell>
+              <StyledTableCell>Positions</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {mockData.map((row) => (
               <TableRow>
-                <TableCell component="th" scope="row">
+                <StyledTableCellThin component="th" scope="row">
                   {row.market}
-                </TableCell>
-                <TableCell align="left">{row.price}</TableCell>
-                <TableCell align="left">{row.updatePeriod}</TableCell>
-                <TableCell align="left">{row.positions}</TableCell>
+                </StyledTableCellThin>
+                <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
+                <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>
+                <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
               </TableRow>
             ))}
           </TableBody>
