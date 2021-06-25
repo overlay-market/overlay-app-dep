@@ -20,6 +20,8 @@ export const HeaderContainer = styled.div`
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
+  max-width: 900px;
+  margin: auto;
 `
 
 export const LogoContainer = styled.div`
