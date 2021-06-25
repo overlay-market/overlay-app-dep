@@ -35,7 +35,6 @@ export const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
   max-width: 900px;
   margin: auto;
   padding-top: 30px;
@@ -44,7 +43,7 @@ export const HeaderContainer = styled.div`
 export const LogoContainer = styled.div`
   height: 32px;
   width: 32px;
-  margin: auto;
+  margin-right: 16px;
 
   img {
     width: 100%;
@@ -61,7 +60,7 @@ export const StyledLink = styled(NavLink).attrs({
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
-  margin: auto;
+  margin: auto 16px;
 
   &.${activeClassName} {
     color: ${({theme}) => theme.text4};
