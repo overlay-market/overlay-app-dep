@@ -5,6 +5,7 @@ import { useDarkModeManager } from '../../state/user/hooks';
 import { NavLink  } from 'react-router-dom';
 import { Wallet } from '../Wallet/Wallet';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
+import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
 import styles from './Header.module.scss';
 import styled from 'styled-components/macro';
 
@@ -28,6 +29,7 @@ export const HeaderContainer = styled.div`
 export const LogoContainer = styled.div`
   height: 32px;
   width: 32px;
+  margin: auto;
 
   img {
     width: 100%;
@@ -63,7 +65,11 @@ export default function Header() {
   return (
     <HeaderContainer>
       <LogoContainer>
-        <img src={OverlayLogo} alt={'Overlay Logo'}/>
+        {darkMode ? (
+          <img src={LightOverlayLogo} alt={'Overlay Logo Light'} />
+          ) : (
+            <img src={OverlayLogo} alt={'Overlay Logo'} />
+        )}
       </LogoContainer>
       <StyledLink to={'/Markets'}>
         Markets
