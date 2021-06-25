@@ -7,10 +7,26 @@ import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
 import styles from './Header.module.scss';
 import styled from 'styled-components/macro';
+import { Moon, Sun } from 'react-feather';
 
 export const StyledMenuButton = styled.button`
-  background-color: ${({theme}) => theme.bg1};
+  background-color: ${({theme}) => theme.bg3};
   color: ${({theme}) => theme.text1};
+  border: none;
+  height: 35px;
+  border-radius: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  display: flex;
+
+  :hover {
+    cursor: pointer;
+    outline: none;
+    background-color: ${({ theme }) => theme.bg3};
+  }
+
+  svg {
+    margin: auto;
+  }
 `
 
 export const HeaderContainer = styled.div`
@@ -74,7 +90,7 @@ export default function Header() {
       <div className={styles["accountContainer"]}>
          <Web3Status/>
         <StyledMenuButton onClick={() => toggleDarkMode()}>
-          {darkMode ? 'Dark Mode' : 'Light Mode'}
+          {darkMode ? <Moon size={20} /> : <Sun size={20} />}
         </StyledMenuButton>
       </div>
     </HeaderContainer>

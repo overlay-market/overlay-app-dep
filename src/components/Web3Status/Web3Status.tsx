@@ -19,13 +19,16 @@ export const Web3StatusUnconnected = styled.button`
 export const Chain = styled.div`
   font-size: 12px;
   font-weight: 400;
-  margin: auto;
+  margin: auto 7px auto auto;
+  border: 1px ${({theme}) => theme.bg2} solid;
+  border-radius: 25px;
+  padding: 7px;
 `
 
 export const Account = styled.div`
   font-size: 12px;
   font-weight: 400;
-  margin: auto;
+  margin: auto 7px auto auto;
 `
 
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
