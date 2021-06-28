@@ -43,7 +43,7 @@ export const HeaderContainer = styled.div`
 export const LogoContainer = styled.div`
   height: 32px;
   width: 32px;
-  margin-right: 16px;
+  margin: auto 16px auto 0px;
 
   img {
     width: 100%;
