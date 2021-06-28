@@ -11,9 +11,11 @@ export const Web3StatusConnected = styled.div`
 `
 export const Web3StatusUnconnected = styled.button`
   text-decoration: none;
+  background: ${({theme}) => theme.bg1};
   color: ${({theme}) => theme.text1};
-  border: ${({theme}) => theme.text1};
-
+  border: 1px ${({theme}) => theme.text1} solid;
+  border-radius: 25px;
+  margin-right: 7px;
 `
 
 export const Chain = styled.div`
