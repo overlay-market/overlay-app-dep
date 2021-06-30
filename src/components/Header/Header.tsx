@@ -8,6 +8,8 @@ import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
 import styles from './Header.module.scss';
 import styled from 'styled-components/macro';
 import { Moon, Sun } from 'react-feather';
+import { useETHBalances } from '../../state/wallet/hooks';
+import { ChainId, Currency } from "@sushiswap/sdk";
 
 export const StyledMenuButton = styled.button`
   background-color: ${({theme}) => theme.bg3};
@@ -69,7 +71,10 @@ export const StyledLink = styled(NavLink).attrs({
 
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
+  const { account, chainId } = useActiveWeb3React();
+  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']; 
 
+  console.log('userEthBalance: ', userEthBalance);
   return (
     <HeaderContainer>
       <LogoContainer>
@@ -91,6 +96,14 @@ export default function Header() {
         <StyledMenuButton onClick={() => toggleDarkMode()}>
           {darkMode ? <Moon size={20} /> : <Sun size={20} />}
         </StyledMenuButton>
+        {account && userEthBalance && (
+                        <>
+                          <div>
+                            {userEthBalance?.toSignificant(4)}{" "}
+                            {Currency.getNativeCurrencySymbol(chainId)}
+                          </div>
+                        </>
+                      )}
       </div>
     </HeaderContainer>
   )
