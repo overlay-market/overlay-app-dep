@@ -4,6 +4,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 
 import { useBlockNumber } from '../../state/application/hooks';
 import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
+import { TEXT } from '../../theme/theme';
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink';
 
 const StyledPolling = styled.div`
@@ -15,16 +16,10 @@ const StyledPolling = styled.div`
   padding: 1rem;
   color: ${({ theme }) => theme.green1};
 `
-// const StyledPollingNumber = styled(TYPE.small)<{ breathe: boolean; hovering: boolean }>`
-//   transition: opacity 0.25s ease;
-//   opacity: ${({ breathe, hovering }) => (hovering ? 0.7 : breathe ? 1 : 0.5)};
-//   :hover {
-//     opacity: 1;
-//   }
-// `
 
-const StyledPollingNumber = styled.div`
+const StyledPollingNumber = styled(TEXT.small)<{ breathe: boolean; hovering: boolean }>`
   transition: opacity 0.25s ease;
+  opacity: ${({ breathe, hovering }) => (hovering ? 0.7 : breathe ? 1 : 0.5)};
   :hover {
     opacity: 1;
   }
@@ -99,8 +94,7 @@ export default function CurrentBlock() {
       href={chainId && blockNumber ? getExplorerLink(chainId, blockNumber.toString(), ExplorerDataType.BLOCK) : ''}
     >
       <StyledPolling onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-        {/* <StyledPollingNumber breathe={isMounting} hovering={isHover}> */}
-        <StyledPollingNumber>
+        <StyledPollingNumber breathe={isMounting} hovering={isHover}>
           {blockNumber}
         </StyledPollingNumber>
         <StyledPollingDot>{isMounting && <Spinner />}</StyledPollingDot>

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { 
+import { Text, TextProps as TextPropsOriginal } from 'rebass';
+import styled, { 
   css,
   DefaultTheme,
   ThemeProvider as StyledComponentsThemeProvider
@@ -65,3 +66,33 @@ export default function ThemeProvider({ children } : { children: React.ReactNode
 
   return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>;
 };
+
+const TextWrapper = styled(Text)<{ color: keyof Colors }>`
+  color: ${({ color, theme }) => (theme as any)[color]};
+`
+
+type TextProps = Omit<TextPropsOriginal, 'css'>
+
+export const TEXT = {
+  main(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'text2'} {...props} />
+  },
+  link(props: TextProps) {
+    return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
+  },
+  body(props: TextProps) {
+    return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
+  },
+  largeHeader(props: TextProps) {
+    return <TextWrapper fontWeight={600} fontSize={24} {...props} />
+  },
+  mediumHeader(props: TextProps) {
+    return <TextWrapper fontWeight={500} fontSize={20} {...props} />
+  },
+  subHeader(props: TextProps) {
+    return <TextWrapper fontWeight={400} fontSize={14} {...props} />
+  },
+  small(props: TextProps) {
+    return <TextWrapper fontWeight={500} fontSize={11} {...props} />
+  },
+}
