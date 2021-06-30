@@ -1,4 +1,4 @@
-import { ThemedCssFunction } from 'styled-components'
+import { ThemedCssFunction } from 'styled-components';
 
 export type Color = string;
 
@@ -17,17 +17,22 @@ export interface Colors {
   bg1: Color
   bg2: Color
   bg3: Color
-}
+
+  // misc
+  blue1: Color
+  red1: Color
+  green1: Color
+};
 
 declare module 'styled-components' {
 
   export interface DefaultTheme extends Colors { 
     // media queries
     mediaWidth: {
-      upToExtraSmall: ThemedCssFunction<DefaultTheme>
-      upToSmall: ThemedCssFunction<DefaultTheme>
-      upToMedium: ThemedCssFunction<DefaultTheme>
-      upToLarge: ThemedCssFunction<DefaultTheme>
+      minExtraSmall: ThemedCssFunction<DefaultTheme>
+      minSmall: ThemedCssFunction<DefaultTheme>
+      minMedium: ThemedCssFunction<DefaultTheme>
+      minLarge: ThemedCssFunction<DefaultTheme>
     }
-  }
-}
+  };
+};

@@ -8,10 +8,10 @@ import { useIsDarkMode } from "../state/user/hooks";
 import { Colors } from "./styled";
 
 export const MEDIA_WIDTHS = {
-  upToExtraSmall: 576,
-  upToSmall: 768,
-  upToMedium: 992,
-  upToLarge: 1400
+  minExtraSmall: 576,
+  minSmall: 768,
+  minMedium: 992,
+  minLarge: 1400
 };
 
 const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
@@ -41,7 +41,12 @@ export function colors(darkMode: boolean): Colors {
     // backgrounds
     bg1: darkMode ? '#0B0F1C' : '#F7F7F7',
     bg2: darkMode ? '#F7F7F7' : '#0B0F1C',
-    bg3: darkMode ? '#565A69' : '#edeef2'
+    bg3: darkMode ? '#565A69' : '#edeef2',
+
+    //misc
+    blue1: darkMode ? '#2172E5' : '#0068FC',
+    red1: darkMode ? '#FF4343' : '#DA2D2B',
+    green1: darkMode ? '#27AE60' : '#007D35',  
   }
 }
 
@@ -51,12 +56,12 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     mediaWidth: mediaWidthTemplates,
   }
-}
+};
 
 export default function ThemeProvider({ children } : { children: React.ReactNode }) {
   const darkMode = useIsDarkMode();
 
-  const themeObject = useMemo(() => theme(darkMode), [darkMode])
+  const themeObject = useMemo(() => theme(darkMode), [darkMode]);
 
-  return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
-}
+  return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>;
+};

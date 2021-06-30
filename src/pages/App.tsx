@@ -3,6 +3,7 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager';
 import Header from '../components/Header/Header';
+import CurrentBlock from '../components/CurrentBlock/CurrentBlock';
 import Markets from './Markets/Markets';
 import Positions from './Positions/Positions';
 import styled from 'styled-components/macro';
@@ -24,6 +25,7 @@ const App = () => {
           <Route exact strict path="/positions" component={Positions} />
         </Switch>
       </Web3ReactManager>
+      <CurrentBlock />
     </AppWrapper>
   )
 }
