@@ -78,7 +78,7 @@ export default function CurrentBlock() {
       }
 
       setIsMounting(true)
-      const mountingTimer = setTimeout(() => setIsMounting(false), 10000000)
+      const mountingTimer = setTimeout(() => setIsMounting(false), 1000)
 
       // this will clear Timeout when component unmount like in willComponentUnmount
       return () => {
