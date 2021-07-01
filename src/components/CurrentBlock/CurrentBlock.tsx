@@ -26,10 +26,10 @@ const StyledPollingNumber = styled(TEXT.small)<{ breathe: boolean; hovering: boo
 `
 
 const StyledPollingDot = styled.div`
-  width: 8px;
-  height: 8px;
-  min-height: 8px;
-  min-width: 8px;
+  width: 9px;
+  height: 9px;
+  min-height: 9px;
+  min-width: 9px;
   margin-left: 0.5rem;
   border-radius: 50%;
   position: relative;
@@ -59,8 +59,8 @@ const Spinner = styled.div`
   border-radius: 50%;
   position: relative;
 
-  left: -3px;
-  top: -3px;
+  left: -4.1px;
+  top: -3.5px;
 `
 
 export default function CurrentBlock() {
