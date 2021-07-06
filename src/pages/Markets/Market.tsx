@@ -3,9 +3,10 @@ import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Column } from '../../components/Column/Column';
 import { Row } from "../../components/Row/Row";
+import { ContractAddresses } from '../../constants/addresses';
 
 export const StyledContainer = styled.div`
-  max-width: 900px;
+  max-width: 500px;
   margin: auto;
   margin-top: 70px;
 `
@@ -22,6 +23,12 @@ export const HeaderDetail = styled.div`
   font-weight: 700;
 `
 
+const TOKEN_LABELS: { [tokenId in ContractAddresses | number]: string } = {
+  [ContractAddresses.ETH_DAI]: 'ETH/DAI',
+  [ContractAddresses.OVL_DAI]: 'OVL/DAI',
+  [ContractAddresses.OVL_ETH]: 'OVL/ETH',
+}
+
 interface MarketHeaderProps {
   marketId: any
   nextSampleTime?: any
@@ -32,8 +39,8 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
   return (
     <Row>
       <Column width={'auto'} align={'left'} padding={'0 38px 0 0'}>
-        <Header> {marketId} </Header>
-        <HeaderDetail> {marketPrice} </HeaderDetail>
+        <Header> {TOKEN_LABELS[marketId]} </Header>
+        <HeaderDetail> TBD </HeaderDetail>
       </Column>
       <Column width={'auto'} align={'left'}>
         <Header color={'#10DCB1'}>Next sample time:</Header>
