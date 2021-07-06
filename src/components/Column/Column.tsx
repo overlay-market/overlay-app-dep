@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 import { Box } from 'rebass/styled-components';
 
-export const Row = styled(Box)<{
+export const Column = styled(Box)<{
   width?: string
   align?: string
   justify?: string
@@ -10,7 +10,7 @@ export const Row = styled(Box)<{
   borderRadius?: string
 }>`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: ${({ width }) => width ?? '100%'}; 
   align-items: ${({ align }) => align ?? 'center'};
   justify-content: ${({ justify }) => justify ?? 'flex-start'};

@@ -29,17 +29,15 @@ export const StyledTableCellThin = styled(StyledTableCell)`
   font-weight: 400 !important;
 `
 
-function createData(market: string, price: number, updatePeriod: string, positions: string, marketId: string) {
-  return {market, price, updatePeriod, positions, marketId};
+function createData(market: string, price: number, updatePeriod: string, oiLong: string, oiShort: string, positions: string, marketId: string) {
+  return {market, price, updatePeriod, oiLong, oiShort, positions, marketId};
 }
 
 // replace with fetched data
 const mockData = [
-  createData("AAVE/ETH", 13.81, "7.4h; 0.9h Sampling Period", "", "1"),
-  createData("ETH/DAI", 2815.40, "7.4h; 0.9h Sampling Period", "", "2"),
-  createData("OVL/ETH", 0.0100, "7.4h; 0.9h Sampling Period", "", "3"),
-  createData("UNI/ETH", 0.00, "7.4h; 0.9h Sampling Period", "", "4"),
-  createData("WBTC/ETH", 2815.40, "7.4h; 0.9h Sampling Period", "", "5"),
+  createData("ETH/DAI", 2815.40, "7.4h; 0.9h", "500/1000", "15/1000", "", "1"),
+  createData("OVL/DAI", 13.81, "7.4h; 0.9h", "1000/1000", "0/1000", "", "2"),
+  createData("OVL/ETH", 0.0100, "7.4h; 0.9h", "230/1000", "423/1000", "", "3"),
 ];
 
 const Markets: React.FC = () => {
@@ -51,7 +49,9 @@ const Markets: React.FC = () => {
             <TableRow>
               <StyledTableCell>Market</StyledTableCell>
               <StyledTableCell>Price</StyledTableCell>
-              <StyledTableCell>Update period</StyledTableCell>
+              <StyledTableCell>Update Period</StyledTableCell>
+              <StyledTableCell>OI Long</StyledTableCell>
+              <StyledTableCell>OI Short</StyledTableCell>
               <StyledTableCell>Positions</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -68,6 +68,8 @@ const Markets: React.FC = () => {
                   </StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>
+                  <StyledTableCellThin align="left">{row.oiLong}</StyledTableCellThin>
+                  <StyledTableCellThin align="left">{row.oiShort}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
               </TableRow>
             ))}
