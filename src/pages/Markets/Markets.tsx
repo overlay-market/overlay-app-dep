@@ -8,7 +8,7 @@ import {
   TableRow,
   Paper
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 
@@ -29,17 +29,17 @@ export const StyledTableCellThin = styled(StyledTableCell)`
   font-weight: 400 !important;
 `
 
-function createData(market: string, price: number, updatePeriod: string, positions: string) {
-  return {market, price, updatePeriod, positions};
+function createData(market: string, price: number, updatePeriod: string, positions: string, marketId: string) {
+  return {market, price, updatePeriod, positions, marketId};
 }
 
 // replace with fetched data
 const mockData = [
-  createData("AAVE/ETH", 13.81, "7.4h; 0.9h Sampling Period", ""),
-  createData("ETH/DAI", 2815.40, "7.4h; 0.9h Sampling Period", ""),
-  createData("OVL/ETH", 0.0100, "7.4h; 0.9h Sampling Period", ""),
-  createData("UNI/ETH", 0.00, "7.4h; 0.9h Sampling Period", ""),
-  createData("WBTC/ETH", 2815.40, "7.4h; 0.9h Sampling Period", ""),
+  createData("AAVE/ETH", 13.81, "7.4h; 0.9h Sampling Period", "", "1"),
+  createData("ETH/DAI", 2815.40, "7.4h; 0.9h Sampling Period", "", "2"),
+  createData("OVL/ETH", 0.0100, "7.4h; 0.9h Sampling Period", "", "3"),
+  createData("UNI/ETH", 0.00, "7.4h; 0.9h Sampling Period", "", "4"),
+  createData("WBTC/ETH", 2815.40, "7.4h; 0.9h Sampling Period", "", "5"),
 ];
 
 const Markets: React.FC = () => {
@@ -56,10 +56,15 @@ const Markets: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {mockData.map((row, index) => (
-              <TableRow component={Link} to={`/Markets/${index}`}>
+            {mockData.map((row) => (
+              <TableRow 
+                // component={Link} 
+                // to={`/Markets/${row.marketId}`}
+                >
                   <StyledTableCellThin component="th" scope="row">
+                    <NavLink to={`/Markets/${row.marketId}`}>
                     {row.market}
+                    </NavLink>
                   </StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>

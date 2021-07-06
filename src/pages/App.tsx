@@ -24,7 +24,7 @@ const App = () => {
           <Route exact strict path="/" render={() => <Redirect to="/markets" />} />
           <Route exact strict path="/markets" component={Markets} />
           <Route exact strict path="/positions" component={Positions} />
-          <Route exact strict path="/market/:id" component={Market} />
+          <Route exact strict path="/markets/:marketId" component={Market} />
         </Switch>
       </Web3ReactManager>
       <CurrentBlock />

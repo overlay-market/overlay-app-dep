@@ -1,9 +1,19 @@
 import React from 'react';
+import { RouteComponentProps, useParams } from 'react-router';
 
-export const Market: React.FC = () => {
+export function Market(
+  { match: 
+  {
+    params: { marketId }
+  }
+}: RouteComponentProps<{ marketId?: string }>
+) {
+
+  // let { marketId } = useParams();
+  console.log('marketId : ', marketId);
   return (
     <>
-      Lorem Ipsum
+      Hello
     </>
   )
-}
+};
