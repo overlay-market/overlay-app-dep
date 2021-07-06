@@ -8,6 +8,7 @@ import {
   TableRow,
   Paper
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 
@@ -55,14 +56,14 @@ const Markets: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {mockData.map((row) => (
-              <TableRow>
-                <StyledTableCellThin component="th" scope="row">
-                  {row.market}
-                </StyledTableCellThin>
-                <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
-                <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>
-                <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
+            {mockData.map((row, index) => (
+              <TableRow component={Link} to={`/Markets/${index}`}>
+                  <StyledTableCellThin component="th" scope="row">
+                    {row.market}
+                  </StyledTableCellThin>
+                  <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
+                  <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>
+                  <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
               </TableRow>
             ))}
           </TableBody>
