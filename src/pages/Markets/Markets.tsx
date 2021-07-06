@@ -8,7 +8,7 @@ import {
   TableRow,
   Paper
 } from '@material-ui/core';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
 
 

@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Column } from '../../components/Column/Column';
+import { Row } from "../../components/Row/Row";
 
 export const StyledContainer = styled.div`
   max-width: 900px;
@@ -9,16 +10,36 @@ export const StyledContainer = styled.div`
   margin-top: 70px;
 `
 
+export const Header = styled.div`
+  color: ${props => props.color || "white"};
+  font-size: 16px;
+  font-weight: 400;
+`
+
+export const HeaderDetail = styled.div`
+  color: ${props => props.color || "white"};
+  font-size: 20px;
+  font-weight: 700;
+`
+
 interface MarketHeaderProps {
   marketId: any
   nextSampleTime?: any
+  marketPrice?: any
 }
 
-export const MarketHeader = ({marketId, nextSampleTime}: MarketHeaderProps) => {
+export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHeaderProps) => {
   return (
-    <Column width={'auto'}>
-      {marketId}
-    </Column>
+    <Row>
+      <Column width={'auto'} align={'left'} padding={'0 38px 0 0'}>
+        <Header> {marketId} </Header>
+        <HeaderDetail> {marketPrice} </HeaderDetail>
+      </Column>
+      <Column width={'auto'} align={'left'}>
+        <Header color={'#10DCB1'}>Next sample time:</Header>
+        <HeaderDetail> 09:15 </HeaderDetail>
+      </Column>
+    </Row>
   )
 }
 
