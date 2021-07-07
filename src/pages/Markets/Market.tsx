@@ -4,6 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { Column } from '../../components/Column/Column';
 import { Row } from "../../components/Row/Row";
 import { ContractAddresses } from '../../constants/addresses';
+import { BuildPosition } from './BuildPosition';
 
 export const StyledContainer = styled.div`
   max-width: 500px;
@@ -50,6 +51,7 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
   )
 }
 
+
 export function Market(
   { match: {params: { marketId }}
 }: RouteComponentProps<{ marketId?: string }>
@@ -59,6 +61,7 @@ export function Market(
   return (
     <StyledContainer>
       <MarketHeader marketId={marketId} />
+      <BuildPosition />
     </StyledContainer>
   )
 };

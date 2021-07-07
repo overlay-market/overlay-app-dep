@@ -20,6 +20,7 @@ export interface Colors {
 
   // misc
   blue1: Color
+  blue2: Color
   red1: Color
   green1: Color
 };

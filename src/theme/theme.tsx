@@ -46,6 +46,7 @@ export function colors(darkMode: boolean): Colors {
 
     //misc
     blue1: darkMode ? '#2172E5' : '#0068FC',
+    blue2: '#56CCF2',
     red1: darkMode ? '#FF4343' : '#DA2D2B',
     green1: darkMode ? '#27AE60' : '#007D35',  
   }
@@ -74,25 +75,25 @@ const TextWrapper = styled(Text)<{ color: keyof Colors }>`
 type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
-  main(props: TextProps) {
+  Main(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'text2'} {...props} />
   },
-  link(props: TextProps) {
+  Link(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
   },
-  body(props: TextProps) {
+  Body(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
   },
-  largeHeader(props: TextProps) {
+  LargeHeader(props: TextProps) {
     return <TextWrapper fontWeight={600} fontSize={24} {...props} />
   },
-  mediumHeader(props: TextProps) {
+  MediumHeader(props: TextProps) {
     return <TextWrapper fontWeight={500} fontSize={20} {...props} />
   },
-  subHeader(props: TextProps) {
+  SubHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
-  small(props: TextProps) {
+  Small(props: TextProps) {
     return <TextWrapper fontWeight={500} fontSize={11} {...props} />
   },
 }
