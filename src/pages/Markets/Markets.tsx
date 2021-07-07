@@ -62,7 +62,7 @@ const Markets: React.FC = () => {
                 // to={`/Markets/${row.marketId}`}
                 >
                   <StyledTableCellThin component="th" scope="row">
-                    <NavLink to={`/Markets/${row.marketId}`}>
+                    <NavLink to={`/markets/${row.marketId}`}>
                     {row.market}
                     </NavLink>
                   </StyledTableCellThin>

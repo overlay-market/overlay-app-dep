@@ -5,6 +5,10 @@ import { Column } from '../../components/Column/Column';
 import { Row } from "../../components/Row/Row";
 import { ContractAddresses } from '../../constants/addresses';
 import { BuildPosition } from './BuildPosition';
+import { MarketCard } from '../../components/Card/MarketCard';
+import { ChevronRight } from 'react-feather';
+import { TEXT } from '../../theme/theme';
+import { NavLink } from 'react-router-dom';
 
 export const StyledContainer = styled.div`
   max-width: 500px;
@@ -22,6 +26,14 @@ export const HeaderDetail = styled.div`
   color: ${props => props.color || "white"};
   font-size: 20px;
   font-weight: 700;
+`
+
+export const StyledLink = styled(NavLink)`
+  text-decoration: none;
+`
+
+export const StyledArrow = styled(ChevronRight)`
+  margin-top: auto;
 `
 
 const TOKEN_LABELS: { [tokenId in ContractAddresses | number]: string } = {
@@ -47,6 +59,12 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
         <Header color={'#10DCB1'}>Next sample time:</Header>
         <HeaderDetail> 09:15 </HeaderDetail>
       </Column>
+      <Row width={'auto'} ml={'auto'}>
+        <StyledLink to="/markets">
+          <TEXT.Body>Back</TEXT.Body>
+        </StyledLink>
+        <StyledArrow color={'white'} size={16}/>
+      </Row>
     </Row>
   )
 }
@@ -62,6 +80,14 @@ export function Market(
     <StyledContainer>
       <MarketHeader marketId={marketId} />
       <BuildPosition />
+
+      <MarketCard title={'Positions'}>
+        NaN
+      </MarketCard>
+
+      <MarketCard title={'Liquidate'}>
+        NaN
+      </MarketCard>
     </StyledContainer>
   )
 };
