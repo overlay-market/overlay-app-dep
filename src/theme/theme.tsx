@@ -36,7 +36,7 @@ export function colors(darkMode: boolean): Colors {
     // text
     text1: darkMode ? '#FFFFFF' : '#000000',
     text2: '10DCB1',
-    text3: '#12B4FF',
+    text3: '#0B0F1C',
     text4: '#12B4FF',
 
     // backgrounds

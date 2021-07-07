@@ -13,6 +13,12 @@ const BaseButton = styled(RebassButton)<
   width: ${({ width }) => (width ? width : '100%')};
 `
 
-export const MarketButton = styled(BaseButton)`
+export const LightGreyButton = styled(BaseButton)`
+  background: #BDBDBD;
+  color: ${({theme}) => theme.text3};
+  font-size: 14px;
 
+  :focus {
+    background: #10DCB1;
+  }
 `
