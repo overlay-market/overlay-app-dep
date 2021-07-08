@@ -84,10 +84,10 @@ export default function Header() {
             <img src={OverlayLogo} alt={'Overlay Logo'} />
         )}
       </LogoContainer>
-      <StyledLink to={'/Markets'}>
+      <StyledLink to={'/markets'}>
         Markets
       </StyledLink>
-      <StyledLink to={'/Positions'}>
+      <StyledLink to={'/positions'}>
         Positions
       </StyledLink>
 
