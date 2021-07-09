@@ -50,7 +50,6 @@ function Web3StatusInner() {
     account ?? ""
   ];
 
-  console.log('userEthBalance: ', { userEthBalance });
   if (account) {
     // connected
     return (  
@@ -58,6 +57,14 @@ function Web3StatusInner() {
         {chainId && NETWORK_LABELS[chainId] && (
               <Chain>{NETWORK_LABELS[chainId]}</Chain>
         )}
+      {account && userEthBalance && (
+              <>
+                <Chain>
+                  {userEthBalance?.toSignificant(4)}{" "}
+                  ETH
+                </Chain>
+              </>
+            )}
         <Account>
           {shortenAddress(account)}
         </Account>
