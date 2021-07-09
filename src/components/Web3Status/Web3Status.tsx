@@ -2,6 +2,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { SupportedChainId } from '../../constants/chains';
 import { injected } from "../../connectors/connectors";
 import { shortenAddress } from '../../utils/web3';
+import { useETHBalances } from '../../state/wallet/hooks';
 import styled from 'styled-components/macro';
 
 export const Web3StatusConnected = styled.div`
@@ -45,6 +46,11 @@ function Web3StatusInner() {
     activate(injected);
   };
 
+  const userEthBalance = useETHBalances(account ? [account] : [])?.[
+    account ?? ""
+  ];
+
+  console.log('userEthBalance: ', { userEthBalance });
   if (account) {
     // connected
     return (  

@@ -72,7 +72,7 @@ export const StyledLink = styled(NavLink).attrs({
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
   const { account, chainId } = useActiveWeb3React();
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? '']; 
+  const userEthBalance = useETHBalances(account ? [account] : [])?.[account ?? ''];
 
   console.log('userEthBalance: ', userEthBalance);
   return (
@@ -100,7 +100,7 @@ export default function Header() {
                         <>
                           <div>
                             {userEthBalance?.toSignificant(4)}{" "}
-                            {Currency.getNativeCurrencySymbol(chainId)}
+                            {/* {Currency.getNativeCurrencySymbol(chainId)} */}
                           </div>
                         </>
                       )}

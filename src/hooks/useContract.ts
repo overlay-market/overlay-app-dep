@@ -3,6 +3,8 @@ import { useActiveWeb3React } from "./web3";
 import { Contract } from "@ethersproject/contracts";
 import { getContract } from "../utils/contract";
 import { MULTICALL_ABI, MULTICALL_NETWORKS } from "../constants/multicall";
+import { MULTICALL2_ADDRESS } from "../constants/addresses";
+import MULTICALL2_ABI from '../constants/multicall/multicall2.json';
 
 
 // returns null on errors
@@ -29,11 +31,7 @@ export function useContract(
   }, [address, ABI, library, withSignerIfPossible, account]);
 }
 
-export function useMulticallContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
-  return useContract(
-    chainId && MULTICALL_NETWORKS[chainId],
-    MULTICALL_ABI,
-    false
-  );
+export function useMulticall2Contract() {
+  const { chainId } = useActiveWeb3React()
+  return useContract(chainId && MULTICALL2_ADDRESS[chainId], MULTICALL2_ABI, false)
 }

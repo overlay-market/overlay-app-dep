@@ -5,6 +5,7 @@ import { HashRouter } from 'react-router-dom';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
 import ApplicationUpdater from './state/application/updater';
+import MulticallUpdater from './state/multicall/updater';
 import ThemeProvider from "./theme/theme";
 import store from './state/state';
 import getLibrary from './utils/getLibrary'
@@ -18,6 +19,7 @@ function Updaters() {
   return (
     <>
       <ApplicationUpdater />
+      <MulticallUpdater />
     </>
   )
 }
