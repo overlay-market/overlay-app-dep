@@ -10,6 +10,7 @@ import {
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
+import { theme } from '../../theme/theme';
 
 
 export const StyledContainer = styled.div`
@@ -29,6 +30,18 @@ export const StyledTableCellThin = styled(StyledTableCell)`
   font-weight: 400 !important;
 `
 
+export const StyledNavLink = styled(NavLink)`
+  color: ${({theme}) => theme.text1};
+  text-decoration: none;
+  font-weight: 500;
+
+  :hover {
+    font-weight: 700;
+  }
+  :focus {
+    font-weight: 700;
+  }
+`
 function createData(market: string, price: number, updatePeriod: string, oiLong: string, oiShort: string, positions: string, marketId: string) {
   return {market, price, updatePeriod, oiLong, oiShort, positions, marketId};
 }
@@ -62,9 +75,9 @@ const Markets: React.FC = () => {
                 // to={`/Markets/${row.marketId}`}
                 >
                   <StyledTableCellThin component="th" scope="row">
-                    <NavLink to={`/markets/${row.marketId}`}>
+                    <StyledNavLink to={`/markets/${row.marketId}`}>
                     {row.market}
-                    </NavLink>
+                    </StyledNavLink>
                   </StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>

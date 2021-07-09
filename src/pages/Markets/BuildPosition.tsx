@@ -13,7 +13,6 @@ export const BuildPosition = () => {
 
   const updateLeverage = (e:any) => {
     setLeverage(e.target.value);
-    console.log('leverage: ', leverage);
   }
 
   return (
