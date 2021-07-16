@@ -2,8 +2,9 @@ import { useMemo } from "react";
 import { useActiveWeb3React } from "./web3";
 import { Contract } from "@ethersproject/contracts";
 import { getContract } from "../utils/contract";
-import { MULTICALL_ABI, MULTICALL_NETWORKS } from "../constants/multicall";
 import { MULTICALL2_ADDRESS } from "../constants/addresses";
+import { V1_FACTORY_ADDRESS } from "../constants/addresses";
+import OVL_V1_FACTORY_ABI from "../constants/abis/OVL_V1_Factory.json";
 import MULTICALL2_ABI from '../constants/multicall/multicall2.json';
 
 
@@ -32,6 +33,11 @@ export function useContract(
 }
 
 export function useMulticall2Contract() {
-  const { chainId } = useActiveWeb3React()
-  return useContract(chainId && MULTICALL2_ADDRESS[chainId], MULTICALL2_ABI, false)
+  const { chainId } = useActiveWeb3React();
+  return useContract(chainId && MULTICALL2_ADDRESS[chainId], MULTICALL2_ABI, false);
+}
+
+export function useOVLFactoryContract() {
+  const { chainId } = useActiveWeb3React();
+  return useContract(chainId && V1_FACTORY_ADDRESS[chainId], OVL_V1_FACTORY_ABI, false);
 }

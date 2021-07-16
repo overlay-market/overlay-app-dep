@@ -33,3 +33,7 @@ export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.OKEX]: '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
   [ChainId.OKEX_TESTNET]: '',
 }
+
+export const V1_FACTORY_ADDRESS: AddressMap = {
+  [ChainId.KOVAN]: '0x9b642848aaEeeFFc1caecCD5CC29F394A876a599',
+}

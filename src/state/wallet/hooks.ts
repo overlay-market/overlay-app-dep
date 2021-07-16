@@ -1,22 +1,29 @@
-// import {
-//   Currency,
-//   CurrencyAmount,
-//   JSBI,
-//   Token,
-//   TokenAmount,
-// } from "@sushiswap/sdk";
 import { Currency, CurrencyAmount, Ether, JSBI, Token } from '@sushiswap/sdk'
 import {
   useMultipleContractSingleData,
   useSingleContractMultipleData,
+  useSingleCallResult
 } from "../multicall/hooks";
 import { useMemo } from "react";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { isAddress } from '../../utils/validate';
 import { useMulticall2Contract } from '../../hooks/useContract';
+import { useOVLFactoryContract } from '../../hooks/useContract';
 import { Interface } from '@ethersproject/abi'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import ERC20_INTERFACE from "../../constants/abis/erc20";
+
+export function useTotalMarkets() {
+  const ovlFactoryContract = useOVLFactoryContract();
+
+  const results = useSingleCallResult(
+    ovlFactoryContract,
+    "allMarkets",
+    [0]
+  );
+
+  console.log('results from useTotalMarkets: ' , results);
+};
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.

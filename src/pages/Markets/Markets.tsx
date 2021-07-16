@@ -11,6 +11,7 @@ import {
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { theme } from '../../theme/theme';
+import { useTotalMarkets } from '../../state/wallet/hooks';
 
 
 export const StyledContainer = styled.div`
@@ -54,6 +55,9 @@ const mockData = [
 ];
 
 const Markets: React.FC = () => {
+  const markets = useTotalMarkets();
+
+  console.log('markets:' , markets);
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
