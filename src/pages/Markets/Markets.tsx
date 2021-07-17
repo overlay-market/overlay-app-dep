@@ -10,8 +10,7 @@ import {
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { theme } from '../../theme/theme';
-import { useTotalMarkets } from '../../state/wallet/hooks';
+import { useTotalMarkets } from '../../state/markets/hooks';
 
 
 export const StyledContainer = styled.div`
@@ -74,10 +73,7 @@ const Markets: React.FC = () => {
           </TableHead>
           <TableBody>
             {mockData.map((row) => (
-              <TableRow 
-                // component={Link} 
-                // to={`/Markets/${row.marketId}`}
-                >
+              <TableRow>
                   <StyledTableCellThin component="th" scope="row">
                     <StyledNavLink to={`/markets/${row.marketId}`}>
                     {row.market}

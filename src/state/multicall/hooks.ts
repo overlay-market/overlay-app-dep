@@ -254,4 +254,4 @@ export function useSingleCallResult(
   return useMemo(() => {
     return toCallState(result, contract?.interface, fragment, latestBlockNumber)
   }, [result, contract, fragment, latestBlockNumber])
-}
+};
