@@ -5,6 +5,7 @@ import { getContract } from "../utils/contract";
 import { MULTICALL2_ADDRESS } from "../constants/addresses";
 import { V1_FACTORY_ADDRESS } from "../constants/addresses";
 import OVL_V1_FACTORY_ABI from "../constants/abis/OVL_V1_Factory.json";
+import OVL_V1_MARKET_ABI from "../constants/abis/overlayv1_uniswapv3_market.json"
 import MULTICALL2_ABI from '../constants/multicall/multicall2.json';
 
 
@@ -40,4 +41,8 @@ export function useMulticall2Contract() {
 export function useOVLFactoryContract() {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && V1_FACTORY_ADDRESS[chainId], OVL_V1_FACTORY_ABI, false);
+}
+
+export function useMarketContract(address: string | undefined) {
+  return useContract(address, OVL_V1_MARKET_ABI, false);
 }

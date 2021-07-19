@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useTotalMarkets, useActiveMarkets } from '../../state/markets/hooks';
+import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
 
 
 export const StyledContainer = styled.div`
@@ -59,6 +59,8 @@ const Markets = () => {
   // const activeMarkets = useActiveMarkets(markets.result?.marketAddress);
   console.log('markets: ', markets);
 
+  const marketData = useMarketData();
+  console.log('marketData, ', marketData);
 
   return (
     <StyledContainer>

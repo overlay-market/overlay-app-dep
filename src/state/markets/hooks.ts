@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useOVLFactoryContract } from "../../hooks/useContract";
+import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 
 export function useTotalMarkets() {
@@ -47,3 +47,14 @@ export function useActiveMarkets(
   
   // return results;
 };
+
+export function useMarketData() {
+  const marketContract = useMarketContract('0x018184E4F0D1760778F53e7675c578Ee3Fe2e778');
+
+  const results = useSingleCallResult(
+    marketContract,
+    'lastPrice',
+  )
+
+  return results;
+}
