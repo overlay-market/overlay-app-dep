@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useOVLFactoryContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 
@@ -12,21 +13,37 @@ export function useTotalMarkets() {
     "allMarkets",
     [0]
   );
-  
-  
-  return results;
+
+  let marketList = results.result;
+  if (!Array.isArray(marketList)) {
+    // temp hardcode begin state
+    marketList = ['0x018184E4F0D1760778F53e7675c578Ee3Fe2e778'];
+  }
+
+  return useActiveMarkets(marketList);
 };
 
 export function useActiveMarkets(
-  addresses?: []
+  addresses?: any
 ) {
   const ovlFactoryContract = useOVLFactoryContract();
-  
-  const results = useSingleCallResult(
+  const results = useSingleContractMultipleData(
     ovlFactoryContract,
     "isMarket",
     [addresses]
   )
 
-  console.log('results in useActiveMarkets: ', results);
+  return useMemo(
+    () =>
+      addresses?.reduce((memo:any, address:any, i:any) => {
+        const isTrue = results?.[i];
+        if (isTrue) {
+          memo.push(address);
+        }
+        return memo;
+      }, []),
+      [addresses, results]
+  )
+  
+  // return results;
 };

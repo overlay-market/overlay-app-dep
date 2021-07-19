@@ -56,7 +56,9 @@ const mockData = [
 const Markets = () => {
   const markets = useTotalMarkets();
 
-  const activeMarkets = useActiveMarkets(markets.result?.marketAddress);
+  // const activeMarkets = useActiveMarkets(markets.result?.marketAddress);
+  console.log('markets: ', markets);
+
 
   return (
     <StyledContainer>
