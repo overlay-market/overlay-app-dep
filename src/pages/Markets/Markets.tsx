@@ -10,7 +10,7 @@ import {
 } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useTotalMarkets } from '../../state/markets/hooks';
+import { useTotalMarkets, useActiveMarkets } from '../../state/markets/hooks';
 
 
 export const StyledContainer = styled.div`
@@ -53,10 +53,11 @@ const mockData = [
   createData("OVL/ETH", 0.0100, "7.4h; 0.9h", "230/1000", "423/1000", "", "3"),
 ];
 
-const Markets: React.FC = () => {
+const Markets = () => {
   const markets = useTotalMarkets();
 
-  console.log('markets:' , markets);
+  const activeMarkets = useActiveMarkets(markets.result?.marketAddress);
+
   return (
     <StyledContainer>
       <TableContainer component={Paper}>

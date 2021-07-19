@@ -1,5 +1,5 @@
 import { useOVLFactoryContract } from "../../hooks/useContract";
-import { useSingleCallResult } from "../multicall/hooks";
+import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 
 export function useTotalMarkets() {
   const ovlFactoryContract = useOVLFactoryContract();
@@ -12,6 +12,21 @@ export function useTotalMarkets() {
     "allMarkets",
     [0]
   );
-
+  
+  
   return results;
+};
+
+export function useActiveMarkets(
+  addresses?: []
+) {
+  const ovlFactoryContract = useOVLFactoryContract();
+  
+  const results = useSingleCallResult(
+    ovlFactoryContract,
+    "isMarket",
+    [addresses]
+  )
+
+  console.log('results in useActiveMarkets: ', results);
 };
