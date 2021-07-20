@@ -92,9 +92,9 @@ export default function Header() {
 
       <div className={styles["accountContainer"]}>
          <Web3Status/>
-        <StyledMenuButton onClick={() => toggleDarkMode()}>
+        {/* <StyledMenuButton onClick={() => toggleDarkMode()}>
           {darkMode ? <Moon size={20} /> : <Sun size={20} />}
-        </StyledMenuButton>
+        </StyledMenuButton> */}
       </div>
     </HeaderContainer>
   )

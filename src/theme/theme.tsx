@@ -94,6 +94,6 @@ export const TEXT = {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
   Small(props: TextProps) {
-    return <TextWrapper fontWeight={500} fontSize={11} {...props} />
+    return <TextWrapper fontWeight={500} fontSize={12} {...props} />
   },
 }

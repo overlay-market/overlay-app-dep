@@ -4,6 +4,8 @@ import { injected } from "../../connectors/connectors";
 import { shortenAddress } from '../../utils/web3';
 import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks';
 import { OVL } from '../../constants/tokens';
+import { Row } from '../Row/Row';
+import { TEXT } from '../../theme/theme';
 import styled from 'styled-components/macro';
 
 export const Web3StatusConnected = styled.div`
@@ -63,10 +65,14 @@ function Web3StatusInner() {
         )}
       {account && userOvlBalance && (
               <>
-                <Chain>
-                  {userOvlBalance?.toSignificant(4)}{" "}
-                  OVL
-                </Chain>
+                <Row>
+                  <TEXT.Small mr={'32px'}>
+                    Balance:
+                    <strong>
+                    {" "}{userOvlBalance?.toSignificant(4)}{" "} OVL
+                    </strong>
+                  </TEXT.Small>
+                </Row>
               </>
             )}
         <Account>
