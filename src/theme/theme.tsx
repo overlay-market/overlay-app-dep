@@ -45,6 +45,7 @@ export function colors(darkMode: boolean): Colors {
     bg3: darkMode ? '#565A69' : '#edeef2',
 
     //misc
+    white1: '#f2f2f2',
     blue1: darkMode ? '#2172E5' : '#0068FC',
     blue2: '#56CCF2',
     red1: darkMode ? '#FF4343' : '#DA2D2B',

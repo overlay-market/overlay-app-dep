@@ -6,7 +6,6 @@ import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
 import { Label, Slider } from '@rebass/forms';
 
-
 export const BuildPosition = () => {
   const [leverage, setLeverage] = useState(1);
 

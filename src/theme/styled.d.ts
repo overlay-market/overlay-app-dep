@@ -19,6 +19,7 @@ export interface Colors {
   bg3: Color
 
   // misc
+  white1: Color
   blue1: Color
   blue2: Color
   red1: Color
