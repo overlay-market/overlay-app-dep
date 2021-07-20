@@ -17,25 +17,43 @@ export const BuildPosition = () => {
 
   return (
     <MarketCard title={'Build'}>
-      <Column as={'form'} onSubmit={(e:any) => e.preventDefault()}>
-        <TEXT.Body margin={'16px auto 4px 0'} letterSpacing={'0.25px'}>
-          Side
-        </TEXT.Body>
+      <Column 
+        as={'form'} 
+        onSubmit={(e:any) => e.preventDefault()}
+        >
+          <TEXT.Body 
+            margin={'16px auto 4px 0'} 
+            letterSpacing={'0.25px'}
+            >
+              Side
+          </TEXT.Body>
         <Row>
-          <LightGreyButton height={'32px'} padding={'8px'} mr={'2px'}>
-            Long
+          <LightGreyButton 
+            height={'32px'} 
+            padding={'8px'} 
+            mr={'2px'}
+            >
+              Long
           </LightGreyButton>
-          <LightGreyButton height={'32px'} padding={'8px'}>
-            Short
+          <LightGreyButton 
+            height={'32px'} 
+            padding={'8px'}
+            >
+              Short
           </LightGreyButton>
         </Row>
         <Label htmlFor='leverage'>
-          <TEXT.Body margin={'24px 0 4px 0'} letterSpacing={'0.25px'}>
-            Leverage: {leverage}x
+          <TEXT.Body 
+            margin={'24px 0 4px 0'} 
+            letterSpacing={'0.25px'}
+            >
+              Leverage: {leverage}x
           </TEXT.Body>
-            <TEXT.Small margin={'auto auto 4px 4px'} color={'white'}>
+          <TEXT.Small 
+            margin={'auto auto 4px 4px'} 
+            color={'white'}>
               (Liquidation Price Est.: N/A USD)
-            </TEXT.Small>
+          </TEXT.Small>
         </Label>
         <Slider
           id='leverage'
