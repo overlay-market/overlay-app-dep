@@ -14,10 +14,10 @@ import ERC20_INTERFACE from "../../constants/abis/erc20";
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
  */
- export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
+export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
   [address: string]: CurrencyAmount<Currency> | undefined
 } {
-  const { chainId } = useActiveWeb3React()
+  const { chainId } = useActiveWeb3React();
   const multicallContract = useMulticall2Contract();
 
   const addresses: string[] = useMemo(
@@ -72,7 +72,6 @@ import ERC20_INTERFACE from "../../constants/abis/erc20";
     100_000
   )
 
-  console.log('balances: ', balances);
   const anyLoading: boolean = useMemo(() => balances.some((callState) => callState.loading), [balances])
 
   return [

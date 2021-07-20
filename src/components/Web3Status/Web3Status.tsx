@@ -2,7 +2,8 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { SupportedChainId } from '../../constants/chains';
 import { injected } from "../../connectors/connectors";
 import { shortenAddress } from '../../utils/web3';
-import { useETHBalances } from '../../state/wallet/hooks';
+import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks';
+import { OVL } from '../../constants/tokens';
 import styled from 'styled-components/macro';
 
 export const Web3StatusConnected = styled.div`
@@ -50,6 +51,9 @@ function Web3StatusInner() {
     account ?? ""
   ];
 
+  const ovl = chainId ? OVL[chainId] : undefined;
+  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+
   if (account) {
     // connected
     return (  
@@ -57,11 +61,11 @@ function Web3StatusInner() {
         {chainId && NETWORK_LABELS[chainId] && (
               <Chain>{NETWORK_LABELS[chainId]}</Chain>
         )}
-      {account && userEthBalance && (
+      {account && userOvlBalance && (
               <>
                 <Chain>
-                  {userEthBalance?.toSignificant(4)}{" "}
-                  ETH
+                  {userOvlBalance?.toSignificant(4)}{" "}
+                  OVL
                 </Chain>
               </>
             )}
