@@ -4,7 +4,7 @@ import { LightGreyButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
-import { Label, Slider } from '@rebass/forms';
+import { Label, Slider, Input } from '@rebass/forms';
 
 export const BuildPosition = () => {
   const [leverage, setLeverage] = useState(1);
@@ -65,6 +65,28 @@ export const BuildPosition = () => {
           bg="#F2F2F2"
           onChange={updateLeverage}
         />
+        <Label htmlFor='Amount'>
+          <TEXT.Body
+            margin={'24px auto 8px 0'}
+            color={'white'}
+            letterSpacing={'0.25px'}
+            >
+            Amount
+          </TEXT.Body>
+        </Label>
+        <Input
+          id='amount'
+          name='amount'
+          color='#fff'
+          min='0'
+          inputMode="decimal"
+          autoComplete="off"
+          autoCorrect="off"
+          type="Number"
+          pattern="^[0-9]*[.,]?[0-9]*$"
+          placeholder='0.0'
+          spellCheck="false"
+          />
       </Column>
     </MarketCard>
   )
