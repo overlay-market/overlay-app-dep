@@ -17,7 +17,13 @@ export const BuildPosition = () => {
   // const updateLeverage = (e:any) => {
   //   setLeverage(e.target.value);
   // }
-
+  const handleAmountInput = useCallback(
+    (e: any) => {
+      onAmountInput(e.target.value);
+    },
+    [onAmountInput]
+  )
+  
   const handleLeverageInput = useCallback(
     (e: any) => {
       onLeverageInput(e.target.value);
@@ -86,6 +92,7 @@ export const BuildPosition = () => {
           </TEXT.Body>
         </Label>
         <Input
+          onChange={handleAmountInput}
           id='amount'
           name='amount'
           color='#fff'
