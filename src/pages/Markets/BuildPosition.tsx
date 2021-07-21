@@ -1,18 +1,29 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { MarketCard } from "../../components/Card/MarketCard";
 import { LightGreyButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
 import { Label, Slider, Input } from '@rebass/forms';
+import { usePositionActionHandlers } from '../../state/position/hooks';
+import { usePositionState } from '../../state/position/hooks';
 
 export const BuildPosition = () => {
   const [leverage, setLeverage] = useState(1);
+  const { leverageValue } = usePositionState();
 
+  const { onAmountInput, onLeverageInput } = usePositionActionHandlers();
 
-  const updateLeverage = (e:any) => {
-    setLeverage(e.target.value);
-  }
+  // const updateLeverage = (e:any) => {
+  //   setLeverage(e.target.value);
+  // }
+
+  const handleLeverageInput = useCallback(
+    (e: any) => {
+      onLeverageInput(e.target.value);
+    },
+    [onLeverageInput]
+  );
 
   return (
     <MarketCard title={'Build'}>
@@ -46,7 +57,7 @@ export const BuildPosition = () => {
             margin={'24px 0 4px 0'} 
             letterSpacing={'0.25px'}
             >
-              Leverage: {leverage}x
+              Leverage: {leverageValue}x
           </TEXT.Body>
           <TEXT.Small 
             margin={'auto auto 4px 4px'} 
@@ -57,13 +68,13 @@ export const BuildPosition = () => {
         <Slider
           id='leverage'
           name='leverage'
-          value={leverage}
+          value={leverageValue}
           step={0.5}
           min={1}
           max={5}
           color='#12B4FF'
           bg="#F2F2F2"
-          onChange={updateLeverage}
+          onChange={handleLeverageInput}
         />
         <Label htmlFor='Amount'>
           <TEXT.Body
