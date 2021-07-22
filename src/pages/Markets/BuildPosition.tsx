@@ -1,18 +1,42 @@
 import { useState, useCallback } from 'react';
+import styled from 'styled-components';
 import { MarketCard } from "../../components/Card/MarketCard";
 import { LightGreyButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
+import { Box } from 'rebass';
 import { Label, Slider, Input } from '@rebass/forms';
 import { usePositionActionHandlers } from '../../state/position/hooks';
 import { usePositionState } from '../../state/position/hooks';
+import { PositionSide } from '../../state/position/actions';
+
+export const InputContainer = styled(Row)`
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid ${({theme}) => theme.white};
+`;
+
+export const InputOVL = styled.div<{
+  height?: string
+  padding?: string
+}>`
+  background: #E0E0E0;
+  color: ${({theme}) => theme.text3};
+  height: ${({height}) => height};
+  line-height: ${({height}) => height};
+  padding: ${({padding}) => padding};
+`;
+
+export const AmountInput = styled(Input)`
+  border-color: transparent !important;
+`
 
 export const BuildPosition = () => {
   const [leverage, setLeverage] = useState(1);
-  const { leverageValue } = usePositionState();
+  const { leverageValue, positionSide } = usePositionState();
 
-  const { onAmountInput, onLeverageInput } = usePositionActionHandlers();
+  const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
 
   // const updateLeverage = (e:any) => {
   //   setLeverage(e.target.value);
@@ -31,6 +55,20 @@ export const BuildPosition = () => {
     [onLeverageInput]
   );
 
+  const handlePositionSideLong = useCallback(
+    () => {
+      onPositionSideInput(PositionSide.LONG)
+    },
+    [onPositionSideInput]
+  );
+
+  const handlePositionSideShort = useCallback(
+    () => {
+      onPositionSideInput(PositionSide.SHORT)
+    },
+    [onPositionSideInput]
+  );
+  
   return (
     <MarketCard title={'Build'}>
       <Column 
@@ -48,12 +86,16 @@ export const BuildPosition = () => {
             height={'32px'} 
             padding={'8px'} 
             mr={'2px'}
+            onClick={handlePositionSideLong}
+            bg={positionSide === 'LONG' ? '#10DCB1' : '#BDBDBD'}
             >
               Long
           </LightGreyButton>
           <LightGreyButton 
             height={'32px'} 
             padding={'8px'}
+            onClick={handlePositionSideShort}
+            bg={positionSide === 'LONG' ? '#BDBDBD' : '#10DCB1'}
             >
               Short
           </LightGreyButton>
@@ -91,20 +133,29 @@ export const BuildPosition = () => {
             Amount
           </TEXT.Body>
         </Label>
-        <Input
-          onChange={handleAmountInput}
-          id='amount'
-          name='amount'
-          color='#fff'
-          min='0'
-          inputMode="decimal"
-          autoComplete="off"
-          autoCorrect="off"
-          type="Number"
-          pattern="^[0-9]*[.,]?[0-9]*$"
-          placeholder='0.0'
-          spellCheck="false"
-          />
+        <InputContainer>
+          <AmountInput
+            height='32px'
+            onChange={handleAmountInput}
+            id='amount'
+            name='amount'
+            color='#fff'
+            min='0'
+            inputMode="decimal"
+            autoComplete="off"
+            autoCorrect="off"
+            type="Number"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            placeholder='0.0'
+            spellCheck="false"
+            />
+            <InputOVL 
+              height='32px' 
+              padding='0 4px'
+              >
+              OVL
+            </InputOVL>
+          </InputContainer>
       </Column>
     </MarketCard>
   )

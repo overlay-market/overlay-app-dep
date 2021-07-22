@@ -1,11 +1,11 @@
 
 import { createReducer } from '@reduxjs/toolkit';
-import { amountInput, leverageInput, positionSideInput } from './actions';
+import { PositionSide, amountInput, leverageInput, positionSideInput } from './actions';
 
 export interface PositionState {
   readonly inputValue: string
   readonly leverageValue: number
-  readonly positionSide: string | undefined
+  readonly positionSide: PositionSide | undefined
 };
 
 const initialState: PositionState = {
