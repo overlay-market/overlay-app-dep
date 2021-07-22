@@ -11,9 +11,19 @@ const BaseButton = styled(RebassButton)<
 >`
   padding: ${({ padding }) => (padding ? padding : '16px')};
   width: ${({ width }) => (width ? width : '100%')};
+  cursor: pointer;
 `
 
 export const LightGreyButton = styled(BaseButton)`
   color: ${({theme}) => theme.text3};
   font-size: 14px;
+`
+
+export const TransparentUnderlineButton = styled(BaseButton)`
+  background: transparent;
+  text-decoration: underline;
+  color: ${({theme}) => theme.white};
+  padding: 0 8px;
+  width: auto;
+  font-size: 12px;
 `

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { MarketCard } from "../../components/Card/MarketCard";
-import { LightGreyButton } from "../../components/Button/Button";
+import { LightGreyButton, TransparentUnderlineButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
@@ -33,7 +33,6 @@ export const AmountInput = styled(Input)`
 `
 
 export const BuildPosition = () => {
-  const [leverage, setLeverage] = useState(1);
   const { leverageValue, positionSide } = usePositionState();
 
   const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
@@ -124,14 +123,24 @@ export const BuildPosition = () => {
           bg="#F2F2F2"
           onChange={handleLeverageInput}
         />
-        <Label htmlFor='Amount'>
+        <Label htmlFor='Amount' mt={'24px'}>
           <TEXT.Body
-            margin={'24px auto 8px 0'}
+            margin={'0 auto 4px 0'}
             color={'white'}
             letterSpacing={'0.25px'}
             >
             Amount
           </TEXT.Body>
+          <Row 
+            ml={'auto'} 
+            mb={'4px'} 
+            width={'auto'}
+            >
+            <TransparentUnderlineButton>25%</TransparentUnderlineButton>
+            <TransparentUnderlineButton>50%</TransparentUnderlineButton>
+            <TransparentUnderlineButton>75%</TransparentUnderlineButton>
+            <TransparentUnderlineButton>Max</TransparentUnderlineButton>
+          </Row>
         </Label>
         <InputContainer>
           <AmountInput
@@ -150,8 +159,8 @@ export const BuildPosition = () => {
             spellCheck="false"
             />
             <InputOVL 
-              height='32px' 
-              padding='0 4px'
+              height={'32px'} 
+              padding={'0 4px'}
               >
               OVL
             </InputOVL>
