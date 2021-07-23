@@ -9,11 +9,13 @@ import { MarketCard } from '../../components/Card/MarketCard';
 import { ChevronRight } from 'react-feather';
 import { TEXT } from '../../theme/theme';
 import { NavLink } from 'react-router-dom';
+import { MarketPositions } from './MarketPositions';
 
 export const StyledContainer = styled.div`
   max-width: 500px;
   margin: auto;
   margin-top: 70px;
+  margin-bottom: 16px;
 `
 
 export const Header = styled.div`
@@ -80,11 +82,7 @@ export function Market(
     <StyledContainer>
       <MarketHeader marketId={marketId} />
       <BuildPosition />
-
-      <MarketCard title={'Positions'}>
-        NaN
-      </MarketCard>
-
+      <MarketPositions />
       <MarketCard title={'Liquidate'}>
         NaN
       </MarketCard>

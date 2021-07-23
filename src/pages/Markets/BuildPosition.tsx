@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { MarketCard } from "../../components/Card/MarketCard";
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 import { 
   LightGreyButton, 
   TransparentUnderlineButton, 
@@ -224,7 +223,7 @@ export const BuildPosition = () => {
               >
               Fee: 0.0%
             </TEXT.Small>
-            { leverageValue && positionSide && inputValue ? (
+            { leverageValue !== undefined && positionSide && inputValue ? (
               <ActiveBlueButton ml={'auto'} mt={'4px'}>
                 Build
               </ActiveBlueButton>

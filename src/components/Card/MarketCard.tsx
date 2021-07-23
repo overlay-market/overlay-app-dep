@@ -1,11 +1,7 @@
 import { WhiteOutlineCard } from "../../components/Card/Card";
-import { Column } from "../../components/Column/Column";
+import { Column as Container } from "../../components/Column/Column";
 import { TEXT } from "../../theme/theme";
 import styled from 'styled-components/macro';
-
-
-export const Container = styled(Column)`
-`
 
 
 interface MarketCardProps {
