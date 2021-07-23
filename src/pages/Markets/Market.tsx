@@ -5,11 +5,11 @@ import { Column } from '../../components/Column/Column';
 import { Row } from "../../components/Row/Row";
 import { ContractAddresses } from '../../constants/addresses';
 import { BuildPosition } from './BuildPosition';
-import { MarketCard } from '../../components/Card/MarketCard';
 import { ChevronRight } from 'react-feather';
 import { TEXT } from '../../theme/theme';
 import { NavLink } from 'react-router-dom';
 import { MarketPositions } from './MarketPositions';
+import { MarketLiquidate } from './MarketLiquidate';
 
 export const StyledContainer = styled.div`
   max-width: 500px;
@@ -83,9 +83,7 @@ export function Market(
       <MarketHeader marketId={marketId} />
       <BuildPosition />
       <MarketPositions />
-      <MarketCard title={'Liquidate'}>
-        NaN
-      </MarketCard>
+      <MarketLiquidate />
     </StyledContainer>
   )
 };
