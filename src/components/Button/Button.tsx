@@ -14,7 +14,8 @@ const BaseButton = styled(RebassButton)<
   cursor: pointer;
 `
 
-export const LightGreyButton = styled(BaseButton)`
+export const LightGreyButton = styled(BaseButton)<{ background?: string }>`
+  background: ${({background}) => background ?? '#BDBDBD'};
   color: ${({theme}) => theme.text3};
   font-size: 14px;
 `
@@ -28,10 +29,21 @@ export const TransparentUnderlineButton = styled(BaseButton)`
   font-size: 12px;
 `
 
-export const DarkGreyButton = styled(BaseButton)`
-  background: #505050;
-  color: #F2F2F2;
+// Build Button base
+const BuildButton = styled(BaseButton)`
   border-radius: 4px;
   font-size: 14px;
   font-weight: 700;
+  color: #F2F2F2;
+  padding: 8px;
+  width: 120px;
+`
+
+export const TransparentDarkGreyButton = styled(BuildButton)`
+  background: #505050;
+  opacity: 0.8;
+`
+
+export const ActiveBlueButton = styled(BuildButton)`
+  background: ${({theme}) => theme.blue3};
 `

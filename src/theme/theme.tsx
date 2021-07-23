@@ -48,6 +48,7 @@ export function colors(darkMode: boolean): Colors {
     white1: '#f2f2f2',
     blue1: darkMode ? '#2172E5' : '#0068FC',
     blue2: '#56CCF2',
+    blue3: '#12B4FF',
     red1: darkMode ? '#FF4343' : '#DA2D2B',
     green1: darkMode ? '#27AE60' : '#007D35',  
   }

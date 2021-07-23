@@ -22,6 +22,7 @@ export interface Colors {
   white1: Color
   blue1: Color
   blue2: Color
+  blue3: Color
   red1: Color
   green1: Color
 };

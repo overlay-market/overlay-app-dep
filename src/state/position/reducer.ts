@@ -10,7 +10,7 @@ export interface PositionState {
 };
 
 const initialState: PositionState = {
-  inputValue: '',
+  inputValue: undefined,
   leverageValue: 1,
   positionSide: undefined
 };

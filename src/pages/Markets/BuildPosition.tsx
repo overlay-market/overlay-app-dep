@@ -2,7 +2,11 @@ import { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import { MarketCard } from "../../components/Card/MarketCard";
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
-import { LightGreyButton, TransparentUnderlineButton, DarkGreyButton } from "../../components/Button/Button";
+import { 
+  LightGreyButton, 
+  TransparentUnderlineButton, 
+  TransparentDarkGreyButton,
+  ActiveBlueButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
@@ -130,7 +134,7 @@ export const BuildPosition = () => {
             padding={'8px'} 
             mr={'2px'}
             onClick={handlePositionSideLong}
-            bg={positionSide === 'LONG' ? '#10DCB1' : '#BDBDBD'}
+            background={positionSide === 'LONG' ? '#10DCB1' : undefined}
             >
               Long
           </LightGreyButton>
@@ -138,7 +142,7 @@ export const BuildPosition = () => {
             height={'32px'} 
             padding={'8px'}
             onClick={handlePositionSideShort}
-            bg={positionSide === 'LONG' ? '#BDBDBD' : '#10DCB1'}
+            background={positionSide === 'SHORT' ? '#10DCB1' : undefined}
             >
               Short
           </LightGreyButton>
@@ -220,14 +224,15 @@ export const BuildPosition = () => {
               >
               Fee: 0.0%
             </TEXT.Small>
-            <DarkGreyButton
-              width={'120px'}
-              ml={'auto'}
-              mt={'4px'}
-              padding={'8px'}
-              >
-              Build
-            </DarkGreyButton>
+            { leverageValue && positionSide && inputValue ? (
+              <ActiveBlueButton ml={'auto'} mt={'4px'}>
+                Build
+              </ActiveBlueButton>
+            ):(
+              <TransparentDarkGreyButton ml={'auto'} mt={'4px'}>
+                Build
+              </TransparentDarkGreyButton>
+            )}
           </BuildContainer>
       </Column>
     </MarketCard>
