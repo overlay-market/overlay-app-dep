@@ -11,7 +11,8 @@ import styled from 'styled-components/macro';
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   width: 100vw;
 `
 
