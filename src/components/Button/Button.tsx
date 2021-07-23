@@ -27,3 +27,11 @@ export const TransparentUnderlineButton = styled(BaseButton)`
   width: auto;
   font-size: 12px;
 `
+
+export const DarkGreyButton = styled(BaseButton)`
+  background: #505050;
+  color: #F2F2F2;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+`

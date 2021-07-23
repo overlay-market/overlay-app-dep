@@ -1,13 +1,11 @@
 import { useState, useCallback } from 'react';
 import styled from 'styled-components';
-import { BigNumber } from 'ethers'
 import { MarketCard } from "../../components/Card/MarketCard";
 import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
-import { LightGreyButton, TransparentUnderlineButton } from "../../components/Button/Button";
+import { LightGreyButton, TransparentUnderlineButton, DarkGreyButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
-import { Box } from 'rebass';
 import { Label, Slider, Input } from '@rebass/forms';
 import { usePositionActionHandlers } from '../../state/position/hooks';
 import { useActiveWeb3React } from '../../hooks/web3';
@@ -36,6 +34,10 @@ export const InputOVL = styled.div<{
 
 export const AmountInput = styled(Input)`
   border-color: transparent !important;
+`
+
+export const BuildContainer = styled(Column)`
+
 `
 
 export const BuildPosition = () => {
@@ -208,6 +210,25 @@ export const BuildPosition = () => {
               OVL
             </InputOVL>
           </InputContainer>
+          <BuildContainer
+            mt={'16px'}
+            >
+            <TEXT.Small
+              textAlign={'right'}
+              ml={'auto'}
+              color={'white'}
+              >
+              Fee: 0.0%
+            </TEXT.Small>
+            <DarkGreyButton
+              width={'120px'}
+              ml={'auto'}
+              mt={'4px'}
+              padding={'8px'}
+              >
+              Build
+            </DarkGreyButton>
+          </BuildContainer>
       </Column>
     </MarketCard>
   )
