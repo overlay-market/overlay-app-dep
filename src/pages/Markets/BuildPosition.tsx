@@ -1,6 +1,8 @@
 import { useState, useCallback } from 'react';
 import styled from 'styled-components';
+import { BigNumber } from 'ethers'
 import { MarketCard } from "../../components/Card/MarketCard";
+import { Currency, CurrencyAmount } from '@uniswap/sdk-core'
 import { LightGreyButton, TransparentUnderlineButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { Column } from "../../components/Column/Column";
@@ -8,8 +10,12 @@ import { Row } from "../../components/Row/Row";
 import { Box } from 'rebass';
 import { Label, Slider, Input } from '@rebass/forms';
 import { usePositionActionHandlers } from '../../state/position/hooks';
+import { useActiveWeb3React } from '../../hooks/web3';
 import { usePositionState } from '../../state/position/hooks';
+import { useTokenBalance } from '../../state/wallet/hooks';
 import { PositionSide } from '../../state/position/actions';
+import { OVL } from '../../constants/tokens';
+import { maxAmountSpend } from '../../utils/maxAmountSpend';
 
 export const InputContainer = styled(Row)`
   border-radius: 4px;
@@ -33,13 +39,21 @@ export const AmountInput = styled(Input)`
 `
 
 export const BuildPosition = () => {
-  const { leverageValue, positionSide } = usePositionState();
+  const { account, chainId } = useActiveWeb3React();
+
+  const ovl = chainId ? OVL[chainId] : undefined;
+
+  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+
+  const maxInputAmount = maxAmountSpend(userOvlBalance);
+  const inputAmount75 = maxInputAmount?.multiply(75).divide(100).toExact();
+  const inputAmount50 = maxInputAmount?.multiply(50).divide(100).toExact();
+  const inputAmount25 = maxInputAmount?.multiply(25).divide(100).toExact();
+
+  const { leverageValue, positionSide, inputValue } = usePositionState();
 
   const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
 
-  // const updateLeverage = (e:any) => {
-  //   setLeverage(e.target.value);
-  // }
   const handleAmountInput = useCallback(
     (e: any) => {
       onAmountInput(e.target.value);
@@ -68,6 +82,34 @@ export const BuildPosition = () => {
     [onPositionSideInput]
   );
   
+  const handleMaxInput = useCallback(
+    () => {
+      onAmountInput(maxInputAmount?.toExact());
+    },
+    [onAmountInput, maxInputAmount]
+  );
+
+  const handle75Input = useCallback(
+    () => {
+      onAmountInput(inputAmount75);
+    },
+    [onAmountInput, inputAmount75]
+  );
+
+  const handle50Input = useCallback(
+    () => {
+      onAmountInput(inputAmount50);
+    },
+    [onAmountInput, inputAmount50]
+  );
+
+  const handle25Input = useCallback(
+    () => {
+      onAmountInput(inputAmount25);
+    },
+    [onAmountInput, inputAmount25]
+  );
+
   return (
     <MarketCard title={'Build'}>
       <Column 
@@ -136,16 +178,17 @@ export const BuildPosition = () => {
             mb={'4px'} 
             width={'auto'}
             >
-            <TransparentUnderlineButton>25%</TransparentUnderlineButton>
-            <TransparentUnderlineButton>50%</TransparentUnderlineButton>
-            <TransparentUnderlineButton>75%</TransparentUnderlineButton>
-            <TransparentUnderlineButton>Max</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={handle25Input}>25%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={handle50Input}>50%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={handle75Input}>75%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={handleMaxInput}>Max</TransparentUnderlineButton>
           </Row>
         </Label>
         <InputContainer>
           <AmountInput
             height='32px'
             onChange={handleAmountInput}
+            value={inputValue?.toString()}
             id='amount'
             name='amount'
             color='#fff'
