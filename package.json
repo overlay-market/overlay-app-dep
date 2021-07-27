@@ -64,7 +64,6 @@
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
     "@types/rebass": "^4.0.8",
-    "node-sass": "^6.0.0",
     "react-router-dom": "^5.2.0"
   }
 }
