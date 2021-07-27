@@ -21,6 +21,7 @@ export const MarketHeaderContainer = styled(Row)`
   justify-content: center;
   margin-left: auto;
   margin-right: auto;
+  align-items: start;
 `;
 
 export const Header = styled.div`
@@ -57,28 +58,71 @@ interface MarketHeaderProps {
 export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHeaderProps) => {
   return (
     <MarketHeaderContainer>
-      <Column width={'auto'} align={'left'} padding={'0 16px 0'}>
-        <Header> {TOKEN_LABELS[marketId]} </Header>
-        <HeaderDetail> TBD </HeaderDetail>
+      <Column 
+        width={'auto'} 
+        align={'left'} 
+        padding={'0 16px 0'}
+        >
+        <Header> 
+          {TOKEN_LABELS[marketId]} 
+        </Header>
+        <HeaderDetail> 
+          $TBD 
+        </HeaderDetail>
       </Column>
-      <Column width={'auto'} align={'left'} padding={'0 16px 0'}>
-        <Header>Next sample time:</Header>
-        <HeaderDetail> 09:15 </HeaderDetail>
+      <Column 
+        width={'auto'} 
+        align={'left'} 
+        padding={'0 16px 0'}
+        >
+        <Header>
+          Next sample time:
+        </Header>
+        <HeaderDetail> 
+          09:15 
+        </HeaderDetail>
       </Column>
-      <Column width={'auto'} align={'left'} padding={'0 16px 0'}>
-        <Header>Open interest available LONG</Header>
-        <HeaderDetail>0 out of 1000</HeaderDetail>
+      <Column 
+        width={'auto'} 
+        align={'left'} 
+        padding={'0 16px 0'}
+        >
+        <Header>
+          Open interest available LONG
+        </Header>
+        <TEXT.Small 
+          color={'white'} 
+          fontWeight={700}
+          mt={'2px'}
+          >
+            0 out of 1000
+          </TEXT.Small>
       </Column>
-      <Column width={'auto'} align={'left'} padding={'0 16px 0'}>
-        <Header>Funding rate:</Header>
-        <HeaderDetail color={'#10DCB1'}>~0.0026%</HeaderDetail>
+      <Column 
+        width={'auto'} 
+        align={'left'} 
+        padding={'0 16px 0'}
+        >
+        <Header>
+          Funding rate:
+        </Header>
+        <TEXT.Small 
+          color={'#10DCB1'} 
+          fontWeight={700}
+          mt={'2px'}
+          >
+            ~0.0026%
+        </TEXT.Small>
       </Column>
-      <Row width={'auto'} padding={'0 16px 0'}>
+      {/* <Row 
+        width={'auto'} 
+        padding={'0 16px 0'}
+        >
         <StyledLink to="/markets">
           <TEXT.Body>Back</TEXT.Body>
         </StyledLink>
         <StyledArrow color={'white'} size={16}/>
-      </Row>
+      </Row> */}
     </MarketHeaderContainer>
   )
 }
