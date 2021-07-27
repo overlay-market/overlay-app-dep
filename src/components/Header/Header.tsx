@@ -9,8 +9,6 @@ import styles from './Header.module.scss';
 import styled from 'styled-components/macro';
 import { Moon, Sun } from 'react-feather';
 import { useETHBalances } from '../../state/wallet/hooks';
-import { ChainId } from "@sushiswap/sdk";
-import { Currency } from "@uniswap/sdk"
 
 export const StyledMenuButton = styled.button`
   background-color: ${({theme}) => theme.bg3};

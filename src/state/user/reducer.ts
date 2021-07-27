@@ -20,7 +20,7 @@ export interface UserState {
 
 export const initialState: UserState = {
 
-  userDarkMode: null,
+  userDarkMode: true,
   matchesDarkMode: false,
   timestamp: currentTimestamp()
 }
