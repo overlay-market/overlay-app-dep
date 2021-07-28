@@ -88,7 +88,7 @@ export default function Header() {
         Positions
       </StyledLink>
       <StyledLink to={'/magic'}>
-        Positions
+        Magic
       </StyledLink>
 
       <div className={styles["accountContainer"]}>
