@@ -2,13 +2,13 @@ import { Currency, CurrencyAmount, Percent, ROUTER_ADDRESS, TradeType, Trade as 
 import { useCallback, useMemo } from 'react'
 import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks';
 
-import { ARCHER_ROUTER_ADDRESS } from '../constants'
-import { MaxUint256 } from '@ethersproject/constants'
-import { TransactionResponse } from '@ethersproject/providers'
-import { calculateGasMargin } from '../functions/trade'
-import { useActiveWeb3React } from './useActiveWeb3React'
-import { useTokenAllowance } from './useTokenAllowance'
-import { useTokenContract } from './useContract'
+import { ARCHER_ROUTER_ADDRESS } from '../constants';
+import { MaxUint256 } from '@ethersproject/constants';
+import { TransactionResponse } from '@ethersproject/providers';
+import { calculateGasMargin } from '../functions/trade';
+import { useActiveWeb3React } from './useActiveWeb3React';
+import { useTokenAllowance } from './useTokenAllowance';
+import { useTokenContract } from './useContract';
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
