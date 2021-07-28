@@ -115,6 +115,8 @@ export const BuildPosition = () => {
     [onAmountInput, inputAmount25]
   );
 
+  
+
   return (
     <MarketCard title={'Build'}>
       <Column 
