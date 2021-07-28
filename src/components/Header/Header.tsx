@@ -87,6 +87,9 @@ export default function Header() {
       <StyledLink to={'/positions'}>
         Positions
       </StyledLink>
+      <StyledLink to={'/magic'}>
+        Positions
+      </StyledLink>
 
       <div className={styles["accountContainer"]}>
          <Web3Status/>

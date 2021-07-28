@@ -8,6 +8,7 @@ import Markets from './Markets/Markets';
 import { Market } from './Markets/Market';
 import Positions from './Positions/Positions';
 import styled from 'styled-components/macro';
+import Magic from './Magic/Magic';
 import { Breadcrumbs } from '../components/Breadcrumbs/Breadcrumbs';
 
 export const AppWrapper = styled.div`
@@ -20,7 +21,8 @@ export const AppWrapper = styled.div`
 export const routes = [
   { path: "/markets", name: "Markets", Component: Markets},
   { path: "/positions", name: "Positions", Component: Positions},
-  { path: "/markets/:marketId", name: ":marketId", Component: Market}
+  { path: "/markets/:marketId", name: ":marketId", Component: Market},
+  { path: "/magic", name: "Magic", Component: Magic}
 ]
 
 const App = () => {
@@ -33,6 +35,7 @@ const App = () => {
           <Route exact strict path="/markets" component={Markets} />
           <Route exact strict path="/positions" component={Positions} />
           <Route exact strict path="/markets/:marketId" component={Market} />
+          <Route exact strict path="/magic" component={Magic} />
           {/* {routes.map(({ path, name, Component}, key) => (
           <Route
             exact
