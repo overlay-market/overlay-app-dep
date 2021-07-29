@@ -6,6 +6,7 @@ import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
 import ApplicationUpdater from './state/application/updater';
 import MulticallUpdater from './state/multicall/updater';
+import TransactionsUpdater from './state/transactions/updater';
 import ThemeProvider from "./theme/theme";
 import store from './state/state';
 import getLibrary from './utils/getLibrary'
@@ -13,16 +14,17 @@ import "./index.css";
 import App from "./pages/App";
 import reportWebVitals from "./reportWebVitals";
 
-const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
+const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
 function Updaters() {
   return (
     <>
       <ApplicationUpdater />
       <MulticallUpdater />
+      <TransactionsUpdater />
     </>
   )
-}
+};
 
 ReactDOM.render(
   <StrictMode>

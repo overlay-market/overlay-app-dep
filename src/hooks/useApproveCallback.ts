@@ -1,14 +1,12 @@
-import { Currency, CurrencyAmount, Percent, ROUTER_ADDRESS, TradeType, Trade as V2Trade } from '@sushiswap/sdk';
+import { MaxUint256 } from '@ethersproject/constants'
+import { TransactionResponse } from '@ethersproject/providers'
+import { CurrencyAmount, Currency} from '@uniswap/sdk-core'
 import { useCallback, useMemo } from 'react'
-import { useHasPendingApproval, useTransactionAdder } from '../state/transactions/hooks';
-
-import { ARCHER_ROUTER_ADDRESS } from '../constants';
-import { MaxUint256 } from '@ethersproject/constants';
-import { TransactionResponse } from '@ethersproject/providers';
-import { calculateGasMargin } from '../functions/trade';
-import { useActiveWeb3React } from './useActiveWeb3React';
-import { useTokenAllowance } from './useTokenAllowance';
+import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
+import { calculateGasMargin } from '../utils/calculateGasMargin'
 import { useTokenContract } from './useContract';
+import { useActiveWeb3React } from './web3';
+import { useTokenAllowance } from './useTokenAllowance';
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -40,10 +38,10 @@ export function useApproveCallback(
         ? ApprovalState.PENDING
         : ApprovalState.NOT_APPROVED
       : ApprovalState.APPROVED
-  }, [amountToApprove, currentAllowance, pendingApproval, spender])
+  }, [amountToApprove, currentAllowance, pendingApproval, spender]);
 
-  const tokenContract = useTokenContract(token?.address)
-  const addTransaction = useTransactionAdder()
+  const tokenContract = useTokenContract(token?.address);
+  const addTransaction = useTransactionAdder();
 
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
@@ -94,27 +92,4 @@ export function useApproveCallback(
   }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction])
 
   return [approvalState, approve]
-}
-
-// wraps useApproveCallback in the context of a swap
-export function useApproveCallbackFromTrade(
-  trade: V2Trade<Currency, Currency, TradeType> | undefined,
-  allowedSlippage: Percent,
-  doArcher: boolean = false
-) {
-  const { chainId } = useActiveWeb3React()
-  const amountToApprove = useMemo(
-    () => (trade && trade.inputAmount.currency.isToken ? trade.maximumAmountIn(allowedSlippage) : undefined),
-    [trade, allowedSlippage]
-  )
-  return useApproveCallback(
-    amountToApprove,
-    chainId
-      ? trade instanceof V2Trade
-        ? !doArcher
-          ? ROUTER_ADDRESS[chainId]
-          : ARCHER_ROUTER_ADDRESS[chainId]
-        : undefined
-      : undefined
-  )
-}
+};
