@@ -20,10 +20,10 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount<Currency>,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React()
-  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined
-  const currentAllowance = useTokenAllowance(token, account ?? undefined, spender)
-  const pendingApproval = useHasPendingApproval(token?.address, spender)
+  const { account } = useActiveWeb3React();
+  const token = amountToApprove?.currency?.isToken ? amountToApprove.currency : undefined;
+  const currentAllowance = useTokenAllowance(token, account ?? undefined, spender);
+  const pendingApproval = useHasPendingApproval(token?.address, spender);
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
