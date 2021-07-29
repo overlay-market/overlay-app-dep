@@ -17,6 +17,8 @@ import { useTokenBalance } from '../../state/wallet/hooks';
 import { PositionSide } from '../../state/position/actions';
 import { OVL } from '../../constants/tokens';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
+import { useApproveCallback } from '../../hooks/useApproveCallback';
+import { useDerivedUserInputs } from '../../state/position/hooks';
 
 export const InputContainer = styled(Row)`
   border-radius: 4px;
@@ -51,71 +53,39 @@ export const BuildPosition = () => {
   const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
 
   const maxInputAmount = maxAmountSpend(userOvlBalance);
-  const inputAmount75 = maxInputAmount?.multiply(75).divide(100).toExact();
-  const inputAmount50 = maxInputAmount?.multiply(50).divide(100).toExact();
-  const inputAmount25 = maxInputAmount?.multiply(25).divide(100).toExact();
+  const inputAmount75 = maxInputAmount?.multiply(75).divide(100).toExact().toString();
+  const inputAmount50 = maxInputAmount?.multiply(50).divide(100).toExact().toString();
+  const inputAmount25 = maxInputAmount?.multiply(25).divide(100).toExact().toString();
 
-  const { leverageValue, positionSide, inputValue } = usePositionState();
+  const { leverageValue, positionSide, inputValue, inputCurrency } = usePositionState();
+  const { parsedAmount, error } = useDerivedUserInputs(
+    inputValue,
+    ovl
+  )
 
   const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
 
-  const handleAmountInput = useCallback(
-    (e: any) => {
-      onAmountInput(e.target.value);
-    },
-    [onAmountInput]
-  )
+  // handle user inputs
+  const handleAmountInput = useCallback((e: any) => { onAmountInput(e.target.value) }, [onAmountInput]);
+  const handleLeverageInput = useCallback((e: any) => { onLeverageInput(e.target.value) }, [onLeverageInput]);
+  const handlePositionSideLong = useCallback(() => { onPositionSideInput(PositionSide.LONG) }, [onPositionSideInput]);
+  const handlePositionSideShort = useCallback(() => { onPositionSideInput(PositionSide.SHORT) }, [onPositionSideInput]);
   
-  const handleLeverageInput = useCallback(
-    (e: any) => {
-      onLeverageInput(e.target.value);
-    },
-    [onLeverageInput]
-  );
+  // handle quick inputs
+  const handleMaxInput = useCallback(() => { onAmountInput(maxInputAmount?.toExact()) }, [onAmountInput, maxInputAmount]);
+  const handle75Input = useCallback(() => { onAmountInput(inputAmount75) }, [onAmountInput, inputAmount75]);
+  const handle50Input = useCallback(() => { onAmountInput(inputAmount50) }, [onAmountInput, inputAmount50]);
+  const handle25Input = useCallback(() => { onAmountInput(inputAmount25) }, [onAmountInput, inputAmount25]);
 
-  const handlePositionSideLong = useCallback(
-    () => {
-      onPositionSideInput(PositionSide.LONG)
-    },
-    [onPositionSideInput]
-  );
+  const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
 
-  const handlePositionSideShort = useCallback(
-    () => {
-      onPositionSideInput(PositionSide.SHORT)
-    },
-    [onPositionSideInput]
-  );
-  
-  const handleMaxInput = useCallback(
-    () => {
-      onAmountInput(maxInputAmount?.toExact());
-    },
-    [onAmountInput, maxInputAmount]
-  );
+  async function attemptToApprove() {
+    if (!inputValue) throw new Error('missing position input size');
+    if (!positionSide) throw new Error('please choose a long/short position');
+    if (!leverageValue) throw new Error('please select a leverage value');
 
-  const handle75Input = useCallback(
-    () => {
-      onAmountInput(inputAmount75);
-    },
-    [onAmountInput, inputAmount75]
-  );
-
-  const handle50Input = useCallback(
-    () => {
-      onAmountInput(inputAmount50);
-    },
-    [onAmountInput, inputAmount50]
-  );
-
-  const handle25Input = useCallback(
-    () => {
-      onAmountInput(inputAmount25);
-    },
-    [onAmountInput, inputAmount25]
-  );
-
-  
+    await approveCallback();
+  };
 
   return (
     <MarketCard title={'Build'}>
@@ -226,7 +196,7 @@ export const BuildPosition = () => {
               Fee: 0.0%
             </TEXT.Small>
             { leverageValue !== undefined && positionSide && inputValue ? (
-              <ActiveBlueButton ml={'auto'} mt={'4px'}>
+              <ActiveBlueButton ml={'auto'} mt={'4px'} onClick={attemptToApprove}>
                 Build
               </ActiveBlueButton>
             ):(

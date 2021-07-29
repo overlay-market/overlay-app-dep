@@ -70,7 +70,6 @@ export const StyledLink = styled(NavLink).attrs({
 
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
-  const { account } = useActiveWeb3React();
 
   return (
     <HeaderContainer>

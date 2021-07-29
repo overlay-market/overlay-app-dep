@@ -62,7 +62,7 @@ export function isTransactionRecent(tx: TransactionDetails): boolean {
 
 // returns whether a token has a pending approval transaction
 export function useHasPendingApproval(tokenAddress: string | undefined, spender: string | undefined): boolean {
-  const allTransactions = useAllTransactions()
+  const allTransactions = useAllTransactions();
   return useMemo(
     () =>
       typeof tokenAddress === 'string' &&

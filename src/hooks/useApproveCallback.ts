@@ -45,35 +45,35 @@ export function useApproveCallback(
 
   const approve = useCallback(async (): Promise<void> => {
     if (approvalState !== ApprovalState.NOT_APPROVED) {
-      console.error('approve was called unnecessarily')
-      return
+      console.error('approve was called unnecessarily');
+      return;
     }
     if (!token) {
-      console.error('no token')
-      return
-    }
+      console.error('no token');
+      return;
+    };
 
     if (!tokenContract) {
-      console.error('tokenContract is null')
-      return
-    }
+      console.error('tokenContract is null');
+      return;
+    };
 
     if (!amountToApprove) {
-      console.error('missing amount to approve')
-      return
-    }
+      console.error('missing amount to approve');
+      return;
+    };
 
     if (!spender) {
-      console.error('no spender')
-      return
-    }
+      console.error('no spender');
+      return;
+    };
 
-    let useExact = false
+    let useExact = false;
     const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
       // general fallback for tokens who restrict approval amounts
-      useExact = true
-      return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString())
-    })
+      useExact = true;
+      return tokenContract.estimateGas.approve(spender, amountToApprove.quotient.toString());
+    });
 
     return tokenContract
       .approve(spender, useExact ? amountToApprove.quotient.toString() : MaxUint256, {
@@ -86,10 +86,10 @@ export function useApproveCallback(
         })
       })
       .catch((error: Error) => {
-        console.debug('Failed to approve token', error)
-        throw error
+        console.debug('Failed to approve token', error);
+        throw error;
       })
-  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction])
+  }, [approvalState, token, tokenContract, amountToApprove, spender, addTransaction]);
 
-  return [approvalState, approve]
+  return [approvalState, approve];
 };
