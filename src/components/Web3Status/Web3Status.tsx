@@ -14,12 +14,13 @@ export const Web3StatusConnected = styled.div`
 
 `
 export const Web3StatusUnconnected = styled.button`
-  text-decoration: none;
+  text-decoration: underline;
   background: ${({theme}) => theme.bg1};
   color: ${({theme}) => theme.text1};
-  border: 1px ${({theme}) => theme.text1} solid;
+  border: 0px;
   border-radius: 25px;
   margin-right: 7px;
+  font-size: 12px;
 `
 
 export const Chain = styled.div`
@@ -91,14 +92,13 @@ function Web3StatusInner() {
     return (
     // not connected
       <Web3StatusUnconnected onClick={connectWallet}>
-        Metamask
+        Connect wallet
       </Web3StatusUnconnected>
     )
   }
 }
 
 export default function Web3Status() {
-
   return (
     <>
       <Web3StatusInner />
