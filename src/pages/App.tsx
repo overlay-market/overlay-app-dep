@@ -21,7 +21,7 @@ export const AppWrapper = styled.div`
 export const routes = [
   { path: "/markets", name: "Markets", Component: Markets},
   { path: "/positions", name: "Positions", Component: Positions},
-  { path: "/markets/:marketId", name: ":marketId", Component: Market},
+  { path: "/market/:marketId", name: ":marketId", Component: Market},
   { path: "/magic", name: "Magic", Component: Magic}
 ]
 
@@ -34,7 +34,7 @@ const App = () => {
           <Route exact strict path="/" render={() => <Redirect to="/markets" />} />
           <Route exact strict path="/markets" component={Markets} />
           <Route exact strict path="/positions" component={Positions} />
-          <Route exact strict path="/markets/:marketId" component={Market} />
+          <Route exact strict path="/market/:marketId" component={Market} />
           <Route exact strict path="/magic" component={Magic} />
           {/* {routes.map(({ path, name, Component}, key) => (
           <Route

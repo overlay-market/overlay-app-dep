@@ -30,7 +30,11 @@ export const StyledTableCellThin = styled(StyledTableCell)`
   font-weight: 400 !important;
 `
 
-export const StyledNavLink = styled(NavLink)`
+const activeClassName = 'INACTIVE';
+
+export const StyledNavLink = styled(NavLink).attrs({
+  activeClassName,
+})`
   color: ${({theme}) => theme.text1};
   text-decoration: none;
   font-weight: 500;
@@ -77,7 +81,7 @@ const Markets = () => {
             {mockData.map((row) => (
               <TableRow>
                   <StyledTableCellThin component="th" scope="row">
-                    <StyledNavLink to={`/markets/${row.marketId}`}>
+                    <StyledNavLink to={`/market/${row.marketId}`}>
                     {row.market}
                     </StyledNavLink>
                   </StyledTableCellThin>
