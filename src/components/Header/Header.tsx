@@ -7,6 +7,7 @@ import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
 import styles from './Header.module.scss';
 import styled from 'styled-components/macro';
+import { Row } from '../Row/Row';
 import { Moon, Sun } from 'react-feather';
 import { useETHBalances } from '../../state/wallet/hooks';
 
@@ -52,6 +53,11 @@ export const LogoContainer = styled.div`
   }
 `
 
+export const AccountContainer = styled(Row)`
+  width: auto;
+  margin-left: auto;
+`;
+
 const activeClassName = 'ACTIVE'
 
 export const StyledLink = styled(NavLink).attrs({
@@ -78,24 +84,27 @@ export default function Header() {
           <img src={LightOverlayLogo} alt={'Overlay Logo Light'} />
           ) : (
             <img src={OverlayLogo} alt={'Overlay Logo'} />
-        )}
+          )}
       </LogoContainer>
+
       <StyledLink to={'/markets'}>
         Markets
       </StyledLink>
+
       <StyledLink to={'/positions'}>
         Positions
       </StyledLink>
+
       <StyledLink to={'/magic'}>
         Magic
       </StyledLink>
 
-      <div className={styles["accountContainer"]}>
+      <AccountContainer>
          <Web3Status/>
         {/* <StyledMenuButton onClick={() => toggleDarkMode()}>
           {darkMode ? <Moon size={20} /> : <Sun size={20} />}
         </StyledMenuButton> */}
-      </div>
+      </AccountContainer>
     </HeaderContainer>
   )
 }
