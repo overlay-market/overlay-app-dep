@@ -5,6 +5,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { Row } from '../Row/Row';
+import More from './More';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
@@ -84,6 +85,7 @@ export default function Header() {
 
       <AccountContainer>
          <Web3Status/>
+         <More/>
       </AccountContainer>
     </HeaderContainer>
   )
