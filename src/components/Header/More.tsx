@@ -12,6 +12,12 @@ import styled from 'styled-components/macro';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MoreVertical, AlertCircle, Globe } from 'react-feather';
 import { TEXT } from '../../theme/theme';
+import { Row } from '../Row/Row';
+
+export const IconContainer = styled(Row)`
+  width: auto;
+  margin-right: 3px;
+`;
 
 export const StyledButton = styled(Button)`
   width: auto;
@@ -29,7 +35,13 @@ export const StyledMenuItem = styled(MenuItem)`
   text-decoration: none !important;
   font-size: 14px !important;
   padding: 0px !important;
-  margin: 6px 16px !important;
+  margin: 6px 6px !important;
+  border-radius: 4px !important;
+  line-height: 1 !important;
+
+  :hover {
+    background: #5f6067 !important;
+  }
 `;
 
 export const StyledPaper = styled(Paper)`
@@ -103,8 +115,17 @@ export default function More() {
                 <ClickAwayListener onClickAway={handleClose}>
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <StyledMenuItem onClick={handleClose}>
-                      <MenuLink href="https://overlay.market">
-                        <AlertCircle size={14}/>
+                      <MenuLink 
+                        pt={2} 
+                        pb={2} 
+                        pl={1} 
+                        pr={1}
+                        minWidth={100} 
+                        href="https://overlay.market"
+                        >
+                        <IconContainer>
+                          <AlertCircle size={14}/> 
+                        </IconContainer>
                           Risks
                       </MenuLink>
                     </StyledMenuItem>
