@@ -6,13 +6,34 @@ import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
+import { ExternalLink } from '../ExternalLink/ExternalLink';
+import { MenuLink } from '../Link/Link';
 import styled from 'styled-components/macro';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MoreVertical, AlertCircle, Globe } from 'react-feather';
+import { TEXT } from '../../theme/theme';
 
 export const StyledButton = styled(Button)`
   width: auto;
   min-width: 0px !important;
+`;
+
+export const StyledMenuList = styled(MenuList)`
+  background: #373A44 !important;
+  border-radius: 8px;
+`;
+
+export const StyledMenuItem = styled(MenuItem)`
+  display: flex;
+  color: #fff !important;
+  text-decoration: none !important;
+  font-size: 14px !important;
+  padding: 0px !important;
+  margin: 6px 16px !important;
+`;
+
+export const StyledPaper = styled(Paper)`
+  border-radius: 8px !important;
 `;
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -76,22 +97,24 @@ export default function More() {
           {({ TransitionProps, placement }) => (
             <Grow
               {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+              style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
             >
-              <Paper>
+              <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <MenuItem onClick={handleClose}>
-                      <AlertCircle size={14} />
-                        Risks
-                    </MenuItem>
-                    <MenuItem disabled>
+                  <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
+                    <StyledMenuItem onClick={handleClose}>
+                      <MenuLink href="https://overlay.market">
+                        <AlertCircle size={14}/>
+                          Risks
+                      </MenuLink>
+                    </StyledMenuItem>
+                    <StyledMenuItem disabled>
                       <Globe size={14} />
                         Language
-                    </MenuItem>
-                  </MenuList>
+                    </StyledMenuItem>
+                  </StyledMenuList>
                 </ClickAwayListener>
-              </Paper>
+              </StyledPaper>
             </Grow>
           )}
         </Popper>
