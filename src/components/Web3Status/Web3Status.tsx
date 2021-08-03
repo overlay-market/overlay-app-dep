@@ -6,13 +6,14 @@ import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks';
 import { OVL } from '../../constants/tokens';
 import { Row } from '../Row/Row';
 import { TEXT } from '../../theme/theme';
+import { AlertTriangle } from 'react-feather';
 import styled from 'styled-components/macro';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
   flex-direction: row;
-
 `
+
 export const Web3StatusUnconnected = styled.button`
   text-decoration: underline;
   background: ${({theme}) => theme.bg1};
@@ -22,6 +23,19 @@ export const Web3StatusUnconnected = styled.button`
   margin-right: 7px;
   font-size: 12px;
   cursor: pointer;
+`
+
+export const Web3StatusError = styled(Web3StatusConnected)`
+  opacity: 0.8;
+  cursor: default;
+  font-size: 12px;
+  border: 1px solid ${({theme}) => theme.text1};
+  border-radius: 15px;
+  padding: 4px 8px;
+`
+
+export const StyledAlertTriangle = styled(AlertTriangle)`
+  margin-right: 3px;
 `
 
 export const Chain = styled.div`
@@ -85,9 +99,10 @@ function Web3StatusInner() {
   } else if (error) {
     // either wrong network or error
     return (
-      <Web3StatusConnected>
-        Error
-      </Web3StatusConnected>
+      <Web3StatusError>
+        <StyledAlertTriangle color={'white'} size={15} />
+        ERR - Unsupported Network
+      </Web3StatusError>
     )
   } else {
     return (
