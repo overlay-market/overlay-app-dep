@@ -12,6 +12,11 @@ const BaseButton = styled(RebassButton)<
   padding: ${({ padding }) => (padding ? padding : '16px')};
   width: ${({ width }) => (width ? width : '100%')};
   cursor: pointer;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 `
 
 export const LightGreyButton = styled(BaseButton)<{ background?: string }>`
@@ -32,7 +37,7 @@ export const TransparentUnderlineButton = styled(BaseButton)`
 export const MenuButton = styled(BaseButton)`
   background: transparent;
   display: flex;
-  padding: 8px 16px;
+  padding: 8px 16px 8px 8px;
   font-size: 12px;
 `
 

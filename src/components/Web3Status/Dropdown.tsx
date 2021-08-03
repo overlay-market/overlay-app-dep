@@ -21,14 +21,9 @@ export const Web3StatusMenuItem = styled(StyledMenuItem)`
 `;
 
 export const Web3Status = styled(Row)`
-  font-size: 12px;
   border: 1px solid white;
   border-radius: 20px;
   display: flex;
-  color: white;
-  width: auto;
-  padding: 8px 14px 8px 10px;
-  margin: 0 16px;
 `;
 
 interface ColorStatusProps {
@@ -37,8 +32,8 @@ interface ColorStatusProps {
 
 export const ColorStatus = styled.div<ColorStatusProps>`
   border-radius: 50px;
-  height: 8px;
-  width: 8px;
+  height: 6px;
+  width: 6px;
   margin: auto 7px auto 3px;
   background: ${props => (props.colorStatus)};
 `;
@@ -48,6 +43,7 @@ export const TriangleButton = styled(Button)`
   width: auto;
   min-width: 0 !important;
   padding-top: 2px !important;
+  height: 36px;
 `
 
 interface RotatingTriangleProps {
@@ -152,11 +148,17 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                 <ClickAwayListener onClickAway={handleClose}>
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <Web3StatusMenuItem disabled>
-                      <Web3Status>
+                      <Web3Status 
+                        m={'4px 16px 8px 8px'} 
+                        p={'9px 16px 9px 11px'}
+                        width={'auto'}
+                        color={'white'}
+                        fontSize={14}
+                        >
                         <ColorStatus colorStatus={colorStatus} />
-                        <TEXT.Small>
+                        <TEXT.Menu>
                           {connectedNetwork}
-                        </TEXT.Small>
+                        </TEXT.Menu>
                       </Web3Status>
                     </Web3StatusMenuItem>
                     <StyledMenuItem>
@@ -164,9 +166,9 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         <IconContainer>
                           <LogOut size={14} />
                         </IconContainer>
-                        <TEXT.Small m={'auto'}>
+                        <TEXT.Menu m={'auto'} fontSize={14}>
                           Disconnect wallet
-                        </TEXT.Small>
+                        </TEXT.Menu>
                       </MenuButton>
                     </StyledMenuItem>
                   </StyledMenuList>

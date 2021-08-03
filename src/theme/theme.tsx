@@ -95,6 +95,9 @@ export const TEXT = {
   SubHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
+  Menu(props: TextProps) {
+    return <TextWrapper fontWeight={400} fontSize={14} {...props} />
+  },
   Small(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={12} {...props} />
   },
