@@ -150,8 +150,8 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <Web3StatusMenuItem disabled>
                       <Web3Status 
-                        m={'4px 16px 8px 8px'} 
-                        p={'9px 16px 9px 11px'}
+                        m={'4px 16px 4px 8px'} 
+                        p={'8px 16px 8px 11px'}
                         width={'auto'}
                         color={'white'}
                         fontSize={14}
@@ -167,8 +167,10 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         padding={'8px 16px 8px 12px'}
                         onClick={disconnectWallet}
                         >
-                        <IconContainer>
-                          <LogOut size={14} />
+                        <IconContainer 
+                          m={'auto 3px'}
+                          >
+                          <LogOut size={13} />
                         </IconContainer>
                         <TEXT.Menu m={'auto'} fontSize={14}>
                           Disconnect wallet

@@ -1,4 +1,5 @@
 import { useActiveWeb3React } from '../../hooks/web3';
+import { UnsupportedChainIdError } from '@web3-react/core';
 import { SupportedChainId } from '../../constants/chains';
 import { injected } from "../../connectors/connectors";
 import { shortenAddress } from '../../utils/web3';
@@ -42,7 +43,7 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
 export const Account = styled(Row)`
   font-size: 12px;
   font-weight: 400;
-  margin: auto 7px auto auto;
+  margin: auto 12px auto auto;
   display: flex;
   flex-direction: row;
 `;
@@ -106,6 +107,10 @@ function Web3StatusInner() {
     activate(injected);
   };
 
+  const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
+  
+  console.log('isError: ', isUnsupportedChainIdError);
+
   const userEthBalance = useETHBalances(account ? [account] : [])?.[
     account ?? ""
   ];
@@ -144,12 +149,22 @@ function Web3StatusInner() {
         </Account>
       </Web3StatusConnected>
     )
-  } else if (error) {
+  } else if (error && isUnsupportedChainIdError) {
+    console.error('Network Error: ', error);
     // either wrong network or error
     return (
       <Web3StatusError>
         <StyledAlertTriangle color={'white'} size={15} />
-          ERR - Unsupported Network
+          ERR - Unsupported network
+      </Web3StatusError>
+    )
+  } else if (error) {
+    console.error('Connection Error: ', error);
+    // either wrong network or error
+    return (
+      <Web3StatusError>
+        <StyledAlertTriangle color={'white'} size={15} />
+          ERROR - Refresh browser
       </Web3StatusError>
     )
   } else {

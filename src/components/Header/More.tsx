@@ -10,7 +10,7 @@ import { ExternalLink } from '../ExternalLink/ExternalLink';
 import { MenuLink } from '../Link/Link';
 import styled from 'styled-components/macro';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { MoreVertical, AlertCircle, Globe } from 'react-feather';
+import { MoreVertical, AlertCircle, Globe, ChevronLeft } from 'react-feather';
 import { TEXT } from '../../theme/theme';
 import { Row } from '../Row/Row';
 import { Fade } from '@material-ui/core';
@@ -24,6 +24,7 @@ export const IconContainer = styled(Row)`
 export const StyledButton = styled(Button)`
   width: auto;
   min-width: 0px !important;
+  padding: 6px 0 !important;
 `;
 
 export const StyledMenuList = styled(MenuList)`
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function More() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const [showLanguage, setShowLanguage] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
@@ -83,7 +85,16 @@ export default function More() {
       event.preventDefault();
       setOpen(false);
     }
-  }
+  };
+
+  const handleLanguageToggle = (event: React.MouseEvent<EventTarget>) => {
+    event.preventDefault();
+    setShowLanguage((prevState) => !prevState);
+  };
+
+  const handleLanguageClose = () => {
+    setShowLanguage(false);
+  };
 
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = useRef(open);
@@ -117,36 +128,58 @@ export default function More() {
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <StyledMenuItem onClick={handleClose}>
-                      <MenuLink 
-                        pt={2} 
-                        pb={2} 
-                        pl={2} 
-                        pr={3}
-                        minWidth={100} 
-                        href="https://overlay.market"
-                        >
-                        <IconContainer>
-                          <AlertCircle size={14}/> 
-                        </IconContainer>
-                          Risks
-                      </MenuLink>
-                    </StyledMenuItem>
-                    <StyledMenuItem disabled>
-                      <MenuLink 
-                          pt={2} 
-                          pb={2} 
-                          pl={2} 
-                          pr={3}
-                          minWidth={100} 
-                          href=""
-                          >
-                        <IconContainer>
-                          <Globe size={14}/> 
-                        </IconContainer>
-                          Language
-                      </MenuLink>
-                    </StyledMenuItem>
+                    {showLanguage ? (
+                      <>
+                        <StyledMenuItem onClick={handleLanguageClose}>
+                          <IconContainer>
+                            <ChevronLeft size={14}/> 
+                              Menu
+                          </IconContainer>
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleLanguageClose}>
+                              English
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleLanguageClose}>
+                              中文
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleLanguageClose}>
+                              Espanol
+                        </StyledMenuItem>
+                      </>
+                    ) : (
+                      <>
+                        <StyledMenuItem onClick={handleClose}>
+                          <MenuLink 
+                            pt={2} 
+                            pb={2} 
+                            pl={2} 
+                            pr={3}
+                            minWidth={100} 
+                            href="https://overlay.market"
+                            >
+                            <IconContainer>
+                              <AlertCircle size={14}/> 
+                            </IconContainer>
+                              Risks
+                          </MenuLink>
+                        </StyledMenuItem>
+                        <StyledMenuItem onClick={handleLanguageToggle}>
+                          <MenuLink 
+                              pt={2} 
+                              pb={2} 
+                              pl={2} 
+                              pr={3}
+                              minWidth={100} 
+                              href=""
+                              >
+                            <IconContainer>
+                              <Globe size={14}/> 
+                            </IconContainer>
+                              Language
+                          </MenuLink>
+                        </StyledMenuItem>
+                      </>
+                    )}
                   </StyledMenuList>
                 </ClickAwayListener>
               </StyledPaper>
