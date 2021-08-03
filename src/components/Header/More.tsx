@@ -17,6 +17,7 @@ import { Row } from '../Row/Row';
 export const IconContainer = styled(Row)`
   width: auto;
   margin-right: 3px;
+  min-width: 16px;
 `;
 
 export const StyledButton = styled(Button)`
@@ -130,8 +131,19 @@ export default function More() {
                       </MenuLink>
                     </StyledMenuItem>
                     <StyledMenuItem disabled>
-                      <Globe size={14} />
-                        Language
+                      <MenuLink 
+                          pt={2} 
+                          pb={2} 
+                          pl={1} 
+                          pr={1}
+                          minWidth={100} 
+                          href=""
+                          >
+                        <IconContainer>
+                          <Globe size={14}/> 
+                        </IconContainer>
+                          Language
+                      </MenuLink>
                     </StyledMenuItem>
                   </StyledMenuList>
                 </ClickAwayListener>

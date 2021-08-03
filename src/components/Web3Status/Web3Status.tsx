@@ -21,6 +21,7 @@ export const Web3StatusUnconnected = styled.button`
   border-radius: 25px;
   margin-right: 7px;
   font-size: 12px;
+  cursor: pointer;
 `
 
 export const Chain = styled.div`

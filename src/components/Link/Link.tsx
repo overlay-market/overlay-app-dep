@@ -10,14 +10,15 @@ export const MenuLink = styled(Link).attrs(props => ({
   cursor: pointer;
   color: ${({theme}) => theme.text1};
   width: 100%;
-
+  display: flex;
+  
   :hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   :focus {
     outline: none;
-    text-decoration: underline;
+    text-decoration: none;
   }
 
   :active {
