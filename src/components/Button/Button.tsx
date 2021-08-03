@@ -37,7 +37,6 @@ export const TransparentUnderlineButton = styled(BaseButton)`
 export const MenuButton = styled(BaseButton)`
   background: transparent;
   display: flex;
-  padding: 8px 16px 8px 8px;
   font-size: 12px;
 `
 

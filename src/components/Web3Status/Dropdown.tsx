@@ -15,6 +15,7 @@ import { Play, LogOut } from 'react-feather';
 import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../Header/More';
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
+import { Fade } from '@material-ui/core';
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
@@ -140,9 +141,10 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
         </TriangleButton>
         <Popper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
-            <Grow
+            <Fade
               {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
+              timeout={250}
+              // style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
             >
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
@@ -162,7 +164,10 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                       </Web3Status>
                     </Web3StatusMenuItem>
                     <StyledMenuItem>
-                      <MenuButton onClick={disconnectWallet}>
+                      <MenuButton 
+                        padding={'8px 16px 8px 12px'}
+                        onClick={disconnectWallet}
+                        >
                         <IconContainer>
                           <LogOut size={14} />
                         </IconContainer>
@@ -174,7 +179,7 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                   </StyledMenuList>
                 </ClickAwayListener>
               </StyledPaper>
-            </Grow>
+            </Fade>
           )}
         </Popper>
       </div>
