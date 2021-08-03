@@ -28,6 +28,7 @@ export const Web3Status = styled(Row)`
   color: white;
   width: auto;
   padding: 8px 14px 8px 10px;
+  margin: 0 16px;
 `;
 
 interface ColorStatusProps {
@@ -163,7 +164,9 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         <IconContainer>
                           <LogOut size={14} />
                         </IconContainer>
+                        <TEXT.Small m={'auto'}>
                           Disconnect wallet
+                        </TEXT.Small>
                       </MenuButton>
                     </StyledMenuItem>
                   </StyledMenuList>
