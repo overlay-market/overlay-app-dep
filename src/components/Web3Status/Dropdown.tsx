@@ -9,7 +9,6 @@ import MenuList from '@material-ui/core/MenuList';
 import styled from 'styled-components/macro';
 import { Row } from '../Row/Row';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { MenuLink } from '../Link/Link';
 import { MenuButton } from '../Button/Button';
 import { Play, LogOut } from 'react-feather';
 import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../Header/More';

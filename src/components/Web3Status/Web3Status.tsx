@@ -47,6 +47,43 @@ export const Account = styled(Row)`
   flex-direction: row;
 `
 
+interface TokenBalanceProps {
+  balance: any
+  network: string
+}
+
+export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
+  if (network === 'Mainnet') {
+    return (
+      <>
+        <Row fontSize={12} fontWeight={400} mr={4}>
+            Balance:
+            <TEXT.BoldSmall ml={1} mr={2}>
+              {balance}
+            </TEXT.BoldSmall>
+            <TEXT.BoldSmall ml={1} mr={2}>
+              OVL
+            </TEXT.BoldSmall>
+        </Row>
+      </>
+    )
+  } else {
+    return (
+      <>
+        <Row fontSize={12} fontWeight={400} mr={4}>
+            Balance:
+            <TEXT.BoldSmall ml={1} mr={2}>
+              {balance}
+            </TEXT.BoldSmall>
+            <TEXT.BoldSmall ml={1} mr={2}>
+              OVL
+            </TEXT.BoldSmall>
+        </Row>
+      </>
+    )
+  }
+};
+
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.MAINNET]: 'Mainnet',
   [SupportedChainId.KOVAN]: 'Kovan',
@@ -70,7 +107,7 @@ function Web3StatusInner() {
     // connected
     return (  
       <Web3StatusConnected>
-      {account && userOvlBalance && (
+      {/* {account && userOvlBalance && (
               <>
                 <Row>
                   <TEXT.Small mr={'32px'}>
@@ -81,7 +118,16 @@ function Web3StatusInner() {
                   </TEXT.Small>
                 </Row>
               </>
-            )}
+            )} */}
+
+      
+      {chainId && userOvlBalance && (
+        <TokenBalance balance={userOvlBalance?.toSignificant(4)} network={NETWORK_LABELS[chainId]} />
+      )}
+
+      {chainId && !userOvlBalance && (
+        <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
+      )}  
         <Account>
           {shortenAddress(account)}
 

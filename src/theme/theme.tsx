@@ -101,4 +101,7 @@ export const TEXT = {
   Small(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={12} {...props} />
   },
+  BoldSmall(props: TextProps) {
+    return <TextWrapper fontWeight={600} fontSize={12} {...props} />
+  }
 }
