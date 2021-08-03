@@ -10,15 +10,24 @@ import styled from 'styled-components/macro';
 import { Row } from '../Row/Row';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MenuLink } from '../Link/Link';
-import { ChevronDown, Play } from 'react-feather';
+import { MenuButton } from '../Button/Button';
+import { Play, LogOut } from 'react-feather';
 import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../Header/More';
+import { TEXT } from '../../theme/theme';
+import { useActiveWeb3React } from '../../hooks/web3';
+
+export const Web3StatusMenuItem = styled(StyledMenuItem)`
+  opacity: 1 !important;
+`;
 
 export const Web3Status = styled(Row)`
   font-size: 12px;
   border: 1px solid white;
   border-radius: 20px;
-  padding: 8px;
   display: flex;
+  color: white;
+  width: auto;
+  padding: 8px 14px 8px 10px;
 `;
 
 interface ColorStatusProps {
@@ -75,6 +84,12 @@ interface DropdownProps {
 };
 
 export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps) {
+  const { deactivate } = useActiveWeb3React();
+
+  const disconnectWallet = () => {
+    deactivate();
+  };
+
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -135,23 +150,21 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    <StyledMenuItem>
+                    <Web3StatusMenuItem disabled>
                       <Web3Status>
                         <ColorStatus colorStatus={colorStatus} />
-                        {connectedNetwork}
+                        <TEXT.Small>
+                          {connectedNetwork}
+                        </TEXT.Small>
                       </Web3Status>
-                    </StyledMenuItem>
-                    <StyledMenuItem disabled>
-                      <MenuLink 
-                          pt={2} 
-                          pb={2} 
-                          pl={1} 
-                          pr={1}
-                          minWidth={100} 
-                          href=""
-                          >
-                          Language
-                      </MenuLink>
+                    </Web3StatusMenuItem>
+                    <StyledMenuItem>
+                      <MenuButton onClick={disconnectWallet}>
+                        <IconContainer>
+                          <LogOut size={14} />
+                        </IconContainer>
+                          Disconnect wallet
+                      </MenuButton>
                     </StyledMenuItem>
                   </StyledMenuList>
                 </ClickAwayListener>

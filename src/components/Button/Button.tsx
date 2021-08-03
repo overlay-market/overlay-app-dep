@@ -29,6 +29,11 @@ export const TransparentUnderlineButton = styled(BaseButton)`
   font-size: 12px;
 `
 
+export const MenuButton = styled(BaseButton)`
+  background: transparent;
+  display: flex;
+`
+
 // Build Button base
 const BuildButton = styled(BaseButton)`
   border-radius: 4px;
@@ -47,3 +52,4 @@ export const TransparentDarkGreyButton = styled(BuildButton)`
 export const ActiveBlueButton = styled(BuildButton)`
   background: ${({theme}) => theme.blue3};
 `
+

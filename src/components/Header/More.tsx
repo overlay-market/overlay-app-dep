@@ -119,8 +119,8 @@ export default function More() {
                       <MenuLink 
                         pt={2} 
                         pb={2} 
-                        pl={1} 
-                        pr={1}
+                        pl={2} 
+                        pr={3}
                         minWidth={100} 
                         href="https://overlay.market"
                         >
@@ -134,8 +134,8 @@ export default function More() {
                       <MenuLink 
                           pt={2} 
                           pb={2} 
-                          pl={1} 
-                          pr={1}
+                          pl={2} 
+                          pr={3}
                           minWidth={100} 
                           href=""
                           >

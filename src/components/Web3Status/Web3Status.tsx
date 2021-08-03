@@ -39,15 +39,6 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
   margin-right: 3px;
 `
 
-export const Chain = styled.div`
-  font-size: 12px;
-  font-weight: 400;
-  margin: auto 16px auto auto;
-  border: 1px ${({theme}) => theme.bg2} solid;
-  border-radius: 25px;
-  padding: 7px;
-`
-
 export const Account = styled(Row)`
   font-size: 12px;
   font-weight: 400;
@@ -79,9 +70,6 @@ function Web3StatusInner() {
     // connected
     return (  
       <Web3StatusConnected>
-        {/* {chainId && NETWORK_LABELS[chainId] && (
-              <Chain>{NETWORK_LABELS[chainId]}</Chain>
-        )} */}
       {account && userOvlBalance && (
               <>
                 <Row>
@@ -99,6 +87,10 @@ function Web3StatusInner() {
 
           {chainId && NETWORK_LABELS[chainId] === 'Mainnet' && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'Kovan' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
         </Account>
       </Web3StatusConnected>
