@@ -2,7 +2,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { SupportedChainId } from '../../constants/chains';
 import { injected } from "../../connectors/connectors";
 import { shortenAddress } from '../../utils/web3';
-import { useETHBalances, useTokenBalance } from '../../state/wallet/hooks';
+import { useETHBalances, useTokenBalance, useTokenBalances } from '../../state/wallet/hooks';
 import { OVL } from '../../constants/tokens';
 import { Row } from '../Row/Row';
 import { TEXT } from '../../theme/theme';
@@ -58,10 +58,10 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
       <>
         <Row fontSize={12} fontWeight={400} mr={4}>
             Balance:
-            <TEXT.BoldSmall ml={1} mr={2}>
+            <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
               {balance}
             </TEXT.BoldSmall>
-            <TEXT.BoldSmall ml={1} mr={2}>
+            <TEXT.BoldSmall ml={1} mr={0}>
               OVL
             </TEXT.BoldSmall>
         </Row>
@@ -70,12 +70,12 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
   } else {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4}>
+        <Row fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
             Balance:
-            <TEXT.BoldSmall ml={1} mr={2}>
+            <TEXT.BoldSmall ml={1} mr={0}>
               {balance}
             </TEXT.BoldSmall>
-            <TEXT.BoldSmall ml={1} mr={2}>
+            <TEXT.BoldSmall ml={1} mr={0}>
               OVL
             </TEXT.BoldSmall>
         </Row>
@@ -102,32 +102,23 @@ function Web3StatusInner() {
 
   const ovl = chainId ? OVL[chainId] : undefined;
   const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+  const userOvlBalances = useTokenBalances(account ?? undefined, [ovl]);
+  console.log('userOvlBalance: ', userOvlBalance);
+  console.log('userOvlBalances: ', userOvlBalances);
 
   if (account) {
     // connected
     return (  
       <Web3StatusConnected>
-      {/* {account && userOvlBalance && (
-              <>
-                <Row>
-                  <TEXT.Small mr={'32px'}>
-                    Balance:
-                    <strong>
-                    {" "}{userOvlBalance?.toSignificant(4)}{" "} OVL
-                    </strong>
-                  </TEXT.Small>
-                </Row>
-              </>
-            )} */}
 
-      
-      {chainId && userOvlBalance && (
+      {account && chainId && userOvlBalance && (
         <TokenBalance balance={userOvlBalance?.toSignificant(4)} network={NETWORK_LABELS[chainId]} />
       )}
 
-      {chainId && !userOvlBalance && (
+      {account && chainId && !userOvlBalance && (
         <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
       )}  
+
         <Account>
           {shortenAddress(account)}
 

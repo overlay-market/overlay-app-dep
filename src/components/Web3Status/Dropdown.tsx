@@ -142,7 +142,7 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
           {({ TransitionProps, placement }) => (
             <Fade
               {...TransitionProps}
-              timeout={250}
+              timeout={200}
               // style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
             >
               <StyledPaper>

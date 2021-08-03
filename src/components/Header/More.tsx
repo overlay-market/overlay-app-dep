@@ -13,6 +13,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MoreVertical, AlertCircle, Globe } from 'react-feather';
 import { TEXT } from '../../theme/theme';
 import { Row } from '../Row/Row';
+import { Fade } from '@material-ui/core';
 
 export const IconContainer = styled(Row)`
   width: auto;
@@ -108,9 +109,10 @@ export default function More() {
         </StyledButton>
         <Popper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
-            <Grow
+            <Fade
               {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
+              timeout={200}
+              // style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
             >
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
@@ -148,7 +150,7 @@ export default function More() {
                   </StyledMenuList>
                 </ClickAwayListener>
               </StyledPaper>
-            </Grow>
+            </Fade>
           )}
         </Popper>
       </div>

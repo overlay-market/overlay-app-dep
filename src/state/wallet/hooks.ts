@@ -74,6 +74,7 @@ export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
 
   const anyLoading: boolean = useMemo(() => balances.some((callState) => callState.loading), [balances])
 
+  console.log('anyLoading from loadingBalance: ', anyLoading);
   return [
     useMemo(
       () =>
