@@ -2,7 +2,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { SupportedChainId } from '../../constants/chains';
 import { injected } from "../../connectors/connectors";
 import { shortenAddress } from '../../utils/web3';
-import { useETHBalances, useTokenBalance, useTokenBalances } from '../../state/wallet/hooks';
+import { useETHBalances, useTokenBalance, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
 import { OVL } from '../../constants/tokens';
 import { Row } from '../Row/Row';
 import { TEXT } from '../../theme/theme';
@@ -13,7 +13,7 @@ import styled from 'styled-components/macro';
 export const Web3StatusConnected = styled.div`
   display: flex;
   flex-direction: row;
-`
+`;
 
 export const Web3StatusUnconnected = styled.button`
   text-decoration: underline;
@@ -24,7 +24,7 @@ export const Web3StatusUnconnected = styled.button`
   margin-right: 7px;
   font-size: 12px;
   cursor: pointer;
-`
+`;
 
 export const Web3StatusError = styled(Web3StatusConnected)`
   opacity: 0.8;
@@ -33,11 +33,11 @@ export const Web3StatusError = styled(Web3StatusConnected)`
   border: 1px solid ${({theme}) => theme.text1};
   border-radius: 15px;
   padding: 4px 8px;
-`
+`;
 
 export const StyledAlertTriangle = styled(AlertTriangle)`
   margin-right: 3px;
-`
+`;
 
 export const Account = styled(Row)`
   font-size: 12px;
@@ -45,15 +45,25 @@ export const Account = styled(Row)`
   margin: auto 7px auto auto;
   display: flex;
   flex-direction: row;
-`
-
+`;
 interface TokenBalanceProps {
   balance: any
   network: string
-}
+};
 
 export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
-  if (network === 'Mainnet') {
+  if (balance === 'Loading...') {
+    return (
+      <>
+        <Row fontSize={12} fontWeight={400} mr={4}>
+            Balance:
+            <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
+              {balance}
+            </TEXT.BoldSmall>
+        </Row>
+      </>
+    )
+  } else if (network === 'Mainnet') {
     return (
       <>
         <Row fontSize={12} fontWeight={400} mr={4}>
@@ -87,7 +97,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.MAINNET]: 'Mainnet',
   [SupportedChainId.KOVAN]: 'Kovan',
-}
+};
 
 function Web3StatusInner() {
   const { account, chainId, activate, error } = useActiveWeb3React();
@@ -102,20 +112,22 @@ function Web3StatusInner() {
 
   const ovl = chainId ? OVL[chainId] : undefined;
   const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
-  const userOvlBalances = useTokenBalances(account ?? undefined, [ovl]);
-  console.log('userOvlBalance: ', userOvlBalance);
-  console.log('userOvlBalances: ', userOvlBalances);
+  const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
 
   if (account) {
     // connected
     return (  
       <Web3StatusConnected>
 
+      {account && isLoadingBalance && chainId && (
+        <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
+      )}
+
       {account && chainId && userOvlBalance && (
         <TokenBalance balance={userOvlBalance?.toSignificant(4)} network={NETWORK_LABELS[chainId]} />
       )}
 
-      {account && chainId && !userOvlBalance && (
+      {account && chainId && !userOvlBalance && !isLoadingBalance && (
         <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
       )}  
 
@@ -148,7 +160,7 @@ function Web3StatusInner() {
       </Web3StatusUnconnected>
     )
   }
-}
+};
 
 export default function Web3Status() {
   return (
@@ -156,4 +168,4 @@ export default function Web3Status() {
       <Web3StatusInner />
     </>
   )
-}
+};
