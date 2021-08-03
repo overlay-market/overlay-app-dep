@@ -7,6 +7,7 @@ import { OVL } from '../../constants/tokens';
 import { Row } from '../Row/Row';
 import { TEXT } from '../../theme/theme';
 import { AlertTriangle } from 'react-feather';
+import Dropdown from './Dropdown';
 import styled from 'styled-components/macro';
 
 export const Web3StatusConnected = styled.div`
@@ -47,10 +48,12 @@ export const Chain = styled.div`
   padding: 7px;
 `
 
-export const Account = styled.div`
+export const Account = styled(Row)`
   font-size: 12px;
   font-weight: 400;
   margin: auto 7px auto auto;
+  display: flex;
+  flex-direction: row;
 `
 
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
@@ -76,9 +79,9 @@ function Web3StatusInner() {
     // connected
     return (  
       <Web3StatusConnected>
-        {chainId && NETWORK_LABELS[chainId] && (
+        {/* {chainId && NETWORK_LABELS[chainId] && (
               <Chain>{NETWORK_LABELS[chainId]}</Chain>
-        )}
+        )} */}
       {account && userOvlBalance && (
               <>
                 <Row>
@@ -93,6 +96,10 @@ function Web3StatusInner() {
             )}
         <Account>
           {shortenAddress(account)}
+
+          {chainId && NETWORK_LABELS[chainId] === 'Mainnet' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
+          )}
         </Account>
       </Web3StatusConnected>
     )
@@ -101,7 +108,7 @@ function Web3StatusInner() {
     return (
       <Web3StatusError>
         <StyledAlertTriangle color={'white'} size={15} />
-        ERR - Unsupported Network
+          ERR - Unsupported Network
       </Web3StatusError>
     )
   } else {
