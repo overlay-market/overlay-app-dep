@@ -8,7 +8,7 @@ import {
   TableRow,
   Paper
 } from '@material-ui/core';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
 
@@ -45,7 +45,16 @@ export const StyledNavLink = styled(NavLink).attrs({
   :focus {
     font-weight: 700;
   }
-`
+`;
+
+export const StyledTableRow = styled(TableRow)`
+  cursor: pointer;
+
+  :hover { 
+    font-weight: 900 !important;
+  }
+`;
+
 function createData(market: string, price: number, updatePeriod: string, oiLong: string, oiShort: string, positions: string, marketId: string) {
   return {market, price, updatePeriod, oiLong, oiShort, positions, marketId};
 }
@@ -60,6 +69,12 @@ const mockData = [
 const Markets = () => {
   const markets = useTotalMarkets();
   const marketData = useMarketData();
+  
+  let history = useHistory();
+
+  function redirectToMarket(marketId: string) {
+    history.push(`/market/${marketId}`);
+  };
 
   console.log('markets: ', markets);
   console.log('marketData: ', marketData);
@@ -79,7 +94,7 @@ const Markets = () => {
           </TableHead>
           <TableBody>
             {mockData.map((row) => (
-              <TableRow>
+              <StyledTableRow>
                   <StyledTableCellThin component="th" scope="row">
                     <StyledNavLink to={`/market/${row.marketId}`}>
                     {row.market}
@@ -90,7 +105,7 @@ const Markets = () => {
                   <StyledTableCellThin align="left">{row.oiLong}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.oiShort}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
-              </TableRow>
+              </StyledTableRow>
             ))}
           </TableBody>
         </Table>
