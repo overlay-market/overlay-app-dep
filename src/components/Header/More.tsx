@@ -32,7 +32,9 @@ export const StyledMenuList = styled(MenuList)`
   border-radius: 8px;
 `;
 
-export const StyledMenuItem = styled(MenuItem)`
+export const StyledMenuItem = styled(MenuItem).attrs<{disableRipple: boolean}>(({disableRipple}) => ({
+  disableRipple: disableRipple ?? true
+}))`
   display: flex;
   color: #fff !important;
   text-decoration: none !important;
@@ -130,25 +132,25 @@ export default function More() {
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {showLanguage ? (
                       <>
-                        <StyledMenuItem onClick={handleLanguageClose}>
+                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
                           <IconContainer>
                             <ChevronLeft size={14}/> 
                               Menu
                           </IconContainer>
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleLanguageClose}>
+                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
                               English
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleLanguageClose}>
+                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
                               中文
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleLanguageClose}>
+                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
                               Espanol
                         </StyledMenuItem>
                       </>
                     ) : (
                       <>
-                        <StyledMenuItem onClick={handleClose}>
+                        <StyledMenuItem disableRipple onClick={handleClose}>
                           <MenuLink 
                             pt={2} 
                             pb={2} 
@@ -163,7 +165,7 @@ export default function More() {
                               Risks
                           </MenuLink>
                         </StyledMenuItem>
-                        <StyledMenuItem onClick={handleLanguageToggle}>
+                        <StyledMenuItem disableRipple onClick={handleLanguageToggle}>
                           <MenuLink 
                               pt={2} 
                               pb={2} 
