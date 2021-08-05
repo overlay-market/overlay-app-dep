@@ -6,7 +6,7 @@ interface Window {
     // on?: (...args: any[]) => void
     on?: any
     // removeListener?: (...args: any[]) => void
-    // autoRefreshOnNetworkChange?: boolean
+    autoRefreshOnNetworkChange?: boolean
   }
   web3?: Record<string, unknown>
 }

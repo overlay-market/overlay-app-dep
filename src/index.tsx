@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { HashRouter } from 'react-router-dom';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
+import { LanguageProvider } from "./i18n";
 import ApplicationUpdater from './state/application/updater';
 import MulticallUpdater from './state/multicall/updater';
 import TransactionsUpdater from './state/transactions/updater';
@@ -30,14 +31,16 @@ ReactDOM.render(
   <StrictMode>
     <Provider store={store}>
       <HashRouter>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <Web3ProviderNetwork getLibrary={getLibrary}>
-            <Updaters />
-            <ThemeProvider>
-              <App />
-            </ThemeProvider>
-          </Web3ProviderNetwork>
-        </Web3ReactProvider>
+        <LanguageProvider>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <Web3ProviderNetwork getLibrary={getLibrary}>
+              <Updaters />
+              <ThemeProvider>
+                <App />
+              </ThemeProvider>
+            </Web3ProviderNetwork>
+          </Web3ReactProvider>
+        </LanguageProvider>
       </HashRouter>
     </Provider>
   </StrictMode>,
