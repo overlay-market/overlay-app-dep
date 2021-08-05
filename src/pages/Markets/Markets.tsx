@@ -11,6 +11,7 @@ import {
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
+import { Trans } from '@lingui/macro';
 
 
 export const StyledContainer = styled.div`
@@ -90,12 +91,36 @@ const Markets = () => {
         <Table>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledTableCell>Market</StyledTableCell>
-              <StyledTableCell>Price</StyledTableCell>
-              <StyledTableCell>Update Period</StyledTableCell>
-              <StyledTableCell>OI Long</StyledTableCell>
-              <StyledTableCell>OI Short</StyledTableCell>
-              <StyledTableCell>Positions</StyledTableCell>
+              <StyledTableCell>
+                <Trans>
+                  Market
+                </Trans>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Trans>
+                  Price
+                </Trans>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Trans>
+                  Update Period
+                </Trans>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Trans>
+                  OI Long
+                </Trans>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Trans>
+                  OI Short
+                </Trans>
+              </StyledTableCell>
+              <StyledTableCell>
+                <Trans>
+                  Positions
+                </Trans>
+              </StyledTableCell>
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>

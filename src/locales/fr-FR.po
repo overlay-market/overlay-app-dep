@@ -6,3 +6,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: fr-FR\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#: src/pages/Markets/Markets.tsx
+msgid "Market"
+msgstr ""
+
+#: src/pages/Markets/Markets.tsx
+msgid "OI Long"
+msgstr ""
+
+#: src/pages/Markets/Markets.tsx
+msgid "OI Short"
+msgstr ""
+
+#: src/pages/Markets/Markets.tsx
+msgid "Positions"
+msgstr ""
+
+#: src/pages/Markets/Markets.tsx
+msgid "Price"
+msgstr ""
+
+#: src/pages/Markets/Markets.tsx
+msgid "Update Period"
+msgstr ""
