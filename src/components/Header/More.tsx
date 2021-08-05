@@ -22,7 +22,6 @@ import { Trans } from '@lingui/macro';
 
 export const IconContainer = styled(Row)`
   width: auto;
-  margin-right: 3px;
   min-width: 16px;
 `;
 
@@ -37,14 +36,13 @@ export const StyledMenuList = styled(MenuList)`
   border-radius: 8px;
 `;
 
-export const StyledMenuItem = styled(MenuItem).attrs<{disableRipple: boolean}>(({disableRipple}) => ({
+const BaseMenuItem = styled(MenuItem).attrs<{disableRipple: boolean}>(({disableRipple}) => ({
   disableRipple: disableRipple ?? true
 }))`
   display: flex;
   color: #fff !important;
   text-decoration: none !important;
   font-size: 14px !important;
-  padding: 0px !important;
   margin: 6px 6px !important;
   border-radius: 4px !important;
   line-height: 1 !important;
@@ -54,12 +52,22 @@ export const StyledMenuItem = styled(MenuItem).attrs<{disableRipple: boolean}>((
   }
 `;
 
+export const StyledMenuItem = styled(BaseMenuItem)`
+  padding: 0px !important;
+`;
+
+export const StyledMenuHeaderItem = styled(BaseMenuItem)`
+  padding: 8px 16px 8px 8px !important;
+`;
+
 export const StyledPaper = styled(Paper)`
   border-radius: 8px !important;
 `;
 
 export const InternalMenuItem = styled(Link)`
-
+  text-decoration: none;
+  color: ${({theme}) => theme.text1};
+  padding: 8px 16px 8px 12px;
 `;
 
 function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; active: boolean; key: string}) {
@@ -154,24 +162,17 @@ export default function More() {
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {showLanguage ? (
                       <>
+                        <StyledMenuHeaderItem disableRipple onClick={handleLanguageClose}>
+                            <IconContainer>
+                              <ChevronLeft size={14}/> 
+                            </IconContainer>
+                                Menu
+                        </StyledMenuHeaderItem>
                         {SUPPORTED_LOCALES.map((locale) => (
-                          <LanguageMenuItem locale={locale} active={activeLocale === locale} key={locale} />
+                          <StyledMenuItem disableRipple>
+                            <LanguageMenuItem locale={locale} active={activeLocale === locale} key={locale} />
+                          </StyledMenuItem>
                         ))}
-                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
-                          <IconContainer>
-                            <ChevronLeft size={14}/> 
-                              Menu
-                          </IconContainer>
-                        </StyledMenuItem>
-                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
-                              English
-                        </StyledMenuItem>
-                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
-                              中文
-                        </StyledMenuItem>
-                        <StyledMenuItem disableRipple onClick={handleLanguageClose}>
-                              Espanol
-                        </StyledMenuItem>
                       </>
                     ) : (
                       <>
@@ -202,6 +203,7 @@ export default function More() {
                             <IconContainer>
                               <Globe size={14}/> 
                             </IconContainer>
+                              Language
                           </MenuLink>
                         </StyledMenuItem>
                       </>
