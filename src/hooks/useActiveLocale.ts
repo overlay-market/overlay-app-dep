@@ -1,6 +1,7 @@
 import { DEFAULT_LOCALE, SupportedLocale, SUPPORTED_LOCALES } from '../constants/locales';
-import { useMemo } from 'react';
-import { useUserLocale } from '../state/user/hooks';
+import { useEffect, useMemo } from 'react';
+import { useUserLocale, useUserLocaleManager  } from '../state/user/hooks';
+import useParsedQueryString from './useParsedQueryString';
 
 /**
  * Given a locale string (e.g. from user agent), return the best match for corresponding SupportedLocale
@@ -26,6 +27,18 @@ import { useUserLocale } from '../state/user/hooks';
   }
 
   return parseLocale(language);
+};
+
+export function useSetLocaleFromUrl() {
+  const parsed = useParsedQueryString();
+  const [userLocale, setUserLocale] = useUserLocaleManager();
+
+  useEffect(() => {
+    const urlLocale = typeof parsed.lng === 'string' ? parseLocale(parsed.lng) : undefined
+    if (urlLocale && urlLocale !== userLocale) {
+      setUserLocale(urlLocale)
+    }
+  }, [parsed.lng, setUserLocale, userLocale]);
 };
 
 /**

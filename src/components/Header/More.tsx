@@ -7,7 +7,11 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { ExternalLink } from '../ExternalLink/ExternalLink';
+import { Link } from 'react-router-dom';
 import { MenuLink } from '../Link/Link';
+import { SupportedLocale, LOCALE_LABEL, SUPPORTED_LOCALES } from '../../constants/locales';
+import { useLocationLinkProps } from '../../hooks/useLocationLinkProps';
+import { useActiveLocale } from '../../hooks/useActiveLocale';
 import styled from 'styled-components/macro';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MoreVertical, AlertCircle, Globe, ChevronLeft } from 'react-feather';
@@ -53,6 +57,22 @@ export const StyledPaper = styled(Paper)`
   border-radius: 8px !important;
 `;
 
+export const InternalMenuItem = styled(Link)`
+
+`;
+
+function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; active: boolean; key: string}) {
+  const { to } = useLocationLinkProps(locale);
+
+  if (!to) return null;
+
+  return (
+    <InternalMenuItem key={key} to={to}>
+      <div>{LOCALE_LABEL[locale]}</div>
+    </InternalMenuItem>
+    )
+  };
+  
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -68,6 +88,7 @@ export default function More() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [showLanguage, setShowLanguage] = useState(false);
+  const activeLocale = useActiveLocale();
   const anchorRef = useRef<HTMLButtonElement>(null);
 
   const handleToggle = () => {
@@ -132,6 +153,9 @@ export default function More() {
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     {showLanguage ? (
                       <>
+                        {SUPPORTED_LOCALES.map((locale) => (
+                          <LanguageMenuItem locale={locale} active={activeLocale === locale} key={locale} />
+                        ))}
                         <StyledMenuItem disableRipple onClick={handleLanguageClose}>
                           <IconContainer>
                             <ChevronLeft size={14}/> 
@@ -191,4 +215,4 @@ export default function More() {
       </div>
     </div>
   );
-}
+};
