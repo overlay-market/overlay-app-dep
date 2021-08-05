@@ -15,24 +15,24 @@ msgstr ""
 
 #: src/pages/Markets/Markets.tsx
 msgid "Market"
-msgstr ""
+msgstr "Thị trường"
 
 #: src/pages/Markets/Markets.tsx
 msgid "OI Long"
-msgstr ""
+msgstr "Lệnh Long"
 
 #: src/pages/Markets/Markets.tsx
 msgid "OI Short"
-msgstr ""
+msgstr "Lệnh Short"
 
 #: src/pages/Markets/Markets.tsx
 msgid "Positions"
-msgstr ""
+msgstr "Vị thế"
 
 #: src/pages/Markets/Markets.tsx
 msgid "Price"
-msgstr ""
+msgstr "Giá cả"
 
 #: src/pages/Markets/Markets.tsx
 msgid "Update Period"
-msgstr ""
+msgstr "Thời gian cập nhật"

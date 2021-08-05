@@ -15,24 +15,24 @@ msgstr ""
 
 #: src/pages/Markets/Markets.tsx
 msgid "Market"
-msgstr ""
+msgstr "Marchés"
 
 #: src/pages/Markets/Markets.tsx
 msgid "OI Long"
-msgstr ""
+msgstr "Commande longue"
 
 #: src/pages/Markets/Markets.tsx
 msgid "OI Short"
-msgstr ""
+msgstr "Commande courte"
 
 #: src/pages/Markets/Markets.tsx
 msgid "Positions"
-msgstr ""
+msgstr "Positionner"
 
 #: src/pages/Markets/Markets.tsx
 msgid "Price"
-msgstr ""
+msgstr "Le prix"
 
 #: src/pages/Markets/Markets.tsx
 msgid "Update Period"
-msgstr ""
+msgstr "Période de mise à jour"
