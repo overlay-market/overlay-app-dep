@@ -20,7 +20,6 @@ export const StyledContainer = styled.div`
 `
 
 export const StyledTableCell = styled(TableCell)`
-  background: ${({theme}) => theme.bg1};
   font-size: 14px;
   font-weight: 700 !important;
   color: ${({theme}) => theme.text1} !important;
@@ -49,10 +48,17 @@ export const StyledNavLink = styled(NavLink).attrs({
 
 export const StyledTableRow = styled(TableRow)`
   cursor: pointer;
+  background: ${({theme}) => theme.bg1};
 
   :hover { 
     font-weight: 900 !important;
+    background: #262626 !important;
   }
+`;
+
+export const StyledTableHeaderRow = styled(TableRow)`
+  background: ${({theme}) => theme.bg1};
+  cursor: default;
 `;
 
 function createData(market: string, price: number, updatePeriod: string, oiLong: string, oiShort: string, positions: string, marketId: string) {
@@ -83,22 +89,23 @@ const Markets = () => {
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
-            <TableRow>
+            <StyledTableHeaderRow>
               <StyledTableCell>Market</StyledTableCell>
               <StyledTableCell>Price</StyledTableCell>
               <StyledTableCell>Update Period</StyledTableCell>
               <StyledTableCell>OI Long</StyledTableCell>
               <StyledTableCell>OI Short</StyledTableCell>
               <StyledTableCell>Positions</StyledTableCell>
-            </TableRow>
+            </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
             {mockData.map((row) => (
-              <StyledTableRow>
+              <StyledTableRow 
+                onClick={() => redirectToMarket(row.marketId)}
+                hover={true}
+                >
                   <StyledTableCellThin component="th" scope="row">
-                    <StyledNavLink to={`/market/${row.marketId}`}>
                     {row.market}
-                    </StyledNavLink>
                   </StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>
