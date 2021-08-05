@@ -13,8 +13,16 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/Header/Header.tsx
+msgid "Magic"
+msgstr ""
+
 #: src/pages/Markets/Markets.tsx
 msgid "Market"
+msgstr "Thị trường"
+
+#: src/components/Header/Header.tsx
+msgid "Markets"
 msgstr "Thị trường"
 
 #: src/pages/Markets/Markets.tsx
@@ -25,6 +33,7 @@ msgstr "Lệnh Long"
 msgid "OI Short"
 msgstr "Lệnh Short"
 
+#: src/components/Header/Header.tsx
 #: src/pages/Markets/Markets.tsx
 msgid "Positions"
 msgstr "Vị thế"

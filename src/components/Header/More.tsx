@@ -18,6 +18,7 @@ import { MoreVertical, AlertCircle, Globe, ChevronLeft } from 'react-feather';
 import { TEXT } from '../../theme/theme';
 import { Row } from '../Row/Row';
 import { Fade } from '@material-ui/core';
+import { Trans } from '@lingui/macro';
 
 export const IconContainer = styled(Row)`
   width: auto;
@@ -201,7 +202,6 @@ export default function More() {
                             <IconContainer>
                               <Globe size={14}/> 
                             </IconContainer>
-                              Language
                           </MenuLink>
                         </StyledMenuItem>
                       </>

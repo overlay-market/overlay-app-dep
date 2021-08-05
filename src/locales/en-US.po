@@ -13,9 +13,17 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/Header/Header.tsx
+msgid "Magic"
+msgstr "Magic"
+
 #: src/pages/Markets/Markets.tsx
 msgid "Market"
 msgstr "Market"
+
+#: src/components/Header/Header.tsx
+msgid "Markets"
+msgstr "Markets"
 
 #: src/pages/Markets/Markets.tsx
 msgid "OI Long"
@@ -25,6 +33,7 @@ msgstr "OI Long"
 msgid "OI Short"
 msgstr "OI Short"
 
+#: src/components/Header/Header.tsx
 #: src/pages/Markets/Markets.tsx
 msgid "Positions"
 msgstr "Positions"

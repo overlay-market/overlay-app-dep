@@ -13,8 +13,16 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+#: src/components/Header/Header.tsx
+msgid "Magic"
+msgstr ""
+
 #: src/pages/Markets/Markets.tsx
 msgid "Market"
+msgstr "行情"
+
+#: src/components/Header/Header.tsx
+msgid "Markets"
 msgstr "行情"
 
 #: src/pages/Markets/Markets.tsx
@@ -25,6 +33,7 @@ msgstr "做多"
 msgid "OI Short"
 msgstr "做空"
 
+#: src/components/Header/Header.tsx
 #: src/pages/Markets/Markets.tsx
 msgid "Positions"
 msgstr "仓位"

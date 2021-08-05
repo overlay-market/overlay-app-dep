@@ -5,6 +5,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { Row } from '../Row/Row';
+import { Trans } from '@lingui/macro';
 import More from './More';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
@@ -76,15 +77,21 @@ export default function Header() {
       </LogoContainer>
 
       <StyledLink to={'/markets'}>
-        Markets
+        <Trans>
+          Markets
+        </Trans>
       </StyledLink>
 
       <StyledLink to={'/positions'}>
-        Positions
+        <Trans>
+          Positions
+        </Trans>
       </StyledLink>
 
       <StyledLink to={'/magic'}>
-        Magic
+        <Trans>
+          Magic
+        </Trans>
       </StyledLink>
 
       <AccountContainer>
@@ -92,6 +99,6 @@ export default function Header() {
          <More/>
       </AccountContainer>
     </HeaderContainer>
-  )
-}
+  );
+};
 
