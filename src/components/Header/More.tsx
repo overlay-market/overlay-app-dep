@@ -46,6 +46,7 @@ const BaseMenuItem = styled(MenuItem).attrs<{disableRipple: boolean}>(({disableR
   margin: 6px 6px !important;
   border-radius: 4px !important;
   line-height: 1 !important;
+  min-width: 125px;
 
   :hover {
     background: #5f6067 !important;
@@ -105,6 +106,7 @@ export default function More() {
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
+    console.log('hello there');
     if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
       return;
     }
@@ -155,7 +157,6 @@ export default function More() {
             <Fade
               {...TransitionProps}
               timeout={200}
-              // style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
             >
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
@@ -185,7 +186,7 @@ export default function More() {
                             minWidth={100} 
                             href="https://overlay.market"
                             >
-                            <IconContainer>
+                            <IconContainer mr={'3px'}>
                               <AlertCircle size={14}/> 
                             </IconContainer>
                               Risks
@@ -200,7 +201,7 @@ export default function More() {
                               minWidth={100} 
                               href=""
                               >
-                            <IconContainer>
+                            <IconContainer mr={'3px'}>
                               <Globe size={14}/> 
                             </IconContainer>
                               Language
