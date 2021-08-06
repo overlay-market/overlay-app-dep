@@ -78,7 +78,15 @@ function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; ac
 
   return (
     <InternalMenuItem key={key} to={to}>
-      <div>{LOCALE_LABEL[locale]}</div>
+      { active ? (
+          <strong>
+            <u>
+              {LOCALE_LABEL[locale]}
+            </u>
+          </strong>
+        ):(
+          <div>{LOCALE_LABEL[locale]}</div>
+      )}
     </InternalMenuItem>
     )
   };
