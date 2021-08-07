@@ -8,6 +8,7 @@ import { OVL } from '../../constants/tokens';
 import { Row } from '../Row/Row';
 import { TEXT } from '../../theme/theme';
 import { AlertTriangle } from 'react-feather';
+import { Trans } from '@lingui/macro';
 import Dropdown from './Dropdown';
 import styled from 'styled-components/macro';
 
@@ -57,9 +58,11 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
     return (
       <>
         <Row fontSize={12} fontWeight={400} mr={4}>
-            Balance:
+            <Trans>
+              Balance:
+            </Trans>
             <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
-              {balance}
+              Loading...
             </TEXT.BoldSmall>
         </Row>
       </>
@@ -68,7 +71,11 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
     return (
       <>
         <Row fontSize={12} fontWeight={400} mr={4}>
-            Balance:
+            <TEXT.Small minWidth={'fit-content'}>
+              <Trans>
+                Balance:
+              </Trans>
+            </TEXT.Small>
             <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
               {balance}
             </TEXT.BoldSmall>
@@ -82,7 +89,9 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
     return (
       <>
         <Row fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
-            Balance:
+            <Trans>
+              Balance:
+            </Trans>
             <TEXT.BoldSmall ml={1} mr={0}>
               {balance}
             </TEXT.BoldSmall>
@@ -125,7 +134,7 @@ function Web3StatusInner() {
       <Web3StatusConnected>
 
       {account && isLoadingBalance && chainId && (
-        <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
+        <TokenBalance balance={'Loading'} network={NETWORK_LABELS[chainId]} />
       )}
 
       {account && chainId && userOvlBalance && (
