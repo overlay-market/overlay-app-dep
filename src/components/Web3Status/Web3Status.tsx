@@ -62,7 +62,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
               Balance:
             </Trans>
             <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
-              Loading...
+              {balance}
             </TEXT.BoldSmall>
         </Row>
       </>
@@ -134,7 +134,7 @@ function Web3StatusInner() {
       <Web3StatusConnected>
 
       {account && isLoadingBalance && chainId && (
-        <TokenBalance balance={'Loading'} network={NETWORK_LABELS[chainId]} />
+        <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
 
       {account && chainId && userOvlBalance && (
