@@ -61,7 +61,16 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
       <Column 
         width={'auto'} 
         align={'left'} 
-        padding={'0 16px 0'}
+        mr={'auto'}
+        >
+        <HeaderDetail> 
+          {TOKEN_LABELS[marketId]} 
+        </HeaderDetail>
+      </Column>
+      <Column 
+        width={'auto'} 
+        align={'left'} 
+        padding={'0 24px 0'}
         >
         <Header> 
           {TOKEN_LABELS[marketId]} 
@@ -73,7 +82,7 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
       <Column 
         width={'auto'} 
         align={'left'} 
-        padding={'0 16px 0'}
+        padding={'0 24px 0'}
         >
         <Header>
           Next sample time:
@@ -85,7 +94,7 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
       <Column 
         width={'auto'} 
         align={'left'} 
-        padding={'0 16px 0'}
+        padding={'0 24px 0'}
         >
         <Header>
           Open interest available LONG
@@ -101,7 +110,8 @@ export const MarketHeader = ({marketId, marketPrice, nextSampleTime}: MarketHead
       <Column 
         width={'auto'} 
         align={'left'} 
-        padding={'0 16px 0'}
+        padding={'0 24px 0'}
+        mr={'auto'}
         >
         <Header>
           Funding rate:
