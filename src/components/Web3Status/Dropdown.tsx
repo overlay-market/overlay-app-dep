@@ -11,7 +11,7 @@ import { Row } from '../Row/Row';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MenuButton } from '../Button/Button';
 import { Play, LogOut } from 'react-feather';
-import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../Header/More';
+import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../More/More';
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { Fade } from '@material-ui/core';

@@ -6,7 +6,7 @@ import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { Row } from '../Row/Row';
 import { Trans } from '@lingui/macro';
-import More from './More';
+import More from '../More/More';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
