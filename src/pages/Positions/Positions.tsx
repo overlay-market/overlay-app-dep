@@ -18,6 +18,7 @@ import Loader from 'react-loader-spinner';
 import { Trans } from '@lingui/macro';
 import styled from 'styled-components/macro';
 import { TEXT } from '../../theme/theme';
+import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 
 const LoadingContainer = styled.div`
   display: block;
@@ -54,6 +55,9 @@ const Positions = () => {
       </TableContainer>
 
         <LoadingContainer>
+          <PlanckCatLoader duration={8} width={32} />
+          <PlanckCatLoader duration={8} width={32} />
+          <PlanckCatLoader duration={8} width={32} />
         </LoadingContainer>
     </StyledContainer>
   )
