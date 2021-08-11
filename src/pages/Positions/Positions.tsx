@@ -62,7 +62,7 @@ const Positions = () => {
           <StyledTableHeaderRow>
             {tableHeaders.map((header, column) => (
               <StyledHeaderCell>
-                <Trans>{header}</Trans>
+                {header}
               </StyledHeaderCell>
             ))}
           </StyledTableHeaderRow>
