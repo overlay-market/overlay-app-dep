@@ -18,17 +18,21 @@ export const StyledContainer = styled.div`
   max-width: 900px;
   margin: auto;
   margin-top: 70px;
-`
+`;
 
 export const StyledTableCell = styled(TableCell)`
   font-size: 14px;
   font-weight: 700 !important;
   color: ${({theme}) => theme.text1} !important;
-`
+`;
+
+export const StyledHeaderCell = styled(StyledTableCell)`
+  padding-bottom: 8px !important;
+`;
 
 export const StyledTableCellThin = styled(StyledTableCell)`
   font-weight: 400 !important;
-`
+`;
 
 const activeClassName = 'INACTIVE';
 
@@ -91,36 +95,36 @@ const Markets = () => {
         <Table>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledTableCell>
+              <StyledHeaderCell>
                 <Trans>
                   Market
                 </Trans>
-              </StyledTableCell>
-              <StyledTableCell>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans>
                   Price
                 </Trans>
-              </StyledTableCell>
-              <StyledTableCell>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans>
                   Update Period
                 </Trans>
-              </StyledTableCell>
-              <StyledTableCell>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans>
                   OI Long
                 </Trans>
-              </StyledTableCell>
-              <StyledTableCell>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans>
                   OI Short
                 </Trans>
-              </StyledTableCell>
-              <StyledTableCell>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans>
                   Positions
                 </Trans>
-              </StyledTableCell>
+              </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
