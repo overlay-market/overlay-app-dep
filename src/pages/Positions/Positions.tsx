@@ -19,9 +19,22 @@ import { Trans } from '@lingui/macro';
 import styled from 'styled-components/macro';
 import { TEXT } from '../../theme/theme';
 import { PlanckCatLoader } from '../../components/Loaders/Loaders';
+import { Button } from 'rebass';
+import { injected } from '../../connectors/connectors';
 
 const LoadingContainer = styled.div`
   display: block;
+`;
+
+const ConnectWallet = styled(Button)`
+  width: 100%;
+  height: 33vh;
+  cursor: pointer;
+  background: none;
+
+  :hover {
+    opacity: 0.7;
+  }
 `;
 
 const tableHeaders = [
@@ -35,8 +48,12 @@ const tableHeaders = [
 ];
 
 const Positions = () => { 
-  const { account, chainId } = useActiveWeb3React();
+  const { account, activate, chainId } = useActiveWeb3React();
   const [loading, setLoading] = useState(true);
+
+  const connectWallet = () => {
+    activate(injected);
+  };
 
   return (
     <StyledContainer>
@@ -53,12 +70,21 @@ const Positions = () => {
         <TableBody>
         </TableBody>
       </TableContainer>
-
+      {account ? (
         <LoadingContainer>
-          <PlanckCatLoader duration={8} width={32} />
-          <PlanckCatLoader duration={8} width={32} />
-          <PlanckCatLoader duration={8} width={32} />
+          <PlanckCatLoader duration={8} width={24} />
+          <PlanckCatLoader duration={8} width={24} />
+          <PlanckCatLoader duration={8} width={24} />
         </LoadingContainer>
+      ):(
+        <LoadingContainer>
+          <ConnectWallet onClick={connectWallet}>
+            <strong>
+              Please connect wallet
+            </strong>
+          </ConnectWallet>
+        </LoadingContainer>
+      )}
     </StyledContainer>
   )
 };
