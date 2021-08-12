@@ -72,9 +72,9 @@ const Positions = () => {
       </TableContainer>
       {account ? (
         <LoadingContainer>
-          <PlanckCatLoader duration={8} width={24} />
-          <PlanckCatLoader duration={8} width={24} />
-          <PlanckCatLoader duration={8} width={24} />
+          <PlanckCatLoader duration={5} width={24} />
+          <PlanckCatLoader duration={5} width={24} />
+          <PlanckCatLoader duration={5} width={24} />
         </LoadingContainer>
       ):(
         <LoadingContainer>
