@@ -84,7 +84,7 @@ export const TEXT = {
     return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
   },
   Body(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={16} color={'text1'} {...props} />
+    return <TextWrapper fontSize={16} color={'text1'} {...props} />
   },
   LargeHeader(props: TextProps) {
     return <TextWrapper fontWeight={600} fontSize={24} {...props} />
