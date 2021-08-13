@@ -10,10 +10,11 @@ import MulticallUpdater from './state/multicall/updater';
 import TransactionsUpdater from './state/transactions/updater';
 import ThemeProvider from "./theme/theme";
 import store from './state/state';
-import getLibrary from './utils/getLibrary'
+import getLibrary from './utils/getLibrary';
 import "./index.css";
 import App from "./pages/App";
 import reportWebVitals from "./reportWebVitals";
+import '@reach/dialog/styles.css'; 
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName);
 
