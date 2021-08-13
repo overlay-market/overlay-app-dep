@@ -16,14 +16,18 @@ export type PopupContent =
         newList: TokenList
         auto: boolean
       }
-    }
+    };
 
-    
+export enum ApplicationModal {
+  WALLET,
+};
+
+
 export const updateBlockNumber = createAction<{ chainId: number; blockNumber: number }>('application/updateBlockNumber');
 export const addPopup = createAction<{
   key?: string
   removeAfterMs?: number | null
   content: PopupContent
 }>('application/addPopup');
-
+export const setOpenModal = createAction<ApplicationModal | null>('application/setOpenModal');
 

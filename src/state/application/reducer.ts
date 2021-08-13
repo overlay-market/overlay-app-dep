@@ -1,12 +1,18 @@
 import { createReducer, nanoid } from '@reduxjs/toolkit'
-import { updateBlockNumber } from './actions'
+import { 
+  updateBlockNumber,
+  ApplicationModal,
+  setOpenModal
+} from './actions'
 
 export interface ApplicationState {
   readonly blockNumber: { readonly [chainId: number]: number };
+  readonly openModal: ApplicationModal | null
 };
 
 const initialState: ApplicationState = {
   blockNumber: {},
+  openModal: null,
 };
 
 export default createReducer(initialState, (builder) =>
@@ -18,5 +24,8 @@ export default createReducer(initialState, (builder) =>
       } else {
         state.blockNumber[chainId] = Math.max(blockNumber, state.blockNumber[chainId])
       }
+    })
+    .addCase(setOpenModal, (state, action) => {
+      state.openModal = action.payload
     })
 );

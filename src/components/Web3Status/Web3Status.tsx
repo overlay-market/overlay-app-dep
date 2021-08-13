@@ -9,8 +9,10 @@ import { Row } from '../Row/Row';
 import { TEXT } from '../../theme/theme';
 import { AlertTriangle } from 'react-feather';
 import { Trans } from '@lingui/macro';
+import { useWalletModalToggle } from '../../state/application/hooks';
 import Dropdown from './Dropdown';
 import styled from 'styled-components/macro';
+import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -127,6 +129,7 @@ function Web3StatusInner() {
   const ovl = chainId ? OVL[chainId] : undefined;
   const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
   const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
+  const toggleWalletModal = useWalletModalToggle();
 
   if (account) {
     // connected
@@ -179,7 +182,7 @@ function Web3StatusInner() {
   } else {
     return (
     // not connected
-      <Web3StatusUnconnected onClick={connectWallet}>
+      <Web3StatusUnconnected onClick={toggleWalletModal}>
         Connect wallet
       </Web3StatusUnconnected>
     )
@@ -190,6 +193,7 @@ export default function Web3Status() {
   return (
     <>
       <Web3StatusInner />
+      <ConnectWalletModal />
     </>
   )
 };
