@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal";
 import { useModalOpen, useWalletModalToggle } from "../../state/application/hooks";
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
@@ -10,6 +10,7 @@ import { SUPPORTED_WALLETS } from "../../constants/wallet";
 import { isMobile } from "react-device-detect"
 import { AbstractConnector } from "@web3-react/abstract-connector";
 import { injected } from "../../connectors/connectors";
+import usePrevious from "../../hooks/usePrevious";
 import PendingView from "./PendingView";
 import METAMASK_ICON from '../../assets/images/metamask.png';
 import WalletOption from './WalletOptions';
@@ -54,6 +55,15 @@ export default function ConnectWalletModal() {
   const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>();
 
   const [pendingError, setPendingError] = useState<boolean>();
+
+  const previousAccount = usePrevious(account);
+  
+  // close on connection, when logged out before
+  useEffect(() => {
+    if (account && !previousAccount && walletModalOpen) {
+      toggleWalletModal()
+    }
+  }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = ''
