@@ -7,10 +7,8 @@ const InfoCard = styled.button<{ active?: boolean }>`
   background-color: transparent;
   padding: 1rem;
   outline: none;
-  border: 1px solid;
   border-radius: 12px;
   width: 100% !important;
-  border-color: ${({ theme, active }) => (active ? 'transparent' : theme.bg3)};
 `
 
 const OptionCard = styled(InfoCard as any)`
@@ -20,6 +18,8 @@ const OptionCard = styled(InfoCard as any)`
   justify-content: space-between;
   margin-top: 16px !important;
   padding: 1rem;
+  background: #1f222d;
+  border: none;
 `
 
 const CardHeader = styled.div`
@@ -32,7 +32,7 @@ const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
     border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)};
-    background: #1f222d;
+    background: #2e3348;
   }
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
@@ -104,7 +104,7 @@ export default function WalletOption({
               </GreenCircle>
             </CircleWrapper>
           )}
-          <TEXT.Body fontWeight={600}>
+          <TEXT.Body fontWeight={600} autoCapitalize={'true'}>
             {header}
           </TEXT.Body>
         {subheader && (
