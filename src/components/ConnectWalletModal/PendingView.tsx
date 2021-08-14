@@ -5,6 +5,8 @@ import WalletOption from './WalletOptions';
 import { injected } from '../../connectors/connectors';
 import { darken } from 'polished';
 import { Trans } from '@lingui/macro';
+import { TEXT } from '../../theme/theme';
+import { AlertTriangle } from 'react-feather';
 import Loader from 'react-loader-spinner';
 
 const PendingSection = styled.div`
@@ -16,47 +18,57 @@ const PendingSection = styled.div`
   }
 `
 
-const StyledLoader = styled(Loader)`
-  margin-right: 1rem;
-`
-
 const LoadingMessage = styled.div<{ error?: boolean }>`
   align-items: center;
   justify-content: flex-start;
   border-radius: 12px;
-  margin-bottom: 20px;
+  margin: 16px 0;
   color: ${({ theme, error }) => (error ? theme.red1 : 'inherit')};
-  border: 1px solid ${({ theme, error }) => (error ? theme.red1 : theme.text4)};
+  border: 1px solid ${({ theme, error }) => (error ? theme.red1 : null)};
 
   & > * {
     padding: 1rem;
   }
 `
 
-const ErrorGroup = styled.div`
-  align-items: center;
-  justify-content: flex-start;
-`
+const ErrorContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const ErrorMessage = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+
+  svg {
+    margin: auto;
+  }
+`;
 
 const ErrorButton = styled.div`
   border-radius: 8px;
   font-size: 12px;
   color: ${({ theme }) => theme.text1};
-  background-color: ${({ theme }) => theme.bg1};
-  margin-left: 1rem;
+  background-color: rgb(86, 90, 105);
   padding: 0.5rem;
+  display: flex;
   font-weight: 600;
   user-select: none;
+  margin-left: 8px;
 
   &:hover {
     cursor: pointer;
-    background-color: ${({ theme }) => darken(0.1, theme.text4)};
+    background-color: ${darken(0.1, '#565A69')};
   }
 `
 
-const LoadingWrapper = styled.div`
-  align-items: center;
-  justify-content: center;
+const LoadingContainer = styled.div`
+  display: flex;
+  flex-direction: row;
 `
 
 export default function PendingView({
@@ -75,28 +87,38 @@ export default function PendingView({
   return (
     <PendingSection>
       <LoadingMessage error={error}>
-        <LoadingWrapper>
+        <LoadingContainer>
           {error ? (
-            <ErrorGroup>
-              <div>
-                <Trans>Error connecting</Trans>
-              </div>
+            <ErrorContainer>
+              <ErrorMessage>
+                <IconContainer>
+                  <AlertTriangle height={15} width={15} />
+                </IconContainer>
+                <TEXT.Body m={'auto 4px'} color={'#FF4343'}>
+                  Error connecting
+                </TEXT.Body>
+              </ErrorMessage>
+
               <ErrorButton
                 onClick={() => {
                   setPendingError(false)
                   connector && tryActivation(connector)
                 }}
               >
-                <Trans>Try Again</Trans>
+                <TEXT.Body m={'auto 4px'} fontWeight={400}>
+                  Try again
+                </TEXT.Body>
               </ErrorButton>
-            </ErrorGroup>
+            </ErrorContainer>
           ) : (
             <>
-              <Loader type="BallTriangle" />
-              <Trans>Initializing...</Trans>
+              <Loader type="BallTriangle" height={30} width={30} color={'#12B4FF'}/>
+              <TEXT.Body m={'auto 8px'}>
+                Initializing...
+              </TEXT.Body>
             </>
           )}
-        </LoadingWrapper>
+        </LoadingContainer>
       </LoadingMessage>
       {Object.keys(SUPPORTED_WALLETS).map((key) => {
         const option = SUPPORTED_WALLETS[key]

@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/macro'
 import { ExternalLink } from '../ExternalLink/ExternalLink';
+import { TEXT } from '../../theme/theme';
 
 const InfoCard = styled.button<{ active?: boolean }>`
   background-color: transparent;
@@ -17,13 +18,13 @@ const OptionCard = styled(InfoCard as any)`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 2rem;
+  margin-top: 16px !important;
   padding: 1rem;
 `
 
-const OptionCardLeft = styled.div`
+const CardHeader = styled.div`
   justify-content: center;
-  height: 100%;
+  text-align: left;
 `
 
 const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
@@ -31,6 +32,7 @@ const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
     border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)};
+    background: #1f222d;
   }
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
@@ -53,12 +55,6 @@ const CircleWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`
-
-const HeaderText = styled.div`
-  color: ${(props) => (props.color === 'blue' ? ({ theme }) => theme.text2 : ({ theme }) => theme.text1)};
-  font-size: 1rem;
-  font-weight: 500;
 `
 
 const SubHeader = styled.div`
@@ -100,8 +96,7 @@ export default function WalletOption({
 }) {
   const content = (
     <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
-      <OptionCardLeft>
-        <HeaderText>
+      <CardHeader>
           {active ?? (
             <CircleWrapper>
               <GreenCircle>
@@ -109,10 +104,15 @@ export default function WalletOption({
               </GreenCircle>
             </CircleWrapper>
           )}
-          {header}
-        </HeaderText>
-        {subheader && <SubHeader>{subheader}</SubHeader>}
-      </OptionCardLeft>
+          <TEXT.Body fontWeight={600}>
+            {header}
+          </TEXT.Body>
+        {subheader && (
+          <SubHeader>
+            {subheader}
+          </SubHeader>
+        )}
+      </CardHeader>
       <IconWrapper size={size}>
         <img src={icon} alt={'Icon'} />
       </IconWrapper>
@@ -122,5 +122,5 @@ export default function WalletOption({
     return <ExternalLink href={link}>{content}</ExternalLink>
   }
 
-  return content
-}
+  return content;
+};
