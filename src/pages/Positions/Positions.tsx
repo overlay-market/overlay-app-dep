@@ -14,6 +14,7 @@ import {
   StyledHeaderCell 
 } from '../Markets/Markets';
 import { useActiveWeb3React } from '../../hooks/web3';
+import { useWalletModalToggle } from "../../state/application/hooks";
 import Loader from 'react-loader-spinner';
 import { Trans } from '@lingui/macro';
 import styled from 'styled-components/macro';
@@ -51,9 +52,7 @@ const Positions = () => {
   const { account, activate, chainId } = useActiveWeb3React();
   const [loading, setLoading] = useState(true);
 
-  const connectWallet = () => {
-    activate(injected);
-  };
+  const toggleWalletModal = useWalletModalToggle();
 
   return (
     <StyledContainer>
@@ -78,7 +77,7 @@ const Positions = () => {
         </LoadingContainer>
       ):(
         <LoadingContainer>
-          <ConnectWallet onClick={connectWallet}>
+          <ConnectWallet onClick={toggleWalletModal}>
             <strong>
               Please connect wallet
             </strong>

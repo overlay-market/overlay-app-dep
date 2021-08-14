@@ -92,7 +92,7 @@ export default function PendingView({
             <ErrorContainer>
               <ErrorMessage>
                 <IconContainer>
-                  <AlertTriangle height={15} width={15} />
+                  <AlertTriangle height={16} width={16} />
                 </IconContainer>
                 <TEXT.Body m={'auto 4px'} color={'#FF4343'}>
                   Error connecting

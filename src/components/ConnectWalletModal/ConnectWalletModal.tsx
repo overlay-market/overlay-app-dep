@@ -5,7 +5,8 @@ import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { ApplicationModal } from "../../state/application/actions";
 import { TEXT } from "../../theme/theme";
 import { X } from "react-feather";
-import { UnsupportedChainIdError, useWeb3React } from "@web3-react/core";
+import { UnsupportedChainIdError } from "@web3-react/core";
+import { useActiveWeb3React } from "../../hooks/web3";
 import { SUPPORTED_WALLETS } from "../../constants/wallet";
 import { isMobile } from "react-device-detect"
 import { AbstractConnector } from "@web3-react/abstract-connector";
@@ -44,7 +45,7 @@ const WALLET_VIEWS = {
 };
 
 export default function ConnectWalletModal() {
-  const { active, account, connector, activate, error } = useWeb3React();
+  const { active, account, connector, activate, error } = useActiveWeb3React();
 
   const walletModalOpen = useModalOpen(ApplicationModal.WALLET);
 
@@ -57,7 +58,7 @@ export default function ConnectWalletModal() {
   const [pendingError, setPendingError] = useState<boolean>();
 
   const previousAccount = usePrevious(account);
-  
+
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
