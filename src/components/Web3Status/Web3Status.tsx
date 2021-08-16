@@ -112,15 +112,9 @@ const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
 };
 
 function Web3StatusInner() {
-  const { account, chainId, activate, error } = useActiveWeb3React();
-
-  const connectWallet = () => {
-    activate(injected);
-  };
+  const { account, chainId, error } = useActiveWeb3React();
 
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-  
-  console.log('isError: ', isUnsupportedChainIdError);
 
   const userEthBalance = useETHBalances(account ? [account] : [])?.[
     account ?? ""

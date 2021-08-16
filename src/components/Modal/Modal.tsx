@@ -19,6 +19,7 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
     justify-content: center;
 
     background-color: rgba(0, 0, 0, 0.424);
+    backdrop-filter: blur(7px);
   }
 `
 
