@@ -15,6 +15,9 @@ import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../M
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { Fade } from '@material-ui/core';
+import { useWalletModalToggle, useModalOpen } from '../../state/application/hooks';
+import { ApplicationModal } from '../../state/application/actions';
+
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
@@ -55,15 +58,6 @@ export const RotatingTriangle = styled(Play)<RotatingTriangleProps>`
   transition: transform ease-out 0.25s;
 `;
 
-// interface RotatingProps {
-//   open: boolean
-// };
-
-// export const Rotating = styled.div<RotatingProps>`
-//   transform: ${props => (props.open ? 'rotate(180deg)' : 'rotate(0deg)')};
-//   transition: transform ease-out 0.25s;
-// `;
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -81,7 +75,11 @@ interface DropdownProps {
 };
 
 export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps) {
-  const { deactivate } = useActiveWeb3React();
+  const { deactivate, account } = useActiveWeb3React();
+
+  const toggleWalletModal = useWalletModalToggle();
+
+  const walletModalOpen = useModalOpen(ApplicationModal.WALLET);
 
   const disconnectWallet = () => {
     deactivate();
@@ -143,7 +141,6 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
             <Fade
               {...TransitionProps}
               timeout={200}
-              // style={{ transformOrigin: placement === 'bottom' ? 'top right' : 'top right' }}
             >
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
@@ -162,6 +159,20 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         </TEXT.Menu>
                       </Web3Status>
                     </Web3StatusMenuItem>
+
+                    {account ? (
+                        <StyledMenuItem>
+                        <MenuButton 
+                          padding={'8px 16px 8px 12px'}
+                          onClick={toggleWalletModal}
+                          >
+                          <TEXT.Menu m={'auto'} fontSize={14}>
+                            Change wallet
+                          </TEXT.Menu>
+                        </MenuButton>
+                      </StyledMenuItem>
+                    ):(null)}
+
                     <StyledMenuItem>
                       <MenuButton 
                         padding={'8px 16px 8px 12px'}
@@ -177,6 +188,8 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         </TEXT.Menu>
                       </MenuButton>
                     </StyledMenuItem>
+
+
                   </StyledMenuList>
                 </ClickAwayListener>
               </StyledPaper>
