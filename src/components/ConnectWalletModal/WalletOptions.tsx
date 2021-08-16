@@ -27,8 +27,11 @@ const CardHeader = styled.div`
   text-align: left;
 `
 
-const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
+const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean}>`
   margin-top: 0;
+  border: ${({active}) => (active ? '1px solid green !important' : '')};
+  background: ${({active}) => (active ? '#154015 !important' : '')};
+
   &:hover {
     cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
     border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)};
@@ -37,30 +40,24 @@ const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean }>`
   opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
 `
 
-const GreenCircle = styled.div`
-  justify-content: center;
-  align-items: center;
-
-  &:first-child {
-    height: 8px;
-    width: 8px;
-    margin-right: 8px;
-    background-color: ${({ theme }) => theme.green1};
-    border-radius: 50%;
-  }
-`
-
-const CircleWrapper = styled.div`
-  color: ${({ theme }) => theme.green1};
+const CardText = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
-`
+  flex-direction: row;
+`;
 
 const SubHeader = styled.div`
   color: ${({ theme }) => theme.text1};
   margin-top: 10px;
   font-size: 12px;
+`
+
+const Connected = styled.div`
+  font-size: 10px;
+  border: 1px solid green;
+  color: green;
+  border-radius: 15px;
+  margin: auto 4px;
+  padding: 2px 4px;
 `
 
 const IconWrapper = styled.div<{ size?: number | null }>`
@@ -94,19 +91,23 @@ export default function WalletOption({
   active?: boolean
   id: string
 }) {
+
   const content = (
     <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
       <CardHeader>
-          {active ?? (
-            <CircleWrapper>
-              <GreenCircle>
-                <div />
-              </GreenCircle>
-            </CircleWrapper>
-          )}
+        <CardText>
           <TEXT.Body fontWeight={600} autoCapitalize={'true'}>
             {header}
           </TEXT.Body>
+
+          {active ? (
+            <Connected>
+              Connected
+            </Connected>
+          ):(null)}
+          
+        </CardText>
+        
         {subheader && (
           <SubHeader>
             {subheader}

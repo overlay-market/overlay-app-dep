@@ -93,7 +93,8 @@ export default function ConnectWalletModal() {
   };
 
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
+    
     return Object.keys(SUPPORTED_WALLETS).map((key) => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
