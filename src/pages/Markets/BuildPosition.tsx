@@ -20,6 +20,7 @@ import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import { useApproveCallback } from '../../hooks/useApproveCallback';
 import { useDerivedUserInputs } from '../../state/position/hooks';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
+import { LeverageSlider } from '../../components/LeverageSlider/LeverageSlider';
 
 export const InputContainer = styled(Row)`
   border-radius: 4px;
@@ -148,29 +149,14 @@ export const BuildPosition = () => {
               Short
           </LightGreyButton>
         </Row>
-        <Label htmlFor='leverage'>
-          <TEXT.Body 
-            margin={'24px 0 4px 0'} 
-            letterSpacing={'0.25px'}
-            >
-              Leverage: {leverageValue}x
-          </TEXT.Body>
-          <TEXT.Small 
-            margin={'auto auto 4px 4px'} 
-            color={'white'}>
-              (Liquidation Price Est.: N/A USD)
-          </TEXT.Small>
-        </Label>
-        <Slider
-          id='leverage'
-          name='leverage'
+        <LeverageSlider
+          name={'leverage'}
           value={leverageValue}
-          step={0.5}
+          step={1}
           min={1}
           max={5}
-          color='#12B4FF'
-          bg="#F2F2F2"
           onChange={handleLeverageInput}
+          margin={'24px 0 0 0'}
         />
         <Label htmlFor='Amount' mt={'24px'}>
           <TEXT.Body
