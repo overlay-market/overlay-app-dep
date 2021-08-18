@@ -19,6 +19,7 @@ import { OVL } from '../../constants/tokens';
 import { maxAmountSpend } from '../../utils/maxAmountSpend';
 import { useApproveCallback } from '../../hooks/useApproveCallback';
 import { useDerivedUserInputs } from '../../state/position/hooks';
+import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 
 export const InputContainer = styled(Row)`
   border-radius: 4px;
@@ -66,16 +67,45 @@ export const BuildPosition = () => {
   const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
 
   // handle user inputs
-  const handleAmountInput = useCallback((e: any) => { onAmountInput(e.target.value) }, [onAmountInput]);
   const handleLeverageInput = useCallback((e: any) => { onLeverageInput(e.target.value) }, [onLeverageInput]);
   const handlePositionSideLong = useCallback(() => { onPositionSideInput(PositionSide.LONG) }, [onPositionSideInput]);
   const handlePositionSideShort = useCallback(() => { onPositionSideInput(PositionSide.SHORT) }, [onPositionSideInput]);
   
+  const handleTypeInput = useCallback(
+    (value: string) => {
+      onAmountInput(value)
+    },
+    [onAmountInput]
+  );
+
   // handle quick inputs
-  const handleMaxInput = useCallback(() => { onAmountInput(maxInputAmount?.toExact()) }, [onAmountInput, maxInputAmount]);
-  const handle75Input = useCallback(() => { onAmountInput(inputAmount75) }, [onAmountInput, inputAmount75]);
-  const handle50Input = useCallback(() => { onAmountInput(inputAmount50) }, [onAmountInput, inputAmount50]);
-  const handle25Input = useCallback(() => { onAmountInput(inputAmount25) }, [onAmountInput, inputAmount25]);
+  const handleMaxInput = useCallback(
+    () => { 
+      onAmountInput(maxInputAmount?.toExact());
+    }, 
+    [onAmountInput, maxInputAmount]
+  );
+
+  const handle75Input = useCallback(
+    () => { 
+      onAmountInput(inputAmount75); 
+    }, 
+    [onAmountInput, inputAmount75]
+  );
+
+  const handle50Input = useCallback(
+    () => { 
+      onAmountInput(inputAmount50) 
+    }, 
+    [onAmountInput, inputAmount50]
+  );
+
+  const handle25Input = useCallback(
+    () => { 
+      onAmountInput(inputAmount25) 
+    }, 
+    [onAmountInput, inputAmount25]
+  );
 
   const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
 
@@ -162,29 +192,18 @@ export const BuildPosition = () => {
           </Row>
         </Label>
         <InputContainer>
-          <AmountInput
-            height='32px'
-            onChange={handleAmountInput}
+          <NumericalInput 
             value={inputValue?.toString()}
-            id='amount'
-            name='amount'
-            color='#fff'
-            min='0'
-            inputMode="decimal"
-            autoComplete="off"
-            autoCorrect="off"
-            type="Number"
-            pattern="^[0-9]*[.,]?[0-9]*$"
-            placeholder='0.0'
-            spellCheck="false"
-            />
-            <InputOVL 
-              height={'32px'} 
-              padding={'0 4px'}
-              >
-              OVL
-            </InputOVL>
-          </InputContainer>
+            onUserInput={handleTypeInput}
+            align={'left'}
+          />
+          <InputOVL 
+            height={'32px'} 
+            padding={'0 4px'}
+            >
+            OVL
+          </InputOVL>
+        </InputContainer>
           <BuildContainer
             mt={'16px'}
             >
