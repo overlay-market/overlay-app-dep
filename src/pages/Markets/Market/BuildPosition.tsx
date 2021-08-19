@@ -119,7 +119,7 @@ export const BuildPosition = () => {
   };
 
   return (
-    <MarketCard title={'Build'}>
+    <MarketCard title={'Build'} align={'left'}>
       <Column 
         as={'form'} 
         onSubmit={(e:any) => e.preventDefault()}
