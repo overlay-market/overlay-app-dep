@@ -66,6 +66,14 @@ export default function ConnectWalletModal() {
     }
   }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
 
+  // always reset to account view
+  useEffect(() => {
+    if (walletModalOpen) {
+      setPendingError(false)
+      setWalletView(WALLET_VIEWS.ACCOUNT)
+    }
+  }, [walletModalOpen])
+
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = ''
     Object.keys(SUPPORTED_WALLETS).map((key) => {
