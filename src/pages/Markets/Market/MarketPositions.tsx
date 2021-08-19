@@ -1,4 +1,4 @@
-import { MarketCard } from "../../components/Card/MarketCard";
+import { MarketCard } from "../../../components/Card/MarketCard";
 import {
   Table,
   TableBody,
