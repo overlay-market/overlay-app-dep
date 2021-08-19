@@ -25,7 +25,7 @@ const StyledPollingNumber = styled(TEXT.Small)<{ breathe: boolean; hovering: boo
   }
 `
 
-const StyledPollingDot = styled.div`
+const StyledPollingDot = styled.div<{color?: string}>`
   width: 8px;
   height: 8px;
   min-height: 8px;
@@ -33,7 +33,7 @@ const StyledPollingDot = styled.div`
   margin-left: 0.5rem;
   border-radius: 50%;
   position: relative;
-  background-color: ${({ theme }) => theme.green1};
+  background-color: ${({ theme, color }) => (color ? color : theme.green1)};
 `
 
 const rotate360 = keyframes`
@@ -64,7 +64,7 @@ const Spinner = styled.div`
 `
 
 export default function CurrentBlock() {
-  const { chainId } = useActiveWeb3React()
+  const { chainId, account } = useActiveWeb3React()
 
   const blockNumber = useBlockNumber()
 
@@ -93,12 +93,18 @@ export default function CurrentBlock() {
     <ExternalLink
       href={chainId && blockNumber ? getExplorerLink(chainId, blockNumber.toString(), ExplorerDataType.BLOCK) : ''}
     >
+      {account ? (
       <StyledPolling onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
         <StyledPollingNumber breathe={isMounting} hovering={isHover}>
           {blockNumber}
         </StyledPollingNumber>
         <StyledPollingDot>{isMounting && <Spinner />}</StyledPollingDot>
       </StyledPolling>
+      ):(
+        <StyledPolling>
+          <StyledPollingDot color={'yellow'} />
+        </StyledPolling>
+      )}
     </ExternalLink>
   )
 }
