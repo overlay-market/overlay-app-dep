@@ -25,12 +25,12 @@ export const LightGreyButton = styled(BaseButton)<{ background?: string }>`
   font-size: 14px;
 `
 
-export const TransparentUnderlineButton = styled(BaseButton)`
+export const TransparentUnderlineButton = styled(BaseButton)<{width?: string}>`
   background: transparent;
   text-decoration: underline;
   color: ${({theme}) => theme.white};
   padding: 0 8px;
-  width: auto;
+  width: ${({width}) => (width ? width : 'auto')};
   font-size: 12px;
 `
 
@@ -47,7 +47,6 @@ const BuildButton = styled(BaseButton)`
   font-weight: 700;
   color: #F2F2F2;
   padding: 8px;
-  width: 120px;
 `
 
 export const TransparentDarkGreyButton = styled(BuildButton)`
@@ -58,4 +57,3 @@ export const TransparentDarkGreyButton = styled(BuildButton)`
 export const ActiveBlueButton = styled(BuildButton)`
   background: ${({theme}) => theme.blue3};
 `
-

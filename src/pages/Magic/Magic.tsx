@@ -6,7 +6,7 @@ import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { Row } from '../../components/Row/Row';
 import { Label } from '@rebass/forms';
 import { TEXT } from '../../theme/theme';
-import { TransparentUnderlineButton } from '../../components/Button/Button';
+import { TransparentUnderlineButton, TransparentDarkGreyButton } from '../../components/Button/Button';
 
 const Container = styled.div`
   display: flex;
@@ -20,6 +20,11 @@ const MagicDetail = styled.div`
   flex-direction: row;
   width: 100%;
   margin-bottom: 24px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const InputContainer = styled(Row)`
@@ -104,6 +109,14 @@ const Magic = ({
             margin={'0 auto 0 0'}
             />
         </MagicDetail>
+        <ButtonContainer>
+          <TEXT.Small textAlign={'right'} ml={'auto'} color={'white'}>
+              Fee: 0.0%
+          </TEXT.Small>
+          <TransparentDarkGreyButton ml={'auto'} mt={'4px'} width={'100%'}>
+                Make some Magic
+          </TransparentDarkGreyButton>
+        </ButtonContainer>
       </MarketCard>
     </Container>
   )

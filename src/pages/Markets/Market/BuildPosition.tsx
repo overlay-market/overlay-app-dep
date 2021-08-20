@@ -193,7 +193,7 @@ export const BuildPosition = () => {
                 Build
               </ActiveBlueButton>
             ):(
-              <TransparentDarkGreyButton ml={'auto'} mt={'4px'}>
+              <TransparentDarkGreyButton ml={'auto'} mt={'4px'} width={'120px'}>
                 Build
               </TransparentDarkGreyButton>
             )}

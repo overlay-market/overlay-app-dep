@@ -12,7 +12,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
 import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
 import { Trans } from '@lingui/macro';
-
+import { InfoTip } from '../../components/InfoTip/InfoTip';
 
 export const StyledContainer = styled.div`
   max-width: 900px;
@@ -124,6 +124,13 @@ const Markets = () => {
                 <Trans>
                   Positions
                 </Trans>
+
+                <InfoTip tipFor={'Positions'}>
+                  <div>
+                    hello there
+                  </div>
+                </InfoTip>
+                
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
