@@ -5,6 +5,7 @@ import { Row } from "../../../components/Row/Row";
 import { ContractAddresses } from '../../../constants/addresses';
 import { BuildPosition } from './BuildPosition';
 import { MarketPositions } from './MarketPositions';
+import { InfoTip } from '../../../components/InfoTip/InfoTip';
 
 const Container = styled.div`
   display: flex;
@@ -82,7 +83,14 @@ export const MarketHeader = ({
       </BannerItem>
 
       <BannerItem>
-        <Title> Funding rate: </Title>
+        <Title> 
+          Funding rate: 
+          <InfoTip tipFor={'Positions'}>
+              <div>
+                ultra meow
+              </div>
+          </InfoTip>
+        </Title>
         <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
       </BannerItem>
     </BannerContainer>

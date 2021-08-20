@@ -66,15 +66,15 @@ export const StyledTableHeaderRow = styled(TableRow)`
   cursor: default;
 `;
 
-function createData(market: string, price: number, updatePeriod: string, oiLong: string, oiShort: string, positions: string, marketId: string) {
-  return {market, price, updatePeriod, oiLong, oiShort, positions, marketId};
+function createData(market: string, price: number, oiLong: string, oiShort: string, positions: string, marketId: string) {
+  return {market, price, oiLong, oiShort, positions, marketId};
 }
 
 // replace with fetched data
 const mockData = [
-  createData("ETH/DAI", 2815.40, "7.4h; 0.9h", "500/1000", "15/1000", "", "1"),
-  createData("OVL/DAI", 13.81, "7.4h; 0.9h", "1000/1000", "0/1000", "", "2"),
-  createData("OVL/ETH", 0.0100, "7.4h; 0.9h", "230/1000", "423/1000", "", "3"),
+  createData("ETH/DAI", 2815.40, "500/1000", "15/1000", "", "1"),
+  createData("OVL/DAI", 13.81, "1000/1000", "0/1000", "", "2"),
+  createData("OVL/ETH", 0.0100, "230/1000", "423/1000", "", "3"),
 ];
 
 const Markets = () => {
@@ -99,15 +99,16 @@ const Markets = () => {
                 <Trans>
                   Market
                 </Trans>
+
+                <InfoTip tipFor={'Positions'}>
+                  <div>
+                    mega meow
+                  </div>
+                </InfoTip>
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans>
                   Price
-                </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
-                <Trans>
-                  Update Period
                 </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
@@ -127,10 +128,9 @@ const Markets = () => {
 
                 <InfoTip tipFor={'Positions'}>
                   <div>
-                    hello there
+                    meow meow
                   </div>
                 </InfoTip>
-                
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
@@ -144,7 +144,6 @@ const Markets = () => {
                     {row.market}
                   </StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
-                  <StyledTableCellThin align="left">{row.updatePeriod}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.oiLong}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.oiShort}</StyledTableCellThin>
                   <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
