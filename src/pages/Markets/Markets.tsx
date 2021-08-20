@@ -100,7 +100,7 @@ const Markets = () => {
                   Market
                 </Trans>
 
-                <InfoTip tipFor={'Positions'}>
+                <InfoTip tipFor={'Market'}>
                   <div>
                     mega meow
                   </div>

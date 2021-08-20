@@ -49,6 +49,7 @@ export const InfoTip = ({
       ):(
         <>
           <IconWrapper 
+              data-for={desktopDataTip}
               data-tip={desktopDataTip}
               >
               <Info height={12} width={12}/>
@@ -59,6 +60,7 @@ export const InfoTip = ({
               type="dark" 
               effect="solid"
               textColor={color}
+              id={desktopDataTip}
               >
                 { children }
           </ReactTooltip>
