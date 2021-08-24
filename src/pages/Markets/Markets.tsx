@@ -84,7 +84,7 @@ const Markets = () => {
   let history = useHistory();
 
   function redirectToMarket(marketId: string) {
-    history.push(`/market/${marketId}`);
+    history.push(`/markets/${marketId}`);
   };
 
   console.log('markets: ', markets);

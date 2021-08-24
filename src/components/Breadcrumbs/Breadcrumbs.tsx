@@ -1,32 +1,20 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
+import useBreadcrumbs from 'use-react-router-breadcrumbs';
+import routesConfig from '../../routes/routesConfig';
 
-interface BreadcrumbsProps {
-  crumbs: any
-}
-
-export const Breadcrumbs = ({ crumbs }: BreadcrumbsProps ) => {
-  // Don't render a single breadcrumb.
-  if (crumbs.length <= 1) {
-    return null;
-  }
+export const Breadcrumbs = () => {
+  const breadcrumbs = useBreadcrumbs(routesConfig);
 
   return (
-    <div>
-      {/* Link back to any previous steps of the breadcrumb. */}
-      {crumbs.map(({ name, path } : { name:any, path:any} , key:any) =>
-        key + 1 === crumbs.length ? (
-          <span key={key} className="bold">
-            {name}
-          </span>
-        ) : (
-          <Link key={key} to={path}>
-            {name}
-          </Link>
-        )
-      )}
-    </div>
+    <>
+      {breadcrumbs.map(({
+        match,
+        breadcrumb
+      }) => (
+        <span key={match.url}>
+          <NavLink to={match.url}>{breadcrumb}</NavLink>
+        </span>
+      ))}
+    </>
   );
 };
-
-// export default Breadcrumbs;
