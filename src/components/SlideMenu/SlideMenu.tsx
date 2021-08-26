@@ -23,11 +23,24 @@ const StyledMenu = styled.nav<{open: boolean}>`
   overflow: hidden;
 `;
 
-const StyledLink = styled(NavLink)`
+const StyledInternalLink = styled(NavLink)`
   color: ${({ theme }) => theme.text1};
   font-size: 14px;
   text-align: left;
   text-decoration: none;
+  font-weight: 700;
+  margin: 12px 0;
+`;
+
+const StyledExternalLink = styled.a.attrs(props => ({
+  target: props.target || '_blank',
+  rel: props.rel || 'noopener noreferrer',
+  href: props.href
+}))`
+  font-size: 14px;
+  text-align: left;
+  text-decoration: none;
+  color: white;
   font-weight: 700;
   margin: 12px 0;
 `;
@@ -53,18 +66,21 @@ const SlideMenu = ({
 
   return (
     <StyledMenu open={open} aria-hidden={!isHidden} {...props}>
-      <StyledLink tabIndex={tabIndex} to={'/markets'}>
+      <StyledInternalLink tabIndex={tabIndex} to={'/markets'}>
         Markets
-      </StyledLink>
-      <StyledLink tabIndex={tabIndex} to={'/positions'}>
+      </StyledInternalLink>
+      <StyledInternalLink tabIndex={tabIndex} to={'/positions'}>
         Positions
-      </StyledLink>
-      <StyledLink tabIndex={tabIndex} to={'/magic'}>
+      </StyledInternalLink>
+      <StyledInternalLink tabIndex={tabIndex} to={'/magic'}>
         Magic
-      </StyledLink>
+      </StyledInternalLink>
 
       <Separator />
-
+      
+      <StyledExternalLink href="https://overlay.market">
+        Risks
+      </StyledExternalLink>
       <Accordion title="Language">
         {SUPPORTED_LOCALES.map((locale) => (
            <AccordionSelection>
