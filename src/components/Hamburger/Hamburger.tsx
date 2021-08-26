@@ -10,20 +10,22 @@ export const StyledBurger = styled.button<{open: boolean}>`
   flex-direction: column;
   justify-content: space-around;
   width: 2rem;
-  height: 2rem;
+  height: auto;
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
   z-index: 10;
+
   span {
-    width: 2rem;
-    height: 0.25rem;
+    width: 16px;
+    height: 2px;
     background: ${({ theme, open }) => open ? theme.white: theme.white};
     border-radius: 10px;
     transition: all 0.3s linear;
     position: relative;
-    transform-origin: 1px;
+    transform-origin: 0px;
+    margin: 2px 0;
     :first-child {
       transform: ${({ open }) => open ? 'rotate(45deg)' : 'rotate(0)'};
     }
