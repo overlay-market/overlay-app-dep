@@ -1,23 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
 import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
 import styled from 'styled-components/macro';
 import { Row } from '../Row/Row';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MenuButton } from '../Button/Button';
 import { Play, LogOut } from 'react-feather';
-import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../More/More';
+import { StyledPaper, StyledMenuList, StyledMenuItem } from '../More/More';
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { Fade } from '@material-ui/core';
 import { useWalletModalToggle, useModalOpen } from '../../state/application/hooks';
 import { ApplicationModal } from '../../state/application/actions';
-
+import { Icon } from '../Icon/Icon';
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
@@ -178,11 +174,9 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         padding={'8px 16px 8px 12px'}
                         onClick={disconnectWallet}
                         >
-                        <IconContainer 
-                          m={'auto 3px'}
-                          >
+                        <Icon margin={'auto 3px'} size={13}>
                           <LogOut size={13} />
-                        </IconContainer>
+                        </Icon>
                         <TEXT.Menu m={'auto'} fontSize={14}>
                           Disconnect wallet
                         </TEXT.Menu>

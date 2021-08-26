@@ -19,11 +19,7 @@ import { TEXT } from '../../theme/theme';
 import { Row } from '../Row/Row';
 import { Fade } from '@material-ui/core';
 import { Trans } from '@lingui/macro';
-
-export const IconContainer = styled(Row)`
-  width: auto;
-  min-width: 16px;
-`;
+import { Icon } from '../Icon/Icon';
 
 export const StyledButton = styled(Button)`
   width: auto;
@@ -177,9 +173,9 @@ export default function More() {
                     {showLanguage ? (
                       <>
                         <StyledMenuHeaderItem disableRipple onClick={handleLanguageClose}>
-                            <IconContainer>
+                            <Icon margin={'0 3px 0 0'} size={14}>
                               <ChevronLeft size={14}/> 
-                            </IconContainer>
+                            </Icon>
                                 Menu
                         </StyledMenuHeaderItem>
                         {SUPPORTED_LOCALES.map((locale) => (
@@ -199,9 +195,9 @@ export default function More() {
                             minWidth={100} 
                             href="https://overlay.market"
                             >
-                            <IconContainer mr={'3px'}>
+                            <Icon margin={'0 3px 0 0'} size={14}>
                               <AlertCircle size={14}/> 
-                            </IconContainer>
+                            </Icon>
                               Risks
                           </MenuLink>
                         </StyledMenuItem>
@@ -214,9 +210,9 @@ export default function More() {
                               minWidth={100} 
                               href=""
                               >
-                            <IconContainer mr={'3px'}>
-                              <Globe size={14}/> 
-                            </IconContainer>
+                            <Icon margin={'0 3px 0 0'} size={14}>
+                              <Globe size={14} /> 
+                            </Icon>
                               Language
                           </MenuLink>
                         </StyledMenuItem>

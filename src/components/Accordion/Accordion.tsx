@@ -1,5 +1,6 @@
 import { useState, ReactNode } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
+import { Icon } from '../Icon/Icon';
 import styled from 'styled-components';
 
 const AccordionWrapper = styled.div`
@@ -10,10 +11,6 @@ const Title = styled.div`
   font-size: 14px;
   font-weight: 700;
   margin: 12px 0;
-`;
-
-const IconWrapper = styled.div`
-  margin: auto 0 auto auto;
 `;
 
 const Clickable = styled.div`
@@ -47,13 +44,13 @@ export const Accordion = ({
     <AccordionWrapper>
       <Clickable onClick={() => setOpen(!isOpen)}>
         <Title> {title} </Title>
-        <IconWrapper> 
+        <Icon size={16} margin={'auto 0 auto auto'}> 
           { isOpen ? (
-            <ChevronUp />
+            <ChevronUp height={16} width={16}/>
           ):(
-            <ChevronDown />
+            <ChevronDown height={16} width={16}/>
           )}
-        </IconWrapper>
+        </Icon>
       </Clickable>
       <Content isOpen={isOpen}>
         {children}
