@@ -111,7 +111,6 @@ export default function Header() {
          <SlideMenu open={open} />
       </AccountContainer>
 
-
     </HeaderContainer>
   );
 };

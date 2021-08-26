@@ -76,7 +76,7 @@ export const InternalMenuItem = styled(Link)`
   padding: 8px 16px 8px 12px;
 `;
 
-function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; active: boolean; key: string}) {
+export function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; active: boolean; key: string}) {
   const { to } = useLocationLinkProps(locale);
 
   if (!to) return null;
