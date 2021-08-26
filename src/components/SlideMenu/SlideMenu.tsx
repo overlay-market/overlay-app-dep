@@ -11,15 +11,14 @@ const StyledMenu = styled.nav<{open: boolean}>`
   display: flex;
   flex-direction: column;
   background: #2F2F2F;
-  transform: ${({ open }) => open ? 'translateX(0)' : 'translateX(100%)'};
   height: 100vh;
   text-align: left;
-  padding: 2rem;
-  min-width: 300px;
+  padding: ${({ open }) => ( open ? '2rem' : '2rem 0')};
+  width: ${({ open }) => ( open ? '300px' : '0px')};
   position: absolute;
   top: 0;
   right: 0;
-  transition: transform 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
   overflow: hidden;
 `;
 

@@ -23,6 +23,7 @@ export const HeaderContainer = styled.div`
   max-width: 900px;
   margin: auto;
   padding-top: 30px;
+  overflow: hidden;
 `
 
 export const LogoContainer = styled.div`
