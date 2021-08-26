@@ -6,6 +6,7 @@ import { ContractAddresses } from '../../../constants/addresses';
 import { BuildPosition } from './BuildPosition';
 import { MarketPositions } from './MarketPositions';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
+import { Breadcrumbs } from '../../../components/Breadcrumbs/Breadcrumbs';
 
 const Container = styled.div`
   display: flex;
@@ -105,6 +106,7 @@ export function Market(
 
   return (
     <>
+    <Breadcrumbs />
     <MarketHeader
       marketId={marketId}
       marketPrice={'$2241.25'}

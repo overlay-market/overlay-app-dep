@@ -9,7 +9,6 @@ import { Market } from './Markets/Market/Market';
 import Positions from './Positions/Positions';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
-import { Breadcrumbs } from '../components/Breadcrumbs/Breadcrumbs';
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -22,7 +21,6 @@ const App = () => {
   return (
     <AppWrapper>
       <Header />
-      <Breadcrumbs />
       <Web3ReactManager>
         <Switch>
           <Route exact strict path="/" render={() => <Redirect to="/markets" />} />

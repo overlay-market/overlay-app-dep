@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Image } from 'rebass';
 import styled from 'styled-components/macro';
@@ -6,6 +7,8 @@ import { useDarkModeManager } from '../../state/user/hooks';
 import { useETHBalances } from '../../state/wallet/hooks';
 import { Row } from '../Row/Row';
 import { Trans } from '@lingui/macro';
+import Burger from '../Hamburger/Hamburger';
+import SlideMenu from '../SlideMenu/SlideMenu';
 import More from '../More/More';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
@@ -51,6 +54,8 @@ export const StyledLink = styled(NavLink).attrs({
 
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
+  const [open, setOpen] = useState(false);
+  const menuId = "main-menu";
 
   return (
     <HeaderContainer>
@@ -98,6 +103,9 @@ export default function Header() {
          <Web3Status/>
          <More/>
       </AccountContainer>
+
+      <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
+      <SlideMenu open={open} />
     </HeaderContainer>
   );
 };
