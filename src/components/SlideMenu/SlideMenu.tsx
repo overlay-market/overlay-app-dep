@@ -30,6 +30,7 @@ const StyledInternalLink = styled(NavLink)`
   text-decoration: none;
   font-weight: 700;
   margin: 12px 0;
+  border: none !important;
 `;
 
 const StyledExternalLink = styled.a.attrs(props => ({
