@@ -29,6 +29,11 @@ export const StyledButton = styled(Button)`
   width: auto;
   min-width: 0px !important;
   padding: 6px 0 !important;
+  display: none !important;
+
+  ${({ theme }) => theme.mediaWidth.minSmall`
+    display: inline-flex !important;
+  `};
 `;
 
 export const StyledMenuList = styled(MenuList)`

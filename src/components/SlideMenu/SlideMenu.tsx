@@ -14,6 +14,7 @@ export const StyledMenu = styled.nav<{open: boolean}>`
   top: 0;
   right: 0;
   transition: transform 0.3s ease-in-out;
+  overflow: hidden;
 
   a {
     font-size: 2rem;

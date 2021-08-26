@@ -46,10 +46,15 @@ export const StyledLink = styled(NavLink).attrs({
   font-weight: 700;
   text-decoration: none;
   margin: auto 16px;
+  display: none;
 
   &.${activeClassName} {
     color: ${({theme}) => theme.text4};
   }
+
+  ${({ theme }) => theme.mediaWidth.minSmall`
+    display: flex;
+  `};
 `
 
 export default function Header() {
@@ -102,10 +107,11 @@ export default function Header() {
       <AccountContainer>
          <Web3Status/>
          <More/>
+         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
+         <SlideMenu open={open} />
       </AccountContainer>
 
-      <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
-      <SlideMenu open={open} />
+
     </HeaderContainer>
   );
 };

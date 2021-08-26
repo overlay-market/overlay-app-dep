@@ -3,7 +3,7 @@ import { bool, func } from 'prop-types';
 import styled from 'styled-components';
 
 export const StyledBurger = styled.button<{open: boolean}>`
-  position: absolute;
+  position: block;
   top: 5%;
   right: 2rem;
   display: flex;
@@ -35,6 +35,10 @@ export const StyledBurger = styled.button<{open: boolean}>`
       transform: ${({ open }) => open ? 'rotate(-45deg)' : 'rotate(0)'};
     }
   }
+
+  ${({ theme }) => theme.mediaWidth.minSmall`
+    display: none;
+  `};
 `;
 
 const Burger = ({ 
