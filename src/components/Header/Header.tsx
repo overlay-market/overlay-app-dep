@@ -19,11 +19,16 @@ export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
   display: flex;
   flex-direction: row;
-  width: 100%;
+  width: auto;
   max-width: 900px;
   margin: auto;
-  padding-top: 30px;
+  padding: 30px 16px 0;
   overflow: hidden;
+
+  ${({ theme }) => theme.mediaWidth.minSmall`
+    width: 100%;
+    padding: 30px 0 0;
+  `};
 `
 
 export const LogoContainer = styled.div`
