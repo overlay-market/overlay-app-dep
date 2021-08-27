@@ -7,7 +7,8 @@ const AccordionWrapper = styled.div`
 
 `;
 
-const Title = styled.div`
+const Title = styled.div<{ fontFamily?: string }>`
+  font-family: ${({fontFamily}) => ( fontFamily ? fontFamily : 'default' )};
   font-size: 14px;
   font-weight: 700;
   margin: 12px 0;
@@ -33,17 +34,19 @@ export const AccordionSelection = styled.div`
 
 export const Accordion = ({ 
   title,
-  children
+  children,
+  fontFamily
 }:{
   title: string
-  children?: React.ReactNode
+  children?: React.ReactNode,
+  fontFamily?: string
 }) => {
   const [isOpen, setOpen] = useState(false);
 
   return(
     <AccordionWrapper>
       <Clickable onClick={() => setOpen(!isOpen)}>
-        <Title> {title} </Title>
+        <Title fontFamily={fontFamily}> {title} </Title>
         <Icon size={16} margin={'auto 0 auto auto'}> 
           { isOpen ? (
             <ChevronUp height={16} width={16}/>

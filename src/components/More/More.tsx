@@ -70,19 +70,30 @@ export const StyledPaper = styled(Paper)`
   border-radius: 8px !important;
 `;
 
-export const InternalMenuItem = styled(Link)`
+export const InternalMenuItem = styled(Link)<{ fontFamily?: string }>`
   text-decoration: none;
   color: ${({theme}) => theme.text1};
   padding: 8px 16px 8px 12px;
+  font-family: ${({fontFamily}) => ( fontFamily ? fontFamily : 'default' )};
 `;
 
-export function LanguageMenuItem({ locale, active, key }: { locale: SupportedLocale; active: boolean; key: string}) {
+export function LanguageMenuItem({ 
+  locale, 
+  active, 
+  key,
+  fontFamily,
+}:{ 
+  locale: SupportedLocale
+  active: boolean
+  key: string
+  fontFamily?: string
+}) {
   const { to } = useLocationLinkProps(locale);
 
   if (!to) return null;
 
   return (
-    <InternalMenuItem key={key} to={to}>
+    <InternalMenuItem key={key} to={to} fontFamily={fontFamily}>
       { active ? (
           <strong>
             <u>

@@ -5,21 +5,24 @@ import { Accordion, AccordionSelection } from '../Accordion/Accordion';
 import { LanguageMenuItem } from '../More/More';
 import { useActiveLocale } from '../../hooks/useActiveLocale';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
-import { useLocationLinkProps } from '../../hooks/useLocationLinkProps';
+import { useWindowDimensions } from '../../hooks/useWindowDimensions';
 
-const StyledMenu = styled.nav<{open: boolean}>`
+const StyledMenu = styled.nav<{open: boolean, height: number, width: number}>`
   display: flex;
   flex-direction: column;
-  background: #2F2F2F;
+  background: transparent;
   height: 100vh;
   text-align: left;
-  padding: ${({ open }) => ( open ? '2rem' : '2rem 0')};
-  width: ${({ open }) => ( open ? '300px' : '0px')};
+  backdrop-filter: blur(40px);
+  width: ${({ width }) => ( `${width}` )}px;
+  height: ${({ height }) => ( `${height}` )}px;
   position: absolute;
   top: 0;
   right: 0;
   transition: 0.3s ease-in-out;
   overflow: hidden;
+  opacity: ${({ open }) => ( open ? 1 : 0 )};
+  z-index: ${({ open }) => ( open ? 1 : -1 )};
 `;
 
 const StyledInternalLink = styled(NavLink)`
@@ -28,8 +31,9 @@ const StyledInternalLink = styled(NavLink)`
   text-align: left;
   text-decoration: none;
   font-weight: 700;
-  margin: 12px 0;
+  margin: 16px 0;
   border: none !important;
+  font-family: 'Press Start 2P', cursive;
 `;
 
 const StyledExternalLink = styled.a.attrs(props => ({
@@ -42,7 +46,8 @@ const StyledExternalLink = styled.a.attrs(props => ({
   text-decoration: none;
   color: white;
   font-weight: 700;
-  margin: 12px 0;
+  margin: 16px 0;
+  font-family: 'Press Start 2P', cursive;
 `;
 
 const Separator = styled.div`
@@ -50,7 +55,13 @@ const Separator = styled.div`
   height: 1px;
   width: 100%;
   background: white;
-  margin: 12px 0;
+  margin: 16px 0;
+`;
+
+const Content = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
 `;
 
 const SlideMenu = ({ 
@@ -61,33 +72,51 @@ const SlideMenu = ({
   props?: any
 }) => {
   const activeLocale = useActiveLocale();
+
   const isHidden = open ? true : false;
+
   const tabIndex = isHidden ? 0 : -1;
 
-  return (
-    <StyledMenu open={open} aria-hidden={!isHidden} {...props}>
-      <StyledInternalLink tabIndex={tabIndex} to={'/markets'}>
-        Markets
-      </StyledInternalLink>
-      <StyledInternalLink tabIndex={tabIndex} to={'/positions'}>
-        Positions
-      </StyledInternalLink>
-      <StyledInternalLink tabIndex={tabIndex} to={'/magic'}>
-        Magic
-      </StyledInternalLink>
+  const { height, width } = useWindowDimensions();
 
-      <Separator />
-      
-      <StyledExternalLink href="https://overlay.market">
-        Risks
-      </StyledExternalLink>
-      <Accordion title="Language">
-        {SUPPORTED_LOCALES.map((locale) => (
-           <AccordionSelection>
-             <LanguageMenuItem locale={locale} active={activeLocale === locale} key={locale} />
-           </AccordionSelection>
-        ))}
-      </Accordion>
+  return (
+    <StyledMenu 
+        open={open} 
+        aria-hidden={!isHidden} 
+        height={height}
+        width={width}
+        {...props}>
+      <Content>
+        <StyledInternalLink tabIndex={tabIndex} to={'/markets'}>
+          Markets
+        </StyledInternalLink>
+        <StyledInternalLink tabIndex={tabIndex} to={'/positions'}>
+          Positions
+        </StyledInternalLink>
+        <StyledInternalLink tabIndex={tabIndex} to={'/magic'}>
+          Magic
+        </StyledInternalLink>
+
+        <Separator />
+        
+        <StyledExternalLink href="https://overlay.market">
+          Risks
+        </StyledExternalLink>
+        <Accordion 
+            title={"Language"}
+            fontFamily={"'Press Start 2P', cursive"}
+            >
+          {SUPPORTED_LOCALES.map((locale) => (
+            <AccordionSelection>
+              <LanguageMenuItem 
+                  locale={locale} 
+                  active={activeLocale === locale} 
+                  key={locale}
+                  />
+            </AccordionSelection>
+          ))}
+        </Accordion>
+      </Content>
     </StyledMenu>
   )
 }
