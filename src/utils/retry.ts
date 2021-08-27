@@ -57,6 +57,7 @@ export function retry<T>(
         if (completed) {
           break
         }
+        //@ts-ignore
         if (n <= 0 || !error.isRetryableError) {
           reject(error)
           completed = true
