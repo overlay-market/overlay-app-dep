@@ -19,7 +19,6 @@ import { TEXT } from '../../theme/theme';
 import { Row } from '../Row/Row';
 import { Fade } from '@material-ui/core';
 import { Trans } from '@lingui/macro';
-import { Icon } from '../Icon/Icon';
 
 export const IconContainer = styled(Row)`
   width: auto;

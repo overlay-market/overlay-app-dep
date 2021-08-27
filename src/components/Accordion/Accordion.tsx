@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'react-feather';
 import { Icon } from '../Icon/Icon';
 import styled from 'styled-components';
@@ -36,7 +36,7 @@ export const Accordion = ({
   children
 }:{
   title: string
-  children: React.ReactNode
+  children?: React.ReactNode
 }) => {
   const [isOpen, setOpen] = useState(false);
 

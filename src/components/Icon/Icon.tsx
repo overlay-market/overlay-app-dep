@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import * as FeatherIcon from 'react-feather';
 
 const IconWrapper = styled.div<{ size: number, margin?: string}>`
   display: flex;
