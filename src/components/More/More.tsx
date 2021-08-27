@@ -21,6 +21,11 @@ import { Fade } from '@material-ui/core';
 import { Trans } from '@lingui/macro';
 import { Icon } from '../Icon/Icon';
 
+export const IconContainer = styled(Row)`
+  width: auto;
+  min-width: 16px;
+`;
+
 export const StyledButton = styled(Button)`
   width: auto;
   min-width: 0px !important;
@@ -173,9 +178,9 @@ export default function More() {
                     {showLanguage ? (
                       <>
                         <StyledMenuHeaderItem disableRipple onClick={handleLanguageClose}>
-                            <Icon margin={'0 3px 0 0'} size={14}>
+                            <IconContainer>
                               <ChevronLeft size={14}/> 
-                            </Icon>
+                            </IconContainer>
                                 Menu
                         </StyledMenuHeaderItem>
                         {SUPPORTED_LOCALES.map((locale) => (
@@ -195,9 +200,9 @@ export default function More() {
                             minWidth={100} 
                             href="https://overlay.market"
                             >
-                            <Icon margin={'0 3px 0 0'} size={14}>
+                            <IconContainer mr={'3px'}>
                               <AlertCircle size={14}/> 
-                            </Icon>
+                            </IconContainer>
                               Risks
                           </MenuLink>
                         </StyledMenuItem>
@@ -210,9 +215,9 @@ export default function More() {
                               minWidth={100} 
                               href=""
                               >
-                            <Icon margin={'0 3px 0 0'} size={14}>
-                              <Globe size={14} /> 
-                            </Icon>
+                            <IconContainer mr={'3px'}>
+                              <Globe size={14}/> 
+                            </IconContainer>
                               Language
                           </MenuLink>
                         </StyledMenuItem>
