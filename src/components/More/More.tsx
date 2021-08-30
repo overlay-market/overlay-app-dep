@@ -75,6 +75,12 @@ export const InternalMenuItem = styled(Link)<{ fontFamily?: string }>`
   color: ${({theme}) => theme.text1};
   padding: 8px 16px 8px 12px;
   font-family: ${({fontFamily}) => ( fontFamily ? fontFamily : 'default' )};
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 `;
 
 export function LanguageMenuItem({ 

@@ -15,6 +15,12 @@ export const StyledBurger = styled.button<{open: boolean}>`
   cursor: pointer;
   padding: 0;
   z-index: 10;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 
   span {
     width: 16px;
