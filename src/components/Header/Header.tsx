@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Image } from 'rebass';
 import styled from 'styled-components/macro';
-import { useActiveWeb3React } from '../../hooks/web3';
 import { useDarkModeManager } from '../../state/user/hooks';
-import { useETHBalances } from '../../state/wallet/hooks';
 import { Row } from '../Row/Row';
 import { Trans } from '@lingui/macro';
 import Burger from '../Hamburger/Hamburger';
@@ -22,7 +20,7 @@ export const HeaderContainer = styled.div`
   width: auto;
   max-width: 900px;
   margin: auto;
-  padding: 30px 16px 0;
+  padding: 24px 16px 24px;
   overflow: hidden;
 
   ${({ theme }) => theme.mediaWidth.minSmall`
@@ -65,7 +63,9 @@ export const StyledLink = styled(NavLink).attrs({
 
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
+
   const [open, setOpen] = useState(false);
+
   const menuId = "main-menu";
 
   return (
