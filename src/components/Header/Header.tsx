@@ -21,13 +21,14 @@ export const HeaderContainer = styled.div`
   flex-direction: row;
   width: auto;
   max-width: 900px;
-  margin: auto;
+  margin: auto auto 16px;
   padding: 30px 16px 0;
   overflow: hidden;
+  border-bottom: 2px solid #12B4FF;
 
   ${({ theme }) => theme.mediaWidth.minSmall`
     width: 100%;
-    padding: 30px 0 0;
+    padding: 32px 0 24px;
   `};
 `
 
@@ -120,4 +121,3 @@ export default function Header() {
     </HeaderContainer>
   );
 };
-

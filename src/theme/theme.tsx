@@ -90,7 +90,7 @@ export const TEXT = {
     return <TextWrapper fontWeight={600} fontSize={24} {...props} />
   },
   MediumHeader(props: TextProps) {
-    return <TextWrapper fontWeight={500} fontSize={20} {...props} />
+    return <TextWrapper fontSize={20} {...props} />
   },
   SubHeader(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />

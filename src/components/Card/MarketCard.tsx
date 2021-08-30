@@ -5,6 +5,8 @@ import styled from 'styled-components/macro';
 
 const Container = styled(Column)`
   padding: 24px 0 0;
+  max-width: 500px;
+  margin: auto;
 `;
 
 const Title = styled(TEXT.Body)<{align?: string}>`
