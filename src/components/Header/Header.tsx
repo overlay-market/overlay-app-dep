@@ -21,10 +21,9 @@ export const HeaderContainer = styled.div`
   flex-direction: row;
   width: auto;
   max-width: 900px;
-  margin: auto auto 16px;
+  margin: auto;
   padding: 30px 16px 0;
   overflow: hidden;
-  border-bottom: 2px solid #12B4FF;
 
   ${({ theme }) => theme.mediaWidth.minSmall`
     width: 100%;

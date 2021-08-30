@@ -14,7 +14,9 @@ const Container = styled.div`
   flex-direction: column;
   max-width: 900px;
   margin: 0 auto 16px;
-  position: relative
+  padding: 16px 0;
+  position: relative;
+  border-top: 2px solid #12B4FF;
 `;
 
 const BannerContainer = styled.div`
@@ -53,7 +55,7 @@ const DesktopHeader = styled.div`
   ${({ theme }) => theme.mediaWidth.minMedium`
     display: flex;
     width: 500px;
-    margin: 8px auto;
+    margin: 0 auto 16px;
   `};
 `;
 
@@ -77,7 +79,7 @@ export const MarketDetails = ({
 
   return (
     <BannerContainer>
-      <Breadcrumbs padding={'8px 0'} />
+      <Breadcrumbs padding={'16px 0'} />
 
       <BannerItem>
         <Title> 

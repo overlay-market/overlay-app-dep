@@ -17,7 +17,7 @@ import { InfoTip } from '../../components/InfoTip/InfoTip';
 export const StyledContainer = styled.div`
   max-width: 900px;
   margin: auto;
-  margin-top: 70px;
+  margin-top: 48px;
 `;
 
 export const StyledTableCell = styled(TableCell)`
