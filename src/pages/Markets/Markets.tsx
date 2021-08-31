@@ -31,16 +31,16 @@ export const StyledTable = styled(Table)`
 
 export const StyledTableCell = styled(TableCell)`
   font-size: 14px;
-  font-weight: 700 !important;
   color: ${({theme}) => theme.text1} !important;
 `;
 
 export const StyledHeaderCell = styled(StyledTableCell)`
   padding-bottom: 8px !important;
+  font-weight: 700 !important;
 `;
 
 export const StyledTableCellThin = styled(StyledTableCell)`
-  font-weight: 400 !important;
+  font-weight: 400;
 `;
 
 const activeClassName = 'INACTIVE';
@@ -65,13 +65,17 @@ export const StyledTableRow = styled(TableRow)`
   background: ${({theme}) => theme.bg1};
   height: 69px;
 
-  :hover { 
-    font-weight: 900 !important;
-    background: #262626 !important;
-  }
 
   ${({theme}) => theme.mediaWidth.minMedium`
     height: auto;
+
+    :hover { 
+      background: #262626 !important;
+
+      >* {
+        font-weight: 900 !important;
+      }
+    }
   `}
 `;
 
