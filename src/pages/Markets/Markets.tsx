@@ -19,6 +19,10 @@ export const StyledContainer = styled.div`
   margin: auto;
   margin-top: 48px;
   padding: 16px;
+
+  > div {
+    background: ${({ theme }) => (theme.bg1)} !important;
+  }
 `;
 
 export const StyledTable = styled(Table)`
@@ -59,11 +63,16 @@ export const StyledNavLink = styled(NavLink).attrs({
 export const StyledTableRow = styled(TableRow)`
   cursor: pointer;
   background: ${({theme}) => theme.bg1};
+  height: 69px;
 
   :hover { 
     font-weight: 900 !important;
     background: #262626 !important;
   }
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    height: auto;
+  `}
 `;
 
 export const StyledTableHeaderRow = styled(TableRow)`
