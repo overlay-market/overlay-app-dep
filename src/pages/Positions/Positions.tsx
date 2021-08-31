@@ -11,7 +11,8 @@ import {
   StyledTableCellThin, 
   StyledTableRow,
   StyledTableHeaderRow, 
-  StyledHeaderCell 
+  StyledHeaderCell,
+  StyledTable
 } from '../Markets/Markets';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { useWalletModalToggle } from "../../state/application/hooks";
@@ -57,7 +58,7 @@ const Positions = () => {
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
-        <Table>
+        <StyledTable>
           <StyledTableHeaderRow>
             {tableHeaders.map((header, column) => (
               <StyledHeaderCell>
@@ -65,7 +66,7 @@ const Positions = () => {
               </StyledHeaderCell>
             ))}
           </StyledTableHeaderRow>
-        </Table>
+        </StyledTable>
         <TableBody>
         </TableBody>
       </TableContainer>

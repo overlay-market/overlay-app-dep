@@ -21,6 +21,10 @@ export const StyledContainer = styled.div`
   padding: 16px;
 `;
 
+export const StyledTable = styled(Table)`
+  white-space: nowrap !important;
+`;
+
 export const StyledTableCell = styled(TableCell)`
   font-size: 14px;
   font-weight: 700 !important;
@@ -93,44 +97,32 @@ const Markets = () => {
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
-        <Table>
+        <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
-                <Trans>
-                  Market
-                </Trans>
-
+                <Trans> Market </Trans>
                 <InfoTip tipFor={'Market'}>
-                  <div>
-                    mega meow
-                  </div>
+                  <div> mega meow </div>
                 </InfoTip>
               </StyledHeaderCell>
-              <StyledHeaderCell>
-                <Trans>
-                  Price
-                </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
-                <Trans>
-                  OI Long
-                </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
-                <Trans>
-                  OI Short
-                </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
-                <Trans>
-                  Positions
-                </Trans>
 
+              <StyledHeaderCell>
+                <Trans> Price </Trans>
+              </StyledHeaderCell>
+              
+              <StyledHeaderCell>
+                <Trans> OI Long </Trans>
+              </StyledHeaderCell>
+
+              <StyledHeaderCell>
+                <Trans> OI Short </Trans>
+              </StyledHeaderCell>
+
+              <StyledHeaderCell>
+                <Trans> Positions </Trans>
                 <InfoTip tipFor={'Positions'}>
-                  <div>
-                    meow meow
-                  </div>
+                  <div> meow meow </div>
                 </InfoTip>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
@@ -151,7 +143,7 @@ const Markets = () => {
               </StyledTableRow>
             ))}
           </TableBody>
-        </Table>
+        </StyledTable>
       </TableContainer>
     </StyledContainer>
   )
