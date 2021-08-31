@@ -15,17 +15,18 @@ const Container = styled.div`
   max-width: 900px;
   margin: 0 auto 32px;
   padding: 16px;
-  position: relative;
+  position: static;
   border-top: 2px solid #12B4FF;
   z-index: 0;
 
   ${({ theme }) => theme.mediaWidth.minMedium`
     padding: 16px 0;
+    position: relative;
   `};
 `;
 
 const BannerContainer = styled.div`
-  position: relative; 
+  position: static; 
   display: flex;
   flex-direction: column;
   width: 100%;
