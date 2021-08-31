@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import { Image } from 'rebass';
-import styled from 'styled-components/macro';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { Row } from '../Row/Row';
 import { Trans } from '@lingui/macro';
 import Burger from '../Hamburger/Hamburger';
+import styled from 'styled-components/macro';
 import SlideMenu from '../SlideMenu/SlideMenu';
 import More from '../More/More';
 import Web3Status from '../Web3Status/Web3Status';
@@ -64,7 +64,8 @@ export const StyledLink = styled(NavLink).attrs({
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
 
-  
+  const history = useHistory();
+
   const [open, setOpen] = useState(false);
   
   const menuId = "main-menu";
@@ -77,9 +78,13 @@ export default function Header() {
     };
   }, [location])
 
+  const returnHome = () => {
+    history.push(`/markets`);
+  };
+
   return (
     <HeaderContainer>
-      <LogoContainer>
+      <LogoContainer onClick={returnHome}>
         {darkMode ? (
           <Image 
             src={LightOverlayLogo} 
