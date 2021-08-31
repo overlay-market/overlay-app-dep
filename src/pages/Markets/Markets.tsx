@@ -18,6 +18,7 @@ export const StyledContainer = styled.div`
   max-width: 900px;
   margin: auto;
   margin-top: 48px;
+  padding: 16px;
 `;
 
 export const StyledTableCell = styled(TableCell)`

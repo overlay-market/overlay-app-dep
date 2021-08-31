@@ -13,6 +13,7 @@ const Container = styled.div`
   flex-direction: column;
   max-width: 500px;
   margin: 0 auto 16px;
+  padding: 16px;
 `;
 
 const MagicDetail = styled.div`
