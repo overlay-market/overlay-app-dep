@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { NavLink, useLocation } from 'react-router-dom';
 import { Image } from 'rebass';
 import styled from 'styled-components/macro';
 import { useDarkModeManager } from '../../state/user/hooks';
@@ -64,9 +64,18 @@ export const StyledLink = styled(NavLink).attrs({
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
 
+  
   const [open, setOpen] = useState(false);
-
+  
   const menuId = "main-menu";
+  
+  let location = useLocation().pathname;
+
+  useEffect(() => {
+    if (open) {
+      setOpen((open) => false)
+    };
+  }, [location])
 
   return (
     <HeaderContainer>
