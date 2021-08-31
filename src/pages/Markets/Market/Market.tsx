@@ -17,6 +17,7 @@ const Container = styled.div`
   padding: 16px;
   position: relative;
   border-top: 2px solid #12B4FF;
+  z-index: 0;
 
   ${({ theme }) => theme.mediaWidth.minMedium`
     padding: 16px 0;

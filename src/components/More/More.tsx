@@ -41,6 +41,10 @@ export const StyledMenuList = styled(MenuList)`
   border-radius: 8px;
 `;
 
+export const StyledPopper = styled(Popper)`
+  z-index: 69 !important;
+`;
+
 const BaseMenuItem = styled(MenuItem).attrs<{disableRipple: boolean}>(({disableRipple}) => ({
   disableRipple: disableRipple ?? true
 }))`
@@ -182,7 +186,7 @@ export default function More() {
         >
           <MoreVertical color={'white'}/>
         </StyledButton>
-        <Popper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
+        <StyledPopper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Fade
               {...TransitionProps}
@@ -244,7 +248,7 @@ export default function More() {
               </StyledPaper>
             </Fade>
           )}
-        </Popper>
+        </StyledPopper>
       </div>
     </div>
   );

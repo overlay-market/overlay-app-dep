@@ -11,7 +11,7 @@ import { Row } from '../Row/Row';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MenuButton } from '../Button/Button';
 import { Play, LogOut } from 'react-feather';
-import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer } from '../More/More';
+import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper } from '../More/More';
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { Fade } from '@material-ui/core';
@@ -136,7 +136,7 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
               open={open}
               />
         </TriangleButton>
-        <Popper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
+        <StyledPopper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
           {({ TransitionProps, placement }) => (
             <Fade
               {...TransitionProps}
@@ -195,7 +195,7 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
               </StyledPaper>
             </Fade>
           )}
-        </Popper>
+        </StyledPopper>
       </div>
     </div>
   );
