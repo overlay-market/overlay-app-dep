@@ -20,7 +20,7 @@ export const HeaderContainer = styled.div`
   max-width: 900px;
   margin: auto;
   padding: 24px 16px 24px;
-  position: relative;
+  position: sticky;
   z-index: 420;
 
   ${({ theme }) => theme.mediaWidth.minSmall`
