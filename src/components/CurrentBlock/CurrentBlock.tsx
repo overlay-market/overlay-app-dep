@@ -15,6 +15,7 @@ const StyledPolling = styled.div`
   bottom: 0;
   padding: 1rem;
   color: ${({ theme }) => theme.green1};
+  z-index: 420;
 `
 
 const StyledPollingNumber = styled(TEXT.Small)<{ breathe: boolean; hovering: boolean }>`

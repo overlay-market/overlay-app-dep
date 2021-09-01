@@ -14,8 +14,8 @@ const StyledMenu = styled.nav<{open: boolean, height: number, width: number}>`
   height: 100vh;
   text-align: left;
   backdrop-filter: blur(40px);
-  width: ${({ width }) => ( `${width}` )}px;
-  height: ${({ height }) => ( `${height}` )}px;
+  width: ${({ width, open }) => ( open ? `${width}` : '0')}px;
+  height: ${({ height, open }) => ( `${height}` )}px;
   position: absolute;
   top: 0;
   right: 0;
