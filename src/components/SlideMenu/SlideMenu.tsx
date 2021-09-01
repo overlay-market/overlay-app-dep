@@ -14,7 +14,7 @@ const StyledMenu = styled.nav<{open: boolean, height: number, width: number}>`
   height: 100vh;
   text-align: left;
   backdrop-filter: blur(40px);
-  width: ${({ width, open }) => ( open ? `${width}` : '0')}px;
+  width: ${({ width, open }) => ( `${width}` )}px;
   height: ${({ height, open }) => ( `${height}` )}px;
   position: absolute;
   top: 0;
@@ -23,6 +23,7 @@ const StyledMenu = styled.nav<{open: boolean, height: number, width: number}>`
   overflow: hidden;
   opacity: ${({ open }) => ( open ? 1 : 0 )};
   z-index: ${({ open }) => ( open ? 1 : -1 )};
+  visibility: ${({ open }) => ( open ? 'default' : 'hidden' )};
 `;
 
 const StyledInternalLink = styled(NavLink)`
