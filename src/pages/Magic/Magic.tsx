@@ -21,6 +21,7 @@ const MagicWallpaper = styled.div`
   top: 0;
   bottom: 0;
   z-index: 0;
+  min-height: inherit;
 `;
 
 const Container = styled.div`

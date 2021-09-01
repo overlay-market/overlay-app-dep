@@ -128,9 +128,9 @@ export default function Header() {
          <Web3Status/>
          <More/>
          <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
-         <SlideMenu open={open} />
       </AccountContainer>
 
+      <SlideMenu open={open} />
     </HeaderContainer>
   );
 };
