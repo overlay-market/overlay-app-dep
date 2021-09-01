@@ -13,7 +13,6 @@ import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
 
 export const HeaderContainer = styled.div`
-  background-color: ${({theme}) => theme.bg1};
   color: ${({theme}) => theme.text1};
   display: flex;
   flex-direction: row;
@@ -21,7 +20,8 @@ export const HeaderContainer = styled.div`
   max-width: 900px;
   margin: auto;
   padding: 24px 16px 24px;
-  overflow: hidden;
+  position: relative;
+  z-index: 420;
 
   ${({ theme }) => theme.mediaWidth.minSmall`
     width: 100%;
@@ -63,11 +63,11 @@ export const StyledLink = styled(NavLink).attrs({
 
 export default function Header() {
   const [darkMode, toggleDarkMode] = useDarkModeManager();
+  
+  const [open, setOpen] = useState(false);
 
   const history = useHistory();
 
-  const [open, setOpen] = useState(false);
-  
   const menuId = "main-menu";
   
   let location = useLocation().pathname;

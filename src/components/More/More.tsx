@@ -71,7 +71,7 @@ export const StyledMenuHeaderItem = styled(BaseMenuItem)`
 `;
 
 export const StyledPaper = styled(Paper)`
-  border-radius: 8px !important;
+  border-radius: 10px !important;
 `;
 
 export const InternalMenuItem = styled(Link)<{ fontFamily?: string }>`

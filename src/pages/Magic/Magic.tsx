@@ -7,6 +7,21 @@ import { Row } from '../../components/Row/Row';
 import { Label } from '@rebass/forms';
 import { TEXT } from '../../theme/theme';
 import { TransparentUnderlineButton, TransparentDarkGreyButton } from '../../components/Button/Button';
+import MagicBackground from '../../assets/images/magic-background.png';
+
+const MagicWallpaper = styled.div`
+  background: url(${MagicBackground});
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 0;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -14,6 +29,8 @@ const Container = styled.div`
   max-width: 500px;
   margin: 0 auto 16px;
   padding: 16px;
+  position: relative;
+  z-index: 69;
 `;
 
 const MagicDetail = styled.div`
@@ -58,8 +75,10 @@ const Magic = ({
   const handleAmountInput = (e: any) => {
     setAmount(e.target.value);
   };
-
+  
   return (
+    <>
+    <MagicWallpaper />
     <Container>
       <MarketCard 
         title={'Make some Magic'}
@@ -119,7 +138,14 @@ const Magic = ({
           </TransparentDarkGreyButton>
         </ButtonContainer>
       </MarketCard>
+
+      <TEXT.Body m={'48px 0 16px'}>✨ETH</TEXT.Body>
+
+      <TEXT.Body>
+        magicETH allows you to Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+      </TEXT.Body>
     </Container>
+    </>
   )
 };
 

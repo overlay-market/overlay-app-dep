@@ -8,14 +8,16 @@ import {
   TableRow,
   Paper
 } from '@material-ui/core';
+import { 
+  StyledContainer, 
+  StyledTableCell, 
+  StyledTableCellThin, 
+  StyledTableRow,
+  StyledTableHeaderRow, 
+  StyledHeaderCell,
+  StyledTable
+} from '../Markets';
 import styled from 'styled-components/macro';
-
-export const StyledTableHeader = styled(TableCell)`
-  background: ${({theme}) => theme.bg1};
-  color: ${({theme}) => theme.text1} !important;
-  padding: 0 4px 4px !important;
-  font-weight: 600 !important;
-`
 
 export const StyledEmptyBody = styled(TableBody)`
   background-color: ${({theme}) => theme.bg1} !important;
@@ -37,16 +39,14 @@ export const MarketPositions = () => {
   return (
     <MarketCard title={'Positions'}>
       <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
+        <StyledTable>
+          <StyledTableHeaderRow>
               {PositionHeaders.map((header, index) => {
                 return (
-                  <StyledTableHeader>{header}</StyledTableHeader>
+                  <StyledHeaderCell>{header}</StyledHeaderCell>
                 )
               })}
-            </TableRow>
-          </TableHead>
+          </StyledTableHeaderRow>
           <StyledEmptyBody>
               <StyledEmptyRow></StyledEmptyRow>
               <StyledEmptyRow></StyledEmptyRow>
@@ -55,7 +55,7 @@ export const MarketPositions = () => {
               <StyledEmptyRow></StyledEmptyRow>
               <StyledEmptyRow></StyledEmptyRow>
           </StyledEmptyBody>
-        </Table>
+        </StyledTable>
       </TableContainer>
     </MarketCard>
   )

@@ -10,7 +10,7 @@ const Container = styled(Column)`
 `;
 
 const Title = styled(TEXT.Body)<{align?: string}>`
-  margin: 0 auto 4px 0 !important;
+  margin: 0 auto 8px 0 !important;
   font-weight: 700;
   text-align: ${({align}) => (align ? align : 'left')};
   width: 100%;
