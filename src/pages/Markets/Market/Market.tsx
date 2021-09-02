@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Row } from "../../../components/Row/Row";
-import { ContractAddresses } from '../../../constants/addresses';
+import { TOKEN_LABELS } from '../../../constants/tokens';
 import { BuildPosition } from './BuildPosition';
 import { MarketPositions } from './MarketPositions';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
@@ -89,12 +89,6 @@ const FlexWrap = styled.div`
     flex-direction: column;
   `};
 `;
-
-const TOKEN_LABELS: { [tokenId in ContractAddresses | number]: string } = {
-  [ContractAddresses.ETH_DAI]: 'ETH/DAI',
-  [ContractAddresses.OVL_DAI]: 'OVL/DAI',
-  [ContractAddresses.OVL_ETH]: 'OVL/ETH',
-}
 
 export const MarketDetails = ({
   marketId, 

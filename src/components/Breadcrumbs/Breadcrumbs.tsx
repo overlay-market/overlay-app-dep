@@ -42,7 +42,7 @@ export const Breadcrumbs = ({
           breadcrumb
           }, index) => (
             <Breadcrumb key={match.url}>
-              {index === breadcrumbs.length - 1 ? (
+              {index !== breadcrumbs.length - 1 ? (
                 <ActiveNavLink to={match.url}>
                   {breadcrumb}
                 </ActiveNavLink>
