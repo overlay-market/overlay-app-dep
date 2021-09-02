@@ -1,8 +1,7 @@
 let $body = <HTMLBodyElement>document.querySelector('body');
 let scrollPosition = 0;
 
-export const enable = () => {
-  console.log('this got hit');
+export const enableLock = () => {
   scrollPosition = window.pageYOffset;
   $body.style.overflow = 'hidden';
   $body.style.position = 'fixed';
@@ -10,8 +9,7 @@ export const enable = () => {
   $body.style.width = '100%';
 };
 
-export const disable = () => {
-  console.log('this got taken down');
+export const disableLock = () => {
   $body.style.removeProperty('overflow');
   $body.style.removeProperty('position');
   $body.style.removeProperty('top');

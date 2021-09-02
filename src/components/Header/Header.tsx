@@ -11,7 +11,7 @@ import More from '../More/More';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
-import { enable, disable } from '../../utils/scrollLock';
+import { enableLock, disableLock } from '../../utils/scrollLock';
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
@@ -83,9 +83,9 @@ export default function Header() {
   // disable scroll when mobile menu open
   useEffect(() => {
     if (open) {
-      enable();
+      enableLock();
     } else {
-      disable();
+      disableLock();
     }
   }, [open]);
 
