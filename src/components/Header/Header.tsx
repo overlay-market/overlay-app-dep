@@ -11,6 +11,7 @@ import More from '../More/More';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
+import { enable, disable } from '../../utils/scrollLock';
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
@@ -72,11 +73,21 @@ export default function Header() {
   
   let location = useLocation().pathname;
 
+  // close menu when at new route
   useEffect(() => {
     if (open) {
       setOpen((open) => false)
     };
   }, [location])
+
+  // disable scroll when mobile menu open
+  useEffect(() => {
+    if (open) {
+      enable();
+    } else {
+      disable();
+    }
+  }, [open]);
 
   const returnHome = () => {
     history.push(`/markets`);
