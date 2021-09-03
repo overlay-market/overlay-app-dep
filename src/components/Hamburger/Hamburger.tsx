@@ -23,14 +23,14 @@ export const StyledBurger = styled.button<{open: boolean}>`
   user-select: none;
 
   span {
-    width: 16px;
-    height: 2px;
+    width: ${({ open }) => ( open ? '17px' : '4px' )};
+    height: ${({ open }) => ( open ? '2px' : '4px' )};
     background: ${({ theme, open }) => open ? theme.white: theme.white};
     border-radius: 10px;
     transition: all 0.3s linear;
     position: relative;
     transform-origin: 0px;
-    margin: 2px 0;
+    margin: ${({ open }) => ( open ? '2px 0' : '1px 0' )};
     :first-child {
       transform: ${({ open }) => open ? 'rotate(45deg)' : 'rotate(0)'};
     }
