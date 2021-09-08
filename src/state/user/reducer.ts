@@ -32,19 +32,19 @@ export const initialState: UserState = {
 
 export default createReducer(initialState, (builder) =>
     builder
-    .addCase(updateVersion, (state) => {
-      state.lastUpdateVersionTimestamp = currentTimestamp()
-    })
-    .addCase(updateUserDarkMode, (state, action) => {
-      state.userDarkMode = action.payload.userDarkMode;
-      state.timestamp = currentTimestamp();
-    })
-    .addCase(updateMatchesDarkMode, (state, action) => {
-      state.matchesDarkMode = action.payload.matchesDarkMode;
-      state.timestamp = currentTimestamp();
-    })
-    .addCase(updateUserLocale, (state, action) => {
-      state.userLocale = action.payload.userLocale
-      state.timestamp = currentTimestamp();
-    })
+      .addCase(updateVersion, (state) => {
+        state.lastUpdateVersionTimestamp = currentTimestamp()
+      })
+      .addCase(updateUserDarkMode, (state, action) => {
+        state.userDarkMode = action.payload.userDarkMode;
+        state.timestamp = currentTimestamp();
+      })
+      .addCase(updateMatchesDarkMode, (state, action) => {
+        state.matchesDarkMode = action.payload.matchesDarkMode;
+        state.timestamp = currentTimestamp();
+      })
+      .addCase(updateUserLocale, (state, action) => {
+        state.userLocale = action.payload.userLocale
+        state.timestamp = currentTimestamp();
+      })
 );
