@@ -11,7 +11,7 @@ export interface PositionState {
   readonly inputCurrency: string | undefined
 };
 
-const initialState: PositionState = {
+export const initialState: PositionState = {
   inputValue: undefined,
   leverageValue: 1,
   positionSide: undefined,
