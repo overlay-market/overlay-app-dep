@@ -19,7 +19,7 @@ const Clickable = styled.div`
 `;
 
 const Content = styled.div<{ isOpen: boolean}>`
-  display: block;
+  display: ${({ isOpen }) => ( isOpen ? 'block' : 'none' )};
   overflow: hidden;
   transition: max-height 0.3s ease-in;
   max-height: ${({ isOpen }) => ( isOpen ? '100vh' : '0px' )};
