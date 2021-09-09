@@ -9,6 +9,7 @@ import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { Breadcrumbs } from '../../../components/Breadcrumbs/Breadcrumbs';
 import { TEXT } from '../../../theme/theme';
 import { Accordion } from '../../../components/Accordion/Accordion';
+import { Device } from '../../../components/Device/Device';
 
 const Container = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ const BannerContainer = styled.div`
     position: absolute;
     left: 0;
     top: 0;
+    width: auto;
   `};
 `;
 
@@ -51,15 +53,17 @@ const BannerItem = styled.div`
   `}; 
 `;
 
-const Title = styled.div`
+const Title = styled.span`
   color: white;
   font-size: 14px;
+  white-space: nowrap;
 `;
 
 const Content = styled.div<{color?: string}>`
   font-size: 20px;
   font-weight: 700;
   color: ${({theme, color}) => (color ? color : theme.text1)};
+  white-space: nowrap;
 `;
 
 const DesktopHeader = styled.div`
@@ -91,13 +95,6 @@ const FlexWrap = styled.div`
   `};
 `;
 
-const MobileDisplay = styled.div`
-
-  ${({ theme }) => theme.mediaWidth.minMedium`
-    display: none;
-  `}
-`;
-
 const MarketTitle = styled.div`
   font-size: 20px;
   text-shadow: 0 0 2px white;
@@ -117,8 +114,8 @@ export const MarketDetails = ({
 }) => {
   let marketName = TOKEN_LABELS[Number(marketId)];
 
-  let mobileMarketHeader = (
-    <>
+  const MobileMarketHeader = (
+      <>
         <MobileHeader>
             <MarketTitle> { marketName } </MarketTitle>
 
@@ -129,55 +126,65 @@ export const MarketDetails = ({
                 $2241.25 
             </TEXT.MediumHeader>
         </MobileHeader>
-    </>
+      </>
     );
 
+  const AdditionalDetails = () => {
+    return (
+      <FlexWrap>
+        <BannerItem>
+          <Title> 
+            OI {Math.sign(openInterest) === -1 ? ('SHORT') : ('LONG')}
+          </Title>
+          <Content> {openInterest}/1000 </Content>
+        </BannerItem>
+
+        <BannerItem>
+          <Title> 
+            Funding rate: 
+            <InfoTip tipFor={'Positions'}>
+                <div>
+                  ultra meow
+                </div>
+            </InfoTip>
+          </Title>
+          <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
+        </BannerItem>
+
+        <BannerItem>
+          <Title> 
+            Bid +/- 1%
+          </Title>
+          <Content> ~$2241.25 </Content>
+        </BannerItem>
+
+        <BannerItem>
+          <Title> 
+            Bid +/- 1%
+          </Title>
+          <Content> ~$2241.25 </Content>
+        </BannerItem>
+    </FlexWrap>
+    )
+  };
+  
   return (
     <BannerContainer>
       <Breadcrumbs padding={'16px 0'} />
 
-      <MobileDisplay>
+      <Device.OnlyMobile display={'block'}>
         <Accordion 
-          title={mobileMarketHeader}
+          title={MobileMarketHeader}
           inactiveColor={'#FFF'}
           activeColor={'#12B4FF'}
           >
-          <FlexWrap>
-            <BannerItem>
-              <Title> 
-                OI {Math.sign(openInterest) === -1 ? ('SHORT') : ('LONG')}
-              </Title>
-              <Content> {openInterest}/1000 </Content>
-            </BannerItem>
-
-            <BannerItem>
-              <Title> 
-                Funding rate: 
-                <InfoTip tipFor={'Positions'}>
-                    <div>
-                      ultra meow
-                    </div>
-                </InfoTip>
-              </Title>
-              <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
-            </BannerItem>
-
-            <BannerItem>
-              <Title> 
-                Bid +/- 1%
-              </Title>
-              <Content> ~$2241.25 </Content>
-            </BannerItem>
-
-            <BannerItem>
-              <Title> 
-                Bid +/- 1%
-              </Title>
-              <Content> ~$2241.25 </Content>
-            </BannerItem>
-          </FlexWrap>
+            <AdditionalDetails />
         </Accordion>
-      </MobileDisplay>
+      </Device.OnlyMobile>
+
+      <Device.OnlyDesktop display={'block'}>
+        <AdditionalDetails />
+      </Device.OnlyDesktop>
     </BannerContainer>
   )
 };
