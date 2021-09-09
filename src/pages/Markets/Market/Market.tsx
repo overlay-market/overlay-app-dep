@@ -8,6 +8,7 @@ import { MarketPositions } from './MarketPositions';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { Breadcrumbs } from '../../../components/Breadcrumbs/Breadcrumbs';
 import { TEXT } from '../../../theme/theme';
+import { Accordion } from '../../../components/Accordion/Accordion';
 
 const Container = styled.div`
   display: flex;
@@ -42,7 +43,7 @@ const BannerItem = styled.div`
   display: flex;
   flex-direction: column;
   text-align: left;
-  margin: 16px 0;
+  margin: 0 0 24px; 
   width: 50%;
 
   ${({ theme }) => theme.mediaWidth.minMedium`
@@ -101,61 +102,71 @@ export const MarketDetails = ({
 }) => {
   let marketName = TOKEN_LABELS[Number(marketId)];
 
+  let mobileMarketHeader = (
+    <>
+        <MobileHeader>
+            <TEXT.MediumHeader 
+                fontWeight={700} 
+                color={'white'}
+                mr={'8px'}
+                > 
+                { marketName } 
+            </TEXT.MediumHeader>
+
+            <TEXT.MediumHeader 
+                fontWeight={300} 
+                color={'white'}
+                > 
+                $2241.25 
+            </TEXT.MediumHeader>
+          </MobileHeader>
+    </>
+    );
+
   return (
     <BannerContainer>
       <Breadcrumbs padding={'16px 0'} />
 
-      <MobileHeader>
-          <TEXT.MediumHeader 
-              fontWeight={700} 
-              color={'white'}
-              mr={'8px'}
-              > 
-              { marketName } 
-          </TEXT.MediumHeader>
+      <Accordion 
+        title={mobileMarketHeader}
+        inactiveColor={'#FFF'}
+        activeColor={'#12B4FF'}
+        >
+        <FlexWrap>
+          <BannerItem>
+            <Title> 
+              OI {Math.sign(openInterest) === -1 ? ('SHORT') : ('LONG')}
+            </Title>
+            <Content> {openInterest}/1000 </Content>
+          </BannerItem>
 
-          <TEXT.MediumHeader 
-              fontWeight={300} 
-              color={'white'}
-              > 
-              $2241.25 
-          </TEXT.MediumHeader>
-        </MobileHeader>
+          <BannerItem>
+            <Title> 
+              Funding rate: 
+              <InfoTip tipFor={'Positions'}>
+                  <div>
+                    ultra meow
+                  </div>
+              </InfoTip>
+            </Title>
+            <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
+          </BannerItem>
 
-      <FlexWrap>
-        <BannerItem>
-          <Title> 
-            OI {Math.sign(openInterest) === -1 ? ('SHORT') : ('LONG')}
-          </Title>
-          <Content> {openInterest}/1000 </Content>
-        </BannerItem>
+          <BannerItem>
+            <Title> 
+              Bid +/- 1%
+            </Title>
+            <Content> ~$2241.25 </Content>
+          </BannerItem>
 
-        <BannerItem>
-          <Title> 
-            Funding rate: 
-            <InfoTip tipFor={'Positions'}>
-                <div>
-                  ultra meow
-                </div>
-            </InfoTip>
-          </Title>
-          <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
-        </BannerItem>
-
-        <BannerItem>
-          <Title> 
-            Bid +/- 1%
-          </Title>
-          <Content> ~$2241.25 </Content>
-        </BannerItem>
-
-        <BannerItem>
-          <Title> 
-            Bid +/- 1%
-          </Title>
-          <Content> ~$2241.25 </Content>
-        </BannerItem>
-      </FlexWrap>
+          <BannerItem>
+            <Title> 
+              Bid +/- 1%
+            </Title>
+            <Content> ~$2241.25 </Content>
+          </BannerItem>
+        </FlexWrap>
+      </Accordion>
     </BannerContainer>
   )
 };

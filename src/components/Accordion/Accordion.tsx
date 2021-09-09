@@ -4,7 +4,6 @@ import { Icon } from '../Icon/Icon';
 import styled from 'styled-components';
 
 const AccordionWrapper = styled.div`
-
 `;
 
 const Title = styled.div<{ fontFamily?: string }>`
@@ -16,16 +15,17 @@ const Title = styled.div<{ fontFamily?: string }>`
 
 const Clickable = styled.div`
   display: flex;
-  width: 100%
+  width: 100%;
 `;
 
 const Content = styled.div<{ isOpen: boolean}>`
+  display: block;
   overflow: hidden;
-  transition: ${({isOpen}) => (isOpen ? 'max-height 0.35s cubic-bezier(0, 1, 0, 1);' : 'max-height 0.3s cubic-bezier(1, 0, 1, 0);')};
-  height: ${({isOpen}) => (isOpen ? 'auto' : 0)};
-  max-height: 9999px;
+  transition: max-height 0.3s ease-in;
+  max-height: ${({ isOpen }) => ( isOpen ? '100vh' : '0px' )};
 `;
 
+// transition: ${({ isOpen }) => ( isOpen ? 'max-height 0.35s cubic-bezier(0, 1, 0, 1);' : 'max-height 0.3s cubic-bezier(1, 0, 1, 0);' )};
 export const AccordionSelection = styled.div`
   display: flex;
   font-size: 12px;
@@ -35,11 +35,15 @@ export const AccordionSelection = styled.div`
 export const Accordion = ({ 
   title,
   children,
-  fontFamily
+  fontFamily,
+  inactiveColor,
+  activeColor,
 }:{
-  title: string
-  children?: React.ReactNode,
+  title: string | React.ReactNode
+  children?: React.ReactNode
   fontFamily?: string
+  inactiveColor?: string
+  activeColor?: string
 }) => {
   const [isOpen, setOpen] = useState(false);
 
@@ -47,12 +51,16 @@ export const Accordion = ({
     <AccordionWrapper>
       <Clickable onClick={() => setOpen(!isOpen)}>
         <Title fontFamily={fontFamily}> {title} </Title>
-        <Icon size={16} margin={'auto 0 auto auto'}> 
-          { isOpen ? (
-            <ChevronUp height={16} width={16}/>
-          ):(
-            <ChevronDown height={16} width={16}/>
-          )}
+        <Icon 
+          size={16} 
+          margin={'auto 0 auto auto'} 
+          color={isOpen ? activeColor : inactiveColor}
+          > 
+            { isOpen ? (
+              <ChevronUp height={16} width={16}/>
+            ):(
+              <ChevronDown height={16} width={16}/>
+            )}
         </Icon>
       </Clickable>
       <Content isOpen={isOpen}>
