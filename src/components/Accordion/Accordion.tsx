@@ -19,13 +19,15 @@ const Clickable = styled.div`
 `;
 
 const Content = styled.div<{ isOpen: boolean}>`
-  display: ${({ isOpen }) => ( isOpen ? 'block' : 'none' )};
+  display: block;
   overflow: hidden;
   transition: max-height 0.3s ease-in;
-  max-height: ${({ isOpen }) => ( isOpen ? '100vh' : '0px' )};
+  max-height: ${({ isOpen }) => ( isOpen ? '100vh' : '0vh' )};
 `;
 
+// display: ${({ isOpen }) => ( isOpen ? 'block' : 'none' )};
 // transition: ${({ isOpen }) => ( isOpen ? 'max-height 0.35s cubic-bezier(0, 1, 0, 1);' : 'max-height 0.3s cubic-bezier(1, 0, 1, 0);' )};
+
 export const AccordionSelection = styled.div`
   display: flex;
   font-size: 12px;
@@ -55,12 +57,9 @@ export const Accordion = ({
           size={16} 
           margin={'auto 0 auto auto'} 
           color={isOpen ? activeColor : inactiveColor}
+          transform={isOpen ? 'rotate(180deg)' : ''}
           > 
-            { isOpen ? (
-              <ChevronUp height={16} width={16}/>
-            ):(
               <ChevronDown height={16} width={16}/>
-            )}
         </Icon>
       </Clickable>
       <Content isOpen={isOpen}>
