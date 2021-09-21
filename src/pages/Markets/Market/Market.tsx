@@ -15,7 +15,6 @@ const Container = styled.div`
   margin: 0 auto 32px;
   padding: 16px;
   position: static;
-  border-top: 2px solid #12B4FF;
   z-index: 0;
 
   ${({ theme }) => theme.mediaWidth.minMedium`
@@ -41,9 +40,7 @@ const MarketHeader = ({
       </TEXT.MediumHeader>
     </Card>
   )
-}
-
-
+};
 
 export function Market(
   { match: {params: { marketId }}

@@ -45,7 +45,7 @@ export const BuildButton = styled(LightGreyButton)`
   background: transparent;
   color: #71D2FF;
   margin-top: 24px;
-`
+`;
 
 export const InputContainer = styled(Row)`
   border-radius: 4px;
@@ -62,11 +62,96 @@ export const InputDescriptor = styled.div`
 
 export const AmountInput = styled(Input)`
   border-color: transparent !important;
-`
+`;
 
-export const BuildContainer = styled(Column)`
+export const Detail = styled(Row)`
+  margin: 12px 0;
+  width: 100%;
+  display: flex;
+`;
 
-`
+export const Title = styled.div`
+  font-size: 14px;
+  font-weight: 700;
+  color: #B9BABD;
+`;
+
+export const Content = styled.div<{ color?: string }>`
+  margin-left: auto;
+  font-size: 14px;
+  color: ${({ color }) => ( color ? color : '#B9BABD')};
+`;
+
+const AdditionalDetails = ({
+  fee,
+  slippage,
+  estLiquidationPrice,
+  bid,
+  ask,
+  expectedOi,
+  oiLong,
+  oiShort,
+  fundingRate
+}:{
+  fee?: string | number
+  slippage?: string | number
+  estLiquidationPrice?: string | number
+  bid?: string | number
+  ask?: string | number
+  expectedOi?: string | number
+  oiLong?: string | number
+  oiShort?: string | number
+  fundingRate?: string | number
+}) => {
+  return (
+    <Column mt={ '96px' }>
+      <Detail>
+        <Title> Fee </Title>
+        <Content> {fee}% </Content>
+      </Detail>
+
+      <Detail>
+        <Title> Slippage </Title>
+        <Content> {slippage}% </Content>
+      </Detail>
+
+      <Detail>
+        <Title> Est. Liquidation </Title>
+        <Content> ${estLiquidationPrice} </Content>
+      </Detail>
+
+      <Detail>
+        <Title> Bid </Title>
+        <Content> ~${bid} </Content>
+      </Detail>
+
+      <Detail>
+        <Title> Ask </Title>
+        <Content> ~${ask} </Content>
+      </Detail>
+
+      <Detail>
+        <Title> Expected OI </Title>
+        <Content> {expectedOi} OVL </Content>
+      </Detail>
+
+      <Detail>
+        <Title> OI Long </Title>
+        <Content> {oiLong} / 200000 </Content>
+      </Detail>
+
+      <Detail>
+        <Title> OI Short </Title>
+        <Content> {oiShort} / 2000000 </Content>
+      </Detail>
+
+      <Detail>
+        <Title> Funding rate </Title>
+        <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
+      </Detail>
+    </Column>
+  )
+}
 
 export const BuildPosition = () => {
   const { account, chainId } = useActiveWeb3React();
@@ -141,10 +226,7 @@ export const BuildPosition = () => {
 
   return (
     <MarketCard align={'left'}>
-      <Column 
-        as={'form'} 
-        onSubmit={(e:any) => e.preventDefault()}
-        >
+      <Column as={'form'} onSubmit={(e:any) => e.preventDefault()}>
         <Column>
           <LongPositionButton
             onClick={ handlePositionSideLong }
@@ -194,11 +276,23 @@ export const BuildPosition = () => {
             value={inputValue?.toString()}
             onUserInput={handleTypeInput}
             align={'right'}
-          />
+            />
         </InputContainer>
         <BuildButton>
           Build
         </BuildButton>
+
+        <AdditionalDetails 
+          fee={'0.0'}
+          slippage={'0'}
+          estLiquidationPrice={'0.00'}
+          bid={'2241.25'}
+          ask={'2241.25'}
+          expectedOi={'0'}
+          oiLong={199000}
+          oiShort={15000}
+          fundingRate={'-0.0026'}
+          />
       </Column>
     </MarketCard>
   )
