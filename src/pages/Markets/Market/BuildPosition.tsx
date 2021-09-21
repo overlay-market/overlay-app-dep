@@ -21,6 +21,7 @@ import { useApproveCallback } from '../../../hooks/useApproveCallback';
 import { useDerivedUserInputs } from '../../../state/position/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
+import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -78,8 +79,17 @@ export const Title = styled.div`
 
 export const Content = styled.div<{ color?: string }>`
   margin-left: auto;
+  flex-direction: row;
+  display: flex;
   font-size: 14px;
   color: ${({ color }) => ( color ? color : '#B9BABD')};
+`;
+
+export const OI = styled.div`
+  font-size: 14px;
+  text-align: right;
+  min-width: 130px;
+  color: #B9BABD;
 `;
 
 const AdditionalDetails = ({
@@ -99,8 +109,8 @@ const AdditionalDetails = ({
   bid?: string | number
   ask?: string | number
   expectedOi?: string | number
-  oiLong?: string | number
-  oiShort?: string | number
+  oiLong?: number | undefined
+  oiShort?: number | undefined
   fundingRate?: string | number
 }) => {
   return (
@@ -137,12 +147,28 @@ const AdditionalDetails = ({
 
       <Detail>
         <Title> OI Long </Title>
-        <Content> {oiLong} / 200000 </Content>
+        <ProgressBar
+          value={oiLong}
+          max={200000}
+          width={'75px'}
+          color={'#10DCB1'}
+          margin={'0 0 0 auto'}
+          />
+          
+        <OI> {oiLong} / 200000 </OI>
       </Detail>
 
       <Detail>
         <Title> OI Short </Title>
-        <Content> {oiShort} / 2000000 </Content>
+        <ProgressBar
+          value={oiShort}
+          max={200000}
+          width={'75px'}
+          color={'#DC1F4E'}
+          margin={'0 0 0 auto'}
+          />
+
+        <OI> {oiShort} / 200000 </OI>
       </Detail>
 
       <Detail>
@@ -289,7 +315,7 @@ export const BuildPosition = () => {
           bid={'2241.25'}
           ask={'2241.25'}
           expectedOi={'0'}
-          oiLong={199000}
+          oiLong={180000}
           oiShort={15000}
           fundingRate={'-0.0026'}
           />
