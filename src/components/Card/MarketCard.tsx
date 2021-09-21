@@ -1,4 +1,4 @@
-import { WhiteOutlineCard } from "../../components/Card/Card";
+import { Card } from "../../components/Card/Card";
 import { Column } from "../../components/Column/Column";
 import { TEXT } from "../../theme/theme";
 import styled from 'styled-components/macro';
@@ -22,16 +22,16 @@ export const MarketCard = ({
   children,
   align
 }:{
-  title: string
+  title?: string
   children: React.ReactNode
   align?: string
 }) => {
   return (
     <Container>
       <Title align={align}> {title} </Title>
-      <WhiteOutlineCard borderRadius={'4px'}>
+      <Card borderRadius={'4px'}>
         {children}
-      </WhiteOutlineCard>
+      </Card>
     </Container>
   )
 };

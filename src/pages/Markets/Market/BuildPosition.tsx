@@ -119,7 +119,7 @@ export const BuildPosition = () => {
   };
 
   return (
-    <MarketCard title={'Build'} align={'left'}>
+    <MarketCard align={'left'}>
       <Column 
         as={'form'} 
         onSubmit={(e:any) => e.preventDefault()}
@@ -189,11 +189,11 @@ export const BuildPosition = () => {
             </TEXT.Small>
             
             { approval && positionSide && inputValue ? (
-              <ActiveBlueButton ml={'auto'} mt={'4px'} onClick={attemptToApprove}>
+              <ActiveBlueButton ml={'auto'} mt={'4px'} onClick={attemptToApprove} width={'100%'}>
                 Build
               </ActiveBlueButton>
             ):(
-              <TransparentDarkGreyButton ml={'auto'} mt={'4px'} width={'120px'}>
+              <TransparentDarkGreyButton ml={'auto'} mt={'4px'} width={'100%'}>
                 Build
               </TransparentDarkGreyButton>
             )}
