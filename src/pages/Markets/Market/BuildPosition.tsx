@@ -22,21 +22,42 @@ import { useDerivedUserInputs } from '../../../state/position/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 
+export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
+  height: 48px;
+  padding: 16px;
+  margin: 4px 0;
+  background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
+  color: ${({ active }) => ( active ? '#F2F2F2' : '#10DCB1' )};
+`;
+
+export const ShortPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
+  height: 48px;
+  padding: 16px;
+  margin: 4px 0;
+  background: ${({ active }) => ( active ? '#FF648A' : 'transparent' )};
+  color: ${({ active }) => ( active ? '#F2F2F2' : '#FF648A' )};
+`;
+
+export const BuildButton = styled(LightGreyButton)`
+  height: 48px;
+  padding: 16px;
+  margin: 4px 0;
+  background: transparent;
+  color: #71D2FF;
+  margin-top: 24px;
+`
+
 export const InputContainer = styled(Row)`
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid ${({theme}) => theme.white};
 `;
 
-export const InputOVL = styled.div<{
-  height?: string
-  padding?: string
-}>`
-  background: #E0E0E0;
-  color: ${({theme}) => theme.text3};
-  height: ${({height}) => height};
-  line-height: ${({height}) => height};
-  padding: ${({padding}) => padding};
+export const InputDescriptor = styled.div`
+  background: transparent;
+  font-size: 16px;
+  color: #f2f2f2;
+  padding: 8px;
 `;
 
 export const AmountInput = styled(Input)`
@@ -124,28 +145,22 @@ export const BuildPosition = () => {
         as={'form'} 
         onSubmit={(e:any) => e.preventDefault()}
         >
-          <TEXT.Body margin={'16px auto 4px 0'}>
-              Side
-          </TEXT.Body>
-        <Row>
-          <LightGreyButton 
-            height={'32px'} 
-            padding={'8px'} 
-            mr={'2px'}
-            onClick={handlePositionSideLong}
-            background={positionSide === 'LONG' ? '#10DCB1' : undefined}
+        <Column>
+          <LongPositionButton
+            onClick={ handlePositionSideLong }
+            active={ positionSide === 'LONG' }
             >
               Long
-          </LightGreyButton>
-          <LightGreyButton 
-            height={'32px'} 
-            padding={'8px'}
-            onClick={handlePositionSideShort}
-            background={positionSide === 'SHORT' ? '#10DCB1' : undefined}
+          </LongPositionButton>
+
+          <ShortPositionButton
+            onClick={ handlePositionSideShort }
+            active={ positionSide === 'SHORT' }
             >
               Short
-          </LightGreyButton>
-        </Row>
+          </ShortPositionButton>
+        </Column>
+
         <LeverageSlider
           name={'leverage'}
           value={leverageValue}
@@ -154,7 +169,8 @@ export const BuildPosition = () => {
           max={5}
           onChange={handleLeverageInput}
           margin={'24px 0 0 0'}
-        />
+          />
+        
         <Label htmlFor='Amount' mt={'24px'}>
           <TEXT.Body margin={'0 auto 4px 0'} color={'white'}>
             Amount
@@ -171,33 +187,18 @@ export const BuildPosition = () => {
           </Row>
         </Label>
         <InputContainer>
+          <InputDescriptor>
+            OVL
+          </InputDescriptor>
           <NumericalInput 
             value={inputValue?.toString()}
             onUserInput={handleTypeInput}
-            align={'left'}
+            align={'right'}
           />
-          <InputOVL 
-            height={'32px'} 
-            padding={'0 4px'}
-            >
-            OVL
-          </InputOVL>
         </InputContainer>
-          <BuildContainer mt={'16px'}>
-            <TEXT.Small textAlign={'right'} ml={'auto'} color={'white'}>
-              Fee: 0.0%
-            </TEXT.Small>
-            
-            { approval && positionSide && inputValue ? (
-              <ActiveBlueButton ml={'auto'} mt={'4px'} onClick={attemptToApprove} width={'100%'}>
-                Build
-              </ActiveBlueButton>
-            ):(
-              <TransparentDarkGreyButton ml={'auto'} mt={'4px'} width={'100%'}>
-                Build
-              </TransparentDarkGreyButton>
-            )}
-          </BuildContainer>
+        <BuildButton>
+          Build
+        </BuildButton>
       </Column>
     </MarketCard>
   )

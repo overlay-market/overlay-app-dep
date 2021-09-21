@@ -6,15 +6,12 @@ import { Card } from '../../../components/Card/Card';
 import { TOKEN_LABELS } from '../../../constants/tokens';
 import { BuildPosition } from './BuildPosition';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
-import { Breadcrumbs } from '../../../components/Breadcrumbs/Breadcrumbs';
 import { TEXT } from '../../../theme/theme';
-import { Accordion } from '../../../components/Accordion/Accordion';
-import { Device } from '../../../components/Device/Device';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 900px;
+  max-width: 350px;
   margin: 0 auto 32px;
   padding: 16px;
   position: static;

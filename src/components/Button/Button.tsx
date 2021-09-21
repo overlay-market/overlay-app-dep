@@ -19,10 +19,13 @@ const BaseButton = styled(RebassButton)<
   -moz-osx-font-smoothing: grayscale;
 `
 
-export const LightGreyButton = styled(BaseButton)<{ background?: string }>`
-  background: ${({background}) => background ?? '#BDBDBD'};
-  color: ${({theme}) => theme.text3};
+export const LightGreyButton = styled(BaseButton)<{ background?: string; border?: string; color?: string }>`
+  background: ${({ background }) => background ?? '#BDBDBD'};
+  color: ${({ color }) => ( color ? color : 'white' )};
   font-size: 14px;
+  font-weight: 700;
+  border-radius: 8px;
+  border: ${({ border }) => ( border ? border : '1px solid #F2F2F2')};
 `
 
 export const TransparentUnderlineButton = styled(BaseButton)<{width?: string}>`

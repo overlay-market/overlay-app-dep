@@ -13,6 +13,12 @@ const Header = styled.div`
   color: ${({theme}) => theme.text1};
 `;
 
+const Value = styled.div`
+  font-size: 16px;
+  margin-left: auto;
+  color: ${({theme}) => theme.text1};
+`;
+
 const Subheader = styled.div`
   font-size: 12px;
   color: ${({theme}) => theme.text1};
@@ -49,11 +55,11 @@ export const LeverageSlider = ({
     <SliderContainer margin={margin}>
       <StyledLabel htmlFor={name}>
         <Header>
-          Leverage: {value}x
+          Leverage:
         </Header>
-        <Subheader>
-          (Liquidation Price Est.: {liquidationPrice} USD)
-        </Subheader>
+        <Value>
+          {value}x
+        </Value>
       </StyledLabel>
       <Slider 
         value={value}
