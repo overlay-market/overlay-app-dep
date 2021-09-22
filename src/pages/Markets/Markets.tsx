@@ -159,9 +159,9 @@ const Markets = () => {
 
                   <StyledTableCellThin align="left">
                     <Column align={ 'left' }>
-                      <TEXT.Small>
+                      <TEXT.SubHeader>
                         { row.oiLong } / { row.oiTotal }
-                      </TEXT.Small>
+                      </TEXT.SubHeader>
                       <ProgressBar
                         value={ row.oiLong }
                         max={ row.oiTotal }
@@ -174,9 +174,9 @@ const Markets = () => {
 
                   <StyledTableCellThin align="left">
                     <Column align={ 'left' }>
-                      <TEXT.Small>
+                      <TEXT.SubHeader>
                         { row.oiShort } / { row.oiTotal }
-                      </TEXT.Small>
+                      </TEXT.SubHeader>
                       <ProgressBar
                         value={ row.oiShort }
                         max={ row.oiTotal }
