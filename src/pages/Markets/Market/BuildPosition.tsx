@@ -315,7 +315,7 @@ export const BuildPosition = () => {
           bid={'2241.25'}
           ask={'2241.25'}
           expectedOi={'0'}
-          oiLong={180000}
+          oiLong={90000}
           oiShort={15000}
           fundingRate={'-0.0026'}
           />

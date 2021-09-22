@@ -90,9 +90,9 @@ function createData(market: string, price: number, oiLong: string, oiShort: stri
 
 // replace with fetched data
 const mockData = [
-  createData("ETH/DAI", 2815.40, "500/1000", "15/1000", "", "1"),
-  createData("OVL/DAI", 13.81, "1000/1000", "0/1000", "", "2"),
-  createData("OVL/ETH", 0.0100, "230/1000", "423/1000", "", "3"),
+  createData("ETH/DAI", 0.0, "500/1000", "15/1000", "", "1"),
+  createData("OVL/DAI", 0.0, "1000/1000", "0/1000", "", "2"),
+  createData("OVL/ETH", 0.0, "230/1000", "423/1000", "", "3"),
 ];
 
 const Markets = () => {
