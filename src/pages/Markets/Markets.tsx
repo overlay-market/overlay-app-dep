@@ -13,6 +13,9 @@ import styled from 'styled-components/macro';
 import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
 import { Trans } from '@lingui/macro';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
+import { ProgressBar } from '../../components/ProgressBar/ProgressBar';
+import { Column } from '../../components/Column/Column';
+import { TEXT } from '../../theme/theme';
 
 export const StyledContainer = styled.div`
   max-width: 900px;
@@ -84,15 +87,15 @@ export const StyledTableHeaderRow = styled(TableRow)`
   cursor: default;
 `;
 
-function createData(market: string, price: number, oiLong: string, oiShort: string, positions: string, marketId: string) {
-  return {market, price, oiLong, oiShort, positions, marketId};
+function createData(market: string, price: string, oiLong: number, oiShort: number, oiTotal: number, positions: string, marketId: string) {
+  return {market, price, oiLong, oiShort, oiTotal, positions, marketId};
 }
 
 // replace with fetched data
 const mockData = [
-  createData("ETH/DAI", 0.0, "500/1000", "15/1000", "", "1"),
-  createData("OVL/DAI", 0.0, "1000/1000", "0/1000", "", "2"),
-  createData("OVL/ETH", 0.0, "230/1000", "423/1000", "", "3"),
+  createData("ETH/DAI", 'N/A', 500, 690, 1000, "6", "1"),
+  createData("OVL/DAI", 'N/A', 1000, 0, 1000, "9", "2"),
+  createData("OVL/ETH", 'N/A', 230, 420, 1000, "", "3"),
 ];
 
 const Markets = () => {
@@ -149,10 +152,44 @@ const Markets = () => {
                   <StyledTableCellThin component="th" scope="row">
                     {row.market}
                   </StyledTableCellThin>
-                  <StyledTableCellThin align="left">{row.price}</StyledTableCellThin>
-                  <StyledTableCellThin align="left">{row.oiLong}</StyledTableCellThin>
-                  <StyledTableCellThin align="left">{row.oiShort}</StyledTableCellThin>
-                  <StyledTableCellThin align="left">{row.positions}</StyledTableCellThin>
+
+                  <StyledTableCellThin align="left">
+                    {row.price}
+                  </StyledTableCellThin>
+
+                  <StyledTableCellThin align="left">
+                    <Column align={ 'left' }>
+                      <TEXT.Small>
+                        { row.oiLong } / { row.oiTotal }
+                      </TEXT.Small>
+                      <ProgressBar
+                        value={ row.oiLong }
+                        max={ row.oiTotal }
+                        color={ '#10DCB1' }
+                        width={ '88px' }
+                        margin={ '0' }
+                        />
+                    </Column>
+                  </StyledTableCellThin>
+
+                  <StyledTableCellThin align="left">
+                    <Column align={ 'left' }>
+                      <TEXT.Small>
+                        { row.oiShort } / { row.oiTotal }
+                      </TEXT.Small>
+                      <ProgressBar
+                        value={ row.oiShort }
+                        max={ row.oiTotal }
+                        color={ '#DC1F4E' }
+                        width={ '88px' }
+                        margin={ '0' }
+                        />
+                    </Column>
+                  </StyledTableCellThin>
+
+                  <StyledTableCellThin align="left">
+                    {row.positions}
+                  </StyledTableCellThin>
               </StyledTableRow>
             ))}
           </TableBody>
