@@ -6,7 +6,6 @@ import {
   Paper
 } from '@material-ui/core';
 import { 
-  StyledContainer, 
   StyledTableCell, 
   StyledTableCellThin, 
   StyledTableRow,
@@ -23,6 +22,16 @@ import { TEXT } from '../../theme/theme';
 import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 import { Button } from 'rebass';
 import { injected } from '../../connectors/connectors';
+import { Container } from '../Markets/Market/Market';
+
+const Header = styled.div`
+  font-size: 20px;
+  text-align: center;
+  margin-top: 36px;
+  margin-bottom: 24px;
+  font-weight: 700;
+  color: white;
+`;
 
 const LoadingContainer = styled.div`
   display: block;
@@ -39,16 +48,6 @@ const ConnectWallet = styled(Button)`
   }
 `;
 
-const tableHeaders = [
-  'Market',
-  'Amt.',
-  'Side',
-  'Leverage',
-  'Lock price',
-  'Est. Liq.',
-  'PnL'
-];
-
 const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
   const [loading, setLoading] = useState(true);
@@ -56,20 +55,10 @@ const Positions = () => {
   const toggleWalletModal = useWalletModalToggle();
 
   return (
-    <StyledContainer>
-      <TableContainer component={Paper}>
-        <StyledTable>
-          <StyledTableHeaderRow>
-            {tableHeaders.map((header, column) => (
-              <StyledHeaderCell>
-                {header}
-              </StyledHeaderCell>
-            ))}
-          </StyledTableHeaderRow>
-        </StyledTable>
-        <TableBody>
-        </TableBody>
-      </TableContainer>
+    <Container>
+      <Header>
+        Positions
+      </Header>
       {account ? (
         <LoadingContainer>
           <PlanckCatLoader duration={5} width={24} />
@@ -85,7 +74,7 @@ const Positions = () => {
           </ConnectWallet>
         </LoadingContainer>
       )}
-    </StyledContainer>
+    </Container>
   )
 };
 

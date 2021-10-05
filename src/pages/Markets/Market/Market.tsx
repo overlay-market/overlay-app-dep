@@ -8,7 +8,7 @@ import { BuildPosition } from './BuildPosition';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { TEXT } from '../../../theme/theme';
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 350px;
