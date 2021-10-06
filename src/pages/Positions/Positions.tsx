@@ -1,18 +1,4 @@
 import { useState } from 'react';
-import {
-  Table,
-  TableBody,
-  TableContainer,
-  Paper
-} from '@material-ui/core';
-import { 
-  StyledTableCell, 
-  StyledTableCellThin, 
-  StyledTableRow,
-  StyledTableHeaderRow, 
-  StyledHeaderCell,
-  StyledTable
-} from '../Markets/Markets';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { useWalletModalToggle } from "../../state/application/hooks";
 import Loader from 'react-loader-spinner';
@@ -23,6 +9,7 @@ import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 import { Button } from 'rebass';
 import { injected } from '../../connectors/connectors';
 import { Container } from '../Markets/Market/Market';
+import { number } from '@lingui/core/cjs/formats';
 
 const Header = styled.div`
   font-size: 20px;
@@ -44,11 +31,20 @@ const CardHeader = styled.div`
 
 const CardCell = styled.div<{ 
   align?: string,
-  width: string
+  width?: string
 }>`
   text-align: ${({ align }) => ( align ? align : 'left' )};
   width: ${({ width }) => ( width ? width : 'auto' )};
   font-size: 14px;
+`;
+
+const Detail = styled.div<{
+  fontWeight?: number;
+  color?: string;
+}>`
+  font-weight: ${({ fontWeight }) => ( fontWeight ? fontWeight : 400 )};
+  color: ${({ color }) => ( color ? color : 'white' )};
+  text-align: inherit;
 `
 
 const CardContainer = styled.div`
@@ -101,6 +97,7 @@ const PositionsCardHeader = () => (
 const PositionCard = ({
   marketName,
   isLong,
+  leverage,
   positionSize,
   collateralCurrency,
   quotePrice,
@@ -114,6 +111,7 @@ const PositionCard = ({
 }:{
   marketName: string
   isLong: boolean
+  leverage: number | string
   positionSize: number | string
   collateralCurrency: string
   quotePrice: number | string
@@ -128,7 +126,27 @@ const PositionCard = ({
 
   return(
     <CardContainer>
+      <CardCell width="50%">
+        <Detail 
+          fontWeight={700} 
+          color={'white'}>
+          {marketName}
+        </Detail>
 
+        {isLong ? (
+          <Detail fontWeight={700} color={'#10DCB1'}>
+            Long {leverage}x
+          </Detail>
+        ):(
+          <Detail fontWeight={700} color={'#FF648A'}>
+            Short {leverage}x
+          </Detail>
+        )}
+
+        <Detail color={'#C0C0C0'}>
+          {}
+        </Detail>
+      </CardCell>
     </CardContainer>
   )
 };
