@@ -7,6 +7,7 @@ import { TOKEN_LABELS } from '../../../constants/tokens';
 import { BuildPosition } from './BuildPosition';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { TEXT } from '../../../theme/theme';
+import Positions from '../../Positions/Positions';
 
 export const Container = styled.div`
   display: flex;
@@ -53,6 +54,7 @@ export function Market(
       <Container>
         <MarketHeader marketName={marketName} marketPrice={2241.25} />
         <BuildPosition />
+        <Positions />
       </Container>
     </>
   )

@@ -190,7 +190,7 @@ const PositionCard = ({
 };
 
 
-const Positions = () => { 
+export const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
   const [loading, setLoading] = useState(true);
 
