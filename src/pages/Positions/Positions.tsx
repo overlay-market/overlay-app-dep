@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { useWalletModalToggle } from "../../state/application/hooks";
 import Loader from 'react-loader-spinner';
+import { ChevronRight } from 'react-feather';
 import { Trans } from '@lingui/macro';
 import styled from 'styled-components/macro';
 import { TEXT } from '../../theme/theme';
@@ -10,6 +11,7 @@ import { Button } from 'rebass';
 import { injected } from '../../connectors/connectors';
 import { Container } from '../Markets/Market/Market';
 import { number } from '@lingui/core/cjs/formats';
+import { Icon } from '../../components/Icon/Icon';
 
 const Header = styled.div`
   font-size: 20px;
@@ -50,7 +52,9 @@ const Detail = styled.div<{
 const CardContainer = styled.div`
   display: flex;
   flex-direction: row;
+  border-bottom: 1px solid #828282;
   width: 100%;
+  padding: 16px 0;
 `;
 
 
@@ -127,9 +131,7 @@ const PositionCard = ({
   return(
     <CardContainer>
       <CardCell width="50%">
-        <Detail 
-          fontWeight={700} 
-          color={'white'}>
+        <Detail fontWeight={700} color={'white'}>
           {marketName}
         </Detail>
 
@@ -144,8 +146,44 @@ const PositionCard = ({
         )}
 
         <Detail color={'#C0C0C0'}>
-          {}
+          {positionSize} {collateralCurrency}
         </Detail>
+
+        <Detail color={'#C0C0C0'}>
+          @ {quotePrice} {quoteCurrency}
+        </Detail>
+
+        <Detail color={'#C0C0C0'}>
+          {dateCreated}
+        </Detail>
+
+        <Detail color={'#C0C0C0'}>
+          {timeCreated}
+        </Detail>
+      </CardCell>
+
+      <CardCell width="30%">
+        <Detail fontWeight={700} color={'white'}>
+          {estLiquidationPrice}
+        </Detail>
+
+        <Detail color={'#C0C0C0'}>
+          {liquidationCurrency}
+        </Detail>
+      </CardCell>
+
+      <CardCell width="20%" align="right">
+        <Detail fontWeight={700} color={'#10DCB1'}>
+          {PnL}
+        </Detail>
+
+        <Detail color={'#C0C0C0'}>
+          {PnLCurrency}
+        </Detail>
+
+        <Icon size={12} margin={'24px 0 0 auto'}>
+          <ChevronRight />
+        </Icon>
       </CardCell>
     </CardContainer>
   )
@@ -164,17 +202,28 @@ const Positions = () => {
         Positions
       </Header>
 
-      <PositionsCardHeader />
-      <PositionsContainer>
-
-      </PositionsContainer>
-
       {account ? (
-        <LoadingContainer>
-          <PlanckCatLoader duration={5} width={24} />
-          <PlanckCatLoader duration={5} width={24} />
-          <PlanckCatLoader duration={5} width={24} />
-        </LoadingContainer>
+        <>
+          <PositionsCardHeader />
+          
+          <PositionsContainer>
+            <PositionCard
+              marketName={ 'ETH/DAI' }
+              isLong={true}
+              leverage={1}
+              positionSize={ '100.0' }
+              collateralCurrency={ 'OVL' }
+              quotePrice={ '2410.0' }
+              quoteCurrency={ 'DAI' }
+              dateCreated={ '9/17/21' }
+              timeCreated={ '10:28:30 PM +UTC' }
+              estLiquidationPrice={ '3210.79' }
+              liquidationCurrency={ 'DAI '}
+              PnL={ '0.10' }
+              PnLCurrency={ 'OVL' }
+              />
+          </PositionsContainer>
+        </>
       ):(
         <LoadingContainer>
           <ConnectWallet onClick={toggleWalletModal}>
@@ -182,6 +231,9 @@ const Positions = () => {
               Please connect wallet
             </strong>
           </ConnectWallet>
+          <PlanckCatLoader duration={5} width={24} />
+          <PlanckCatLoader duration={5} width={24} />
+          <PlanckCatLoader duration={5} width={24} />
         </LoadingContainer>
       )}
     </Container>
