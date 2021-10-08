@@ -25,8 +25,8 @@ export const HeaderContainer = styled.div`
   z-index: 420;
 
   ${({ theme }) => theme.mediaWidth.minSmall`
-    width: 100%;
-    padding: 32px 0 24px;
+    width: auto;
+    padding: 32px 16px 24px;
   `};
 `
 

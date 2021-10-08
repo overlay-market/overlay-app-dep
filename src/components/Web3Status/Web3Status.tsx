@@ -25,7 +25,7 @@ export const Web3StatusUnconnected = styled.button`
   color: ${({theme}) => theme.text1};
   border: 0px;
   border-radius: 25px;
-  margin-right: 7px;
+  margin-right: 24px;
   font-size: 12px;
   cursor: pointer;
 `;
@@ -46,7 +46,7 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
 export const Account = styled(Row)`
   font-size: 12px;
   font-weight: 400;
-  margin: auto 12px auto auto;
+  margin: auto 24px auto auto;
   display: flex;
   flex-direction: row;
 `;
