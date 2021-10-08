@@ -13,7 +13,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 350px;
-  margin: 0 auto 32px;
+  margin: 0 0 32px;
   padding: 16px;
   position: static;
   z-index: 0;
@@ -21,6 +21,7 @@ export const Container = styled.div`
   ${({ theme }) => theme.mediaWidth.minMedium`
     padding: 16px 0;
     position: relative;
+    margin: 0 auto 32px;
   `};
 `;
 
