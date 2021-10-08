@@ -82,6 +82,44 @@ const ConnectWallet = styled(Button)`
   }
 `;
 
+function create_mock_position(
+  marketName: string,
+  isLong: boolean,
+  leverage: number | string,
+  positionSize: number | string,
+  collateralCurrency: string,
+  quotePrice: number | string,
+  quoteCurrency: string,
+  dateCreated: any,
+  timeCreated: any,
+  estLiquidationPrice: string,
+  liquidationCurrency: string,
+  PnL: number | string,
+  PnLCurrency: string,
+  ) {
+    return { 
+      marketName, 
+      isLong, 
+      leverage, 
+      positionSize, 
+      collateralCurrency, 
+      quotePrice, 
+      quoteCurrency, 
+      dateCreated, 
+      timeCreated, 
+      estLiquidationPrice,
+      liquidationCurrency,
+      PnL, 
+      PnLCurrency }
+  };
+
+
+export const mock_position_data = [
+  create_mock_position("ETH/DAI", true, 1, 100, "OVL", 2410.24, "DAI", "9/17/21", '10:28:30 PM +UTC', '420.60', 'DAI', '0.10', 'OVL'),
+  create_mock_position("ETH/DAI", false, 3, 3300, "OVL", 2910.23, "DAI", "9/21/21", '09:13:24 PM +UTC', '2533.89', 'DAI', '5.01', 'OVL'),
+  create_mock_position("ETH/DAI", true, 7, 700, "OVL", 3300.77, "DAI", "9/25/21", '22:21:15 PM +UTC', '3156.22', 'DAI', '33.33', 'OVL')
+]
+
 const PositionsCardHeader = () => (
   <CardHeader>
     <HeaderCell align="left" width="50%">
@@ -208,20 +246,38 @@ export const Positions = () => {
           
           <PositionsContainer>
             <PositionCard
-              marketName={ 'ETH/DAI' }
-              isLong={true}
-              leverage={1}
-              positionSize={ '100.0' }
-              collateralCurrency={ 'OVL' }
-              quotePrice={ '2410.0' }
-              quoteCurrency={ 'DAI' }
-              dateCreated={ '9/17/21' }
-              timeCreated={ '10:28:30 PM +UTC' }
-              estLiquidationPrice={ '3210.79' }
-              liquidationCurrency={ 'DAI '}
-              PnL={ '0.10' }
-              PnLCurrency={ 'OVL' }
-              />
+                marketName={ 'ETH/DAI' }
+                isLong={true}
+                leverage={1}
+                positionSize={ '100.0' }
+                collateralCurrency={ 'OVL' }
+                quotePrice={ '2410.0' }
+                quoteCurrency={ 'DAI' }
+                dateCreated={ '9/17/21' }
+                timeCreated={ '10:28:30 PM +UTC' }
+                estLiquidationPrice={ '3210.79' }
+                liquidationCurrency={ 'DAI' }
+                PnL={ '0.10' }
+                PnLCurrency={ 'OVL' }
+                />
+
+            {mock_position_data.map((p, key) => (
+              <PositionCard 
+                  marketName={p.marketName}
+                  isLong={p.isLong}
+                  leverage={p.leverage}
+                  positionSize={p.positionSize}
+                  collateralCurrency={p.collateralCurrency}
+                  quotePrice={p.quotePrice}
+                  quoteCurrency={p.quoteCurrency}
+                  dateCreated={p.dateCreated}
+                  timeCreated={p.timeCreated}
+                  estLiquidationPrice={p.estLiquidationPrice}
+                  liquidationCurrency={p.liquidationCurrency}
+                  PnL={p.PnL}
+                  PnLCurrency={p.PnLCurrency}
+                  />
+            ))} 
           </PositionsContainer>
         </>
       ):(
