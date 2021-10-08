@@ -12,6 +12,7 @@ import { injected } from '../../connectors/connectors';
 import { Container } from '../Markets/Market/Market';
 import { number } from '@lingui/core/cjs/formats';
 import { Icon } from '../../components/Icon/Icon';
+import { MarketCard } from '../../components/Card/MarketCard';
 
 const Header = styled.div`
   font-size: 20px;
@@ -235,64 +236,66 @@ export const Positions = () => {
   const toggleWalletModal = useWalletModalToggle();
 
   return (
-    <Container>
-      <Header>
-        Positions
-      </Header>
+    <MarketCard>
+      <Container>
+        <Header>
+          Positions
+        </Header>
 
-      {account ? (
-        <>
-          <PositionsCardHeader />
-          
-          <PositionsContainer>
-            <PositionCard
-                marketName={ 'ETH/DAI' }
-                isLong={true}
-                leverage={1}
-                positionSize={ '100.0' }
-                collateralCurrency={ 'OVL' }
-                quotePrice={ '2410.0' }
-                quoteCurrency={ 'DAI' }
-                dateCreated={ '9/17/21' }
-                timeCreated={ '10:28:30 PM +UTC' }
-                estLiquidationPrice={ '3210.79' }
-                liquidationCurrency={ 'DAI' }
-                PnL={ '0.10' }
-                PnLCurrency={ 'OVL' }
-                />
-
-            {mock_position_data.map((p, key) => (
-              <PositionCard 
-                  marketName={p.marketName}
-                  isLong={p.isLong}
-                  leverage={p.leverage}
-                  positionSize={p.positionSize}
-                  collateralCurrency={p.collateralCurrency}
-                  quotePrice={p.quotePrice}
-                  quoteCurrency={p.quoteCurrency}
-                  dateCreated={p.dateCreated}
-                  timeCreated={p.timeCreated}
-                  estLiquidationPrice={p.estLiquidationPrice}
-                  liquidationCurrency={p.liquidationCurrency}
-                  PnL={p.PnL}
-                  PnLCurrency={p.PnLCurrency}
+        {account ? (
+          <>
+            <PositionsCardHeader />
+            
+            <PositionsContainer>
+              <PositionCard
+                  marketName={ 'ETH/DAI' }
+                  isLong={true}
+                  leverage={1}
+                  positionSize={ '100.0' }
+                  collateralCurrency={ 'OVL' }
+                  quotePrice={ '2410.0' }
+                  quoteCurrency={ 'DAI' }
+                  dateCreated={ '9/17/21' }
+                  timeCreated={ '10:28:30 PM +UTC' }
+                  estLiquidationPrice={ '3210.79' }
+                  liquidationCurrency={ 'DAI' }
+                  PnL={ '0.10' }
+                  PnLCurrency={ 'OVL' }
                   />
-            ))} 
-          </PositionsContainer>
-        </>
-      ):(
-        <LoadingContainer>
-          <ConnectWallet onClick={toggleWalletModal}>
-            <strong>
-              Please connect wallet
-            </strong>
-          </ConnectWallet>
-          <PlanckCatLoader duration={5} width={24} />
-          <PlanckCatLoader duration={5} width={24} />
-          <PlanckCatLoader duration={5} width={24} />
-        </LoadingContainer>
-      )}
-    </Container>
+
+              {mock_position_data.map((p, key) => (
+                <PositionCard 
+                    marketName={p.marketName}
+                    isLong={p.isLong}
+                    leverage={p.leverage}
+                    positionSize={p.positionSize}
+                    collateralCurrency={p.collateralCurrency}
+                    quotePrice={p.quotePrice}
+                    quoteCurrency={p.quoteCurrency}
+                    dateCreated={p.dateCreated}
+                    timeCreated={p.timeCreated}
+                    estLiquidationPrice={p.estLiquidationPrice}
+                    liquidationCurrency={p.liquidationCurrency}
+                    PnL={p.PnL}
+                    PnLCurrency={p.PnLCurrency}
+                    />
+              ))} 
+            </PositionsContainer>
+          </>
+        ):(
+          <LoadingContainer>
+            <ConnectWallet onClick={toggleWalletModal}>
+              <strong>
+                Please connect wallet
+              </strong>
+            </ConnectWallet>
+            <PlanckCatLoader duration={5} width={24} />
+            <PlanckCatLoader duration={5} width={24} />
+            <PlanckCatLoader duration={5} width={24} />
+          </LoadingContainer>
+        )}
+      </Container>
+    </MarketCard>
   )
 };
 
