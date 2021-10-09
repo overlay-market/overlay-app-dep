@@ -9,16 +9,23 @@ import { TEXT } from '../../theme/theme';
 import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 import { Button } from 'rebass';
 import { injected } from '../../connectors/connectors';
-import { Container } from '../Markets/Market/Market';
 import { number } from '@lingui/core/cjs/formats';
 import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 350px;
+  margin: 0 auto 32px;
+  position: static;
+  z-index: 0;
+`;
+
 const Header = styled.div`
   font-size: 20px;
   text-align: center;
-  margin-top: 36px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
   font-weight: 700;
   color: white;
 `;
