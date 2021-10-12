@@ -24,6 +24,7 @@ import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlide
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
 import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
+import { InfoTip } from '../../../components/InfoTip/InfoTip';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -103,6 +104,7 @@ const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   border-radius: 8px;
   backdrop-filter: blur(10px);
   z-index: 5;
+  color: #f2f2f2;
 `;
 
 const AdditionalDetails = ({
@@ -203,14 +205,24 @@ export const BuildPosition = () => {
 
   const maxInputAmount = maxAmountSpend(userOvlBalance);
 
-  const { leverageValue, positionSide, inputValue, inputCurrency } = usePositionState();
+  const { 
+    leverageValue, 
+    positionSide, 
+    inputValue, 
+    inputCurrency, 
+    slippageValue,
+    txnDeadline } = usePositionState();
 
-  const { parsedAmount, error } = useDerivedUserInputs(
-    inputValue,
-    ovl
-  );
+  const { 
+    onAmountInput, 
+    onLeverageInput, 
+    onPositionSideInput, 
+    onSlippageInput,
+    onTxnDeadlineInput } = usePositionActionHandlers();
 
-  const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
+
+  const { parsedAmount, error } = useDerivedUserInputs(inputValue, ovl);
+
 
   // handle user inputs
   const handleLeverageInput = useCallback((e: any) => { onLeverageInput(e.target.value) }, [onLeverageInput]);
@@ -285,7 +297,38 @@ export const BuildPosition = () => {
           </Icon>
 
           <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
-            
+            <Column>
+                <Row>
+                    <TEXT.Menu>
+                      Slippage Tolerance
+                    </TEXT.Menu>
+                    <InfoTip tipFor={'Slippage Tolerance'}>
+                        <div>
+                            meow meow meow
+                        </div>
+                    </InfoTip>
+                </Row>
+
+                <Row>
+                    <NumericalInput value={slippageValue} onUserInput={onSlippageInput} />
+                </Row>
+                    
+                <Row>
+                    <TEXT.Menu>
+                      Transaction Deadline
+                    </TEXT.Menu>
+                    <InfoTip tipFor={'Transaction Deadline'}>
+                        <div>
+                            meow meow woof
+                        </div>
+                    </InfoTip>
+                </Row>
+
+                <Row>
+                    <NumericalInput value={txnDeadline} onUserInput={onTxnDeadlineInput} />
+                </Row>
+            </Column>
+
           </TransactionSettingModal>
 
         {/* Building out Transaction Settings above */}
