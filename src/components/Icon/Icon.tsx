@@ -5,6 +5,7 @@ const IconWrapper = styled.div<{
   margin?: string, 
   color?: string,
   transform?: string
+  clickable?: boolean
 }>`
   display: flex;
   height: ${({ size }) => ( size )}px;
@@ -13,6 +14,7 @@ const IconWrapper = styled.div<{
   color: ${({ color }) => ( color ? color : '#fff' )};
   transform: ${({ transform }) => ( transform ? transform : 'rotate(0deg)' )};
   transition: transform 0.2s ease-out;
+  cursor: ${({ clickable }) => ( clickable ? 'pointer' : 'default')}
 `;
 
 export const Icon = ({
@@ -20,13 +22,17 @@ export const Icon = ({
   margin,
   children,
   color,
-  transform
+  transform,
+  clickable,
+  onClick
 }:{
   size: number
   margin?: string
   children: React.ReactNode
   color?: string
   transform?: string
+  clickable?: boolean
+  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void;
 }) => {
   return (
     <IconWrapper 
@@ -34,6 +40,8 @@ export const Icon = ({
       margin={margin} 
       color={color}
       transform={transform}
+      clickable={clickable}
+      onClick={onClick}
       >
         { children }
     </IconWrapper>

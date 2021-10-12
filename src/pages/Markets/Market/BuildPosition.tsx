@@ -22,6 +22,8 @@ import { useDerivedUserInputs } from '../../../state/position/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
+import { Sliders, X } from 'react-feather';
+import { Icon } from '../../../components/Icon/Icon';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -180,6 +182,8 @@ const AdditionalDetails = ({
 }
 
 export const BuildPosition = () => {
+  const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
+
   const { account, chainId } = useActiveWeb3React();
 
   const ovl = chainId ? OVL[chainId] : undefined;
@@ -253,6 +257,24 @@ export const BuildPosition = () => {
   return (
     <MarketCard align={'left'}>
       <Column as={'form'} onSubmit={(e:any) => e.preventDefault()}>
+
+        {/* Building out Transaction Settings below */}
+          <Icon 
+            size={24} 
+            margin={'0 0 0 auto'} 
+            transform={'rotate(90deg)'} 
+            clickable={true}
+            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+            >
+              {isTxnSettingsOpen ? (
+                <X color={'#12B4FF'}/>
+              ):(
+                <Sliders color={'#B9BABD'}/>
+              )}
+          </Icon>
+
+        {/* Building out Transaction Settings above */}
+
         <Column>
           <LongPositionButton
             onClick={ handlePositionSideLong }
@@ -308,18 +330,19 @@ export const BuildPosition = () => {
           Build
         </BuildButton>
 
-        <AdditionalDetails 
-          fee={'0.0'}
-          slippage={'0'}
-          estLiquidationPrice={'0.00'}
-          bid={'2241.25'}
-          ask={'2241.25'}
-          expectedOi={'0'}
-          oiLong={90000}
-          oiShort={15000}
-          fundingRate={'-0.0026'}
-          />
       </Column>
+
+      <AdditionalDetails 
+        fee={'0.0'}
+        slippage={'0'}
+        estLiquidationPrice={'0.00'}
+        bid={'2241.25'}
+        ask={'2241.25'}
+        expectedOi={'0'}
+        oiLong={90000}
+        oiShort={15000}
+        fundingRate={'-0.0026'}
+        />
     </MarketCard>
   )
 };

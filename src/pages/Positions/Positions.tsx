@@ -296,9 +296,6 @@ export const Positions = () => {
                 Please connect wallet
               </strong>
             </ConnectWallet>
-            <PlanckCatLoader duration={5} width={24} />
-            <PlanckCatLoader duration={5} width={24} />
-            <PlanckCatLoader duration={5} width={24} />
           </LoadingContainer>
         )}
       </Container>
