@@ -94,6 +94,17 @@ export const OI = styled.div`
   color: #B9BABD;
 `;
 
+const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
+  display: ${({ isOpen }) => ( isOpen ? 'flex' : 'none' )};
+  position: absolute;
+  border: 1px solid #D0D0D2;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  z-index: 5;
+`;
+
 const AdditionalDetails = ({
   fee,
   slippage,
@@ -272,6 +283,10 @@ export const BuildPosition = () => {
                 <Sliders color={'#B9BABD'}/>
               )}
           </Icon>
+
+          <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
+            
+          </TransactionSettingModal>
 
         {/* Building out Transaction Settings above */}
 

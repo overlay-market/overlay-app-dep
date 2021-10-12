@@ -14,7 +14,8 @@ const IconWrapper = styled.div<{
   color: ${({ color }) => ( color ? color : '#fff' )};
   transform: ${({ transform }) => ( transform ? transform : 'rotate(0deg)' )};
   transition: transform 0.2s ease-out;
-  cursor: ${({ clickable }) => ( clickable ? 'pointer' : 'default')}
+  cursor: ${({ clickable }) => ( clickable ? 'pointer' : 'default')};
+  z-index: 10;
 `;
 
 export const Icon = ({
