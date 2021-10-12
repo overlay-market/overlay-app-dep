@@ -1,6 +1,12 @@
 import { useCallback } from "react";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
-import { PositionSide, amountInput, leverageInput, positionSideInput } from "./actions";
+import { 
+  PositionSide, 
+  amountInput, 
+  leverageInput, 
+  positionSideInput, 
+  slippageInput,
+  txnDeadlineInput } from "./actions";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppState } from "../state";
 import { Token } from "@uniswap/sdk-core";
@@ -16,6 +22,8 @@ export function usePositionActionHandlers(): {
   onAmountInput: (inputValue: string | undefined) => void;
   onLeverageInput: (leverageValue: number) => void;
   onPositionSideInput: (positionSide: PositionSide) => void;
+  onSlippageInput: (slippageValue: string | undefined) => void;
+  onTxnDeadlineInput: ( txnDeadline: string | undefined) => void;
 } {
   const dispatch = useAppDispatch();
 
@@ -38,12 +46,28 @@ export function usePositionActionHandlers(): {
       dispatch(positionSideInput({positionSide}))
     },
     [dispatch]
+  );
+
+  const onSlippageInput = useCallback(
+    (slippageValue: string | undefined) => {
+      dispatch(slippageInput({slippageValue}))
+    },
+    [dispatch]
+  )
+
+  const onTxnDeadlineInput = useCallback(
+    (txnDeadline: string | undefined) => {
+      dispatch(txnDeadlineInput({txnDeadline}))
+    },
+    [dispatch]
   )
 
   return {
     onAmountInput,
     onLeverageInput,
-    onPositionSideInput
+    onPositionSideInput,
+    onSlippageInput,
+    onTxnDeadlineInput
   }
 };
 

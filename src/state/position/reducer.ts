@@ -1,7 +1,13 @@
 
 import { createReducer } from '@reduxjs/toolkit';
 import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
-import { PositionSide, amountInput, leverageInput, positionSideInput } from './actions';
+import { 
+  PositionSide, 
+  amountInput, 
+  leverageInput, 
+  positionSideInput, 
+  slippageInput,
+  txnDeadlineInput } from './actions';
 import { OVL } from '../../constants/tokens';
 
 export interface PositionState {
@@ -9,13 +15,17 @@ export interface PositionState {
   readonly leverageValue: number
   readonly positionSide: PositionSide | undefined
   readonly inputCurrency: string | undefined
+  readonly slippageValue: string | undefined
+  readonly txnDeadline: string | undefined
 };
 
 export const initialState: PositionState = {
   inputValue: undefined,
   leverageValue: 1,
   positionSide: undefined,
-  inputCurrency: OVL[1].address
+  inputCurrency: OVL[1].address,
+  slippageValue: '0.3',
+  txnDeadline: '30'
 };
 
 export default createReducer<PositionState>(initialState, (builder) =>
@@ -34,8 +44,20 @@ export default createReducer<PositionState>(initialState, (builder) =>
     )
     .addCase(
       positionSideInput,
-      (state, { payload: {positionSide}}) => {
+      (state, { payload: {positionSide} }) => {
         state.positionSide = positionSide;
+      }
+    )
+    .addCase(
+      slippageInput,
+      (state, { payload: { slippageValue } }) => {
+        state.slippageValue = slippageValue;
+      }
+    )
+    .addCase(
+      txnDeadlineInput,
+      (state, { payload: {txnDeadline} }) => {
+        state.txnDeadline = txnDeadline;
       }
     )
 )
