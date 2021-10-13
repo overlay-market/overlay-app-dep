@@ -7,7 +7,8 @@ import {
   leverageInput, 
   positionSideInput, 
   slippageInput,
-  txnDeadlineInput } from './actions';
+  txnDeadlineInput,
+  DefaultTxnSettings } from './actions';
 import { OVL } from '../../constants/tokens';
 
 export interface PositionState {
@@ -15,8 +16,8 @@ export interface PositionState {
   readonly leverageValue: number
   readonly positionSide: PositionSide | undefined
   readonly inputCurrency: string | undefined
-  readonly slippageValue: string | undefined
-  readonly txnDeadline: string | undefined
+  readonly slippageValue: DefaultTxnSettings | string | undefined
+  readonly txnDeadline: DefaultTxnSettings | string | undefined
 };
 
 export const initialState: PositionState = {

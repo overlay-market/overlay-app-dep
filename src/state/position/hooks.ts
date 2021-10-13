@@ -6,7 +6,8 @@ import {
   leverageInput, 
   positionSideInput, 
   slippageInput,
-  txnDeadlineInput } from "./actions";
+  txnDeadlineInput,
+  DefaultTxnSettings } from "./actions";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppState } from "../state";
 import { Token } from "@uniswap/sdk-core";
@@ -49,14 +50,14 @@ export function usePositionActionHandlers(): {
   );
 
   const onSlippageInput = useCallback(
-    (slippageValue: string | undefined) => {
+    (slippageValue: DefaultTxnSettings | string | undefined) => {
       dispatch(slippageInput({slippageValue}))
     },
     [dispatch]
   )
 
   const onTxnDeadlineInput = useCallback(
-    (txnDeadline: string | undefined) => {
+    (txnDeadline: DefaultTxnSettings | string | undefined) => {
       dispatch(txnDeadlineInput({txnDeadline}))
     },
     [dispatch]

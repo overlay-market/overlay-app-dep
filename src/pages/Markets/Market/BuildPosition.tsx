@@ -15,7 +15,7 @@ import { usePositionActionHandlers } from '../../../state/position/hooks';
 import { useActiveWeb3React } from '../../../hooks/web3';
 import { usePositionState } from '../../../state/position/hooks';
 import { useTokenBalance } from '../../../state/wallet/hooks';
-import { PositionSide } from '../../../state/position/actions';
+import { PositionSide, DefaultTxnSettings } from '../../../state/position/actions';
 import { OVL } from '../../../constants/tokens';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { useApproveCallback } from '../../../hooks/useApproveCallback';
@@ -225,19 +225,32 @@ export const BuildPosition = () => {
 
   const { parsedAmount, error } = useDerivedUserInputs(inputValue, ovl);
 
-
   // handle user inputs
-  const handleLeverageInput = useCallback((e: any) => { onLeverageInput(e.target.value) }, [onLeverageInput]);
+  const handleResetTxnSettings = useCallback((e:any) => {
+      onSlippageInput(DefaultTxnSettings.DEFAULT_SLIPPAGE);
+      onTxnDeadlineInput(DefaultTxnSettings.DEFAULT_DEADLINE);
+    }, [onSlippageInput, onTxnDeadlineInput]
+  );
 
-  const handlePositionSideLong = useCallback(() => { onPositionSideInput(PositionSide.LONG) }, [onPositionSideInput]);
+  const handleLeverageInput = useCallback((e: any) => { 
+      onLeverageInput(e.target.value) 
+    }, [onLeverageInput]
+  );
+
+  const handlePositionSideLong = useCallback(() => {
+     onPositionSideInput(PositionSide.LONG) 
+    }, [onPositionSideInput]
+  );
   
-  const handlePositionSideShort = useCallback(() => { onPositionSideInput(PositionSide.SHORT) }, [onPositionSideInput]);
+  const handlePositionSideShort = useCallback(() => { 
+     onPositionSideInput(PositionSide.SHORT)
+    }, [onPositionSideInput]
+  );
   
   const handleTypeInput = useCallback(
     (value: string) => {
       onAmountInput(value)
-    },
-    [onAmountInput]
+    }, [onAmountInput]
   );
 
   // handle quick inputs
@@ -359,6 +372,7 @@ export const BuildPosition = () => {
                         border={'none'} 
                         width={'96px'}
                         margin={'0 auto 0 0'}
+                        onClick={handleResetTxnSettings}
                         > 
                           Reset
                     </TxnSettingsButton>
