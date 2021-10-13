@@ -368,10 +368,30 @@ export const BuildPosition = () => {
             mb={'4px'} 
             width={'auto'}
             >
-            <TransparentUnderlineButton onClick={handle25Input}>25%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={handle50Input}>50%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={handle75Input}>75%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={handleMaxInput}>Max</TransparentUnderlineButton>
+            <TransparentUnderlineButton 
+                border={'none'} 
+                onClick={handle25Input}
+                >
+                  25%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton 
+                border={'none'} 
+                onClick={handle50Input}
+                >
+                  50%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton
+                border={'none'} 
+                onClick={handle75Input}
+                >
+                  75%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton 
+                border={'none'} 
+                onClick={handleMaxInput}
+                >
+                  Max
+            </TransparentUnderlineButton>
           </Row>
         </Label>
         <InputContainer>

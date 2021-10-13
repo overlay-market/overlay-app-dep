@@ -7,17 +7,32 @@ const BaseButton = styled(RebassButton)<
   {
     padding?: string
     width?: string
+    borderRadius?: string
+    border?: string
+    disabled?: boolean
+    active?: boolean
+    color?: any
   } & ButtonProps
 >`
   padding: ${({ padding }) => (padding ? padding : '16px')};
   width: ${({ width }) => (width ? width : '100%')};
+  borderRadius: ${({ borderRadius }) => ( borderRadius ? borderRadius : '8px' )};
+  color: ${({ color }) => ( color ? color : '#f2f2f2' )};
+  border: ${({ border }) => ( border ? border : '1px solid #f2f2f2' )};
   cursor: pointer;
+  font-weight: 700;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
   sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: transform 450ms ease;
 `
+
+export const TxnSettingsButton = styled(BaseButton)`
+  background: ${({ disabled }) => ( disabled ? 'gray' : 'transparent')};
+`;
+
 
 export const LightGreyButton = styled(BaseButton)<{ background?: string; border?: string; color?: string }>`
   background: ${({ background }) => background ?? '#BDBDBD'};
