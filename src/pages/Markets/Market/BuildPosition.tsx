@@ -311,15 +311,23 @@ export const BuildPosition = () => {
                     </InfoTip>
                 </Row>
 
-                <Row padding={'0px 8px 16px 8px'}>
-                    <InputContainer>
+                <Row padding={'0px 16px 16px'}>
+                    <InputContainer width={'180px'}>
                         <NumericalInput 
                             value={slippageValue} 
                             onUserInput={onSlippageInput}
                             align={'right'}
                             />
+                        <InputDescriptor>
+                          %
+                        </InputDescriptor>
                     </InputContainer>
-                    <TxnSettingsButton width={'96px'}> Auto </TxnSettingsButton>
+                    <TxnSettingsButton 
+                        width={'96px'} 
+                        margin={'0 0 0 8px'}
+                        > 
+                          Auto 
+                    </TxnSettingsButton>
                 </Row>
                     
                 <Row padding={'8px 16px'}>
@@ -334,11 +342,16 @@ export const BuildPosition = () => {
                 </Row>
 
                 <Row padding={'8px 16px'}>
-                    <NumericalInput 
-                        value={txnDeadline} 
-                        onUserInput={onTxnDeadlineInput}
-                        align={'right'}
-                        />
+                    <InputContainer width={'180px'}>
+                        <NumericalInput 
+                            value={txnDeadline} 
+                            onUserInput={onTxnDeadlineInput}
+                            align={'right'}
+                            />
+                        <InputDescriptor>
+                          minutes
+                        </InputDescriptor>
+                    </InputContainer>
                 </Row>
 
                 <Row margin={'auto 0 0 0'} padding={'16px'}>
