@@ -5,7 +5,8 @@ import {
   LightGreyButton, 
   TransparentUnderlineButton, 
   TransparentDarkGreyButton,
-  ActiveBlueButton } from "../../../components/Button/Button";
+  ActiveBlueButton,
+  TxnSettingsButton } from "../../../components/Button/Button";
 import { TEXT } from "../../../theme/theme";
 import { Column } from "../../../components/Column/Column";
 import { Row } from "../../../components/Row/Row";
@@ -106,6 +107,7 @@ const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   z-index: 5;
   color: #f2f2f2;
 `;
+
 
 const AdditionalDetails = ({
   fee,
@@ -298,7 +300,7 @@ export const BuildPosition = () => {
 
           <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
             <Column>
-                <Row>
+                <Row padding={'8px 16px'}>
                     <TEXT.Menu>
                       Slippage Tolerance
                     </TEXT.Menu>
@@ -309,11 +311,18 @@ export const BuildPosition = () => {
                     </InfoTip>
                 </Row>
 
-                <Row>
-                    <NumericalInput value={slippageValue} onUserInput={onSlippageInput} />
+                <Row padding={'0px 8px 16px 8px'}>
+                    <InputContainer>
+                        <NumericalInput 
+                            value={slippageValue} 
+                            onUserInput={onSlippageInput}
+                            align={'right'}
+                            />
+                    </InputContainer>
+                    <TxnSettingsButton width={'96px'}> Auto </TxnSettingsButton>
                 </Row>
                     
-                <Row>
+                <Row padding={'8px 16px'}>
                     <TEXT.Menu>
                       Transaction Deadline
                     </TEXT.Menu>
@@ -324,9 +333,25 @@ export const BuildPosition = () => {
                     </InfoTip>
                 </Row>
 
-                <Row>
-                    <NumericalInput value={txnDeadline} onUserInput={onTxnDeadlineInput} />
+                <Row padding={'8px 16px'}>
+                    <NumericalInput 
+                        value={txnDeadline} 
+                        onUserInput={onTxnDeadlineInput}
+                        align={'right'}
+                        />
                 </Row>
+
+                <Row margin={'auto 0 0 0'} padding={'16px'}>
+                    <TxnSettingsButton 
+                        border={'none'} 
+                        width={'96px'}
+                        margin={'0 auto 0 0'}
+                        > 
+                          Reset
+                    </TxnSettingsButton>
+                    <TxnSettingsButton width={'96px'}> Save </TxnSettingsButton>
+                </Row>
+
             </Column>
 
           </TransactionSettingModal>
