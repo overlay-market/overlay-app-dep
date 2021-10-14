@@ -328,7 +328,7 @@ export const BuildPosition = () => {
                 </Row>
 
                 <Row padding={'0px 16px 16px'}>
-                    <InputContainer width={'180px'}>
+                    <InputContainer width={'180px'} height={'40px'}>
                         <NumericalInput 
                             value={slippageValue} 
                             onUserInput={onSlippageInput}
@@ -339,10 +339,11 @@ export const BuildPosition = () => {
                         </InputDescriptor>
                     </InputContainer>
                     <TxnSettingsButton 
-                        width={'96px'} 
-                        margin={'0 0 0 8px'}
                         active={isAuto}
                         onClick={handleResetTxnSettings}
+                        width={'96px'} 
+                        margin={'0 0 0 8px'}
+                        padding={'0px'}
                         > 
                           Auto 
                     </TxnSettingsButton>
@@ -350,7 +351,7 @@ export const BuildPosition = () => {
                     
                 <Row padding={'8px 16px'}>
                     <TEXT.Menu>
-                      Transaction Deadline
+                        Transaction Deadline
                     </TEXT.Menu>
                     <InfoTip tipFor={'Transaction Deadline'}>
                         <div>
@@ -359,29 +360,35 @@ export const BuildPosition = () => {
                     </InfoTip>
                 </Row>
 
-                <Row padding={'8px 16px'}>
-                    <InputContainer width={'180px'}>
-                        <NumericalInput 
-                            value={txnDeadline} 
-                            onUserInput={onTxnDeadlineInput}
-                            align={'right'}
-                            />
-                        <InputDescriptor>
-                          minutes
-                        </InputDescriptor>
+                <Row padding={'0px 16px 16px'}>
+                    <InputContainer width={'180px'} height={'40px'}>
+                          <NumericalInput 
+                              value={txnDeadline} 
+                              onUserInput={onTxnDeadlineInput}
+                              align={'right'}
+                              />
+                          <InputDescriptor>
+                              minutes
+                          </InputDescriptor>
                     </InputContainer>
                 </Row>
 
                 <Row margin={'auto 0 0 0'} padding={'16px'}>
                     <TxnSettingsButton 
+                        onClick={handleResetTxnSettings}
                         border={'none'} 
                         width={'96px'}
                         margin={'0 auto 0 0'}
-                        onClick={handleResetTxnSettings}
+                        padding={'0px'}
                         > 
                           Reset
                     </TxnSettingsButton>
-                    <TxnSettingsButton width={'96px'}> Save </TxnSettingsButton>
+                    <TxnSettingsButton 
+                        width={'96px'}
+                        padding={'0px'}
+                        > 
+                          Save 
+                    </TxnSettingsButton>
                 </Row>
 
             </Column>
