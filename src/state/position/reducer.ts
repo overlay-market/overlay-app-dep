@@ -49,12 +49,9 @@ export default createReducer<PositionState>(initialState, (builder) =>
         state.positionSide = positionSide;
       }
     )
-    .addCase(
-      slippageInput,
-      (state, { payload: { slippageValue } }) => {
-        state.slippageValue = slippageValue;
-      }
-    )
+    .addCase(slippageInput, (state,action) => {
+      state.slippageValue = action.payload.slippageValue;
+    })
     .addCase(
       txnDeadlineInput,
       (state, { payload: {txnDeadline} }) => {
