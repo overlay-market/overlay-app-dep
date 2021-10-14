@@ -129,7 +129,7 @@ export function useIsTxnSettingsAuto() : boolean {
 };
 
 //@ts-ignore
-export function useTxnSettingsAuto(): [boolean, (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => void] {
+export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => void] {
   const dispatch = useAppDispatch();
   const isAuto = useIsTxnSettingsAuto();
 
