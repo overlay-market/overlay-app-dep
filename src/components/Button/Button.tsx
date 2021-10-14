@@ -33,6 +33,7 @@ const BaseButton = styled(RebassButton)<
 export const TxnSettingsButton = styled(BaseButton)`
   background: ${({ active, disabled }) => ( active ? '#12B4FF' : disabled ? 'gray' : 'transparent')};
   color: ${({ disabled }) => ( disabled ? '#0B0F1C' : '#71D2FF' )};
+  cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
 `;
 
 

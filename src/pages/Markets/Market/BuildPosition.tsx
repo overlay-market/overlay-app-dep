@@ -26,6 +26,7 @@ import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
 import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
+import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -199,6 +200,8 @@ const AdditionalDetails = ({
 export const BuildPosition = () => {
   const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
 
+  const isAuto = useIsTxnSettingsAuto();
+
   const { account, chainId } = useActiveWeb3React();
 
   const ovl = chainId ? OVL[chainId] : undefined;
@@ -338,6 +341,8 @@ export const BuildPosition = () => {
                     <TxnSettingsButton 
                         width={'96px'} 
                         margin={'0 0 0 8px'}
+                        active={isAuto}
+                        onClick={handleResetTxnSettings}
                         > 
                           Auto 
                     </TxnSettingsButton>
