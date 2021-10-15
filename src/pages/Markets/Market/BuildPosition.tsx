@@ -197,7 +197,13 @@ const AdditionalDetails = ({
   )
 }
 
-export const BuildPosition = () => {
+export const BuildPosition = ({
+  marketName,
+  marketPrice
+}:{
+  marketName: string 
+  marketPrice: string | number
+}) => {
   const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
 
   const isAuto = useIsTxnSettingsAuto();
@@ -299,7 +305,16 @@ export const BuildPosition = () => {
     <MarketCard align={'left'}>
       <Column as={'form'} onSubmit={(e:any) => e.preventDefault()}>
 
-        {/* Building out Transaction Settings below */}
+        <Row>
+            <Column>
+                <TEXT.MediumHeader fontWeight={700} color={'white'}>
+                    {marketName}
+                </TEXT.MediumHeader>
+
+                <TEXT.MediumHeader fontWeight={400} color={'white'}>
+                    {marketPrice}
+                </TEXT.MediumHeader>
+            </Column>
           <Icon 
             size={24} 
             margin={'0 0 0 auto'} 
@@ -309,11 +324,14 @@ export const BuildPosition = () => {
             >
               {isTxnSettingsOpen ? (
                 <X color={'#12B4FF'}/>
-              ):(
-                <Sliders color={'#B9BABD'}/>
-              )}
+                ):(
+                  <Sliders color={'#B9BABD'}/>
+                  )}
           </Icon>
 
+
+        </Row>
+        {/* Building out Transaction Settings below */}
           <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
             <Column>
                 <Row padding={'8px 16px'}>
@@ -394,8 +412,7 @@ export const BuildPosition = () => {
             </Column>
 
           </TransactionSettingModal>
-
-        {/* Building out Transaction Settings above */}
+            {/* Building out Transaction Settings above */}
 
         <Column>
           <LongPositionButton

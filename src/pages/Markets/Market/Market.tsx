@@ -25,24 +25,6 @@ export const Container = styled.div`
   `};
 `;
 
-const MarketHeader = ({
-  marketName,
-  marketPrice
-}:{
-  marketName: string
-  marketPrice: number | string
-}) => {
-  return (
-    <Card width={'auto'} textAlign={'center'} flexDirection={'column'} color={'white'}>
-      <TEXT.MediumHeader fontWeight={700}>
-        { marketName }
-      </TEXT.MediumHeader>
-      <TEXT.MediumHeader>
-        ${ marketPrice }
-      </TEXT.MediumHeader>
-    </Card>
-  )
-};
 
 export function Market(
   { match: {params: { marketId }}
@@ -53,8 +35,10 @@ export function Market(
   return (
     <>
       <Container>
-        <MarketHeader marketName={marketName} marketPrice={2241.25} />
-        <BuildPosition />
+        <BuildPosition 
+            marketName={marketName}
+            marketPrice={'2241.25'}
+            />
         <Positions />
       </Container>
     </>
