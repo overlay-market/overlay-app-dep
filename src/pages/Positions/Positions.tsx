@@ -6,12 +6,14 @@ import { ChevronRight } from 'react-feather';
 import { Trans } from '@lingui/macro';
 import styled from 'styled-components/macro';
 import { TEXT } from '../../theme/theme';
+import { Link } from 'react-router-dom';
 import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 import { Button } from 'rebass';
 import { injected } from '../../connectors/connectors';
 import { number } from '@lingui/core/cjs/formats';
 import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
+import { StyledLink } from '../../components/Link/Link';
 
 const Container = styled.div`
   display: flex;
@@ -57,12 +59,18 @@ const Detail = styled.div<{
   text-align: inherit;
 `
 
-const CardContainer = styled.div`
+const CardContainer = styled(Link)`
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #828282;
   width: 100%;
   padding: 16px 0;
+  text-decoration: none;
+
+  :hover {
+    border-right: 2px solid #12B4FF;
+    border-left: 2px solid #12B4FF;
+  }
 `;
 
 
@@ -91,6 +99,7 @@ const ConnectWallet = styled(Button)`
 `;
 
 function create_mock_position(
+  positionId: string,
   marketName: string,
   isLong: boolean,
   leverage: number | string,
@@ -106,6 +115,7 @@ function create_mock_position(
   PnLCurrency: string,
   ) {
     return { 
+      positionId,
       marketName, 
       isLong, 
       leverage, 
@@ -123,9 +133,9 @@ function create_mock_position(
 
 
 export const mock_position_data = [
-  create_mock_position("ETH/DAI", true, 1, 100, "OVL", 2410.24, "DAI", "9/17/21", '10:28:30 PM +UTC', '420.60', 'DAI', '0.10', 'OVL'),
-  create_mock_position("ETH/DAI", false, 3, 3300, "OVL", 2910.23, "DAI", "9/21/21", '09:13:24 PM +UTC', '2533.89', 'DAI', '5.01', 'OVL'),
-  create_mock_position("ETH/DAI", true, 7, 700, "OVL", 3300.77, "DAI", "9/25/21", '22:21:15 PM +UTC', '3156.22', 'DAI', '33.33', 'OVL')
+  create_mock_position("0", "ETH/DAI", true, 1, 100, "OVL", 2410.24, "DAI", "9/17/21", '10:28:30 PM +UTC', '420.60', 'DAI', '0.10', 'OVL'),
+  create_mock_position("1", "ETH/DAI", false, 3, 3300, "OVL", 2910.23, "DAI", "9/21/21", '09:13:24 PM +UTC', '2533.89', 'DAI', '5.01', 'OVL'),
+  create_mock_position("2", "ETH/DAI", true, 7, 700, "OVL", 3300.77, "DAI", "9/25/21", '22:21:15 PM +UTC', '3156.22', 'DAI', '33.33', 'OVL')
 ]
 
 const PositionsCardHeader = () => (
@@ -145,6 +155,7 @@ const PositionsCardHeader = () => (
 );
 
 const PositionCard = ({
+  positionId,
   marketName,
   isLong,
   leverage,
@@ -159,6 +170,7 @@ const PositionCard = ({
   PnL,
   PnLCurrency
 }:{
+  positionId: string
   marketName: string
   isLong: boolean
   leverage: number | string
@@ -174,8 +186,9 @@ const PositionCard = ({
   PnLCurrency: string
 }) => {
 
+
   return(
-    <CardContainer>
+    <CardContainer to={`/positions/${positionId}`} >
       <CardCell width="50%">
         <Detail fontWeight={700} color={'white'}>
           {marketName}
@@ -255,6 +268,7 @@ export const Positions = () => {
             
             <PositionsContainer>
               <PositionCard
+                  positionId={ '0' }
                   marketName={ 'ETH/DAI' }
                   isLong={true}
                   leverage={1}
@@ -272,6 +286,7 @@ export const Positions = () => {
 
               {mock_position_data.map((p, key) => (
                 <PositionCard 
+                    positionId={p.positionId}
                     marketName={p.marketName}
                     isLong={p.isLong}
                     leverage={p.leverage}
