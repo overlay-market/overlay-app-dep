@@ -317,7 +317,7 @@ export const BuildPosition = ({
             </Column>
           <Icon 
             size={24} 
-            margin={'0 0 0 auto'} 
+            margin={'0 0 auto auto'} 
             transform={'rotate(90deg)'} 
             clickable={true}
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
