@@ -132,7 +132,7 @@ const AdditionalDetails = ({
   fundingRate?: string | number
 }) => {
   return (
-    <Column mt={ '96px' }>
+    <Column mt={ '96px' } padding={'0 16px'}>
       <Detail>
         <Title> Fee </Title>
         <Content> {fee}% </Content>
@@ -302,17 +302,28 @@ export const BuildPosition = ({
   };
 
   return (
-    <MarketCard align={'left'}>
-      <Column as={'form'} onSubmit={(e:any) => e.preventDefault()}>
+    <MarketCard align={'left'} padding={'0px'}>
+      <Column 
+          padding={'0 16px'}
+          as={'form'} 
+          onSubmit={(e:any) => e.preventDefault()}
+          >
 
-        <Row>
+        <Row margin={'0 0 32px 0'}>
             <Column>
-                <TEXT.MediumHeader fontWeight={700} color={'white'}>
-                    {marketName}
+                <TEXT.MediumHeader 
+                    fontWeight={700} 
+                    color={'white'} 
+                    margin={'14px 0 0 0'}
+                    >
+                      { marketName }
                 </TEXT.MediumHeader>
 
-                <TEXT.MediumHeader fontWeight={400} color={'white'}>
-                    {marketPrice}
+                <TEXT.MediumHeader 
+                    fontWeight={400} 
+                    color={'white'}
+                    >
+                      { marketPrice }
                 </TEXT.MediumHeader>
             </Column>
           <Icon 
@@ -320,6 +331,9 @@ export const BuildPosition = ({
             margin={'0 0 auto auto'} 
             transform={'rotate(90deg)'} 
             clickable={true}
+            top={'22px'}
+            right={'12px'}
+            position={'absolute'}
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
             >
               {isTxnSettingsOpen ? (
@@ -333,86 +347,93 @@ export const BuildPosition = ({
         </Row>
         {/* Building out Transaction Settings below */}
           <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
-            <Column>
-                <Row padding={'8px 16px'}>
-                    <TEXT.Menu>
-                      Slippage Tolerance
-                    </TEXT.Menu>
-                    <InfoTip tipFor={'Slippage Tolerance'}>
-                        <div>
-                            meow meow meow
-                        </div>
-                    </InfoTip>
-                </Row>
+              <Column>
+                  <TEXT.Body 
+                      fontWeight={700} 
+                      textAlign={'left'} 
+                      margin={'24px auto 16px 16px'}
+                      >
+                        Transaction Settings
+                  </TEXT.Body>
 
-                <Row padding={'0px 16px 16px'}>
-                    <InputContainer width={'180px'} height={'40px'}>
-                        <NumericalInput 
-                            value={slippageValue} 
-                            onUserInput={onSlippageInput}
-                            align={'right'}
-                            />
-                        <InputDescriptor>
-                          %
-                        </InputDescriptor>
-                    </InputContainer>
-                    <TxnSettingsButton 
-                        active={isAuto}
-                        onClick={handleResetTxnSettings}
-                        width={'96px'} 
-                        margin={'0 0 0 8px'}
-                        padding={'0px'}
-                        > 
-                          Auto 
-                    </TxnSettingsButton>
-                </Row>
-                    
-                <Row padding={'8px 16px'}>
-                    <TEXT.Menu>
-                        Transaction Deadline
-                    </TEXT.Menu>
-                    <InfoTip tipFor={'Transaction Deadline'}>
-                        <div>
-                            meow meow woof
-                        </div>
-                    </InfoTip>
-                </Row>
+                  <Row padding={'8px 16px'}>
+                      <TEXT.Menu>
+                        Slippage Tolerance
+                      </TEXT.Menu>
 
-                <Row padding={'0px 16px 16px'}>
-                    <InputContainer width={'180px'} height={'40px'}>
+                      <InfoTip tipFor={'Slippage Tolerance'}>
+                          <div>
+                              meow meow meow
+                          </div>
+                      </InfoTip>
+                  </Row>
+
+                  <Row padding={'0px 16px 16px'}>
+                      <InputContainer width={'210px'} height={'40px'}>
                           <NumericalInput 
-                              value={txnDeadline} 
-                              onUserInput={onTxnDeadlineInput}
+                              value={slippageValue} 
+                              onUserInput={onSlippageInput}
                               align={'right'}
                               />
                           <InputDescriptor>
-                              minutes
+                            %
                           </InputDescriptor>
-                    </InputContainer>
-                </Row>
+                      </InputContainer>
+                      <TxnSettingsButton 
+                          active={isAuto}
+                          onClick={handleResetTxnSettings}
+                          width={'96px'} 
+                          margin={'0 0 0 auto'}
+                          padding={'0px'}
+                          > 
+                            Auto 
+                      </TxnSettingsButton>
+                  </Row>
+                      
+                  <Row padding={'8px 16px'}>
+                      <TEXT.Menu>
+                          Transaction Deadline
+                      </TEXT.Menu>
+                      <InfoTip tipFor={'Transaction Deadline'}>
+                          <div>
+                              meow meow woof
+                          </div>
+                      </InfoTip>
+                  </Row>
 
-                <Row margin={'auto 0 0 0'} padding={'16px'}>
-                    <TxnSettingsButton 
-                        onClick={handleResetTxnSettings}
-                        border={'none'} 
-                        width={'96px'}
-                        margin={'0 auto 0 0'}
-                        padding={'0px'}
-                        > 
-                          Reset
-                    </TxnSettingsButton>
-                    <TxnSettingsButton 
-                        width={'96px'}
-                        padding={'0px'}
-                        > 
-                          Save 
-                    </TxnSettingsButton>
-                </Row>
+                  <Row padding={'0px 16px 16px'}>
+                      <InputContainer width={'210px'} height={'40px'}>
+                            <NumericalInput 
+                                value={txnDeadline} 
+                                onUserInput={onTxnDeadlineInput}
+                                align={'right'}
+                                />
+                            <InputDescriptor>
+                                minutes
+                            </InputDescriptor>
+                      </InputContainer>
+                  </Row>
 
-            </Column>
-
+                  <Row margin={'auto 0 0 0'} padding={'16px'} borderTop={'1px solid white'} >
+                      <TxnSettingsButton 
+                          onClick={handleResetTxnSettings}
+                          border={'none'} 
+                          width={'96px'}
+                          margin={'0 auto 0 0'}
+                          padding={'0px'}
+                          > 
+                            Reset
+                      </TxnSettingsButton>
+                      <TxnSettingsButton 
+                          width={'96px'}
+                          padding={'0px'}
+                          > 
+                            Save 
+                      </TxnSettingsButton>
+                  </Row>
+              </Column>
           </TransactionSettingModal>
-            {/* Building out Transaction Settings above */}
+        {/* Building out Transaction Settings above */}
 
         <Column>
           <LongPositionButton

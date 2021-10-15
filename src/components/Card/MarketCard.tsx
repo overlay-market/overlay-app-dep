@@ -20,16 +20,18 @@ const Title = styled(TEXT.Body)<{align?: string}>`
 export const MarketCard = ({
   title, 
   children,
-  align
+  align,
+  padding
 }:{
   title?: string
   children: React.ReactNode
   align?: string
+  padding?: string
 }) => {
   return (
     <Container>
       <Title align={align}> {title} </Title>
-      <Card borderRadius={'4px'}>
+      <Card borderRadius={'4px'} padding={padding}>
         {children}
       </Card>
     </Container>
