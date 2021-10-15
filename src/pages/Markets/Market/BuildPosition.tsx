@@ -104,7 +104,7 @@ const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   height: 100%;
   width: 100%;
   border-radius: 8px;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(33px);
   z-index: 5;
   color: #f2f2f2;
 `;
