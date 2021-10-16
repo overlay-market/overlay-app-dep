@@ -59,7 +59,7 @@ const Detail = styled.div<{
   text-align: inherit;
 `
 
-const CardContainer = styled(Link)`
+const CardContainer = styled(Link)<{ navigate?: boolean}>`
   display: flex;
   flex-direction: row;
   border-bottom: 1px solid #828282;
@@ -67,9 +67,11 @@ const CardContainer = styled(Link)`
   padding: 16px 0;
   text-decoration: none;
 
+  pointer-events: ${({ navigate }) => ( navigate ? 'auto' : 'none' )};
+
   :hover {
-    border-right: 2px solid #12B4FF;
-    border-left: 2px solid #12B4FF;
+    border-right: ${({ navigate }) => ( navigate ? '2px solid #12B4FF' : 'none' )};
+    border-left: ${({ navigate }) => ( navigate ? '2px solid #12B4FF' : 'none' )};
   }
 `;
 
@@ -138,7 +140,7 @@ export const mock_position_data = [
   create_mock_position("2", "ETH/DAI", true, 7, 700, "OVL", 3300.77, "DAI", "9/25/21", '22:21:15 PM +UTC', '3156.22', 'DAI', '33.33', 'OVL')
 ]
 
-const PositionsCardHeader = () => (
+export const PositionsCardHeader = () => (
   <CardHeader>
     <HeaderCell align="left" width="50%">
       Position
@@ -154,7 +156,7 @@ const PositionsCardHeader = () => (
   </CardHeader>
 );
 
-const PositionCard = ({
+export const PositionCard = ({
   positionId,
   marketName,
   isLong,
@@ -168,7 +170,8 @@ const PositionCard = ({
   estLiquidationPrice,
   liquidationCurrency,
   PnL,
-  PnLCurrency
+  PnLCurrency,
+  navigate
 }:{
   positionId: string
   marketName: string
@@ -184,11 +187,12 @@ const PositionCard = ({
   liquidationCurrency: string
   PnL: number | string
   PnLCurrency: string
+  navigate?: boolean
 }) => {
 
 
   return(
-    <CardContainer to={`/positions/${positionId}`} >
+    <CardContainer navigate={navigate} to={`/positions/${positionId}`} >
       <CardCell width="50%">
         <Detail fontWeight={700} color={'white'}>
           {marketName}
@@ -282,6 +286,7 @@ export const Positions = () => {
                   liquidationCurrency={ 'DAI' }
                   PnL={ '0.10' }
                   PnLCurrency={ 'OVL' }
+                  navigate={true}
                   />
 
               {mock_position_data.map((p, key) => (
@@ -300,6 +305,7 @@ export const Positions = () => {
                     liquidationCurrency={p.liquidationCurrency}
                     PnL={p.PnL}
                     PnLCurrency={p.PnLCurrency}
+                    navigate={true}
                     />
               ))} 
             </PositionsContainer>

@@ -17,6 +17,7 @@ export const Container = styled.div`
   padding: 16px;
   position: static;
   z-index: 0;
+  color: white;
 
   ${({ theme }) => theme.mediaWidth.minMedium`
     padding: 16px 0;
