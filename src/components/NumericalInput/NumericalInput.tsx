@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components/macro';
 import { escapeRegExp } from '../../utils/escapeRegExp';
 
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string }>`
+const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string; height?: string }>`
   color: ${({ error, theme }) => (error ? theme.red1 : theme.text1)};
   width: 100%;
   position: relative;
@@ -13,6 +13,7 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   background-color: transparent;
   font-size: ${({ fontSize }) => fontSize ?? '16px'};
   text-align: ${({ align }) => align && align};
+  height: ${({ height }) => (height ? height : 'auto')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -44,6 +45,7 @@ export const NumericalInput = React.memo(function InnerInput({
   onUserInput,
   placeholder,
   prependSymbol,
+  height,
   ...rest
 }: {
   value: string | number | undefined
@@ -51,6 +53,7 @@ export const NumericalInput = React.memo(function InnerInput({
   error?: boolean
   fontSize?: string
   align?: 'right' | 'left'
+  height?: string
   prependSymbol?: string | undefined
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const enforcer = (nextUserInput: string) => {
@@ -90,6 +93,7 @@ export const NumericalInput = React.memo(function InnerInput({
       minLength={1}
       maxLength={79}
       spellCheck="false"
+      height={height}
     />
   )
 });

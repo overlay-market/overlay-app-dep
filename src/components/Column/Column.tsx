@@ -11,6 +11,7 @@ export const Column = styled(Box)<{
 }>`
   display: flex;
   flex-direction: column;
+  position: relative;
   width: ${({ width }) => width ?? '100%'}; 
   align-items: ${({ align }) => align ?? 'center'};
   justify-content: ${({ justify }) => justify ?? 'flex-start'};
