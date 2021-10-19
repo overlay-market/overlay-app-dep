@@ -1,9 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import useDebounce from '../../hooks/useDebounce';
 import useIsWindowVisible from '../../hooks/useIsWindowVisible';
-import { useActiveWeb3React } from '../../hooks/web3'
-import { updateBlockNumber } from './actions'
+import { useActiveWeb3React } from '../../hooks/web3';
+import { updateBlockNumber } from './actions';
+import { api, CHAIN_TAG } from '../data/enhanced';
+
+function useQueryCacheInvalidator() {
+  const dispatch = useAppDispatch()
+
+  // subscribe to `chainId` changes in the redux store rather than Web3
+  // this will ensure that when `invalidateTags` is called, the latest
+  // `chainId` is available in redux to build the subgraph url
+  const chainId = useAppSelector((state) => state.application.chainId)
+
+  useEffect(() => {
+    dispatch(api.util.invalidateTags([CHAIN_TAG]))
+  }, [chainId, dispatch])
+}
 
 export default function Updater(): null {
   const { library, chainId } = useActiveWeb3React()
@@ -15,6 +29,8 @@ export default function Updater(): null {
     chainId,
     blockNumber: null,
   })
+
+  useQueryCacheInvalidator()
 
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {

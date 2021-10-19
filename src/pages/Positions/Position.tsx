@@ -12,6 +12,8 @@ import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { PositionCard, PositionsCardHeader } from './Positions';
 import { useCurrentOvlBalance } from '../../state/data/hooks';
 import { useActiveWeb3React } from '../../hooks/web3';
+import { api } from '../../state/data/slice';
+import { useAppDispatch } from '../../state/hooks';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -53,14 +55,15 @@ export function Position(
 }: RouteComponentProps<{ positionId: string }>
 ) {
   const { account } = useActiveWeb3React();
+  const dispatch = useAppDispatch();
 
   let alice = '0x4f816c2016f5c8496380cdb6c1db881f73fe5fca';
 
   const response = useCurrentOvlBalance(alice);
 
-  useEffect(() => {
-    console.log('response from data api slice: ', response)
-  }, [response]);
+  // useEffect(() => {
+  //   const result = dispatch(api.endpoints.)
+  // }, [response]);
 
   return (
     <Container>
