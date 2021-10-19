@@ -3,6 +3,7 @@ import {
   useMultipleContractSingleData,
   useSingleContractMultipleData,
 } from "../multicall/hooks";
+import { useAccountQuery } from '../data/enhanced';
 import { useMemo } from "react";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { isAddress } from '../../utils/validate';
@@ -10,6 +11,29 @@ import { useMulticall2Contract } from '../../hooks/useContract';
 import { Interface } from '@ethersproject/abi'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import ERC20_INTERFACE from "../../constants/abis/erc20";
+
+
+export function useOvlBalance(
+  address: string 
+) {
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    data
+  } = useAccountQuery({ account: address })
+
+  return useMemo(() => {
+    return {
+      isLoading,
+      isError,
+      error,
+      isUninitialized,
+      data
+    } 
+  }, [ isLoading, isError, error, isUninitialized, data ])
+};
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.

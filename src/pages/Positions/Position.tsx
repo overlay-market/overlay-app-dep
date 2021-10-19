@@ -10,7 +10,7 @@ import { TransparentUnderlineButton, LightGreyButton } from '../../components/Bu
 import { InputContainer, InputDescriptor } from '../Markets/Market/BuildPosition';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { PositionCard, PositionsCardHeader } from './Positions';
-import { useCurrentOvlBalance } from '../../state/data/hooks';
+import { useOvlBalance } from '../../state/wallet/hooks';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
@@ -56,14 +56,6 @@ export function Position(
 ) {
   const { account } = useActiveWeb3React();
   const dispatch = useAppDispatch();
-
-  let alice = '0x4f816c2016f5c8496380cdb6c1db881f73fe5fca';
-
-  const response = useCurrentOvlBalance(alice);
-
-  useEffect(() => {
-    console.log('response from Position: ', response);
-  }, [response])
 
   return (
     <Container>
