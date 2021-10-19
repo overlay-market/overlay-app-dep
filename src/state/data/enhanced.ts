@@ -9,6 +9,6 @@ export const api = generatedApi.enhanceEndpoints({
       providesTags: [CHAIN_TAG],
     },
   },
-})
+});
 
-export const { useAccountQuery } = api
+export const { useAccountQuery, useLazyAccountQuery } = api;

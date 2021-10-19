@@ -19,7 +19,7 @@ const store = configureStore({
     transactions,
     [dataApi.reducerPath]: dataApi.reducer,
   },
-  middleware: [...getDefaultMiddleware({ thunk: false }), save({ states: PERSISTED_KEYS, debounce: 1000 })],
+  middleware: [...getDefaultMiddleware({ thunk: false, serializableCheck: false }).concat(dataApi.middleware), save({ states: PERSISTED_KEYS, debounce: 1000 })],
   preloadedState: load({ states: PERSISTED_KEYS }),
 });
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Container } from '../Markets/Market/Market';
@@ -10,7 +10,8 @@ import { TransparentUnderlineButton, LightGreyButton } from '../../components/Bu
 import { InputContainer, InputDescriptor } from '../Markets/Market/BuildPosition';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { PositionCard, PositionsCardHeader } from './Positions';
-import { request, gql } from 'graphql-request';
+import { useCurrentOvlBalance } from '../../state/data/hooks';
+import { useActiveWeb3React } from '../../hooks/web3';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -21,10 +22,6 @@ const UnwindButton = styled(LightGreyButton)`
   margin-top: 24px;
   margin-bottom: 64px; 
 `;
-
-export const BobSendAliceMoolah = () => {
-  
-}
 
 const ListItem = ({
   item,
@@ -55,6 +52,16 @@ export function Position(
   { match: {params: { positionId }}
 }: RouteComponentProps<{ positionId: string }>
 ) {
+  const { account } = useActiveWeb3React();
+
+  let alice = '0x4f816c2016f5c8496380cdb6c1db881f73fe5fca';
+
+  const response = useCurrentOvlBalance(alice);
+
+  useEffect(() => {
+    console.log('response from data api slice: ', response)
+  }, [response]);
+
   return (
     <Container>
 
