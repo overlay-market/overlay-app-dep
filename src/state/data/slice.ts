@@ -14,7 +14,7 @@ export const api = createApi({
   reducerPath: 'dataApi',
   baseQuery: graphqlRequestBaseQuery(),
   endpoints: (builder) => ({
-    ovlBalance: builder.query({
+    accountQuery: builder.query({
       query: ({ account }) => ({ 
           document: gql`
             query account($account: ID!) {
