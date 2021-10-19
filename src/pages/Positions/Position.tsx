@@ -10,6 +10,7 @@ import { TransparentUnderlineButton, LightGreyButton } from '../../components/Bu
 import { InputContainer, InputDescriptor } from '../Markets/Market/BuildPosition';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { PositionCard, PositionsCardHeader } from './Positions';
+import { request, gql } from 'graphql-request';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -20,6 +21,10 @@ const UnwindButton = styled(LightGreyButton)`
   margin-top: 24px;
   margin-bottom: 64px; 
 `;
+
+export const BobSendAliceMoolah = () => {
+  
+}
 
 const ListItem = ({
   item,
