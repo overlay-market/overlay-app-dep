@@ -1,10 +1,12 @@
+import { SupportedChainId } from './../../constants/chains';
 import { useCallback, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import useDebounce from '../../hooks/useDebounce';
 import useIsWindowVisible from '../../hooks/useIsWindowVisible';
 import { useActiveWeb3React } from '../../hooks/web3';
-import { updateBlockNumber } from './actions';
+import { updateBlockNumber, updateChainId } from './actions';
 import { api, CHAIN_TAG } from '../data/enhanced';
+import { supportedChainId } from '../../utils/supportedChainId';
 
 function useQueryCacheInvalidator() {
   const dispatch = useAppDispatch()
@@ -68,6 +70,12 @@ export default function Updater(): null {
     if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
     dispatch(updateBlockNumber({ chainId: debouncedState.chainId, blockNumber: debouncedState.blockNumber }))
   }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
+
+  useEffect(() => {
+    dispatch(
+      updateChainId({ chainId: debouncedState.chainId ? supportedChainId(debouncedState.chainId) ?? null : null })
+    )
+  }, [dispatch, debouncedState.chainId])
 
   return null
 }

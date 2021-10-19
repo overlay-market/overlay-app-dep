@@ -61,9 +61,9 @@ export function Position(
 
   const response = useCurrentOvlBalance(alice);
 
-  // useEffect(() => {
-  //   const result = dispatch(api.endpoints.)
-  // }, [response]);
+  useEffect(() => {
+    console.log('response from Position: ', response);
+  }, [response])
 
   return (
     <Container>

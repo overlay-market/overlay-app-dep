@@ -24,5 +24,4 @@ export function useCurrentOvlBalance(
       data
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
-
 }
