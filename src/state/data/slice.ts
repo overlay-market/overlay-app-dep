@@ -19,9 +19,7 @@ export const api = createApi({
           document: gql`
             query account($account: ID!) {
                 account(id: $account) {
-                    balanceOVL {
-                        balance
-                    }
+                  id
                 }
             }
           `,
@@ -30,15 +28,33 @@ export const api = createApi({
           },
        }),
     }),
-    allMarkets: builder.query({
-      query: () => ({
+    appQuery: builder.query({
+      query: ({account}) => ({
         document: gql`
-          query markets {
+          query app($account: ID!) {
             markets {
               id
+              oiLong
+              oiLongShares
+              oiLongQueued
+              oiShort
+              oiShortShares
+              oiShortQueued
+              oiCap
+            }
+            account (id: $account) {
+              balanceOVL {
+                balance
+              }
+              balances {
+                shares
+              }
             }
           }
         `,
+        variables: {
+          account
+        }
       })
     })
   })

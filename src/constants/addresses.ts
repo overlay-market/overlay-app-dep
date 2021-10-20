@@ -10,7 +10,7 @@ export enum ContractAddresses {
 };
 
 // update as new contracts are deployed
-export const OVL_ADDRESS: AddressMap = constructSameAddressMap('0x754deD0a3518F087D4f1D69FFe57423C5e4794ea');
+export const OVL_ADDRESS: AddressMap = constructSameAddressMap('0x04346e29fDef5dc5A7822793d9f00B5db73D6532');
 
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',

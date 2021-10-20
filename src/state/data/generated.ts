@@ -1240,21 +1240,29 @@ export type AccountQuery = (
   { __typename?: 'Query' }
   & { account?: Maybe<(
     { __typename?: 'Account' }
-    & { balanceOVL: (
-      { __typename?: 'BalanceOVL' }
-      & Pick<BalanceOvl, 'balance'>
-    ) }
+    & Pick<Account, 'id'>
   )> }
 );
 
-export type MarketsQueryVariables = Exact<{ [key: string]: never; }>;
+export type AppQueryVariables = Exact<{
+  account: Scalars['ID'];
+}>;
 
 
-export type MarketsQuery = (
+export type AppQuery = (
   { __typename?: 'Query' }
   & { markets: Array<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id'>
+    & Pick<Market, 'id' | 'oiLong' | 'oiLongShares' | 'oiLongQueued' | 'oiShort' | 'oiShortShares' | 'oiShortQueued' | 'oiCap'>
+  )>, account?: Maybe<(
+    { __typename?: 'Account' }
+    & { balanceOVL: (
+      { __typename?: 'BalanceOVL' }
+      & Pick<BalanceOvl, 'balance'>
+    ), balances: Array<(
+      { __typename?: 'Balance' }
+      & Pick<Balance, 'shares'>
+    )> }
   )> }
 );
 
@@ -1262,16 +1270,29 @@ export type MarketsQuery = (
 export const AccountDocument = `
     query account($account: ID!) {
   account(id: $account) {
-    balanceOVL {
-      balance
-    }
+    id
   }
 }
     `;
-export const MarketsDocument = `
-    query markets {
+export const AppDocument = `
+    query app($account: ID!) {
   markets {
     id
+    oiLong
+    oiLongShares
+    oiLongQueued
+    oiShort
+    oiShortShares
+    oiShortQueued
+    oiCap
+  }
+  account(id: $account) {
+    balanceOVL {
+      balance
+    }
+    balances {
+      shares
+    }
   }
 }
     `;
@@ -1281,12 +1302,12 @@ const injectedRtkApi = api.injectEndpoints({
     account: build.query<AccountQuery, AccountQueryVariables>({
       query: (variables) => ({ document: AccountDocument, variables })
     }),
-    markets: build.query<MarketsQuery, MarketsQueryVariables | void>({
-      query: (variables) => ({ document: MarketsDocument, variables })
+    app: build.query<AppQuery, AppQueryVariables>({
+      query: (variables) => ({ document: AppDocument, variables })
     }),
   }),
 });
 
 export { injectedRtkApi as api };
-export const { useAccountQuery, useLazyAccountQuery, useMarketsQuery, useLazyMarketsQuery } = injectedRtkApi;
+export const { useAccountQuery, useLazyAccountQuery, useAppQuery, useLazyAppQuery } = injectedRtkApi;
 
