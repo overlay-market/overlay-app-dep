@@ -6,6 +6,7 @@ import multicall from './multicall/reducer';
 import position from './position/reducer';
 import transactions from './transactions/reducer';
 import { updateVersion } from './global/actions';
+import { api as dataApi } from './data/slice'
 
 const PERSISTED_KEYS: string[] = ['user', 'transactions'];
 
@@ -15,9 +16,13 @@ const store = configureStore({
     user,
     multicall,
     position,
-    transactions
+    transactions,
+    [dataApi.reducerPath]: dataApi.reducer,
   },
-  middleware: [...getDefaultMiddleware({ thunk: false }), save({ states: PERSISTED_KEYS, debounce: 1000 })],
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware({ thunk: true })
+      .concat(dataApi.middleware)
+      .concat(save({ states: PERSISTED_KEYS, debounce: 1000 })),
   preloadedState: load({ states: PERSISTED_KEYS }),
 });
 

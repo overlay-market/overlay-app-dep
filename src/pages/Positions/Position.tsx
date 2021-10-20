@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Container } from '../Markets/Market/Market';
@@ -10,6 +10,11 @@ import { TransparentUnderlineButton, LightGreyButton } from '../../components/Bu
 import { InputContainer, InputDescriptor } from '../Markets/Market/BuildPosition';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { PositionCard, PositionsCardHeader } from './Positions';
+import { useOvlBalance } from '../../state/wallet/hooks';
+import { useAllMarkets } from '../../state/markets/hooks';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { api } from '../../state/data/slice';
+import { useAppDispatch } from '../../state/hooks';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -50,6 +55,15 @@ export function Position(
   { match: {params: { positionId }}
 }: RouteComponentProps<{ positionId: string }>
 ) {
+  const { account } = useActiveWeb3React();
+  const dispatch = useAppDispatch();
+
+  const response = useAllMarkets();
+
+  useEffect(() => {
+    console.log('response from allMarkets: ', response);
+  }, [response])
+  
   return (
     <Container>
 
