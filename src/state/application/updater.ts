@@ -32,7 +32,7 @@ export default function Updater(): null {
     blockNumber: null,
   })
 
-  useQueryCacheInvalidator()
+  useQueryCacheInvalidator();
 
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {

@@ -1,6 +1,27 @@
 import { useMemo } from "react";
 import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
+import { useAllMarketsQuery } from "../data/enhanced";
+
+export function useAllMarkets() {
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    data
+  } = useAllMarketsQuery({});
+
+  return useMemo(() => {
+    return {
+      isLoading,
+      isError,
+      error,
+      isUninitialized,
+      data
+    } 
+  }, [ isLoading, isError, error, isUninitialized, data ])
+};
 
 export function useTotalMarkets() {
   const ovlFactoryContract = useOVLFactoryContract();

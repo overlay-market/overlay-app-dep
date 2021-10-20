@@ -30,6 +30,17 @@ export const api = createApi({
           },
        }),
     }),
+    allMarkets: builder.query({
+      query: () => ({
+        document: gql`
+          query markets {
+            markets {
+              id
+            }
+          }
+        `,
+      })
+    })
   })
 });
 
