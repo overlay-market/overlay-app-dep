@@ -15,6 +15,7 @@ import { useAllMarkets } from '../../state/markets/hooks';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
+import { formatAmount } from '../../utils/formatData';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -62,6 +63,10 @@ export function Position(
 
   useEffect(() => {
     console.log('response from allMarkets: ', response);
+
+    if (response.data) {
+      console.log('test amount: ', formatAmount(response.data.markets[0].oiLong, 18));
+    }
   }, [response])
   
   return (
