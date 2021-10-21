@@ -15,14 +15,14 @@ export function useAllMarkets() {
     data
   } = useAppQuery({account});
 
-  // const formatData = useCallback(() => {
-  //   if (data?.markets.length) {
-  //     console.log('test format: ', formatAmount(data?.markets?.[0].oiLongQueued, 18))
+  const formatData = useCallback(() => {
+    if (data?.markets.length) {
+      
 
-  //   }
+    }
 
 
-  // }, [data])
+  }, [data])
 
   return useMemo(() => {
     return {
