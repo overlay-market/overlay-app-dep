@@ -3,6 +3,12 @@ import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContrac
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 import { useAppQuery } from "../data/enhanced";
 import { formatAmount } from "../../utils/formatData";
+import { useAppSelector } from "../hooks";
+import { AppState } from "../state";
+
+export function useMarketsState(): AppState['markets'] {
+  return useAppSelector((state) => state.markets)
+}
 
 export function useAllMarkets() {
   const account = '0x4F816C2016F5c8496380Cdb6c1dB881f73fe5fCA';
