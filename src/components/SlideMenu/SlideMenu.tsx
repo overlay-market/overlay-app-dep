@@ -35,7 +35,6 @@ const StyledInternalLink = styled(NavLink)`
   font-weight: 700;
   margin: 16px 0;
   border: none !important;
-  font-family: 'Press Start 2P', cursive;
 `;
 
 const StyledExternalLink = styled.a.attrs(props => ({
@@ -49,7 +48,6 @@ const StyledExternalLink = styled.a.attrs(props => ({
   color: white;
   font-weight: 700;
   margin: 16px 0;
-  font-family: 'Press Start 2P', cursive;
 `;
 
 const Separator = styled.div`
@@ -106,7 +104,6 @@ const SlideMenu = ({
         </StyledExternalLink>
         <Accordion 
             title={"Language"}
-            fontFamily={"'Press Start 2P', cursive"}
             >
           {SUPPORTED_LOCALES.map((locale) => (
             <AccordionSelection>
