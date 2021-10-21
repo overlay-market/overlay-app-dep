@@ -9,6 +9,7 @@ export const Row = styled(Box)<{
   border?: string
   borderRadius?: string
   minWidth?: string
+  borderTop?: string
 }>`
   display: flex;
   flex-direction: row;
@@ -19,4 +20,5 @@ export const Row = styled(Box)<{
   border: ${({ border }) => border};
   border-radius: ${({ borderRadius }) => borderRadius};
   min-width: ${({ borderRadius }) => borderRadius ?? 'auto'};
+  border-top: ${({ borderTop }) => borderTop ?? borderTop };
 `

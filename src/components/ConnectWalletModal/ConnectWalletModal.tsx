@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import Modal from "../Modal/Modal";
 import { useModalOpen, useWalletModalToggle } from "../../state/application/hooks";
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
 import { ApplicationModal } from "../../state/application/actions";
 import { TEXT } from "../../theme/theme";
 import { X } from "react-feather";
+// import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { UnsupportedChainIdError } from "@web3-react/core";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { SUPPORTED_WALLETS } from "../../constants/wallet";
@@ -86,9 +86,9 @@ export default function ConnectWalletModal() {
     setWalletView(WALLET_VIEWS.PENDING)
 
     // if the connector is walletconnect and the user has already tried to connect, manually reset the connector
-    if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
-      connector.walletConnectProvider = undefined
-    }
+    // if (connector instanceof WalletConnectConnector && connector.walletConnectProvider?.wc?.uri) {
+    //   connector.walletConnectProvider = undefined
+    // }
 
     connector &&
       activate(connector, undefined, true).catch((error) => {

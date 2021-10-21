@@ -1,6 +1,13 @@
 import { useCallback } from "react";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
-import { PositionSide, amountInput, leverageInput, positionSideInput } from "./actions";
+import { 
+  PositionSide, 
+  amountInput, 
+  leverageInput, 
+  positionSideInput, 
+  slippageInput,
+  txnDeadlineInput,
+  DefaultTxnSettings } from "./actions";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppState } from "../state";
 import { Token } from "@uniswap/sdk-core";
@@ -16,6 +23,8 @@ export function usePositionActionHandlers(): {
   onAmountInput: (inputValue: string | undefined) => void;
   onLeverageInput: (leverageValue: number) => void;
   onPositionSideInput: (positionSide: PositionSide) => void;
+  onSlippageInput: (slippageValue: DefaultTxnSettings | string | undefined) => void;
+  onTxnDeadlineInput: ( txnDeadline: DefaultTxnSettings | string | undefined) => void;
 } {
   const dispatch = useAppDispatch();
 
@@ -38,12 +47,28 @@ export function usePositionActionHandlers(): {
       dispatch(positionSideInput({positionSide}))
     },
     [dispatch]
+  );
+
+  const onSlippageInput = useCallback(
+    (slippageValue: DefaultTxnSettings | string | undefined) => {
+      dispatch(slippageInput({slippageValue}))
+    },
+    [dispatch]
+  )
+
+  const onTxnDeadlineInput = useCallback(
+    (txnDeadline: DefaultTxnSettings | string | undefined) => {
+      dispatch(txnDeadlineInput({txnDeadline}))
+    },
+    [dispatch]
   )
 
   return {
     onAmountInput,
     onLeverageInput,
-    onPositionSideInput
+    onPositionSideInput,
+    onSlippageInput,
+    onTxnDeadlineInput
   }
 };
 
@@ -95,3 +120,26 @@ export function tryParseAmount<T extends Currency>(value?: string, currency?: T)
   // necessary for all paths to return a value
   return undefined;
 }
+
+export function useIsTxnSettingsAuto() : boolean {
+  const { slippageValue, txnDeadline } = useAppSelector(((state) => state.position));
+
+  if (slippageValue === DefaultTxnSettings.DEFAULT_SLIPPAGE && txnDeadline === DefaultTxnSettings.DEFAULT_DEADLINE) return true;
+  else return false;
+};
+
+//@ts-ignore
+export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => any] {
+  const dispatch = useAppDispatch();
+  const isAuto = useIsTxnSettingsAuto();
+
+  const toggleSetTxnSettingsAuto = useCallback(
+    (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => {
+      dispatch(slippageInput({ slippageValue: default_slippage }))
+      dispatch(txnDeadlineInput({ txnDeadline: default_deadline }))
+    },
+      [dispatch]
+  )
+
+  return [isAuto, toggleSetTxnSettingsAuto];
+};

@@ -5,7 +5,8 @@ import {
   LightGreyButton, 
   TransparentUnderlineButton, 
   TransparentDarkGreyButton,
-  ActiveBlueButton } from "../../../components/Button/Button";
+  ActiveBlueButton,
+  TxnSettingsButton } from "../../../components/Button/Button";
 import { TEXT } from "../../../theme/theme";
 import { Column } from "../../../components/Column/Column";
 import { Row } from "../../../components/Row/Row";
@@ -14,7 +15,7 @@ import { usePositionActionHandlers } from '../../../state/position/hooks';
 import { useActiveWeb3React } from '../../../hooks/web3';
 import { usePositionState } from '../../../state/position/hooks';
 import { useTokenBalance } from '../../../state/wallet/hooks';
-import { PositionSide } from '../../../state/position/actions';
+import { PositionSide, DefaultTxnSettings } from '../../../state/position/actions';
 import { OVL } from '../../../constants/tokens';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { useApproveCallback } from '../../../hooks/useApproveCallback';
@@ -22,6 +23,10 @@ import { useDerivedUserInputs } from '../../../state/position/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
+import { Sliders, X } from 'react-feather';
+import { Icon } from '../../../components/Icon/Icon';
+import { InfoTip } from '../../../components/InfoTip/InfoTip';
+import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -92,6 +97,19 @@ export const OI = styled.div`
   color: #B9BABD;
 `;
 
+const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
+  display: ${({ isOpen }) => ( isOpen ? 'flex' : 'none' )};
+  position: absolute;
+  border: 1px solid #D0D0D2;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  backdrop-filter: blur(33px);
+  z-index: 5;
+  color: #f2f2f2;
+`;
+
+
 const AdditionalDetails = ({
   fee,
   slippage,
@@ -114,7 +132,7 @@ const AdditionalDetails = ({
   fundingRate?: string | number
 }) => {
   return (
-    <Column mt={ '96px' }>
+    <Column mt={ '96px' } padding={'0 16px'}>
       <Detail>
         <Title> Fee </Title>
         <Content> {fee}% </Content>
@@ -179,7 +197,17 @@ const AdditionalDetails = ({
   )
 }
 
-export const BuildPosition = () => {
+export const BuildPosition = ({
+  marketName,
+  marketPrice
+}:{
+  marketName: string 
+  marketPrice: string | number
+}) => {
+  const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
+
+  const isAuto = useIsTxnSettingsAuto();
+
   const { account, chainId } = useActiveWeb3React();
 
   const ovl = chainId ? OVL[chainId] : undefined;
@@ -188,27 +216,50 @@ export const BuildPosition = () => {
 
   const maxInputAmount = maxAmountSpend(userOvlBalance);
 
-  const { leverageValue, positionSide, inputValue, inputCurrency } = usePositionState();
+  const { 
+    leverageValue, 
+    positionSide, 
+    inputValue, 
+    inputCurrency, 
+    slippageValue,
+    txnDeadline } = usePositionState();
 
-  const { parsedAmount, error } = useDerivedUserInputs(
-    inputValue,
-    ovl
-  );
+  const { 
+    onAmountInput, 
+    onLeverageInput, 
+    onPositionSideInput, 
+    onSlippageInput,
+    onTxnDeadlineInput } = usePositionActionHandlers();
 
-  const { onAmountInput, onLeverageInput, onPositionSideInput } = usePositionActionHandlers();
+
+  const { parsedAmount, error } = useDerivedUserInputs(inputValue, ovl);
 
   // handle user inputs
-  const handleLeverageInput = useCallback((e: any) => { onLeverageInput(e.target.value) }, [onLeverageInput]);
+  const handleResetTxnSettings = useCallback((e:any) => {
+      onSlippageInput(DefaultTxnSettings.DEFAULT_SLIPPAGE);
+      onTxnDeadlineInput(DefaultTxnSettings.DEFAULT_DEADLINE);
+    }, [onSlippageInput, onTxnDeadlineInput]
+  );
 
-  const handlePositionSideLong = useCallback(() => { onPositionSideInput(PositionSide.LONG) }, [onPositionSideInput]);
+  const handleLeverageInput = useCallback((e: any) => { 
+      onLeverageInput(e.target.value) 
+    }, [onLeverageInput]
+  );
+
+  const handlePositionSideLong = useCallback(() => {
+     onPositionSideInput(PositionSide.LONG) 
+    }, [onPositionSideInput]
+  );
   
-  const handlePositionSideShort = useCallback(() => { onPositionSideInput(PositionSide.SHORT) }, [onPositionSideInput]);
+  const handlePositionSideShort = useCallback(() => { 
+     onPositionSideInput(PositionSide.SHORT)
+    }, [onPositionSideInput]
+  );
   
   const handleTypeInput = useCallback(
     (value: string) => {
       onAmountInput(value)
-    },
-    [onAmountInput]
+    }, [onAmountInput]
   );
 
   // handle quick inputs
@@ -251,8 +302,139 @@ export const BuildPosition = () => {
   };
 
   return (
-    <MarketCard align={'left'}>
-      <Column as={'form'} onSubmit={(e:any) => e.preventDefault()}>
+    <MarketCard align={'left'} padding={'0px'}>
+      <Column 
+          padding={'0 16px'}
+          as={'form'} 
+          onSubmit={(e:any) => e.preventDefault()}
+          >
+
+        <Row margin={'0 0 32px 0'}>
+            <Column>
+                <TEXT.MediumHeader 
+                    fontWeight={700} 
+                    color={'white'} 
+                    margin={'14px 0 0 0'}
+                    >
+                      { marketName }
+                </TEXT.MediumHeader>
+
+                <TEXT.MediumHeader 
+                    fontWeight={400} 
+                    color={'white'}
+                    >
+                      { marketPrice }
+                </TEXT.MediumHeader>
+            </Column>
+          <Icon 
+            size={24} 
+            margin={'0 0 auto auto'} 
+            transform={'rotate(90deg)'} 
+            clickable={true}
+            top={'22px'}
+            right={'12px'}
+            position={'absolute'}
+            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+            >
+              {isTxnSettingsOpen ? (
+                <X color={'#12B4FF'}/>
+                ):(
+                  <Sliders color={'#B9BABD'}/>
+                  )}
+          </Icon>
+
+
+        </Row>
+        {/* Building out Transaction Settings below */}
+          <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
+              <Column>
+                  <TEXT.Body 
+                      fontWeight={700} 
+                      textAlign={'left'} 
+                      margin={'24px auto 16px 16px'}
+                      >
+                        Transaction Settings
+                  </TEXT.Body>
+
+                  <Row padding={'8px 16px'}>
+                      <TEXT.Menu>
+                        Slippage Tolerance
+                      </TEXT.Menu>
+
+                      <InfoTip tipFor={'Slippage Tolerance'}>
+                          <div>
+                              meow meow meow
+                          </div>
+                      </InfoTip>
+                  </Row>
+
+                  <Row padding={'0px 16px 16px'}>
+                      <InputContainer width={'210px'} height={'40px'}>
+                          <NumericalInput 
+                              value={slippageValue} 
+                              onUserInput={onSlippageInput}
+                              align={'right'}
+                              />
+                          <InputDescriptor>
+                            %
+                          </InputDescriptor>
+                      </InputContainer>
+                      <TxnSettingsButton 
+                          active={isAuto}
+                          onClick={handleResetTxnSettings}
+                          width={'96px'} 
+                          margin={'0 0 0 auto'}
+                          padding={'0px'}
+                          > 
+                            Auto 
+                      </TxnSettingsButton>
+                  </Row>
+                      
+                  <Row padding={'8px 16px'}>
+                      <TEXT.Menu>
+                          Transaction Deadline
+                      </TEXT.Menu>
+                      <InfoTip tipFor={'Transaction Deadline'}>
+                          <div>
+                              meow meow woof
+                          </div>
+                      </InfoTip>
+                  </Row>
+
+                  <Row padding={'0px 16px 16px'}>
+                      <InputContainer width={'210px'} height={'40px'}>
+                            <NumericalInput 
+                                value={txnDeadline} 
+                                onUserInput={onTxnDeadlineInput}
+                                align={'right'}
+                                />
+                            <InputDescriptor>
+                                minutes
+                            </InputDescriptor>
+                      </InputContainer>
+                  </Row>
+
+                  <Row margin={'auto 0 0 0'} padding={'16px'} borderTop={'1px solid white'} >
+                      <TxnSettingsButton 
+                          onClick={handleResetTxnSettings}
+                          border={'none'} 
+                          width={'96px'}
+                          margin={'0 auto 0 0'}
+                          padding={'0px'}
+                          > 
+                            Reset
+                      </TxnSettingsButton>
+                      <TxnSettingsButton 
+                          width={'96px'}
+                          padding={'0px'}
+                          > 
+                            Save 
+                      </TxnSettingsButton>
+                  </Row>
+              </Column>
+          </TransactionSettingModal>
+        {/* Building out Transaction Settings above */}
+
         <Column>
           <LongPositionButton
             onClick={ handlePositionSideLong }
@@ -288,10 +470,30 @@ export const BuildPosition = () => {
             mb={'4px'} 
             width={'auto'}
             >
-            <TransparentUnderlineButton onClick={handle25Input}>25%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={handle50Input}>50%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={handle75Input}>75%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={handleMaxInput}>Max</TransparentUnderlineButton>
+            <TransparentUnderlineButton 
+                border={'none'} 
+                onClick={handle25Input}
+                >
+                  25%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton 
+                border={'none'} 
+                onClick={handle50Input}
+                >
+                  50%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton
+                border={'none'} 
+                onClick={handle75Input}
+                >
+                  75%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton 
+                border={'none'} 
+                onClick={handleMaxInput}
+                >
+                  Max
+            </TransparentUnderlineButton>
           </Row>
         </Label>
         <InputContainer>
@@ -308,18 +510,19 @@ export const BuildPosition = () => {
           Build
         </BuildButton>
 
-        <AdditionalDetails 
-          fee={'0.0'}
-          slippage={'0'}
-          estLiquidationPrice={'0.00'}
-          bid={'2241.25'}
-          ask={'2241.25'}
-          expectedOi={'0'}
-          oiLong={90000}
-          oiShort={15000}
-          fundingRate={'-0.0026'}
-          />
       </Column>
+
+      <AdditionalDetails 
+        fee={'0.0'}
+        slippage={'0'}
+        estLiquidationPrice={'0.00'}
+        bid={'2241.25'}
+        ask={'2241.25'}
+        expectedOi={'0'}
+        oiLong={90000}
+        oiShort={15000}
+        fundingRate={'-0.0026'}
+        />
     </MarketCard>
   )
 };

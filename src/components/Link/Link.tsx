@@ -1,7 +1,8 @@
-import { Link } from "rebass";
+import { Link as RebassLink } from "rebass";
+import { Link } from "react-router-dom";
 import styled from 'styled-components/macro';
 
-export const MenuLink = styled(Link).attrs(props => ({
+export const MenuLink = styled(RebassLink).attrs(props => ({
   target: props.target || '_blank',
   rel: props.rel || 'noopener noreferrer',
   src: props.src || ''
@@ -24,4 +25,9 @@ export const MenuLink = styled(Link).attrs(props => ({
   :active {
     text-decoration: none;
   }
+`;
+
+export const StyledLink = styled(Link)`
+  cursor: pointer;
+  position: absolute;
 `;

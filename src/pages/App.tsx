@@ -6,6 +6,7 @@ import Header from '../components/Header/Header';
 import CurrentBlock from '../components/CurrentBlock/CurrentBlock';
 import Markets from './Markets/Markets';
 import { Market } from './Markets/Market/Market';
+import { Position } from './Positions/Position';
 import Positions from './Positions/Positions';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
@@ -27,6 +28,7 @@ const App = () => {
           <Route exact strict path="/markets" component={Markets} />
           <Route exact strict path="/markets/:marketId" component={Market} />
           <Route exact strict path="/positions" component={Positions} />
+          <Route exact strict path="/positions/:positionId" component={Position} /> 
           <Route exact strict path="/magic" component={Magic} />
         </Switch>
       </Web3ReactManager>
