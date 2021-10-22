@@ -11,7 +11,6 @@ import { InputContainer, InputDescriptor } from '../Markets/Market/BuildPosition
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { PositionCard, PositionsCardHeader } from './Positions';
 import { useOvlBalance } from '../../state/wallet/hooks';
-import { useAllMarkets } from '../../state/markets/hooks';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
@@ -58,16 +57,6 @@ export function Position(
 ) {
   const { account } = useActiveWeb3React();
   const dispatch = useAppDispatch();
-
-  const response = useAllMarkets();
-
-  useEffect(() => {
-    console.log('response from allMarkets: ', response);
-
-    if (response.data) {
-      console.log('test amount: ', formatAmount(response.data.markets[0].oiLong, 18));
-    }
-  }, [response])
   
   return (
     <Container>

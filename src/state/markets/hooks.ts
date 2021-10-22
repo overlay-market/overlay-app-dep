@@ -6,14 +6,16 @@ import { formatAmount } from "../../utils/formatData";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { AppState } from "../state";
 import { updateMarkets } from "./actions";
+import { useBlockNumber } from "../application/hooks";
 
 export function useMarketsState(): AppState['markets'] {
   return useAppSelector((state) => state.markets)
 };
 
-export function useAllMarkets() {
+export function useAllMarkets( blockNumber: number | undefined ) {
   const account = '0x4F816C2016F5c8496380Cdb6c1dB881f73fe5fCA';
   const dispatch = useAppDispatch();
+
 
   const {
     isLoading,
@@ -27,10 +29,11 @@ export function useAllMarkets() {
     if (data?.markets) {
       let newData = data.markets;
       console.log('updating state for market: ', newData);
+      console.log('updated during blockNumber: ', blockNumber);
       dispatch(updateMarkets({ marketsData: newData }))
     }
 
-  }, [dispatch])
+  }, [dispatch, blockNumber])
 
   useEffect(() => {
     formatData(data)
