@@ -1,17 +1,19 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 import { useAppQuery } from "../data/enhanced";
 import { formatAmount } from "../../utils/formatData";
-import { useAppSelector } from "../hooks";
+import { useAppSelector, useAppDispatch } from "../hooks";
 import { AppState } from "../state";
+import { updateMarkets } from "./actions";
 
 export function useMarketsState(): AppState['markets'] {
   return useAppSelector((state) => state.markets)
-}
+};
 
 export function useAllMarkets() {
   const account = '0x4F816C2016F5c8496380Cdb6c1dB881f73fe5fCA';
+  const dispatch = useAppDispatch();
 
   const {
     isLoading,
@@ -21,14 +23,18 @@ export function useAllMarkets() {
     data
   } = useAppQuery({account});
 
-  const formatData = useCallback(() => {
-    if (data?.markets.length) {
-      
-
+  const formatData = useCallback((data) => {
+    if (data?.markets) {
+      let newData = data.markets;
+      console.log('updating state for market: ', newData);
+      dispatch(updateMarkets({ marketsData: newData }))
     }
 
+  }, [dispatch])
 
-  }, [data])
+  useEffect(() => {
+    formatData(data)
+  }, [formatData, data]);
 
   return useMemo(() => {
     return {
