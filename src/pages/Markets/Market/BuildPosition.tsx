@@ -132,7 +132,7 @@ const AdditionalDetails = ({
   fundingRate?: string | number
 }) => {
   return (
-    <Column mt={ '96px' } padding={'0 16px'}>
+    <Column mt={ '64px' } padding={'0 16px'}>
       <Detail>
         <Title> Fee </Title>
         <Content> {fee}% </Content>

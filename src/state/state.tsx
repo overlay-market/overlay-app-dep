@@ -5,6 +5,7 @@ import application from './application/reducer';
 import multicall from './multicall/reducer';
 import position from './position/reducer';
 import transactions from './transactions/reducer';
+import markets from './markets/reducer';
 import { updateVersion } from './global/actions';
 import { api as dataApi } from './data/slice'
 
@@ -17,6 +18,7 @@ const store = configureStore({
     multicall,
     position,
     transactions,
+    markets,
     [dataApi.reducerPath]: dataApi.reducer,
   },
   middleware: (getDefaultMiddleware) => 

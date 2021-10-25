@@ -10,12 +10,13 @@ import {
 } from '@material-ui/core';
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
+import { useTotalMarkets, useActiveMarkets, useMarketData, useAllMarkets } from '../../state/markets/hooks';
 import { Trans } from '@lingui/macro';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { ProgressBar } from '../../components/ProgressBar/ProgressBar';
 import { Column } from '../../components/Column/Column';
 import { TEXT } from '../../theme/theme';
+import { useActiveWeb3React } from '../../hooks/web3';
 
 export const StyledContainer = styled.div`
   max-width: 900px;
@@ -99,9 +100,12 @@ const mockData = [
 ];
 
 const Markets = () => {
+  const { chainId } = useActiveWeb3React();
   const markets = useTotalMarkets();
   const marketData = useMarketData();
-  
+
+  const marketsData = useAllMarkets(chainId);
+
   let history = useHistory();
 
   function redirectToMarket(marketId: string) {

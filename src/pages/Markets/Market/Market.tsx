@@ -40,7 +40,6 @@ export function Market(
             marketName={marketName}
             marketPrice={'2241.25'}
             />
-        <Positions />
       </Container>
     </>
   )
