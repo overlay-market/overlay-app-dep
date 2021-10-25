@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Table,
   TableBody,
@@ -16,7 +16,7 @@ import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { ProgressBar } from '../../components/ProgressBar/ProgressBar';
 import { Column } from '../../components/Column/Column';
 import { TEXT } from '../../theme/theme';
-import { useActiveWeb3React } from '../../hooks/web3';
+import { useBlockNumber } from '../../state/application/hooks';
 
 export const StyledContainer = styled.div`
   max-width: 900px;
@@ -100,11 +100,10 @@ const mockData = [
 ];
 
 const Markets = () => {
-  const { chainId } = useActiveWeb3React();
+  const blockNumber = useBlockNumber();
   const markets = useTotalMarkets();
-  const marketData = useMarketData();
 
-  const marketsData = useAllMarkets(chainId);
+  const marketsData = useAllMarkets({ blockNumber });
 
   let history = useHistory();
 
@@ -113,7 +112,12 @@ const Markets = () => {
   };
 
   console.log('markets: ', markets);
-  console.log('marketData: ', marketData);
+  console.log('blockNumber: ', blockNumber);
+
+  useEffect(() => {
+    console.log('marketsData: ', marketsData);
+  }, [marketsData]);
+
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
