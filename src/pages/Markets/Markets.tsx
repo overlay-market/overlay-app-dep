@@ -15,6 +15,7 @@ import { Trans } from '@lingui/macro';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { ProgressBar } from '../../components/ProgressBar/ProgressBar';
 import { Column } from '../../components/Column/Column';
+import { Row } from '../../components/Row/Row';
 import { TEXT } from '../../theme/theme';
 import { useBlockNumber } from '../../state/application/hooks';
 
@@ -36,6 +37,7 @@ export const StyledTable = styled(Table)`
 export const StyledTableCell = styled(TableCell)`
   font-size: 14px;
   color: ${({theme}) => theme.text1} !important;
+  width: 20%;
 `;
 
 export const StyledHeaderCell = styled(StyledTableCell)`
@@ -88,15 +90,15 @@ export const StyledTableHeaderRow = styled(TableRow)`
   cursor: default;
 `;
 
-function createData(market: string, price: string, oiLong: number, oiShort: number, oiTotal: number, positions: string, marketId: string) {
-  return {market, price, oiLong, oiShort, oiTotal, positions, marketId};
+function createData(market: string, price: string, oiLong: number, oiShort: number, oiTotal: number, longFundingRate: string, shortFundingRate: string, marketId: string) {
+  return {market, price, oiLong, oiShort, oiTotal, longFundingRate, shortFundingRate, marketId};
 }
 
 // replace with fetched data
 const mockData = [
-  createData("ETH/DAI", 'N/A', 500, 690, 1000, "6", "1"),
-  createData("OVL/DAI", 'N/A', 1000, 0, 1000, "9", "2"),
-  createData("OVL/ETH", 'N/A', 230, 420, 1000, "", "3"),
+  createData("ETH/DAI", 'N/A', 500, 690, 1000, "-.00012", "+0.0001", "1"),
+  createData("OVL/DAI", 'N/A', 1000, 0, 1000,  "-.00012", "+0.0001", "2"),
+  createData("OVL/ETH", 'N/A', 230, 420, 1000, "-.00012", "+0.0001", "3"),
 ];
 
 const Markets = () => {
@@ -144,7 +146,7 @@ const Markets = () => {
               </StyledHeaderCell>
 
               <StyledHeaderCell>
-                <Trans> Positions </Trans>
+                <Trans> Funding Rate </Trans>
                 <InfoTip tipFor={'Positions'}>
                   <div> meow meow </div>
                 </InfoTip>
@@ -196,7 +198,15 @@ const Markets = () => {
                   </StyledTableCellThin>
 
                   <StyledTableCellThin align="left">
-                    {row.positions}
+                      <Row>
+                          <TEXT.Main color={'#10DCB1'} mr={'3px'}>
+                            {row.longFundingRate}%
+                          </TEXT.Main>
+                          /
+                          <TEXT.Main color={'#FF648A'} ml={'3px'}>
+                            {row.shortFundingRate}%
+                          </TEXT.Main>
+                      </Row>
                   </StyledTableCellThin>
               </StyledTableRow>
             ))}
