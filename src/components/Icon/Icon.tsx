@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const IconWrapper = styled.div<{ 
-  size: number, 
+  size?: number, 
   margin?: string, 
   color?: string,
   transform?: string
@@ -42,13 +42,15 @@ export const Icon = ({
   bottom,
   position
 }:{
-  size: number
+  size?: number
   margin?: string
   children: React.ReactNode
   color?: string
   transform?: string
   clickable?: boolean
-  onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
+  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
+  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => any
+  onClick?: (event: any) => any
   top?: string
   right?: string
   left?: string
