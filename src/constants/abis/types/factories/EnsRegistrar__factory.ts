@@ -438,6 +438,6 @@ export class EnsRegistrar__factory {
     address: string,
     signerOrProvider: Signer | Provider
   ): EnsRegistrar {
-    return new Contract(address, _abi, signerOrProvider) as EnsRegistrar;
+    return new Contract(address, _abi, signerOrProvider as any) as EnsRegistrar;
   }
 }

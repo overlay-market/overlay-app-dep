@@ -51,6 +51,6 @@ export class Eip2612__factory {
     address: string,
     signerOrProvider: Signer | Provider
   ): Eip2612 {
-    return new Contract(address, _abi, signerOrProvider) as Eip2612;
+    return new Contract(address, _abi, signerOrProvider as any) as Eip2612;
   }
 }

@@ -51,5 +51,5 @@ export function useMarketContract(address: string | undefined) {
 
 
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
-  return useContract<ERC20>(tokenAddress, ERC20_ABI, withSignerIfPossible);
+  return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible);
 };

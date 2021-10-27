@@ -78,12 +78,12 @@ export class ArgentWalletContract__factory {
   }
   static connect(
     address: string,
-    signerOrProvider: Signer | Provider
+    signerOrProvider: Signer | Provider 
   ): ArgentWalletContract {
     return new Contract(
       address,
       _abi,
-      signerOrProvider
+      signerOrProvider as any
     ) as ArgentWalletContract;
   }
 }
