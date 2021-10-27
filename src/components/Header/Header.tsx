@@ -129,9 +129,9 @@ export default function Header() {
         </Trans>
       </StyledLink>
 
-      <StyledLink to={'/magic'}>
+      <StyledLink to={'/liquidate'}>
         <Trans>
-          Magic
+          Liquidate
         </Trans>
       </StyledLink>
 
