@@ -1,16 +1,6 @@
 import React, { useEffect } from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper
-} from '@material-ui/core';
-import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useTotalMarkets, useActiveMarkets, useMarketData, useAllMarkets } from '../../state/markets/hooks';
+import { NavLink, useHistory } from 'react-router-dom';
 import { Trans } from '@lingui/macro';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { ProgressBar } from '../../components/ProgressBar/ProgressBar';
@@ -18,36 +8,10 @@ import { Column } from '../../components/Column/Column';
 import { Row } from '../../components/Row/Row';
 import { TEXT } from '../../theme/theme';
 import { useBlockNumber } from '../../state/application/hooks';
-
-export const StyledContainer = styled.div`
-  max-width: 900px;
-  margin: auto;
-  margin-top: 48px;
-  padding: 16px;
-
-  > div {
-    background: ${({ theme }) => (theme.bg1)} !important;
-  }
-`;
-
-export const StyledTable = styled(Table)`
-  white-space: nowrap !important;
-`;
-
-export const StyledTableCell = styled(TableCell)`
-  font-size: 14px;
-  color: ${({theme}) => theme.text1} !important;
-  width: 20%;
-`;
-
-export const StyledHeaderCell = styled(StyledTableCell)`
-  padding-bottom: 8px !important;
-  font-weight: 700 !important;
-`;
-
-export const StyledTableCellThin = styled(StyledTableCell)`
-  font-weight: 400;
-`;
+import { StyledContainer } from '../../components/Container/Container';
+import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
+import { useTotalMarkets, useActiveMarkets, useMarketData, useAllMarkets } from '../../state/markets/hooks';
+import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 
 const activeClassName = 'INACTIVE';
 
@@ -64,30 +28,6 @@ export const StyledNavLink = styled(NavLink).attrs({
   :focus {
     font-weight: 700;
   }
-`;
-
-export const StyledTableRow = styled(TableRow)`
-  cursor: pointer;
-  background: ${({theme}) => theme.bg1};
-  height: 69px;
-
-
-  ${({theme}) => theme.mediaWidth.minMedium`
-    height: auto;
-
-    :hover { 
-      background: #262626 !important;
-
-      >* {
-        font-weight: 900 !important;
-      }
-    }
-  `}
-`;
-
-export const StyledTableHeaderRow = styled(TableRow)`
-  background: ${({theme}) => theme.bg1};
-  cursor: default;
 `;
 
 function createData(market: string, price: string, oiLong: number, oiShort: number, oiTotal: number, longFundingRate: string, shortFundingRate: string, marketId: string) {
