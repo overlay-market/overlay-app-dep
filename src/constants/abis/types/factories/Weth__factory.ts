@@ -292,6 +292,6 @@ export class Weth__factory {
     return new utils.Interface(_abi) as WethInterface;
   }
   static connect(address: string, signerOrProvider: Signer | Provider): Weth {
-    return new Contract(address, _abi, signerOrProvider) as Weth;
+    return new Contract(address, _abi, signerOrProvider as any) as Weth;
   }
 }

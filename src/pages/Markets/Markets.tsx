@@ -8,9 +8,14 @@ import {
   TableRow,
   Paper
 } from '@material-ui/core';
+import { 
+  useTotalMarkets, 
+  useActiveMarkets, 
+  useMarketData, 
+  useAllMarkets 
+} from '../../state/markets/hooks';
 import { NavLink, useHistory } from 'react-router-dom';
 import styled from 'styled-components/macro';
-import { useTotalMarkets, useActiveMarkets, useMarketData, useAllMarkets } from '../../state/markets/hooks';
 import { Trans } from '@lingui/macro';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { ProgressBar } from '../../components/ProgressBar/ProgressBar';

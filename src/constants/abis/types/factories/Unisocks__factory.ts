@@ -487,6 +487,6 @@ export class Unisocks__factory {
     address: string,
     signerOrProvider: Signer | Provider
   ): Unisocks {
-    return new Contract(address, _abi, signerOrProvider) as Unisocks;
+    return new Contract(address, _abi, signerOrProvider as any) as Unisocks;
   }
 }

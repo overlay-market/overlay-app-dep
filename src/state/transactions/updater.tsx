@@ -77,8 +77,6 @@ export default function Updater(): null {
       .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
       .map((hash) => {
         const { promise, cancel } = getReceipt(hash)
-        console.log('promise: ', promise);
-        console.log('cancel: ', cancel);
         
         promise
           .then((receipt) => {
@@ -105,7 +103,6 @@ export default function Updater(): null {
                   txn: {
                     hash,
                     success: receipt.status === 1,
-                    summary: transactions[hash]?.summary,
                   },
                 },
                 hash

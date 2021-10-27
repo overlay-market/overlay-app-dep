@@ -835,6 +835,6 @@ export class EnsPublicResolver__factory {
     address: string,
     signerOrProvider: Signer | Provider
   ): EnsPublicResolver {
-    return new Contract(address, _abi, signerOrProvider) as EnsPublicResolver;
+    return new Contract(address, _abi, signerOrProvider as any) as EnsPublicResolver;
   }
 }

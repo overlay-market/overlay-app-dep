@@ -4,7 +4,8 @@ import { SupportedChainId } from '../constants/chains';
 
 const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
   SupportedChainId.MAINNET,
-  SupportedChainId.KOVAN
+  SupportedChainId.KOVAN,
+  SupportedChainId.LOCALHOST
 ];
 
 export const injected = new InjectedConnector({
