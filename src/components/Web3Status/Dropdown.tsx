@@ -165,6 +165,7 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                         <MenuButton 
                           padding={'8px 16px 8px 12px'}
                           onClick={toggleWalletModal}
+                          border={'none'}
                           >
                           <TEXT.Menu m={'auto'} fontSize={14}>
                             Change wallet
@@ -177,6 +178,7 @@ export default function Dropdown({connectedNetwork, colorStatus} : DropdownProps
                       <MenuButton 
                         padding={'8px 16px 8px 12px'}
                         onClick={disconnectWallet}
+                        border={'none'}
                         >
                         <IconContainer 
                           m={'auto 3px'}

@@ -6,16 +6,17 @@ import { formatAmount } from "../../utils/formatData";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { AppState } from "../state";
 import { updateMarkets } from "./actions";
-import { useBlockNumber } from "../application/hooks";
+
 
 export function useMarketsState(): AppState['markets'] {
   return useAppSelector((state) => state.markets)
 };
 
-export function useAllMarkets( blockNumber: number | undefined ) {
+export function useAllMarkets(
+  blockNumber: any
+) {
   const account = '0x4F816C2016F5c8496380Cdb6c1dB881f73fe5fCA';
   const dispatch = useAppDispatch();
-
 
   const {
     isLoading,

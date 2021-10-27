@@ -6,6 +6,7 @@ import { Column } from '../../components/Column/Column';
 import { TEXT } from '../../theme/theme';
 import { Label } from '@rebass/forms';
 import { Row } from '../../components/Row/Row';
+import { Back } from '../../components/Back/Back';
 import { TransparentUnderlineButton, LightGreyButton } from '../../components/Button/Button';
 import { InputContainer, InputDescriptor } from '../Markets/Market/BuildPosition';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
@@ -15,6 +16,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
 import { formatAmount } from '../../utils/formatData';
+import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -26,7 +28,7 @@ const UnwindButton = styled(LightGreyButton)`
   margin-bottom: 64px; 
 `;
 
-const ListItem = ({
+export const ListItem = ({
   item,
   value,
   itemColor,
@@ -60,6 +62,8 @@ export function Position(
   
   return (
     <Container>
+        <ConfirmTxnModal />
+        <Back arrowSize={16} textSize={16} margin={'0 auto 64px 0'} />
 
         <Column>
             <TEXT.MediumHeader fontWeight={700}>

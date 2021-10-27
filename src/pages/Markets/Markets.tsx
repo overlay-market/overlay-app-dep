@@ -1,56 +1,17 @@
-import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper
-} from '@material-ui/core';
-import { 
-  useTotalMarkets, 
-  useActiveMarkets, 
-  useMarketData, 
-  useAllMarkets 
-} from '../../state/markets/hooks';
-import { NavLink, useHistory } from 'react-router-dom';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/macro';
+import { NavLink, useHistory } from 'react-router-dom';
 import { Trans } from '@lingui/macro';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { ProgressBar } from '../../components/ProgressBar/ProgressBar';
 import { Column } from '../../components/Column/Column';
+import { Row } from '../../components/Row/Row';
 import { TEXT } from '../../theme/theme';
-import { useActiveWeb3React } from '../../hooks/web3';
-
-export const StyledContainer = styled.div`
-  max-width: 900px;
-  margin: auto;
-  margin-top: 48px;
-  padding: 16px;
-
-  > div {
-    background: ${({ theme }) => (theme.bg1)} !important;
-  }
-`;
-
-export const StyledTable = styled(Table)`
-  white-space: nowrap !important;
-`;
-
-export const StyledTableCell = styled(TableCell)`
-  font-size: 14px;
-  color: ${({theme}) => theme.text1} !important;
-`;
-
-export const StyledHeaderCell = styled(StyledTableCell)`
-  padding-bottom: 8px !important;
-  font-weight: 700 !important;
-`;
-
-export const StyledTableCellThin = styled(StyledTableCell)`
-  font-weight: 400;
-`;
+import { useBlockNumber } from '../../state/application/hooks';
+import { StyledContainer } from '../../components/Container/Container';
+import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
+import { useTotalMarkets, useActiveMarkets, useMarketData, useAllMarkets } from '../../state/markets/hooks';
+import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 
 const activeClassName = 'INACTIVE';
 
@@ -69,47 +30,22 @@ export const StyledNavLink = styled(NavLink).attrs({
   }
 `;
 
-export const StyledTableRow = styled(TableRow)`
-  cursor: pointer;
-  background: ${({theme}) => theme.bg1};
-  height: 69px;
-
-
-  ${({theme}) => theme.mediaWidth.minMedium`
-    height: auto;
-
-    :hover { 
-      background: #262626 !important;
-
-      >* {
-        font-weight: 900 !important;
-      }
-    }
-  `}
-`;
-
-export const StyledTableHeaderRow = styled(TableRow)`
-  background: ${({theme}) => theme.bg1};
-  cursor: default;
-`;
-
-function createData(market: string, price: string, oiLong: number, oiShort: number, oiTotal: number, positions: string, marketId: string) {
-  return {market, price, oiLong, oiShort, oiTotal, positions, marketId};
+function createData(market: string, price: string, oiLong: number, oiShort: number, oiTotal: number, longFundingRate: string, shortFundingRate: string, marketId: string) {
+  return {market, price, oiLong, oiShort, oiTotal, longFundingRate, shortFundingRate, marketId};
 }
 
 // replace with fetched data
 const mockData = [
-  createData("ETH/DAI", 'N/A', 500, 690, 1000, "6", "1"),
-  createData("OVL/DAI", 'N/A', 1000, 0, 1000, "9", "2"),
-  createData("OVL/ETH", 'N/A', 230, 420, 1000, "", "3"),
+  createData("ETH/DAI", 'N/A', 500, 690, 1000, "-.00012", "+0.0001", "1"),
+  createData("OVL/DAI", 'N/A', 1000, 0, 1000,  "-.00012", "+0.0001", "2"),
+  createData("OVL/ETH", 'N/A', 230, 420, 1000, "-.00012", "+0.0001", "3"),
 ];
 
 const Markets = () => {
-  const { chainId } = useActiveWeb3React();
+  const blockNumber = useBlockNumber();
   const markets = useTotalMarkets();
-  const marketData = useMarketData();
 
-  const marketsData = useAllMarkets(chainId);
+  const marketsData = useAllMarkets({ blockNumber });
 
   let history = useHistory();
 
@@ -118,7 +54,12 @@ const Markets = () => {
   };
 
   console.log('markets: ', markets);
-  console.log('marketData: ', marketData);
+  console.log('blockNumber: ', blockNumber);
+
+  useEffect(() => {
+    console.log('marketsData: ', marketsData);
+  }, [marketsData]);
+
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
@@ -145,7 +86,7 @@ const Markets = () => {
               </StyledHeaderCell>
 
               <StyledHeaderCell>
-                <Trans> Positions </Trans>
+                <Trans> Funding Rate </Trans>
                 <InfoTip tipFor={'Positions'}>
                   <div> meow meow </div>
                 </InfoTip>
@@ -197,7 +138,15 @@ const Markets = () => {
                   </StyledTableCellThin>
 
                   <StyledTableCellThin align="left">
-                    {row.positions}
+                      <Row>
+                          <TEXT.Main color={'#10DCB1'} mr={'3px'}>
+                            {row.longFundingRate}%
+                          </TEXT.Main>
+                          /
+                          <TEXT.Main color={'#FF648A'} ml={'3px'}>
+                            {row.shortFundingRate}%
+                          </TEXT.Main>
+                      </Row>
                   </StyledTableCellThin>
               </StyledTableRow>
             ))}
