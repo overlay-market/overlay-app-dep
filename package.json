@@ -19,6 +19,7 @@
     "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
+    "@overlay-market/overlay-v1-sdk": "github:overlay-market/overlay-v1-sdk",
     "@reach/dialog": "^0.10.3",
     "@rebass/forms": "^4.0.6",
     "@reduxjs/toolkit": "^1.6.1",
