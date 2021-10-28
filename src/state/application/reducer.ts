@@ -4,7 +4,9 @@ import {
   updateBlockNumber,
   ApplicationModal,
   setOpenModal,
-  PopupContent
+  PopupContent,
+  addPopup,
+  removePopup
 } from './actions'
 
 type PopupList = Array<{
@@ -43,5 +45,22 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setOpenModal, (state, action) => {
       state.openModal = action.payload
+    })
+    .addCase(addPopup, (state, { payload: { content, key, removeAfterMs = 15000 } }) => {
+      state.popupList = (key ? state.popupList.filter((popup) => popup.key !== key) : state.popupList).concat([
+        {
+          key: key || nanoid(),
+          show: true,
+          content,
+          removeAfterMs,
+        },
+      ])
+    })
+    .addCase(removePopup, (state, { payload: { key } }) => {
+      state.popupList.forEach((p) => {
+        if (p.key === key) {
+          p.show = false
+        }
+      })
     })
 );
