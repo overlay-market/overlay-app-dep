@@ -1,5 +1,6 @@
 import './App.css';
 import React from 'react';
+import { useCallback, useMemo } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager';
 import Header from '../components/Header/Header';
@@ -11,6 +12,10 @@ import Positions from './Positions/Positions';
 import Liquidate from './Liquidate/Liquidate';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
+import { 
+  useAllTransactions, 
+  useAllPendingTransactions 
+} from '../state/transactions/hooks'
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -20,6 +25,24 @@ export const AppWrapper = styled.div`
 `
 
 const App = () => {
+
+  const allTransactions = useAllTransactions()
+
+  console.log("all transactions", allTransactions)
+
+  const allPendingTransactions = useAllPendingTransactions()
+
+  console.log("use callback")
+
+  const onTxnPending = useMemo(() => {
+
+    console.log("tx pending")
+
+  }, [ allPendingTransactions ])
+
+
+  console.log("allPendingTransactions", allPendingTransactions)
+
   return (
     <AppWrapper>
       <Header />

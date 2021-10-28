@@ -217,18 +217,23 @@ export const BuildPosition = ({
   marketName: string 
   marketPrice: string | number
 }) => {
-  const [{ showConfirm, attemptingTxn, swapErrorMessage, txHash }, setBuildState] = useState<{
+
+  const [ { 
+    showConfirm, 
+    attemptingTxn, 
+    txnErrorMessage, 
+    txHash 
+  }, setBuildState ] = useState<{
     showConfirm: boolean
     attemptingTxn: boolean
-    swapErrorMessage: string | undefined
+    txnErrorMessage: string | undefined
     txHash: string | undefined
   }>({
     showConfirm: false,
     attemptingTxn: false,
-    swapErrorMessage: undefined,
+    txnErrorMessage: undefined,
     txHash: undefined
   });
-
   
   const addTransaction = useTransactionAdder()
 
@@ -322,10 +327,10 @@ export const BuildPosition = ({
     setBuildState({
       showConfirm: false,
       attemptingTxn,
-      swapErrorMessage,
+      txnErrorMessage,
       txHash
     })
-  }, [showConfirm, attemptingTxn, swapErrorMessage, txHash]);
+  }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
 
   const PromptSnackbar = ({
     showSnackbar,
@@ -374,7 +379,7 @@ export const BuildPosition = ({
         value: utils.parseEther('0').toHexString(),
       }
 
-      setBuildState({ showConfirm: false, attemptingTxn: true, swapErrorMessage: undefined, txHash: undefined })
+      setBuildState({ showConfirm: false, attemptingTxn: true, txnErrorMessage: undefined, txHash: undefined })
 
       console.log("calldata", calldata)
       console.log("txn", txn)
@@ -395,27 +400,35 @@ export const BuildPosition = ({
             .then( (response: TransactionResponse) => {
 
               setTimeout(() => {
-                setBuildState({ showConfirm: false, attemptingTxn: false, swapErrorMessage: undefined, txHash: undefined })
+
                 addTransaction(
-                  response, 
-                  {
+                  response, {
                     type: TransactionType.BUILD_OVL_POSITION,
                     market: OVL_MARKET_ADDRESS[chainId],
                     collateral: inputValue,
                     isLong: positionSide == 'LONG',
                     leverage: leverageValue.toString()
-                  }
-                )
-                console.log("response", response)
+                  })
 
-                if (response) {
-                  console.log('helo there');
-                  setBuildState({ showConfirm: false, attemptingTxn: false, swapErrorMessage: undefined, txHash: response.hash })
-                }
+                setBuildState({ 
+                  showConfirm: false, 
+                  attemptingTxn: false, 
+                  txnErrorMessage: undefined, 
+                  txHash: response.hash 
+                })
+
               }, 5000)
+
             })
             .catch(error => {
-              console.error("error", error)
+
+              setBuildState({ 
+                showConfirm: false, 
+                attemptingTxn: false, 
+                txnErrorMessage: error.message, 
+                txHash: undefined 
+              })
+
             })
 
         })
@@ -650,7 +663,7 @@ export const BuildPosition = ({
             align={'right'}
             />
         </InputContainer>
-        <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, swapErrorMessage: undefined, txHash: undefined }) }} >
+        <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
               Build
         </BuildButton>
 
@@ -669,9 +682,9 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
-      {/* <SnackbarAlert severity={'success'} title={'hello'}>
+      <SnackbarAlert severity={'success'} title={'hello'}>
         hello
-      </SnackbarAlert> */}
+      </SnackbarAlert>
       <PromptSnackbar showSnackbar={(txHash ? true : false)} severity={'success'} message={`${txHash}`} />
     </MarketCard>
   )

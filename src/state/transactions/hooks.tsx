@@ -48,6 +48,18 @@ export function useIsTransactionPending(transactionHash?: string): boolean {
   return !transactions[transactionHash].receipt;
 };
 
+export function useAllPendingTransactions(): { [txHash: string]: TransactionDetails } {
+
+  const txns = useAllTransactions()
+
+  const accu: { [txHash: string]: TransactionDetails; } = {}
+
+  for (const hash in txns) if (!!txns[hash].receipt) accu[hash] = txns[hash]
+
+  return accu
+
+}
+
 /**
  * Returns whether a transaction happened in the last day (86400 seconds * 1000 milliseconds / second)
  * @param tx to check for recency
