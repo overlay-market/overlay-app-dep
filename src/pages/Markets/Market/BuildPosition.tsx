@@ -38,6 +38,7 @@ import { utils } from 'ethers';
 import { calculateGasMargin } from '../../../utils/calculateGasMargin'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { TransactionType } from '../../../state/transactions/actions'
+import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -215,10 +216,20 @@ export const BuildPosition = ({
   marketName: string 
   marketPrice: string | number
 }) => {
+  const [{ showConfirm, attemptingTxn, swapErrorMessage, txHash }, setBuildState] = useState<{
+    showConfirm: boolean
+    attemptingTxn: boolean
+    swapErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    showConfirm: false,
+    attemptingTxn: false,
+    swapErrorMessage: undefined,
+    txHash: undefined
+  });
 
+  
   const addTransaction = useTransactionAdder()
-
-  const [attemptingTxn, setAttemptingTxn] = useState<boolean>(false) // clicked confirm
 
   const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
 
@@ -306,6 +317,15 @@ export const BuildPosition = ({
     [onAmountInput, maxInputAmount]
   );
 
+  const handleDismiss = useCallback(() => {
+    setBuildState({
+      showConfirm: false,
+      attemptingTxn,
+      swapErrorMessage,
+      txHash
+    })
+  }, [showConfirm, attemptingTxn, swapErrorMessage, txHash]);
+
   async function handleBuild () {
 
     if (chainId && library && inputValue) {
@@ -327,7 +347,7 @@ export const BuildPosition = ({
         value: utils.parseEther('0').toHexString(),
       }
 
-      setAttemptingTxn(true)
+      setBuildState({ showConfirm: false, attemptingTxn: true, swapErrorMessage: undefined, txHash: undefined })
 
       console.log("calldata", calldata)
       console.log("txn", txn)
@@ -348,7 +368,7 @@ export const BuildPosition = ({
             .then( (response: TransactionResponse) => {
 
               setTimeout( () => {
-                setAttemptingTxn(false)
+                setBuildState({ showConfirm: false, attemptingTxn: false, swapErrorMessage: undefined, txHash: undefined })
                 addTransaction(
                   response, 
                   {
@@ -599,8 +619,8 @@ export const BuildPosition = ({
             align={'right'}
             />
         </InputContainer>
-        <BuildButton onClick={handleBuild} >
-          Build
+        <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, swapErrorMessage: undefined, txHash: undefined }) }} >
+              Build
         </BuildButton>
 
       </Column>
@@ -616,6 +636,8 @@ export const BuildPosition = ({
         oiShort={15000}
         fundingRate={'-0.0026'}
       />
+
+      <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
     </MarketCard>
   )
 };

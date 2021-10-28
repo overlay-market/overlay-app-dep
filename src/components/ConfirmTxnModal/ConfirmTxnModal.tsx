@@ -9,15 +9,23 @@ import { Row } from "../Row/Row";
 import { Column } from "../Column/Column";
 import { ActiveBlueButton } from "../Button/Button";
 
-export default function ConfirmTxnModal() {
+export default function ConfirmTxnModal({
+  isOpen,
+  onConfirm,
+  onDismiss,
+}:{
+  isOpen: boolean
+  onConfirm?: () => void
+  onDismiss?: () => void
+}) {
   return(
-    <Modal isOpen={true} onDismiss={() => null} width={'350px'}>
+    <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
         <ModalContent>
             <WalletHeader>
                 <TEXT.Body color={'white'} fontWeight={600} m={'auto 0'}>
                     Confirm Transaction
                 </TEXT.Body>
-                <CloseIcon onClick={() => null}>
+                <CloseIcon onClick={onDismiss}>
                     <X color={'white'} height={24} width={24} />
                 </CloseIcon>
             </WalletHeader>
@@ -89,7 +97,7 @@ export default function ConfirmTxnModal() {
                   The unwind price will be at least 2989.99 USDC or the transaction will revert.
                 </TEXT.Small>
 
-                <ActiveBlueButton border={'none'}>
+                <ActiveBlueButton border={'none'} onClick={onConfirm}>
                    Confirm Build
                 </ActiveBlueButton>
         </ModalContent>

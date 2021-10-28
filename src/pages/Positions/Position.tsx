@@ -62,7 +62,6 @@ export function Position(
   
   return (
     <Container>
-        <ConfirmTxnModal />
         <Back arrowSize={16} textSize={16} margin={'0 auto 64px 0'} />
 
         <Column>
