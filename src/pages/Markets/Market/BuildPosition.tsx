@@ -32,7 +32,6 @@ import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
-import { OVLCollateral } from '@overlay-market/overlay-v1-sdk';
 import { TransactionResponse } from '@ethersproject/providers'
 import { utils } from 'ethers';
 import { calculateGasMargin } from '../../../utils/calculateGasMargin'
