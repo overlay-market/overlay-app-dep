@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCallback, useMemo } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager';
@@ -14,8 +14,9 @@ import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
 import { 
   useAllTransactions, 
-  useAllPendingTransactions 
+  isTransactionRecent
 } from '../state/transactions/hooks'
+import { TransactionDetails } from '../state/transactions/reducer';
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -23,25 +24,24 @@ export const AppWrapper = styled.div`
   min-height: 100vh;
   width: 100vw;
 `
+// we want the latest one to come first, so return negative if a is after b
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
 
 const App = () => {
 
-  const allTransactions = useAllTransactions()
+  const allTransactions = useAllTransactions();
 
-  console.log("all transactions", allTransactions)
-
-  const allPendingTransactions = useAllPendingTransactions()
-
-  console.log("use callback")
-
-  const onTxnPending = useMemo(() => {
-
-    console.log("tx pending")
-
-  }, [ allPendingTransactions ])
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
 
 
-  console.log("allPendingTransactions", allPendingTransactions)
+  useEffect(() => {
+    console.log('allTransactions: ', allTransactions);
+  }, [allTransactions])
 
   return (
     <AppWrapper>
