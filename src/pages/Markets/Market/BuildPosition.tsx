@@ -682,9 +682,6 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
-      <SnackbarAlert severity={'success'} title={'hello'}>
-        hello
-      </SnackbarAlert>
       <PromptSnackbar showSnackbar={(txHash ? true : false)} severity={'success'} message={`${txHash}`} />
     </MarketCard>
   )
