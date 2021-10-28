@@ -363,14 +363,16 @@ export const BuildPosition = ({
 
       const signer = library.getSigner()
 
-      const calldata = OVLCollateral.buildParameters({
-        collateral: utils.parseUnits(inputValue),
-        leverage: Number(leverageValue),
-        isLong: positionSide == 'LONG',
-        market: OVL_MARKET_ADDRESS[chainId],
-        slippageTolerance: 1,
-        deadline: 1
-      })
+      // const calldata = OVLCollateral.buildParameters({
+      //   collateral: utils.parseUnits(inputValue),
+      //   leverage: Number(leverageValue),
+      //   isLong: positionSide == 'LONG',
+      //   market: OVL_MARKET_ADDRESS[chainId],
+      //   slippageTolerance: 1,
+      //   deadline: 1
+      // })
+
+      const calldata = 'null';
 
       const txn: { to: string; data: string; value: string } = {
         to: OVL_COLLATERAL_ADDRESS[chainId],
