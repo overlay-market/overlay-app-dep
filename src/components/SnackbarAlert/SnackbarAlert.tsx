@@ -25,14 +25,14 @@ const StyledIconButton = styled(IconButton)`
   margin-right: 0px !important;
 `
 
-interface TransitionAlertProps {
+interface SnackbarAlertProps {
   message?: any
   severity: any
-  title: any
+  title?: any
   children?: React.ReactNode;
 }
 
-export const TransitionAlert: React.FC<TransitionAlertProps> = ({ message, severity, title, children }) => {
+export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ message, severity, title, children }) => {
     const [open, setOpen] = useState(true);
 
     return (
@@ -41,7 +41,7 @@ export const TransitionAlert: React.FC<TransitionAlertProps> = ({ message, sever
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          autoHideDuration={1000}
+          autoHideDuration={6900}
           open={open}
           >
             <StyledAlert

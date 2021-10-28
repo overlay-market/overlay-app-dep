@@ -39,6 +39,7 @@ import { calculateGasMargin } from '../../../utils/calculateGasMargin'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { TransactionType } from '../../../state/transactions/actions'
 import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
+import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -326,6 +327,32 @@ export const BuildPosition = ({
     })
   }, [showConfirm, attemptingTxn, swapErrorMessage, txHash]);
 
+  const PromptSnackbar = ({
+    showSnackbar,
+    severity,
+    message,
+    title,
+    children
+  }:{
+    showSnackbar: boolean
+    severity: string
+    message?: string
+    title?: string
+    children?: React.ReactNode
+  }) => {
+
+    return (
+      <>
+          {showSnackbar ?? (
+              <SnackbarAlert severity={severity} message={message} title={title}>
+                  {children}
+              </SnackbarAlert>
+          )}
+      </>
+    )
+  }
+
+  
   async function handleBuild () {
 
     if (chainId && library && inputValue) {
@@ -352,7 +379,7 @@ export const BuildPosition = ({
       console.log("calldata", calldata)
       console.log("txn", txn)
 
-      library
+      await library
         .getSigner()
         .estimateGas(txn)
         .then(estimate => {
@@ -367,7 +394,7 @@ export const BuildPosition = ({
             .sendTransaction(tx)
             .then( (response: TransactionResponse) => {
 
-              setTimeout( () => {
+              setTimeout(() => {
                 setBuildState({ showConfirm: false, attemptingTxn: false, swapErrorMessage: undefined, txHash: undefined })
                 addTransaction(
                   response, 
@@ -380,8 +407,12 @@ export const BuildPosition = ({
                   }
                 )
                 console.log("response", response)
-              }, 5000)
 
+                if (response) {
+                  console.log('helo there');
+                  setBuildState({ showConfirm: false, attemptingTxn: false, swapErrorMessage: undefined, txHash: response.hash })
+                }
+              }, 5000)
             })
             .catch(error => {
               console.error("error", error)
@@ -638,6 +669,10 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
+      {/* <SnackbarAlert severity={'success'} title={'hello'}>
+        hello
+      </SnackbarAlert> */}
+      <PromptSnackbar showSnackbar={(txHash ? true : false)} severity={'success'} message={`${txHash}`} />
     </MarketCard>
   )
 };

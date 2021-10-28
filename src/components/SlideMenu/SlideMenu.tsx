@@ -105,7 +105,7 @@ const SlideMenu = ({
         <Accordion 
             title={"Language"}
             >
-          {SUPPORTED_LOCALES.map((locale) => (
+          {SUPPORTED_LOCALES.map((locale, key) => (
             <AccordionSelection>
               <LanguageMenuItem 
                   locale={locale} 
