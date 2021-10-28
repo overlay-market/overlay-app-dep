@@ -237,7 +237,7 @@ export class ArgentWalletDetector__factory {
     return new Contract(
       address,
       _abi,
-      signerOrProvider
+      signerOrProvider as any
     ) as ArgentWalletDetector;
   }
 }

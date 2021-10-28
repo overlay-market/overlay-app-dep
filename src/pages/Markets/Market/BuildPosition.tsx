@@ -17,6 +17,11 @@ import { usePositionState } from '../../../state/position/hooks';
 import { useTokenBalance } from '../../../state/wallet/hooks';
 import { PositionSide, DefaultTxnSettings } from '../../../state/position/actions';
 import { OVL } from '../../../constants/tokens';
+import { 
+  OVL_ADDRESS, 
+  OVL_COLLATERAL_ADDRESS, 
+  OVL_MARKET_ADDRESS 
+} from '../../../constants/addresses';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { useApproveCallback } from '../../../hooks/useApproveCallback';
 import { useDerivedUserInputs } from '../../../state/position/hooks';
@@ -27,6 +32,14 @@ import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
+import { OVLCollateral } from '@overlay-market/overlay-v1-sdk';
+import { TransactionResponse } from '@ethersproject/providers'
+import { utils } from 'ethers';
+import { calculateGasMargin } from '../../../utils/calculateGasMargin'
+import { useTransactionAdder } from '../../../state/transactions/hooks'
+import { TransactionType } from '../../../state/transactions/actions'
+import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
+import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -204,11 +217,31 @@ export const BuildPosition = ({
   marketName: string 
   marketPrice: string | number
 }) => {
+
+  const [ { 
+    showConfirm, 
+    attemptingTxn, 
+    txnErrorMessage, 
+    txHash 
+  }, setBuildState ] = useState<{
+    showConfirm: boolean
+    attemptingTxn: boolean
+    txnErrorMessage: string | undefined
+    txHash: string | undefined
+  }>({
+    showConfirm: false,
+    attemptingTxn: false,
+    txnErrorMessage: undefined,
+    txHash: undefined
+  });
+  
+  const addTransaction = useTransactionAdder()
+
   const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
 
   const isAuto = useIsTxnSettingsAuto();
 
-  const { account, chainId } = useActiveWeb3React();
+  const { account, chainId, library } = useActiveWeb3React();
 
   const ovl = chainId ? OVL[chainId] : undefined;
 
@@ -230,7 +263,6 @@ export const BuildPosition = ({
     onPositionSideInput, 
     onSlippageInput,
     onTxnDeadlineInput } = usePositionActionHandlers();
-
 
   const { parsedAmount, error } = useDerivedUserInputs(inputValue, ovl);
 
@@ -290,6 +322,130 @@ export const BuildPosition = ({
     }, 
     [onAmountInput, maxInputAmount]
   );
+
+  const handleDismiss = useCallback(() => {
+    setBuildState({
+      showConfirm: false,
+      attemptingTxn,
+      txnErrorMessage,
+      txHash
+    })
+  }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
+
+  const PromptSnackbar = ({
+    showSnackbar,
+    severity,
+    message,
+    title,
+    children
+  }:{
+    showSnackbar: boolean
+    severity: string
+    message?: string
+    title?: string
+    children?: React.ReactNode
+  }) => {
+
+    return (
+      <>
+          {showSnackbar ?? (
+              <SnackbarAlert severity={severity} message={message} title={title}>
+                  {children}
+              </SnackbarAlert>
+          )}
+      </>
+    )
+  }
+
+  
+  async function handleBuild () {
+
+    if (chainId && library && inputValue) {
+
+      const signer = library.getSigner()
+
+      const calldata = OVLCollateral.buildParameters({
+        collateral: utils.parseUnits(inputValue),
+        leverage: Number(leverageValue),
+        isLong: positionSide == 'LONG',
+        market: OVL_MARKET_ADDRESS[chainId],
+        slippageTolerance: 1,
+        deadline: 1
+      })
+
+      const txn: { to: string; data: string; value: string } = {
+        to: OVL_COLLATERAL_ADDRESS[chainId],
+        data: calldata,
+        value: utils.parseEther('0').toHexString(),
+      }
+
+      setBuildState({ showConfirm: false, attemptingTxn: true, txnErrorMessage: undefined, txHash: undefined })
+
+      console.log("calldata", calldata)
+      console.log("txn", txn)
+
+      await library
+        .getSigner()
+        .estimateGas(txn)
+        .then(estimate => {
+          console.log("estimate", estimate.toString())
+          const tx = {
+            ...txn,
+            gasLimit: calculateGasMargin(estimate)
+          }
+
+          library
+            .getSigner()
+            .sendTransaction(tx)
+            .then( (response: TransactionResponse) => {
+
+              setTimeout(() => {
+
+                addTransaction(
+                  response, {
+                    type: TransactionType.BUILD_OVL_POSITION,
+                    market: OVL_MARKET_ADDRESS[chainId],
+                    collateral: inputValue,
+                    isLong: positionSide == 'LONG',
+                    leverage: leverageValue.toString()
+                  })
+
+                setBuildState({ 
+                  showConfirm: false, 
+                  attemptingTxn: false, 
+                  txnErrorMessage: undefined, 
+                  txHash: response.hash 
+                })
+
+              }, 5000)
+
+            })
+            .catch(error => {
+
+              setBuildState({ 
+                showConfirm: false, 
+                attemptingTxn: false, 
+                txnErrorMessage: error.message, 
+                txHash: undefined 
+              })
+
+            })
+
+        })
+
+
+      console.log("handle build - ", 
+        "\n leverage", typeof leverageValue, leverageValue, 
+        "\n side", typeof positionSide, positionSide,
+        "\n value", typeof inputValue, inputValue, utils.parseUnits(inputValue),
+        "\n currency", typeof inputCurrency, inputCurrency, 
+        "\n slippage", typeof slippageValue, slippageValue,
+        "\n deadline", typeof txnDeadline, txnDeadline
+      );
+
+    }
+
+  }
 
   const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
 
@@ -501,13 +657,14 @@ export const BuildPosition = ({
             OVL
           </InputDescriptor>
           <NumericalInput 
+            // value={55}
             value={inputValue?.toString()}
             onUserInput={handleTypeInput}
             align={'right'}
             />
         </InputContainer>
-        <BuildButton>
-          Build
+        <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
+              Build
         </BuildButton>
 
       </Column>
@@ -522,7 +679,13 @@ export const BuildPosition = ({
         oiLong={90000}
         oiShort={15000}
         fundingRate={'-0.0026'}
-        />
+      />
+
+      <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
+      <SnackbarAlert severity={'success'} title={'hello'}>
+        hello
+      </SnackbarAlert>
+      <PromptSnackbar showSnackbar={(txHash ? true : false)} severity={'success'} message={`${txHash}`} />
     </MarketCard>
   )
 };

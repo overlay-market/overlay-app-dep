@@ -329,6 +329,6 @@ export class Multicall2__factory {
     address: string,
     signerOrProvider: Signer | Provider
   ): Multicall2 {
-    return new Contract(address, _abi, signerOrProvider) as Multicall2;
+    return new Contract(address, _abi, signerOrProvider as any) as Multicall2;
   }
 }

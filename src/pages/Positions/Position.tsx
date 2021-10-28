@@ -16,7 +16,7 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
 import { formatAmount } from '../../utils/formatData';
-
+import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -28,7 +28,7 @@ const UnwindButton = styled(LightGreyButton)`
   margin-bottom: 64px; 
 `;
 
-const ListItem = ({
+export const ListItem = ({
   item,
   value,
   itemColor,

@@ -3,6 +3,7 @@ import { TransactionResponse } from '@ethersproject/providers'
 import { CurrencyAmount, Currency} from '@uniswap/sdk-core'
 import { useCallback, useMemo } from 'react'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
+import { TransactionType } from '../state/transactions/actions'
 import { calculateGasMargin } from '../utils/calculateGasMargin'
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './web3';
@@ -80,10 +81,7 @@ export function useApproveCallback(
         gasLimit: calculateGasMargin(estimatedGas),
       })
       .then((response: TransactionResponse) => {
-        addTransaction(response, {
-          summary: 'Approve ' + amountToApprove.currency.symbol,
-          approval: { tokenAddress: token.address, spender: spender },
-        })
+        addTransaction(response, { type: TransactionType.APPROVAL, tokenAddress: token.address, spender } )
       })
       .catch((error: Error) => {
         console.debug('Failed to approve token', error);

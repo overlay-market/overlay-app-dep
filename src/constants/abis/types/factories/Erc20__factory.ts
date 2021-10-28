@@ -235,6 +235,6 @@ export class Erc20__factory {
     return new utils.Interface(_abi) as Erc20Interface;
   }
   static connect(address: string, signerOrProvider: Signer | Provider): Erc20 {
-    return new Contract(address, _abi, signerOrProvider) as Erc20;
+    return new Contract(address, _abi, signerOrProvider as any) as Erc20;
   }
 }

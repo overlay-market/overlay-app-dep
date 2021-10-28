@@ -47,13 +47,17 @@ export const LightGreyButton = styled(BaseButton)<{ background?: string; border?
   border: ${({ border }) => ( border ? border : '1px solid #F2F2F2')};
 `
 
-export const TransparentUnderlineButton = styled(BaseButton)<{width?: string}>`
+export const TransparentButton = styled(BaseButton)<{ width?: string, underline?: boolean }>`
   background: transparent;
-  text-decoration: underline;
-  color: ${({theme}) => theme.white};
+  color: ${({ color }) => ( color ? color : 'white' )};
   padding: 0 8px;
   width: ${({width}) => (width ? width : 'auto')};
   font-size: 12px;
+  cursor: pointer;
+`
+
+export const TransparentUnderlineButton = styled(TransparentButton)`
+  text-decoration: underline;
 `
 
 export const MenuButton = styled(BaseButton)`

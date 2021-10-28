@@ -46,6 +46,6 @@ export class Erc20Bytes32__factory {
     address: string,
     signerOrProvider: Signer | Provider
   ): Erc20Bytes32 {
-    return new Contract(address, _abi, signerOrProvider) as Erc20Bytes32;
+    return new Contract(address, _abi, signerOrProvider as any) as Erc20Bytes32;
   }
 }
