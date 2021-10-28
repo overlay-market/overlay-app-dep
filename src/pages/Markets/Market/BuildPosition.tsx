@@ -393,7 +393,8 @@ export const BuildPosition = ({
             ...txn,
             gasLimit: calculateGasMargin(estimate)
           }
-
+          console.log("tx before confirm: ", tx);
+          
           library
             .getSigner()
             .sendTransaction(tx)

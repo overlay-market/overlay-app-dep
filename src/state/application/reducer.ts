@@ -3,17 +3,26 @@ import {
   updateChainId,
   updateBlockNumber,
   ApplicationModal,
-  setOpenModal
+  setOpenModal,
+  PopupContent
 } from './actions'
 
+type PopupList = Array<{
+  key: string
+  show: boolean
+  content: PopupContent
+  removeAfterMs: number | null
+}>
 export interface ApplicationState {
   readonly chainId: number | null
-  readonly blockNumber: { readonly [chainId: number]: number };
+  readonly popupList: PopupList
+  readonly blockNumber: { readonly [chainId: number]: number }
   readonly openModal: ApplicationModal | null
 };
 
 const initialState: ApplicationState = {
   chainId: null,
+  popupList: [],
   blockNumber: {},
   openModal: null,
 };

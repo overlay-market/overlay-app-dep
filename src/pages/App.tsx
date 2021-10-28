@@ -43,6 +43,10 @@ const App = () => {
     console.log('allTransactions: ', allTransactions);
   }, [allTransactions])
 
+  useEffect(() => {
+    console.log('sortedRecentTransactions: ', sortedRecentTransactions);
+  }, [sortedRecentTransactions])
+  
   return (
     <AppWrapper>
       <Header />
