@@ -2,13 +2,8 @@ import { useCallback, useEffect } from 'react';
 import { PopupContent } from '../../state/application/actions';
 import { useRemovePopup } from '../../state/application/hooks';
 import { SnackbarAlert } from '../SnackbarAlert/SnackbarAlert';
-
-export enum PopupType {
-  ERROR = "error",
-  WARNING = "warning",
-  INFO = "info",
-  SUCCESS = "success"
-};
+import { PopupType } from '../SnackbarAlert/SnackbarAlert';
+import { useSnackbar } from 'notistack';
 
 export default function Popup({
   removeAfterMs,
@@ -25,6 +20,7 @@ export default function Popup({
   title?: string
   children?: React.ReactNode
 }) {
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const removePopup = useRemovePopup();
   const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup]);
 
@@ -34,19 +30,28 @@ export default function Popup({
     const timeout = setTimeout(() => {
       removeThisPopup()
     }, removeAfterMs)
+
+    return () => {
+      clearTimeout(timeout)
+    }
   }, [removeAfterMs, removeThisPopup]);
+
+  const triggerPopup = () => {
+    enqueueSnackbar(`${content}`)
+  };
 
   return (
     <>
-      <SnackbarAlert 
+      {/* <SnackbarAlert 
         onClick={removeThisPopup} 
         severity={severity} 
         title={title}
         message={content}
-
+        autoHideDuration={removeAfterMs}
       >
         {children}
-      </SnackbarAlert>
+      </SnackbarAlert> */}
+      {triggerPopup()}
     </>
   )
 };

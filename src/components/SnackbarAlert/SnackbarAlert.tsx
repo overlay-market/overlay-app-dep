@@ -5,6 +5,14 @@ import { Alert, AlertTitle }  from '@material-ui/lab';
 import CloseIcon from '@material-ui/icons/Close';
 import styled from 'styled-components/macro';
 
+export enum PopupType {
+  ERROR = "error",
+  WARNING = "warning",
+  INFO = "info",
+  SUCCESS = "success"
+};
+
+
 const StyledAlert = styled(Alert)`
 `
 
@@ -31,7 +39,7 @@ interface SnackbarAlertProps {
   title?: any
   children?: React.ReactNode;
   onClick?: () => void;
-  autoHideDuration?: number
+  autoHideDuration?: number | null
 }
 
 export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ 
@@ -40,7 +48,7 @@ export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({
   title, 
   children, 
   onClick,
-  autoHideDuration = 8888
+  autoHideDuration
 }) => {
     const [open, setOpen] = useState(true);
 
@@ -50,7 +58,7 @@ export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          autoHideDuration={autoHideDuration}
+          autoHideDuration={autoHideDuration ? autoHideDuration : 5000}
           open={open}
           >
             <StyledAlert

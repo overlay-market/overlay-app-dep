@@ -331,32 +331,6 @@ export const BuildPosition = ({
       txHash
     })
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
-
-  const PromptSnackbar = ({
-    showSnackbar,
-    severity,
-    message,
-    title,
-    children
-  }:{
-    showSnackbar: boolean
-    severity: string
-    message?: string
-    title?: string
-    children?: React.ReactNode
-  }) => {
-
-    return (
-      <>
-          {showSnackbar ?? (
-              <SnackbarAlert severity={severity} message={message} title={title}>
-                  {children}
-              </SnackbarAlert>
-          )}
-      </>
-    )
-  }
-
   
   async function handleBuild () {
 
@@ -683,10 +657,6 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
-      <SnackbarAlert severity={'success'} title={'hello'}>
-        hello
-      </SnackbarAlert>
-      <PromptSnackbar showSnackbar={(txHash ? true : false)} severity={'success'} message={`${txHash}`} />
     </MarketCard>
   )
 };

@@ -14,9 +14,12 @@ import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
 import { 
   useAllTransactions, 
-  isTransactionRecent
+  isTransactionRecent,
 } from '../state/transactions/hooks'
+import { useActivePopups } from '../state/application/hooks';
 import { TransactionDetails } from '../state/transactions/reducer';
+import Popup from '../components/Popup/Popup';
+import { PopupType } from '../components/SnackbarAlert/SnackbarAlert';
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -38,6 +41,7 @@ const App = () => {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
+  const activePopups = useActivePopups()
 
   useEffect(() => {
     console.log('allTransactions: ', allTransactions);
@@ -46,9 +50,22 @@ const App = () => {
   useEffect(() => {
     console.log('sortedRecentTransactions: ', sortedRecentTransactions);
   }, [sortedRecentTransactions])
-  
+
+  useEffect(() => {
+    console.log('activePopups: ', activePopups);
+  }, [activePopups])
+
   return (
     <AppWrapper>
+      {activePopups.map((popup) => (
+        <Popup 
+          key={popup.key} 
+          content={popup.content} 
+          popKey={popup.key} 
+          removeAfterMs={popup.removeAfterMs}
+          severity={PopupType.SUCCESS}
+        />
+      ))}
       <Header />
       <Web3ReactManager>
         <Switch>
