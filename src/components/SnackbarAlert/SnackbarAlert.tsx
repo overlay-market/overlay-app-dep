@@ -30,9 +30,18 @@ interface SnackbarAlertProps {
   severity: any
   title?: any
   children?: React.ReactNode;
+  onClick?: () => void;
+  autoHideDuration?: number
 }
 
-export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ message, severity, title, children }) => {
+export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ 
+  message, 
+  severity, 
+  title, 
+  children, 
+  onClick,
+  autoHideDuration = 8888
+}) => {
     const [open, setOpen] = useState(true);
 
     return (
@@ -41,7 +50,7 @@ export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ message, severity,
             vertical: 'bottom',
             horizontal: 'right',
           }}
-          autoHideDuration={6900}
+          autoHideDuration={autoHideDuration}
           open={open}
           >
             <StyledAlert
@@ -51,9 +60,7 @@ export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ message, severity,
                   aria-label="close"
                   color="inherit"
                   size="small"
-                  onClick={() => {
-                    setOpen(false);
-                  }}
+                  onClick={onClick}
                 >
                   <CloseIcon fontSize="inherit" />
                 </StyledIconButton>
@@ -61,7 +68,7 @@ export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({ message, severity,
             >
               <AlertTitle> {title} </AlertTitle>
               <Message> {message} </Message>
-              {children}
+                {children}
             </StyledAlert>
         </StyledSnackbar>
     );
