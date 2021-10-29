@@ -51,9 +51,6 @@ const App = () => {
     console.log('sortedRecentTransactions: ', sortedRecentTransactions);
   }, [sortedRecentTransactions])
 
-  useEffect(() => {
-    console.log('activePopups: ', activePopups);
-  }, [activePopups])
 
   return (
     <AppWrapper>
