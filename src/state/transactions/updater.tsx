@@ -71,6 +71,7 @@ export default function Updater(): null {
   )
 
   useEffect(() => {
+    
     if (!chainId || !library || !lastBlockNumber) return
 
     const cancels = Object.keys(transactions)
@@ -80,6 +81,7 @@ export default function Updater(): null {
         
         promise
           .then((receipt) => {
+            console.log('this is receipt in useEffect: ', receipt);
             if (receipt) {
               dispatch(
                 finalizeTransaction({

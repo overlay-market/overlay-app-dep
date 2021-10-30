@@ -18,8 +18,7 @@ import {
 } from '../state/transactions/hooks'
 import { useActivePopups } from '../state/application/hooks';
 import { TransactionDetails } from '../state/transactions/reducer';
-import Popup from '../components/Popup/Popup';
-import { PopupType } from '../components/SnackbarAlert/SnackbarAlert';
+import Popups from '../components/Popup/Popups';
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -27,42 +26,17 @@ export const AppWrapper = styled.div`
   min-height: 100vh;
   width: 100vw;
 `
-// we want the latest one to come first, so return negative if a is after b
-function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
-  return b.addedTime - a.addedTime
-}
 
 const App = () => {
-
-  const allTransactions = useAllTransactions();
-
-  const sortedRecentTransactions = useMemo(() => {
-    const txs = Object.values(allTransactions)
-    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
-  }, [allTransactions])
-
   const activePopups = useActivePopups()
 
-  useEffect(() => {
-    console.log('allTransactions: ', allTransactions);
-  }, [allTransactions])
-
-  useEffect(() => {
-    console.log('sortedRecentTransactions: ', sortedRecentTransactions);
-  }, [sortedRecentTransactions])
-
+  // useEffect(() => {
+  //   console.log('activePopups at app level: ', activePopups);
+  // }, [activePopups]);
 
   return (
     <AppWrapper>
-      {activePopups.map((popup) => (
-        <Popup 
-          key={popup.key} 
-          content={popup.content} 
-          popKey={popup.key} 
-          removeAfterMs={popup.removeAfterMs}
-          severity={PopupType.SUCCESS}
-        />
-      ))}
+      <Popups />
       <Header />
       <Web3ReactManager>
         <Switch>

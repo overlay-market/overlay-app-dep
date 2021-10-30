@@ -28,30 +28,43 @@ export default function Popup({
     if (removeAfterMs === null) return undefined;
 
     const timeout = setTimeout(() => {
-      removeThisPopup()
+      removeThisPopup();
+      closeSnackbar(popKey);
     }, removeAfterMs)
 
     return () => {
       clearTimeout(timeout)
     }
   }, [removeAfterMs, removeThisPopup]);
+  
+  
+  const triggerPopup = ({ 
+    hash
+  }:{
+    hash: string
+  }) => {
+    enqueueSnackbar(hash, {
+      key: popKey,
+      autoHideDuration: removeAfterMs,
+      variant: severity,
+      preventDuplicate: true
+    })
+  }
 
-  const triggerPopup = () => {
-    enqueueSnackbar(`${content}`)
-  };
+
+  let popupContent;
+
+  if ('txn' in content) {
+    const {
+      txn: { hash, success, summary },
+    } = content;
+
+    popupContent = triggerPopup({ hash: hash });
+  }
 
   return (
     <>
-      {/* <SnackbarAlert 
-        onClick={removeThisPopup} 
-        severity={severity} 
-        title={title}
-        message={content}
-        autoHideDuration={removeAfterMs}
-      >
-        {children}
-      </SnackbarAlert> */}
-      {triggerPopup()}
+         {popupContent}
     </>
   )
 };
