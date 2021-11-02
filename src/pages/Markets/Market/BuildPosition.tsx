@@ -24,7 +24,7 @@ import {
 } from '../../../constants/addresses';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { useApproveCallback } from '../../../hooks/useApproveCallback';
-import { useDerivedUserInputs } from '../../../state/position/hooks';
+import { useDerivedBuildInfo } from '../../../state/position/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
@@ -264,7 +264,7 @@ export const BuildPosition = ({
     onSlippageInput,
     onTxnDeadlineInput } = usePositionActionHandlers();
 
-  const { parsedAmount, error } = useDerivedUserInputs(inputValue, ovl);
+  const { parsedAmount, error } = useDerivedBuildInfo(inputValue, ovl);
 
   // handle user inputs
   const handleResetTxnSettings = useCallback((e:any) => {

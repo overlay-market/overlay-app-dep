@@ -72,7 +72,7 @@ export function usePositionActionHandlers(): {
   }
 };
 
-export function useDerivedUserInputs(
+export function useDerivedBuildInfo(
   typedValue: string | undefined,
   inputToken: Token | undefined
 ) : {
