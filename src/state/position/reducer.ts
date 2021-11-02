@@ -1,4 +1,3 @@
-
 import { createReducer } from '@reduxjs/toolkit';
 import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
 import { 
@@ -9,6 +8,7 @@ import {
   slippageInput,
   txnDeadlineInput,
   DefaultTxnSettings } from './actions';
+  import { OVL_MARKET_ADDRESS } from './../../constants/addresses';
 import { OVL } from '../../constants/tokens';
 
 export interface PositionState {

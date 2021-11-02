@@ -75,11 +75,16 @@ export function usePositionActionHandlers(): {
 export function useDerivedBuildInfo(
   typedValue: string | undefined,
   inputToken: Token | undefined
-) : {
-  parsedAmount?: CurrencyAmount<Token>,
-  error?: string
-} {
+) {
   const { account } = useActiveWeb3React();
+
+  const { 
+    inputValue,
+    leverageValue,
+    positionSide,
+    slippageValue,
+    txnDeadline
+  } = usePositionState();
 
   const parsedInput: CurrencyAmount<Token> | undefined = tryParseAmount(typedValue, inputToken);
 
@@ -100,6 +105,11 @@ export function useDerivedBuildInfo(
   return {
     parsedAmount,
     error,
+    inputValue,
+    leverageValue,
+    positionSide,
+    slippageValue,
+    txnDeadline
   }
 }
 
