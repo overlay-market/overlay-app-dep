@@ -1,6 +1,6 @@
 import { MaxUint256 } from '@ethersproject/constants'
 import { TransactionResponse } from '@ethersproject/providers'
-import { CurrencyAmount, Currency} from '@uniswap/sdk-core'
+import { CurrencyAmount, Currency, Percent } from '@uniswap/sdk-core'
 import { useCallback, useMemo } from 'react'
 import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
 import { TransactionType } from '../state/transactions/actions'

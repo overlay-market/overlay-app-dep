@@ -424,6 +424,8 @@ export const BuildPosition = ({
 
   const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
 
+  console.log('current approval status: ', approval);
+  
   async function attemptToApprove() {
     if (!inputValue) throw new Error('missing position input size');
     if (!positionSide) throw new Error('please choose a long/short position');
