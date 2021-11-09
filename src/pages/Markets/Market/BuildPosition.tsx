@@ -40,6 +40,8 @@ import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { TransactionType } from '../../../state/transactions/actions'
 import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
 import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
+import TransactionPending from '../../../components/TransactionPendingModal/TransactionPendingModal';
+import { PopupType } from '../../../components/SnackbarAlert/SnackbarAlert';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -659,6 +661,7 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
+      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
     </MarketCard>
   )
 };
