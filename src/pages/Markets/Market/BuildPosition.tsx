@@ -334,6 +334,7 @@ export const BuildPosition = ({
     })
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
   
+
   async function handleBuild () {
 
     if (chainId && library && inputValue) {
