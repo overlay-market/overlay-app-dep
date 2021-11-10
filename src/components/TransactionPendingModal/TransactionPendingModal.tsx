@@ -11,11 +11,7 @@ export default function TransactionPending({
 }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  useEffect(() => {
-    if (!attemptingTxn) {
-      closeSnackbar();
-    }
-  }, [attemptingTxn, closeSnackbar]);
+  let key : any = undefined;
 
   const triggerPopup = ({
     attemptingTxn
@@ -23,17 +19,21 @@ export default function TransactionPending({
     attemptingTxn: boolean
   }) => {
     if (attemptingTxn) {
-      enqueueSnackbar('Attempting Txn', {
+      key = enqueueSnackbar('Attempting Txn', {
         variant: severity,
         preventDuplicate: true
       })
     }
   }
-
+  
   let TxnPendingAlert;
-
+  
   if (attemptingTxn) {
     TxnPendingAlert = triggerPopup({ attemptingTxn })
+  }
+  
+  if (!attemptingTxn && key !== undefined) {
+      closeSnackbar(key);
   }
 
   return (
