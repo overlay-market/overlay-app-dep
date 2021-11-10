@@ -337,7 +337,7 @@ export const BuildPosition = ({
     })
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
   
-  const handleBuildPosition = useCallback(() => {
+  const handleBuild = useCallback(() => {
       if (!buildCallback) {
         return
       }
@@ -351,96 +351,6 @@ export const BuildPosition = ({
           setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: error, txHash: undefined })
         })
     }, [buildCallback]);
-
-  async function handleBuild () {
-
-    if (chainId && library && inputValue) {
-
-      const signer = library.getSigner()
-
-      const calldata = OVLCollateral.buildParameters({
-        collateral: utils.parseUnits(inputValue),
-        leverage: Number(leverageValue),
-        isLong: positionSide == 'LONG',
-        market: OVL_MARKET_ADDRESS[chainId],
-        slippageTolerance: 1,
-        deadline: 1
-      })
-
-      const txn: { to: string; data: string; value: string } = {
-        to: OVL_COLLATERAL_ADDRESS[chainId],
-        data: calldata,
-        value: utils.parseEther('0').toHexString(),
-      }
-
-      setBuildState({ showConfirm: false, attemptingTxn: true, txnErrorMessage: undefined, txHash: undefined })
-
-      console.log("calldata", calldata)
-      console.log("txn", txn)
-
-      await library
-        .getSigner()
-        .estimateGas(txn)
-        .then(estimate => {
-          console.log("estimate", estimate.toString())
-          const tx = {
-            ...txn,
-            gasLimit: calculateGasMargin(estimate)
-          }
-          console.log("tx before confirm: ", tx);
-          
-          library
-            .getSigner()
-            .sendTransaction(tx)
-            .then( (response: TransactionResponse) => {
-
-              setTimeout(() => {
-
-                addTransaction(
-                  response, {
-                    type: TransactionType.BUILD_OVL_POSITION,
-                    market: OVL_MARKET_ADDRESS[chainId],
-                    collateral: inputValue,
-                    isLong: positionSide == 'LONG',
-                    leverage: leverageValue.toString()
-                  })
-
-                setBuildState({ 
-                  showConfirm: false, 
-                  attemptingTxn: false, 
-                  txnErrorMessage: undefined, 
-                  txHash: response.hash 
-                })
-
-              }, 5000)
-
-            })
-            .catch(error => {
-
-              setBuildState({ 
-                showConfirm: false, 
-                attemptingTxn: false, 
-                txnErrorMessage: error.message, 
-                txHash: undefined 
-              })
-
-            })
-
-        })
-
-
-      console.log("handle build - ", 
-        "\n leverage", typeof leverageValue, leverageValue, 
-        "\n side", typeof positionSide, positionSide,
-        "\n value", typeof inputValue, inputValue, utils.parseUnits(inputValue),
-        "\n currency", typeof inputCurrency, inputCurrency, 
-        "\n slippage", typeof slippageValue, slippageValue,
-        "\n deadline", typeof txnDeadline, txnDeadline
-      );
-
-    }
-
-  }
 
   // const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
   
@@ -676,7 +586,7 @@ export const BuildPosition = ({
         fundingRate={'-0.0026'}
       />
 
-      <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuildPosition()} onDismiss={handleDismiss}/>
+      <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuild()} onDismiss={handleDismiss}/>
       <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
     </MarketCard>
   )
