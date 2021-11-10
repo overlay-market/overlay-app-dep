@@ -38,22 +38,32 @@ enum BuildCallbackState {
   VALID
 };
 
+// collateral: any | undefined,
+// leverage: any | undefined,
+// isLong: boolean | undefined,
+// slippageTolerance: number | undefined,
+// deadline: number,
+// chainId: any | undefined
+
 function useBuildCallArguments(
-  collateral: any,
-  leverage: any,
-  isLong: boolean,
-  slippageTolerance: number,
-  deadline: number,
-  chainId: any
+  buildData: any | undefined,
+  chainId: any | undefined
 ) {
-  const calldata = OVLCollateral.buildParameters({
-    collateral: utils.parseUnits(collateral),
-    leverage: Number(leverage),
-    isLong: isLong,
-    market: OVL_MARKET_ADDRESS[chainId],
-    slippageTolerance: slippageTolerance,
-    deadline: deadline
-  });
+
+  let calldata: any;
+
+  if (!buildData) {
+    calldata = undefined;
+  } else {
+    calldata = OVLCollateral.buildParameters({
+      collateral: utils.parseUnits(buildData.collateral),
+      leverage: Number(buildData.leverage),
+      isLong: buildData.isLong,
+      market: OVL_MARKET_ADDRESS[chainId],
+      slippageTolerance: buildData.slippageTolerance,
+      deadline: buildData.deadline
+    });
+  }
 
   return useMemo(() => {
     const txn: {address: string; calldata: string; value: string } = {
@@ -74,18 +84,13 @@ function useBuildCallArguments(
 
 export function useBuildCallback(
   buildData: any, // position to build
-  allowedSlippage: Percent,
 ): { state: BuildCallbackState; callback: null | (() => Promise<string>); error: string | null } {
   const { account, chainId, library } = useActiveWeb3React();
 
   const addTransaction = useTransactionAdder();
 
   const buildCalls = useBuildCallArguments(
-    buildData.inputValue,
-    buildData.leverageValue,
-    buildData.positionSide,
-    buildData.slippageValue,
-    buildData.txnDeadline,
+    buildData,
     chainId
   )
 

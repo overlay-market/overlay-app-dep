@@ -14,6 +14,7 @@ import { Token } from "@uniswap/sdk-core";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { parseUnits } from '@ethersproject/units';
 import JSBI from 'jsbi';
+import { Trans } from '@lingui/macro';
 
 export function usePositionState(): AppState['position'] {
   return useAppSelector((state) => state.position);
@@ -72,10 +73,11 @@ export function usePositionActionHandlers(): {
   }
 };
 
-export function useDerivedBuildInfo(
-  typedValue: string | undefined,
-  inputToken: Token | undefined
-) {
+export function useDerivedBuildInfo(): {
+  buildData: object | undefined
+  inputError?: string
+  parsedAmount?: string
+}{
   const { account } = useActiveWeb3React();
 
   const { 
@@ -86,34 +88,42 @@ export function useDerivedBuildInfo(
     txnDeadline
   } = usePositionState();
 
-  let buildData = {
-    inputValue,
-    leverageValue,
-    positionSide,
-    slippageValue,
-    txnDeadline
+  let buildData: object | undefined;
+
+  // if any inputs missing, will not allow buildCallback to be created
+  if (!inputValue || !leverageValue || !positionSide || !slippageValue || txnDeadline) {
+    buildData = undefined;
+  } else {
+    buildData = {
+      inputValue,
+      leverageValue,
+      positionSide,
+      slippageValue,
+      txnDeadline
+    }
   }
 
-  const parsedInput: CurrencyAmount<Token> | undefined = tryParseAmount(typedValue, inputToken);
-
-  const parsedAmount =
-    parsedInput && parsedInput.quotient
-      ? parsedInput
-      : undefined;
-
-  let error: string | undefined;
-
+  let inputError: string | undefined;
   if (!account) {
-    error = 'Connect Wallet';
+    inputError = `Connect Wallet`
   }
-  if (!parsedAmount) {
-    error = error ?? 'Enter an amount';
+
+  if (!inputValue) {
+    inputError = `Input Collateral Amount`
+  }
+
+  if (!leverageValue) {
+    inputError = `Select Leverage Amount`
+  }
+
+  if (!positionSide) {
+    inputError = `Select Long or Short Position`
   }
 
   return {
-    parsedAmount,
-    error,
-    buildData
+    buildData,
+    inputError,
+    parsedAmount: inputValue
   }
 }
 

@@ -42,6 +42,7 @@ import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal
 import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
 import TransactionPending from '../../../components/TransactionPendingModal/TransactionPendingModal';
 import { PopupType } from '../../../components/SnackbarAlert/SnackbarAlert';
+import { useBuildCallback } from '../../../hooks/useBuildCallback';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -266,7 +267,9 @@ export const BuildPosition = ({
     onSlippageInput,
     onTxnDeadlineInput } = usePositionActionHandlers();
 
-  const { buildData, parsedAmount, error } = useDerivedBuildInfo(inputValue, ovl);
+  const { buildData, inputError } = useDerivedBuildInfo();
+  
+  const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
 
   // handle user inputs
   const handleResetTxnSettings = useCallback((e:any) => {
@@ -425,17 +428,15 @@ export const BuildPosition = ({
 
   }
 
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
-
-  console.log('current approval status: ', approval);
+  // const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
   
-  async function attemptToApprove() {
-    if (!inputValue) throw new Error('missing position input size');
-    if (!positionSide) throw new Error('please choose a long/short position');
-    if (!leverageValue) throw new Error('please select a leverage value');
+  // async function attemptToApprove() {
+  //   if (!inputValue) throw new Error('missing position input size');
+  //   if (!positionSide) throw new Error('please choose a long/short position');
+  //   if (!leverageValue) throw new Error('please select a leverage value');
 
-    await approveCallback();
-  };
+  //   await approveCallback();
+  // };
 
   return (
     <MarketCard align={'left'} padding={'0px'}>
