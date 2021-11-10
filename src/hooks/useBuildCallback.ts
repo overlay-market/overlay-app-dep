@@ -38,13 +38,6 @@ enum BuildCallbackState {
   VALID
 };
 
-// collateral: any | undefined,
-// leverage: any | undefined,
-// isLong: boolean | undefined,
-// slippageTolerance: number | undefined,
-// deadline: number,
-// chainId: any | undefined
-
 function useBuildCallArguments(
   buildData: any | undefined,
   chainId: any | undefined
@@ -54,6 +47,8 @@ function useBuildCallArguments(
 
   if (!buildData) {
     calldata = undefined;
+  } else if (!buildData.inputValue || !buildData.leverage || !buildData.isLong) {
+    calldata = undefined
   } else {
     calldata = OVLCollateral.buildParameters({
       collateral: utils.parseUnits(buildData.collateral),

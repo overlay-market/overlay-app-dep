@@ -91,7 +91,7 @@ export function useDerivedBuildInfo(): {
   let buildData: object | undefined;
 
   // if any inputs missing, will not allow buildCallback to be created
-  if (!inputValue || !leverageValue || !positionSide || !slippageValue || txnDeadline) {
+  if (!inputValue || !leverageValue || !positionSide) {
     buildData = undefined;
   } else {
     buildData = {

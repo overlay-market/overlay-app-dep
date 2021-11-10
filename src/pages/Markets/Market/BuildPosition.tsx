@@ -337,6 +337,20 @@ export const BuildPosition = ({
     })
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
   
+  const handleBuildPosition = useCallback(() => {
+      if (!buildCallback) {
+        return
+      }
+
+      setBuildState({ showConfirm: false, attemptingTxn: true, txnErrorMessage: undefined, txHash: undefined })
+      buildCallback()
+        .then((hash) => {
+          setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: undefined, txHash: hash })
+        })
+        .catch((error) => {
+          setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: error, txHash: undefined })
+        })
+    }, [buildCallback]);
 
   async function handleBuild () {
 
@@ -662,7 +676,7 @@ export const BuildPosition = ({
         fundingRate={'-0.0026'}
       />
 
-      <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
+      <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuildPosition()} onDismiss={handleDismiss}/>
       <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
     </MarketCard>
   )
