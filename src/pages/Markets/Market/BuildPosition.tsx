@@ -266,7 +266,7 @@ export const BuildPosition = ({
     onSlippageInput,
     onTxnDeadlineInput } = usePositionActionHandlers();
 
-  const { parsedAmount, error } = useDerivedBuildInfo(inputValue, ovl);
+  const { buildData, parsedAmount, error } = useDerivedBuildInfo(inputValue, ovl);
 
   // handle user inputs
   const handleResetTxnSettings = useCallback((e:any) => {

@@ -17,7 +17,6 @@ function useBuildCallArguments(
   collateral: any,
   leverage: any,
   isLong: boolean,
-  market: any,
   slippageTolerance: number,
   deadline: number,
   chainId: any
@@ -45,27 +44,38 @@ function useBuildCallArguments(
   }, [buildData, chainId])
 }
 
-// export function useBuildCallback(
-//   position: any, // position to build
-//   allowedSlippage: Percent,
-// ): { state: BuildCallbackState; callback: null | (() => Promise<string>); error: string | null } {
-//   const { account, chainId, library } = useActiveWeb3React();
+export function useBuildCallback(
+  buildData: any, // position to build
+  allowedSlippage: Percent,
+): { state: BuildCallbackState; callback: null | (() => Promise<string>); error: string | null } {
+  const { account, chainId, library } = useActiveWeb3React();
 
-//   const addTransaction = useTransactionAdder();
+  const addTransaction = useTransactionAdder();
 
-//   return useMemo(() => {
-//     if (!position || !library || !account || !chainId) {
-//       return { state: BuildCallbackState.INVALID, callback: null, error: 'Missing Dependencies' };
-//     }
+  const { buildData: calldata, txn: txn} = useBuildCallArguments(
+    buildData.inputValue,
+    buildData.leverageValue,
+    buildData.positionSide,
+    buildData.slippageValue,
+    buildData.txnDeadline,
+    chainId
+  )
 
-//     return {
-//       state: BuildCallbackState.VALID,
-//       callback: async function onBuild(): Promise<string> {
+  // return useMemo(() => {
+  //   if (!buildData || !library || !account || !chainId) {
+  //     return { state: BuildCallbackState.INVALID, callback: null, error: 'Missing Dependencies' };
+  //   }
+
+  //   return {
+  //     state: BuildCallbackState.VALID,
+  //     callback: async function onBuild(): Promise<string> {
         
-//         return library
-//                   .getSigner()
-//                   .estimateGas
-//       }
-//     }
-//   }
-// };
+  //       return library
+  //                 .getSigner()
+  //                 .estimateGas(txn)
+                  
+  //     },
+  //     error: null,
+  //   }
+  // }, [])
+};

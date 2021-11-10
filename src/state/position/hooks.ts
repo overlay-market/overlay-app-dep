@@ -86,6 +86,14 @@ export function useDerivedBuildInfo(
     txnDeadline
   } = usePositionState();
 
+  let buildData = {
+    inputValue,
+    leverageValue,
+    positionSide,
+    slippageValue,
+    txnDeadline
+  }
+
   const parsedInput: CurrencyAmount<Token> | undefined = tryParseAmount(typedValue, inputToken);
 
   const parsedAmount =
@@ -105,11 +113,7 @@ export function useDerivedBuildInfo(
   return {
     parsedAmount,
     error,
-    inputValue,
-    leverageValue,
-    positionSide,
-    slippageValue,
-    txnDeadline
+    buildData
   }
 }
 
