@@ -63,11 +63,6 @@ const SnackMessage = forwardRef<
 >((props, ref) => {
   const classes = useStyles();
   const { closeSnackbar } = useSnackbar();
-  const [expanded, setExpanded] = useState(false);
-
-  const handleExpandClick = useCallback(() => {
-    setExpanded((oldExpanded) => !oldExpanded);
-  }, []);
 
   const handleDismiss = useCallback(() => {
     closeSnackbar(props.id);
@@ -81,29 +76,11 @@ const SnackMessage = forwardRef<
             {props.message}
           </Typography>
           <div className={classes.icons}>
-            <IconButton
-              aria-label="Show more"
-              className={classnames(classes.expand, {
-                [classes.expandOpen]: expanded,
-              })}
-              onClick={handleExpandClick}
-            >
-              <ExpandMoreIcon />
-            </IconButton>
             <IconButton className={classes.expand} onClick={handleDismiss}>
               <CloseIcon />
             </IconButton>
           </div>
         </CardActions>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <Paper className={classes.collapse}>
-            <Typography gutterBottom>PDF ready</Typography>
-            <Button size="small" className={classes.button}>
-              <CheckCircleIcon className={classes.checkIcon} />
-              Download now
-            </Button>
-          </Paper>
-        </Collapse>
       </Card>
     </SnackbarContent>
   );
