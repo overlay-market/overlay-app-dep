@@ -82,6 +82,7 @@ const SnackMessage = forwardRef<
   if (parsed) {
     let { parsedMessage, variant } = parsed;
   }
+
   
   return (
     <SnackbarContent ref={ref} className={classes.root}>
