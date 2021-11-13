@@ -1,6 +1,4 @@
 import './App.css';
-import React, { useEffect } from 'react';
-import { useCallback, useMemo } from 'react'
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager';
 import Header from '../components/Header/Header';
@@ -12,12 +10,6 @@ import Positions from './Positions/Positions';
 import Liquidate from './Liquidate/Liquidate';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
-import { 
-  useAllTransactions, 
-  isTransactionRecent,
-} from '../state/transactions/hooks'
-import { useActivePopups } from '../state/application/hooks';
-import { TransactionDetails } from '../state/transactions/reducer';
 import Popups from '../components/Popup/Popups';
 
 export const AppWrapper = styled.div`
@@ -28,12 +20,6 @@ export const AppWrapper = styled.div`
 `
 
 const App = () => {
-  const activePopups = useActivePopups()
-
-  // useEffect(() => {
-  //   console.log('activePopups at app level: ', activePopups);
-  // }, [activePopups]);
-
   return (
     <AppWrapper>
       <Popups />
