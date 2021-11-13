@@ -70,13 +70,26 @@ const SnackMessage = forwardRef<
     closeSnackbar(props.id);
   }, [props.id, closeSnackbar]);
 
+  let parsed = undefined;
+  let parsedMessage = undefined;
+  let variant = undefined;
+
+  if (typeof props.message === 'string') {
+    parsed = JSON.parse(props.message);
+    console.log('parsed: ', parsed);
+  }
+
+  if (parsed) {
+    let { parsedMessage, variant } = parsed;
+  }
+  
   return (
     <SnackbarContent ref={ref} className={classes.root}>
       <Card className={classes.card}>
         <CardActions classes={{ root: classes.actionRoot }}>
           <Clock color={ "#F2F2F2" } size={20} />
           <Typography variant="subtitle2" className={classes.typography}>
-            {props.message}
+            { !parsed ? (props.message) : (parsed.message) }
           </Typography>
           <div className={classes.icons}>
             <IconButton className={classes.expand} onClick={handleDismiss}>

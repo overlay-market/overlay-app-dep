@@ -14,8 +14,8 @@ export default function TransactionPending({
 
   const triggerPopup = ({ attemptingTxn }: { attemptingTxn: boolean }) => {
     if (attemptingTxn) {
-      key = enqueueSnackbar('{"message": "Attempting Txn", "variant": "testing"}', {
-        variant: severity,
+      key = enqueueSnackbar({message: 'Attempting Txn', variant: 'testing'}, {
+        variant: PopupType.WARNING,
         preventDuplicate: true,
       });
     }
