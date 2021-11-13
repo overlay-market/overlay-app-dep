@@ -43,7 +43,7 @@ export default function Popup({
   }:{
     hash: string
   }) => {
-    enqueueSnackbar(hash, {
+    enqueueSnackbar(`{"message": "${hash}", "variant": "${severity}"}`, {
       key: popKey,
       autoHideDuration: removeAfterMs,
       variant: severity,

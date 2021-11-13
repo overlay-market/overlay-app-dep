@@ -40,7 +40,7 @@ import { useTransactionAdder } from '../../../state/transactions/hooks'
 import { TransactionType } from '../../../state/transactions/actions'
 import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
 import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
-import TransactionPending from '../../../components/TransactionPendingModal/TransactionPendingModal';
+import TransactionPending from '../../../components/Popup/TransactionPending';
 import { PopupType } from '../../../components/SnackbarAlert/SnackbarAlert';
 import { useBuildCallback } from '../../../hooks/useBuildCallback';
 

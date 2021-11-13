@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useCallback, useMemo } from "react";
+import React, { forwardRef, useCallback } from "react";
 import classnames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar, SnackbarContent } from "notistack";
@@ -57,7 +57,6 @@ const SnackMessage = forwardRef<
   HTMLDivElement,
   { id: string | number; message: string | React.ReactNode }
 >((props, ref) => {
-  const [variantt, setVariant] = useState();
   const classes = useStyles();
   const { closeSnackbar } = useSnackbar();
 
@@ -81,8 +80,6 @@ const SnackMessage = forwardRef<
   }
 
   let VariantIcon = ({ variant }:{ variant: PopupType | undefined}) => {
-      console.log('variant: ', variant);
-
       if (variant === PopupType.WARNING) return <Clock color={ "#F2F2F2" } size={20} />;
       else if (variant === PopupType.SUCCESS) return <CheckCircle color={ '#10DCB1' } size={20} />;
       else return <AlertCircle color={ '#F2F2F2' } size={20} />;
