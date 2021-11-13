@@ -6,7 +6,7 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
-import { Clock, X, CheckCircle } from "react-feather";
+import { Clock, X, CheckCircle, AlertCircle } from "react-feather";
 import { PopupType } from "./SnackbarAlert";
 
 const useStyles = makeStyles((theme) => ({
@@ -81,15 +81,11 @@ const SnackMessage = forwardRef<
   }
 
   let VariantIcon = ({ variant }:{ variant: PopupType | undefined}) => {
-      if (variant === PopupType.WARNING) {
-        return (
-          <Clock color={ "#F2F2F2" } size={20} />
-        )
-      } else {
-        return (
-          <CheckCircle color={ '#10DCB1' } size={20} />
-        )
-      }
+      console.log('variant: ', variant);
+
+      if (variant === PopupType.WARNING) return <Clock color={ "#F2F2F2" } size={20} />;
+      else if (variant === PopupType.SUCCESS) return <CheckCircle color={ '#10DCB1' } size={20} />;
+      else return <AlertCircle color={ '#F2F2F2' } size={20} />;
   }
 
   console.log('variant before return: ', parsedVariant);

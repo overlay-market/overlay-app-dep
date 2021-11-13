@@ -587,7 +587,7 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuild()} onDismiss={handleDismiss}/>
-      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.SUCCESS} />
+      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
     </MarketCard>
   )
 };
