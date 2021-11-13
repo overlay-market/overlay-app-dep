@@ -1,19 +1,13 @@
-import React, { useState, forwardRef, useCallback } from "react";
+import React, { useState, forwardRef, useCallback, useMemo } from "react";
 import classnames from "classnames";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSnackbar, SnackbarContent } from "notistack";
-import Collapse from "@material-ui/core/Collapse";
-import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import { Clock, X } from "react-feather";
-
+import { Clock, X, CheckCircle } from "react-feather";
+import { PopupType } from "./SnackbarAlert";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +57,7 @@ const SnackMessage = forwardRef<
   HTMLDivElement,
   { id: string | number; message: string | React.ReactNode }
 >((props, ref) => {
+  const [variantt, setVariant] = useState();
   const classes = useStyles();
   const { closeSnackbar } = useSnackbar();
 
@@ -71,26 +66,40 @@ const SnackMessage = forwardRef<
   }, [props.id, closeSnackbar]);
 
   let parsed = undefined;
-  let parsedMessage = undefined;
-  let variant = undefined;
+  let parsedMessage;
+  let parsedVariant;
 
   if (typeof props.message === 'string') {
     parsed = JSON.parse(props.message);
-    console.log('parsed: ', parsed);
   }
 
   if (parsed) {
-    let { parsedMessage, variant } = parsed;
+    let { message, variant } = parsed;
+    parsedMessage = message;
+    parsedVariant = variant;
+    console.log('variant in parsed: ', parsedVariant);
   }
 
-  
+  let VariantIcon = ({ variant }:{ variant: PopupType | undefined}) => {
+      if (variant === PopupType.WARNING) {
+        return (
+          <Clock color={ "#F2F2F2" } size={20} />
+        )
+      } else {
+        return (
+          <CheckCircle color={ '#10DCB1' } size={20} />
+        )
+      }
+  }
+
+  console.log('variant before return: ', parsedVariant);
   return (
     <SnackbarContent ref={ref} className={classes.root}>
       <Card className={classes.card}>
         <CardActions classes={{ root: classes.actionRoot }}>
-          <Clock color={ "#F2F2F2" } size={20} />
+          <VariantIcon variant={parsedVariant} />
           <Typography variant="subtitle2" className={classes.typography}>
-            { !parsed ? (props.message) : (parsed.message) }
+            { !parsed ? (props.message) : (parsedMessage) }
           </Typography>
           <div className={classes.icons}>
             <IconButton className={classes.expand} onClick={handleDismiss}>

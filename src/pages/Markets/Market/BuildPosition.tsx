@@ -362,7 +362,6 @@ export const BuildPosition = ({
   //   await approveCallback();
   // };
 
-  console.log('attemptingTxn: ', attemptingTxn);
   return (
     <MarketCard align={'left'} padding={'0px'}>
       <Column 
@@ -588,7 +587,7 @@ export const BuildPosition = ({
       />
 
       <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuild()} onDismiss={handleDismiss}/>
-      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
+      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.SUCCESS} />
     </MarketCard>
   )
 };
