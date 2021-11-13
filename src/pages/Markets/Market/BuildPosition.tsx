@@ -362,6 +362,7 @@ export const BuildPosition = ({
   //   await approveCallback();
   // };
 
+  console.log('attemptingTxn: ', attemptingTxn);
   return (
     <MarketCard align={'left'} padding={'0px'}>
       <Column 

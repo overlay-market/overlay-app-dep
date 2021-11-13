@@ -12,6 +12,8 @@ import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import { Clock, X } from "react-feather";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -20,18 +22,18 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   card: {
-    backgroundColor: "#fddc6c",
+    backgroundColor: "#3A3D48",
     width: "100%",
   },
   typography: {
     fontWeight: "bold",
+    color: "#f2f2f2"
   },
   actionRoot: {
     padding: "8px 8px 8px 16px",
-    justifyContent: "space-between",
   },
   icons: {
-    marginLeft: "auto",
+    marginLeft: "auto !important",
   },
   expand: {
     padding: "8px 8px",
@@ -72,12 +74,13 @@ const SnackMessage = forwardRef<
     <SnackbarContent ref={ref} className={classes.root}>
       <Card className={classes.card}>
         <CardActions classes={{ root: classes.actionRoot }}>
+          <Clock color={ "#F2F2F2" } size={20} />
           <Typography variant="subtitle2" className={classes.typography}>
             {props.message}
           </Typography>
           <div className={classes.icons}>
             <IconButton className={classes.expand} onClick={handleDismiss}>
-              <CloseIcon />
+              <X color={ "#F2F2F2" } size={16} />
             </IconButton>
           </div>
         </CardActions>
