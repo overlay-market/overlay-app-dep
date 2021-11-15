@@ -1,9 +1,9 @@
-import { useCallback, useEffect } from 'react';
-import { PopupContent } from '../../state/application/actions';
-import { useRemovePopup } from '../../state/application/hooks';
-import { SnackbarAlert } from '../SnackbarAlert/SnackbarAlert';
-import { PopupType } from '../SnackbarAlert/SnackbarAlert';
-import { useSnackbar } from 'notistack';
+import { useCallback, useEffect } from "react";
+import { PopupContent } from "../../state/application/actions";
+import { useRemovePopup } from "../../state/application/hooks";
+import { SnackbarAlert } from "../SnackbarAlert/SnackbarAlert";
+import { PopupType } from "../SnackbarAlert/SnackbarAlert";
+import { useSnackbar } from "notistack";
 
 export default function Popup({
   removeAfterMs,
@@ -11,18 +11,21 @@ export default function Popup({
   popKey,
   severity,
   title,
-  children
+  children,
 }: {
-  removeAfterMs: number | null
-  content: PopupContent
-  popKey: string
-  severity: PopupType
-  title?: string
-  children?: React.ReactNode
+  removeAfterMs: number | null;
+  content: PopupContent;
+  popKey: string;
+  severity: PopupType;
+  title?: string;
+  children?: React.ReactNode;
 }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const removePopup = useRemovePopup();
-  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup]);
+  const removeThisPopup = useCallback(
+    () => removePopup(popKey),
+    [popKey, removePopup]
+  );
 
   useEffect(() => {
     if (removeAfterMs === null) return undefined;
@@ -30,31 +33,28 @@ export default function Popup({
     const timeout = setTimeout(() => {
       removeThisPopup();
       closeSnackbar(popKey);
-    }, removeAfterMs)
+    }, removeAfterMs);
 
     return () => {
-      clearTimeout(timeout)
-    }
+      clearTimeout(timeout);
+    };
   }, [removeAfterMs, removeThisPopup]);
-  
-  
-  const triggerPopup = ({ 
-    hash
-  }:{
-    hash: string
-  }) => {
-    enqueueSnackbar(`{"message": "${hash}", "variant": "${severity}"}`, {
-      key: popKey,
-      autoHideDuration: removeAfterMs,
-      variant: severity,
-      preventDuplicate: true
-    })
-  }
 
+  const triggerPopup = ({ hash }: { hash: string }) => {
+    enqueueSnackbar(
+      `{"message": "Build confirmed", "hash": "${hash}", "variant": "${severity}"}`,
+      {
+        key: popKey,
+        autoHideDuration: removeAfterMs,
+        variant: severity,
+        preventDuplicate: true,
+      }
+    );
+  };
 
   let popupContent;
 
-  if ('txn' in content) {
+  if ("txn" in content) {
     const {
       txn: { hash, success, summary },
     } = content;
@@ -62,9 +62,5 @@ export default function Popup({
     popupContent = triggerPopup({ hash: hash });
   }
 
-  return (
-    <>
-         {popupContent}
-    </>
-  )
-};
+  return <>{popupContent}</>;
+}

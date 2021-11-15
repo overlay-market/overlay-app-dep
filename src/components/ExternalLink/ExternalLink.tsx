@@ -135,6 +135,8 @@ export const LinkIcon = styled(LinkIconFeather)`
   width: 18px;
   margin-left: 10px;
   stroke: ${({ theme }) => theme.blue1};
+  color: #f2f2f2;
+  padding: 8px 8px;
 `
 
 

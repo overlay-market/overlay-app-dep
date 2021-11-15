@@ -6,8 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
-import { Clock, X, CheckCircle, AlertCircle } from "react-feather";
+import { Clock, X, CheckCircle, AlertCircle, Link } from "react-feather";
 import { PopupType } from "./SnackbarAlert";
+import { Icon } from "../Icon/Icon";
+import { ExternalLinkIcon } from "../ExternalLink/ExternalLink";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   typography: {
     fontWeight: "bold",
-    color: "#f2f2f2"
+    color: "#f2f2f2",
   },
   actionRoot: {
     padding: "8px 8px 8px 16px",
@@ -67,37 +69,47 @@ const SnackMessage = forwardRef<
   let parsed = undefined;
   let parsedMessage;
   let parsedVariant;
+  let parsedHash;
 
-  if (typeof props.message === 'string') {
+  if (typeof props.message === "string") {
     parsed = JSON.parse(props.message);
   }
 
   if (parsed) {
-    let { message, variant } = parsed;
+    let { message, variant, hash } = parsed;
     parsedMessage = message;
     parsedVariant = variant;
-    console.log('variant in parsed: ', parsedVariant);
+    parsedHash = hash;
+    console.log("variant in parsed: ", parsedVariant);
   }
 
-  let VariantIcon = ({ variant }:{ variant: PopupType | undefined}) => {
-      if (variant === PopupType.WARNING) return <Clock color={ "#F2F2F2" } size={20} />;
-      else if (variant === PopupType.SUCCESS) return <CheckCircle color={ '#10DCB1' } size={20} />;
-      else return <AlertCircle color={ '#F2F2F2' } size={20} />;
-  }
+  let VariantIcon = ({ variant }: { variant: PopupType | undefined }) => {
+    if (variant === PopupType.WARNING)
+      return <Clock color={"#F2F2F2"} size={20} />;
+    else if (variant === PopupType.SUCCESS)
+      return <CheckCircle color={"#10DCB1"} size={20} />;
+    else return <AlertCircle color={"#F2F2F2"} size={20} />;
+  };
 
-  console.log('variant before return: ', parsedVariant);
+  console.log("variant before return: ", parsedVariant);
   return (
     <SnackbarContent ref={ref} className={classes.root}>
       <Card className={classes.card}>
         <CardActions classes={{ root: classes.actionRoot }}>
           <VariantIcon variant={parsedVariant} />
           <Typography variant="subtitle2" className={classes.typography}>
-            { !parsed ? (props.message) : (parsedMessage) }
+            {!parsed ? props.message : parsedMessage}
           </Typography>
           <div className={classes.icons}>
-            <IconButton className={classes.expand} onClick={handleDismiss}>
-              <X color={ "#F2F2F2" } size={16} />
-            </IconButton>
+            {parsedVariant === PopupType.SUCCESS && parsedHash ? (
+              <ExternalLinkIcon
+                href={`https://kovan.etherscan.io/tx/${parsedHash}`}
+              />
+            ) : (
+              <IconButton className={classes.expand} onClick={handleDismiss}>
+                <X color={"#F2F2F2"} size={16} />
+              </IconButton>
+            )}
           </div>
         </CardActions>
       </Card>
