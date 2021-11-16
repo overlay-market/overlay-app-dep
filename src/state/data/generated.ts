@@ -1261,7 +1261,7 @@ export type AppQuery = (
       & Pick<BalanceOvl, 'balance'>
     ), balances: Array<(
       { __typename?: 'Balance' }
-      & Pick<Balance, 'shares'>
+      & Pick<Balance, 'id' | 'shares'>
     )> }
   )> }
 );
@@ -1291,6 +1291,7 @@ export const AppDocument = `
       balance
     }
     balances {
+      id
       shares
     }
   }

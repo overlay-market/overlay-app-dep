@@ -47,6 +47,7 @@ export const api = createApi({
                 balance
               }
               balances {
+                id
                 shares
               }
             }
