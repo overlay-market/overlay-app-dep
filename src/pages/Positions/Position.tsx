@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Container } from '../Markets/Market/Market';
@@ -17,6 +17,8 @@ import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
 import { formatAmount } from '../../utils/formatData';
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
+import { useUnwindCallback } from '../../hooks/useUnwindCallback';
+import { utils } from 'ethers';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -60,6 +62,21 @@ export function Position(
   const { account } = useActiveWeb3React();
   const dispatch = useAppDispatch();
   
+  let mockUnwindData = {
+    positionId: "2",
+    shares: "10"
+  };
+
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(mockUnwindData);
+
+  const handleUnwind = useCallback(() => {
+    if (!unwindCallback) {
+      return
+    }
+
+    unwindCallback()
+  }, [unwindCallback])
+
   return (
     <Container>
         <Back arrowSize={16} textSize={16} margin={'0 auto 64px 0'} />
@@ -114,7 +131,9 @@ export function Position(
               align={'right'}
               />
         </InputContainer>
-        <UnwindButton>
+        <UnwindButton 
+          onClick={() => handleUnwind()}
+          >
            Unwind
         </UnwindButton>
 
