@@ -200,7 +200,7 @@ export function useUnwindCallback(
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Unwind failed`, error, address, calldata, value);
-
+              console.log('Unwind Error: ', error);
               throw new Error(`Unwind failed: ${error}`);
             }
           });
