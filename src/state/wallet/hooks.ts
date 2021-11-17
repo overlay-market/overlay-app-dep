@@ -30,7 +30,7 @@ export function useOvlBalance(
       isError,
       error,
       isUninitialized,
-      data
+      ovlBalance: data?.account?.balanceOVL?.balance
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
 };

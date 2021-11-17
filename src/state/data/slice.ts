@@ -20,6 +20,14 @@ export const api = createApi({
             query account($account: ID!) {
                 account(id: $account) {
                   id
+                  balanceOVL {
+                    balance
+                    locked
+                  }
+                  balances{
+                    id
+                    shares
+                  }
                 }
             }
           `,
@@ -77,7 +85,7 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
 
       console.log('subgraphUrl: ', subgraphUrl);
       console.log('chainId: ', chainId);
-      
+
       if (!subgraphUrl) {
         return {
           error: {
