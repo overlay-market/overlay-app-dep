@@ -14,7 +14,7 @@ import ERC20_INTERFACE from "../../constants/abis/erc20";
 
 
 export function useOvlBalance(
-  address: string 
+  address: string
 ) {
   const {
     isLoading,
@@ -23,7 +23,7 @@ export function useOvlBalance(
     isUninitialized,
     data
   } = useAccountQuery({ account: address })
-
+  
   return useMemo(() => {
     return {
       isLoading,

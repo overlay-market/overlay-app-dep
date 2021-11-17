@@ -14,6 +14,7 @@ import { number } from '@lingui/core/cjs/formats';
 import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
 import { StyledLink } from '../../components/Link/Link';
+import { useOvlBalance } from '../../state/wallet/hooks';
 
 const Container = styled.div`
   display: flex;
@@ -255,6 +256,11 @@ export const PositionCard = ({
 
 export const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
+
+  const ovlBalance = useOvlBalance( "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937" );
+
+  console.log('ovlBalance: ', ovlBalance); 
+
   const [loading, setLoading] = useState(true);
 
   const toggleWalletModal = useWalletModalToggle();

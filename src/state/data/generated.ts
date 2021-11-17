@@ -1222,7 +1222,7 @@ export type AppQuery = { __typename?: "Query" } & {
 
 export const AccountDocument = `
   query account($account: ID!) {
-    account(id: "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937") {
+    account(id: $account) {
       id
       balanceOVL {
         balance

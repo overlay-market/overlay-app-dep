@@ -13,6 +13,7 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import Dropdown from './Dropdown';
 import styled from 'styled-components/macro';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
+import { useOvlBalance } from '../../state/wallet/hooks';
 
 export const Web3StatusConnected = styled.div`
   display: flex;

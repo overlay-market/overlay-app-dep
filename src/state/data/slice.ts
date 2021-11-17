@@ -75,6 +75,9 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
 
       const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : undefined
 
+      console.log('subgraphUrl: ', subgraphUrl);
+      console.log('chainId: ', chainId);
+      
       if (!subgraphUrl) {
         return {
           error: {

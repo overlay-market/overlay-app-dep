@@ -23,7 +23,7 @@ export interface ApplicationState {
 };
 
 const initialState: ApplicationState = {
-  chainId: null,
+  chainId: 1,
   popupList: [],
   blockNumber: {},
   openModal: null,
