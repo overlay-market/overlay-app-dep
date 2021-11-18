@@ -14,15 +14,18 @@ import ERC20_INTERFACE from "../../constants/abis/erc20";
 
 
 export function useOvlBalance(
-  address: string
+  address: string | null | undefined
 ) {
+
+  let queryAddress = address ? address.toLowerCase() : "";
+
   const {
     isLoading,
     isError,
     error,
     isUninitialized,
     data
-  } = useAccountQuery({ account: address })
+  } = useAccountQuery({ account: queryAddress })
   
   return useMemo(() => {
     return {

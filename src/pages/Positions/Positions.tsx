@@ -257,7 +257,7 @@ export const PositionCard = ({
 export const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
 
-  const ovlBalance = useOvlBalance( "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937" );
+  const ovlBalance = useOvlBalance(account);
 
   console.log('ovlBalance: ', ovlBalance); 
 
