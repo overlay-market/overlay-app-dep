@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { 
   PositionSide, 
@@ -15,6 +15,7 @@ import { useActiveWeb3React } from "../../hooks/web3";
 import { parseUnits } from '@ethersproject/units';
 import JSBI from 'jsbi';
 import { Trans } from '@lingui/macro';
+import { useAccountQuery } from "../data/generated";
 
 export function usePositionState(): AppState['position'] {
   return useAppSelector((state) => state.position);
@@ -166,4 +167,42 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
   )
 
   return [isAuto, toggleSetTxnSettingsAuto];
+};
+
+export function useAllPositions(
+  address: string | null | undefined
+) {
+  let queryAddress = address ? address.toLowerCase() : "";
+
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    data
+  } = useAccountQuery({ account: queryAddress })
+
+  return useMemo(() => {
+    return {
+      isLoading,
+      isError,
+      error,
+      isUninitialized,
+      positions: data?.account?.balances
+    } 
+  }, [ isLoading, isError, error, isUninitialized, data ])
+};
+
+export function useActivePositions(
+  address: string | null | undefined
+) {
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    positions
+  }  = useAllPositions(address);
+
+  return positions ? positions.filter(position => position.shares !== "0") : null
 };
