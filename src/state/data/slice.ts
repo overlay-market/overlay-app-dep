@@ -42,22 +42,17 @@ export const api = createApi({
           query app($account: ID!) {
             markets {
               id
+              baseName
+              quoteName
+              baseSymbol
+              quoteSymbol
               oiLong
               oiLongShares
-              oiLongQueued
               oiShort
               oiShortShares
-              oiShortQueued
               oiCap
-            }
-            account (id: $account) {
-              balanceOVL {
-                balance
-              }
-              balances {
-                id
-                shares
-              }
+              updatePeriod
+              compoundPeriod
             }
           }
         `,

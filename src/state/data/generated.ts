@@ -70,8 +70,9 @@ export enum Account_OrderBy {
 export type Balance = {
   __typename?: 'Balance';
   id: Scalars['ID'];
+  market: Market;
   account: Account;
-  position: Scalars['BigInt'];
+  position: Position;
   shares: Scalars['BigInt'];
 };
 
@@ -140,6 +141,20 @@ export type Balance_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
+  market?: Maybe<Scalars['String']>;
+  market_not?: Maybe<Scalars['String']>;
+  market_gt?: Maybe<Scalars['String']>;
+  market_lt?: Maybe<Scalars['String']>;
+  market_gte?: Maybe<Scalars['String']>;
+  market_lte?: Maybe<Scalars['String']>;
+  market_in?: Maybe<Array<Scalars['String']>>;
+  market_not_in?: Maybe<Array<Scalars['String']>>;
+  market_contains?: Maybe<Scalars['String']>;
+  market_not_contains?: Maybe<Scalars['String']>;
+  market_starts_with?: Maybe<Scalars['String']>;
+  market_not_starts_with?: Maybe<Scalars['String']>;
+  market_ends_with?: Maybe<Scalars['String']>;
+  market_not_ends_with?: Maybe<Scalars['String']>;
   account?: Maybe<Scalars['String']>;
   account_not?: Maybe<Scalars['String']>;
   account_gt?: Maybe<Scalars['String']>;
@@ -154,14 +169,20 @@ export type Balance_Filter = {
   account_not_starts_with?: Maybe<Scalars['String']>;
   account_ends_with?: Maybe<Scalars['String']>;
   account_not_ends_with?: Maybe<Scalars['String']>;
-  position?: Maybe<Scalars['BigInt']>;
-  position_not?: Maybe<Scalars['BigInt']>;
-  position_gt?: Maybe<Scalars['BigInt']>;
-  position_lt?: Maybe<Scalars['BigInt']>;
-  position_gte?: Maybe<Scalars['BigInt']>;
-  position_lte?: Maybe<Scalars['BigInt']>;
-  position_in?: Maybe<Array<Scalars['BigInt']>>;
-  position_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  position?: Maybe<Scalars['String']>;
+  position_not?: Maybe<Scalars['String']>;
+  position_gt?: Maybe<Scalars['String']>;
+  position_lt?: Maybe<Scalars['String']>;
+  position_gte?: Maybe<Scalars['String']>;
+  position_lte?: Maybe<Scalars['String']>;
+  position_in?: Maybe<Array<Scalars['String']>>;
+  position_not_in?: Maybe<Array<Scalars['String']>>;
+  position_contains?: Maybe<Scalars['String']>;
+  position_not_contains?: Maybe<Scalars['String']>;
+  position_starts_with?: Maybe<Scalars['String']>;
+  position_not_starts_with?: Maybe<Scalars['String']>;
+  position_ends_with?: Maybe<Scalars['String']>;
+  position_not_ends_with?: Maybe<Scalars['String']>;
   shares?: Maybe<Scalars['BigInt']>;
   shares_not?: Maybe<Scalars['BigInt']>;
   shares_gt?: Maybe<Scalars['BigInt']>;
@@ -174,6 +195,7 @@ export type Balance_Filter = {
 
 export enum Balance_OrderBy {
   Id = 'id',
+  Market = 'market',
   Account = 'account',
   Position = 'position',
   Shares = 'shares'
@@ -247,14 +269,13 @@ export type Market = {
   quoteSymbol: Scalars['String'];
   oiLong: Scalars['BigInt'];
   oiLongShares: Scalars['BigInt'];
-  oiLongQueued: Scalars['BigInt'];
   oiShort: Scalars['BigInt'];
   oiShortShares: Scalars['BigInt'];
-  oiShortQueued: Scalars['BigInt'];
   oiCap: Scalars['BigInt'];
   updatePeriod: Scalars['BigInt'];
-  compoundingPeriod: Scalars['BigInt'];
+  compoundPeriod: Scalars['BigInt'];
   positions: Array<Position>;
+  positionBalances: Array<Balance>;
   prices: Array<PricePoint>;
   currentPrice: PricePoint;
 };
@@ -266,6 +287,15 @@ export type MarketPositionsArgs = {
   orderBy?: Maybe<Position_OrderBy>;
   orderDirection?: Maybe<OrderDirection>;
   where?: Maybe<Position_Filter>;
+};
+
+
+export type MarketPositionBalancesArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Balance_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Balance_Filter>;
 };
 
 
@@ -282,7 +312,6 @@ export type MarketManifest = {
   id: Scalars['ID'];
   markets: Array<Scalars['String']>;
   compoundings: Array<Scalars['BigInt']>;
-  updates: Array<Scalars['BigInt']>;
 };
 
 export type MarketManifest_Filter = {
@@ -302,17 +331,12 @@ export type MarketManifest_Filter = {
   compoundings_not?: Maybe<Array<Scalars['BigInt']>>;
   compoundings_contains?: Maybe<Array<Scalars['BigInt']>>;
   compoundings_not_contains?: Maybe<Array<Scalars['BigInt']>>;
-  updates?: Maybe<Array<Scalars['BigInt']>>;
-  updates_not?: Maybe<Array<Scalars['BigInt']>>;
-  updates_contains?: Maybe<Array<Scalars['BigInt']>>;
-  updates_not_contains?: Maybe<Array<Scalars['BigInt']>>;
 };
 
 export enum MarketManifest_OrderBy {
   Id = 'id',
   Markets = 'markets',
-  Compoundings = 'compoundings',
-  Updates = 'updates'
+  Compoundings = 'compoundings'
 }
 
 export type MarketMonitor = {
@@ -457,14 +481,6 @@ export type Market_Filter = {
   oiLongShares_lte?: Maybe<Scalars['BigInt']>;
   oiLongShares_in?: Maybe<Array<Scalars['BigInt']>>;
   oiLongShares_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  oiLongQueued?: Maybe<Scalars['BigInt']>;
-  oiLongQueued_not?: Maybe<Scalars['BigInt']>;
-  oiLongQueued_gt?: Maybe<Scalars['BigInt']>;
-  oiLongQueued_lt?: Maybe<Scalars['BigInt']>;
-  oiLongQueued_gte?: Maybe<Scalars['BigInt']>;
-  oiLongQueued_lte?: Maybe<Scalars['BigInt']>;
-  oiLongQueued_in?: Maybe<Array<Scalars['BigInt']>>;
-  oiLongQueued_not_in?: Maybe<Array<Scalars['BigInt']>>;
   oiShort?: Maybe<Scalars['BigInt']>;
   oiShort_not?: Maybe<Scalars['BigInt']>;
   oiShort_gt?: Maybe<Scalars['BigInt']>;
@@ -481,14 +497,6 @@ export type Market_Filter = {
   oiShortShares_lte?: Maybe<Scalars['BigInt']>;
   oiShortShares_in?: Maybe<Array<Scalars['BigInt']>>;
   oiShortShares_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  oiShortQueued?: Maybe<Scalars['BigInt']>;
-  oiShortQueued_not?: Maybe<Scalars['BigInt']>;
-  oiShortQueued_gt?: Maybe<Scalars['BigInt']>;
-  oiShortQueued_lt?: Maybe<Scalars['BigInt']>;
-  oiShortQueued_gte?: Maybe<Scalars['BigInt']>;
-  oiShortQueued_lte?: Maybe<Scalars['BigInt']>;
-  oiShortQueued_in?: Maybe<Array<Scalars['BigInt']>>;
-  oiShortQueued_not_in?: Maybe<Array<Scalars['BigInt']>>;
   oiCap?: Maybe<Scalars['BigInt']>;
   oiCap_not?: Maybe<Scalars['BigInt']>;
   oiCap_gt?: Maybe<Scalars['BigInt']>;
@@ -505,14 +513,14 @@ export type Market_Filter = {
   updatePeriod_lte?: Maybe<Scalars['BigInt']>;
   updatePeriod_in?: Maybe<Array<Scalars['BigInt']>>;
   updatePeriod_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  compoundingPeriod?: Maybe<Scalars['BigInt']>;
-  compoundingPeriod_not?: Maybe<Scalars['BigInt']>;
-  compoundingPeriod_gt?: Maybe<Scalars['BigInt']>;
-  compoundingPeriod_lt?: Maybe<Scalars['BigInt']>;
-  compoundingPeriod_gte?: Maybe<Scalars['BigInt']>;
-  compoundingPeriod_lte?: Maybe<Scalars['BigInt']>;
-  compoundingPeriod_in?: Maybe<Array<Scalars['BigInt']>>;
-  compoundingPeriod_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  compoundPeriod?: Maybe<Scalars['BigInt']>;
+  compoundPeriod_not?: Maybe<Scalars['BigInt']>;
+  compoundPeriod_gt?: Maybe<Scalars['BigInt']>;
+  compoundPeriod_lt?: Maybe<Scalars['BigInt']>;
+  compoundPeriod_gte?: Maybe<Scalars['BigInt']>;
+  compoundPeriod_lte?: Maybe<Scalars['BigInt']>;
+  compoundPeriod_in?: Maybe<Array<Scalars['BigInt']>>;
+  compoundPeriod_not_in?: Maybe<Array<Scalars['BigInt']>>;
   currentPrice?: Maybe<Scalars['String']>;
   currentPrice_not?: Maybe<Scalars['String']>;
   currentPrice_gt?: Maybe<Scalars['String']>;
@@ -541,14 +549,13 @@ export enum Market_OrderBy {
   QuoteSymbol = 'quoteSymbol',
   OiLong = 'oiLong',
   OiLongShares = 'oiLongShares',
-  OiLongQueued = 'oiLongQueued',
   OiShort = 'oiShort',
   OiShortShares = 'oiShortShares',
-  OiShortQueued = 'oiShortQueued',
   OiCap = 'oiCap',
   UpdatePeriod = 'updatePeriod',
-  CompoundingPeriod = 'compoundingPeriod',
+  CompoundPeriod = 'compoundPeriod',
   Positions = 'positions',
+  PositionBalances = 'positionBalances',
   Prices = 'prices',
   CurrentPrice = 'currentPrice'
 }
@@ -563,6 +570,7 @@ export type Position = {
   id: Scalars['ID'];
   number: Scalars['BigInt'];
   collateralManager: CollateralManager;
+  balances: Array<Balance>;
   market: Market;
   isLong: Scalars['Boolean'];
   leverage: Scalars['BigInt'];
@@ -570,9 +578,17 @@ export type Position = {
   oiShares: Scalars['BigInt'];
   debt: Scalars['BigInt'];
   cost: Scalars['BigInt'];
-  compounding: Scalars['BigInt'];
   liquidationPrice: Scalars['BigDecimal'];
   totalSupply: Scalars['BigInt'];
+};
+
+
+export type PositionBalancesArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Balance_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Balance_Filter>;
 };
 
 export type Position_Filter = {
@@ -670,14 +686,6 @@ export type Position_Filter = {
   cost_lte?: Maybe<Scalars['BigInt']>;
   cost_in?: Maybe<Array<Scalars['BigInt']>>;
   cost_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  compounding?: Maybe<Scalars['BigInt']>;
-  compounding_not?: Maybe<Scalars['BigInt']>;
-  compounding_gt?: Maybe<Scalars['BigInt']>;
-  compounding_lt?: Maybe<Scalars['BigInt']>;
-  compounding_gte?: Maybe<Scalars['BigInt']>;
-  compounding_lte?: Maybe<Scalars['BigInt']>;
-  compounding_in?: Maybe<Array<Scalars['BigInt']>>;
-  compounding_not_in?: Maybe<Array<Scalars['BigInt']>>;
   liquidationPrice?: Maybe<Scalars['BigDecimal']>;
   liquidationPrice_not?: Maybe<Scalars['BigDecimal']>;
   liquidationPrice_gt?: Maybe<Scalars['BigDecimal']>;
@@ -700,6 +708,7 @@ export enum Position_OrderBy {
   Id = 'id',
   Number = 'number',
   CollateralManager = 'collateralManager',
+  Balances = 'balances',
   Market = 'market',
   IsLong = 'isLong',
   Leverage = 'leverage',
@@ -707,7 +716,6 @@ export enum Position_OrderBy {
   OiShares = 'oiShares',
   Debt = 'debt',
   Cost = 'cost',
-  Compounding = 'compounding',
   LiquidationPrice = 'liquidationPrice',
   TotalSupply = 'totalSupply'
 }
@@ -1260,16 +1268,7 @@ export type AppQuery = (
   { __typename?: 'Query' }
   & { markets: Array<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'oiLong' | 'oiLongShares' | 'oiLongQueued' | 'oiShort' | 'oiShortShares' | 'oiShortQueued' | 'oiCap'>
-  )>, account?: Maybe<(
-    { __typename?: 'Account' }
-    & { balanceOVL: (
-      { __typename?: 'BalanceOVL' }
-      & Pick<BalanceOvl, 'balance'>
-    ), balances: Array<(
-      { __typename?: 'Balance' }
-      & Pick<Balance, 'id' | 'shares'>
-    )> }
+    & Pick<Market, 'id' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
   )> }
 );
 
@@ -1293,22 +1292,17 @@ export const AppDocument = `
     query app($account: ID!) {
   markets {
     id
+    baseName
+    quoteName
+    baseSymbol
+    quoteSymbol
     oiLong
     oiLongShares
-    oiLongQueued
     oiShort
     oiShortShares
-    oiShortQueued
     oiCap
-  }
-  account(id: $account) {
-    balanceOVL {
-      balance
-    }
-    balances {
-      id
-      shares
-    }
+    updatePeriod
+    compoundPeriod
   }
 }
     `;

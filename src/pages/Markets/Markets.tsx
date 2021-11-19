@@ -43,9 +43,9 @@ const mockData = [
 
 const Markets = () => {
   const blockNumber = useBlockNumber();
-  const markets = useTotalMarkets();
+  // const markets = useTotalMarkets();
 
-  const marketsData = useAllMarkets({ blockNumber });
+  // const marketsData = useAllMarkets({ blockNumber });
 
   let history = useHistory();
 
@@ -53,12 +53,12 @@ const Markets = () => {
     history.push(`/markets/${marketId}`);
   };
 
-  console.log('markets: ', markets);
+  // console.log('markets: ', markets);
   console.log('blockNumber: ', blockNumber);
 
-  useEffect(() => {
-    console.log('marketsData: ', marketsData);
-  }, [marketsData]);
+  // useEffect(() => {
+  //   console.log('marketsData: ', marketsData);
+  // }, [marketsData]);
 
   return (
     <StyledContainer>

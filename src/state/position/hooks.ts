@@ -204,5 +204,5 @@ export function useActivePositions(
     positions
   }  = useAllPositions(address);
 
-  return positions ? positions.filter(position => position.shares !== "0") : null
+  return positions ? positions.filter(position => position.shares !== "0") : [];
 };
