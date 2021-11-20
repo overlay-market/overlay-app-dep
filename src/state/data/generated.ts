@@ -1248,13 +1248,11 @@ export type AccountQuery = (
   { __typename?: 'Query' }
   & { account?: Maybe<(
     { __typename?: 'Account' }
-    & Pick<Account, 'id'>
     & { balanceOVL: (
       { __typename?: 'BalanceOVL' }
       & Pick<BalanceOvl, 'balance' | 'locked'>
     ), balances: Array<(
       { __typename?: 'Balance' }
-      & Pick<Balance, 'id' | 'shares'>
       & { position: (
         { __typename?: 'Position' }
         & Pick<Position, 'id' | 'number' | 'isLong' | 'leverage' | 'oiShares' | 'debt' | 'cost' | 'liquidationPrice' | 'totalSupply'>
@@ -1279,15 +1277,12 @@ export type AppQuery = (
 
 export const AccountDocument = `
     query account($account: ID!) {
-  account(id: "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937") {
-    id
+  account(id: $account) {
     balanceOVL {
       balance
       locked
     }
     balances {
-      id
-      shares
       position {
         id
         number

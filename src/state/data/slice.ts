@@ -23,16 +23,13 @@ export const api = createApi({
       query: ({ account }) => ({
         document: gql`
           query account($account: ID!) {
-            account(id: "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937") {
-              id
+            account(id: $account) {
               balanceOVL {
                 balance
                 locked
               }
-              balances {
-                id
-                shares
-                position {
+              balances{
+                position{
                   id
                   number
                   isLong
