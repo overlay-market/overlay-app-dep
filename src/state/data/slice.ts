@@ -22,29 +22,31 @@ export const api = createApi({
     accountQuery: builder.query({
       query: ({ account }) => ({
         document: gql`
-          account(id: "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937") {
-            id
-            balanceOVL {
-              balance
-              locked
-            }
-            balances{
+          query account($account: ID!) {
+            account(id: "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937") {
               id
-              shares
-              position{
+              balanceOVL {
+                balance
+                locked
+              }
+              balances {
                 id
-                number
-                isLong
-                leverage
-                oiShares
-                debt
-                cost
-                liquidationPrice
-                totalSupply
+                shares
+                position {
+                  id
+                  number
+                  isLong
+                  leverage
+                  oiShares
+                  debt
+                  cost
+                  liquidationPrice
+                  totalSupply
+                }
               }
             }
           }
-          `,
+        `,
         variables: {
           account,
         },

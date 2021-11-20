@@ -1255,6 +1255,10 @@ export type AccountQuery = (
     ), balances: Array<(
       { __typename?: 'Balance' }
       & Pick<Balance, 'id' | 'shares'>
+      & { position: (
+        { __typename?: 'Position' }
+        & Pick<Position, 'id' | 'number' | 'isLong' | 'leverage' | 'oiShares' | 'debt' | 'cost' | 'liquidationPrice' | 'totalSupply'>
+      ) }
     )> }
   )> }
 );
@@ -1275,7 +1279,7 @@ export type AppQuery = (
 
 export const AccountDocument = `
     query account($account: ID!) {
-  account(id: $account) {
+  account(id: "0x8e8b3e19717a5ddcfccce9bf3b225e61efdd7937") {
     id
     balanceOVL {
       balance
@@ -1284,6 +1288,17 @@ export const AccountDocument = `
     balances {
       id
       shares
+      position {
+        id
+        number
+        isLong
+        leverage
+        oiShares
+        debt
+        cost
+        liquidationPrice
+        totalSupply
+      }
     }
   }
 }
