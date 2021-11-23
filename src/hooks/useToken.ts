@@ -4,8 +4,10 @@ import { arrayify } from '@ethersproject/bytes';
 import { parseBytes32String } from '@ethersproject/strings';
 import { useTokenContract, useBytes32TokenContract  } from "./useContract";
 import { isAddress } from "../utils/web3";
-import { Token } from '@uniswap/sdk-core'
+import { Token, Currency } from '@uniswap/sdk-core'
 import { NEVER_RELOAD, useSingleCallResult } from "../state/multicall/hooks";
+import { ExtendedEther } from "../constants/tokens";
+import { SupportedChainId } from "../constants/chains";
 
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
@@ -29,7 +31,8 @@ export function useToken(tokenAddress?: string | null): Token | undefined | null
 
   const tokenContract = useTokenContract(address ? address : undefined, false)
   const tokenContractBytes32 = useBytes32TokenContract(address ? address : undefined, false)
-  const token: Token | undefined = address ? tokens[address] : undefined
+  // const token: Token | undefined = address ? tokens[address] : undefined
+  const token: Token | undefined = undefined; // temp keep this way 
 
   const tokenName = useSingleCallResult(token ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
   const tokenNameBytes32 = useSingleCallResult(
@@ -71,4 +74,23 @@ export function useToken(tokenAddress?: string | null): Token | undefined | null
     tokenName.result,
     tokenNameBytes32.result,
   ])
+}
+
+export function useCurrency(currencyId: string | null | undefined): Currency | null | undefined {
+  const { chainId } = useActiveWeb3React()
+  const isETH = currencyId?.toUpperCase() === 'ETH'
+  const token = useToken(isETH ? undefined : currencyId)
+  const extendedEther = useMemo(
+    () =>
+      chainId
+        ? ExtendedEther.onChain(chainId)
+        : // display mainnet when not connected
+          ExtendedEther.onChain(SupportedChainId.MAINNET),
+    [chainId]
+  )
+  // const weth = chainId ? WETH9_EXTENDED[chainId] : undefined
+
+  if (currencyId === null || currencyId === undefined) return currencyId
+  // if (weth?.address?.toUpperCase() === currencyId?.toUpperCase()) return weth
+  return isETH ? extendedEther : token
 }
