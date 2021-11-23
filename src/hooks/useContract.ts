@@ -9,7 +9,7 @@ import OVL_V1_MARKET_ABI from "../constants/abis/overlayv1_uniswapv3_market.json
 import MULTICALL2_ABI from '../constants/multicall/multicall2.json';
 import { Erc20 as ERC20 } from "../constants/abis/types";
 import ERC20_ABI from '../constants/abis/erc20.json';
-
+import ERC20_BYTES32_ABI from '../constants/abis/erc20_bytes32.json';
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -49,7 +49,10 @@ export function useMarketContract(address: string | undefined) {
   return useContract(address, OVL_V1_MARKET_ABI, false);
 };
 
-
 export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible);
 };
+
+export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
+  return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
+}

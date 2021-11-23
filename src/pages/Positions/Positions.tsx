@@ -258,10 +258,10 @@ export const PositionCard = ({
 export const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
 
-  const ovlBalance = useOvlBalance(account);
-  const positions = useActivePositions(account);
+  // const ovlBalance = useOvlBalance(account);
+  // const positions = useActivePositions(account);
 
-  console.log('positions: ', positions); 
+  // console.log('positions: ', positions); 
 
   const [loading, setLoading] = useState(true);
 

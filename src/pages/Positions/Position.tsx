@@ -19,7 +19,7 @@ import { formatAmount } from '../../utils/formatData';
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
 import { useUnwindCallback } from '../../hooks/useUnwindCallback';
 import { utils } from 'ethers';
-
+import { useActivePositions } from '../../state/position/hooks'
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
   padding: 16px;
@@ -61,6 +61,10 @@ export function Position(
 ) {
   const { account } = useActiveWeb3React();
   const dispatch = useAppDispatch();
+  
+  const positions = useActivePositions(account);
+
+  console.log('positions from within position: ', positions);
   
   let mockUnwindData = {
     positionId: "2",
