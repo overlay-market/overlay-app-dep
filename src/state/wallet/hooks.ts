@@ -6,7 +6,7 @@ import {
 import { useAccountQuery } from '../data/enhanced';
 import { useMemo } from "react";
 import { useActiveWeb3React } from "../../hooks/web3";
-import { isAddress } from '../../utils/validate';
+import { isAddress } from '../../utils/web3';
 import { useMulticall2Contract } from '../../hooks/useContract';
 import { Interface } from '@ethersproject/abi'
 import ERC20_ABI from '../../constants/abis/erc20.json'

@@ -23,8 +23,8 @@ import {
   OVL_MARKET_ADDRESS 
 } from '../../../constants/addresses';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
-import { useApproveCallback } from '../../../hooks/useApproveCallback';
-import { useDerivedBuildInfo } from '../../../state/position/hooks';
+import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
+import { useDerivedBuildInfo, tryParseAmount } from '../../../state/position/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
@@ -32,17 +32,13 @@ import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
-import { OVLCollateral } from '@overlay-market/overlay-v1-sdk';
-import { TransactionResponse } from '@ethersproject/providers'
-import { utils } from 'ethers';
-import { calculateGasMargin } from '../../../utils/calculateGasMargin'
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { TransactionType } from '../../../state/transactions/actions'
 import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
-import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
 import TransactionPending from '../../../components/Popup/TransactionPending';
 import { PopupType } from '../../../components/SnackbarAlert/SnackbarAlert';
 import { useBuildCallback } from '../../../hooks/useBuildCallback';
+import { useCurrency } from '../../../hooks/useToken';
+import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -67,6 +63,10 @@ export const BuildButton = styled(LightGreyButton)`
   background: transparent;
   color: #71D2FF;
   margin-top: 24px;
+`;
+
+export const ApproveButton = styled(LightGreyButton)`
+  background: linear-gradient(91.32deg, #10DCB1 0%, #33E0EB 24.17%, #12B4FF 52.11%, #3D96FF 77.89%, #7879F1 102.61%);
 `;
 
 export const InputContainer = styled(Row)`
@@ -352,8 +352,19 @@ export const BuildPosition = ({
         })
     }, [buildCallback]);
 
-  // const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
-  
+
+  // const ovlAddress = useCurrency('0x04346e29fDef5dc5A7822793d9f00B5db73D6532'); 
+
+  // const parsedAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(inputValue, ovlAddress ? ovlAddress : undefined);
+
+  // const parsedAmount = tryParseAmount(inputValue, ovl);
+
+  // console.log('parsedAmount: ', parsedAmount);
+
+  // const [approval, approveCallback] = useApproveCallback(parsedAmount, '0xc3D73beec840D95b0B70c660A9b8BE2996B0cC17');
+
+  // const showApprovalFlow = approval !== ApprovalState.APPROVED && parsedAmount;
+
   // async function attemptToApprove() {
   //   if (!inputValue) throw new Error('missing position input size');
   //   if (!positionSide) throw new Error('please choose a long/short position');
@@ -568,10 +579,9 @@ export const BuildPosition = ({
             align={'right'}
             />
         </InputContainer>
-        <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
-              Build
-        </BuildButton>
-
+          <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
+            Build
+          </BuildButton>
       </Column>
 
       <AdditionalDetails 

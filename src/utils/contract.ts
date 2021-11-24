@@ -1,7 +1,7 @@
 import { Contract } from "@ethersproject/contracts";
 import { AddressZero } from "@ethersproject/constants";
 import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
-import { isAddress } from "./validate";
+import { isAddress } from "./web3";
 
 // account is not optional
 export function getSigner(
