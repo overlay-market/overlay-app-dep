@@ -12,7 +12,7 @@ import { StyledContainer } from '../../components/Container/Container';
 import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
 import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
 import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
-import { useAppQuery } from '../../state/data/generated';
+import { useAllMarkets } from '../../state/markets/hooks';
 
 const activeClassName = 'INACTIVE';
 
@@ -49,11 +49,12 @@ const Markets = () => {
     history.push(`/markets/${marketId}`);
   };
 
-  const allMarkets = useAppQuery();
+  const { isLoading, markets } = useAllMarkets();
 
   useEffect(() => {
-    console.log('allMarkets: ', allMarkets)
-  }, [allMarkets])
+    console.log('isLoading: ', isLoading)
+    console.log('allMarkets: ', markets)
+  }, [isLoading, markets])
 
   return (
     <StyledContainer>
