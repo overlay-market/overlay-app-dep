@@ -9,12 +9,9 @@ import { TEXT } from '../../theme/theme';
 import { Link } from 'react-router-dom';
 import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 import { Button } from 'rebass';
-import { injected } from '../../connectors/connectors';
-import { number } from '@lingui/core/cjs/formats';
 import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
-import { StyledLink } from '../../components/Link/Link';
-import { useOvlBalance } from '../../state/wallet/hooks';
+import { useAllPositions } from '../../state/positions/hooks';
 
 const Container = styled.div`
   display: flex;
@@ -197,6 +194,10 @@ export const Positions = () => {
 
   const toggleWalletModal = useWalletModalToggle();
 
+  const { isLoading, positions } = useAllPositions( account ? account : undefined );
+
+  console.log('positions: ', positions);
+
   return (
     <MarketCard>
       <Container>
@@ -209,19 +210,35 @@ export const Positions = () => {
             <PositionsCardHeader />
             
             <PositionsContainer>
-              <PositionCard
-                  positionId={ '0' }
-                  marketName={ 'ETH/DAI' }
-                  isLong={true}
-                  leverage={1}
-                  positionSize={ '100.0' }
-                  collateralCurrency={ 'OVL' }
-                  quotePrice={ '2410.0' }
-                  quoteCurrency={ 'DAI' }
-                  estLiquidationPrice={ '3210.79' }
-                  PnL={ '0.10' }
-                  navigate={true}
+
+              {isLoading ? (
+                <Loader 
+                  type="TailSpin"
+                  color="#f2f2f2"
+                  height={100}
+                  width={100}
                   />
+              ):(
+                positions?.map((positionData, key) => {
+                  let position = positionData.position;
+
+                  return (
+                    <PositionCard
+                        positionId={position.id}
+                        marketName={ 'ETH/DAI' }
+                        isLong={position.isLong}
+                        leverage={position.leverage}
+                        positionSize={ '100.0' }
+                        collateralCurrency={ 'OVL' }
+                        quotePrice={ '2410.0' }
+                        quoteCurrency={ 'DAI' }
+                        estLiquidationPrice={position.liquidationPrice}
+                        PnL={ '0.10' }
+                        navigate={true}
+                        />
+                  )
+                })
+              )}
             </PositionsContainer>
           </>
         ):(
