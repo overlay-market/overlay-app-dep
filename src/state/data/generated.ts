@@ -727,7 +727,7 @@ export type PricePoint = {
   number: Scalars['BigInt'];
   bid: Scalars['BigInt'];
   ask: Scalars['BigInt'];
-  index: Scalars['BigInt'];
+  depth: Scalars['BigInt'];
 };
 
 export type PricePointCount = {
@@ -807,14 +807,14 @@ export type PricePoint_Filter = {
   ask_lte?: Maybe<Scalars['BigInt']>;
   ask_in?: Maybe<Array<Scalars['BigInt']>>;
   ask_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  index?: Maybe<Scalars['BigInt']>;
-  index_not?: Maybe<Scalars['BigInt']>;
-  index_gt?: Maybe<Scalars['BigInt']>;
-  index_lt?: Maybe<Scalars['BigInt']>;
-  index_gte?: Maybe<Scalars['BigInt']>;
-  index_lte?: Maybe<Scalars['BigInt']>;
-  index_in?: Maybe<Array<Scalars['BigInt']>>;
-  index_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  depth?: Maybe<Scalars['BigInt']>;
+  depth_not?: Maybe<Scalars['BigInt']>;
+  depth_gt?: Maybe<Scalars['BigInt']>;
+  depth_lt?: Maybe<Scalars['BigInt']>;
+  depth_gte?: Maybe<Scalars['BigInt']>;
+  depth_lte?: Maybe<Scalars['BigInt']>;
+  depth_in?: Maybe<Array<Scalars['BigInt']>>;
+  depth_not_in?: Maybe<Array<Scalars['BigInt']>>;
 };
 
 export enum PricePoint_OrderBy {
@@ -823,7 +823,7 @@ export enum PricePoint_OrderBy {
   Number = 'number',
   Bid = 'bid',
   Ask = 'ask',
-  Index = 'index'
+  Depth = 'depth'
 }
 
 export type Query = {
@@ -1261,16 +1261,14 @@ export type AccountQuery = (
   )> }
 );
 
-export type AppQueryVariables = Exact<{
-  account: Scalars['ID'];
-}>;
+export type AppQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type AppQuery = (
   { __typename?: 'Query' }
   & { markets: Array<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
+    & Pick<Market, 'base' | 'quote' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
   )> }
 );
 
@@ -1299,9 +1297,10 @@ export const AccountDocument = `
 }
     `;
 export const AppDocument = `
-    query app($account: ID!) {
+    query app {
   markets {
-    id
+    base
+    quote
     baseName
     quoteName
     baseSymbol
@@ -1322,7 +1321,7 @@ const injectedRtkApi = api.injectEndpoints({
     account: build.query<AccountQuery, AccountQueryVariables>({
       query: (variables) => ({ document: AccountDocument, variables })
     }),
-    app: build.query<AppQuery, AppQueryVariables>({
+    app: build.query<AppQuery, AppQueryVariables | void>({
       query: (variables) => ({ document: AppDocument, variables })
     }),
   }),

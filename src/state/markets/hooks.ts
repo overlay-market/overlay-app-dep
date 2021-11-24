@@ -12,44 +12,44 @@ export function useMarketsState(): AppState['markets'] {
   return useAppSelector((state) => state.markets)
 };
 
-export function useAllMarkets(
-  blockNumber: any
-) {
-  const account = '0x4F816C2016F5c8496380Cdb6c1dB881f73fe5fCA';
-  const dispatch = useAppDispatch();
+// export function useAllMarkets(
+//   blockNumber: any
+// ) {
+//   const account = '0x4F816C2016F5c8496380Cdb6c1dB881f73fe5fCA';
+//   const dispatch = useAppDispatch();
 
-  const {
-    isLoading,
-    isError,
-    error,
-    isUninitialized,
-    data
-  } = useAppQuery({account});
+//   const {
+//     isLoading,
+//     isError,
+//     error,
+//     isUninitialized,
+//     data
+//   } = useAppQuery({account});
 
-  const formatData = useCallback((data) => {
-    if (data?.markets) {
-      let newData = data.markets;
-      console.log('updating state for market: ', newData);
-      console.log('updated during blockNumber: ', blockNumber);
-      dispatch(updateMarkets({ marketsData: newData }))
-    }
+//   const formatData = useCallback((data) => {
+//     if (data?.markets) {
+//       let newData = data.markets;
+//       console.log('updating state for market: ', newData);
+//       console.log('updated during blockNumber: ', blockNumber);
+//       dispatch(updateMarkets({ marketsData: newData }))
+//     }
 
-  }, [dispatch, blockNumber])
+//   }, [dispatch, blockNumber])
 
-  useEffect(() => {
-    formatData(data)
-  }, [formatData, data]);
+//   useEffect(() => {
+//     formatData(data)
+//   }, [formatData, data]);
 
-  return useMemo(() => {
-    return {
-      isLoading,
-      isError,
-      error,
-      isUninitialized,
-      data
-    } 
-  }, [ isLoading, isError, error, isUninitialized, data ])
-};
+//   return useMemo(() => {
+//     return {
+//       isLoading,
+//       isError,
+//       error,
+//       isUninitialized,
+//       data
+//     } 
+//   }, [ isLoading, isError, error, isUninitialized, data ])
+// };
 
 
 

@@ -13,6 +13,8 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
     "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1",
   [SupportedChainId.KOVAN]:
     "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1",
+  [SupportedChainId.LOCALHOST]:
+    "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1",
 };
 
 export const api = createApi({
@@ -50,11 +52,12 @@ export const api = createApi({
       }),
     }),
     appQuery: builder.query({
-      query: ({ account }) => ({
+      query: () => ({
         document: gql`
-          query app($account: ID!) {
+          query app {
             markets {
-              id
+              base
+              quote
               baseName
               quoteName
               baseSymbol
@@ -68,10 +71,7 @@ export const api = createApi({
               compoundPeriod
             }
           }
-        `,
-        variables: {
-          account,
-        },
+        `
       }),
     }),
   }),
