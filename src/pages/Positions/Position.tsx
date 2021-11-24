@@ -139,23 +139,6 @@ export function Position(
 
 
         <PositionsCardHeader />
-        <PositionCard
-                  positionId={ '0' }
-                  marketName={ 'ETH/DAI' }
-                  isLong={true}
-                  leverage={1}
-                  positionSize={ '100.0' }
-                  collateralCurrency={ 'OVL' }
-                  quotePrice={ '2410.0' }
-                  quoteCurrency={ 'DAI' }
-                  dateCreated={ '9/17/21' }
-                  timeCreated={ '10:28:30 PM +UTC' }
-                  estLiquidationPrice={ '3210.79' }
-                  liquidationCurrency={ 'DAI' }
-                  PnL={ '0.10' }
-                  PnLCurrency={ 'OVL' }
-                  navigate={false}
-                  />
 
 
         <Column mt={'48px'}>
