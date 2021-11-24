@@ -11,11 +11,11 @@ import { TEXT } from "../../../theme/theme";
 import { Column } from "../../../components/Column/Column";
 import { Row } from "../../../components/Row/Row";
 import { Label, Input } from '@rebass/forms';
-import { usePositionActionHandlers } from '../../../state/position/hooks';
+import { usePositionActionHandlers } from '../../../state/positions/hooks';
 import { useActiveWeb3React } from '../../../hooks/web3';
-import { usePositionState } from '../../../state/position/hooks';
+import { usePositionState } from '../../../state/positions/hooks';
 import { useTokenBalance } from '../../../state/wallet/hooks';
-import { PositionSide, DefaultTxnSettings } from '../../../state/position/actions';
+import { PositionSide, DefaultTxnSettings } from '../../../state/positions/actions';
 import { OVL } from '../../../constants/tokens';
 import { 
   OVL_ADDRESS, 
@@ -24,14 +24,14 @@ import {
 } from '../../../constants/addresses';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
 import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
-import { useDerivedBuildInfo, tryParseAmount } from '../../../state/position/hooks';
+import { useDerivedBuildInfo, tryParseAmount } from '../../../state/positions/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
 import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
-import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
+import { useIsTxnSettingsAuto } from '../../../state/positions/hooks';
 import { useTransactionAdder } from '../../../state/transactions/hooks'
 import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
 import TransactionPending from '../../../components/Popup/TransactionPending';

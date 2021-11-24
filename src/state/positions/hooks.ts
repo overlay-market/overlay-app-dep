@@ -172,7 +172,7 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
 export function useAllPositions(
   address: string | null | undefined
 ) {
-  let queryAddress = address ? address.toLowerCase() : "";
+  let accountAddress = address ? address.toLowerCase() : "";
 
   const {
     isLoading,
@@ -180,7 +180,7 @@ export function useAllPositions(
     error,
     isUninitialized,
     data
-  } = useAccountQuery({ account: queryAddress })
+  } = useAccountQuery({ account: accountAddress })
 
   return useMemo(() => {
     return {
@@ -191,18 +191,4 @@ export function useAllPositions(
       positions: data?.account?.balances
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
-};
-
-export function useActivePositions(
-  address: string | null | undefined
-) {
-  const {
-    isLoading,
-    isError,
-    error,
-    isUninitialized,
-    positions
-  }  = useAllPositions(address);
-
-  return positions ? positions.filter(position => position.position.oiShares !== "0") : [];
 };

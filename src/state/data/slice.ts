@@ -91,9 +91,6 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
       // if chainId in state is null, set default query to Mainnet
       const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : CHAIN_SUBGRAPH_URL[1];
 
-      console.log("subgraphUrl: ", subgraphUrl);
-      console.log("chainId: ", chainId);
-
       if (!subgraphUrl) {
         return {
           error: {

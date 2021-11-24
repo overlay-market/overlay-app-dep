@@ -15,7 +15,6 @@ import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
 import { StyledLink } from '../../components/Link/Link';
 import { useOvlBalance } from '../../state/wallet/hooks';
-import { useActivePositions } from '../../state/position/hooks';
 
 const Container = styled.div`
   display: flex;
@@ -257,11 +256,6 @@ export const PositionCard = ({
 
 export const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
-
-  // const ovlBalance = useOvlBalance(account);
-  // const positions = useActivePositions(account);
-
-  // console.log('positions: ', positions); 
 
   const [loading, setLoading] = useState(true);
 
