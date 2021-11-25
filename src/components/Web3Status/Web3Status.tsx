@@ -14,6 +14,7 @@ import Dropdown from './Dropdown';
 import styled from 'styled-components/macro';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 import { useOvlBalance } from '../../state/wallet/hooks';
+import { utils } from 'ethers';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -131,6 +132,14 @@ function Web3StatusInner() {
 
   const toggleWalletModal = useWalletModalToggle();
 
+  function useParsedWei(value: string, decimals: number) {
+    let formattedEther = utils.formatEther(value);
+
+    let formatDecimals = Number(formattedEther).toFixed(decimals);
+
+    return formatDecimals.toString();
+  }
+
   if (account) {
     // connected
     return (  
@@ -141,7 +150,7 @@ function Web3StatusInner() {
       )}
 
       {account && chainId && ovlBalance && (
-        <TokenBalance balance={ovlBalance} network={NETWORK_LABELS[chainId]} />
+        <TokenBalance balance={Number(utils.formatEther(ovlBalance)).toFixed(0).toString()} network={NETWORK_LABELS[chainId]} />
       )}
 
       {account && chainId && !ovlBalance && (
