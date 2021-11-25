@@ -63,8 +63,8 @@ export function Position(
   const dispatch = useAppDispatch();
   
   let mockUnwindData = {
-    positionId: "2",
-    shares: "10"
+    positionId: "3",
+    shares: "100"
   };
 
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(mockUnwindData);

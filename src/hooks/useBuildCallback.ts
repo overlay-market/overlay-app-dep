@@ -1,7 +1,8 @@
 import { TransactionType } from "./../state/transactions/actions";
 import { BigNumber } from "@ethersproject/bignumber";
+import Big from 'big.js';
 import { TransactionResponse } from "@ethersproject/providers";
-import { useMemo } from "react";
+import { useMemo, useEffect } from "react";
 import { useTransactionAdder } from "../state/transactions/hooks";
 import { useActiveWeb3React } from "./web3";
 import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
@@ -45,22 +46,19 @@ function useBuildCallArguments(
 ) {
   let calldata: any;
 
+  console.log('buildData: ', buildData);
+
   if (!buildData) {
-    calldata = undefined;
-  } else if (
-    !buildData.inputValue ||
-    !buildData.leverage ||
-    !buildData.isLong
-  ) {
+    console.log('here');
     calldata = undefined;
   } else {
     calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits(buildData.collateral),
+      collateral: new Big("5000"),
       leverage: Number(buildData.leverage),
-      isLong: buildData.isLong,
+      isLong: true,
       market: OVL_MARKET_ADDRESS[chainId],
-      slippageTolerance: buildData.slippageTolerance,
-      deadline: buildData.deadline,
+      slippageTolerance: 1,
+      deadline: 1,
     });
   }
 
@@ -93,6 +91,8 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder();
 
   const buildCalls = useBuildCallArguments(buildData, chainId);
+
+  console.log('buildCalls: ', buildCalls);
 
   return useMemo(() => {
     if (!buildData || !library || !account || !chainId) {

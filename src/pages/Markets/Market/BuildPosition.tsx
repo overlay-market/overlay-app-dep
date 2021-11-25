@@ -268,7 +268,7 @@ export const BuildPosition = ({
     onTxnDeadlineInput } = usePositionActionHandlers();
 
   const { buildData, inputError } = useDerivedBuildInfo();
-  
+
   const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
 
   // handle user inputs
