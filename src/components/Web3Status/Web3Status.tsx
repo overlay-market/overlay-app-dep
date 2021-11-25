@@ -117,13 +117,18 @@ function Web3StatusInner() {
 
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ""
-  ];
+  // const userEthBalance = useETHBalances(account ? [account] : [])?.[
+  //   account ?? ""
+  // ];
 
-  const ovl = chainId ? OVL[chainId] : undefined;
-  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
-  const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
+  // const ovl = chainId ? OVL[chainId] : undefined;
+
+  // const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+
+  // const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
+  
+  const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
+
   const toggleWalletModal = useWalletModalToggle();
 
   if (account) {
@@ -131,15 +136,15 @@ function Web3StatusInner() {
     return (  
       <Web3StatusConnected>
 
-      {account && isLoadingBalance && chainId && (
+      {account && isLoading && chainId && (
         <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
 
-      {account && chainId && userOvlBalance && (
-        <TokenBalance balance={userOvlBalance?.toSignificant(4)} network={NETWORK_LABELS[chainId]} />
+      {account && chainId && ovlBalance && (
+        <TokenBalance balance={ovlBalance} network={NETWORK_LABELS[chainId]} />
       )}
 
-      {account && chainId && !userOvlBalance && !isLoadingBalance && (
+      {account && chainId && !ovlBalance && (
         <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
       )}  
 

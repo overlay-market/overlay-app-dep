@@ -16,7 +16,6 @@ import ERC20_INTERFACE from "../../constants/abis/erc20";
 export function useOvlBalance(
   address: string | null | undefined
 ) {
-
   let queryAddress = address ? address.toLowerCase() : "";
 
   const {
