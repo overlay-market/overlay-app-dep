@@ -53,7 +53,7 @@ function useBuildCallArguments(
     calldata = undefined;
   } else {
     calldata = OVLCollateral.buildParameters({
-      collateral: new Big("5000"),
+      collateral: utils.parseUnits("5000"),
       leverage: Number(buildData.leverage),
       isLong: true,
       market: OVL_MARKET_ADDRESS[chainId],
