@@ -10,8 +10,9 @@ import { TEXT } from '../../theme/theme';
 import { useBlockNumber } from '../../state/application/hooks';
 import { StyledContainer } from '../../components/Container/Container';
 import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
-import { useTotalMarkets, useActiveMarkets, useMarketData, useAllMarkets } from '../../state/markets/hooks';
+import { useTotalMarkets, useActiveMarkets, useMarketData } from '../../state/markets/hooks';
 import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
+import { useAllMarkets } from '../../state/markets/hooks';
 
 const activeClassName = 'INACTIVE';
 
@@ -42,23 +43,18 @@ const mockData = [
 ];
 
 const Markets = () => {
-  const blockNumber = useBlockNumber();
-  const markets = useTotalMarkets();
-
-  const marketsData = useAllMarkets({ blockNumber });
-
   let history = useHistory();
 
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`);
   };
 
-  console.log('markets: ', markets);
-  console.log('blockNumber: ', blockNumber);
+  const { isLoading, markets } = useAllMarkets();
 
   useEffect(() => {
-    console.log('marketsData: ', marketsData);
-  }, [marketsData]);
+    console.log('isLoading: ', isLoading)
+    console.log('allMarkets: ', markets)
+  }, [isLoading, markets])
 
   return (
     <StyledContainer>

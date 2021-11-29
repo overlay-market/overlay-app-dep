@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { 
   PositionSide, 
@@ -14,6 +14,8 @@ import { Token } from "@uniswap/sdk-core";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { parseUnits } from '@ethersproject/units';
 import JSBI from 'jsbi';
+import { Trans } from '@lingui/macro';
+import { useAccountQuery } from "../data/generated";
 
 export function usePositionState(): AppState['position'] {
   return useAppSelector((state) => state.position);
@@ -72,34 +74,57 @@ export function usePositionActionHandlers(): {
   }
 };
 
-export function useDerivedUserInputs(
-  typedValue: string | undefined,
-  inputToken: Token | undefined
-) : {
-  parsedAmount?: CurrencyAmount<Token>,
-  error?: string
-} {
+export function useDerivedBuildInfo(): {
+  buildData: object | undefined
+  inputError?: string
+  parsedAmount?: string
+}{
   const { account } = useActiveWeb3React();
 
-  const parsedInput: CurrencyAmount<Token> | undefined = tryParseAmount(typedValue, inputToken);
+  const { 
+    inputValue,
+    leverageValue,
+    positionSide,
+    slippageValue,
+    txnDeadline
+  } = usePositionState();
 
-  const parsedAmount =
-    parsedInput && parsedInput.quotient
-      ? parsedInput
-      : undefined;
+  let buildData: object | undefined;
 
-  let error: string | undefined;
-
-  if (!account) {
-    error = 'Connect Wallet';
+  // if any inputs missing, will not allow buildCallback to be created
+  if (!inputValue || !leverageValue || !positionSide) {
+    buildData = undefined;
+  } else {
+    buildData = {
+      inputValue,
+      leverageValue,
+      positionSide,
+      slippageValue,
+      txnDeadline
+    }
   }
-  if (!parsedAmount) {
-    error = error ?? 'Enter an amount';
+
+  let inputError: string | undefined;
+  if (!account) {
+    inputError = `Connect Wallet`
+  }
+
+  if (!inputValue) {
+    inputError = `Input Collateral Amount`
+  }
+
+  if (!leverageValue) {
+    inputError = `Select Leverage Amount`
+  }
+
+  if (!positionSide) {
+    inputError = `Select Long or Short Position`
   }
 
   return {
-    parsedAmount,
-    error,
+    buildData,
+    inputError,
+    parsedAmount: inputValue
   }
 }
 
@@ -142,4 +167,28 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
   )
 
   return [isAuto, toggleSetTxnSettingsAuto];
+};
+
+export function useAllPositions(
+  address: string | null | undefined
+) {
+  let accountAddress = address ? address.toLowerCase() : "";
+
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    data
+  } = useAccountQuery({ account: accountAddress })
+
+  return useMemo(() => {
+    return {
+      isLoading,
+      isError,
+      error,
+      isUninitialized,
+      positions: data?.account?.balances
+    } 
+  }, [ isLoading, isError, error, isUninitialized, data ])
 };

@@ -5,6 +5,8 @@ import { HashRouter } from 'react-router-dom';
 import { createWeb3ReactRoot, Web3ReactProvider } from '@web3-react/core';
 import { NetworkContextName } from './constants/misc';
 import { LanguageProvider } from "./i18n";
+import { SnackbarProvider } from 'notistack';
+import SnackMessage from "./components/SnackbarAlert/Snackbar";
 import ApplicationUpdater from './state/application/updater';
 import MulticallUpdater from './state/multicall/updater';
 import TransactionsUpdater from './state/transactions/updater';
@@ -36,9 +38,18 @@ ReactDOM.render(
           <Web3ReactProvider getLibrary={getLibrary}>
             <Web3ProviderNetwork getLibrary={getLibrary}>
               <Updaters />
-              <ThemeProvider>
-                <App />
-              </ThemeProvider>
+                <SnackbarProvider     
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    content={(key, message) => (
+                        <SnackMessage id={key} message={message} />
+                )}>
+                <ThemeProvider>
+                  <App />
+                </ThemeProvider>
+              </SnackbarProvider>
             </Web3ProviderNetwork>
           </Web3ReactProvider>
         </LanguageProvider>

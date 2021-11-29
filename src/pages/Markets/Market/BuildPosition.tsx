@@ -11,11 +11,11 @@ import { TEXT } from "../../../theme/theme";
 import { Column } from "../../../components/Column/Column";
 import { Row } from "../../../components/Row/Row";
 import { Label, Input } from '@rebass/forms';
-import { usePositionActionHandlers } from '../../../state/position/hooks';
+import { usePositionActionHandlers } from '../../../state/positions/hooks';
 import { useActiveWeb3React } from '../../../hooks/web3';
-import { usePositionState } from '../../../state/position/hooks';
+import { usePositionState } from '../../../state/positions/hooks';
 import { useTokenBalance } from '../../../state/wallet/hooks';
-import { PositionSide, DefaultTxnSettings } from '../../../state/position/actions';
+import { PositionSide, DefaultTxnSettings } from '../../../state/positions/actions';
 import { OVL } from '../../../constants/tokens';
 import { 
   OVL_ADDRESS, 
@@ -23,22 +23,22 @@ import {
   OVL_MARKET_ADDRESS 
 } from '../../../constants/addresses';
 import { maxAmountSpend } from '../../../utils/maxAmountSpend';
-import { useApproveCallback } from '../../../hooks/useApproveCallback';
-import { useDerivedUserInputs } from '../../../state/position/hooks';
+import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
+import { useDerivedBuildInfo, tryParseAmount } from '../../../state/positions/hooks';
 import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
 import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
 import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
 import { Sliders, X } from 'react-feather';
 import { Icon } from '../../../components/Icon/Icon';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
-import { useIsTxnSettingsAuto } from '../../../state/position/hooks';
-import { TransactionResponse } from '@ethersproject/providers'
-import { utils } from 'ethers';
-import { calculateGasMargin } from '../../../utils/calculateGasMargin'
+import { useIsTxnSettingsAuto } from '../../../state/positions/hooks';
 import { useTransactionAdder } from '../../../state/transactions/hooks'
-import { TransactionType } from '../../../state/transactions/actions'
 import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
-import { SnackbarAlert } from '../../../components/SnackbarAlert/SnackbarAlert';
+import TransactionPending from '../../../components/Popup/TransactionPending';
+import { PopupType } from '../../../components/SnackbarAlert/SnackbarAlert';
+import { useBuildCallback } from '../../../hooks/useBuildCallback';
+import { useCurrency } from '../../../hooks/useToken';
+import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -63,6 +63,10 @@ export const BuildButton = styled(LightGreyButton)`
   background: transparent;
   color: #71D2FF;
   margin-top: 24px;
+`;
+
+export const ApproveButton = styled(LightGreyButton)`
+  background: linear-gradient(91.32deg, #10DCB1 0%, #33E0EB 24.17%, #12B4FF 52.11%, #3D96FF 77.89%, #7879F1 102.61%);
 `;
 
 export const InputContainer = styled(Row)`
@@ -263,7 +267,9 @@ export const BuildPosition = ({
     onSlippageInput,
     onTxnDeadlineInput } = usePositionActionHandlers();
 
-  const { parsedAmount, error } = useDerivedUserInputs(inputValue, ovl);
+  const { buildData, inputError } = useDerivedBuildInfo();
+
+  const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
 
   // handle user inputs
   const handleResetTxnSettings = useCallback((e:any) => {
@@ -330,133 +336,42 @@ export const BuildPosition = ({
       txHash
     })
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
-
-  const PromptSnackbar = ({
-    showSnackbar,
-    severity,
-    message,
-    title,
-    children
-  }:{
-    showSnackbar: boolean
-    severity: string
-    message?: string
-    title?: string
-    children?: React.ReactNode
-  }) => {
-
-    return (
-      <>
-          {showSnackbar ?? (
-              <SnackbarAlert severity={severity} message={message} title={title}>
-                  {children}
-              </SnackbarAlert>
-          )}
-      </>
-    )
-  }
-
   
-  async function handleBuild () {
-
-    if (chainId && library && inputValue) {
-
-      const signer = library.getSigner()
-
-      // const calldata = OVLCollateral.buildParameters({
-      //   collateral: utils.parseUnits(inputValue),
-      //   leverage: Number(leverageValue),
-      //   isLong: positionSide == 'LONG',
-      //   market: OVL_MARKET_ADDRESS[chainId],
-      //   slippageTolerance: 1,
-      //   deadline: 1
-      // })
-
-      const calldata = 'null';
-
-      const txn: { to: string; data: string; value: string } = {
-        to: OVL_COLLATERAL_ADDRESS[chainId],
-        data: calldata,
-        value: utils.parseEther('0').toHexString(),
+  const handleBuild = useCallback(() => {
+      if (!buildCallback) {
+        return
       }
 
       setBuildState({ showConfirm: false, attemptingTxn: true, txnErrorMessage: undefined, txHash: undefined })
-
-      console.log("calldata", calldata)
-      console.log("txn", txn)
-
-      await library
-        .getSigner()
-        .estimateGas(txn)
-        .then(estimate => {
-          console.log("estimate", estimate.toString())
-          const tx = {
-            ...txn,
-            gasLimit: calculateGasMargin(estimate)
-          }
-
-          library
-            .getSigner()
-            .sendTransaction(tx)
-            .then( (response: TransactionResponse) => {
-
-              setTimeout(() => {
-
-                addTransaction(
-                  response, {
-                    type: TransactionType.BUILD_OVL_POSITION,
-                    market: OVL_MARKET_ADDRESS[chainId],
-                    collateral: inputValue,
-                    isLong: positionSide == 'LONG',
-                    leverage: leverageValue.toString()
-                  })
-
-                setBuildState({ 
-                  showConfirm: false, 
-                  attemptingTxn: false, 
-                  txnErrorMessage: undefined, 
-                  txHash: response.hash 
-                })
-
-              }, 5000)
-
-            })
-            .catch(error => {
-
-              setBuildState({ 
-                showConfirm: false, 
-                attemptingTxn: false, 
-                txnErrorMessage: error.message, 
-                txHash: undefined 
-              })
-
-            })
-
+      buildCallback()
+        .then((hash) => {
+          setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: undefined, txHash: hash })
         })
+        .catch((error) => {
+          setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: error, txHash: undefined })
+        })
+    }, [buildCallback]);
 
 
-      console.log("handle build - ", 
-        "\n leverage", typeof leverageValue, leverageValue, 
-        "\n side", typeof positionSide, positionSide,
-        "\n value", typeof inputValue, inputValue, utils.parseUnits(inputValue),
-        "\n currency", typeof inputCurrency, inputCurrency, 
-        "\n slippage", typeof slippageValue, slippageValue,
-        "\n deadline", typeof txnDeadline, txnDeadline
-      );
+  // const ovlAddress = useCurrency('0x04346e29fDef5dc5A7822793d9f00B5db73D6532'); 
 
-    }
+  // const parsedAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(inputValue, ovlAddress ? ovlAddress : undefined);
 
-  }
+  // const parsedAmount = tryParseAmount(inputValue, ovl);
 
-  const [approval, approveCallback] = useApproveCallback(parsedAmount, inputCurrency);
+  // console.log('parsedAmount: ', parsedAmount);
 
-  async function attemptToApprove() {
-    if (!inputValue) throw new Error('missing position input size');
-    if (!positionSide) throw new Error('please choose a long/short position');
-    if (!leverageValue) throw new Error('please select a leverage value');
+  // const [approval, approveCallback] = useApproveCallback(parsedAmount, '0xc3D73beec840D95b0B70c660A9b8BE2996B0cC17');
 
-    await approveCallback();
-  };
+  // const showApprovalFlow = approval !== ApprovalState.APPROVED && parsedAmount;
+
+  // async function attemptToApprove() {
+  //   if (!inputValue) throw new Error('missing position input size');
+  //   if (!positionSide) throw new Error('please choose a long/short position');
+  //   if (!leverageValue) throw new Error('please select a leverage value');
+
+  //   await approveCallback();
+  // };
 
   return (
     <MarketCard align={'left'} padding={'0px'}>
@@ -664,10 +579,9 @@ export const BuildPosition = ({
             align={'right'}
             />
         </InputContainer>
-        <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
-              Build
-        </BuildButton>
-
+          <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
+            Build
+          </BuildButton>
       </Column>
 
       <AdditionalDetails 
@@ -682,8 +596,8 @@ export const BuildPosition = ({
         fundingRate={'-0.0026'}
       />
 
-      <ConfirmTxnModal isOpen={showConfirm} onConfirm={handleBuild} onDismiss={handleDismiss}/>
-      <PromptSnackbar showSnackbar={(txHash ? true : false)} severity={'success'} message={`${txHash}`} />
+      <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuild()} onDismiss={handleDismiss}/>
+      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
     </MarketCard>
   )
 };

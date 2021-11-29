@@ -1,5 +1,8 @@
 import {
   addTransaction,
+  clearAllTransactions,
+  finalizeTransaction,
+  checkedTransaction,
   SerializableTransactionReceipt,
   TransactionInfo
 } from './actions'
@@ -40,5 +43,28 @@ export default createReducer(initialState, (builder) =>
         info
       }
       transactions[chainId] = txs
+    })
+    .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {
+      if (!transactions[chainId]) return
+      transactions[chainId] = {}
+    })
+    .addCase(checkedTransaction, (transactions, { payload: { chainId, hash, blockNumber } }) => {
+      const tx = transactions[chainId]?.[hash]
+      if (!tx) {
+        return
+      }
+      if (!tx.lastCheckedBlockNumber) {
+        tx.lastCheckedBlockNumber = blockNumber
+      } else {
+        tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
+      }
+    })
+    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+      const tx = transactions[chainId]?.[hash]
+      if (!tx) {
+        return
+      }
+      tx.receipt = receipt
+      tx.confirmedTime = now()
     })
 );

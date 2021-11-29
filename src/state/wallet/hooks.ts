@@ -6,7 +6,7 @@ import {
 import { useAccountQuery } from '../data/enhanced';
 import { useMemo } from "react";
 import { useActiveWeb3React } from "../../hooks/web3";
-import { isAddress } from '../../utils/validate';
+import { isAddress } from '../../utils/web3';
 import { useMulticall2Contract } from '../../hooks/useContract';
 import { Interface } from '@ethersproject/abi'
 import ERC20_ABI from '../../constants/abis/erc20.json'
@@ -14,23 +14,25 @@ import ERC20_INTERFACE from "../../constants/abis/erc20";
 
 
 export function useOvlBalance(
-  address: string 
+  address: string | null | undefined
 ) {
+  let queryAddress = address ? address.toLowerCase() : "";
+
   const {
     isLoading,
     isError,
     error,
     isUninitialized,
     data
-  } = useAccountQuery({ account: address })
-
+  } = useAccountQuery({ account: queryAddress })
+  
   return useMemo(() => {
     return {
       isLoading,
       isError,
       error,
       isUninitialized,
-      data
+      ovlBalance: data?.account?.balanceOVL?.balance
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
 };

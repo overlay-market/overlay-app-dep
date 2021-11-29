@@ -13,6 +13,8 @@ import { useWalletModalToggle } from '../../state/application/hooks';
 import Dropdown from './Dropdown';
 import styled from 'styled-components/macro';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
+import { useOvlBalance } from '../../state/wallet/hooks';
+import { utils } from 'ethers';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -116,29 +118,42 @@ function Web3StatusInner() {
 
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
-  const userEthBalance = useETHBalances(account ? [account] : [])?.[
-    account ?? ""
-  ];
+  // const userEthBalance = useETHBalances(account ? [account] : [])?.[
+  //   account ?? ""
+  // ];
 
-  const ovl = chainId ? OVL[chainId] : undefined;
-  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
-  const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
+  // const ovl = chainId ? OVL[chainId] : undefined;
+
+  // const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+
+  // const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
+  
+  const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
+
   const toggleWalletModal = useWalletModalToggle();
+
+  function useParsedWei(value: string, decimals: number) {
+    let formattedEther = utils.formatEther(value);
+
+    let formatDecimals = Number(formattedEther).toFixed(decimals);
+
+    return formatDecimals.toString();
+  }
 
   if (account) {
     // connected
     return (  
       <Web3StatusConnected>
 
-      {account && isLoadingBalance && chainId && (
+      {account && isLoading && chainId && (
         <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
 
-      {account && chainId && userOvlBalance && (
-        <TokenBalance balance={userOvlBalance?.toSignificant(4)} network={NETWORK_LABELS[chainId]} />
+      {account && chainId && ovlBalance && (
+        <TokenBalance balance={Number(utils.formatEther(ovlBalance)).toFixed(0).toString()} network={NETWORK_LABELS[chainId]} />
       )}
 
-      {account && chainId && !userOvlBalance && !isLoadingBalance && (
+      {account && chainId && !ovlBalance && (
         <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
       )}  
 

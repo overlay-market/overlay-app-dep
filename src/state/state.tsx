@@ -3,7 +3,7 @@ import { save, load } from 'redux-localstorage-simple';
 import user from './user/reducer';
 import application from './application/reducer';
 import multicall from './multicall/reducer';
-import position from './position/reducer';
+import position from './positions/reducer';
 import transactions from './transactions/reducer';
 import markets from './markets/reducer';
 import { updateVersion } from './global/actions';

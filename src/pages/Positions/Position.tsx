@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { Container } from '../Markets/Market/Market';
@@ -17,6 +17,8 @@ import { api } from '../../state/data/slice';
 import { useAppDispatch } from '../../state/hooks';
 import { formatAmount } from '../../utils/formatData';
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
+import { useUnwindCallback } from '../../hooks/useUnwindCallback';
+import { utils } from 'ethers';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -60,6 +62,21 @@ export function Position(
   const { account } = useActiveWeb3React();
   const dispatch = useAppDispatch();
   
+  let mockUnwindData = {
+    positionId: "3",
+    shares: "100"
+  };
+
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(mockUnwindData);
+
+  const handleUnwind = useCallback(() => {
+    if (!unwindCallback) {
+      return
+    }
+
+    unwindCallback()
+  }, [unwindCallback])
+
   return (
     <Container>
         <Back arrowSize={16} textSize={16} margin={'0 auto 64px 0'} />
@@ -114,29 +131,14 @@ export function Position(
               align={'right'}
               />
         </InputContainer>
-        <UnwindButton>
+        <UnwindButton 
+          onClick={() => handleUnwind()}
+          >
            Unwind
         </UnwindButton>
 
 
         <PositionsCardHeader />
-        <PositionCard
-                  positionId={ '0' }
-                  marketName={ 'ETH/DAI' }
-                  isLong={true}
-                  leverage={1}
-                  positionSize={ '100.0' }
-                  collateralCurrency={ 'OVL' }
-                  quotePrice={ '2410.0' }
-                  quoteCurrency={ 'DAI' }
-                  dateCreated={ '9/17/21' }
-                  timeCreated={ '10:28:30 PM +UTC' }
-                  estLiquidationPrice={ '3210.79' }
-                  liquidationCurrency={ 'DAI' }
-                  PnL={ '0.10' }
-                  PnLCurrency={ 'OVL' }
-                  navigate={false}
-                  />
 
 
         <Column mt={'48px'}>

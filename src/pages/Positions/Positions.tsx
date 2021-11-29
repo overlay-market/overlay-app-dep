@@ -9,11 +9,9 @@ import { TEXT } from '../../theme/theme';
 import { Link } from 'react-router-dom';
 import { PlanckCatLoader } from '../../components/Loaders/Loaders';
 import { Button } from 'rebass';
-import { injected } from '../../connectors/connectors';
-import { number } from '@lingui/core/cjs/formats';
 import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
-import { StyledLink } from '../../components/Link/Link';
+import { useAllPositions } from '../../state/positions/hooks';
 
 const Container = styled.div`
   display: flex;
@@ -100,46 +98,6 @@ const ConnectWallet = styled(Button)`
   }
 `;
 
-function create_mock_position(
-  positionId: string,
-  marketName: string,
-  isLong: boolean,
-  leverage: number | string,
-  positionSize: number | string,
-  collateralCurrency: string,
-  quotePrice: number | string,
-  quoteCurrency: string,
-  dateCreated: any,
-  timeCreated: any,
-  estLiquidationPrice: string,
-  liquidationCurrency: string,
-  PnL: number | string,
-  PnLCurrency: string,
-  ) {
-    return { 
-      positionId,
-      marketName, 
-      isLong, 
-      leverage, 
-      positionSize, 
-      collateralCurrency, 
-      quotePrice, 
-      quoteCurrency, 
-      dateCreated, 
-      timeCreated, 
-      estLiquidationPrice,
-      liquidationCurrency,
-      PnL, 
-      PnLCurrency }
-  };
-
-
-export const mock_position_data = [
-  create_mock_position("0", "ETH/DAI", true, 1, 100, "OVL", 2410.24, "DAI", "9/17/21", '10:28:30 PM +UTC', '420.60', 'DAI', '0.10', 'OVL'),
-  create_mock_position("1", "ETH/DAI", false, 3, 3300, "OVL", 2910.23, "DAI", "9/21/21", '09:13:24 PM +UTC', '2533.89', 'DAI', '5.01', 'OVL'),
-  create_mock_position("2", "ETH/DAI", true, 7, 700, "OVL", 3300.77, "DAI", "9/25/21", '22:21:15 PM +UTC', '3156.22', 'DAI', '33.33', 'OVL')
-]
-
 export const PositionsCardHeader = () => (
   <CardHeader>
     <HeaderCell align="left" width="50%">
@@ -165,12 +123,8 @@ export const PositionCard = ({
   collateralCurrency,
   quotePrice,
   quoteCurrency,
-  dateCreated,
-  timeCreated,
   estLiquidationPrice,
-  liquidationCurrency,
   PnL,
-  PnLCurrency,
   navigate
 }:{
   positionId: string
@@ -181,12 +135,8 @@ export const PositionCard = ({
   collateralCurrency: string
   quotePrice: number | string
   quoteCurrency: string
-  dateCreated: any
-  timeCreated: any
   estLiquidationPrice: string
-  liquidationCurrency: string
   PnL: number | string
-  PnLCurrency: string
   navigate?: boolean
 }) => {
 
@@ -215,33 +165,17 @@ export const PositionCard = ({
         <Detail color={'#C0C0C0'}>
           @ {quotePrice} {quoteCurrency}
         </Detail>
-
-        <Detail color={'#C0C0C0'}>
-          {dateCreated}
-        </Detail>
-
-        <Detail color={'#C0C0C0'}>
-          {timeCreated}
-        </Detail>
       </CardCell>
 
       <CardCell width="30%">
         <Detail fontWeight={700} color={'white'}>
           {estLiquidationPrice}
         </Detail>
-
-        <Detail color={'#C0C0C0'}>
-          {liquidationCurrency}
-        </Detail>
       </CardCell>
 
       <CardCell width="20%" align="right">
         <Detail fontWeight={700} color={'#10DCB1'}>
           {PnL}
-        </Detail>
-
-        <Detail color={'#C0C0C0'}>
-          {PnLCurrency}
         </Detail>
 
         <Icon size={12} margin={'24px 0 0 auto'}>
@@ -255,9 +189,14 @@ export const PositionCard = ({
 
 export const Positions = () => { 
   const { account, activate, chainId } = useActiveWeb3React();
+
   const [loading, setLoading] = useState(true);
 
   const toggleWalletModal = useWalletModalToggle();
+
+  const { isLoading, positions } = useAllPositions( account ? account : undefined );
+
+  console.log('positions: ', positions);
 
   return (
     <MarketCard>
@@ -271,43 +210,35 @@ export const Positions = () => {
             <PositionsCardHeader />
             
             <PositionsContainer>
-              <PositionCard
-                  positionId={ '0' }
-                  marketName={ 'ETH/DAI' }
-                  isLong={true}
-                  leverage={1}
-                  positionSize={ '100.0' }
-                  collateralCurrency={ 'OVL' }
-                  quotePrice={ '2410.0' }
-                  quoteCurrency={ 'DAI' }
-                  dateCreated={ '9/17/21' }
-                  timeCreated={ '10:28:30 PM +UTC' }
-                  estLiquidationPrice={ '3210.79' }
-                  liquidationCurrency={ 'DAI' }
-                  PnL={ '0.10' }
-                  PnLCurrency={ 'OVL' }
-                  navigate={true}
-                  />
 
-              {mock_position_data.map((p, key) => (
-                <PositionCard 
-                    positionId={p.positionId}
-                    marketName={p.marketName}
-                    isLong={p.isLong}
-                    leverage={p.leverage}
-                    positionSize={p.positionSize}
-                    collateralCurrency={p.collateralCurrency}
-                    quotePrice={p.quotePrice}
-                    quoteCurrency={p.quoteCurrency}
-                    dateCreated={p.dateCreated}
-                    timeCreated={p.timeCreated}
-                    estLiquidationPrice={p.estLiquidationPrice}
-                    liquidationCurrency={p.liquidationCurrency}
-                    PnL={p.PnL}
-                    PnLCurrency={p.PnLCurrency}
-                    navigate={true}
-                    />
-              ))} 
+              {isLoading ? (
+                <Loader 
+                  type="TailSpin"
+                  color="#f2f2f2"
+                  height={100}
+                  width={100}
+                  />
+              ):(
+                positions?.map((positionData, key) => {
+                  let position = positionData.position;
+
+                  return (
+                    <PositionCard
+                        positionId={position.id}
+                        marketName={ 'ETH/DAI' }
+                        isLong={position.isLong}
+                        leverage={position.leverage}
+                        positionSize={ '100.0' }
+                        collateralCurrency={ 'OVL' }
+                        quotePrice={ '2410.0' }
+                        quoteCurrency={ 'DAI' }
+                        estLiquidationPrice={position.liquidationPrice}
+                        PnL={ '0.10' }
+                        navigate={true}
+                        />
+                  )
+                })
+              )}
             </PositionsContainer>
           </>
         ):(
