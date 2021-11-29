@@ -1,3 +1,4 @@
+import { leverageInput } from './../state/positions/actions';
 import { TransactionType } from "./../state/transactions/actions";
 import { BigNumber } from "@ethersproject/bignumber";
 import Big from 'big.js';
@@ -12,6 +13,7 @@ import {
 } from "../constants/addresses";
 import { utils } from "ethers";
 import isZero from "../utils/isZero";
+
 import { calculateGasMargin } from "../utils/calculateGasMargin";
 
 interface BuildCall {
@@ -52,9 +54,13 @@ function useBuildCallArguments(
     console.log('here');
     calldata = undefined;
   } else {
+    let parsedCollateral = utils.parseUnits('50000000000000');
+
+    console.log('parsedCollateral: ', parsedCollateral);
+
     calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits("5000"),
-      leverage: Number(buildData.leverage),
+      collateral: parsedCollateral,
+      leverage: 2,
       isLong: true,
       market: OVL_MARKET_ADDRESS[chainId],
       slippageTolerance: 1,
@@ -184,6 +190,8 @@ export function useBuildCallback(
           call: { address, calldata, value },
         } = bestCallOption;
 
+        console.log('bestCallOption: ', bestCallOption);
+
         return library
           .getSigner()
           .sendTransaction({
@@ -198,6 +206,11 @@ export function useBuildCallback(
           })
           .then((response: TransactionResponse) => {
             console.log("response from useBuildCallback: ", response);
+
+            response.wait().then((res) => {
+              console.log('response.wait: ', res)
+            })
+
             addTransaction(response, {
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],

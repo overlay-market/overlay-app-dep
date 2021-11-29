@@ -111,6 +111,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.MAINNET]: 'Mainnet',
   [SupportedChainId.KOVAN]: 'Kovan',
+  [SupportedChainId.LOCALHOST]: 'LocalHost'
 };
 
 function Web3StatusInner() {
