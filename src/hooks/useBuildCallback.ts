@@ -46,20 +46,18 @@ function useBuildCallArguments(
 ) {
   let calldata: any;
 
-  console.log('buildData: ', buildData);
+  if (!buildData) calldata = undefined;
+  else {
 
-  if (!buildData) {
-    console.log('here');
-    calldata = undefined;
-  } else {
     calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits("5000"),
-      leverage: Number(buildData.leverage),
+      collateral: utils.parseUnits(buildData.inputValue),
+      leverage: Number(buildData.leverageValue),
       isLong: true,
       market: OVL_MARKET_ADDRESS[chainId],
-      slippageTolerance: 1,
-      deadline: 1,
+      minOI: 1,
+      deadline: 1
     });
+
   }
 
   return useMemo(() => {
@@ -77,6 +75,7 @@ function useBuildCallArguments(
       },
     ];
   }, [calldata, chainId]);
+
 }
 
 export function useBuildCallback(
@@ -92,22 +91,26 @@ export function useBuildCallback(
 
   const buildCalls = useBuildCallArguments(buildData, chainId);
 
-  console.log('buildCalls: ', buildCalls);
-
   return useMemo(() => {
+
     if (!buildData || !library || !account || !chainId) {
+
       return {
         state: BuildCallbackState.INVALID,
         callback: null,
         error: "Missing Dependencies",
       };
+
     }
 
     return {
       state: BuildCallbackState.VALID,
       callback: async function onBuild(): Promise<string> {
+
         const estimatedCalls: BuildCallEstimate[] = await Promise.all(
+
           buildCalls.map((call) => {
+
             const { address, calldata, value } = call;
 
             const tx = {
@@ -119,13 +122,9 @@ export function useBuildCallback(
 
             return library
               .estimateGas(tx)
-              .then((gasEstimate) => {
-                return {
-                  call,
-                  gasEstimate,
-                };
-              })
+              .then((gasEstimate) => { return { call, gasEstimate } })
               .catch((gasError) => {
+
                 console.debug(
                   "Gas estimate failed, trying eth_call to extract error",
                   call
@@ -134,22 +133,27 @@ export function useBuildCallback(
                 return library
                   .call(tx)
                   .then((result) => {
+
                     console.debug(
                       "Unexpected successful call after failed estimate gas",
-                      call,
-                      gasError,
-                      result
+                      call, gasError, result
                     );
+
+                    const error = "Unexpected issue with estimating the gas. "
+                     + "Please try again."
+
                     return {
+                      error: new Error(error),
                       call,
-                      error: new Error(
-                        "Unexpected issue with estimating the gas. Please try again."
-                      ),
                     };
+
                   })
                   .catch((callError) => {
+
                     console.debug("Call threw error", call, callError);
+
                     return { call, error: new Error(callError) };
+
                   });
               });
           })
@@ -168,8 +172,9 @@ export function useBuildCallback(
           const errorCalls = estimatedCalls.filter(
             (call): call is FailedCall => "error" in call
           );
+
           if (errorCalls.length > 0)
-            throw errorCalls[errorCalls.length - 1].error;
+            throw "ERROR " + errorCalls[errorCalls.length - 1].error;
           const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>(
             (call): call is BuildCallEstimate => !("error" in call)
           );
@@ -197,7 +202,7 @@ export function useBuildCallback(
             ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response: TransactionResponse) => {
-            console.log("response from useBuildCallback: ", response);
+
             addTransaction(response, {
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],
@@ -207,8 +212,10 @@ export function useBuildCallback(
             });
 
             return response.hash;
+
           })
-          .catch((error) => {
+          .catch(error => {
+
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
               throw new Error("Transaction rejected.");
