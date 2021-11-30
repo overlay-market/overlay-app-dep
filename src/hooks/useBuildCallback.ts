@@ -46,20 +46,18 @@ function useBuildCallArguments(
 ) {
   let calldata: any;
 
-  console.log('buildData: ', buildData);
+  if (!buildData) calldata = undefined;
+  else {
 
-  if (!buildData) {
-    console.log('here');
-    calldata = undefined;
-  } else {
     calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits("5000"),
-      leverage: Number(buildData.leverage),
+      collateral: utils.parseUnits(buildData.inputValue),
+      leverage: Number(buildData.leverageValue),
       isLong: true,
       market: OVL_MARKET_ADDRESS[chainId],
-      slippageTolerance: 1,
-      deadline: 1,
+      minOI: 1,
+      deadline: 1
     });
+
   }
 
   return useMemo(() => {
@@ -77,6 +75,7 @@ function useBuildCallArguments(
       },
     ];
   }, [calldata, chainId]);
+
 }
 
 export function useBuildCallback(
@@ -95,6 +94,9 @@ export function useBuildCallback(
   console.log('buildCalls: ', buildCalls);
 
   return useMemo(() => {
+
+    console.log("start of use memo")
+
     if (!buildData || !library || !account || !chainId) {
       return {
         state: BuildCallbackState.INVALID,
@@ -103,11 +105,29 @@ export function useBuildCallback(
       };
     }
 
+    console.log("has everything")
+
     return {
       state: BuildCallbackState.VALID,
       callback: async function onBuild(): Promise<string> {
+
+        OVLCollateral.sanity()
+
+        console.log("start of on build")
+        console.log("start of on build")
+        console.log("start of on build")
+        console.log("start of on build")
+        console.log("start of on build")
+        console.log("start of on build")
+        console.log("start of on build")
+        console.log("start of on build")
+
+
         const estimatedCalls: BuildCallEstimate[] = await Promise.all(
           buildCalls.map((call) => {
+
+            console.log("mapping build calls")
+
             const { address, calldata, value } = call;
 
             const tx = {
@@ -120,12 +140,16 @@ export function useBuildCallback(
             return library
               .estimateGas(tx)
               .then((gasEstimate) => {
+                console.log("gas estimate")
                 return {
                   call,
                   gasEstimate,
                 };
               })
               .catch((gasError) => {
+
+                console.log("gas error")
+
                 console.debug(
                   "Gas estimate failed, trying eth_call to extract error",
                   call
@@ -148,12 +172,19 @@ export function useBuildCallback(
                     };
                   })
                   .catch((callError) => {
+
+                    console.log("ERROR", callError)
+
                     console.debug("Call threw error", call, callError);
+
                     return { call, error: new Error(callError) };
+
                   });
               });
           })
         );
+
+        console.log("estimated calls", estimatedCalls)
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         let bestCallOption: SuccessfulCall | BuildCallEstimate | undefined =
@@ -163,13 +194,19 @@ export function useBuildCallback(
               (ix === list.length - 1 || "gasEstimate" in list[ix + 1])
           );
 
+        console.log("best call option", bestCallOption)
+
         // check if any calls errored with a recognizable error
         if (!bestCallOption) {
+          console.log("....... !best call option")
           const errorCalls = estimatedCalls.filter(
             (call): call is FailedCall => "error" in call
           );
+
+          console.log("error calls", errorCalls)
+
           if (errorCalls.length > 0)
-            throw errorCalls[errorCalls.length - 1].error;
+            throw "ERROR " + errorCalls[errorCalls.length - 1].error;
           const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>(
             (call): call is BuildCallEstimate => !("error" in call)
           );
@@ -180,9 +217,13 @@ export function useBuildCallback(
           bestCallOption = firstNoErrorCall;
         }
 
+        console.log("2. best call option", bestCallOption)
+
         const {
           call: { address, calldata, value },
         } = bestCallOption;
+
+        console.log("call...", address, calldata, value)
 
         return library
           .getSigner()
@@ -197,7 +238,9 @@ export function useBuildCallback(
             ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response: TransactionResponse) => {
-            console.log("response from useBuildCallback: ", response);
+
+            console.log(".then from sent transaction", response);
+
             addTransaction(response, {
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],
@@ -207,8 +250,12 @@ export function useBuildCallback(
             });
 
             return response.hash;
+
           })
-          .catch((error) => {
+          .catch(error => {
+
+            console.log(".catch from send transaction", error)
+
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
               throw new Error("Transaction rejected.");
