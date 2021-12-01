@@ -48,7 +48,6 @@ export const LeverageSlider = ({
   min: number
   max: number
   step: number
-  defaultValue?: number
   margin?: string
 }) => {
   return (  
@@ -68,7 +67,6 @@ export const LeverageSlider = ({
         max={max}
         step={step}
         onChange={onChange}
-        defaultValue={1}
         backgroundColor={'#F2F2F2'}
         color={'#12B4FF'}
         />

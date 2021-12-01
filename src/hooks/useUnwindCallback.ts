@@ -184,7 +184,7 @@ export function useUnwindCallback(
             ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response: TransactionResponse) => {
-            console.log("response from useUnwindCallback: ", response);
+
             addTransaction(response, {
               type: TransactionType.UNWIND_OVL_POSITION,
               positionId: unwindData.positionId,
@@ -200,7 +200,6 @@ export function useUnwindCallback(
             } else {
               // otherwise, the error was unexpected and we need to convey that
               console.error(`Unwind failed`, error, address, calldata, value);
-              console.log('Unwind Error: ', error);
               throw new Error(`Unwind failed: ${error}`);
             }
           });

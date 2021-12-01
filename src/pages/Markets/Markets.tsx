@@ -51,11 +51,6 @@ const Markets = () => {
 
   const { isLoading, markets } = useAllMarkets();
 
-  useEffect(() => {
-    console.log('isLoading: ', isLoading)
-    console.log('allMarkets: ', markets)
-  }, [isLoading, markets])
-
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
@@ -90,10 +85,11 @@ const Markets = () => {
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
-            {mockData.map((row) => (
+            {mockData.map((row, key) => (
               <StyledTableRow 
                 onClick={() => redirectToMarket(row.marketId)}
                 hover={true}
+                key={key.toString()}
                 >
                   <StyledTableCellThin component="th" scope="row">
                     {row.market}

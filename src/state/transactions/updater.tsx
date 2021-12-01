@@ -81,7 +81,6 @@ export default function Updater(): null {
         
         promise
           .then((receipt) => {
-            console.log('this is receipt in useEffect: ', receipt);
             if (receipt) {
               dispatch(
                 finalizeTransaction({

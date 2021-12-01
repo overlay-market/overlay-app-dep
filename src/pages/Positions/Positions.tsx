@@ -194,8 +194,6 @@ export const Positions = () => {
 
   const { isLoading, positions } = useAllPositions( account ? account : undefined );
 
-  console.log('positions: ', positions);
-
   return (
     <MarketCard>
       <Container>
@@ -223,6 +221,7 @@ export const Positions = () => {
                   console.log('formatUnits: ', Number(utils.formatUnits(position.cost, 18)).toFixed(2))
                   return (
                     <PositionCard
+                        key={key.toString()}
                         positionId={ position.id }
                         marketName={ position.id }
                         isLong={ position.isLong }
