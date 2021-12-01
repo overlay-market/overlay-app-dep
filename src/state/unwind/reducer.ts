@@ -1,12 +1,14 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { typeInput } from "./actions";
+import { typeInput, selectPositionId } from "./actions";
 
 export interface UnwindState {
   readonly typedValue: string
+  readonly positionId: string
 };
 
 export const initialState: UnwindState = {
-  typedValue: ""
+  typedValue: "",
+  positionId: ""
 };
 
 export default createReducer<UnwindState>(initialState, (builder) =>
@@ -15,6 +17,10 @@ export default createReducer<UnwindState>(initialState, (builder) =>
       typeInput, 
       (state, { payload: { typedValue} }) => {
         state.typedValue = typedValue;
-      }
-    )
+      })
+    .addCase(
+      selectPositionId,
+      (state, { payload: { positionId } }) => {
+        state.positionId = positionId;
+      })
 );
