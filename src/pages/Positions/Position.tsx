@@ -19,6 +19,7 @@ import { formatAmount } from '../../utils/formatData';
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
 import { useUnwindCallback } from '../../hooks/useUnwindCallback';
 import { utils } from 'ethers';
+import { useAllPositions } from '../../state/positions/hooks';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -60,8 +61,19 @@ export function Position(
 }: RouteComponentProps<{ positionId: string }>
 ) {
   const { account } = useActiveWeb3React();
+
   const dispatch = useAppDispatch();
   
+  const { error, isLoading, positions } = useAllPositions(account);
+
+  const filtered = positions?.filter((index, key) => {
+    return index.position.id === positionId
+  });
+    
+  const position = filtered ? filtered[0].position : null;
+
+  console.log('position: ', position);
+
   let mockUnwindData = {
     positionId: "3",
     shares: "100"
@@ -153,7 +165,7 @@ export function Position(
                 />
             <ListItem
                 item={'Open Interest'}
-                value={'49.5 OVL'}
+                value={ `${Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)} OVL` }
                 />
         </Column>
 
@@ -168,20 +180,20 @@ export function Position(
                 value={'5x'}
                 />
             <ListItem
-                item={'Debt'}
-                value={'40 OVL'}
+                item={ 'Debt' }
+                value={ `${Number(utils.formatUnits(position?.debt, 18)).toFixed(2)} OVL` }
                 />
             <ListItem
-                item={'Cost'}
-                value={'10 OVL'}
+                item={ 'Cost' }
+                value={ `${Number(utils.formatUnits(position?.cost, 18)).toFixed(2)} OVL` }
                 />
             <ListItem
-                item={'Collateral'}
-                value={'9.5 OVL'}
+                item={ 'Collateral' }
+                value={ `${Number(utils.formatUnits(position?.debt, 18)).toFixed(2)} OVL` }
                 />
             <ListItem
-                item={'Notional'}
-                value={'54.45 OVL'}
+                item={ 'Notional' }
+                value={ '54.45 OVL' }
                 />
             <ListItem
                 item={'Maintenance'}
@@ -206,8 +218,8 @@ export function Position(
 
         <Column mt={'48px'}>
             <ListItem
-                item={'Total Shares Outstanding'}
-                value={'50'}
+                item={ 'Total Shares Outstanding' }
+                value={ `${Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2)} OVL` }
                 />
             <ListItem
                 item={'Position Shares'}
