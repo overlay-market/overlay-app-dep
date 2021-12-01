@@ -222,6 +222,7 @@ export const Positions = () => {
 
                   return (
                     <PositionCard
+                        key={key.toString()}
                         positionId={position.id}
                         marketName={ 'ETH/DAI' }
                         isLong={position.isLong}
