@@ -12,6 +12,7 @@ import { Button } from 'rebass';
 import { Icon } from '../../components/Icon/Icon';
 import { MarketCard } from '../../components/Card/MarketCard';
 import { useAllPositions } from '../../state/positions/hooks';
+import { utils } from 'ethers';
 
 const Container = styled.div`
   display: flex;
@@ -46,6 +47,7 @@ const CardCell = styled.div<{
   text-align: ${({ align }) => ( align ? align : 'left' )};
   width: ${({ width }) => ( width ? width : 'auto' )};
   font-size: 14px;
+  overflow: scroll;
 `;
 
 const Detail = styled.div<{
@@ -161,10 +163,6 @@ export const PositionCard = ({
         <Detail color={'#C0C0C0'}>
           {positionSize} {collateralCurrency}
         </Detail>
-
-        <Detail color={'#C0C0C0'}>
-          @ {quotePrice} {quoteCurrency}
-        </Detail>
       </CardCell>
 
       <CardCell width="30%">
@@ -222,13 +220,14 @@ export const Positions = () => {
                 positions?.map((positionData, key) => {
                   let position = positionData.position;
 
+                  console.log('formatUnits: ', Number(utils.formatUnits(position.cost, 18)).toFixed(2))
                   return (
                     <PositionCard
-                        positionId={position.id}
-                        marketName={ 'ETH/DAI' }
-                        isLong={position.isLong}
-                        leverage={position.leverage}
-                        positionSize={ '100.0' }
+                        positionId={ position.id }
+                        marketName={ position.id }
+                        isLong={ position.isLong }
+                        leverage={ position.leverage }
+                        positionSize={ Number(utils.formatUnits(position.oiShares, 18)).toFixed(2) }
                         collateralCurrency={ 'OVL' }
                         quotePrice={ '2410.0' }
                         quoteCurrency={ 'DAI' }

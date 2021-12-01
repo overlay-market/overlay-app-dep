@@ -206,14 +206,6 @@ export function useBuildCallback(
             ...(value && !isZero(value) ? { value } : {}),
           })
           .then((response: TransactionResponse) => {
-<<<<<<< HEAD
-            console.log("response from useBuildCallback: ", response);
-
-            response.wait().then((res) => {
-              console.log('response.wait: ', res)
-            })
-=======
->>>>>>> staging
 
             addTransaction(response, {
               type: TransactionType.BUILD_OVL_POSITION,
