@@ -90,12 +90,12 @@ export const InternalMenuItem = styled(Link)<{ fontFamily?: string }>`
 export function LanguageMenuItem({ 
   locale, 
   active, 
-  key,
+  componentKey,
   fontFamily,
 }:{ 
   locale: SupportedLocale
   active: boolean
-  key: string
+  componentKey: string
   fontFamily?: string
 }) {
   const { to } = useLocationLinkProps(locale);
@@ -103,7 +103,7 @@ export function LanguageMenuItem({
   if (!to) return null;
 
   return (
-    <InternalMenuItem key={key} to={to} fontFamily={fontFamily}>
+    <InternalMenuItem key={componentKey} to={to} fontFamily={fontFamily}>
       { active ? (
           <strong>
             <u>
@@ -203,9 +203,9 @@ export default function More() {
                             </IconContainer>
                                 Menu
                         </StyledMenuHeaderItem>
-                        {SUPPORTED_LOCALES.map((locale) => (
+                        {SUPPORTED_LOCALES.map((locale, key) => (
                           <StyledMenuItem disableRipple>
-                            <LanguageMenuItem locale={locale} active={activeLocale === locale} key={locale} />
+                            <LanguageMenuItem locale={locale} active={activeLocale === locale} componentKey={key.toString()} />
                           </StyledMenuItem>
                         ))}
                       </>

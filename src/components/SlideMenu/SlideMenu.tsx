@@ -97,20 +97,18 @@ const SlideMenu = ({
           Magic
         </StyledInternalLink>
 
-        <Separator />
+        <Separator/>
         
         <StyledExternalLink href="https://overlay.market">
           Risks
         </StyledExternalLink>
-        <Accordion 
-            title={"Language"}
-            >
+        <Accordion title={"Language"} >
           {SUPPORTED_LOCALES.map((locale, key) => (
-            <AccordionSelection>
+            <AccordionSelection key={key.toString()} >
               <LanguageMenuItem 
                   locale={locale} 
                   active={activeLocale === locale} 
-                  key={locale}
+                  componentKey={key.toString()}
                   />
             </AccordionSelection>
           ))}
