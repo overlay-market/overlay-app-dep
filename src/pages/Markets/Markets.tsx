@@ -85,10 +85,11 @@ const Markets = () => {
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
-            {mockData.map((row) => (
+            {mockData.map((row, key) => (
               <StyledTableRow 
                 onClick={() => redirectToMarket(row.marketId)}
                 hover={true}
+                key={key.toString()}
                 >
                   <StyledTableCellThin component="th" scope="row">
                     {row.market}
