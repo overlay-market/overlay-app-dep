@@ -33,7 +33,7 @@ const Liquidate = () => {
                       </StyledTableHeaderRow>
 
                       {mock.map((position, key) => (
-                          <StyledTableRow hover={false}>
+                          <StyledTableRow key={key.toString()} hover={false}>
                               <StyledTableCellThin component="th" scope="row">
                                   {position.maintenance}
                               </StyledTableCellThin>
