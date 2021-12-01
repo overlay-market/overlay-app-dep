@@ -260,8 +260,6 @@ export const BuildPosition = ({
     slippageValue,
     txnDeadline } = usePositionState();
 
-  console.log("leverageValue", leverageValue)
-
   const { 
     onAmountInput, 
     onLeverageInput, 
