@@ -80,7 +80,6 @@ const SnackMessage = forwardRef<
     parsedMessage = message;
     parsedVariant = variant;
     parsedHash = hash;
-    console.log("variant in parsed: ", parsedVariant);
   }
 
   let VariantIcon = ({ variant }: { variant: PopupType | undefined }) => {
@@ -91,7 +90,6 @@ const SnackMessage = forwardRef<
     else return <AlertCircle color={"#F2F2F2"} size={20} />;
   };
 
-  console.log("variant before return: ", parsedVariant);
   return (
     <SnackbarContent ref={ref} className={classes.root}>
       <Card className={classes.card}>

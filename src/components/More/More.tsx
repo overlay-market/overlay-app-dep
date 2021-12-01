@@ -140,10 +140,10 @@ export default function More() {
   };
 
   const handleClose = (event: React.MouseEvent<EventTarget>) => {
-    console.log('hello there');
-    if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
-      return;
-    }
+
+    if (anchorRef.current && 
+        anchorRef.current.contains(event.target as HTMLElement)
+    ) return;
 
     setOpen(false);
   };

@@ -51,11 +51,6 @@ const Markets = () => {
 
   const { isLoading, markets } = useAllMarkets();
 
-  useEffect(() => {
-    console.log('isLoading: ', isLoading)
-    console.log('allMarkets: ', markets)
-  }, [isLoading, markets])
-
   return (
     <StyledContainer>
       <TableContainer component={Paper}>

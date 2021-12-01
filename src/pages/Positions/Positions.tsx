@@ -196,8 +196,6 @@ export const Positions = () => {
 
   const { isLoading, positions } = useAllPositions( account ? account : undefined );
 
-  console.log('positions: ', positions);
-
   return (
     <MarketCard>
       <Container>

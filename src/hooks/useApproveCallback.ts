@@ -45,36 +45,20 @@ export function useApproveCallback(
   const addTransaction = useTransactionAdder();
 
   const approve = useCallback(async (): Promise<void> => {
-    console.log('1');
+    
     if (approvalState !== ApprovalState.NOT_APPROVED) {
       console.error('approve was called unnecessarily');
       return;
     }
-    console.log('2');
-    if (!token) {
-      console.error('no token');
-      return;
-    };
 
-    console.log('3');
-    if (!tokenContract) {
-      console.error('tokenContract is null');
-      return;
-    };
+    if (!token) return console.error('no token');
 
-    console.log('4');
-    if (!amountToApprove) {
-      console.error('missing amount to approve');
-      return;
-    };
+    if (!tokenContract) return console.error('tokenContract is null');
 
-    console.log('5');
-    if (!spender) {
-      console.error('no spender');
-      return;
-    };
+    if (!amountToApprove) return console.error('missing amount to approve');
 
-    console.log('6');
+    if (!spender) return console.error('no spender');
+
     let useExact = false;
     const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
       // general fallback for tokens who restrict approval amounts
