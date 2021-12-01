@@ -4,6 +4,7 @@ import user from './user/reducer';
 import application from './application/reducer';
 import multicall from './multicall/reducer';
 import position from './positions/reducer';
+import unwind from './unwind/reducer';
 import transactions from './transactions/reducer';
 import markets from './markets/reducer';
 import { updateVersion } from './global/actions';
@@ -17,6 +18,7 @@ const store = configureStore({
     user,
     multicall,
     position,
+    unwind,
     transactions,
     markets,
     [dataApi.reducerPath]: dataApi.reducer,
