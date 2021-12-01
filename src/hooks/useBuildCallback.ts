@@ -1,3 +1,4 @@
+import { leverageInput } from './../state/positions/actions';
 import { TransactionType } from "./../state/transactions/actions";
 import { BigNumber } from "@ethersproject/bignumber";
 import Big from 'big.js';
@@ -12,6 +13,7 @@ import {
 } from "../constants/addresses";
 import { utils } from "ethers";
 import isZero from "../utils/isZero";
+
 import { calculateGasMargin } from "../utils/calculateGasMargin";
 
 interface BuildCall {
@@ -188,6 +190,8 @@ export function useBuildCallback(
         const {
           call: { address, calldata, value },
         } = bestCallOption;
+
+        console.log('bestCallOption: ', bestCallOption);
 
         return library
           .getSigner()
