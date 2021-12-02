@@ -3,12 +3,12 @@ import { typeInput, selectPositionId } from "./actions";
 
 export interface UnwindState {
   readonly typedValue: string
-  readonly positionId: string
+  readonly selectedPositionId: string
 };
 
 export const initialState: UnwindState = {
   typedValue: "",
-  positionId: ""
+  selectedPositionId: ""
 };
 
 export default createReducer<UnwindState>(initialState, (builder) =>
@@ -20,7 +20,7 @@ export default createReducer<UnwindState>(initialState, (builder) =>
       })
     .addCase(
       selectPositionId,
-      (state, { payload: { positionId } }) => {
-        state.positionId = positionId;
+      (state, { payload: { selectedPositionId } }) => {
+        state.selectedPositionId = selectedPositionId;
       })
 );

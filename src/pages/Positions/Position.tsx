@@ -20,6 +20,7 @@ import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal';
 import { useUnwindCallback } from '../../hooks/useUnwindCallback';
 import { utils } from 'ethers';
 import { useAllPositions } from '../../state/positions/hooks';
+import { useUnwindState, useUnwindActionHandlers } from '../../state/unwind/hooks';
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -72,7 +73,9 @@ export function Position(
     
   const position = filtered ? filtered[0].position : null;
 
-  console.log('position: ', position);
+  const { typedValue, selectedPositionId } = useUnwindState();
+
+  const { onUserInput, onSelectPositionId } = useUnwindActionHandlers();
 
   let mockUnwindData = {
     positionId: "3",
