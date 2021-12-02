@@ -156,30 +156,27 @@ export function Position({
         marketName={position?.number}
         isLong={position?.isLong ?? null}
         leverage={position?.leverage}
-        positionSize={Number(utils.formatUnits(position?.oiShares, 18)).toFixed(
-          2
-        )}
+        positionSize={`${
+          position?.oiShares
+            ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)+" OVL"
+            : "loading..."
+        }`}
         collateralCurrency={"OVL"}
-        quotePrice={"2410.0"}
-        quoteCurrency={"DAI"}
+        quotePrice={"n/a"}
+        quoteCurrency={"n/a"}
         estLiquidationPrice={position?.liquidationPrice}
-        PnL={"0.10"}
+        PnL={"n/a"}
         navigate={false}
       />
 
       <Column mt={"48px"}>
-        <ListItem
-          item={"PnL"}
-          value={"4.45 OVL (+50%)"}
-          valueColor={"#10DCB1"}
-        />
-        <ListItem item={"Value"} value={"14.5 OVL"} />
+        <ListItem item={"PnL"} valueColor={"#10DCB1"} value={"n/a"} />
+        <ListItem item={"Value"} value={"n/a"} />
         <ListItem
           item={"Open Interest"}
           value={`${
             position?.oiShares
-              ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) +
-                "OVL"
+              ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)+" OVL"
               : "loading..."
           }`}
         />
@@ -187,12 +184,15 @@ export function Position({
 
       <Column mt={"48px"}>
         <ListItem item={"Side"} value={"Long"} valueColor={"#10DCB1"} />
-        <ListItem item={"Leverage"} value={"5x"} />
+        <ListItem
+          item={"Leverage"}
+          value={`${position?.leverage ? position.leverage : "loading"}`}
+        />
         <ListItem
           item={"Debt"}
           value={`${
             position?.debt
-              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + "OVL"
+              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2)+" OVL"
               : "loading..."
           }`}
         />
@@ -200,7 +200,7 @@ export function Position({
           item={"Cost"}
           value={`${
             position?.cost
-              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + "OVL"
+              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2)+" OVL"
               : "loading..."
           }`}
         />
@@ -208,18 +208,18 @@ export function Position({
           item={"Collateral"}
           value={`${
             position?.debt
-              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + "OVL"
+              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2)+" OVL"
               : "loading..."
           }`}
         />
-        <ListItem item={"Notional"} value={"54.45 OVL"} />
-        <ListItem item={"Maintenance"} value={"3 OVL"} />
+        <ListItem item={"Notional"} value={"n/a"} />
+        <ListItem item={"Maintenance"} value={"n/a"} />
       </Column>
 
       <Column mt={"48px"}>
-        <ListItem item={"Entry Price"} value={"3000.00 USDC"} />
-        <ListItem item={"Current Price"} value={"3300.00 USDC"} />
-        <ListItem item={"Liquidation Price (est)"} value={"2606.00 USDC"} />
+        <ListItem item={"Entry Price"} value={"n/a"} />
+        <ListItem item={"Current Price"} value={"n/a"} />
+        <ListItem item={"Liquidation Price (est)"} value={"n/a"} />
       </Column>
 
       <Column mt={"48px"}>
@@ -227,13 +227,11 @@ export function Position({
           item={"Total Shares Outstanding"}
           value={`${
             position?.totalSupply
-              ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(
-                  2
-                ) + "OVL"
+              ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2)+" OVL"
               : "loading..."
           }`}
         />
-        <ListItem item={"Position Shares"} value={"15"} />
+        <ListItem item={"Position Shares"} value={"n/a"} />
       </Column>
     </Container>
   );
