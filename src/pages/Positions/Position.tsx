@@ -77,6 +77,14 @@ export function Position(
 
   const { onUserInput, onSelectPositionId } = useUnwindActionHandlers();
 
+  const handleUserInput = useCallback((e: any) => {
+    onUserInput(e.target.value)
+  }, [onUserInput]);
+
+  const handleSelectPosition = useCallback((positionId: string) => {
+    onSelectPositionId(positionId)
+  }, [onSelectPositionId]);
+
   let mockUnwindData = {
     positionId: "3",
     shares: "100"
@@ -94,6 +102,7 @@ export function Position(
 
   return (
     <Container>
+      {handleSelectPosition(positionId)}
         <Back arrowSize={16} textSize={16} margin={'0 auto 64px 0'} />
 
         <Column>
