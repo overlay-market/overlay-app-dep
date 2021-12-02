@@ -24,7 +24,7 @@ import { useAppDispatch } from "../../state/hooks";
 import { formatAmount } from "../../utils/formatData";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
-import { utils } from "ethers";
+import { BigNumberish, utils } from "ethers";
 import { useAllPositions } from "../../state/positions/hooks";
 import {
   useUnwindState,
@@ -87,11 +87,16 @@ export function Position({
   const { onUserInput, onSelectPositionId } = useUnwindActionHandlers();
 
   const handleUserInput = useCallback(
-    (e: any) => {
-      onUserInput(e.target.value);
+    (input: string) => {
+      onUserInput(input);
     },
     [onUserInput]
   );
+
+  const handleQuickInput = (percentage: number, totalOi: string | null) => {
+      let calculatedOi = (Number(totalOi) * (percentage / 100)).toFixed(0)
+      return onUserInput(calculatedOi)
+  };
 
   const handleSelectPosition = useCallback(
     (positionId: number) => {
@@ -126,16 +131,16 @@ export function Position({
           Unwind Amount
         </TEXT.Body>
         <Row ml={"auto"} mb={"4px"} width={"auto"}>
-          <TransparentUnderlineButton border={"none"}>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(25, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
             25%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton border={"none"}>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(50, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
             50%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton border={"none"}>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(75, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
             75%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton border={"none"}>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(100, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
             Max
           </TransparentUnderlineButton>
         </Row>
@@ -144,7 +149,7 @@ export function Position({
         <InputDescriptor>OVL</InputDescriptor>
         <NumericalInput
           value={typedValue}
-          onUserInput={onUserInput}
+          onUserInput={handleUserInput}
           align={"right"}
         />
       </InputContainer>
