@@ -180,9 +180,10 @@ export function useAllPositions(
     error,
     isUninitialized,
     data
-  } = useAccountQuery({ account: accountAddress })
+  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 3000 })
 
   return useMemo(() => {
+    console.log('data: ', data?.account?.balances);
     return {
       isLoading,
       isError,

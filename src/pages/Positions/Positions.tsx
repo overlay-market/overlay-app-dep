@@ -230,11 +230,7 @@ export const Positions = () => {
               ) : (
                 positions?.map((positionData, key) => {
                   let position = positionData.position;
-
-                  console.log(
-                    "formatUnits: ",
-                    Number(utils.formatUnits(position.cost, 18)).toFixed(2)
-                  );
+                  
                   return (
                     <PositionCard
                       key={key.toString()}

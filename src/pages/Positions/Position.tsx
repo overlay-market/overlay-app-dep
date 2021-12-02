@@ -105,6 +105,8 @@ export function Position({
     [onSelectPositionId]
   );
 
+  const handleClearInput = () => (onUserInput(""));
+
   const { callback: unwindCallback, error: unwindCallbackError } =
     useUnwindCallback(typedValue, selectedPositionId);
 
@@ -113,7 +115,9 @@ export function Position({
       return;
     }
 
-    unwindCallback();
+    unwindCallback()
+      .then((success) => onUserInput(""))
+      .catch((err) => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback]);
 
   return (
@@ -163,7 +167,7 @@ export function Position({
         leverage={position?.leverage}
         positionSize={`${
           position?.oiShares
-            ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)+" OVL"
+            ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
             : "loading..."
         }`}
         collateralCurrency={"OVL"}
