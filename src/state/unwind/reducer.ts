@@ -3,12 +3,12 @@ import { typeInput, selectPositionId } from "./actions";
 
 export interface UnwindState {
   readonly typedValue: string
-  readonly selectedPositionId: string | undefined
+  readonly selectedPositionId: number | null
 };
 
 export const initialState: UnwindState = {
   typedValue: "",
-  selectedPositionId: undefined
+  selectedPositionId: null
 };
 
 export default createReducer<UnwindState>(initialState, (builder) =>

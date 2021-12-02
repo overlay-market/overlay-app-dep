@@ -1256,6 +1256,10 @@ export type AccountQuery = (
       & { position: (
         { __typename?: 'Position' }
         & Pick<Position, 'id' | 'number' | 'isLong' | 'leverage' | 'oiShares' | 'debt' | 'cost' | 'liquidationPrice' | 'totalSupply'>
+        & { collateralManager: (
+          { __typename?: 'CollateralManager' }
+          & Pick<CollateralManager, 'id' | 'address'>
+        ) }
       ) }
     )> }
   )> }
@@ -1291,6 +1295,10 @@ export const AccountDocument = `
         cost
         liquidationPrice
         totalSupply
+        collateralManager {
+          id
+          address
+        }
       }
     }
   }

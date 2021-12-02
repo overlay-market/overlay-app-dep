@@ -41,6 +41,10 @@ export const api = createApi({
                   cost
                   liquidationPrice
                   totalSupply
+                  collateralManager {
+                    id
+                    address
+                  }
                 }
               }
             }

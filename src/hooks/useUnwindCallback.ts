@@ -38,7 +38,7 @@ enum UnwindCallbackState {
 
 function useUnwindCallArguments(
   unwindAmount: string,
-  positionId: string,
+  positionId: number | null,
   chainId: any
 ) {
   let calldata: any;
@@ -48,7 +48,7 @@ function useUnwindCallArguments(
   } else {
     calldata = OVLCollateral.unwindParameters({
       shares: utils.parseUnits(unwindAmount),
-      positionId: 1,
+      positionId: positionId,
     });
   }
 
@@ -71,7 +71,7 @@ function useUnwindCallArguments(
 
 export function useUnwindCallback(
   unwindAmount: string,
-  positionId: string
+  positionId: number | null
 ) : {
   state: UnwindCallbackState;
   callback: null | (() => Promise<string>);
@@ -189,7 +189,7 @@ export function useUnwindCallback(
 
             addTransaction(response, {
               type: TransactionType.UNWIND_OVL_POSITION,
-              positionId: positionId,
+              positionId: positionId.toString(),
               shares: unwindAmount
             });
 

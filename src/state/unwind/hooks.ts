@@ -9,7 +9,7 @@ export function useUnwindState(): AppState['unwind'] {
 
 export function useUnwindActionHandlers(): {
   onUserInput: (typedValue: string) => void;
-  onSelectPositionId: (selectedPosition: string) => void;
+  onSelectPositionId: (selectedPosition: number | null) => void;
 } {
   const dispatch = useAppDispatch();
 
@@ -20,7 +20,7 @@ export function useUnwindActionHandlers(): {
   );
 
   const onSelectPositionId = useCallback(
-    (selectedPositionId: string) => {
+    (selectedPositionId: number | null) => {
       dispatch(selectPositionId({ selectedPositionId }))
     }, [dispatch]
   );

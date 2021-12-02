@@ -1,4 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
 
 export const typeInput = createAction<{ typedValue: string }>('unwind/typeInput');
-export const selectPositionId = createAction<{ selectedPositionId: string }>('unwind/selectPositionId');
+export const selectPositionId = createAction<{ selectedPositionId: number | null }>('unwind/selectPositionId');

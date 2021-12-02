@@ -81,7 +81,7 @@ export function Position(
     onUserInput(e.target.value)
   }, [onUserInput]);
 
-  const handleSelectPosition = useCallback((positionId: string) => {
+  const handleSelectPosition = useCallback((positionId: number) => {
     onSelectPositionId(positionId)
   }, [onSelectPositionId]);
 
@@ -90,7 +90,7 @@ export function Position(
     shares: "100"
   };
 
-  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(typedValue, selectedPositionId ? selectedPositionId : "");
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(typedValue, selectedPositionId);
 
   console.log('unwindCallback: ', unwindCallback);
 
@@ -104,7 +104,7 @@ export function Position(
 
   return (
     <Container>
-      {handleSelectPosition(positionId)}
+      {handleSelectPosition(position?.number)}
         <Back arrowSize={16} textSize={16} margin={'0 auto 64px 0'} />
 
         <Column>
