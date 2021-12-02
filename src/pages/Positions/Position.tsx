@@ -105,7 +105,11 @@ export function Position({
     [onSelectPositionId]
   );
 
-  const handleClearInput = () => (onUserInput(""));
+  const handleClearInput = useCallback(() => {
+    onUserInput("")
+    }, 
+    [onUserInput]
+  );
 
   const { callback: unwindCallback, error: unwindCallbackError } =
     useUnwindCallback(typedValue, selectedPositionId);
@@ -116,9 +120,9 @@ export function Position({
     }
 
     unwindCallback()
-      .then((success) => onUserInput(""))
+      .then((success) => handleClearInput)
       .catch((err) => console.error('Error from handleUnwind: ', err))
-  }, [unwindCallback]);
+  }, [unwindCallback, handleClearInput]);
 
   return (
     <Container>
