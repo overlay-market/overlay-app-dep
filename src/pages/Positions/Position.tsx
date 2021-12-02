@@ -84,7 +84,11 @@ export function Position({
 
   const { typedValue, selectedPositionId } = useUnwindState();
 
-  const { onUserInput, onSelectPositionId } = useUnwindActionHandlers();
+  const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
+
+  useEffect(() => {
+    onResetUnwindState();
+  }, [positionId, onResetUnwindState]);
 
   const handleUserInput = useCallback(
     (input: string) => {

@@ -13,6 +13,7 @@ import { Icon } from "../../components/Icon/Icon";
 import { MarketCard } from "../../components/Card/MarketCard";
 import { useAllPositions } from "../../state/positions/hooks";
 import { utils } from "ethers";
+import { useUnwindActionHandlers } from "../../state/unwind/hooks";
 
 const Container = styled.div`
   display: flex;
@@ -200,9 +201,7 @@ export const PositionCard = ({
 };
 
 export const Positions = () => {
-  const { account, activate, chainId } = useActiveWeb3React();
-
-  const [loading, setLoading] = useState(true);
+  const { account } = useActiveWeb3React();
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -210,8 +209,11 @@ export const Positions = () => {
     account ? account : undefined
   );
 
+  const { onResetUnwindState } = useUnwindActionHandlers();
+
   return (
     <MarketCard>
+      {onResetUnwindState()}
       <Container>
         <Header>Positions</Header>
 
@@ -230,7 +232,7 @@ export const Positions = () => {
               ) : (
                 positions?.map((positionData, key) => {
                   let position = positionData.position;
-                  
+
                   return (
                     <PositionCard
                       key={key.toString()}

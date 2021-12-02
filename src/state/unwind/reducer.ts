@@ -1,5 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { typeInput, selectPositionId } from "./actions";
+import { typeInput, selectPositionId, resetUnwindState } from "./actions";
 
 export interface UnwindState {
   readonly typedValue: string
@@ -22,5 +22,11 @@ export default createReducer<UnwindState>(initialState, (builder) =>
       selectPositionId,
       (state, { payload: { selectedPositionId } }) => {
         state.selectedPositionId = selectedPositionId;
+      })
+    .addCase(
+      resetUnwindState,
+      (state) => {
+          state.typedValue = "";
+          state.selectedPositionId = null;
       })
 );
