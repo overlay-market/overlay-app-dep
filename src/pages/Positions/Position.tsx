@@ -166,8 +166,20 @@ export function Position(
 
 
         <PositionsCardHeader />
-
-
+        <PositionCard
+            positionId={ position?.id ?? 'loading' }
+            marketName={ position?.number }
+            isLong={ position?.isLong ?? null }
+            leverage={ position?.leverage }
+            positionSize={ Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) }
+            collateralCurrency={ 'OVL' }
+            quotePrice={ '2410.0' }
+            quoteCurrency={ 'DAI' }
+            estLiquidationPrice={position?.liquidationPrice}
+            PnL={ '0.10' }
+            navigate={false}
+            />
+            
         <Column mt={'48px'}>
             <ListItem 
                 item={'PnL'}

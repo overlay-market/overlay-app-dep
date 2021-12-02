@@ -59,10 +59,10 @@ const Detail = styled.div<{
   text-align: inherit;
 `
 
-const CardContainer = styled(Link)<{ navigate?: boolean}>`
+const CardContainer = styled(Link)<{ navigate?: boolean, border?: boolean }>`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid #828282;
+  border-bottom: ${({ border }) => ( border ? '1px solid #828282' : 'none')};
   width: 100%;
   padding: 16px 0;
   min-height: 69px;
@@ -128,11 +128,12 @@ export const PositionCard = ({
   quoteCurrency,
   estLiquidationPrice,
   PnL,
-  navigate
+  navigate,
+  border
 }:{
   positionId: string
   marketName: string
-  isLong: boolean
+  isLong: boolean | null
   leverage: number | string
   positionSize: number | string
   collateralCurrency: string
@@ -141,21 +142,30 @@ export const PositionCard = ({
   estLiquidationPrice: string
   PnL: number | string
   navigate?: boolean
+  border?: boolean
 }) => {
 
 
   return(
-    <CardContainer navigate={navigate} to={`/positions/${positionId}`} >
+    <CardContainer navigate={navigate} border={border} to={`/positions/${positionId}`} >
       <CardCell width="50%">
         <Detail fontWeight={700} color={'white'}>
           {marketName}
         </Detail>
 
-        {isLong ? (
+        {isLong === null && (
+          <Detail fontWeight={700} color={'#C0C0C0'}>
+            loading...
+          </Detail>
+        )}
+
+        {isLong === true && (
           <Detail fontWeight={700} color={'#10DCB1'}>
             Long {leverage}x
           </Detail>
-        ):(
+        )}
+
+        {isLong === false && (
           <Detail fontWeight={700} color={'#FF648A'}>
             Short {leverage}x
           </Detail>
@@ -177,9 +187,13 @@ export const PositionCard = ({
           {PnL}
         </Detail>
 
+
+      {navigate ?? (
         <Icon size={12} margin={'24px 0 0 auto'}>
           <ChevronRight />
         </Icon>
+      )}
+      
       </CardCell>
     </CardContainer>
   )
@@ -234,6 +248,7 @@ export const Positions = () => {
                         estLiquidationPrice={position.liquidationPrice}
                         PnL={ '0.10' }
                         navigate={true}
+                        border={true}
                         />
                   )
                 })
