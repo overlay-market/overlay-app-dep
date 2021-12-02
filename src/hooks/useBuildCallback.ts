@@ -54,7 +54,7 @@ function useBuildCallArguments(
     calldata = OVLCollateral.buildParameters({
       collateral: utils.parseUnits(buildData.inputValue),
       leverage: Number(buildData.leverageValue),
-      isLong: true,
+      isLong: buildData.isLong,
       market: OVL_MARKET_ADDRESS[chainId],
       minOI: 1,
       deadline: 1

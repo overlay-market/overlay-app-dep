@@ -65,6 +65,7 @@ const CardContainer = styled(Link)<{ navigate?: boolean}>`
   border-bottom: 1px solid #828282;
   width: 100%;
   padding: 16px 0;
+  min-height: 69px;
   text-decoration: none;
 
   pointer-events: ${({ navigate }) => ( navigate ? 'auto' : 'none' )};
@@ -223,7 +224,7 @@ export const Positions = () => {
                     <PositionCard
                         key={key.toString()}
                         positionId={ position.id }
-                        marketName={ position.id }
+                        marketName={ position.number }
                         isLong={ position.isLong }
                         leverage={ position.leverage }
                         positionSize={ Number(utils.formatUnits(position.oiShares, 18)).toFixed(2) }
