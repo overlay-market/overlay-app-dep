@@ -22,6 +22,7 @@ import { utils } from 'ethers';
 import { useAllPositions } from '../../state/positions/hooks';
 import { useUnwindState, useUnwindActionHandlers } from '../../state/unwind/hooks';
 
+
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
   padding: 16px;
@@ -179,7 +180,12 @@ export function Position(
                 />
             <ListItem
                 item={'Open Interest'}
-                value={ `${Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)} OVL` }
+                value={`${ position?.oiShares ? (
+                          Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + 'OVL'
+                        ):(
+                          'loading...'
+                        )}`
+                      }
                 />
         </Column>
 
@@ -195,15 +201,30 @@ export function Position(
                 />
             <ListItem
                 item={ 'Debt' }
-                value={ `${Number(utils.formatUnits(position?.debt, 18)).toFixed(2)} OVL` }
+                value={`${ position?.debt ? (
+                          Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + 'OVL'
+                        ):(
+                          'loading...'
+                        )}`
+                      }
                 />
             <ListItem
                 item={ 'Cost' }
-                value={ `${Number(utils.formatUnits(position?.cost, 18)).toFixed(2)} OVL` }
+                value={`${ position?.cost ? (
+                          Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + 'OVL'
+                        ):(
+                          'loading...'
+                        )}`
+                      }
                 />
             <ListItem
                 item={ 'Collateral' }
-                value={ `${Number(utils.formatUnits(position?.debt, 18)).toFixed(2)} OVL` }
+                value={`${ position?.debt ? (
+                          Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + 'OVL'
+                        ):(
+                          'loading...'
+                        )}`
+                      }
                 />
             <ListItem
                 item={ 'Notional' }
@@ -233,7 +254,12 @@ export function Position(
         <Column mt={'48px'}>
             <ListItem
                 item={ 'Total Shares Outstanding' }
-                value={ `${Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2)} OVL` }
+                value={`${ position?.totalSupply ? (
+                          Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + 'OVL'
+                        ):(
+                          'loading...'
+                        )}`
+                      }
                 />
             <ListItem
                 item={'Position Shares'}
