@@ -90,7 +90,9 @@ export function Position(
     shares: "100"
   };
 
-  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(mockUnwindData);
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(typedValue, selectedPositionId ? selectedPositionId : "");
+
+  console.log('unwindCallback: ', unwindCallback);
 
   const handleUnwind = useCallback(() => {
     if (!unwindCallback) {
@@ -150,8 +152,8 @@ export function Position(
             OVL
           </InputDescriptor>
           <NumericalInput 
-              value={'0.0'}
-              onUserInput={() => null}
+              value={typedValue}
+              onUserInput={onUserInput}
               align={'right'}
               />
         </InputContainer>

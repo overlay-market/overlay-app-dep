@@ -37,17 +37,18 @@ enum UnwindCallbackState {
 }
 
 function useUnwindCallArguments(
-  unwindData: any | undefined,
-  chainId: any | undefined
+  unwindAmount: string,
+  positionId: string,
+  chainId: any
 ) {
   let calldata: any;
 
-  if (!unwindData.positionId || !unwindData.shares) {
+  if (unwindAmount === "" || !positionId) {
     calldata = undefined;
   } else {
     calldata = OVLCollateral.unwindParameters({
-      positionId: unwindData.positionId,
-      shares: utils.parseUnits(unwindData.shares),
+      shares: utils.parseUnits(unwindAmount),
+      positionId: 1,
     });
   }
 
@@ -69,7 +70,8 @@ function useUnwindCallArguments(
 };
 
 export function useUnwindCallback(
-  unwindData: any 
+  unwindAmount: string,
+  positionId: string
 ) : {
   state: UnwindCallbackState;
   callback: null | (() => Promise<string>);
@@ -79,10 +81,10 @@ export function useUnwindCallback(
 
   const addTransaction = useTransactionAdder();
 
-  const unwindCalls = useUnwindCallArguments(unwindData, chainId);
+  const unwindCalls = useUnwindCallArguments(unwindAmount, positionId, chainId);
 
   return useMemo(() => {
-    if (!unwindData || !library || !account || !chainId) {
+    if (!unwindAmount || !positionId || !library || !account || !chainId) {
       return {
         state: UnwindCallbackState.INVALID,
         callback: null,
@@ -187,8 +189,8 @@ export function useUnwindCallback(
 
             addTransaction(response, {
               type: TransactionType.UNWIND_OVL_POSITION,
-              positionId: unwindData.positionId,
-              shares: unwindData.shares
+              positionId: positionId,
+              shares: unwindAmount
             });
 
             return response.hash;
@@ -206,5 +208,5 @@ export function useUnwindCallback(
       },
       error: null,
     };
-  }, [unwindData, library, account, chainId, unwindCalls, addTransaction]);
+  }, [unwindAmount, positionId, library, account, chainId, unwindCalls, addTransaction]);
 }
