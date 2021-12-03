@@ -1273,6 +1273,10 @@ export type AppQuery = (
   & { markets: Array<(
     { __typename?: 'Market' }
     & Pick<Market, 'base' | 'quote' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
+    & { currentPrice: (
+      { __typename?: 'PricePoint' }
+      & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+    ) }
   )> }
 );
 
@@ -1320,6 +1324,11 @@ export const AppDocument = `
     oiCap
     updatePeriod
     compoundPeriod
+    currentPrice {
+      bid
+      ask
+      depth
+    }
   }
 }
     `;

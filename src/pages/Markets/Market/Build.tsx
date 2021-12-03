@@ -590,7 +590,7 @@ export const BuildInterface = ({
 
       <AdditionalDetails
         fee={"0.0"}
-        slippage={"0"}
+        slippage={ setSlippageValue }
         estLiquidationPrice={"0.00"}
         bid={"2241.25"}
         ask={"2241.25"}

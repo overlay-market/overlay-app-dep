@@ -73,6 +73,11 @@ export const api = createApi({
               oiCap
               updatePeriod
               compoundPeriod
+              currentPrice {
+                bid
+                ask
+                depth
+              }
             }
           }
         `
