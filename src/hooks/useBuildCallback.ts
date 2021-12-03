@@ -50,11 +50,11 @@ function useBuildCallArguments(
 
   if (!buildData) calldata = undefined;
   else {
-
+    console.log('buildData: ', buildData);
     calldata = OVLCollateral.buildParameters({
       collateral: utils.parseUnits(buildData.typedValue),
       leverage: Number(buildData.selectedLeverage),
-      isLong: buildData.selectedPositionSide,
+      isLong: buildData.isLong,
       market: OVL_MARKET_ADDRESS[chainId],
       minOI: 1,
       deadline: 1
@@ -211,7 +211,7 @@ export function useBuildCallback(
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],
               collateral: buildData.typedValue,
-              isLong: buildData.selectedPositionSide,
+              isLong: buildData.isLong,
               leverage: buildData.selectedLeverage,
             });
 

@@ -288,6 +288,8 @@ export const BuildInterface = ({
   const { callback: buildCallback, error: buildCallbackError } =
     useBuildCallback(buildData);
 
+    console.log('buildCallback: ', buildCallback);
+    
   const handleResetTxnSettings = useCallback(
     (e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);

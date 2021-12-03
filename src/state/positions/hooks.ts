@@ -101,7 +101,7 @@ export function useDerivedBuildInfo(): {
   let buildData: object | undefined;
 
   // if any inputs missing, will not allow buildCallback to be created
-  if (!typedValue || !selectedLeverage || !isLong) {
+  if (!typedValue || !selectedLeverage || isLong === null) {
     buildData = undefined;
   } else {
     buildData = {
@@ -126,7 +126,7 @@ export function useDerivedBuildInfo(): {
     inputError = `Select Leverage Amount`
   }
 
-  if (!isLong) {
+  if (isLong === null) {
     inputError = `Select Long or Short Position`
   }
 
