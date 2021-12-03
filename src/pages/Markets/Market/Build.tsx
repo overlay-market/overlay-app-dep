@@ -266,8 +266,6 @@ export const BuildInterface = ({
 
   const { error, ovlBalance: userOvlBalance } = useOvlBalance( account );
 
-  console.log('userOvlBalance and type: ', userOvlBalance, typeof userOvlBalance);
-
   const {
     selectedLeverage,
     isLong,
@@ -282,6 +280,7 @@ export const BuildInterface = ({
     onSelectPositionSide,
     onSetSlippage,
     onSetTxnDeadline,
+    onResetBuildState
   } = usePositionActionHandlers();
 
   const { buildData, inputError } = useDerivedBuildInfo();
@@ -289,7 +288,6 @@ export const BuildInterface = ({
   const { callback: buildCallback, error: buildCallbackError } =
     useBuildCallback(buildData);
 
-  // handle user inputs
   const handleResetTxnSettings = useCallback(
     (e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
@@ -308,7 +306,9 @@ export const BuildInterface = ({
   const handleSelectPositionSide = useCallback(
     (isLong: boolean) => {
       onSelectPositionSide(isLong)
-  }, [onSelectPositionSide]);
+    }, 
+    [onSelectPositionSide]
+  );
 
   
   const handleUserInput = useCallback(
@@ -316,7 +316,7 @@ export const BuildInterface = ({
       onAmountInput(input);
     },
     [onAmountInput]
-    );
+  );
     
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
     let calculatedAmountByPercentage;
@@ -328,10 +328,9 @@ export const BuildInterface = ({
     }
 
     return handleUserInput(calculatedAmountByPercentage)
-  }
+  };
 
-    
-    const handleDismiss = useCallback(() => {
+  const handleDismiss = useCallback(() => {
     setBuildState({
       showConfirm: false,
       attemptingTxn,
@@ -359,6 +358,7 @@ export const BuildInterface = ({
           txnErrorMessage: undefined,
           txHash: hash,
         });
+        onResetBuildState();
       })
       .catch((error) => {
         setBuildState({
@@ -368,7 +368,7 @@ export const BuildInterface = ({
           txHash: undefined,
         });
       });
-  }, [buildCallback]);
+  }, [buildCallback, onResetBuildState]);
 
   // const ovlAddress = useCurrency('0x04346e29fDef5dc5A7822793d9f00B5db73D6532');
 
@@ -428,7 +428,7 @@ export const BuildInterface = ({
             )}
           </Icon>
         </Row>
-        {/* Building out Transaction Settings below */}
+
         <TransactionSettingModal isOpen={isTxnSettingsOpen}>
           <Column>
             <TEXT.Body
@@ -505,7 +505,6 @@ export const BuildInterface = ({
             </Row>
           </Column>
         </TransactionSettingModal>
-        {/* Building out Transaction Settings above */}
 
         <Column>
           <LongPositionButton

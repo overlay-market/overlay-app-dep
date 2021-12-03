@@ -1,13 +1,13 @@
 import { useCallback, useMemo } from "react";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { 
-  PositionSide, 
+  DefaultTxnSettings,
   typeInput, 
   selectLeverage, 
   selectPositionSide, 
   setSlippage,
   setTxnDeadline,
-  DefaultTxnSettings } from "./actions";
+  resetBuildState } from "./actions";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppState } from "../state";
 import { Token } from "@uniswap/sdk-core";
@@ -27,6 +27,7 @@ export function usePositionActionHandlers(): {
   onSelectPositionSide: (isLong: boolean) => void;
   onSetSlippage: (setSlippageValue: DefaultTxnSettings | string | undefined) => void;
   onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string | undefined) => void;
+  onResetBuildState: () => void;
 } {
   const dispatch = useAppDispatch();
 
@@ -65,12 +66,20 @@ export function usePositionActionHandlers(): {
     [dispatch]
   )
 
+  const onResetBuildState = useCallback(
+    () => {
+      dispatch(resetBuildState())
+    },
+    [dispatch]
+  )
+
   return {
     onAmountInput,
     onSelectLeverage,
     onSelectPositionSide,
     onSetSlippage,
-    onSetTxnDeadline
+    onSetTxnDeadline,
+    onResetBuildState
   }
 };
 
