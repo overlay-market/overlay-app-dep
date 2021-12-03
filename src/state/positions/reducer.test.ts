@@ -10,11 +10,11 @@ describe('position reducer', () => {
 
     describe('initialState', () => {
       it('inputValue initially undefined', () => {
-        expect(store.getState().inputValue).toBeUndefined();
+        expect(store.getState().typedValue).toBeUndefined();
       })
 
       it('positionSide initially undefined', () => {
-        expect(store.getState().positionSide).toBeUndefined();
+        expect(store.getState().selectedPositionSide).toBeUndefined();
       })
   })
 })

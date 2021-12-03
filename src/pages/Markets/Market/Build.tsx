@@ -213,7 +213,7 @@ const AdditionalDetails = ({
   )
 }
 
-export const BuildPosition = ({
+export const BuildInterface = ({
   marketName,
   marketPrice
 }:{
@@ -253,19 +253,18 @@ export const BuildPosition = ({
   const maxInputAmount = maxAmountSpend(userOvlBalance);
 
   const { 
-    leverageValue, 
-    positionSide, 
-    inputValue, 
-    inputCurrency, 
-    slippageValue,
+    selectedLeverage, 
+    selectedPositionSide, 
+    typedValue, 
+    setSlippageValue,
     txnDeadline } = usePositionState();
 
   const { 
     onAmountInput, 
-    onLeverageInput, 
-    onPositionSideInput, 
-    onSlippageInput,
-    onTxnDeadlineInput } = usePositionActionHandlers();
+    onSelectLeverage, 
+    onSelectPositionSide, 
+    onSetSlippage,
+    onSetTxnDeadline } = usePositionActionHandlers();
 
   const { buildData, inputError } = useDerivedBuildInfo();
 
@@ -273,59 +272,30 @@ export const BuildPosition = ({
 
   // handle user inputs
   const handleResetTxnSettings = useCallback((e:any) => {
-      onSlippageInput(DefaultTxnSettings.DEFAULT_SLIPPAGE);
-      onTxnDeadlineInput(DefaultTxnSettings.DEFAULT_DEADLINE);
-    }, [onSlippageInput, onTxnDeadlineInput]
+    onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
+    onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
+    }, [onSetSlippage, onSetTxnDeadline]
   );
 
   const handleLeverageInput = useCallback((e: any) => { 
-      onLeverageInput(e.target.value) 
-    }, [onLeverageInput]
+      onSelectLeverage(e.target.value) 
+    }, [onSelectLeverage]
   );
 
   const handlePositionSideLong = useCallback(() => {
-     onPositionSideInput(PositionSide.LONG) 
-    }, [onPositionSideInput]
+    onSelectPositionSide(PositionSide.LONG) 
+    }, [onSelectPositionSide]
   );
   
   const handlePositionSideShort = useCallback(() => { 
-     onPositionSideInput(PositionSide.SHORT)
-    }, [onPositionSideInput]
+    onSelectPositionSide(PositionSide.SHORT)
+    }, [onSelectPositionSide]
   );
   
   const handleTypeInput = useCallback(
     (value: string) => {
       onAmountInput(value)
     }, [onAmountInput]
-  );
-
-  // handle quick inputs
-  const handleMaxInput = useCallback(
-    () => { 
-      onAmountInput(maxInputAmount?.toExact());
-    }, 
-    [onAmountInput, maxInputAmount]
-  );
-
-  const handle75Input = useCallback(
-    () => { 
-      onAmountInput(maxInputAmount?.multiply(75).divide(100).toExact().toString()); 
-    }, 
-    [onAmountInput, maxInputAmount]
-  );
-
-  const handle50Input = useCallback(
-    () => { 
-      onAmountInput(maxInputAmount?.multiply(50).divide(100).toExact().toString()); 
-    }, 
-    [onAmountInput, maxInputAmount]
-  );
-
-  const handle25Input = useCallback(
-    () => { 
-      onAmountInput(maxInputAmount?.multiply(25).divide(100).toExact().toString()); 
-    }, 
-    [onAmountInput, maxInputAmount]
   );
 
   const handleDismiss = useCallback(() => {
@@ -443,8 +413,8 @@ export const BuildPosition = ({
                   <Row padding={'0px 16px 16px'}>
                       <InputContainer width={'210px'} height={'40px'}>
                           <NumericalInput 
-                              value={slippageValue} 
-                              onUserInput={onSlippageInput}
+                              value={setSlippageValue} 
+                              onUserInput={onSetSlippage}
                               align={'right'}
                               />
                           <InputDescriptor>
@@ -477,7 +447,7 @@ export const BuildPosition = ({
                       <InputContainer width={'210px'} height={'40px'}>
                             <NumericalInput 
                                 value={txnDeadline} 
-                                onUserInput={onTxnDeadlineInput}
+                                onUserInput={onSetTxnDeadline}
                                 align={'right'}
                                 />
                             <InputDescriptor>
@@ -510,14 +480,14 @@ export const BuildPosition = ({
         <Column>
           <LongPositionButton
             onClick={ handlePositionSideLong }
-            active={ positionSide === 'LONG' }
+            active={ selectedPositionSide === 'LONG' }
             >
               Long
           </LongPositionButton>
 
           <ShortPositionButton
             onClick={ handlePositionSideShort }
-            active={ positionSide === 'SHORT' }
+            active={ selectedPositionSide === 'SHORT' }
             >
               Short
           </ShortPositionButton>
@@ -525,7 +495,7 @@ export const BuildPosition = ({
 
         <LeverageSlider
           name={'leverage'}
-          value={leverageValue}
+          value={selectedLeverage}
           step={1}
           min={1}
           max={5}
@@ -544,25 +514,25 @@ export const BuildPosition = ({
             >
             <TransparentUnderlineButton 
                 border={'none'} 
-                onClick={handle25Input}
+                // onClick={handle25Input}
                 >
                   25%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton 
                 border={'none'} 
-                onClick={handle50Input}
+                // onClick={handle50Input}
                 >
                   50%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
                 border={'none'} 
-                onClick={handle75Input}
+                // onClick={handle75Input}
                 >
                   75%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton 
                 border={'none'} 
-                onClick={handleMaxInput}
+                // onClick={handleMaxInput}
                 >
                   Max
             </TransparentUnderlineButton>
@@ -574,7 +544,7 @@ export const BuildPosition = ({
           </InputDescriptor>
           <NumericalInput 
             // value={55}
-            value={inputValue?.toString()}
+            value={typedValue?.toString()}
             onUserInput={handleTypeInput}
             align={'right'}
             />

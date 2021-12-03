@@ -1,4 +1,4 @@
-import { leverageInput } from './../state/positions/actions';
+import { selectLeverage } from './../state/positions/actions';
 import { TransactionType } from "./../state/transactions/actions";
 import { BigNumber } from "@ethersproject/bignumber";
 import Big from 'big.js';
@@ -52,7 +52,7 @@ function useBuildCallArguments(
   else {
 
     calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits(buildData.inputValue),
+      collateral: utils.parseUnits(buildData.typedValue),
       leverage: Number(buildData.leverageValue),
       isLong: buildData.isLong,
       market: OVL_MARKET_ADDRESS[chainId],
@@ -210,7 +210,7 @@ export function useBuildCallback(
             addTransaction(response, {
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],
-              collateral: buildData.collateral,
+              collateral: buildData.typedValue,
               isLong: buildData.isLong,
               leverage: buildData.leverage,
             });

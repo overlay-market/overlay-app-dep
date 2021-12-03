@@ -14,7 +14,7 @@ import {
 import {
   InputContainer,
   InputDescriptor,
-} from "../Markets/Market/BuildPosition";
+} from "../Markets/Market/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { PositionCard, PositionsCardHeader } from "./Positions";
 import { useOvlBalance } from "../../state/wallet/hooks";

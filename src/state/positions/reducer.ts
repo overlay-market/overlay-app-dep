@@ -2,58 +2,58 @@ import { createReducer } from '@reduxjs/toolkit';
 import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
 import { 
   PositionSide, 
-  amountInput, 
-  leverageInput, 
-  positionSideInput, 
-  slippageInput,
-  txnDeadlineInput,
+  typeInput, 
+  selectLeverage, 
+  selectPositionSide, 
+  setSlippage,
+  setTxnDeadline,
   DefaultTxnSettings } from './actions';
   import { OVL_MARKET_ADDRESS } from '../../constants/addresses';
 import { OVL } from '../../constants/tokens';
 
 export interface PositionState {
-  readonly inputValue: string | undefined
-  readonly leverageValue: number
-  readonly positionSide: PositionSide | undefined
+  readonly typedValue: string | undefined
+  readonly selectedLeverage: number
+  readonly selectedPositionSide: PositionSide | undefined
   readonly inputCurrency: string | undefined
-  readonly slippageValue: DefaultTxnSettings | string | undefined
+  readonly setSlippageValue: DefaultTxnSettings | string | undefined
   readonly txnDeadline: DefaultTxnSettings | string | undefined
 };
 
 export const initialState: PositionState = {
-  inputValue: undefined,
-  leverageValue: 1,
-  positionSide: undefined,
+  typedValue: undefined,
+  selectedLeverage: 1,
+  selectedPositionSide: undefined,
   inputCurrency: OVL[1].address,
-  slippageValue: '0.3',
+  setSlippageValue: '0.3',
   txnDeadline: '30'
 };
 
 export default createReducer<PositionState>(initialState, (builder) =>
   builder
     .addCase(
-      amountInput,
-      (state, { payload: { inputValue } }) => {
-        state.inputValue = inputValue;
+      typeInput,
+      (state, { payload: { typedValue } }) => {
+        state.typedValue = typedValue;
       }
     )
     .addCase(
-      leverageInput,
-      (state, { payload: {leverageValue} }) => {
-        state.leverageValue = leverageValue;
+      selectLeverage,
+      (state, { payload: { selectedLeverage } }) => {
+        state.selectedLeverage = selectedLeverage;
       }
     )
     .addCase(
-      positionSideInput,
-      (state, { payload: {positionSide} }) => {
-        state.positionSide = positionSide;
+      selectPositionSide,
+      (state, { payload: {selectedPositionSide} }) => {
+        state.selectedPositionSide = selectedPositionSide;
       }
     )
-    .addCase(slippageInput, (state,action) => {
-      state.slippageValue = action.payload.slippageValue;
+    .addCase(setSlippage, (state,action) => {
+      state.setSlippageValue = action.payload.setSlippageValue;
     })
     .addCase(
-      txnDeadlineInput,
+      setTxnDeadline,
       (state, { payload: {txnDeadline} }) => {
         state.txnDeadline = txnDeadline;
       }

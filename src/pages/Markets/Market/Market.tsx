@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router';
 import { Row } from "../../../components/Row/Row";
 import { Card } from '../../../components/Card/Card';
 import { TOKEN_LABELS } from '../../../constants/tokens';
-import { BuildPosition } from './BuildPosition';
+import { BuildInterface } from './Build';
 import { InfoTip } from '../../../components/InfoTip/InfoTip';
 import { TEXT } from '../../../theme/theme';
 import Positions from '../../Positions/Positions';
@@ -36,7 +36,7 @@ export function Market(
   return (
     <>
       <Container>
-        <BuildPosition 
+        <BuildInterface 
             marketName={marketName}
             marketPrice={'2241.25'}
             />

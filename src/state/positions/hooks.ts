@@ -2,11 +2,11 @@ import { useCallback, useMemo } from "react";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { 
   PositionSide, 
-  amountInput, 
-  leverageInput, 
-  positionSideInput, 
-  slippageInput,
-  txnDeadlineInput,
+  typeInput, 
+  selectLeverage, 
+  selectPositionSide, 
+  setSlippage,
+  setTxnDeadline,
   DefaultTxnSettings } from "./actions";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppState } from "../state";
@@ -22,55 +22,55 @@ export function usePositionState(): AppState['position'] {
 }
 
 export function usePositionActionHandlers(): {
-  onAmountInput: (inputValue: string | undefined) => void;
-  onLeverageInput: (leverageValue: number) => void;
-  onPositionSideInput: (positionSide: PositionSide) => void;
-  onSlippageInput: (slippageValue: DefaultTxnSettings | string | undefined) => void;
-  onTxnDeadlineInput: ( txnDeadline: DefaultTxnSettings | string | undefined) => void;
+  onAmountInput: (typedValue: string | undefined) => void;
+  onSelectLeverage: (selectedLeverage: number) => void;
+  onSelectPositionSide: (selectedPositionSide: PositionSide) => void;
+  onSetSlippage: (setSlippageValue: DefaultTxnSettings | string | undefined) => void;
+  onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string | undefined) => void;
 } {
   const dispatch = useAppDispatch();
 
   const onAmountInput = useCallback(
-    (inputValue: string | undefined) => {
-      dispatch(amountInput({inputValue}))
+    (typedValue: string | undefined) => {
+      dispatch(typeInput({typedValue}))
     },
     [dispatch]
   );
 
-  const onLeverageInput = useCallback(
-    (leverageValue: number) => {
-      dispatch(leverageInput({leverageValue}))
+  const onSelectLeverage = useCallback(
+    (selectedLeverage: number) => {
+      dispatch(selectLeverage({selectedLeverage}))
     },
     [dispatch]
   );
 
-  const onPositionSideInput = useCallback(
-    (positionSide: PositionSide) => {
-      dispatch(positionSideInput({positionSide}))
+  const onSelectPositionSide = useCallback(
+    (selectedPositionSide: PositionSide) => {
+      dispatch(selectPositionSide({selectedPositionSide}))
     },
     [dispatch]
   );
 
-  const onSlippageInput = useCallback(
-    (slippageValue: DefaultTxnSettings | string | undefined) => {
-      dispatch(slippageInput({slippageValue}))
+  const onSetSlippage = useCallback(
+    (setSlippageValue: DefaultTxnSettings | string | undefined) => {
+      dispatch(setSlippage({setSlippageValue}))
     },
     [dispatch]
   )
 
-  const onTxnDeadlineInput = useCallback(
+  const onSetTxnDeadline = useCallback(
     (txnDeadline: DefaultTxnSettings | string | undefined) => {
-      dispatch(txnDeadlineInput({txnDeadline}))
+      dispatch(setTxnDeadline({txnDeadline}))
     },
     [dispatch]
   )
 
   return {
     onAmountInput,
-    onLeverageInput,
-    onPositionSideInput,
-    onSlippageInput,
-    onTxnDeadlineInput
+    onSelectLeverage,
+    onSelectPositionSide,
+    onSetSlippage,
+    onSetTxnDeadline
   }
 };
 
@@ -82,24 +82,24 @@ export function useDerivedBuildInfo(): {
   const { account } = useActiveWeb3React();
 
   const { 
-    inputValue,
-    leverageValue,
-    positionSide,
-    slippageValue,
+    typedValue,
+    selectedLeverage,
+    selectedPositionSide,
+    setSlippageValue,
     txnDeadline
   } = usePositionState();
 
   let buildData: object | undefined;
 
   // if any inputs missing, will not allow buildCallback to be created
-  if (!inputValue || !leverageValue || !positionSide) {
+  if (!typedValue || !selectedLeverage || !selectedPositionSide) {
     buildData = undefined;
   } else {
     buildData = {
-      inputValue,
-      leverageValue,
-      positionSide,
-      slippageValue,
+      typedValue,
+      selectedLeverage,
+      selectedPositionSide,
+      setSlippageValue,
       txnDeadline
     }
   }
@@ -109,22 +109,22 @@ export function useDerivedBuildInfo(): {
     inputError = `Connect Wallet`
   }
 
-  if (!inputValue) {
+  if (!typedValue) {
     inputError = `Input Collateral Amount`
   }
 
-  if (!leverageValue) {
+  if (!selectedLeverage) {
     inputError = `Select Leverage Amount`
   }
 
-  if (!positionSide) {
+  if (!selectedPositionSide) {
     inputError = `Select Long or Short Position`
   }
 
   return {
     buildData,
     inputError,
-    parsedAmount: inputValue
+    parsedAmount: typedValue
   }
 }
 
@@ -147,9 +147,9 @@ export function tryParseAmount<T extends Currency>(value?: string, currency?: T)
 }
 
 export function useIsTxnSettingsAuto() : boolean {
-  const { slippageValue, txnDeadline } = useAppSelector(((state) => state.position));
+  const { setSlippageValue, txnDeadline } = useAppSelector(((state) => state.position));
 
-  if (slippageValue === DefaultTxnSettings.DEFAULT_SLIPPAGE && txnDeadline === DefaultTxnSettings.DEFAULT_DEADLINE) return true;
+  if (setSlippageValue === DefaultTxnSettings.DEFAULT_SLIPPAGE && txnDeadline === DefaultTxnSettings.DEFAULT_DEADLINE) return true;
   else return false;
 };
 
@@ -160,8 +160,8 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
 
   const toggleSetTxnSettingsAuto = useCallback(
     (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => {
-      dispatch(slippageInput({ slippageValue: default_slippage }))
-      dispatch(txnDeadlineInput({ txnDeadline: default_deadline }))
+      dispatch(setSlippage({ setSlippageValue: default_slippage }))
+      dispatch(setTxnDeadline({ txnDeadline: default_deadline }))
     },
       [dispatch]
   )
@@ -183,7 +183,6 @@ export function useAllPositions(
   } = useAccountQuery({ account: accountAddress }, { pollingInterval: 3000 })
 
   return useMemo(() => {
-    console.log('data: ', data?.account?.balances);
     return {
       isLoading,
       isError,
