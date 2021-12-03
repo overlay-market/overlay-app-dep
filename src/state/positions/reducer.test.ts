@@ -14,7 +14,7 @@ describe('position reducer', () => {
       })
 
       it('positionSide initially undefined', () => {
-        expect(store.getState().selectedPositionSide).toBeUndefined();
+        expect(store.getState().isLong).toBeUndefined();
       })
   })
 })

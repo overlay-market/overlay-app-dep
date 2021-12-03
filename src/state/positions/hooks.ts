@@ -24,7 +24,7 @@ export function usePositionState(): AppState['position'] {
 export function usePositionActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;
   onSelectLeverage: (selectedLeverage: number) => void;
-  onSelectPositionSide: (selectedPositionSide: PositionSide) => void;
+  onSelectPositionSide: (isLong: boolean) => void;
   onSetSlippage: (setSlippageValue: DefaultTxnSettings | string | undefined) => void;
   onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string | undefined) => void;
 } {
@@ -32,35 +32,35 @@ export function usePositionActionHandlers(): {
 
   const onAmountInput = useCallback(
     (typedValue: string | undefined) => {
-      dispatch(typeInput({typedValue}))
+      dispatch(typeInput({ typedValue }))
     },
     [dispatch]
   );
 
   const onSelectLeverage = useCallback(
     (selectedLeverage: number) => {
-      dispatch(selectLeverage({selectedLeverage}))
+      dispatch(selectLeverage({ selectedLeverage }))
     },
     [dispatch]
   );
 
   const onSelectPositionSide = useCallback(
-    (selectedPositionSide: PositionSide) => {
-      dispatch(selectPositionSide({selectedPositionSide}))
+    (isLong: boolean) => {
+      dispatch(selectPositionSide({ isLong }))
     },
     [dispatch]
   );
 
   const onSetSlippage = useCallback(
     (setSlippageValue: DefaultTxnSettings | string | undefined) => {
-      dispatch(setSlippage({setSlippageValue}))
+      dispatch(setSlippage({ setSlippageValue }))
     },
     [dispatch]
   )
 
   const onSetTxnDeadline = useCallback(
     (txnDeadline: DefaultTxnSettings | string | undefined) => {
-      dispatch(setTxnDeadline({txnDeadline}))
+      dispatch(setTxnDeadline({ txnDeadline }))
     },
     [dispatch]
   )
@@ -84,7 +84,7 @@ export function useDerivedBuildInfo(): {
   const { 
     typedValue,
     selectedLeverage,
-    selectedPositionSide,
+    isLong,
     setSlippageValue,
     txnDeadline
   } = usePositionState();
@@ -92,13 +92,13 @@ export function useDerivedBuildInfo(): {
   let buildData: object | undefined;
 
   // if any inputs missing, will not allow buildCallback to be created
-  if (!typedValue || !selectedLeverage || !selectedPositionSide) {
+  if (!typedValue || !selectedLeverage || !isLong) {
     buildData = undefined;
   } else {
     buildData = {
       typedValue,
       selectedLeverage,
-      selectedPositionSide,
+      isLong,
       setSlippageValue,
       txnDeadline
     }
@@ -117,7 +117,7 @@ export function useDerivedBuildInfo(): {
     inputError = `Select Leverage Amount`
   }
 
-  if (!selectedPositionSide) {
+  if (!isLong) {
     inputError = `Select Long or Short Position`
   }
 

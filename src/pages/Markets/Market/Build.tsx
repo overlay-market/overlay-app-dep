@@ -269,7 +269,7 @@ export const BuildInterface = ({
 
   const {
     selectedLeverage,
-    selectedPositionSide,
+    isLong,
     typedValue,
     setSlippageValue,
     txnDeadline,
@@ -305,16 +305,16 @@ export const BuildInterface = ({
   );
 
   const handlePositionSideLong = useCallback(() => {
-    onSelectPositionSide(PositionSide.LONG);
+    onSelectPositionSide(true);
   }, [onSelectPositionSide]);
 
   const handlePositionSideShort = useCallback(() => {
-    onSelectPositionSide(PositionSide.SHORT);
+    onSelectPositionSide(false);
   }, [onSelectPositionSide]);
 
-  const handleTypeInput = useCallback(
-    (value: string) => {
-      onAmountInput(value);
+  const handleUserInput = useCallback(
+    (input: string) => {
+      onAmountInput(input);
     },
     [onAmountInput]
   );
@@ -498,14 +498,14 @@ export const BuildInterface = ({
         <Column>
           <LongPositionButton
             onClick={handlePositionSideLong}
-            active={selectedPositionSide === "LONG"}
+            active={isLong}
           >
             Long
           </LongPositionButton>
 
           <ShortPositionButton
             onClick={handlePositionSideShort}
-            active={selectedPositionSide === "SHORT"}
+            active={!isLong}
           >
             Short
           </ShortPositionButton>
@@ -557,7 +557,7 @@ export const BuildInterface = ({
           <NumericalInput
             // value={55}
             value={typedValue?.toString()}
-            onUserInput={handleTypeInput}
+            onUserInput={handleUserInput}
             align={"right"}
           />
         </InputContainer>

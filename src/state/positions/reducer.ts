@@ -15,7 +15,7 @@ import { OVL } from "../../constants/tokens";
 export interface PositionState {
   readonly typedValue: string | undefined;
   readonly selectedLeverage: number;
-  readonly selectedPositionSide: PositionSide | undefined;
+  readonly isLong: boolean | undefined;
   readonly inputCurrency: string | undefined;
   readonly setSlippageValue: DefaultTxnSettings | string | undefined;
   readonly txnDeadline: DefaultTxnSettings | string | undefined;
@@ -24,7 +24,7 @@ export interface PositionState {
 export const initialState: PositionState = {
   typedValue: undefined,
   selectedLeverage: 1,
-  selectedPositionSide: undefined,
+  isLong: undefined,
   inputCurrency: OVL[1].address,
   setSlippageValue: "0.3",
   txnDeadline: "30",
@@ -38,8 +38,8 @@ export default createReducer<PositionState>(initialState, (builder) =>
     .addCase(selectLeverage, (state, { payload: { selectedLeverage } }) => {
       state.selectedLeverage = selectedLeverage;
     })
-    .addCase(selectPositionSide, (state, { payload: { selectedPositionSide } }) => {
-      state.selectedPositionSide = selectedPositionSide;
+    .addCase(selectPositionSide, (state, { payload: { isLong } }) => {
+      state.isLong = isLong;
     })
     .addCase(setSlippage, (state, action) => {
       state.setSlippageValue = action.payload.setSlippageValue;

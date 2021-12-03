@@ -53,8 +53,8 @@ function useBuildCallArguments(
 
     calldata = OVLCollateral.buildParameters({
       collateral: utils.parseUnits(buildData.typedValue),
-      leverage: Number(buildData.leverageValue),
-      isLong: buildData.isLong,
+      leverage: Number(buildData.selectedLeverage),
+      isLong: buildData.selectedPositionSide,
       market: OVL_MARKET_ADDRESS[chainId],
       minOI: 1,
       deadline: 1
@@ -211,8 +211,8 @@ export function useBuildCallback(
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],
               collateral: buildData.typedValue,
-              isLong: buildData.isLong,
-              leverage: buildData.leverage,
+              isLong: buildData.selectedPositionSide,
+              leverage: buildData.selectedLeverage,
             });
 
             return response.hash;
