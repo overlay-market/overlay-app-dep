@@ -15,7 +15,7 @@ import { Label, Input } from "@rebass/forms";
 import { usePositionActionHandlers } from "../../../state/positions/hooks";
 import { useActiveWeb3React } from "../../../hooks/web3";
 import { usePositionState } from "../../../state/positions/hooks";
-import { useTokenBalance } from "../../../state/wallet/hooks";
+import { useTokenBalance, useOvlBalance } from "../../../state/wallet/hooks";
 import {
   PositionSide,
   DefaultTxnSettings,
@@ -49,6 +49,7 @@ import { PopupType } from "../../../components/SnackbarAlert/SnackbarAlert";
 import { useBuildCallback } from "../../../hooks/useBuildCallback";
 import { useCurrency } from "../../../hooks/useToken";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
+import { utils } from "ethers";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -263,9 +264,9 @@ export const BuildInterface = ({
 
   const ovl = chainId ? OVL[chainId] : undefined;
 
-  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+  const { error, ovlBalance: userOvlBalance } = useOvlBalance( account );
 
-  const maxInputAmount = maxAmountSpend(userOvlBalance);
+  console.log('userOvlBalance and type: ', userOvlBalance, typeof userOvlBalance);
 
   const {
     selectedLeverage,
@@ -309,14 +310,28 @@ export const BuildInterface = ({
       onSelectPositionSide(isLong)
   }, [onSelectPositionSide]);
 
+  
   const handleUserInput = useCallback(
     (input: string) => {
       onAmountInput(input);
     },
     [onAmountInput]
-  );
+    );
+    
+  const handleQuickInput = (percentage: number, totalSupply: string | null) => {
+    let calculatedAmountByPercentage;
 
-  const handleDismiss = useCallback(() => {
+    if (percentage < 100) {
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(0);
+    } else {
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(10);
+    }
+
+    return handleUserInput(calculatedAmountByPercentage)
+  }
+
+    
+    const handleDismiss = useCallback(() => {
     setBuildState({
       showConfirm: false,
       attemptingTxn,
@@ -525,25 +540,25 @@ export const BuildInterface = ({
           <Row ml={"auto"} mb={"4px"} width={"auto"}>
             <TransparentUnderlineButton
               border={"none"}
-              // onClick={handle25Input}
+              onClick={() => handleQuickInput(25, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
             >
               25%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              // onClick={handle50Input}
+              onClick={() => handleQuickInput(50, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
             >
               50%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              // onClick={handle75Input}
+              onClick={() => handleQuickInput(75, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
             >
               75%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              // onClick={handleMaxInput}
+              onClick={() => handleQuickInput(100, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
             >
               Max
             </TransparentUnderlineButton>
