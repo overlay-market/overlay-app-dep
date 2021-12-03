@@ -304,12 +304,9 @@ export const BuildInterface = ({
     [onSelectLeverage]
   );
 
-  const handlePositionSideLong = useCallback(() => {
-    onSelectPositionSide(true);
-  }, [onSelectPositionSide]);
-
-  const handlePositionSideShort = useCallback(() => {
-    onSelectPositionSide(false);
+  const handleSelectPositionSide = useCallback(
+    (isLong: boolean) => {
+      onSelectPositionSide(isLong)
   }, [onSelectPositionSide]);
 
   const handleUserInput = useCallback(
@@ -497,15 +494,15 @@ export const BuildInterface = ({
 
         <Column>
           <LongPositionButton
-            onClick={handlePositionSideLong}
+            onClick={() => handleSelectPositionSide(true)}
             active={isLong}
           >
             Long
           </LongPositionButton>
 
           <ShortPositionButton
-            onClick={handlePositionSideShort}
-            active={!isLong}
+            onClick={() => handleSelectPositionSide(false)}
+            active={!isLong && isLong !== undefined}
           >
             Short
           </ShortPositionButton>
