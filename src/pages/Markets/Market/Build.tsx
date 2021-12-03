@@ -1,59 +1,71 @@
-import { useState, useCallback } from 'react';
-import styled from 'styled-components';
+import { useState, useCallback } from "react";
+import styled from "styled-components";
 import { MarketCard } from "../../../components/Card/MarketCard";
-import { 
-  LightGreyButton, 
-  TransparentUnderlineButton, 
+import {
+  LightGreyButton,
+  TransparentUnderlineButton,
   TransparentDarkGreyButton,
   ActiveBlueButton,
-  TxnSettingsButton } from "../../../components/Button/Button";
+  TxnSettingsButton,
+} from "../../../components/Button/Button";
 import { TEXT } from "../../../theme/theme";
 import { Column } from "../../../components/Column/Column";
 import { Row } from "../../../components/Row/Row";
-import { Label, Input } from '@rebass/forms';
-import { usePositionActionHandlers } from '../../../state/positions/hooks';
-import { useActiveWeb3React } from '../../../hooks/web3';
-import { usePositionState } from '../../../state/positions/hooks';
-import { useTokenBalance } from '../../../state/wallet/hooks';
-import { PositionSide, DefaultTxnSettings } from '../../../state/positions/actions';
-import { OVL } from '../../../constants/tokens';
-import { 
-  OVL_ADDRESS, 
-  OVL_COLLATERAL_ADDRESS, 
-  OVL_MARKET_ADDRESS 
-} from '../../../constants/addresses';
-import { maxAmountSpend } from '../../../utils/maxAmountSpend';
-import { ApprovalState, useApproveCallback } from '../../../hooks/useApproveCallback';
-import { useDerivedBuildInfo, tryParseAmount } from '../../../state/positions/hooks';
-import { NumericalInput } from '../../../components/NumericalInput/NumericalInput';
-import { LeverageSlider } from '../../../components/LeverageSlider/LeverageSlider';
-import { ProgressBar } from '../../../components/ProgressBar/ProgressBar';
-import { Sliders, X } from 'react-feather';
-import { Icon } from '../../../components/Icon/Icon';
-import { InfoTip } from '../../../components/InfoTip/InfoTip';
-import { useIsTxnSettingsAuto } from '../../../state/positions/hooks';
-import { useTransactionAdder } from '../../../state/transactions/hooks'
-import ConfirmTxnModal from '../../../components/ConfirmTxnModal/ConfirmTxnModal';
-import TransactionPending from '../../../components/Popup/TransactionPending';
-import { PopupType } from '../../../components/SnackbarAlert/SnackbarAlert';
-import { useBuildCallback } from '../../../hooks/useBuildCallback';
-import { useCurrency } from '../../../hooks/useToken';
-import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
+import { Label, Input } from "@rebass/forms";
+import { usePositionActionHandlers } from "../../../state/positions/hooks";
+import { useActiveWeb3React } from "../../../hooks/web3";
+import { usePositionState } from "../../../state/positions/hooks";
+import { useTokenBalance } from "../../../state/wallet/hooks";
+import {
+  PositionSide,
+  DefaultTxnSettings,
+} from "../../../state/positions/actions";
+import { OVL } from "../../../constants/tokens";
+import {
+  OVL_ADDRESS,
+  OVL_COLLATERAL_ADDRESS,
+  OVL_MARKET_ADDRESS,
+} from "../../../constants/addresses";
+import { maxAmountSpend } from "../../../utils/maxAmountSpend";
+import {
+  ApprovalState,
+  useApproveCallback,
+} from "../../../hooks/useApproveCallback";
+import {
+  useDerivedBuildInfo,
+  tryParseAmount,
+} from "../../../state/positions/hooks";
+import { NumericalInput } from "../../../components/NumericalInput/NumericalInput";
+import { LeverageSlider } from "../../../components/LeverageSlider/LeverageSlider";
+import { ProgressBar } from "../../../components/ProgressBar/ProgressBar";
+import { Sliders, X } from "react-feather";
+import { Icon } from "../../../components/Icon/Icon";
+import { InfoTip } from "../../../components/InfoTip/InfoTip";
+import { useIsTxnSettingsAuto } from "../../../state/positions/hooks";
+import { useTransactionAdder } from "../../../state/transactions/hooks";
+import ConfirmTxnModal from "../../../components/ConfirmTxnModal/ConfirmTxnModal";
+import TransactionPending from "../../../components/Popup/TransactionPending";
+import { PopupType } from "../../../components/SnackbarAlert/SnackbarAlert";
+import { useBuildCallback } from "../../../hooks/useBuildCallback";
+import { useCurrency } from "../../../hooks/useToken";
+import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
   padding: 16px;
   margin: 4px 0;
-  background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
-  color: ${({ active }) => ( active ? '#F2F2F2' : '#10DCB1' )};
+  background: ${({ active }) => (active ? "#10DCB1" : "transparent")};
+  color: ${({ active }) => (active ? "#F2F2F2" : "#10DCB1")};
 `;
 
-export const ShortPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
+export const ShortPositionButton = styled(LightGreyButton)<{
+  active?: boolean;
+}>`
   height: 48px;
   padding: 16px;
   margin: 4px 0;
-  background: ${({ active }) => ( active ? '#FF648A' : 'transparent' )};
-  color: ${({ active }) => ( active ? '#F2F2F2' : '#FF648A' )};
+  background: ${({ active }) => (active ? "#FF648A" : "transparent")};
+  color: ${({ active }) => (active ? "#F2F2F2" : "#FF648A")};
 `;
 
 export const BuildButton = styled(LightGreyButton)`
@@ -61,18 +73,25 @@ export const BuildButton = styled(LightGreyButton)`
   padding: 16px;
   margin: 4px 0;
   background: transparent;
-  color: #71D2FF;
+  color: #71d2ff;
   margin-top: 24px;
 `;
 
 export const ApproveButton = styled(LightGreyButton)`
-  background: linear-gradient(91.32deg, #10DCB1 0%, #33E0EB 24.17%, #12B4FF 52.11%, #3D96FF 77.89%, #7879F1 102.61%);
+  background: linear-gradient(
+    91.32deg,
+    #10dcb1 0%,
+    #33e0eb 24.17%,
+    #12b4ff 52.11%,
+    #3d96ff 77.89%,
+    #7879f1 102.61%
+  );
 `;
 
 export const InputContainer = styled(Row)`
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid ${({theme}) => theme.white};
+  border: 1px solid ${({ theme }) => theme.white};
 `;
 
 export const InputDescriptor = styled.div`
@@ -95,7 +114,7 @@ export const Detail = styled(Row)`
 export const Title = styled.div`
   font-size: 14px;
   font-weight: 700;
-  color: #B9BABD;
+  color: #b9babd;
 `;
 
 export const Content = styled.div<{ color?: string }>`
@@ -103,20 +122,20 @@ export const Content = styled.div<{ color?: string }>`
   flex-direction: row;
   display: flex;
   font-size: 14px;
-  color: ${({ color }) => ( color ? color : '#B9BABD')};
+  color: ${({ color }) => (color ? color : "#B9BABD")};
 `;
 
 export const OI = styled.div`
   font-size: 14px;
   text-align: right;
   min-width: 130px;
-  color: #B9BABD;
+  color: #b9babd;
 `;
 
 const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
-  display: ${({ isOpen }) => ( isOpen ? 'flex' : 'none' )};
+  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
   position: absolute;
-  border: 1px solid #D0D0D2;
+  border: 1px solid #d0d0d2;
   height: 100%;
   width: 100%;
   border-radius: 8px;
@@ -124,7 +143,6 @@ const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   z-index: 5;
   color: #f2f2f2;
 `;
-
 
 const AdditionalDetails = ({
   fee,
@@ -135,20 +153,20 @@ const AdditionalDetails = ({
   expectedOi,
   oiLong,
   oiShort,
-  fundingRate
-}:{
-  fee?: string | number
-  slippage?: string | number
-  estLiquidationPrice?: string | number
-  bid?: string | number
-  ask?: string | number
-  expectedOi?: string | number
-  oiLong?: number | undefined
-  oiShort?: number | undefined
-  fundingRate?: string | number
+  fundingRate,
+}: {
+  fee?: string | number;
+  slippage?: string | number;
+  estLiquidationPrice?: string | number;
+  bid?: string | number;
+  ask?: string | number;
+  expectedOi?: string | number;
+  oiLong?: number | undefined;
+  oiShort?: number | undefined;
+  fundingRate?: string | number;
 }) => {
   return (
-    <Column mt={ '64px' } padding={'0 16px'}>
+    <Column mt={"64px"} padding={"0 16px"}>
       <Detail>
         <Title> Fee </Title>
         <Content> {fee}% </Content>
@@ -184,11 +202,11 @@ const AdditionalDetails = ({
         <ProgressBar
           value={oiLong}
           max={200000}
-          width={'75px'}
-          color={'#10DCB1'}
-          margin={'0 0 0 auto'}
-          />
-          
+          width={"75px"}
+          color={"#10DCB1"}
+          margin={"0 0 0 auto"}
+        />
+
         <OI> {oiLong} / 200000 </OI>
       </Detail>
 
@@ -197,50 +215,47 @@ const AdditionalDetails = ({
         <ProgressBar
           value={oiShort}
           max={200000}
-          width={'75px'}
-          color={'#DC1F4E'}
-          margin={'0 0 0 auto'}
-          />
+          width={"75px"}
+          color={"#DC1F4E"}
+          margin={"0 0 0 auto"}
+        />
 
         <OI> {oiShort} / 200000 </OI>
       </Detail>
 
       <Detail>
         <Title> Funding rate </Title>
-        <Content color={'#10DCB1'}> ~ {fundingRate}% </Content>
+        <Content color={"#10DCB1"}> ~ {fundingRate}% </Content>
       </Detail>
     </Column>
-  )
-}
+  );
+};
 
 export const BuildInterface = ({
   marketName,
-  marketPrice
-}:{
-  marketName: string 
-  marketPrice: string | number
+  marketPrice,
+}: {
+  marketName: string;
+  marketPrice: string | number;
 }) => {
-
-  const [ { 
-    showConfirm, 
-    attemptingTxn, 
-    txnErrorMessage, 
-    txHash 
-  }, setBuildState ] = useState<{
-    showConfirm: boolean
-    attemptingTxn: boolean
-    txnErrorMessage: string | undefined
-    txHash: string | undefined
+  const [
+    { showConfirm, attemptingTxn, txnErrorMessage, txHash },
+    setBuildState,
+  ] = useState<{
+    showConfirm: boolean;
+    attemptingTxn: boolean;
+    txnErrorMessage: string | undefined;
+    txHash: string | undefined;
   }>({
     showConfirm: false,
     attemptingTxn: false,
     txnErrorMessage: undefined,
-    txHash: undefined
+    txHash: undefined,
   });
-  
-  const addTransaction = useTransactionAdder()
 
-  const [ isTxnSettingsOpen, setTxnSettingsOpen ] = useState(false);
+  const addTransaction = useTransactionAdder();
+
+  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState(false);
 
   const isAuto = useIsTxnSettingsAuto();
 
@@ -252,50 +267,56 @@ export const BuildInterface = ({
 
   const maxInputAmount = maxAmountSpend(userOvlBalance);
 
-  const { 
-    selectedLeverage, 
-    selectedPositionSide, 
-    typedValue, 
+  const {
+    selectedLeverage,
+    selectedPositionSide,
+    typedValue,
     setSlippageValue,
-    txnDeadline } = usePositionState();
+    txnDeadline,
+  } = usePositionState();
 
-  const { 
-    onAmountInput, 
-    onSelectLeverage, 
-    onSelectPositionSide, 
+  const {
+    onAmountInput,
+    onSelectLeverage,
+    onSelectPositionSide,
     onSetSlippage,
-    onSetTxnDeadline } = usePositionActionHandlers();
+    onSetTxnDeadline,
+  } = usePositionActionHandlers();
 
   const { buildData, inputError } = useDerivedBuildInfo();
 
-  const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
+  const { callback: buildCallback, error: buildCallbackError } =
+    useBuildCallback(buildData);
 
   // handle user inputs
-  const handleResetTxnSettings = useCallback((e:any) => {
-    onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
-    onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
-    }, [onSetSlippage, onSetTxnDeadline]
+  const handleResetTxnSettings = useCallback(
+    (e: any) => {
+      onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
+      onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
+    },
+    [onSetSlippage, onSetTxnDeadline]
   );
 
-  const handleLeverageInput = useCallback((e: any) => { 
-      onSelectLeverage(e.target.value) 
-    }, [onSelectLeverage]
+  const handleLeverageInput = useCallback(
+    (e: any) => {
+      onSelectLeverage(e.target.value);
+    },
+    [onSelectLeverage]
   );
 
   const handlePositionSideLong = useCallback(() => {
-    onSelectPositionSide(PositionSide.LONG) 
-    }, [onSelectPositionSide]
-  );
-  
-  const handlePositionSideShort = useCallback(() => { 
-    onSelectPositionSide(PositionSide.SHORT)
-    }, [onSelectPositionSide]
-  );
-  
+    onSelectPositionSide(PositionSide.LONG);
+  }, [onSelectPositionSide]);
+
+  const handlePositionSideShort = useCallback(() => {
+    onSelectPositionSide(PositionSide.SHORT);
+  }, [onSelectPositionSide]);
+
   const handleTypeInput = useCallback(
     (value: string) => {
-      onAmountInput(value)
-    }, [onAmountInput]
+      onAmountInput(value);
+    },
+    [onAmountInput]
   );
 
   const handleDismiss = useCallback(() => {
@@ -303,27 +324,41 @@ export const BuildInterface = ({
       showConfirm: false,
       attemptingTxn,
       txnErrorMessage,
-      txHash
-    })
+      txHash,
+    });
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
-  
+
   const handleBuild = useCallback(() => {
-      if (!buildCallback) {
-        return
-      }
+    if (!buildCallback) {
+      return;
+    }
 
-      setBuildState({ showConfirm: false, attemptingTxn: true, txnErrorMessage: undefined, txHash: undefined })
-      buildCallback()
-        .then((hash) => {
-          setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: undefined, txHash: hash })
-        })
-        .catch((error) => {
-          setBuildState({ showConfirm: false, attemptingTxn: false, txnErrorMessage: error, txHash: undefined })
-        })
-    }, [buildCallback]);
+    setBuildState({
+      showConfirm: false,
+      attemptingTxn: true,
+      txnErrorMessage: undefined,
+      txHash: undefined,
+    });
+    buildCallback()
+      .then((hash) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTxn: false,
+          txnErrorMessage: undefined,
+          txHash: hash,
+        });
+      })
+      .catch((error) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTxn: false,
+          txnErrorMessage: error,
+          txHash: undefined,
+        });
+      });
+  }, [buildCallback]);
 
-
-  // const ovlAddress = useCurrency('0x04346e29fDef5dc5A7822793d9f00B5db73D6532'); 
+  // const ovlAddress = useCurrency('0x04346e29fDef5dc5A7822793d9f00B5db73D6532');
 
   // const parsedAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(inputValue, ovlAddress ? ovlAddress : undefined);
 
@@ -344,230 +379,223 @@ export const BuildInterface = ({
   // };
 
   return (
-    <MarketCard align={'left'} padding={'0px'}>
-      <Column 
-          padding={'0 16px'}
-          as={'form'} 
-          onSubmit={(e:any) => e.preventDefault()}
-          >
-
-        <Row margin={'0 0 32px 0'}>
-            <Column>
-                <TEXT.MediumHeader 
-                    fontWeight={700} 
-                    color={'white'} 
-                    margin={'14px 0 0 0'}
-                    >
-                      { marketName }
-                </TEXT.MediumHeader>
-
-                <TEXT.MediumHeader 
-                    fontWeight={400} 
-                    color={'white'}
-                    >
-                      { marketPrice }
-                </TEXT.MediumHeader>
-            </Column>
-          <Icon 
-            size={24} 
-            margin={'0 0 auto auto'} 
-            transform={'rotate(90deg)'} 
-            clickable={true}
-            top={'22px'}
-            right={'12px'}
-            position={'absolute'}
-            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+    <MarketCard align={"left"} padding={"0px"}>
+      <Column
+        padding={"0 16px"}
+        as={"form"}
+        onSubmit={(e: any) => e.preventDefault()}
+      >
+        <Row margin={"0 0 32px 0"}>
+          <Column>
+            <TEXT.MediumHeader
+              fontWeight={700}
+              color={"white"}
+              margin={"14px 0 0 0"}
             >
-              {isTxnSettingsOpen ? (
-                <X color={'#12B4FF'}/>
-                ):(
-                  <Sliders color={'#B9BABD'}/>
-                  )}
+              {marketName}
+            </TEXT.MediumHeader>
+
+            <TEXT.MediumHeader fontWeight={400} color={"white"}>
+              {marketPrice}
+            </TEXT.MediumHeader>
+          </Column>
+          <Icon
+            size={24}
+            margin={"0 0 auto auto"}
+            transform={"rotate(90deg)"}
+            clickable={true}
+            top={"22px"}
+            right={"12px"}
+            position={"absolute"}
+            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+          >
+            {isTxnSettingsOpen ? (
+              <X color={"#12B4FF"} />
+            ) : (
+              <Sliders color={"#B9BABD"} />
+            )}
           </Icon>
-
-
         </Row>
         {/* Building out Transaction Settings below */}
-          <TransactionSettingModal isOpen={ isTxnSettingsOpen }>
-              <Column>
-                  <TEXT.Body 
-                      fontWeight={700} 
-                      textAlign={'left'} 
-                      margin={'24px auto 16px 16px'}
-                      >
-                        Transaction Settings
-                  </TEXT.Body>
+        <TransactionSettingModal isOpen={isTxnSettingsOpen}>
+          <Column>
+            <TEXT.Body
+              fontWeight={700}
+              textAlign={"left"}
+              margin={"24px auto 16px 16px"}
+            >
+              Transaction Settings
+            </TEXT.Body>
 
-                  <Row padding={'8px 16px'}>
-                      <TEXT.Menu>
-                        Slippage Tolerance
-                      </TEXT.Menu>
+            <Row padding={"8px 16px"}>
+              <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
 
-                      <InfoTip tipFor={'Slippage Tolerance'}>
-                          <div>
-                              meow meow meow
-                          </div>
-                      </InfoTip>
-                  </Row>
+              <InfoTip tipFor={"Slippage Tolerance"}>
+                <div>meow meow meow</div>
+              </InfoTip>
+            </Row>
 
-                  <Row padding={'0px 16px 16px'}>
-                      <InputContainer width={'210px'} height={'40px'}>
-                          <NumericalInput 
-                              value={setSlippageValue} 
-                              onUserInput={onSetSlippage}
-                              align={'right'}
-                              />
-                          <InputDescriptor>
-                            %
-                          </InputDescriptor>
-                      </InputContainer>
-                      <TxnSettingsButton 
-                          active={isAuto}
-                          onClick={handleResetTxnSettings}
-                          width={'96px'} 
-                          margin={'0 0 0 auto'}
-                          padding={'0px'}
-                          > 
-                            Auto 
-                      </TxnSettingsButton>
-                  </Row>
-                      
-                  <Row padding={'8px 16px'}>
-                      <TEXT.Menu>
-                          Transaction Deadline
-                      </TEXT.Menu>
-                      <InfoTip tipFor={'Transaction Deadline'}>
-                          <div>
-                              meow meow woof
-                          </div>
-                      </InfoTip>
-                  </Row>
+            <Row padding={"0px 16px 16px"}>
+              <InputContainer width={"210px"} height={"40px"}>
+                <NumericalInput
+                  value={setSlippageValue}
+                  onUserInput={onSetSlippage}
+                  align={"right"}
+                />
+                <InputDescriptor>%</InputDescriptor>
+              </InputContainer>
+              <TxnSettingsButton
+                active={isAuto}
+                onClick={handleResetTxnSettings}
+                width={"96px"}
+                margin={"0 0 0 auto"}
+                padding={"0px"}
+              >
+                Auto
+              </TxnSettingsButton>
+            </Row>
 
-                  <Row padding={'0px 16px 16px'}>
-                      <InputContainer width={'210px'} height={'40px'}>
-                            <NumericalInput 
-                                value={txnDeadline} 
-                                onUserInput={onSetTxnDeadline}
-                                align={'right'}
-                                />
-                            <InputDescriptor>
-                                minutes
-                            </InputDescriptor>
-                      </InputContainer>
-                  </Row>
+            <Row padding={"8px 16px"}>
+              <TEXT.Menu>Transaction Deadline</TEXT.Menu>
+              <InfoTip tipFor={"Transaction Deadline"}>
+                <div>meow meow woof</div>
+              </InfoTip>
+            </Row>
 
-                  <Row margin={'auto 0 0 0'} padding={'16px'} borderTop={'1px solid white'} >
-                      <TxnSettingsButton 
-                          onClick={handleResetTxnSettings}
-                          border={'none'} 
-                          width={'96px'}
-                          margin={'0 auto 0 0'}
-                          padding={'0px'}
-                          > 
-                            Reset
-                      </TxnSettingsButton>
-                      <TxnSettingsButton 
-                          width={'96px'}
-                          padding={'0px'}
-                          > 
-                            Save 
-                      </TxnSettingsButton>
-                  </Row>
-              </Column>
-          </TransactionSettingModal>
+            <Row padding={"0px 16px 16px"}>
+              <InputContainer width={"210px"} height={"40px"}>
+                <NumericalInput
+                  value={txnDeadline}
+                  onUserInput={onSetTxnDeadline}
+                  align={"right"}
+                />
+                <InputDescriptor>minutes</InputDescriptor>
+              </InputContainer>
+            </Row>
+
+            <Row
+              margin={"auto 0 0 0"}
+              padding={"16px"}
+              borderTop={"1px solid white"}
+            >
+              <TxnSettingsButton
+                onClick={handleResetTxnSettings}
+                border={"none"}
+                width={"96px"}
+                margin={"0 auto 0 0"}
+                padding={"0px"}
+              >
+                Reset
+              </TxnSettingsButton>
+              <TxnSettingsButton width={"96px"} padding={"0px"}>
+                Save
+              </TxnSettingsButton>
+            </Row>
+          </Column>
+        </TransactionSettingModal>
         {/* Building out Transaction Settings above */}
 
         <Column>
           <LongPositionButton
-            onClick={ handlePositionSideLong }
-            active={ selectedPositionSide === 'LONG' }
-            >
-              Long
+            onClick={handlePositionSideLong}
+            active={selectedPositionSide === "LONG"}
+          >
+            Long
           </LongPositionButton>
 
           <ShortPositionButton
-            onClick={ handlePositionSideShort }
-            active={ selectedPositionSide === 'SHORT' }
-            >
-              Short
+            onClick={handlePositionSideShort}
+            active={selectedPositionSide === "SHORT"}
+          >
+            Short
           </ShortPositionButton>
         </Column>
 
         <LeverageSlider
-          name={'leverage'}
+          name={"leverage"}
           value={selectedLeverage}
           step={1}
           min={1}
           max={5}
           onChange={handleLeverageInput}
-          margin={'24px 0 0 0'}
-          />
-        
-        <Label htmlFor='Amount' mt={'24px'}>
-          <TEXT.Body margin={'0 auto 4px 0'} color={'white'}>
+          margin={"24px 0 0 0"}
+        />
+
+        <Label htmlFor="Amount" mt={"24px"}>
+          <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
             Amount
           </TEXT.Body>
-          <Row 
-            ml={'auto'} 
-            mb={'4px'} 
-            width={'auto'}
+          <Row ml={"auto"} mb={"4px"} width={"auto"}>
+            <TransparentUnderlineButton
+              border={"none"}
+              // onClick={handle25Input}
             >
-            <TransparentUnderlineButton 
-                border={'none'} 
-                // onClick={handle25Input}
-                >
-                  25%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton 
-                border={'none'} 
-                // onClick={handle50Input}
-                >
-                  50%
+              25%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
-                border={'none'} 
-                // onClick={handle75Input}
-                >
-                  75%
+              border={"none"}
+              // onClick={handle50Input}
+            >
+              50%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton 
-                border={'none'} 
-                // onClick={handleMaxInput}
-                >
-                  Max
+            <TransparentUnderlineButton
+              border={"none"}
+              // onClick={handle75Input}
+            >
+              75%
+            </TransparentUnderlineButton>
+            <TransparentUnderlineButton
+              border={"none"}
+              // onClick={handleMaxInput}
+            >
+              Max
             </TransparentUnderlineButton>
           </Row>
         </Label>
         <InputContainer>
-          <InputDescriptor>
-            OVL
-          </InputDescriptor>
-          <NumericalInput 
+          <InputDescriptor>OVL</InputDescriptor>
+          <NumericalInput
             // value={55}
             value={typedValue?.toString()}
             onUserInput={handleTypeInput}
-            align={'right'}
-            />
+            align={"right"}
+          />
         </InputContainer>
-          <BuildButton onClick={() => { setBuildState({ showConfirm: true, attemptingTxn: false, txnErrorMessage: undefined, txHash: undefined }) }} >
-            Build
-          </BuildButton>
+        <BuildButton
+          onClick={() => {
+            setBuildState({
+              showConfirm: true,
+              attemptingTxn: false,
+              txnErrorMessage: undefined,
+              txHash: undefined,
+            });
+          }}
+        >
+          Build
+        </BuildButton>
       </Column>
 
-      <AdditionalDetails 
-        fee={'0.0'}
-        slippage={'0'}
-        estLiquidationPrice={'0.00'}
-        bid={'2241.25'}
-        ask={'2241.25'}
-        expectedOi={'0'}
+      <AdditionalDetails
+        fee={"0.0"}
+        slippage={"0"}
+        estLiquidationPrice={"0.00"}
+        bid={"2241.25"}
+        ask={"2241.25"}
+        expectedOi={"0"}
         oiLong={90000}
         oiShort={15000}
-        fundingRate={'-0.0026'}
+        fundingRate={"-0.0026"}
       />
 
-      <ConfirmTxnModal isOpen={showConfirm} onConfirm={() => handleBuild()} onDismiss={handleDismiss}/>
-      <TransactionPending attemptingTxn={attemptingTxn} severity={PopupType.WARNING} />
+      <ConfirmTxnModal
+        isOpen={showConfirm}
+        onConfirm={() => handleBuild()}
+        onDismiss={handleDismiss}
+      />
+      <TransactionPending
+        attemptingTxn={attemptingTxn}
+        severity={PopupType.WARNING}
+      />
     </MarketCard>
-  )
+  );
 };
