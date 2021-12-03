@@ -124,7 +124,7 @@ export function Position({
     }
 
     unwindCallback()
-      .then((success) => handleClearInput)
+      .then((success) => handleClearInput())
       .catch((err) => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, handleClearInput]);
 
