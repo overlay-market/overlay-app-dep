@@ -39,7 +39,7 @@ import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { utils } from "ethers";
 import { useAllMarkets } from "../../../state/markets/hooks";
 import { Back } from "../../../components/Back/Back";
-import { formatWeiToParsedString } from "../../../utils/formatWeiToParsedString";
+import { formatWeiToParsedString } from "../../../utils/formatWei";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;

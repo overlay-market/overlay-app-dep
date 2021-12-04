@@ -25,6 +25,7 @@ import {
 } from "../../components/Table/Table";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { utils } from "ethers";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 
 const activeClassName = "INACTIVE";
 
@@ -147,8 +148,8 @@ const Markets = () => {
                       { Number(utils.formatUnits(market.oiCap, 18)).toFixed(0) }
                     </TEXT.SubHeader>
                     <ProgressBar
-                      value={market.oiLong}
-                      max={market.oiCap}
+                      value={ formatWeiToParsedNumber(market.oiLong) }
+                      max={ formatWeiToParsedNumber(market.oiCap) }
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -163,8 +164,8 @@ const Markets = () => {
                       { Number(utils.formatUnits(market.oiCap, 18)).toFixed(0) }
                     </TEXT.SubHeader>
                     <ProgressBar
-                      value={market.oiShort}
-                      max={market.oiCap}
+                      value={ formatWeiToParsedNumber(market.oiShort) }
+                      max={ formatWeiToParsedNumber(market.oiCap) }
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}
