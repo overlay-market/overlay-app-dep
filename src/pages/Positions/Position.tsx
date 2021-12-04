@@ -21,7 +21,6 @@ import { useOvlBalance } from "../../state/wallet/hooks";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { api } from "../../state/data/slice";
 import { useAppDispatch } from "../../state/hooks";
-import { formatAmount } from "../../utils/formatData";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
 import { BigNumberish, utils } from "ethers";

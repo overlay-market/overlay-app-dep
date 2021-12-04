@@ -60,6 +60,7 @@ export const api = createApi({
         document: gql`
           query app {
             markets {
+              id
               base
               quote
               baseName

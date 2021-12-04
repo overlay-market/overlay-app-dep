@@ -1272,7 +1272,7 @@ export type AppQuery = (
   { __typename?: 'Query' }
   & { markets: Array<(
     { __typename?: 'Market' }
-    & Pick<Market, 'base' | 'quote' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
+    & Pick<Market, 'id' | 'base' | 'quote' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
     & { currentPrice: (
       { __typename?: 'PricePoint' }
       & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
@@ -1311,6 +1311,7 @@ export const AccountDocument = `
 export const AppDocument = `
     query app {
   markets {
+    id
     base
     quote
     baseName

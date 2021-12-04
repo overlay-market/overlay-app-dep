@@ -24,6 +24,7 @@ import {
   StyledTableHeaderRow,
 } from "../../components/Table/Table";
 import { useAllMarkets } from "../../state/markets/hooks";
+import { utils } from "ethers";
 
 const activeClassName = "INACTIVE";
 
@@ -80,10 +81,13 @@ const Markets = () => {
 
   const { isLoading, markets } = useAllMarkets();
 
+  console.log('isLoading: ', isLoading, ', markets: ', markets);
+
   return (
     <StyledContainer>
       <TableContainer component={Paper}>
         <StyledTable>
+
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
@@ -113,29 +117,38 @@ const Markets = () => {
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
+
           <TableBody>
-            {mockData.map((row, key) => (
+            {markets?.map((market, key) => (
               <StyledTableRow
-                onClick={() => redirectToMarket(row.marketId)}
+                onClick={() => redirectToMarket(market.id)}
                 hover={true}
                 key={key.toString()}
               >
                 <StyledTableCellThin component="th" scope="row">
-                  {row.market}
+                  {/* {market.baseName} / {market.quoteName} */}
+                  {market.id}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {row.price}
+                  { 
+                    (
+                      (Number(utils.formatUnits(market.currentPrice.bid, 18)) +
+                       Number(utils.formatUnits(market.currentPrice.ask, 18))) / 2
+                    )
+                    .toFixed(2)
+                  }
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
                   <Column align={"left"}>
                     <TEXT.SubHeader>
-                      {row.oiLong} / {row.oiTotal}
+                      { Number(utils.formatUnits(market.oiLong, 18)).toFixed(0) }/ 
+                      { Number(utils.formatUnits(market.oiCap, 18)).toFixed(0) }
                     </TEXT.SubHeader>
                     <ProgressBar
-                      value={row.oiLong}
-                      max={row.oiTotal}
+                      value={market.oiLong}
+                      max={market.oiCap}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -146,11 +159,12 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <Column align={"left"}>
                     <TEXT.SubHeader>
-                      {row.oiShort} / {row.oiTotal}
+                      { Number(utils.formatUnits(market.oiShort, 18)).toFixed(0) }/ 
+                      { Number(utils.formatUnits(market.oiCap, 18)).toFixed(0) }
                     </TEXT.SubHeader>
                     <ProgressBar
-                      value={row.oiShort}
-                      max={row.oiTotal}
+                      value={market.oiShort}
+                      max={market.oiCap}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}
@@ -161,17 +175,18 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <Row>
                     <TEXT.Main color={"#10DCB1"} mr={"3px"}>
-                      {row.longFundingRate}%
+                      n/a%
                     </TEXT.Main>
                     /
                     <TEXT.Main color={"#FF648A"} ml={"3px"}>
-                      {row.shortFundingRate}%
+                      n/a%
                     </TEXT.Main>
                   </Row>
                 </StyledTableCellThin>
               </StyledTableRow>
             ))}
           </TableBody>
+          
         </StyledTable>
       </TableContainer>
     </StyledContainer>

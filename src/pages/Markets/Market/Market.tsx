@@ -27,7 +27,6 @@ export function Market(
   { match: {params: { marketId }}
 }: RouteComponentProps<{ marketId: string }>
 ) {
-  let marketName = TOKEN_LABELS[Number(marketId)];
 
   const { onResetBuildState } = usePositionActionHandlers();
 
@@ -39,7 +38,7 @@ export function Market(
     <>
       <Container>
         <BuildInterface 
-            marketName={marketName}
+            marketId={marketId}
             marketPrice={'2241.25'}
             />
       </Container>

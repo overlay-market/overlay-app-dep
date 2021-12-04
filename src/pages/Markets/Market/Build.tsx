@@ -16,25 +16,12 @@ import { usePositionActionHandlers } from "../../../state/positions/hooks";
 import { useActiveWeb3React } from "../../../hooks/web3";
 import { usePositionState } from "../../../state/positions/hooks";
 import { useTokenBalance, useOvlBalance } from "../../../state/wallet/hooks";
-import {
-  PositionSide,
-  DefaultTxnSettings,
-} from "../../../state/positions/actions";
+import { PositionSide, DefaultTxnSettings } from "../../../state/positions/actions";
 import { OVL } from "../../../constants/tokens";
-import {
-  OVL_ADDRESS,
-  OVL_COLLATERAL_ADDRESS,
-  OVL_MARKET_ADDRESS,
-} from "../../../constants/addresses";
+import { OVL_ADDRESS, OVL_COLLATERAL_ADDRESS, OVL_MARKET_ADDRESS } from "../../../constants/addresses";
 import { maxAmountSpend } from "../../../utils/maxAmountSpend";
-import {
-  ApprovalState,
-  useApproveCallback,
-} from "../../../hooks/useApproveCallback";
-import {
-  useDerivedBuildInfo,
-  tryParseAmount,
-} from "../../../state/positions/hooks";
+import { ApprovalState, useApproveCallback } from "../../../hooks/useApproveCallback";
+import { useDerivedBuildInfo, tryParseAmount } from "../../../state/positions/hooks";
 import { NumericalInput } from "../../../components/NumericalInput/NumericalInput";
 import { LeverageSlider } from "../../../components/LeverageSlider/LeverageSlider";
 import { ProgressBar } from "../../../components/ProgressBar/ProgressBar";
@@ -50,6 +37,9 @@ import { useBuildCallback } from "../../../hooks/useBuildCallback";
 import { useCurrency } from "../../../hooks/useToken";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { utils } from "ethers";
+import { useAllMarkets } from "../../../state/markets/hooks";
+import { Back } from "../../../components/Back/Back";
+import { formatWeiToParsedString } from "../../../utils/formatWeiToParsedString";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -233,10 +223,10 @@ const AdditionalDetails = ({
 };
 
 export const BuildInterface = ({
-  marketName,
+  marketId,
   marketPrice,
 }: {
-  marketName: string;
+  marketId: string;
   marketPrice: string | number;
 }) => {
   const [
@@ -266,6 +256,14 @@ export const BuildInterface = ({
 
   const { error, ovlBalance: userOvlBalance } = useOvlBalance( account );
 
+  const { isLoading, markets } = useAllMarkets();
+
+  const filtered = markets?.filter((market, key) => {
+    return market.id === marketId;
+  });
+
+  const market = filtered ? filtered[0] : null;
+
   const {
     selectedLeverage,
     isLong,
@@ -287,8 +285,6 @@ export const BuildInterface = ({
 
   const { callback: buildCallback, error: buildCallbackError } =
     useBuildCallback(buildData);
-
-    console.log('buildCallback: ', buildCallback);
     
   const handleResetTxnSettings = useCallback(
     (e: any) => {
@@ -406,7 +402,7 @@ export const BuildInterface = ({
               color={"white"}
               margin={"14px 0 0 0"}
             >
-              {marketName}
+              {market?.id}
             </TEXT.MediumHeader>
 
             <TEXT.MediumHeader fontWeight={400} color={"white"}>
@@ -592,8 +588,8 @@ export const BuildInterface = ({
         fee={"0.0"}
         slippage={ setSlippageValue }
         estLiquidationPrice={"0.00"}
-        bid={"2241.25"}
-        ask={"2241.25"}
+        bid={ market ? formatWeiToParsedString(market.currentPrice.bid, 10) : 'loading' }
+        ask={ market ? formatWeiToParsedString(market.currentPrice.ask, 10) : 'loading' }
         expectedOi={"0"}
         oiLong={90000}
         oiShort={15000}
