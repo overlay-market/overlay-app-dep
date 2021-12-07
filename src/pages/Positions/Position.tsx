@@ -97,7 +97,12 @@ export function Position({
   );
 
   const handleQuickInput = (percentage: number, totalOi: string | null) => {
-      let calculatedOi = (Number(totalOi) * (percentage / 100)).toFixed(0)
+      let calculatedOi:string = percentage !== 100 ? (
+        (Number(totalOi) * (percentage / 100)).toFixed(0)
+      ) : (
+        (Number(totalOi) * (percentage / 100)).toFixed(18)
+      );
+
       return onUserInput(calculatedOi)
   };
 
@@ -151,7 +156,7 @@ export function Position({
           <TransparentUnderlineButton onClick={() => handleQuickInput(75, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
             75%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton onClick={() => handleQuickInput(100, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(100, position?.oiShares ? utils.formatUnits(position?.oiShares, 18) : (null))} border={"none"}>
             Max
           </TransparentUnderlineButton>
         </Row>

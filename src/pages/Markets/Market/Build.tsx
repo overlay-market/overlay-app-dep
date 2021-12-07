@@ -42,6 +42,7 @@ import { Back } from "../../../components/Back/Back";
 import { formatWeiToParsedString } from "../../../utils/formatWei";
 import { useSingleCallResult } from '../../../state/multicall/hooks';
 import { useTokenContract } from "../../../hooks/useContract";
+import { useAllPositions } from "../../../state/positions/hooks";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -263,6 +264,8 @@ export const BuildInterface = ({
   const { error, ovlBalance: userOvlBalance } = useOvlBalance( account );
 
   const { isLoading, markets } = useAllMarkets();
+
+  const { positions } = useAllPositions(account);
 
   const filtered = markets?.filter((market, key) => {
     return market.id === marketId;
