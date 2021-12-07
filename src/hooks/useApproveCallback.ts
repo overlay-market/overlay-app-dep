@@ -19,22 +19,17 @@ export enum ApprovalState {
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
-  // amountToApprove?: CurrencyAmount<Currency>,
   amountToApprove?: BigNumber | undefined,
   currencyToken?: Token,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
-  // const token = currencyToken?.isToken ? currencyToken.currency : undefined;
   const currentAllowance = useTokenAllowance(currencyToken, account ?? undefined, spender);
-  console.log('currentAllowance: ', currentAllowance);
-
   const pendingApproval = useHasPendingApproval(currencyToken?.address, spender);
 
   // check the current approval status
   const approvalState: ApprovalState = useMemo(() => {
     if (!amountToApprove || !spender) return ApprovalState.UNKNOWN
-    // if (currencyToken?.isNative) return ApprovalState.APPROVED
     // we might not have enough data to know whether or not we need to approve
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
