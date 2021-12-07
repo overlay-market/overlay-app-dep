@@ -71,6 +71,10 @@ export const BuildButton = styled(LightGreyButton)`
 `;
 
 export const ApproveButton = styled(LightGreyButton)`
+  height: 48px;
+  padding: 16px;
+  margin: 4px 0;
+  margin-top: 24px;
   background: linear-gradient(
     91.32deg,
     #10dcb1 0%,
@@ -340,6 +344,12 @@ export const BuildInterface = ({
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
 
   const handleBuild = useCallback(() => {
+    if (!typedValue) throw new Error('missing position input size');
+
+    if (isLong === undefined) throw new Error('please choose a long/short position');
+    
+    if (!selectedLeverage) throw new Error('please select a leverage value');
+
     if (!buildCallback) {
       return;
     }
@@ -370,32 +380,19 @@ export const BuildInterface = ({
       });
   }, [buildCallback, onResetBuildState]);
 
-  // const ovlAddress = useCurrency('0x04346e29fDef5dc5A7822793d9f00B5db73D6532');
-
-  // const parsedAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(inputValue, ovlAddress ? ovlAddress : undefined);
-
-  const parsedAmount = tryParseAmount(typedValue, ovl);
-
-  // console.log('parsedAmount: ', parsedAmount);
-
   const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
 
   console.log('approval: ', approval);
 
-  const ovlToken = useTokenContract("0x04346e29fDef5dc5A7822793d9f00B5db73D6532");
-  const ovlContract = useSingleCallResult(ovlToken, 'decimals');
+  const showApprovalFlow = approval !== ApprovalState.APPROVED && !typedValue;
 
+  async function attemptToApprove() {
+    if (!typedValue) throw new Error('missing position input size');
+    if (isLong === undefined) throw new Error('please choose a long/short position');
+    if (!selectedLeverage) throw new Error('please select a leverage value');
 
-  console.log('ovlContract: ', ovlContract);
-  // const showApprovalFlow = approval !== ApprovalState.APPROVED && parsedAmount;
-
-  // async function attemptToApprove() {
-  //   if (!inputValue) throw new Error('missing position input size');
-  //   if (!positionSide) throw new Error('please choose a long/short position');
-  //   if (!leverageValue) throw new Error('please select a leverage value');
-
-  //   await approveCallback();
-  // };
+    await approveCallback();
+  };
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -579,18 +576,26 @@ export const BuildInterface = ({
             align={"right"}
           />
         </InputContainer>
-        <BuildButton
-          onClick={() => {
-            setBuildState({
-              showConfirm: true,
-              attemptingTxn: false,
-              txnErrorMessage: undefined,
-              txHash: undefined,
-            });
-          }}
-        >
-          Build
-        </BuildButton>
+        {showApprovalFlow ? (
+          <ApproveButton
+            onClick={attemptToApprove}
+            >
+            Approve
+          </ApproveButton>
+        ):(
+          <BuildButton
+            onClick={() => {
+              setBuildState({
+                showConfirm: true,
+                attemptingTxn: false,
+                txnErrorMessage: undefined,
+                txHash: undefined,
+              });
+            }}
+          >
+            Build
+          </BuildButton>
+        )}
       </Column>
 
       <AdditionalDetails
