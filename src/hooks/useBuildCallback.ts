@@ -50,7 +50,6 @@ function useBuildCallArguments(
 
   if (!buildData) calldata = undefined;
   else {
-    console.log('buildData: ', buildData);
     calldata = OVLCollateral.buildParameters({
       collateral: utils.parseUnits(buildData.typedValue),
       leverage: Number(buildData.selectedLeverage),

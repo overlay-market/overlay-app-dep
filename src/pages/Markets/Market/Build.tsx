@@ -40,6 +40,8 @@ import { utils } from "ethers";
 import { useAllMarkets } from "../../../state/markets/hooks";
 import { Back } from "../../../components/Back/Back";
 import { formatWeiToParsedString } from "../../../utils/formatWei";
+import { useSingleCallResult } from '../../../state/multicall/hooks';
+import { useTokenContract } from "../../../hooks/useContract";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -372,12 +374,19 @@ export const BuildInterface = ({
 
   // const parsedAmount: CurrencyAmount<Currency> | undefined = tryParseAmount(inputValue, ovlAddress ? ovlAddress : undefined);
 
-  // const parsedAmount = tryParseAmount(inputValue, ovl);
+  const parsedAmount = tryParseAmount(typedValue, ovl);
 
   // console.log('parsedAmount: ', parsedAmount);
 
-  // const [approval, approveCallback] = useApproveCallback(parsedAmount, '0xc3D73beec840D95b0B70c660A9b8BE2996B0cC17');
+  const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
 
+  console.log('approval: ', approval);
+
+  const ovlToken = useTokenContract("0x04346e29fDef5dc5A7822793d9f00B5db73D6532");
+  const ovlContract = useSingleCallResult(ovlToken, 'decimals');
+
+
+  console.log('ovlContract: ', ovlContract);
   // const showApprovalFlow = approval !== ApprovalState.APPROVED && parsedAmount;
 
   // async function attemptToApprove() {
