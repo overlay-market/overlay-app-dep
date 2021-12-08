@@ -1,48 +1,48 @@
 import { useState, useCallback } from "react";
 import styled from "styled-components";
-import { MarketCard } from "../../../components/Card/MarketCard";
+import { MarketCard } from "../../components/Card/MarketCard";
 import {
   LightGreyButton,
   TransparentUnderlineButton,
   TransparentDarkGreyButton,
   ActiveBlueButton,
   TxnSettingsButton,
-} from "../../../components/Button/Button";
-import { TEXT } from "../../../theme/theme";
-import { Column } from "../../../components/Column/Column";
-import { Row } from "../../../components/Row/Row";
+} from "../../components/Button/Button";
+import { TEXT } from "../../theme/theme";
+import { Column } from "../../components/Column/Column";
+import { Row } from "../../components/Row/Row";
 import { Label, Input } from "@rebass/forms";
-import { usePositionActionHandlers } from "../../../state/positions/hooks";
-import { useActiveWeb3React } from "../../../hooks/web3";
-import { usePositionState } from "../../../state/positions/hooks";
-import { useTokenBalance, useOvlBalance } from "../../../state/wallet/hooks";
-import { PositionSide, DefaultTxnSettings } from "../../../state/positions/actions";
-import { OVL } from "../../../constants/tokens";
-import { OVL_ADDRESS, OVL_COLLATERAL_ADDRESS, OVL_MARKET_ADDRESS } from "../../../constants/addresses";
-import { maxAmountSpend } from "../../../utils/maxAmountSpend";
-import { ApprovalState, useApproveCallback } from "../../../hooks/useApproveCallback";
-import { useDerivedBuildInfo, tryParseAmount } from "../../../state/positions/hooks";
-import { NumericalInput } from "../../../components/NumericalInput/NumericalInput";
-import { LeverageSlider } from "../../../components/LeverageSlider/LeverageSlider";
-import { ProgressBar } from "../../../components/ProgressBar/ProgressBar";
+import { usePositionActionHandlers } from "../../state/positions/hooks";
+import { useActiveWeb3React } from "../../hooks/web3";
+import { usePositionState } from "../../state/positions/hooks";
+import { useTokenBalance, useOvlBalance } from "../../state/wallet/hooks";
+import { PositionSide, DefaultTxnSettings } from "../../state/positions/actions";
+import { OVL } from "../../constants/tokens";
+import { OVL_ADDRESS, OVL_COLLATERAL_ADDRESS, OVL_MARKET_ADDRESS } from "../../constants/addresses";
+import { maxAmountSpend } from "../../utils/maxAmountSpend";
+import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
+import { useDerivedBuildInfo, tryParseAmount } from "../../state/positions/hooks";
+import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
+import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
+import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { Sliders, X } from "react-feather";
-import { Icon } from "../../../components/Icon/Icon";
-import { InfoTip } from "../../../components/InfoTip/InfoTip";
-import { useIsTxnSettingsAuto } from "../../../state/positions/hooks";
-import { useTransactionAdder } from "../../../state/transactions/hooks";
-import ConfirmTxnModal from "../../../components/ConfirmTxnModal/ConfirmTxnModal";
-import TransactionPending from "../../../components/Popup/TransactionPending";
-import { PopupType } from "../../../components/SnackbarAlert/SnackbarAlert";
-import { useBuildCallback } from "../../../hooks/useBuildCallback";
-import { useCurrency } from "../../../hooks/useToken";
+import { Icon } from "../../components/Icon/Icon";
+import { InfoTip } from "../../components/InfoTip/InfoTip";
+import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
+import { useTransactionAdder } from "../../state/transactions/hooks";
+import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
+import TransactionPending from "../../components/Popup/TransactionPending";
+import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
+import { useBuildCallback } from "../../hooks/useBuildCallback";
+import { useCurrency } from "../../hooks/useToken";
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { utils } from "ethers";
-import { useAllMarkets } from "../../../state/markets/hooks";
-import { Back } from "../../../components/Back/Back";
-import { formatWeiToParsedString } from "../../../utils/formatWei";
-import { useSingleCallResult } from '../../../state/multicall/hooks';
-import { useTokenContract } from "../../../hooks/useContract";
-import { useAllPositions } from "../../../state/positions/hooks";
+import { useAllMarkets } from "../../state/markets/hooks";
+import { Back } from "../../components/Back/Back";
+import { formatWeiToParsedString } from "../../utils/formatWei";
+import { useSingleCallResult } from '../../state/multicall/hooks';
+import { useTokenContract } from "../../hooks/useContract";
+import { useAllPositions } from "../../state/positions/hooks";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -383,19 +383,19 @@ export const BuildInterface = ({
       });
   }, [buildCallback, onResetBuildState]);
 
-  const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
+  // const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
 
-  console.log('approval: ', approval);
+  // console.log('approval: ', approval);
 
-  const showApprovalFlow = approval !== ApprovalState.APPROVED && !typedValue;
+  // const showApprovalFlow = approval !== ApprovalState.APPROVED;
 
-  async function attemptToApprove() {
-    if (!typedValue) throw new Error('missing position input size');
-    if (isLong === undefined) throw new Error('please choose a long/short position');
-    if (!selectedLeverage) throw new Error('please select a leverage value');
+  // async function attemptToApprove() {
+  //   if (!typedValue) throw new Error('missing position input size');
+  //   if (isLong === undefined) throw new Error('please choose a long/short position');
+  //   if (!selectedLeverage) throw new Error('please select a leverage value');
 
-    await approveCallback();
-  };
+  //   await approveCallback();
+  // };
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -579,13 +579,13 @@ export const BuildInterface = ({
             align={"right"}
           />
         </InputContainer>
-        {showApprovalFlow ? (
+        {/* {showApprovalFlow ? (
           <ApproveButton
             onClick={attemptToApprove}
             >
             Approve
           </ApproveButton>
-        ):(
+        ):( */}
           <BuildButton
             onClick={() => {
               setBuildState({
@@ -598,7 +598,7 @@ export const BuildInterface = ({
           >
             Build
           </BuildButton>
-        )}
+        {/* )} */}
       </Column>
 
       <AdditionalDetails

@@ -4,7 +4,7 @@ import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager';
 import Header from '../components/Header/Header';
 import CurrentBlock from '../components/CurrentBlock/CurrentBlock';
 import Markets from './Markets/Markets';
-import { Market } from './Markets/Market/Market';
+import { Market } from './Markets/Market';
 import { Position } from './Positions/Position';
 import Positions from './Positions/Positions';
 import Liquidate from './Liquidate/Liquidate';

@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
-import { Container } from "../Markets/Market/Market";
+import { Container } from "../Markets/Market";
 import { Column } from "../../components/Column/Column";
 import { TEXT } from "../../theme/theme";
 import { Label } from "@rebass/forms";
@@ -14,7 +14,7 @@ import {
 import {
   InputContainer,
   InputDescriptor,
-} from "../Markets/Market/Build";
+} from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { PositionCard, PositionsCardHeader } from "./Positions";
 import { useOvlBalance } from "../../state/wallet/hooks";

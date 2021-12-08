@@ -1,7 +1,7 @@
 import Markets from "../pages/Markets/Markets";
 import Positions from "../pages/Positions/Positions";
 import Magic from "../pages/Magic/Magic";
-import { Market } from "../pages/Markets/Market/Market";
+import { Market } from "../pages/Markets/Market";
 import { Position } from "../pages/Positions/Position";
 import { TOKEN_LABELS } from "../constants/tokens";
 
