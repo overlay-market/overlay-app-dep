@@ -26,7 +26,7 @@ export const initialState: PositionState = {
   selectedLeverage: 1,
   isLong: undefined,
   inputCurrency: OVL[1].address,
-  setSlippageValue: "0.3",
+  setSlippageValue: "1",
   txnDeadline: "30",
 };
 

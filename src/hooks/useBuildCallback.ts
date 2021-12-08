@@ -1,4 +1,4 @@
-import { selectLeverage } from './../state/positions/actions';
+import { selectLeverage, setSlippage } from './../state/positions/actions';
 import { TransactionType } from "./../state/transactions/actions";
 import { BigNumber } from "@ethersproject/bignumber";
 import Big from 'big.js';
@@ -55,7 +55,7 @@ function useBuildCallArguments(
       leverage: Number(buildData.selectedLeverage),
       isLong: buildData.isLong,
       market: OVL_MARKET_ADDRESS[chainId],
-      minOI: 1,
+      minOI: Number(buildData.setSlippageValue),
       deadline: 1
     });
 

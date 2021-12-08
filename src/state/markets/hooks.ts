@@ -4,7 +4,6 @@ import { useSingleCallResult, useSingleContractMultipleData } from "../multicall
 import { useAppQuery } from "../data/enhanced";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { AppState } from "../state";
-import { updateMarkets } from "./actions";
 
 
 export function useMarketsState(): AppState['markets'] {
