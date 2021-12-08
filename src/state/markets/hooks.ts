@@ -13,7 +13,12 @@ export function useMarketsState(): AppState['markets'] {
 
 export function useAllMarkets() {
 
-  const { isLoading, isError, error, isUninitialized, data } = useAppQuery();
+  const { 
+    isLoading, 
+    isError, 
+    error, 
+    isUninitialized, 
+    data } = useAppQuery({}, { pollingInterval: 3000 });
 
   return useMemo(() => {
     return {
