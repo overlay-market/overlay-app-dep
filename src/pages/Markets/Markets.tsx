@@ -144,12 +144,12 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <Column align={"left"}>
                     <TEXT.SubHeader>
-                      { Number(utils.formatUnits(market.oiLong, 18)).toFixed(0) }/ 
+                      { Number(utils.formatUnits(market.oiLong, 18)).toFixed(0) }/
                       { Number(utils.formatUnits(market.oiCap, 18)).toFixed(0) }
                     </TEXT.SubHeader>
                     <ProgressBar
-                      value={ formatWeiToParsedNumber(market.oiLong) }
-                      max={ formatWeiToParsedNumber(market.oiCap) }
+                      value={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
+                      max={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -160,12 +160,12 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <Column align={"left"}>
                     <TEXT.SubHeader>
-                      { Number(utils.formatUnits(market.oiShort, 18)).toFixed(0) }/ 
-                      { Number(utils.formatUnits(market.oiCap, 18)).toFixed(0) }
+                      {Number(utils.formatUnits(market.oiShort, 18)).toFixed(0)}/ 
+                      {Number(utils.formatUnits(market.oiCap, 18)).toFixed(0)}
                     </TEXT.SubHeader>
                     <ProgressBar
-                      value={ formatWeiToParsedNumber(market.oiShort) }
-                      max={ formatWeiToParsedNumber(market.oiCap) }
+                      value={formatWeiToParsedNumber(market.oiShort, 18, 0)}
+                      max={formatWeiToParsedNumber(market.oiCap, 18, 0)}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}

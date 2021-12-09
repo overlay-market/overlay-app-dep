@@ -23,7 +23,7 @@ export default function ConfirmTxnModal({
   isOpen: boolean
   onConfirm?: () => void
   onDismiss?: () => void
-  marketPrice: string
+  marketPrice: string | undefined
   isLong: boolean | undefined
   selectedLeverage: number
   collateral: string | undefined
@@ -54,7 +54,7 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Price'} 
                         itemColor={'#B9BABD'}
-                        value={marketPrice}
+                        value={marketPrice ? marketPrice : "loading..."}
                         />
 
                     <ListItem 

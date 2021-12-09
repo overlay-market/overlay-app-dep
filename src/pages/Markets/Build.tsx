@@ -47,7 +47,7 @@ import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { utils } from "ethers";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { Back } from "../../components/Back/Back";
-import { formatWeiToParsedString } from "../../utils/formatWei";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { useAllPositions } from "../../state/positions/hooks";
 import { shortenAddress } from "../../utils/web3";
 
@@ -158,6 +158,7 @@ const AdditionalDetails = ({
   expectedOi,
   oiLong,
   oiShort,
+  oiCap,
   fundingRate,
 }: {
   fee?: string | number;
@@ -168,6 +169,7 @@ const AdditionalDetails = ({
   expectedOi?: string | number;
   oiLong?: number | undefined;
   oiShort?: number | undefined;
+  oiCap?: number | undefined
   fundingRate?: string | number;
 }) => {
   return (
@@ -206,26 +208,26 @@ const AdditionalDetails = ({
         <Title> OI Long </Title>
         <ProgressBar
           value={oiLong}
-          max={200000}
+          max={oiCap}
           width={"75px"}
           color={"#10DCB1"}
           margin={"0 0 0 auto"}
         />
 
-        <OI> {oiLong} / 200000 </OI>
+        <OI> {oiLong} / {oiCap} </OI>
       </Detail>
 
       <Detail>
         <Title> OI Short </Title>
         <ProgressBar
           value={oiShort}
-          max={200000}
+          max={oiCap}
           width={"75px"}
           color={"#DC1F4E"}
           margin={"0 0 0 auto"}
         />
 
-        <OI> {oiShort} / 200000 </OI>
+        <OI> {oiShort} / {oiCap} </OI>
       </Detail>
 
       <Detail>
@@ -679,8 +681,9 @@ export const BuildInterface = ({
             : "loading"
         }
         expectedOi={"0"}
-        oiLong={90000}
-        oiShort={15000}
+        oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
+        oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
+        oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
         fundingRate={"-0.0026"}
       />
 
