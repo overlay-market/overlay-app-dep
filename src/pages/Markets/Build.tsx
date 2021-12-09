@@ -15,11 +15,8 @@ import { Label, Input } from "@rebass/forms";
 import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { usePositionState } from "../../state/positions/hooks";
-import { useTokenBalance, useOvlBalance } from "../../state/wallet/hooks";
-import {
-  PositionSide,
-  DefaultTxnSettings,
-} from "../../state/positions/actions";
+import { useOvlBalance } from "../../state/wallet/hooks";
+import { DefaultTxnSettings } from "../../state/positions/actions";
 import { OVL } from "../../constants/tokens";
 import {
   OVL_ADDRESS,
@@ -47,15 +44,12 @@ import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import TransactionPending from "../../components/Popup/TransactionPending";
 import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
 import { useBuildCallback } from "../../hooks/useBuildCallback";
-import { useCurrency } from "../../hooks/useToken";
-import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import { utils } from "ethers";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { Back } from "../../components/Back/Back";
 import { formatWeiToParsedString } from "../../utils/formatWei";
-import { useSingleCallResult } from "../../state/multicall/hooks";
-import { useTokenContract } from "../../hooks/useContract";
 import { useAllPositions } from "../../state/positions/hooks";
+import { shortenAddress } from "../../utils/web3";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -420,6 +414,15 @@ export const BuildInterface = ({
     await approveCallback();
   }, [approveCallback, typedValue]);
 
+  const averagePrice = useMemo(() => {
+    return market ? (
+              ((
+                Number(utils.formatUnits(market?.currentPrice.bid, 18)) + 
+                Number(utils.formatUnits(market?.currentPrice.ask, 18))
+              )/2).toFixed(7)
+            ) : ('loading...')
+  }, [market]);
+
   return (
     <MarketCard align={"left"} padding={"0px"}>
       <Column
@@ -434,11 +437,20 @@ export const BuildInterface = ({
               color={"white"}
               margin={"14px 0 0 0"}
             >
-              {market?.id}
+              {market ? shortenAddress(market?.id) : 'loading...'}
             </TEXT.MediumHeader>
 
             <TEXT.MediumHeader fontWeight={400} color={"white"}>
-              {marketPrice}
+              {isLong === undefined && averagePrice}
+
+              {isLong !== undefined && market ? 
+                ( 
+                  isLong ? (Number(utils.formatUnits(market?.currentPrice.bid, 18)).toFixed(7))
+                  :(Number(utils.formatUnits(market?.currentPrice.ask, 18)).toFixed(7))
+                ):(
+                  null
+                )}
+
             </TEXT.MediumHeader>
           </Column>
           <Icon
