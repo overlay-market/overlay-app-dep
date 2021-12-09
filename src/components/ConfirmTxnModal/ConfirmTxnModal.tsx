@@ -59,7 +59,8 @@ export default function ConfirmTxnModal({
 
                     <ListItem 
                         item={'Side'} 
-                        itemColor={isLong ? "#10DCB1" : "#FF648A"}
+                        itemColor={'#B9BABD'}
+                        valueColor={isLong ? "#10DCB1" : "#FF648A"}
                         value={isLong ? "Long" : "Short"}
                         />  
 
