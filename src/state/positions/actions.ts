@@ -7,7 +7,7 @@ export enum PositionSide {
 };
 
 export enum DefaultTxnSettings { 
-  DEFAULT_SLIPPAGE = '0.3',
+  DEFAULT_SLIPPAGE = '1',
   DEFAULT_DEADLINE = '30'
 };
 

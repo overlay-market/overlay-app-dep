@@ -504,7 +504,11 @@ export const BuildInterface = ({
               >
                 Reset
               </TxnSettingsButton>
-              <TxnSettingsButton width={"96px"} padding={"0px"}>
+              <TxnSettingsButton 
+                onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+                width={"96px"} 
+                padding={"0px"}
+              >
                 Save
               </TxnSettingsButton>
             </Row>
