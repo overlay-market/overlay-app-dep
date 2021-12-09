@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo} from "react";
+import { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { MarketCard } from "../../components/Card/MarketCard";
 import {
@@ -16,12 +16,25 @@ import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { usePositionState } from "../../state/positions/hooks";
 import { useTokenBalance, useOvlBalance } from "../../state/wallet/hooks";
-import { PositionSide, DefaultTxnSettings } from "../../state/positions/actions";
+import {
+  PositionSide,
+  DefaultTxnSettings,
+} from "../../state/positions/actions";
 import { OVL } from "../../constants/tokens";
-import { OVL_ADDRESS, OVL_COLLATERAL_ADDRESS, OVL_MARKET_ADDRESS } from "../../constants/addresses";
+import {
+  OVL_ADDRESS,
+  OVL_COLLATERAL_ADDRESS,
+  OVL_MARKET_ADDRESS,
+} from "../../constants/addresses";
 import { maxAmountSpend } from "../../utils/maxAmountSpend";
-import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
-import { useDerivedBuildInfo, tryParseAmount } from "../../state/positions/hooks";
+import {
+  ApprovalState,
+  useApproveCallback,
+} from "../../hooks/useApproveCallback";
+import {
+  useDerivedBuildInfo,
+  tryParseAmount,
+} from "../../state/positions/hooks";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
@@ -40,7 +53,7 @@ import { utils } from "ethers";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { Back } from "../../components/Back/Back";
 import { formatWeiToParsedString } from "../../utils/formatWei";
-import { useSingleCallResult } from '../../state/multicall/hooks';
+import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useTokenContract } from "../../hooks/useContract";
 import { useAllPositions } from "../../state/positions/hooks";
 
@@ -261,7 +274,7 @@ export const BuildInterface = ({
 
   const ovl = chainId ? OVL[chainId] : undefined;
 
-  const { error, ovlBalance: userOvlBalance } = useOvlBalance( account );
+  const { error, ovlBalance: userOvlBalance } = useOvlBalance(account);
 
   const { isLoading, markets } = useAllMarkets();
 
@@ -287,14 +300,14 @@ export const BuildInterface = ({
     onSelectPositionSide,
     onSetSlippage,
     onSetTxnDeadline,
-    onResetBuildState
+    onResetBuildState,
   } = usePositionActionHandlers();
 
   const { buildData, inputError } = useDerivedBuildInfo();
 
   const { callback: buildCallback, error: buildCallbackError } =
     useBuildCallback(buildData);
-    
+
   const handleResetTxnSettings = useCallback(
     (e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
@@ -312,29 +325,34 @@ export const BuildInterface = ({
 
   const handleSelectPositionSide = useCallback(
     (isLong: boolean) => {
-      onSelectPositionSide(isLong)
-    }, 
+      onSelectPositionSide(isLong);
+    },
     [onSelectPositionSide]
   );
 
-  
   const handleUserInput = useCallback(
     (input: string) => {
       onAmountInput(input);
     },
     [onAmountInput]
   );
-    
+
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
     let calculatedAmountByPercentage;
 
     if (percentage < 100) {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(0);
+      calculatedAmountByPercentage = (
+        Number(totalSupply) *
+        (percentage / 100)
+      ).toFixed(0);
     } else {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(10);
+      calculatedAmountByPercentage = (
+        Number(totalSupply) *
+        (percentage / 100)
+      ).toFixed(10);
     }
 
-    return handleUserInput(calculatedAmountByPercentage)
+    return handleUserInput(calculatedAmountByPercentage);
   };
 
   const handleDismiss = useCallback(() => {
@@ -347,11 +365,12 @@ export const BuildInterface = ({
   }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
 
   const handleBuild = useCallback(() => {
-    if (!typedValue) throw new Error('missing position input size');
+    if (!typedValue) throw new Error("missing position input size");
 
-    if (isLong === undefined) throw new Error('please choose a long/short position');
-    
-    if (!selectedLeverage) throw new Error('please select a leverage value');
+    if (isLong === undefined)
+      throw new Error("please choose a long/short position");
+
+    if (!selectedLeverage) throw new Error("please select a leverage value");
 
     if (!buildCallback) {
       return;
@@ -383,14 +402,20 @@ export const BuildInterface = ({
       });
   }, [buildCallback, onResetBuildState]);
 
-  const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
+  const [approval, approveCallback] = useApproveCallback(
+    utils.parseUnits(typedValue ? typedValue : "0"),
+    ovl,
+    account ?? undefined
+  );
 
   const showApprovalFlow = useMemo(() => {
-    return approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN; 
+    return (
+      approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
+    );
   }, [approval]);
 
-  const handleApprove = useCallback(async() => {
-    if (!typedValue) throw new Error('missing position input size');
+  const handleApprove = useCallback(async () => {
+    if (!typedValue) throw new Error("missing position input size");
 
     await approveCallback();
   }, [approveCallback, typedValue]);
@@ -504,9 +529,9 @@ export const BuildInterface = ({
               >
                 Reset
               </TxnSettingsButton>
-              <TxnSettingsButton 
+              <TxnSettingsButton
                 onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
-                width={"96px"} 
+                width={"96px"}
                 padding={"0px"}
               >
                 Save
@@ -548,25 +573,53 @@ export const BuildInterface = ({
           <Row ml={"auto"} mb={"4px"} width={"auto"}>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(25, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
+              onClick={() =>
+                handleQuickInput(
+                  25,
+                  userOvlBalance
+                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
+                    : null
+                )
+              }
             >
               25%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(50, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
+              onClick={() =>
+                handleQuickInput(
+                  50,
+                  userOvlBalance
+                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
+                    : null
+                )
+              }
             >
               50%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(75, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
+              onClick={() =>
+                handleQuickInput(
+                  75,
+                  userOvlBalance
+                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
+                    : null
+                )
+              }
             >
               75%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(100, userOvlBalance ? (Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)) : (null))}
+              onClick={() =>
+                handleQuickInput(
+                  100,
+                  userOvlBalance
+                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
+                    : null
+                )
+              }
             >
               Max
             </TransparentUnderlineButton>
@@ -582,12 +635,8 @@ export const BuildInterface = ({
           />
         </InputContainer>
         {showApprovalFlow ? (
-          <ApproveButton
-            onClick={handleApprove}
-            >
-            Approve
-          </ApproveButton>
-        ):(
+          <ApproveButton onClick={handleApprove}>Approve</ApproveButton>
+        ) : (
           <BuildButton
             onClick={() => {
               setBuildState({
@@ -605,10 +654,18 @@ export const BuildInterface = ({
 
       <AdditionalDetails
         fee={"0.0"}
-        slippage={ setSlippageValue }
+        slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
-        bid={ market ? formatWeiToParsedString(market.currentPrice.bid, 10) : 'loading' }
-        ask={ market ? formatWeiToParsedString(market.currentPrice.ask, 10) : 'loading' }
+        bid={
+          market
+            ? formatWeiToParsedString(market.currentPrice.bid, 10)
+            : "loading"
+        }
+        ask={
+          market
+            ? formatWeiToParsedString(market.currentPrice.ask, 10)
+            : "loading"
+        }
         expectedOi={"0"}
         oiLong={90000}
         oiShort={15000}
@@ -619,9 +676,13 @@ export const BuildInterface = ({
         isOpen={showConfirm}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        marketPrice={market ? 
-          ( isLong ? (formatWeiToParsedString(market.currentPrice.bid, 10)) : (formatWeiToParsedString(market.currentPrice.ask, 10)))
-          : 'n/a'}
+        marketPrice={
+          market
+            ? isLong
+              ? formatWeiToParsedString(market.currentPrice.bid, 10)
+              : formatWeiToParsedString(market.currentPrice.ask, 10)
+            : "n/a"
+        }
         isLong={isLong}
         selectedLeverage={selectedLeverage}
         collateral={typedValue}
