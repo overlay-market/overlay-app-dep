@@ -26,6 +26,7 @@ import {
 import { useAllMarkets } from "../../state/markets/hooks";
 import { utils } from "ethers";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
+import { shortenAddress } from "../../utils/web3";
 
 const activeClassName = "INACTIVE";
 
@@ -128,7 +129,7 @@ const Markets = () => {
               >
                 <StyledTableCellThin component="th" scope="row">
                   {/* {market.baseName} / {market.quoteName} */}
-                  {market.id}
+                  {shortenAddress(market.id)}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">

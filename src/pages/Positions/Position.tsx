@@ -29,6 +29,7 @@ import {
   useUnwindState,
   useUnwindActionHandlers,
 } from "../../state/unwind/hooks";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -141,9 +142,9 @@ export function Position({
         <TEXT.MediumHeader fontWeight={700}>Close Position</TEXT.MediumHeader>
         <TEXT.MediumHeader>
           {position && position?.isLong ? (
-            Number(utils.formatUnits(position?.pricePoint.bid, 18)).toFixed(7)
+            formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
           ) : (
-            Number(utils.formatUnits(position?.pricePoint.ask, 18)).toFixed(7)
+            formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)
           )}
         </TEXT.MediumHeader>
       </Column>
