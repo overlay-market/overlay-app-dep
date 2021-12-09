@@ -387,7 +387,7 @@ export const BuildInterface = ({
 
   // console.log('approval: ', approval);
 
-  const showApprovalFlow = approval !== ApprovalState.APPROVED;
+  const showApprovalFlow = approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN;
 
   async function attemptToApprove() {
     if (!typedValue) throw new Error('missing position input size');
