@@ -14,10 +14,20 @@ export default function ConfirmTxnModal({
   isOpen,
   onConfirm,
   onDismiss,
+  marketPrice,
+  isLong,
+  selectedLeverage,
+  collateral,
+  setSlippageValue,
 }:{
   isOpen: boolean
   onConfirm?: () => void
   onDismiss?: () => void
+  marketPrice: string
+  isLong: boolean | undefined
+  selectedLeverage: number
+  collateral: string | undefined
+  setSlippageValue: string
 }) {
   return(
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
@@ -44,19 +54,19 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Price'} 
                         itemColor={'#B9BABD'}
-                        value={'3000.00 USDC'}
+                        value={marketPrice}
                         />
 
                     <ListItem 
                         item={'Side'} 
-                        itemColor={'#B9BABD'}
-                        value={'Long'}
+                        itemColor={isLong ? "#10DCB1" : "#FF648A"}
+                        value={isLong ? "Long" : "Short"}
                         />  
 
                     <ListItem 
                         item={'Leverage'} 
                         itemColor={'#B9BABD'}
-                        value={'4x'}
+                        value={`${selectedLeverage}x`}
                         />  
                 </Column>
 
@@ -70,7 +80,7 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Slippage'} 
                         itemColor={'#B9BABD'}
-                        value={'0%'}
+                        value={`${setSlippageValue}%`}
                         />  
 
                     <ListItem 
@@ -84,7 +94,7 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Collateral'} 
                         itemColor={'#B9BABD'}
-                        value={'10 OVL'}
+                        value={`${collateral} OVL`}
                         />
 
                     <ListItem 

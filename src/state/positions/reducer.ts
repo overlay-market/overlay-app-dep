@@ -17,8 +17,8 @@ export interface PositionState {
   readonly selectedLeverage: number;
   readonly isLong: boolean | undefined;
   readonly inputCurrency: string | undefined;
-  readonly setSlippageValue: DefaultTxnSettings | string | undefined;
-  readonly txnDeadline: DefaultTxnSettings | string | undefined;
+  readonly setSlippageValue: DefaultTxnSettings | string;
+  readonly txnDeadline: DefaultTxnSettings | string;
 }
 
 export const initialState: PositionState = {

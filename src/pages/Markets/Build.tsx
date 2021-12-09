@@ -383,19 +383,17 @@ export const BuildInterface = ({
       });
   }, [buildCallback, onResetBuildState]);
 
-  // const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
+  const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
 
   // console.log('approval: ', approval);
 
-  // const showApprovalFlow = approval !== ApprovalState.APPROVED;
+  const showApprovalFlow = approval !== ApprovalState.APPROVED;
 
-  // async function attemptToApprove() {
-  //   if (!typedValue) throw new Error('missing position input size');
-  //   if (isLong === undefined) throw new Error('please choose a long/short position');
-  //   if (!selectedLeverage) throw new Error('please select a leverage value');
+  async function attemptToApprove() {
+    if (!typedValue) throw new Error('missing position input size');
 
-  //   await approveCallback();
-  // };
+    await approveCallback();
+  };
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -579,13 +577,13 @@ export const BuildInterface = ({
             align={"right"}
           />
         </InputContainer>
-        {/* {showApprovalFlow ? (
+        {showApprovalFlow ? (
           <ApproveButton
             onClick={attemptToApprove}
             >
             Approve
           </ApproveButton>
-        ):( */}
+        ):(
           <BuildButton
             onClick={() => {
               setBuildState({
@@ -598,7 +596,7 @@ export const BuildInterface = ({
           >
             Build
           </BuildButton>
-        {/* )} */}
+        )}
       </Column>
 
       <AdditionalDetails
@@ -617,6 +615,13 @@ export const BuildInterface = ({
         isOpen={showConfirm}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
+        marketPrice={market ? 
+          ( isLong ? (formatWeiToParsedString(market.currentPrice.bid, 10)) : (formatWeiToParsedString(market.currentPrice.ask, 10)))
+          : 'n/a'}
+        isLong={isLong}
+        selectedLeverage={selectedLeverage}
+        collateral={typedValue}
+        setSlippageValue={setSlippageValue}
       />
       <TransactionPending
         attemptingTxn={attemptingTxn}

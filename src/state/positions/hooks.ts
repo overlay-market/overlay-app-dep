@@ -25,8 +25,8 @@ export function usePositionActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;
   onSelectLeverage: (selectedLeverage: number) => void;
   onSelectPositionSide: (isLong: boolean) => void;
-  onSetSlippage: (setSlippageValue: DefaultTxnSettings | string | undefined) => void;
-  onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string | undefined) => void;
+  onSetSlippage: (setSlippageValue: DefaultTxnSettings | string) => void;
+  onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string) => void;
   onResetBuildState: () => void;
 } {
   const dispatch = useAppDispatch();
@@ -53,14 +53,14 @@ export function usePositionActionHandlers(): {
   );
 
   const onSetSlippage = useCallback(
-    (setSlippageValue: DefaultTxnSettings | string | undefined) => {
+    (setSlippageValue: DefaultTxnSettings | string) => {
       dispatch(setSlippage({ setSlippageValue }))
     },
     [dispatch]
   )
 
   const onSetTxnDeadline = useCallback(
-    (txnDeadline: DefaultTxnSettings | string | undefined) => {
+    (txnDeadline: DefaultTxnSettings | string) => {
       dispatch(setTxnDeadline({ txnDeadline }))
     },
     [dispatch]
@@ -163,12 +163,12 @@ export function useIsTxnSettingsAuto() : boolean {
 };
 
 //@ts-ignore
-export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => any] {
+export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxnSettings | string, default_deadline: DefaultTxnSettings | string) => any] {
   const dispatch = useAppDispatch();
   const isAuto = useIsTxnSettingsAuto();
 
   const toggleSetTxnSettingsAuto = useCallback(
-    (default_slippage: DefaultTxnSettings | string | undefined, default_deadline: DefaultTxnSettings | string | undefined) => {
+    (default_slippage: DefaultTxnSettings | string, default_deadline: DefaultTxnSettings | string) => {
       dispatch(setSlippage({ setSlippageValue: default_slippage }))
       dispatch(setTxnDeadline({ txnDeadline: default_deadline }))
     },
