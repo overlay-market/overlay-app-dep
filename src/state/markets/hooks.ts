@@ -17,7 +17,7 @@ export function useAllMarkets() {
     isError, 
     error, 
     isUninitialized, 
-    data } = useAppQuery({}, { pollingInterval: 3000 });
+    data } = useAppQuery({}, { pollingInterval: 15000 });
 
   return useMemo(() => {
     return {

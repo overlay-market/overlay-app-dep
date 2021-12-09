@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo} from "react";
 import styled from "styled-components";
 import { MarketCard } from "../../components/Card/MarketCard";
 import {
@@ -253,7 +253,7 @@ export const BuildInterface = ({
 
   const addTransaction = useTransactionAdder();
 
-  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState(false);
+  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
 
   const isAuto = useIsTxnSettingsAuto();
 
@@ -385,15 +385,15 @@ export const BuildInterface = ({
 
   const [approval, approveCallback] = useApproveCallback(utils.parseUnits(typedValue ? typedValue : "0"), ovl, account ?? undefined);
 
-  // console.log('approval: ', approval);
+  const showApprovalFlow = useMemo(() => {
+    return approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN; 
+  }, [approval]);
 
-  const showApprovalFlow = approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN;
-
-  async function attemptToApprove() {
+  const handleApprove = useCallback(async() => {
     if (!typedValue) throw new Error('missing position input size');
 
     await approveCallback();
-  };
+  }, [approveCallback, typedValue]);
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -583,7 +583,7 @@ export const BuildInterface = ({
         </InputContainer>
         {showApprovalFlow ? (
           <ApproveButton
-            onClick={attemptToApprove}
+            onClick={handleApprove}
             >
             Approve
           </ApproveButton>

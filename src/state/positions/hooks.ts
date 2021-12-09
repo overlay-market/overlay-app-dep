@@ -189,7 +189,7 @@ export function useAllPositions(
     error,
     isUninitialized,
     data
-  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 3000 })
+  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 15000 })
 
   return useMemo(() => {
     return {
