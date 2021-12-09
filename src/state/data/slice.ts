@@ -45,6 +45,11 @@ export const api = createApi({
                     id
                     address
                   }
+                  pricePoint{
+                    bid
+                    ask
+                    depth
+                  }
                 }
               }
             }

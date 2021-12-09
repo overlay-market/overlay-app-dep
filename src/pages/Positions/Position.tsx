@@ -139,7 +139,13 @@ export function Position({
 
       <Column>
         <TEXT.MediumHeader fontWeight={700}>Close Position</TEXT.MediumHeader>
-        <TEXT.MediumHeader>$2241.25</TEXT.MediumHeader>
+        <TEXT.MediumHeader>
+          {position && position?.isLong ? (
+            Number(utils.formatUnits(position?.pricePoint.bid, 18)).toFixed(7)
+          ) : (
+            Number(utils.formatUnits(position?.pricePoint.ask, 18)).toFixed(7)
+          )}
+        </TEXT.MediumHeader>
       </Column>
 
       <Label htmlFor="Amount" mt={"24px"}>

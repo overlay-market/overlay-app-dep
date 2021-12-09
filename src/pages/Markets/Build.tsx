@@ -362,7 +362,7 @@ export const BuildInterface = ({
       txnErrorMessage,
       txHash,
     });
-  }, [showConfirm, attemptingTxn, txnErrorMessage, txHash]);
+  }, [attemptingTxn, txnErrorMessage, txHash]);
 
   const handleBuild = useCallback(() => {
     if (!typedValue) throw new Error("missing position input size");
@@ -400,7 +400,7 @@ export const BuildInterface = ({
           txHash: undefined,
         });
       });
-  }, [buildCallback, onResetBuildState]);
+  }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
 
   const [approval, approveCallback] = useApproveCallback(
     utils.parseUnits(typedValue ? typedValue : "0"),

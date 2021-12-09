@@ -1259,6 +1259,9 @@ export type AccountQuery = (
         & { collateralManager: (
           { __typename?: 'CollateralManager' }
           & Pick<CollateralManager, 'id' | 'address'>
+        ), pricePoint: (
+          { __typename?: 'PricePoint' }
+          & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
         ) }
       ) }
     )> }
@@ -1302,6 +1305,11 @@ export const AccountDocument = `
         collateralManager {
           id
           address
+        }
+        pricePoint {
+          bid
+          ask
+          depth
         }
       }
     }
