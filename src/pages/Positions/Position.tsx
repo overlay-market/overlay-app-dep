@@ -30,6 +30,8 @@ import {
   useUnwindActionHandlers,
 } from "../../state/unwind/hooks";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
+import { usePositionValue } from "../../hooks/usePositionValue";
+import { BigNumber } from "ethers";
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -81,6 +83,10 @@ export function Position({
   });
 
   const position = filtered ? filtered[0].position : null;
+
+  const positionValue: BigNumber | null = usePositionValue(position ? position.number : null)
+
+  console.log('positionValue: ', positionValue);
 
   const { typedValue, selectedPositionId } = useUnwindState();
 
@@ -199,7 +205,7 @@ export function Position({
 
       <Column mt={"48px"}>
         <ListItem item={"PnL"} valueColor={"#10DCB1"} value={"n/a"} />
-        <ListItem item={"Value"} value={"n/a"} />
+        <ListItem item={"Value"} value={ positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : 'loading...' } />
         <ListItem
           item={"Open Interest"}
           value={`${
