@@ -50,6 +50,9 @@ import { Back } from "../../components/Back/Back";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { useAllPositions } from "../../state/positions/hooks";
 import { shortenAddress } from "../../utils/web3";
+import { useSingleCallResult } from "../../state/multicall/hooks";
+import { useCollateralManagerContract } from "../../hooks/useContract";
+import { useBuildFees } from "../../hooks/useBuildFees";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -275,6 +278,8 @@ export const BuildInterface = ({
   const { isLoading, markets } = useAllMarkets();
 
   const { positions } = useAllPositions(account);
+
+  const buildFees = useBuildFees();
 
   const filtered = markets?.filter((market, key) => {
     return market.id === marketId;
@@ -667,7 +672,7 @@ export const BuildInterface = ({
       </Column>
 
       <AdditionalDetails
-        fee={"0.0"}
+        fee={ buildFees ? formatWeiToParsedNumber(buildFees, 18, 2) : "loading"}
         slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
         bid={

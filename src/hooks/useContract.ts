@@ -49,7 +49,7 @@ export function useMarketContract(address: string | undefined): Contract | null 
   return useContract(address, OVL_V1_MARKET_ABI, false);
 };
 
-export function useCollateralManangerContract(): Contract | null {
+export function useCollateralManagerContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && OVL_COLLATERAL_ADDRESS[chainId], OVL_COLLATERAL_ABI, false)
 };
