@@ -47,7 +47,10 @@ import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { utils } from "ethers";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { Back } from "../../components/Back/Back";
-import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
+import {
+  formatWeiToParsedString,
+  formatWeiToParsedNumber,
+} from "../../utils/formatWei";
 import { useAllPositions } from "../../state/positions/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { useSingleCallResult } from "../../state/multicall/hooks";
@@ -172,7 +175,7 @@ const AdditionalDetails = ({
   expectedOi?: string | number;
   oiLong?: number | undefined;
   oiShort?: number | undefined;
-  oiCap?: number | undefined
+  oiCap?: number | undefined;
   fundingRate?: string | number;
 }) => {
   return (
@@ -217,7 +220,10 @@ const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
 
-        <OI> {oiLong} / {oiCap} </OI>
+        <OI>
+          {" "}
+          {oiLong} / {oiCap}{" "}
+        </OI>
       </Detail>
 
       <Detail>
@@ -230,7 +236,10 @@ const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
 
-        <OI> {oiShort} / {oiCap} </OI>
+        <OI>
+          {" "}
+          {oiShort} / {oiCap}{" "}
+        </OI>
       </Detail>
 
       <Detail>
@@ -422,12 +431,13 @@ export const BuildInterface = ({
   }, [approveCallback, typedValue]);
 
   const averagePrice = useMemo(() => {
-    return market ? (
-              ((
-                Number(utils.formatUnits(market?.currentPrice.bid, 18)) + 
-                Number(utils.formatUnits(market?.currentPrice.ask, 18))
-              )/2).toFixed(7)
-            ) : ('loading...')
+    return market
+      ? (
+          (Number(utils.formatUnits(market?.currentPrice.bid, 18)) +
+            Number(utils.formatUnits(market?.currentPrice.ask, 18))) /
+          2
+        ).toFixed(7)
+      : "loading...";
   }, [market]);
 
   return (
@@ -444,20 +454,21 @@ export const BuildInterface = ({
               color={"white"}
               margin={"14px 0 0 0"}
             >
-              {market ? shortenAddress(market?.id) : 'loading...'}
+              {market ? shortenAddress(market?.id) : "loading..."}
             </TEXT.MediumHeader>
 
             <TEXT.MediumHeader fontWeight={400} color={"white"}>
               {isLong === undefined && averagePrice}
 
-              {isLong !== undefined && market ? 
-                ( 
-                  isLong ? (Number(utils.formatUnits(market?.currentPrice.bid, 18)).toFixed(7))
-                  :(Number(utils.formatUnits(market?.currentPrice.ask, 18)).toFixed(7))
-                ):(
-                  null
-                )}
-
+              {isLong !== undefined && market
+                ? isLong
+                  ? Number(
+                      utils.formatUnits(market?.currentPrice.bid, 18)
+                    ).toFixed(7)
+                  : Number(
+                      utils.formatUnits(market?.currentPrice.ask, 18)
+                    ).toFixed(7)
+                : null}
             </TEXT.MediumHeader>
           </Column>
           <Icon
@@ -672,7 +683,7 @@ export const BuildInterface = ({
       </Column>
 
       <AdditionalDetails
-        fee={ buildFees ? formatWeiToParsedNumber(buildFees, 18, 2) : "loading"}
+        fee={buildFees ? formatWeiToParsedNumber(buildFees, 18, 2) : "loading"}
         slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
         bid={

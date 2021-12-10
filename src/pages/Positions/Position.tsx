@@ -11,10 +11,7 @@ import {
   TransparentUnderlineButton,
   LightGreyButton,
 } from "../../components/Button/Button";
-import {
-  InputContainer,
-  InputDescriptor,
-} from "../Markets/Build";
+import { InputContainer, InputDescriptor } from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { PositionCard, PositionsCardHeader } from "./Positions";
 import { useOvlBalance } from "../../state/wallet/hooks";
@@ -29,7 +26,10 @@ import {
   useUnwindState,
   useUnwindActionHandlers,
 } from "../../state/unwind/hooks";
-import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
+import {
+  formatWeiToParsedString,
+  formatWeiToParsedNumber,
+} from "../../utils/formatWei";
 import { usePositionValue } from "../../hooks/usePositionValue";
 import { BigNumber } from "ethers";
 
@@ -84,13 +84,16 @@ export function Position({
 
   const position = filtered ? filtered[0].position : null;
 
-  const positionValue: BigNumber | null = usePositionValue(position ? position.number : null)
+  const positionValue: BigNumber | null = usePositionValue(
+    position ? position.number : null
+  );
 
-  console.log('positionValue: ', positionValue);
+  console.log("positionValue: ", positionValue);
 
   const { typedValue, selectedPositionId } = useUnwindState();
 
-  const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
+  const { onUserInput, onSelectPositionId, onResetUnwindState } =
+    useUnwindActionHandlers();
 
   useEffect(() => {
     onResetUnwindState();
@@ -104,13 +107,12 @@ export function Position({
   );
 
   const handleQuickInput = (percentage: number, totalOi: string | null) => {
-      let calculatedOi:string = percentage !== 100 ? (
-        (Number(totalOi) * (percentage / 100)).toFixed(0)
-      ) : (
-        (Number(totalOi) * (percentage / 100)).toFixed(18)
-      );
+    let calculatedOi: string =
+      percentage !== 100
+        ? (Number(totalOi) * (percentage / 100)).toFixed(0)
+        : (Number(totalOi) * (percentage / 100)).toFixed(18);
 
-      return onUserInput(calculatedOi)
+    return onUserInput(calculatedOi);
   };
 
   const handleSelectPosition = useCallback(
@@ -121,10 +123,8 @@ export function Position({
   );
 
   const handleClearInput = useCallback(() => {
-    onUserInput("")
-    }, 
-    [onUserInput]
-  );
+    onUserInput("");
+  }, [onUserInput]);
 
   const { callback: unwindCallback, error: unwindCallbackError } =
     useUnwindCallback(typedValue, selectedPositionId);
@@ -136,7 +136,7 @@ export function Position({
 
     unwindCallback()
       .then((success) => handleClearInput())
-      .catch((err) => console.error('Error from handleUnwind: ', err))
+      .catch((err) => console.error("Error from handleUnwind: ", err));
   }, [unwindCallback, handleClearInput]);
 
   return (
@@ -147,11 +147,9 @@ export function Position({
       <Column>
         <TEXT.MediumHeader fontWeight={700}>Close Position</TEXT.MediumHeader>
         <TEXT.MediumHeader>
-          {position && position?.isLong ? (
-            formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
-          ) : (
-            formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)
-          )}
+          {position && position?.isLong
+            ? formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
+            : formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)}
         </TEXT.MediumHeader>
       </Column>
 
@@ -160,16 +158,56 @@ export function Position({
           Unwind Amount
         </TEXT.Body>
         <Row ml={"auto"} mb={"4px"} width={"auto"}>
-          <TransparentUnderlineButton onClick={() => handleQuickInput(25, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
+          <TransparentUnderlineButton
+            onClick={() =>
+              handleQuickInput(
+                25,
+                position?.oiShares
+                  ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
+                  : null
+              )
+            }
+            border={"none"}
+          >
             25%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton onClick={() => handleQuickInput(50, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
+          <TransparentUnderlineButton
+            onClick={() =>
+              handleQuickInput(
+                50,
+                position?.oiShares
+                  ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
+                  : null
+              )
+            }
+            border={"none"}
+          >
             50%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton onClick={() => handleQuickInput(75, position?.oiShares ? (Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)) : (null))} border={"none"}>
+          <TransparentUnderlineButton
+            onClick={() =>
+              handleQuickInput(
+                75,
+                position?.oiShares
+                  ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
+                  : null
+              )
+            }
+            border={"none"}
+          >
             75%
           </TransparentUnderlineButton>
-          <TransparentUnderlineButton onClick={() => handleQuickInput(100, position?.oiShares ? utils.formatUnits(position?.oiShares, 18) : (null))} border={"none"}>
+          <TransparentUnderlineButton
+            onClick={() =>
+              handleQuickInput(
+                100,
+                position?.oiShares
+                  ? utils.formatUnits(position?.oiShares, 18)
+                  : null
+              )
+            }
+            border={"none"}
+          >
             Max
           </TransparentUnderlineButton>
         </Row>
@@ -205,12 +243,20 @@ export function Position({
 
       <Column mt={"48px"}>
         <ListItem item={"PnL"} valueColor={"#10DCB1"} value={"n/a"} />
-        <ListItem item={"Value"} value={ positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : 'loading...' } />
+        <ListItem
+          item={"Value"}
+          value={
+            positionValue
+              ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL`
+              : "loading..."
+          }
+        />
         <ListItem
           item={"Open Interest"}
           value={`${
             position?.oiShares
-              ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)+" OVL"
+              ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) +
+                " OVL"
               : "loading..."
           }`}
         />
@@ -226,7 +272,8 @@ export function Position({
           item={"Debt"}
           value={`${
             position?.debt
-              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2)+" OVL"
+              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) +
+                " OVL"
               : "loading..."
           }`}
         />
@@ -234,7 +281,8 @@ export function Position({
           item={"Cost"}
           value={`${
             position?.cost
-              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2)+" OVL"
+              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) +
+                " OVL"
               : "loading..."
           }`}
         />
@@ -242,7 +290,8 @@ export function Position({
           item={"Collateral"}
           value={`${
             position?.debt
-              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2)+" OVL"
+              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) +
+                " OVL"
               : "loading..."
           }`}
         />
@@ -261,7 +310,9 @@ export function Position({
           item={"Total Shares Outstanding"}
           value={`${
             position?.totalSupply
-              ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2)+" OVL"
+              ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(
+                  2
+                ) + " OVL"
               : "loading..."
           }`}
         />

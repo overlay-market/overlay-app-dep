@@ -12,11 +12,10 @@ export function usePositionValue(positionId: string | null): BigNumber | null {
     if (!positionId || !currentBlock || !collateralManagerContract) return;
 
     (async () => {
-      setValue(await collateralManagerContract.value(positionId))
+      setValue(await collateralManagerContract.value(positionId));
     })();
-
-  }, [positionId, currentBlock, collateralManagerContract])
+  }, [positionId, currentBlock, collateralManagerContract]);
   return useMemo(() => {
     return value;
-  }, [value])
+  }, [value]);
 }
