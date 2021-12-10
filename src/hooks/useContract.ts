@@ -35,21 +35,21 @@ export function useContract<T extends Contract = Contract>(
   }, [address, ABI, library, withSignerIfPossible, account]) as T;
 };
 
-export function useMulticall2Contract() {
+export function useMulticall2Contract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && MULTICALL2_ADDRESS[chainId], MULTICALL2_ABI, false);
 };
 
-export function useOVLFactoryContract() {
+export function useOVLFactoryContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && V1_FACTORY_ADDRESS[chainId], OVL_V1_FACTORY_ABI, false);
 };
 
-export function useMarketContract(address: string | undefined) {
+export function useMarketContract(address: string | undefined): Contract | null {
   return useContract(address, OVL_V1_MARKET_ABI, false);
 };
 
-export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean) {
+export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible);
 };
 
