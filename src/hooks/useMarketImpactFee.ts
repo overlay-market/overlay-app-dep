@@ -10,7 +10,7 @@ export function useMarketImpactFee(
   isLong?: boolean | undefined,
   oi?: BigNumber | undefined,
   oiCap?: BigNumber | undefined
-) {
+){
   const marketContract = useMarketContract(marketAddress);
   const [lmbda, setLmbda] = useState<BigNumber>();
   const [pressure, setPressure] = useState<BigNumber>();

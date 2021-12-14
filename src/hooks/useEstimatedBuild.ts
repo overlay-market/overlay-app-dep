@@ -1,22 +1,26 @@
-import { utils, BigNumber } from "ethers";
-import { useBlockNumber } from "../state/application/hooks";
-import { useMemo, useEffect, useState } from "react";
-import { useMarketContract } from "./useContract";
+import { useMemo } from "react";
 
-export function useEstimatedBuild() {
-  const marketContract = useMarketContract('0x6f49162bC17EbA2B926f789522269A0e0F2A5884');
-  const currentBlock = useBlockNumber();
-  const [estimatedBuild, setEstimatedBuild] = useState();
+export function useEstimatedBuild(
+  selectedLeverage: number,
+  collateral?: number | undefined,
+  buildFee?: number | undefined,
+  impactFee?: number | undefined,
+) {
+  const preAdjustedOi = collateral ? (collateral * selectedLeverage) : undefined;
+  
+  const calculatedBuildFee = preAdjustedOi && buildFee ? (preAdjustedOi * buildFee) : undefined;
+  const calculatedImpactFee = preAdjustedOi && impactFee ? (preAdjustedOi * impactFee) : undefined;
 
-  useEffect(() => {
-    if (!marketContract || !currentBlock) return;
-
-    (async () => {
-      setEstimatedBuild(await marketContract.enterOI( true, utils.parseUnits('5'), utils.parseUnits('1') ))
-    })();
-  }, [marketContract, currentBlock]);
+  const adjustedCollateral = collateral && calculatedBuildFee && calculatedImpactFee ? (collateral - calculatedBuildFee - calculatedImpactFee) : undefined;
+  const adjustedOi = adjustedCollateral ? (adjustedCollateral * selectedLeverage) : undefined;
 
   return useMemo(() => {
-    return estimatedBuild;
-  }, [estimatedBuild]);
+    return {
+      preAdjustedOi,
+      calculatedBuildFee,
+      calculatedImpactFee,
+      adjustedCollateral,
+      adjustedOi
+    };
+  }, [adjustedCollateral, adjustedOi, preAdjustedOi, calculatedBuildFee, calculatedImpactFee]);
 };

@@ -455,7 +455,6 @@ export const BuildInterface = ({
     market?.oiCap
   );
 
-  console.log('marketImpactFee: ', marketImpactFee);
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
