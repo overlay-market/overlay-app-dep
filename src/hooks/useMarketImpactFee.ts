@@ -1,8 +1,7 @@
-import { Token, CurrencyAmount } from "@uniswap/sdk-core";
 import { useMemo, useEffect, useState } from "react";
 import { useBlockNumber } from "../state/application/hooks";
 import { useMarketContract } from "./useContract";
-import { utils, BigNumber } from "ethers";
+import { BigNumber } from "ethers";
 import { formatWeiToParsedNumber } from "../utils/formatWei";
 
 export function useMarketImpactFee(
@@ -12,24 +11,25 @@ export function useMarketImpactFee(
   oiCap?: BigNumber | undefined
 ){
   const marketContract = useMarketContract(marketAddress);
+  const blockNumber = useBlockNumber();
   const [lmbda, setLmbda] = useState<BigNumber>();
   const [pressure, setPressure] = useState<BigNumber>();
 
   useEffect(() => {
-    if (!marketContract || isLong === undefined || !oi || !oiCap) return;
+    if (!marketContract || isLong === undefined || !oi || !oiCap || !blockNumber) return;
 
     (async () => {
       setPressure(await marketContract.pressure(isLong, oi, oiCap))
     })();
-  }, [marketContract, isLong, oi, oiCap]);
+  }, [marketContract, isLong, oi, oiCap, blockNumber]);
 
   useEffect(() => {
-    if (!marketContract) return;
+    if (!marketContract || !blockNumber) return;
 
     (async () => {
       setLmbda(await marketContract.lmbda())
     })();
-  }, [marketContract]);
+  }, [marketContract, blockNumber]);
 
   return useMemo(() => {
     const parsedLmbda = lmbda ? formatWeiToParsedNumber(lmbda, 18, 18) : undefined;
