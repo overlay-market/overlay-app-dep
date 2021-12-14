@@ -443,11 +443,14 @@ export const BuildInterface = ({
       : "loading...";
   }, [market]);
 
-  
   const { lmbda, pressure, impactFee } = useMarketImpactFee(
     market ? market.id : undefined,
     isLong,
-    isLong !== undefined ? (isLong ? market?.oiLong : market?.oiShort) : undefined,
+    isLong !== undefined
+      ? isLong
+        ? market?.oiLong
+        : market?.oiShort
+      : undefined,
     market?.oiCap
   );
 
@@ -456,7 +459,7 @@ export const BuildInterface = ({
     calculatedBuildFee,
     calculatedImpactFee,
     adjustedCollateral,
-    adjustedOi
+    adjustedOi,
   } = useEstimatedBuild(
     selectedLeverage,
     Number(typedValue),
@@ -707,7 +710,13 @@ export const BuildInterface = ({
       </Column>
 
       <AdditionalDetails
-        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading"}
+        fee={
+          buildFee
+            ? formatDecimalToPercentage(
+                formatWeiToParsedNumber(buildFee, 18, 5)
+              )
+            : "loading"
+        }
         slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
         bid={
@@ -720,7 +729,7 @@ export const BuildInterface = ({
             ? formatWeiToParsedString(market.currentPrice.ask, 10)
             : "loading"
         }
-        expectedOi={ adjustedOi ? adjustedOi.toFixed(2) : ' - '}
+        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : " - "}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
         oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
