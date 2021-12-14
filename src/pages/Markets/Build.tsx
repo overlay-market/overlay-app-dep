@@ -447,7 +447,12 @@ export const BuildInterface = ({
 
   // console.log('estimatedBuild: ', estimatedBuild);
   
-  // const marketImpactFee = useMarketImpactFee('', isLong, );
+  const marketImpactFee = useMarketImpactFee(
+    market ? market.id : undefined,
+    isLong,
+    isLong !== undefined ? (isLong ? market?.oiLong : market?.oiShort) : undefined,
+    market?.oiCap
+  );
 
   console.log('marketImpactFee: ', marketImpactFee);
 

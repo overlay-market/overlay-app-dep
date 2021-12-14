@@ -3,6 +3,7 @@ import { useMemo, useEffect, useState } from "react";
 import { useBlockNumber } from "../state/application/hooks";
 import { useMarketContract } from "./useContract";
 import { utils, BigNumber } from "ethers";
+import { formatWeiToParsedNumber } from "../utils/formatWei";
 
 export function useMarketImpactFee(
   marketAddress?: string | undefined,
@@ -10,7 +11,7 @@ export function useMarketImpactFee(
   oi?: BigNumber | undefined,
   oiCap?: BigNumber | undefined
 ) {
-  const marketContract = useMarketContract('0x6f49162bC17EbA2B926f789522269A0e0F2A5884');
+  const marketContract = useMarketContract(marketAddress);
   const [lmbda, setLmbda] = useState<BigNumber>();
   const [pressure, setPressure] = useState<BigNumber>();
 
@@ -31,9 +32,20 @@ export function useMarketImpactFee(
   }, [marketContract]);
 
   return useMemo(() => {
+    const parsedLmbda = lmbda ? formatWeiToParsedNumber(lmbda, 18, 18) : undefined;
+    console.log('parsedLmbda: ', parsedLmbda);
+
+    const parsedPressure = pressure ? formatWeiToParsedNumber(pressure, 18, 18) : undefined;
+    console.log('parsedPressure: ', parsedPressure);
+
+    const exponent = parsedLmbda && parsedPressure ? (-1 * parsedLmbda * parsedPressure) : undefined;
+
+    const impactFee = exponent ? (1 - Math.E ** exponent) : undefined;
+
     return {
       lmbda,
-      pressure
+      pressure,
+      impactFee
     }
   }, [pressure, lmbda]);
 };
