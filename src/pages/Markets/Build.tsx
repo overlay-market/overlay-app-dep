@@ -440,6 +440,7 @@ export const BuildInterface = ({
       : "loading...";
   }, [market]);
 
+
   return (
     <MarketCard align={"left"} padding={"0px"}>
       <Column
@@ -683,7 +684,7 @@ export const BuildInterface = ({
       </Column>
 
       <AdditionalDetails
-        fee={buildFees ? formatWeiToParsedNumber(buildFees, 18, 2) : "loading"}
+        fee={buildFees ? formatWeiToParsedNumber(buildFees, 18, 5) : "loading"}
         slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
         bid={

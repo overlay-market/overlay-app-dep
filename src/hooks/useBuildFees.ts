@@ -1,21 +1,22 @@
 import { BigNumber } from 'ethers';
 import { useEffect, useState, useMemo } from "react";
-import { useCollateralManagerContract } from "./useContract";
+import { useMothershipContract } from "./useContract";
 import { useBlockNumber } from '../state/application/hooks';
 
 export function useBuildFees() {
-  const collateralManagerContract = useCollateralManagerContract();
+  const mothershipContract = useMothershipContract();
   const currentBlock = useBlockNumber();
   const [fees, setFees] = useState<BigNumber | null>(null);
 
   useEffect(() => {
-    if (!collateralManagerContract || !currentBlock) return;
+    if (!mothershipContract || !currentBlock) return;
+
 
     (async () => {
-      setFees(await collateralManagerContract.fees());
+      setFees(await mothershipContract.fee());
     })()
   }
-  , [currentBlock, collateralManagerContract]);
+  , [currentBlock, mothershipContract]);
 
   return useMemo(() => {
     return fees;
