@@ -88,7 +88,11 @@ export function Position({
     position ? position.number : null
   );
 
-  console.log("positionValue: ", positionValue);
+  // const PnL = (positionValue: BigNumber | null, positionCost: BigNumber | null): number | undefined => {
+  //   return positionValue && positionCost ? formatWeiToParsedNumber((positionValue.sub(positionCost)), 18, 2) : undefined;
+  // };
+
+  const PnL = positionValue && position?.cost ? formatWeiToParsedNumber((positionValue.sub(position.cost)), 18, 2) : undefined;
 
   const { typedValue, selectedPositionId } = useUnwindState();
 
@@ -237,12 +241,12 @@ export function Position({
         quotePrice={"n/a"}
         quoteCurrency={"n/a"}
         estLiquidationPrice={position?.liquidationPrice}
-        PnL={"n/a"}
+        PnL={`${PnL} OVL`}
         navigate={false}
       />
 
       <Column mt={"48px"}>
-        <ListItem item={"PnL"} valueColor={"#10DCB1"} value={"n/a"} />
+        <ListItem item={"PnL"} valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} />
         <ListItem
           item={"Value"}
           value={

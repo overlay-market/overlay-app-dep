@@ -141,7 +141,7 @@ export const PositionCard = ({
   quotePrice: number | string;
   quoteCurrency: string;
   estLiquidationPrice: string;
-  PnL: number | string;
+  PnL: number | string | undefined;
   navigate?: boolean;
   border?: boolean;
 }) => {
