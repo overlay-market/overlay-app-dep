@@ -56,6 +56,8 @@ import { shortenAddress } from "../../utils/web3";
 import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useCollateralManagerContract } from "../../hooks/useContract";
 import { useBuildFee } from "../../hooks/useBuildFee";
+import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
+import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -440,6 +442,14 @@ export const BuildInterface = ({
       : "loading...";
   }, [market]);
 
+
+  // const estimatedBuild = useEstimatedBuild();
+
+  // console.log('estimatedBuild: ', estimatedBuild);
+  
+  // const marketImpactFee = useMarketImpactFee('', isLong, );
+
+  console.log('marketImpactFee: ', marketImpactFee);
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
