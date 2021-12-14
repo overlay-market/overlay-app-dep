@@ -55,7 +55,7 @@ import { useAllPositions } from "../../state/positions/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useCollateralManagerContract } from "../../hooks/useContract";
-import { useBuildFees } from "../../hooks/useBuildFees";
+import { useBuildFee } from "../../hooks/useBuildFee";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -288,7 +288,7 @@ export const BuildInterface = ({
 
   const { positions } = useAllPositions(account);
 
-  const buildFees = useBuildFees();
+  const buildFee = useBuildFee();
 
   const filtered = markets?.filter((market, key) => {
     return market.id === marketId;
@@ -684,7 +684,7 @@ export const BuildInterface = ({
       </Column>
 
       <AdditionalDetails
-        fee={buildFees ? formatWeiToParsedNumber(buildFees, 18, 5) : "loading"}
+        fee={buildFee ? formatWeiToParsedNumber(buildFee, 18, 5) : "loading"}
         slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
         bid={
@@ -719,6 +719,7 @@ export const BuildInterface = ({
         selectedLeverage={selectedLeverage}
         collateral={typedValue}
         setSlippageValue={setSlippageValue}
+        buildFee={buildFee && formatWeiToParsedNumber(buildFee, 18, 5)}
       />
       <TransactionPending
         attemptingTxn={attemptingTxn}

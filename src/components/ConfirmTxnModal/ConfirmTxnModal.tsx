@@ -19,6 +19,7 @@ export default function ConfirmTxnModal({
   selectedLeverage,
   collateral,
   setSlippageValue,
+  buildFee,
 }:{
   isOpen: boolean
   onConfirm?: () => void
@@ -28,6 +29,7 @@ export default function ConfirmTxnModal({
   selectedLeverage: number
   collateral: string | undefined
   setSlippageValue: string
+  buildFee: number | undefined | null
 }) {
   return(
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
@@ -75,7 +77,7 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Fee'} 
                         itemColor={'#B9BABD'}
-                        value={'0%'}
+                        value={`${buildFee}%`}
                         />
 
                     <ListItem 
