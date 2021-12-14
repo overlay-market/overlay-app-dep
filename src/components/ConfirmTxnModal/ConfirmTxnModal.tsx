@@ -17,9 +17,10 @@ export default function ConfirmTxnModal({
   marketPrice,
   isLong,
   selectedLeverage,
-  collateral,
   setSlippageValue,
   buildFee,
+  adjustedCollateral,
+  adjustedOi
 }:{
   isOpen: boolean
   onConfirm?: () => void
@@ -27,9 +28,10 @@ export default function ConfirmTxnModal({
   marketPrice: string | undefined
   isLong: boolean | undefined
   selectedLeverage: number
-  collateral: string | undefined
   setSlippageValue: string
   buildFee: number | undefined | null
+  adjustedCollateral: number | undefined
+  adjustedOi: number | undefined
 }) {
   return(
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
@@ -89,7 +91,7 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Est. Liquidation'} 
                         itemColor={'#B9BABD'}
-                        value={'$0.00'}
+                        value={'n/a'}
                         />  
                 </Column>
 
@@ -97,13 +99,13 @@ export default function ConfirmTxnModal({
                     <ListItem 
                         item={'Collateral'} 
                         itemColor={'#B9BABD'}
-                        value={`${collateral} OVL`}
+                        value={`${adjustedCollateral} OVL`}
                         />
 
                     <ListItem 
                         item={'Expected OI'} 
                         itemColor={'#B9BABD'}
-                        value={'~9.89 OVL'}
+                        value={`${adjustedOi} OVL`}
                         />  
                 </Column>
 

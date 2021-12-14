@@ -443,18 +443,26 @@ export const BuildInterface = ({
       : "loading...";
   }, [market]);
 
-
-  // const estimatedBuild = useEstimatedBuild();
-
-  // console.log('estimatedBuild: ', estimatedBuild);
   
-  const marketImpactFee = useMarketImpactFee(
+  const { lmbda, pressure, impactFee } = useMarketImpactFee(
     market ? market.id : undefined,
     isLong,
     isLong !== undefined ? (isLong ? market?.oiLong : market?.oiShort) : undefined,
     market?.oiCap
   );
 
+  const {
+    preAdjustedOi,
+    calculatedBuildFee,
+    calculatedImpactFee,
+    adjustedCollateral,
+    adjustedOi
+  } = useEstimatedBuild(
+    selectedLeverage,
+    Number(typedValue),
+    buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
+    impactFee
+  );
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -712,7 +720,7 @@ export const BuildInterface = ({
             ? formatWeiToParsedString(market.currentPrice.ask, 10)
             : "loading"
         }
-        expectedOi={"0"}
+        expectedOi={ adjustedOi ? adjustedOi.toFixed(2) : ' - '}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
         oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
@@ -732,7 +740,8 @@ export const BuildInterface = ({
         }
         isLong={isLong}
         selectedLeverage={selectedLeverage}
-        collateral={typedValue}
+        adjustedCollateral={adjustedCollateral}
+        adjustedOi={adjustedOi}
         setSlippageValue={setSlippageValue}
         buildFee={buildFee && formatWeiToParsedNumber(buildFee, 18, 5)}
       />
