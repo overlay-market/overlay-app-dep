@@ -304,7 +304,7 @@ export const BuildInterface = ({
   const fundingRate = useFundingRate(market?.id);
 
   console.log('fundingRate: ', fundingRate);
-  
+
   const {
     selectedLeverage,
     isLong,
@@ -758,7 +758,7 @@ export const BuildInterface = ({
         adjustedCollateral={adjustedCollateral}
         adjustedOi={adjustedOi}
         setSlippageValue={setSlippageValue}
-        buildFee={buildFee && formatWeiToParsedNumber(buildFee, 18, 5)}
+        buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
       />
       <TransactionPending
         attemptingTxn={attemptingTxn}

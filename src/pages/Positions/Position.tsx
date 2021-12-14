@@ -267,7 +267,7 @@ export function Position({
       </Column>
 
       <Column mt={"48px"}>
-        <ListItem item={"Side"} value={"Long"} valueColor={"#10DCB1"} />
+        <ListItem item={"Side"} value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} />
         <ListItem
           item={"Leverage"}
           value={`${position?.leverage ? position.leverage : "loading"}`}
