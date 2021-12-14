@@ -33,11 +33,7 @@ export function useMarketImpactFee(
 
   return useMemo(() => {
     const parsedLmbda = lmbda ? formatWeiToParsedNumber(lmbda, 18, 18) : undefined;
-    console.log('parsedLmbda: ', parsedLmbda);
-
     const parsedPressure = pressure ? formatWeiToParsedNumber(pressure, 18, 18) : undefined;
-    console.log('parsedPressure: ', parsedPressure);
-
     const exponent = parsedLmbda && parsedPressure ? (-1 * parsedLmbda * parsedPressure) : undefined;
 
     const impactFee = exponent ? (1 - Math.E ** exponent) : undefined;

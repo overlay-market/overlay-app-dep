@@ -58,6 +58,7 @@ import { useCollateralManagerContract } from "../../hooks/useContract";
 import { useBuildFee } from "../../hooks/useBuildFee";
 import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
 import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
+import { formatDecimalToPercentage } from "../../utils/formatDecimal";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -699,7 +700,7 @@ export const BuildInterface = ({
       </Column>
 
       <AdditionalDetails
-        fee={buildFee ? formatWeiToParsedNumber(buildFee, 18, 5) : "loading"}
+        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading"}
         slippage={setSlippageValue}
         estLiquidationPrice={"0.00"}
         bid={
