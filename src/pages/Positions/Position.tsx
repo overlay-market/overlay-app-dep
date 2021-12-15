@@ -232,25 +232,6 @@ export function Position({
       </InputContainer>
       <UnwindButton onClick={() => handleUnwind()}>Unwind</UnwindButton>
 
-      <PositionsCardHeader />
-      <PositionCard
-        positionId={position?.id ?? "loading"}
-        marketName={position?.number}
-        isLong={position?.isLong ?? null}
-        leverage={position?.leverage}
-        positionSize={`${
-          position?.oiShares
-            ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
-            : "loading..."
-        }`}
-        collateralCurrency={"OVL"}
-        quotePrice={"n/a"}
-        quoteCurrency={"n/a"}
-        estLiquidationPrice={position?.liquidationPrice}
-        PnL={`${PnL} OVL`}
-        navigate={false}
-      />
-
       <Column mt={"48px"}>
         <ListItem item={"PnL"} valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} />
         <ListItem
