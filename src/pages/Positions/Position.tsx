@@ -88,11 +88,12 @@ export function Position({
     position ? position.number : null
   );
 
-  // const PnL = (positionValue: BigNumber | null, positionCost: BigNumber | null): number | undefined => {
-  //   return positionValue && positionCost ? formatWeiToParsedNumber((positionValue.sub(positionCost)), 18, 2) : undefined;
-  // };
-
   const PnL = positionValue && position?.cost ? formatWeiToParsedNumber((positionValue.sub(position.cost)), 18, 2) : undefined;
+
+  const entryPrice: number | string | undefined = position && 
+      position.isLong !== undefined ? 
+        (position.isLong ? formatWeiToParsedNumber(position.pricePoint.ask, 18, 5) : formatWeiToParsedNumber(position.pricePoint.bid, 18, 5) )
+        : undefined;
 
   const { typedValue, selectedPositionId } = useUnwindState();
 
@@ -113,7 +114,7 @@ export function Position({
   const handleQuickInput = (percentage: number, totalOi: string | null) => {
     let calculatedOi: string =
       percentage !== 100
-        ? (Number(totalOi) * (percentage / 100)).toFixed(0)
+        ? (Number(totalOi) * (percentage / 100)).toFixed(4)
         : (Number(totalOi) * (percentage / 100)).toFixed(18);
 
     return onUserInput(calculatedOi);
@@ -304,7 +305,7 @@ export function Position({
       </Column>
 
       <Column mt={"48px"}>
-        <ListItem item={"Entry Price"} value={"n/a"} />
+        <ListItem item={"Entry Price"} value={ entryPrice ? `${entryPrice}` : 'loading'} />
         <ListItem item={"Current Price"} value={"n/a"} />
         <ListItem item={"Liquidation Price (est)"} value={"n/a"} />
       </Column>

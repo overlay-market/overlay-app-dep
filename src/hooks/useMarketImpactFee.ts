@@ -14,6 +14,7 @@ export function useMarketImpactFee(
   const blockNumber = useBlockNumber();
   const [lmbda, setLmbda] = useState<BigNumber>();
   const [pressure, setPressure] = useState<BigNumber>();
+  const [pbnj, setPbnj] = useState<BigNumber>();
 
   useEffect(() => {
     if (!marketContract || isLong === undefined || !oi || !oiCap || !blockNumber) return;
@@ -31,6 +32,14 @@ export function useMarketImpactFee(
     })();
   }, [marketContract, blockNumber]);
 
+  useEffect(() => {
+    if (!marketContract || !blockNumber) return;
+
+    (async () => {
+      setPbnj(await marketContract.pbnj())
+    })();
+  }, [marketContract, blockNumber])
+
   return useMemo(() => {
     const parsedLmbda = lmbda ? formatWeiToParsedNumber(lmbda, 18, 18) : undefined;
     const parsedPressure = pressure ? formatWeiToParsedNumber(pressure, 18, 18) : undefined;
@@ -41,7 +50,8 @@ export function useMarketImpactFee(
     return {
       lmbda,
       pressure,
-      impactFee
+      impactFee,
+      pbnj
     }
-  }, [pressure, lmbda]);
+  }, [pressure, lmbda, pbnj]);
 };

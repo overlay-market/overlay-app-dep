@@ -449,7 +449,7 @@ export const BuildInterface = ({
       : "loading...";
   }, [market]);
 
-  const { lmbda, pressure, impactFee } = useMarketImpactFee(
+  const { lmbda, pressure, impactFee, pbnj } = useMarketImpactFee(
     market ? market.id : undefined,
     isLong,
     isLong !== undefined
