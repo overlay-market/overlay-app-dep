@@ -50,6 +50,12 @@ export const api = createApi({
                     ask
                     depth
                   }
+                  market {
+                    currentPrice {
+                      bid
+                      ask
+                    }
+                  }
                 }
               }
             }

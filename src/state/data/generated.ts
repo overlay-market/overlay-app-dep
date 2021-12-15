@@ -1262,6 +1262,12 @@ export type AccountQuery = (
         ), pricePoint: (
           { __typename?: 'PricePoint' }
           & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+        ), market: (
+          { __typename?: 'Market' }
+          & { currentPrice: (
+            { __typename?: 'PricePoint' }
+            & Pick<PricePoint, 'bid' | 'ask'>
+          ) }
         ) }
       ) }
     )> }
@@ -1310,6 +1316,12 @@ export const AccountDocument = `
           bid
           ask
           depth
+        }
+        market {
+          currentPrice {
+            bid
+            ask
+          }
         }
       }
     }

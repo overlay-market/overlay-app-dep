@@ -95,6 +95,11 @@ export function Position({
         (position.isLong ? formatWeiToParsedNumber(position.pricePoint.ask, 18, 5) : formatWeiToParsedNumber(position.pricePoint.bid, 18, 5) )
         : undefined;
 
+  const currentPrice: number | string | undefined = position &&
+      position.isLong !== undefined ? 
+        (position.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5))
+        : undefined;
+
   const { typedValue, selectedPositionId } = useUnwindState();
 
   const { onUserInput, onSelectPositionId, onResetUnwindState } =
@@ -295,7 +300,7 @@ export function Position({
           item={"Collateral"}
           value={`${
             position?.debt
-              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) +
+              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) +
                 " OVL"
               : "loading..."
           }`}
@@ -306,7 +311,7 @@ export function Position({
 
       <Column mt={"48px"}>
         <ListItem item={"Entry Price"} value={ entryPrice ? `${entryPrice}` : 'loading'} />
-        <ListItem item={"Current Price"} value={"n/a"} />
+        <ListItem item={"Current Price"} value={ currentPrice ? `${currentPrice}` : 'loading'} />
         <ListItem item={"Liquidation Price (est)"} value={"n/a"} />
       </Column>
 
