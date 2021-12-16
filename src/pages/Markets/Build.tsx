@@ -60,6 +60,7 @@ import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
 import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
 import { formatDecimalToPercentage } from "../../utils/formatDecimal";
 import { useFundingRate } from "../../hooks/useFundingRate";
+import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -302,8 +303,8 @@ export const BuildInterface = ({
   const market = filtered ? filtered[0] : null;
   
   const fundingRate = useFundingRate(market?.id);
-
-  console.log('fundingRate: ', fundingRate);
+  
+  const liquidationPrice = useLiquidationPrice("", market ? market.id : "undefined");
 
   const {
     selectedLeverage,
