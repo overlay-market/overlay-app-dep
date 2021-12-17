@@ -38,7 +38,7 @@ export function useLiquidationPrice(
   return useMemo(() => {
     if (!marginMaintenance && isLong !== undefined && !entryBidPrice && !entryAskPrice && !debt && !entryOi && !currentOi) return;
 
-    const parsedMarginMaintenance = marginMaintenance && formatWeiToParsedNumber(marginMaintenance, 18, 10);
+    const parsedMarginMaintenance = marginMaintenance && formatWeiToParsedNumber(marginMaintenance, 18, 5);
 
     let liquidationPrice = 
     parsedMarginMaintenance ? (

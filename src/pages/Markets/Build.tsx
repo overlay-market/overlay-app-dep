@@ -475,8 +475,15 @@ export const BuildInterface = ({
       impactFee
       );
         
-    // const liquidationPrice = useLiquidationPrice("", market ? market.id : "undefined");
-
+    const estimatedLiquidationPrice = useLiquidationPrice(
+      market?.id,
+      isLong,
+      formatWeiToParsedNumber(market?.currentPrice.bid, 18, 5),
+      formatWeiToParsedNumber(market?.currentPrice.ask, 18, 5),
+      adjustedDebt,
+      adjustedOi,
+      adjustedOi
+      );
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -729,7 +736,7 @@ export const BuildInterface = ({
             : "loading"
         }
         slippage={setSlippageValue}
-        estLiquidationPrice={"0.00"}
+        estLiquidationPrice={estimatedLiquidationPrice}
         bid={
           market
             ? formatWeiToParsedString(market.currentPrice.bid, 10)
@@ -764,6 +771,7 @@ export const BuildInterface = ({
         adjustedOi={adjustedOi}
         setSlippageValue={setSlippageValue}
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
+        estimatedLiquidationPrice={estimatedLiquidationPrice}
       />
       <TransactionPending
         attemptingTxn={attemptingTxn}

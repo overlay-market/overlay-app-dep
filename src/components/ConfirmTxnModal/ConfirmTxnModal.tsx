@@ -24,6 +24,7 @@ export default function ConfirmTxnModal({
   buildFee,
   adjustedCollateral,
   adjustedOi,
+  estimatedLiquidationPrice,
 }: {
   isOpen: boolean;
   onConfirm?: () => void;
@@ -35,6 +36,7 @@ export default function ConfirmTxnModal({
   buildFee: number | undefined | null;
   adjustedCollateral: number | undefined;
   adjustedOi: number | undefined;
+  estimatedLiquidationPrice: any
 }) {
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={"350px"}>
@@ -88,7 +90,7 @@ export default function ConfirmTxnModal({
           <ListItem
             item={"Est. Liquidation"}
             itemColor={"#B9BABD"}
-            value={"n/a"}
+            value={estimatedLiquidationPrice}
           />
         </Column>
 
