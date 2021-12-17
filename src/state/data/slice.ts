@@ -66,6 +66,32 @@ export const api = createApi({
         },
       }),
     }),
+    positionsQuery: builder.query({
+      query: () => ({
+        document: gql`
+          query positions{
+            positions {
+              id
+              number
+              market {
+                id
+              }
+              isLong
+              leverage
+              pricePoint {
+                bid
+                ask
+                depth
+              }
+              oiShares
+              debt
+              cost
+              totalSupply
+            }
+          }
+        `
+      }),
+    }),
     appQuery: builder.query({
       query: () => ({
         document: gql`

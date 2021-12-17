@@ -1274,6 +1274,24 @@ export type AccountQuery = (
   )> }
 );
 
+export type PositionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PositionsQuery = (
+  { __typename?: 'Query' }
+  & { positions: Array<(
+    { __typename?: 'Position' }
+    & Pick<Position, 'id' | 'number' | 'isLong' | 'leverage' | 'oiShares' | 'debt' | 'cost' | 'totalSupply'>
+    & { market: (
+      { __typename?: 'Market' }
+      & Pick<Market, 'id'>
+    ), pricePoint: (
+      { __typename?: 'PricePoint' }
+      & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+    ) }
+  )> }
+);
+
 export type AppQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1328,6 +1346,28 @@ export const AccountDocument = `
   }
 }
     `;
+export const PositionsDocument = `
+    query positions {
+  positions {
+    id
+    number
+    market {
+      id
+    }
+    isLong
+    leverage
+    pricePoint {
+      bid
+      ask
+      depth
+    }
+    oiShares
+    debt
+    cost
+    totalSupply
+  }
+}
+    `;
 export const AppDocument = `
     query app {
   markets {
@@ -1359,6 +1399,9 @@ const injectedRtkApi = api.injectEndpoints({
     account: build.query<AccountQuery, AccountQueryVariables>({
       query: (variables) => ({ document: AccountDocument, variables })
     }),
+    positions: build.query<PositionsQuery, PositionsQueryVariables | void>({
+      query: (variables) => ({ document: PositionsDocument, variables })
+    }),
     app: build.query<AppQuery, AppQueryVariables | void>({
       query: (variables) => ({ document: AppDocument, variables })
     }),
@@ -1366,5 +1409,5 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useAccountQuery, useLazyAccountQuery, useAppQuery, useLazyAppQuery } = injectedRtkApi;
+export const { useAccountQuery, useLazyAccountQuery, usePositionsQuery, useLazyPositionsQuery, useAppQuery, useLazyAppQuery } = injectedRtkApi;
 

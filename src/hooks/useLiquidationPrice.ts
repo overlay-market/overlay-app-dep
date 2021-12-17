@@ -43,7 +43,7 @@ export function useLiquidationPrice(
     let liquidationPrice = 
     parsedMarginMaintenance ? (
       isLong ? ( (entryAskPrice / currentOi) * (parsedMarginMaintenance * entryOi + debt) ) 
-      : ( (entryBidPrice / currentOi) * (2 * currentOi - debt - parsedMarginMaintenance + currentOi) )
+      : ( (entryBidPrice / currentOi) * (2 * currentOi - debt - parsedMarginMaintenance * currentOi) )
     ) : undefined;
 
     return liquidationPrice;

@@ -302,7 +302,6 @@ export const BuildInterface = ({
   
   const market = filtered ? filtered[0] : null;
   
-  
   const {
     selectedLeverage,
     isLong,
@@ -330,105 +329,105 @@ export const BuildInterface = ({
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
       onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
     },
-    [onSetSlippage, onSetTxnDeadline]
-    );
+  [onSetSlippage, onSetTxnDeadline]
+  );
     
-    const handleLeverageInput = useCallback(
-      (e: any) => {
-        onSelectLeverage(e.target.value);
-      },
-      [onSelectLeverage]
-      );
+  const handleLeverageInput = useCallback(
+    (e: any) => {
+      onSelectLeverage(e.target.value);
+    },
+  [onSelectLeverage]
+  );
       
-      const handleSelectPositionSide = useCallback(
-        (isLong: boolean) => {
-          onSelectPositionSide(isLong);
-        },
-        [onSelectPositionSide]
-        );
-        
-        const handleUserInput = useCallback(
-          (input: string) => {
-            onAmountInput(input);
-          },
-          [onAmountInput]
-          );
+  const handleSelectPositionSide = useCallback(
+    (isLong: boolean) => {
+      onSelectPositionSide(isLong);
+    },
+  [onSelectPositionSide]
+  );
+    
+  const handleUserInput = useCallback(
+    (input: string) => {
+      onAmountInput(input);
+    },
+  [onAmountInput]
+  );
           
-          const handleQuickInput = (percentage: number, totalSupply: string | null) => {
-            let calculatedAmountByPercentage;
-            
-            if (percentage < 100) {
-              calculatedAmountByPercentage = (
-                Number(totalSupply) *
-                (percentage / 100)
-                ).toFixed(0);
-              } else {
-                calculatedAmountByPercentage = (
-                  Number(totalSupply) *
-                  (percentage / 100)
-                  ).toFixed(10);
-                }
-                
-                return handleUserInput(calculatedAmountByPercentage);
-              };
+  const handleQuickInput = (percentage: number, totalSupply: string | null) => {
+    let calculatedAmountByPercentage;
+    
+    if (percentage < 100) {
+      calculatedAmountByPercentage = (
+        Number(totalSupply) *
+        (percentage / 100)
+        ).toFixed(0);
+    } else {
+      calculatedAmountByPercentage = (
+        Number(totalSupply) *
+        (percentage / 100)
+        ).toFixed(10);
+    }
+        
+    return handleUserInput(calculatedAmountByPercentage);
+  };
               
-              const handleDismiss = useCallback(() => {
-                setBuildState({
-                  showConfirm: false,
-                  attemptingTxn,
-                  txnErrorMessage,
-                  txHash,
-                });
-              }, [attemptingTxn, txnErrorMessage, txHash]);
-              
-              const handleBuild = useCallback(() => {
-                if (!typedValue) throw new Error("missing position input size");
-                
-                if (isLong === undefined)
-                throw new Error("please choose a long/short position");
-                
-                if (!selectedLeverage) throw new Error("please select a leverage value");
-                
-                if (!buildCallback) {
-                  return;
-                }
-                
-                setBuildState({
-                  showConfirm: false,
-                  attemptingTxn: true,
-                  txnErrorMessage: undefined,
-                  txHash: undefined,
-                });
-                buildCallback()
-                .then((hash) => {
-                  setBuildState({
-                    showConfirm: false,
-                    attemptingTxn: false,
-                    txnErrorMessage: undefined,
-                    txHash: hash,
-                  });
-                  onResetBuildState();
-                })
-                .catch((error) => {
-                  setBuildState({
-                    showConfirm: false,
-                    attemptingTxn: false,
-                    txnErrorMessage: error,
-                    txHash: undefined,
-                  });
-                });
-              }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
-              
-              const [approval, approveCallback] = useApproveCallback(
-                utils.parseUnits(typedValue ? typedValue : "0"),
-                ovl,
-                account ?? undefined
-                );
-
-                const showApprovalFlow = useMemo(() => {
-                  return (
-                    approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
+  const handleDismiss = useCallback(() => {
+    setBuildState({
+      showConfirm: false,
+      attemptingTxn,
+      txnErrorMessage,
+      txHash,
+    });
+  }, [attemptingTxn, txnErrorMessage, txHash]);
+  
+  const handleBuild = useCallback(() => {
+    if (!typedValue) throw new Error("missing position input size");
+    
+    if (isLong === undefined)
+    throw new Error("please choose a long/short position");
+    
+    if (!selectedLeverage) throw new Error("please select a leverage value");
+    
+    if (!buildCallback) {
+      return;
+    }
+    
+    setBuildState({
+      showConfirm: false,
+      attemptingTxn: true,
+      txnErrorMessage: undefined,
+      txHash: undefined,
+    });
+    buildCallback()
+    .then((hash) => {
+      setBuildState({
+        showConfirm: false,
+        attemptingTxn: false,
+        txnErrorMessage: undefined,
+        txHash: hash,
+      });
+      onResetBuildState();
+    })
+    .catch((error) => {
+      setBuildState({
+        showConfirm: false,
+        attemptingTxn: false,
+        txnErrorMessage: error,
+        txHash: undefined,
+      });
+    });
+  }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
+  
+  const [approval, approveCallback] = useApproveCallback(
+    utils.parseUnits(typedValue ? typedValue : "0"),
+    ovl,
+    account ?? undefined
     );
+
+  const showApprovalFlow = useMemo(() => {
+    return (
+      approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
+  );
   }, [approval]);
   
   const handleApprove = useCallback(async () => {
@@ -438,7 +437,6 @@ export const BuildInterface = ({
   }, [approveCallback, typedValue]);
   
   const fundingRate = useFundingRate(market?.id);
-  
   
   const averagePrice = useMemo(() => {
     return market
