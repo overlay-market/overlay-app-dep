@@ -302,10 +302,7 @@ export const BuildInterface = ({
   
   const market = filtered ? filtered[0] : null;
   
-  const fundingRate = useFundingRate(market?.id);
   
-  const liquidationPrice = useLiquidationPrice("", market ? market.id : "undefined");
-
   const {
     selectedLeverage,
     isLong,
@@ -313,7 +310,7 @@ export const BuildInterface = ({
     setSlippageValue,
     txnDeadline,
   } = usePositionState();
-
+  
   const {
     onAmountInput,
     onSelectLeverage,
@@ -322,157 +319,164 @@ export const BuildInterface = ({
     onSetTxnDeadline,
     onResetBuildState,
   } = usePositionActionHandlers();
-
+  
   const { buildData, inputError } = useDerivedBuildInfo();
-
+  
   const { callback: buildCallback, error: buildCallbackError } =
-    useBuildCallback(buildData);
-
+  useBuildCallback(buildData);
+  
   const handleResetTxnSettings = useCallback(
     (e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
       onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
     },
     [onSetSlippage, onSetTxnDeadline]
-  );
+    );
+    
+    const handleLeverageInput = useCallback(
+      (e: any) => {
+        onSelectLeverage(e.target.value);
+      },
+      [onSelectLeverage]
+      );
+      
+      const handleSelectPositionSide = useCallback(
+        (isLong: boolean) => {
+          onSelectPositionSide(isLong);
+        },
+        [onSelectPositionSide]
+        );
+        
+        const handleUserInput = useCallback(
+          (input: string) => {
+            onAmountInput(input);
+          },
+          [onAmountInput]
+          );
+          
+          const handleQuickInput = (percentage: number, totalSupply: string | null) => {
+            let calculatedAmountByPercentage;
+            
+            if (percentage < 100) {
+              calculatedAmountByPercentage = (
+                Number(totalSupply) *
+                (percentage / 100)
+                ).toFixed(0);
+              } else {
+                calculatedAmountByPercentage = (
+                  Number(totalSupply) *
+                  (percentage / 100)
+                  ).toFixed(10);
+                }
+                
+                return handleUserInput(calculatedAmountByPercentage);
+              };
+              
+              const handleDismiss = useCallback(() => {
+                setBuildState({
+                  showConfirm: false,
+                  attemptingTxn,
+                  txnErrorMessage,
+                  txHash,
+                });
+              }, [attemptingTxn, txnErrorMessage, txHash]);
+              
+              const handleBuild = useCallback(() => {
+                if (!typedValue) throw new Error("missing position input size");
+                
+                if (isLong === undefined)
+                throw new Error("please choose a long/short position");
+                
+                if (!selectedLeverage) throw new Error("please select a leverage value");
+                
+                if (!buildCallback) {
+                  return;
+                }
+                
+                setBuildState({
+                  showConfirm: false,
+                  attemptingTxn: true,
+                  txnErrorMessage: undefined,
+                  txHash: undefined,
+                });
+                buildCallback()
+                .then((hash) => {
+                  setBuildState({
+                    showConfirm: false,
+                    attemptingTxn: false,
+                    txnErrorMessage: undefined,
+                    txHash: hash,
+                  });
+                  onResetBuildState();
+                })
+                .catch((error) => {
+                  setBuildState({
+                    showConfirm: false,
+                    attemptingTxn: false,
+                    txnErrorMessage: error,
+                    txHash: undefined,
+                  });
+                });
+              }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
+              
+              const [approval, approveCallback] = useApproveCallback(
+                utils.parseUnits(typedValue ? typedValue : "0"),
+                ovl,
+                account ?? undefined
+                );
 
-  const handleLeverageInput = useCallback(
-    (e: any) => {
-      onSelectLeverage(e.target.value);
-    },
-    [onSelectLeverage]
-  );
-
-  const handleSelectPositionSide = useCallback(
-    (isLong: boolean) => {
-      onSelectPositionSide(isLong);
-    },
-    [onSelectPositionSide]
-  );
-
-  const handleUserInput = useCallback(
-    (input: string) => {
-      onAmountInput(input);
-    },
-    [onAmountInput]
-  );
-
-  const handleQuickInput = (percentage: number, totalSupply: string | null) => {
-    let calculatedAmountByPercentage;
-
-    if (percentage < 100) {
-      calculatedAmountByPercentage = (
-        Number(totalSupply) *
-        (percentage / 100)
-      ).toFixed(0);
-    } else {
-      calculatedAmountByPercentage = (
-        Number(totalSupply) *
-        (percentage / 100)
-      ).toFixed(10);
-    }
-
-    return handleUserInput(calculatedAmountByPercentage);
-  };
-
-  const handleDismiss = useCallback(() => {
-    setBuildState({
-      showConfirm: false,
-      attemptingTxn,
-      txnErrorMessage,
-      txHash,
-    });
-  }, [attemptingTxn, txnErrorMessage, txHash]);
-
-  const handleBuild = useCallback(() => {
-    if (!typedValue) throw new Error("missing position input size");
-
-    if (isLong === undefined)
-      throw new Error("please choose a long/short position");
-
-    if (!selectedLeverage) throw new Error("please select a leverage value");
-
-    if (!buildCallback) {
-      return;
-    }
-
-    setBuildState({
-      showConfirm: false,
-      attemptingTxn: true,
-      txnErrorMessage: undefined,
-      txHash: undefined,
-    });
-    buildCallback()
-      .then((hash) => {
-        setBuildState({
-          showConfirm: false,
-          attemptingTxn: false,
-          txnErrorMessage: undefined,
-          txHash: hash,
-        });
-        onResetBuildState();
-      })
-      .catch((error) => {
-        setBuildState({
-          showConfirm: false,
-          attemptingTxn: false,
-          txnErrorMessage: error,
-          txHash: undefined,
-        });
-      });
-  }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
-
-  const [approval, approveCallback] = useApproveCallback(
-    utils.parseUnits(typedValue ? typedValue : "0"),
-    ovl,
-    account ?? undefined
-  );
-
-  const showApprovalFlow = useMemo(() => {
-    return (
-      approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
+                const showApprovalFlow = useMemo(() => {
+                  return (
+                    approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
     );
   }, [approval]);
-
+  
   const handleApprove = useCallback(async () => {
     if (!typedValue) throw new Error("missing position input size");
-
+    
     await approveCallback();
   }, [approveCallback, typedValue]);
-
+  
+  const fundingRate = useFundingRate(market?.id);
+  
+  
   const averagePrice = useMemo(() => {
     return market
-      ? (
-          (Number(utils.formatUnits(market?.currentPrice.bid, 18)) +
-            Number(utils.formatUnits(market?.currentPrice.ask, 18))) /
-          2
-        ).toFixed(7)
+    ? (
+      (Number(utils.formatUnits(market?.currentPrice.bid, 18)) +
+      Number(utils.formatUnits(market?.currentPrice.ask, 18))) /
+      2
+      ).toFixed(7)
       : "loading...";
-  }, [market]);
-
+    }, [market]);
+    
   const { lmbda, pressure, impactFee, pbnj } = useMarketImpactFee(
     market ? market.id : undefined,
     isLong,
     isLong !== undefined
-      ? isLong
-        ? market?.oiLong
-        : market?.oiShort
-      : undefined,
+    ? isLong
+    ? market?.oiLong
+    : market?.oiShort
+    : undefined,
     market?.oiCap
-  );
+    );
+    
+    const {
+      preAdjustedOi,
+      calculatedBuildFee,
+      calculatedImpactFee,
+      adjustedCollateral,
+      adjustedOi,
+      adjustedDebt
+    } = useEstimatedBuild(
+      selectedLeverage,
+      Number(typedValue),
+      buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
+      impactFee
+      );
+        
+    // const liquidationPrice = useLiquidationPrice("", market ? market.id : "undefined");
 
-  const {
-    preAdjustedOi,
-    calculatedBuildFee,
-    calculatedImpactFee,
-    adjustedCollateral,
-    adjustedOi,
-  } = useEstimatedBuild(
-    selectedLeverage,
-    Number(typedValue),
-    buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
-    impactFee
-  );
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
@@ -480,7 +484,7 @@ export const BuildInterface = ({
         padding={"0 16px"}
         as={"form"}
         onSubmit={(e: any) => e.preventDefault()}
-      >
+        >
         <Row margin={"0 0 32px 0"}>
           <Column>
             <TEXT.MediumHeader

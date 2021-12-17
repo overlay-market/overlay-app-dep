@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useCollateralManagerContract } from "./useContract";
 import { useBlockNumber } from "../state/application/hooks";
 import { BigNumber } from "ethers";
+import { formatWeiToParsedNumber } from "../utils/formatWei";
 
 // for longs:
 // liq_price = (entryPrice / OI) * (MM * OI(0) + D)
@@ -15,15 +16,16 @@ import { BigNumber } from "ethers";
 // OI(0) = open interest at entry
 
 export function useLiquidationPrice(
-  collateralManager?: any,
   market?: any,
   isLong?: boolean,
-  entryPrice?: any,
+  entryBidPrice?: any,
+  entryAskPrice?: any,
   debt?: any,
   entryOi?: any,
+  currentOi?: any
 ) {
   const collateralManagerContract = useCollateralManagerContract();
-  const [marginMaintenance, setMarginMaintenance] = useState();
+  const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
 
   useEffect(() => {
     if (!collateralManagerContract || !market) return;
@@ -31,9 +33,20 @@ export function useLiquidationPrice(
     (async () => {
       setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
     })();
-  }, [collateralManagerContract, market])
+  }, [collateralManagerContract, market]);
 
   return useMemo(() => {
-    return marginMaintenance;
-  }, [marginMaintenance]);
+    if (!marginMaintenance && isLong !== undefined && !entryBidPrice && !entryAskPrice && !debt && !entryOi && !currentOi) return;
+
+    const parsedMarginMaintenance = marginMaintenance && formatWeiToParsedNumber(marginMaintenance, 18, 10);
+
+    let liquidationPrice = 
+    parsedMarginMaintenance ? (
+      isLong ? ( (entryAskPrice / currentOi) * (parsedMarginMaintenance * entryOi + debt) ) 
+      : ( (entryBidPrice / currentOi) * (2 * currentOi - debt - parsedMarginMaintenance + currentOi) )
+    ) : undefined;
+
+    return liquidationPrice;
+
+  }, [marginMaintenance, isLong, entryBidPrice, entryAskPrice, debt, entryOi, currentOi]);
 }

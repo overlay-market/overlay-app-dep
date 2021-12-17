@@ -13,6 +13,7 @@ export function useEstimatedBuild(
 
   const adjustedCollateral = collateral && calculatedBuildFee && calculatedImpactFee ? (collateral - calculatedBuildFee - calculatedImpactFee) : undefined;
   const adjustedOi = adjustedCollateral ? (adjustedCollateral * selectedLeverage) : undefined;
+  const adjustedDebt = adjustedCollateral && adjustedOi ? adjustedOi - adjustedCollateral: undefined;
 
   return useMemo(() => {
     return {
@@ -20,7 +21,8 @@ export function useEstimatedBuild(
       calculatedBuildFee,
       calculatedImpactFee,
       adjustedCollateral,
-      adjustedOi
+      adjustedOi,
+      adjustedDebt
     };
-  }, [adjustedCollateral, adjustedOi, preAdjustedOi, calculatedBuildFee, calculatedImpactFee]);
+  }, [adjustedCollateral, adjustedOi, adjustedDebt, preAdjustedOi, calculatedBuildFee, calculatedImpactFee]);
 };
