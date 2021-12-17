@@ -75,6 +75,11 @@ export const api = createApi({
               number
               market {
                 id
+                currentPrice {
+                  bid
+                  ask
+                  depth
+                }
               }
               isLong
               leverage

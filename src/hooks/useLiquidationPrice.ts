@@ -3,6 +3,7 @@ import { useCollateralManagerContract } from "./useContract";
 import { useBlockNumber } from "../state/application/hooks";
 import { BigNumber } from "ethers";
 import { formatWeiToParsedNumber } from "../utils/formatWei";
+import { useMaintenanceMargin } from "./useMaintenanceMargin";
 
 // for longs:
 // liq_price = (entryPrice / OI) * (MM * OI(0) + D)
@@ -24,16 +25,18 @@ export function useLiquidationPrice(
   entryOi?: any,
   currentOi?: any
 ) {
-  const collateralManagerContract = useCollateralManagerContract();
-  const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
+  // const collateralManagerContract = useCollateralManagerContract();
+  const marginMaintenance = useMaintenanceMargin(market);
 
-  useEffect(() => {
-    if (!collateralManagerContract || !market) return;
+  // const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
 
-    (async () => {
-      setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
-    })();
-  }, [collateralManagerContract, market]);
+  // useEffect(() => {
+  //   if (!collateralManagerContract || !market) return;
+
+  //   (async () => {
+  //     setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
+  //   })();
+  // }, [collateralManagerContract, market]);
 
   return useMemo(() => {
     if (!marginMaintenance && isLong !== undefined && !entryBidPrice && !entryAskPrice && !debt && !entryOi && !currentOi) return;

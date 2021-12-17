@@ -15,7 +15,7 @@ import { useActiveWeb3React } from "../../hooks/web3";
 import { parseUnits } from '@ethersproject/units';
 import JSBI from 'jsbi';
 import { Trans } from '@lingui/macro';
-import { useAccountQuery } from "../data/generated";
+import { useAccountQuery, usePositionsQuery } from "../data/generated";
 
 export function usePositionState(): AppState['position'] {
   return useAppSelector((state) => state.position);
@@ -202,3 +202,22 @@ export function useAccountPositions(
   }, [ isLoading, isError, error, isUninitialized, data ])
 };
 
+export function useAllPositions() {
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    data
+  } = usePositionsQuery({}, { pollingInterval: 15000});
+
+  return useMemo(() => {
+    return {
+      isLoading,
+      isError,
+      error,
+      isUninitialized,
+      allPositions: data
+    } 
+  }, [ isLoading, isError, error, isUninitialized, data])
+};

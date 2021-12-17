@@ -1285,6 +1285,10 @@ export type PositionsQuery = (
     & { market: (
       { __typename?: 'Market' }
       & Pick<Market, 'id'>
+      & { currentPrice: (
+        { __typename?: 'PricePoint' }
+        & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+      ) }
     ), pricePoint: (
       { __typename?: 'PricePoint' }
       & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
@@ -1353,6 +1357,11 @@ export const PositionsDocument = `
     number
     market {
       id
+      currentPrice {
+        bid
+        ask
+        depth
+      }
     }
     isLong
     leverage
