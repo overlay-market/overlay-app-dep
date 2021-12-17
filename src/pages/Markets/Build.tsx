@@ -51,7 +51,7 @@ import {
   formatWeiToParsedString,
   formatWeiToParsedNumber,
 } from "../../utils/formatWei";
-import { useAllPositions } from "../../state/positions/hooks";
+import { useAccountPositions } from "../../state/positions/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useCollateralManagerContract } from "../../hooks/useContract";
@@ -291,7 +291,7 @@ export const BuildInterface = ({
 
   const { isLoading, markets } = useAllMarkets();
 
-  const { positions } = useAllPositions(account);
+  const { positions } = useAccountPositions(account);
 
   
   const buildFee = useBuildFee();

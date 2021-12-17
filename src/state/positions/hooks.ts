@@ -178,7 +178,7 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
   return [isAuto, toggleSetTxnSettingsAuto];
 };
 
-export function useAllPositions(
+export function useAccountPositions(
   address: string | null | undefined
 ) {
   let accountAddress = address ? address.toLowerCase() : "";
@@ -201,3 +201,4 @@ export function useAllPositions(
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
 };
+

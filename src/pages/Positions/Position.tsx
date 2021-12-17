@@ -21,7 +21,7 @@ import { useAppDispatch } from "../../state/hooks";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
 import { BigNumberish, utils } from "ethers";
-import { useAllPositions } from "../../state/positions/hooks";
+import { useAccountPositions } from "../../state/positions/hooks";
 import {
   useUnwindState,
   useUnwindActionHandlers,
@@ -76,7 +76,7 @@ export function Position({
 
   const dispatch = useAppDispatch();
 
-  const { error, isLoading, positions } = useAllPositions(account);
+  const { error, isLoading, positions } = useAccountPositions(account);
 
   const filtered = positions?.filter((index, key) => {
     return index.position.id === positionId;

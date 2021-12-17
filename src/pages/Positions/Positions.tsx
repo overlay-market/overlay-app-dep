@@ -11,7 +11,7 @@ import { PlanckCatLoader } from "../../components/Loaders/Loaders";
 import { Button } from "rebass";
 import { Icon } from "../../components/Icon/Icon";
 import { MarketCard } from "../../components/Card/MarketCard";
-import { useAllPositions } from "../../state/positions/hooks";
+import { useAccountPositions } from "../../state/positions/hooks";
 import { utils } from "ethers";
 import { useUnwindActionHandlers } from "../../state/unwind/hooks";
 
@@ -205,7 +205,7 @@ export const Positions = () => {
 
   const toggleWalletModal = useWalletModalToggle();
 
-  const { isLoading, positions } = useAllPositions(
+  const { isLoading, positions } = useAccountPositions(
     account ? account : undefined
   );
 
