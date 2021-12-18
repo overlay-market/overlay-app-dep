@@ -6,70 +6,71 @@ import { useAllPositions } from '../../state/positions/hooks';
 import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
 import { usePositionValue } from '../../hooks/usePositionValue';
+import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
 import { useMemo } from 'react';
 
-const mock = [
-  {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
-  {maintenance: '3.00 OVL', value: '2.00 OVL', reward: '0.50 OVL', callback: (() => null)},
-  {maintenance: '0.10 OVL', value: '0.01 OVL', reward: '0.00001 OVL', callback: (() => null)},
-]
+// const mock = [
+//   {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
+//   {maintenance: '3.00 OVL', value: '2.00 OVL', reward: '0.50 OVL', callback: (() => null)},
+//   {maintenance: '0.10 OVL', value: '0.01 OVL', reward: '0.00001 OVL', callback: (() => null)},
+// ]
 
-const LiquidatablePosition = (
-  market?: string,
-  number?: string,
-  isLong?: boolean,
-  entryBidPrice?: string,
-  entryAskPrice?: string,
-  debt?: string,
-  entryOi?: string,
-  currentOi?: string,
-  currentBidPrice?: string,
-  currentAskPrice?: string
-) => {
-  const liquidationPrice = useLiquidationPrice(
-    market,
-    isLong,
-    entryBidPrice,
-    entryAskPrice,
-    debt,
-    entryOi,
-    currentOi
-  );
+export const LiquidatablePosition = (positionData: any) => {
+  let position = positionData.positionData;
 
-  console.log('liquidationPrice: ', liquidationPrice);
+  // const liquidationPrice = useLiquidationPrice(
+  //   market.market,
+  //   isLong,
+  //   entryBidPrice,
+  //   entryAskPrice,
+  //   debt,
+  //   entryOi,
+  //   currentOi
+  // );
+  console.log('positionData: ', positionData.positionData);
 
-  const currentValue = usePositionValue(number ? number : null);
+  const maintenanceMarginRate = useMaintenanceMargin(position.market.id);
 
-  const currentPrice = isLong ? formatWeiToParsedNumber(currentAskPrice, 18, 5) : formatWeiToParsedNumber(currentBidPrice, 18, 5);
+  const currentValue = usePositionValue(position.number ? position.number : null);
+  const currentPrice = positionData.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5);
 
-  // const maintenanceMargin = parsedMarginMaintenance * entryOi;
+  const parsedCurrentValue = currentValue ? formatWeiToParsedNumber(currentValue, 18, 10) : undefined;
+  const parsedMaintenanceMarginRate = maintenanceMarginRate ? formatWeiToParsedNumber(maintenanceMarginRate, 18, 10) : undefined;
+  const parsedCurrentOi = position.oiShares ? formatWeiToParsedNumber(position.oiShares, 18, 10) : undefined;
 
-  // return currentPrice && liquidationPrice && currentPrice > liquidationPrice ? (
-  //   <StyledTableRow hover={false}>
-  //     <StyledTableCellThin component="th" scope="row">
-  //         {position.maintenance}
-  //     </StyledTableCellThin>
+  const nominalMaintenanceMargin: BigInt | number | any = parsedCurrentOi && parsedMaintenanceMarginRate && parsedCurrentOi * parsedMaintenanceMarginRate;
 
-  //     <StyledTableCellThin align="left">
-  //         {currentValue}
-  //     </StyledTableCellThin>
+  const reward = parsedCurrentValue && parsedMaintenanceMarginRate && parsedCurrentValue * parsedMaintenanceMarginRate;
 
-  //     <StyledTableCellThin align="left">
-  //         {position.reward}
-  //     </StyledTableCellThin>
+  const maintenanceMargin = parsedMaintenanceMarginRate && position.totalSupply && parsedMaintenanceMarginRate * position.totalSupply;
 
-  //     <StyledTableCellThin align="left">
-  //         <TransparentButton 
-  //             color={'#12B4FF'}
-  //             border={'none'}
-  //             onClick={position.callback}>
-  //             Liquidate
-  //         </TransparentButton>
-  //     </StyledTableCellThin>
-  //   </StyledTableRow>
-  // ) : (
-  //   null
-  // )
+  return (
+      <>
+        <StyledTableRow hover={false}>
+          <StyledTableCellThin component="th" scope="row">
+              {nominalMaintenanceMargin}
+          </StyledTableCellThin>
+
+          <StyledTableCellThin align="left">
+              {parsedCurrentValue}
+          </StyledTableCellThin>
+
+          <StyledTableCellThin align="left">
+              {reward}
+          </StyledTableCellThin>
+
+          <StyledTableCellThin align="left">
+              <TransparentButton 
+                  color={'#12B4FF'}
+                  border={'none'}
+                  // onClick={() => ()}
+                  >
+                  Liquidate
+              </TransparentButton>
+          </StyledTableCellThin>
+        </StyledTableRow>
+      </>
+  )
 };
 
 const Liquidate = () => {
@@ -81,6 +82,7 @@ const Liquidate = () => {
     allPositions
   } = useAllPositions();
 
+  console.log('allPositions: ', allPositions);
   return (
       <StyledContainer maxWidth={'420px'}>
           <TableContainer component={Paper}>
@@ -103,7 +105,12 @@ const Liquidate = () => {
                           </StyledHeaderCell>  
                       </StyledTableHeaderRow>
 
-                      {mock.map((position, key) => (
+                      {allPositions?.map((position, key) => (
+                          <LiquidatablePosition
+                            positionData={position}
+                            />
+                      ))}
+                      {/* {mock.map((position, key) => (
                           <StyledTableRow key={key.toString()} hover={false}>
                               <StyledTableCellThin component="th" scope="row">
                                   {position.maintenance}
@@ -126,7 +133,7 @@ const Liquidate = () => {
                                   </TransparentButton>
                               </StyledTableCellThin>
                           </StyledTableRow>
-                      ))}
+                      ))} */}
                   </TableHead>
                 </StyledTable>
           </TableContainer>

@@ -217,7 +217,7 @@ export function useAllPositions() {
       isError,
       error,
       isUninitialized,
-      allPositions: data
+      allPositions: data?.positions
     } 
   }, [ isLoading, isError, error, isUninitialized, data])
 };

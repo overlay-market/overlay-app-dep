@@ -17,7 +17,7 @@ import { useMaintenanceMargin } from "./useMaintenanceMargin";
 // OI(0) = open interest at entry
 
 export function useLiquidationPrice(
-  market?: any,
+  market?: string,
   isLong?: boolean,
   entryBidPrice?: any,
   entryAskPrice?: any,
@@ -25,18 +25,18 @@ export function useLiquidationPrice(
   entryOi?: any,
   currentOi?: any
 ) {
-  // const collateralManagerContract = useCollateralManagerContract();
-  const marginMaintenance = useMaintenanceMargin(market);
+  const collateralManagerContract = useCollateralManagerContract();
+  // const marginMaintenance = useMaintenanceMargin(market);
 
-  // const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
+  const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
 
-  // useEffect(() => {
-  //   if (!collateralManagerContract || !market) return;
+  useEffect(() => {
+    if (!collateralManagerContract || !market) return;
 
-  //   (async () => {
-  //     setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
-  //   })();
-  // }, [collateralManagerContract, market]);
+    (async () => {
+      setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
+    })();
+  }, [collateralManagerContract, market]);
 
   return useMemo(() => {
     if (!marginMaintenance && isLong !== undefined && !entryBidPrice && !entryAskPrice && !debt && !entryOi && !currentOi) return;
