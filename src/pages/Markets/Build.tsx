@@ -197,17 +197,17 @@ const AdditionalDetails = ({
 
       <Detail>
         <Title> Est. Liquidation </Title>
-        <Content> ${estLiquidationPrice} </Content>
+        <Content> {estLiquidationPrice} </Content>
       </Detail>
 
       <Detail>
         <Title> Bid </Title>
-        <Content> ~${bid} </Content>
+        <Content> ~{bid} </Content>
       </Detail>
 
       <Detail>
         <Title> Ask </Title>
-        <Content> ~${ask} </Content>
+        <Content> ~{ask} </Content>
       </Detail>
 
       <Detail>
