@@ -18,16 +18,15 @@ import { useMemo } from 'react';
 export const LiquidatablePosition = (positionData: any) => {
   let position = positionData.positionData;
 
-  // const liquidationPrice = useLiquidationPrice(
-  //   market.market,
-  //   isLong,
-  //   entryBidPrice,
-  //   entryAskPrice,
-  //   debt,
-  //   entryOi,
-  //   currentOi
-  // );
-  console.log('positionData: ', positionData.positionData);
+  const estimatedLiquidationPrice = useLiquidationPrice(
+    position.market.id,
+    position.isLong,
+    position.pricePoint.bid,
+    position.pricePoint.ask,
+    position.debt,
+    position.totalSupply,
+    position.oiShares
+  );
 
   const maintenanceMarginRate = useMaintenanceMargin(position.market.id);
 
@@ -37,18 +36,26 @@ export const LiquidatablePosition = (positionData: any) => {
   const parsedCurrentValue = currentValue ? formatWeiToParsedNumber(currentValue, 18, 10) : undefined;
   const parsedMaintenanceMarginRate = maintenanceMarginRate ? formatWeiToParsedNumber(maintenanceMarginRate, 18, 10) : undefined;
   const parsedCurrentOi = position.oiShares ? formatWeiToParsedNumber(position.oiShares, 18, 10) : undefined;
+  const parsedInitialOi = position.totalSupply && formatWeiToParsedNumber(position.totalSupply, 18, 10);
 
   const nominalMaintenanceMargin: BigInt | number | any = parsedCurrentOi && parsedMaintenanceMarginRate && parsedCurrentOi * parsedMaintenanceMarginRate;
 
   const reward = parsedCurrentValue && parsedMaintenanceMarginRate && parsedCurrentValue * parsedMaintenanceMarginRate;
 
-  const maintenanceMargin = parsedMaintenanceMarginRate && position.totalSupply && parsedMaintenanceMarginRate * position.totalSupply;
+  const maintenanceMargin = parsedMaintenanceMarginRate && parsedInitialOi && parsedMaintenanceMarginRate * parsedInitialOi;
+
+  const liquidationPrice = parsedInitialOi && parsedMaintenanceMarginRate && parsedInitialOi * parsedMaintenanceMarginRate;
+
+  const liquidatable = parsedCurrentValue && liquidationPrice > parsedCurrentValue;
+
+  console.log('parsedCurrentValue: ', parsedCurrentValue);
+  console.log('liquidationPrice: ', liquidationPrice);
 
   return (
       <>
         <StyledTableRow hover={false}>
           <StyledTableCellThin component="th" scope="row">
-              {nominalMaintenanceMargin}
+              {maintenanceMargin}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
