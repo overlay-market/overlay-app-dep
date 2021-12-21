@@ -7,12 +7,13 @@ export enum PositionSide {
 };
 
 export enum DefaultTxnSettings { 
-  DEFAULT_SLIPPAGE = '0.3',
+  DEFAULT_SLIPPAGE = '1',
   DEFAULT_DEADLINE = '30'
 };
 
-export const amountInput = createAction<{ inputValue: string | undefined }>('positions/amountInput');
-export const leverageInput = createAction<{ leverageValue: number }>('positions/leverageInput');
-export const positionSideInput = createAction<{ positionSide: PositionSide}>('positions/positionSideInput');
-export const slippageInput = createAction<{ slippageValue: DefaultTxnSettings | string | undefined }>('positions/slippageInput');
-export const txnDeadlineInput = createAction<{ txnDeadline: DefaultTxnSettings | string | undefined }>('positions/txnDeadlineInput');
+export const typeInput = createAction<{ typedValue: string | undefined }>('positions/typeInput');
+export const selectLeverage = createAction<{ selectedLeverage: number }>('positions/selectLeverage');
+export const selectPositionSide = createAction<{ isLong: boolean }>('positions/selectPositionSide');
+export const setSlippage = createAction<{ setSlippageValue: DefaultTxnSettings | string }>('positions/setSlippage');
+export const setTxnDeadline = createAction<{ txnDeadline: DefaultTxnSettings | string  }>('positions/setTxnDeadline');
+export const resetBuildState = createAction<void>('unwind/resetBuildState');

@@ -38,7 +38,7 @@ export default function Popup({
     return () => {
       clearTimeout(timeout);
     };
-  }, [removeAfterMs, removeThisPopup]);
+  }, [removeAfterMs, removeThisPopup, closeSnackbar, popKey]);
 
   const triggerPopup = ({ hash }: { hash: string }) => {
     enqueueSnackbar(

@@ -1256,8 +1256,43 @@ export type AccountQuery = (
       & { position: (
         { __typename?: 'Position' }
         & Pick<Position, 'id' | 'number' | 'isLong' | 'leverage' | 'oiShares' | 'debt' | 'cost' | 'liquidationPrice' | 'totalSupply'>
+        & { collateralManager: (
+          { __typename?: 'CollateralManager' }
+          & Pick<CollateralManager, 'id' | 'address'>
+        ), pricePoint: (
+          { __typename?: 'PricePoint' }
+          & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+        ), market: (
+          { __typename?: 'Market' }
+          & { currentPrice: (
+            { __typename?: 'PricePoint' }
+            & Pick<PricePoint, 'bid' | 'ask'>
+          ) }
+        ) }
       ) }
     )> }
+  )> }
+);
+
+export type PositionsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PositionsQuery = (
+  { __typename?: 'Query' }
+  & { positions: Array<(
+    { __typename?: 'Position' }
+    & Pick<Position, 'id' | 'number' | 'isLong' | 'leverage' | 'oiShares' | 'debt' | 'cost' | 'totalSupply'>
+    & { market: (
+      { __typename?: 'Market' }
+      & Pick<Market, 'id'>
+      & { currentPrice: (
+        { __typename?: 'PricePoint' }
+        & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+      ) }
+    ), pricePoint: (
+      { __typename?: 'PricePoint' }
+      & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+    ) }
   )> }
 );
 
@@ -1268,7 +1303,11 @@ export type AppQuery = (
   { __typename?: 'Query' }
   & { markets: Array<(
     { __typename?: 'Market' }
-    & Pick<Market, 'base' | 'quote' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
+    & Pick<Market, 'id' | 'base' | 'quote' | 'baseName' | 'quoteName' | 'baseSymbol' | 'quoteSymbol' | 'oiLong' | 'oiLongShares' | 'oiShort' | 'oiShortShares' | 'oiCap' | 'updatePeriod' | 'compoundPeriod'>
+    & { currentPrice: (
+      { __typename?: 'PricePoint' }
+      & Pick<PricePoint, 'bid' | 'ask' | 'depth'>
+    ) }
   )> }
 );
 
@@ -1291,14 +1330,57 @@ export const AccountDocument = `
         cost
         liquidationPrice
         totalSupply
+        collateralManager {
+          id
+          address
+        }
+        pricePoint {
+          bid
+          ask
+          depth
+        }
+        market {
+          currentPrice {
+            bid
+            ask
+          }
+        }
       }
     }
+  }
+}
+    `;
+export const PositionsDocument = `
+    query positions {
+  positions {
+    id
+    number
+    market {
+      id
+      currentPrice {
+        bid
+        ask
+        depth
+      }
+    }
+    isLong
+    leverage
+    pricePoint {
+      bid
+      ask
+      depth
+    }
+    oiShares
+    debt
+    cost
+    totalSupply
   }
 }
     `;
 export const AppDocument = `
     query app {
   markets {
+    id
     base
     quote
     baseName
@@ -1312,6 +1394,11 @@ export const AppDocument = `
     oiCap
     updatePeriod
     compoundPeriod
+    currentPrice {
+      bid
+      ask
+      depth
+    }
   }
 }
     `;
@@ -1321,6 +1408,9 @@ const injectedRtkApi = api.injectEndpoints({
     account: build.query<AccountQuery, AccountQueryVariables>({
       query: (variables) => ({ document: AccountDocument, variables })
     }),
+    positions: build.query<PositionsQuery, PositionsQueryVariables | void>({
+      query: (variables) => ({ document: PositionsDocument, variables })
+    }),
     app: build.query<AppQuery, AppQueryVariables | void>({
       query: (variables) => ({ document: AppDocument, variables })
     }),
@@ -1328,5 +1418,5 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useAccountQuery, useLazyAccountQuery, useAppQuery, useLazyAppQuery } = injectedRtkApi;
+export const { useAccountQuery, useLazyAccountQuery, usePositionsQuery, useLazyPositionsQuery, useAppQuery, useLazyAppQuery } = injectedRtkApi;
 

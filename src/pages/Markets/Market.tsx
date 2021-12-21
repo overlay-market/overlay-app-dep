@@ -1,13 +1,9 @@
-import React from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
-import { Row } from "../../../components/Row/Row";
-import { Card } from '../../../components/Card/Card';
-import { TOKEN_LABELS } from '../../../constants/tokens';
-import { BuildPosition } from './BuildPosition';
-import { InfoTip } from '../../../components/InfoTip/InfoTip';
-import { TEXT } from '../../../theme/theme';
-import Positions from '../../Positions/Positions';
+import { TOKEN_LABELS } from '../../constants/tokens';
+import { BuildInterface } from './Build';
+import { usePositionActionHandlers } from '../../state/positions/hooks';
 
 export const Container = styled.div`
   display: flex;
@@ -31,13 +27,18 @@ export function Market(
   { match: {params: { marketId }}
 }: RouteComponentProps<{ marketId: string }>
 ) {
-  let marketName = TOKEN_LABELS[Number(marketId)];
+
+  const { onResetBuildState } = usePositionActionHandlers();
+
+  useEffect(() => {
+    onResetBuildState();
+  }, [marketId, onResetBuildState]);
 
   return (
     <>
       <Container>
-        <BuildPosition 
-            marketName={marketName}
+        <BuildInterface 
+            marketId={marketId}
             marketPrice={'2241.25'}
             />
       </Container>

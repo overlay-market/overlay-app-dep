@@ -1,61 +1,58 @@
-import { createReducer } from '@reduxjs/toolkit';
-import { CurrencyAmount, Currency } from '@uniswap/sdk-core';
-import { 
-  PositionSide, 
-  amountInput, 
-  leverageInput, 
-  positionSideInput, 
-  slippageInput,
-  txnDeadlineInput,
-  DefaultTxnSettings } from './actions';
-  import { OVL_MARKET_ADDRESS } from '../../constants/addresses';
-import { OVL } from '../../constants/tokens';
+import { createReducer } from "@reduxjs/toolkit";
+import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
+import {
+  DefaultTxnSettings,
+  typeInput,
+  selectLeverage,
+  selectPositionSide,
+  setSlippage,
+  setTxnDeadline,
+  resetBuildState
+} from "./actions";
+import { OVL_MARKET_ADDRESS } from "../../constants/addresses";
+import { OVL } from "../../constants/tokens";
 
 export interface PositionState {
-  readonly inputValue: string | undefined
-  readonly leverageValue: number
-  readonly positionSide: PositionSide | undefined
-  readonly inputCurrency: string | undefined
-  readonly slippageValue: DefaultTxnSettings | string | undefined
-  readonly txnDeadline: DefaultTxnSettings | string | undefined
-};
+  readonly typedValue: string | undefined;
+  readonly selectedLeverage: number;
+  readonly isLong: boolean | undefined;
+  readonly inputCurrency: string | undefined;
+  readonly setSlippageValue: DefaultTxnSettings | string;
+  readonly txnDeadline: DefaultTxnSettings | string;
+}
 
 export const initialState: PositionState = {
-  inputValue: undefined,
-  leverageValue: 1,
-  positionSide: undefined,
+  typedValue: "",
+  selectedLeverage: 1,
+  isLong: undefined,
   inputCurrency: OVL[1].address,
-  slippageValue: '0.3',
-  txnDeadline: '30'
+  setSlippageValue: "1",
+  txnDeadline: "30",
 };
 
 export default createReducer<PositionState>(initialState, (builder) =>
   builder
-    .addCase(
-      amountInput,
-      (state, { payload: { inputValue } }) => {
-        state.inputValue = inputValue;
-      }
-    )
-    .addCase(
-      leverageInput,
-      (state, { payload: {leverageValue} }) => {
-        state.leverageValue = leverageValue;
-      }
-    )
-    .addCase(
-      positionSideInput,
-      (state, { payload: {positionSide} }) => {
-        state.positionSide = positionSide;
-      }
-    )
-    .addCase(slippageInput, (state,action) => {
-      state.slippageValue = action.payload.slippageValue;
+    .addCase(typeInput, (state, { payload: { typedValue } }) => {
+      state.typedValue = typedValue;
     })
-    .addCase(
-      txnDeadlineInput,
-      (state, { payload: {txnDeadline} }) => {
-        state.txnDeadline = txnDeadline;
-      }
-    )
-)
+    .addCase(selectLeverage, (state, { payload: { selectedLeverage } }) => {
+      state.selectedLeverage = selectedLeverage;
+    })
+    .addCase(selectPositionSide, (state, { payload: { isLong } }) => {
+      state.isLong = isLong;
+    })
+    .addCase(setSlippage, (state, action) => {
+      state.setSlippageValue = action.payload.setSlippageValue;
+    })
+    .addCase(setTxnDeadline, (state, { payload: { txnDeadline } }) => {
+      state.txnDeadline = txnDeadline;
+    })
+    .addCase(resetBuildState, (state) => {
+      state.typedValue = initialState.typedValue;
+      state.selectedLeverage = initialState.selectedLeverage;
+      state.isLong = initialState.isLong;
+      state.inputCurrency = initialState.inputCurrency;
+      state.setSlippageValue = initialState.setSlippageValue;
+      state.txnDeadline = initialState.txnDeadline;
+    })
+);

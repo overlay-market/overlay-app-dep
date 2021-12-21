@@ -1,0 +1,1268 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_mothership",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_ovlFeed",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_marketFeed",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_quote",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_eth",
+        "type": "address"
+      },
+      {
+        "internalType": "uint128",
+        "name": "_baseAmount",
+        "type": "uint128"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_macroWindow",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_microWindow",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_priceFrameCap",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oiLong",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "oiShort",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "fundingPaid",
+        "type": "int256"
+      }
+    ],
+    "name": "FundingPaid",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "bid",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "ask",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "depth",
+        "type": "uint256"
+      }
+    ],
+    "name": "NewPricePoint",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "k",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "v",
+        "type": "uint256"
+      }
+    ],
+    "name": "log",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "MIN_COLLAT",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int24",
+        "name": "_tick",
+        "type": "int24"
+      }
+    ],
+    "name": "_tickToPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "quote_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_collateral",
+        "type": "address"
+      }
+    ],
+    "name": "addCollateral",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "base",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "brrrrdAccumulator",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "brrrrdCycloid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "brrrrdExpected",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "brrrrdFiling",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "brrrrdRollers",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "time",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ying",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "yang",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "brrrrdWindowMacro",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "brrrrdWindowMicro",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "compounded",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "compoundingPeriod",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_marketLiquidity",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_ovlPrice",
+        "type": "uint256"
+      }
+    ],
+    "name": "computeDepth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "depth_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "depth",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "depth_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_leverage",
+        "type": "uint256"
+      }
+    ],
+    "name": "enterOI",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oiAdjusted_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateralAdjusted_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "debtAdjusted_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fee_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "impact_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "pricePointNext_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_now",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_compounded",
+        "type": "uint256"
+      }
+    ],
+    "name": "epochs",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "compoundings_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tCompounding_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pricePoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "exitData",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oi_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oiShares_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "priceFrame_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_oi",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_oiShares",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrr",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_antiBrrrr",
+        "type": "uint256"
+      }
+    ],
+    "name": "exitOI",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "fetchPricePoint",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "int24",
+            "name": "macroTick",
+            "type": "int24"
+          },
+          {
+            "internalType": "int24",
+            "name": "microTick",
+            "type": "int24"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depth",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct OverlayV1PricePoint.PricePoint",
+        "name": "price_",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getBrrrrd",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "brrrrd_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "antiBrrrrd_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_oi",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_cap",
+        "type": "uint256"
+      }
+    ],
+    "name": "impact",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "impact_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "impactCycloid",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "impactRollers",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "time",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ying",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "yang",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "impactWindow",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "isCollateral",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "k",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "leverageMax",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lmbda",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "macroWindow",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketFeed",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "microWindow",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "mothership",
+    "outputs": [
+      {
+        "internalType": "contract IOverlayV1Mothership",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oi",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oiLong_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oiShort_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oiLongShares_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oiShortShares_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oiCap",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cap_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oiLong",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oiLong_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oiLongShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oiShort",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oiShort_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "oiShortShares",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ovl",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ovlFeed",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pbnj",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_priceEntry",
+        "type": "uint256"
+      }
+    ],
+    "name": "positionInfo",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oi_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "oiShares_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "priceFrame_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bool",
+        "name": "_isLong",
+        "type": "bool"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_oi",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_cap",
+        "type": "uint256"
+      }
+    ],
+    "name": "pressure",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "pressure_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "priceFrameCap",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pricePointCurrent",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "bid_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ask_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "depth_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "pricePointNextIndex",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "nextIndex_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pricePointIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "pricePoints",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "bid_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ask_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "depth_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "quote",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "int24",
+            "name": "macroTick",
+            "type": "int24"
+          },
+          {
+            "internalType": "int24",
+            "name": "microTick",
+            "type": "int24"
+          },
+          {
+            "internalType": "uint256",
+            "name": "depth",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct OverlayV1PricePoint.PricePoint",
+        "name": "_pricePoint",
+        "type": "tuple"
+      }
+    ],
+    "name": "readPricePoint",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "bid_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ask_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "depth_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pricePoint",
+        "type": "uint256"
+      }
+    ],
+    "name": "readPricePoint",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "bid_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "ask_",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "depth_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_collateral",
+        "type": "address"
+      }
+    ],
+    "name": "removeCollateral",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_lmbda",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_staticCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrrExpected",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrrdWindowMacro",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrrdWindowMicro",
+        "type": "uint256"
+      }
+    ],
+    "name": "setComptrollerParams",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_k",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_pbnj",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_compoundPeriod",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_lmbda",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_staticCap",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrrdExpected",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrrdWindowMacro",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_brrrrdWindowMicro",
+        "type": "uint256"
+      }
+    ],
+    "name": "setEverything",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_k",
+        "type": "uint256"
+      }
+    ],
+    "name": "setK",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_compoundingPeriod",
+        "type": "uint256"
+      }
+    ],
+    "name": "setPeriods",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_pbnj",
+        "type": "uint256"
+      }
+    ],
+    "name": "setSpread",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "update",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cap_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "updated",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

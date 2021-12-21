@@ -41,6 +41,21 @@ export const api = createApi({
                   cost
                   liquidationPrice
                   totalSupply
+                  collateralManager {
+                    id
+                    address
+                  }
+                  pricePoint{
+                    bid
+                    ask
+                    depth
+                  }
+                  market {
+                    currentPrice {
+                      bid
+                      ask
+                    }
+                  }
                 }
               }
             }
@@ -51,11 +66,43 @@ export const api = createApi({
         },
       }),
     }),
+    positionsQuery: builder.query({
+      query: () => ({
+        document: gql`
+          query positions{
+            positions {
+              id
+              number
+              market {
+                id
+                currentPrice {
+                  bid
+                  ask
+                  depth
+                }
+              }
+              isLong
+              leverage
+              pricePoint {
+                bid
+                ask
+                depth
+              }
+              oiShares
+              debt
+              cost
+              totalSupply
+            }
+          }
+        `
+      }),
+    }),
     appQuery: builder.query({
       query: () => ({
         document: gql`
           query app {
             markets {
+              id
               base
               quote
               baseName
@@ -69,6 +116,11 @@ export const api = createApi({
               oiCap
               updatePeriod
               compoundPeriod
+              currentPrice {
+                bid
+                ask
+                depth
+              }
             }
           }
         `

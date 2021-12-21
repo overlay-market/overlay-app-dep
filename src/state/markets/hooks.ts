@@ -2,10 +2,8 @@ import { useMemo, useCallback, useEffect } from "react";
 import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 import { useAppQuery } from "../data/enhanced";
-import { formatAmount } from "../../utils/formatData";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { AppState } from "../state";
-import { updateMarkets } from "./actions";
 
 
 export function useMarketsState(): AppState['markets'] {
@@ -14,7 +12,12 @@ export function useMarketsState(): AppState['markets'] {
 
 export function useAllMarkets() {
 
-  const { isLoading, isError, error, isUninitialized, data } = useAppQuery();
+  const { 
+    isLoading, 
+    isError, 
+    error, 
+    isUninitialized, 
+    data } = useAppQuery({}, { pollingInterval: 15000 });
 
   return useMemo(() => {
     return {

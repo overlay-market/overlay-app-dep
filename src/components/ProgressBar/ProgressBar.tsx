@@ -35,14 +35,14 @@ export const ProgressBar = ({
   margin
 }:{
   value: number | undefined
-  max: number
+  max: number | undefined
   color: string
   width: string
   margin?: string | undefined
 }) => {
   const [ progressValue, setProgressValue ] = useState(0);
 
-  let currentPercentage = value ? ( (value / max) * 100 ) : 0;
+  let currentPercentage = max && value ? ( (value / max) * 100 ) : 0;
 
   useEffect(() => {
     if (progressValue !== currentPercentage ) {

@@ -1,4 +1,4 @@
-import { leverageInput } from './../state/positions/actions';
+import { selectLeverage, setSlippage } from './../state/positions/actions';
 import { TransactionType } from "./../state/transactions/actions";
 import { BigNumber } from "@ethersproject/bignumber";
 import Big from 'big.js';
@@ -50,13 +50,12 @@ function useBuildCallArguments(
 
   if (!buildData) calldata = undefined;
   else {
-
     calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits(buildData.inputValue),
-      leverage: Number(buildData.leverageValue),
-      isLong: true,
+      collateral: utils.parseUnits(buildData.typedValue),
+      leverage: Number(buildData.selectedLeverage),
+      isLong: buildData.isLong,
       market: OVL_MARKET_ADDRESS[chainId],
-      minOI: 1,
+      minOI: Number(buildData.setSlippageValue),
       deadline: 1
     });
 
@@ -210,9 +209,9 @@ export function useBuildCallback(
             addTransaction(response, {
               type: TransactionType.BUILD_OVL_POSITION,
               market: OVL_MARKET_ADDRESS[chainId],
-              collateral: buildData.collateral,
+              collateral: buildData.typedValue,
               isLong: buildData.isLong,
-              leverage: buildData.leverage,
+              leverage: buildData.selectedLeverage,
             });
 
             return response.hash;
