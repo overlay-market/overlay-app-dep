@@ -32,6 +32,8 @@ import {
 } from "../../utils/formatWei";
 import { usePositionValue } from "../../hooks/usePositionValue";
 import { BigNumber } from "ethers";
+import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
+import { formatDecimalPlaces } from "../../utils/formatDecimal";
 
 const UnwindButton = styled(LightGreyButton)`
   height: 48px;
@@ -100,6 +102,15 @@ export function Position({
         (position.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5))
         : undefined;
 
+  const estLiquidationPrice = useLiquidationPrice(
+    position?.market?.id,
+    position?.isLong,
+    entryPrice,
+    entryPrice,
+    formatWeiToParsedNumber(position?.debt, 18, 18),
+    formatWeiToParsedNumber(position?.totalSupply, 18, 18),
+    formatWeiToParsedNumber(position?.oiShares, 18, 18)
+  )
   const { typedValue, selectedPositionId } = useUnwindState();
 
   const { onUserInput, onSelectPositionId, onResetUnwindState } =
@@ -293,7 +304,7 @@ export function Position({
       <Column mt={"48px"}>
         <ListItem item={"Entry Price"} value={ entryPrice ? `${entryPrice}` : 'loading'} />
         <ListItem item={"Current Price"} value={ currentPrice ? `${currentPrice}` : 'loading'} />
-        <ListItem item={"Liquidation Price (est)"} value={"n/a"} />
+        <ListItem item={"Liquidation Price (est)"} value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} />
       </Column>
 
       <Column mt={"48px"}>

@@ -51,6 +51,7 @@ export const api = createApi({
                     depth
                   }
                   market {
+                    id
                     currentPrice {
                       bid
                       ask

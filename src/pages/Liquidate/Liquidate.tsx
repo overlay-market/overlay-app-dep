@@ -46,13 +46,16 @@ export const LiquidatablePosition = (positionData: any) => {
 
   const liquidationPrice = parsedInitialOi && parsedMaintenanceMarginRate && parsedInitialOi * parsedMaintenanceMarginRate;
 
-  const liquidatable = parsedCurrentValue && liquidationPrice > parsedCurrentValue;
+  const liquidatable = parsedCurrentValue && currentPrice && liquidationPrice > parsedCurrentValue;
 
   console.log('parsedCurrentValue: ', parsedCurrentValue);
   console.log('liquidationPrice: ', liquidationPrice);
+  console.log('currentPrice: ', currentPrice);
+
 
   return (
       <>
+      {liquidatable ?? (
         <StyledTableRow hover={false}>
           <StyledTableCellThin component="th" scope="row">
               {maintenanceMargin}
@@ -76,6 +79,7 @@ export const LiquidatablePosition = (positionData: any) => {
               </TransparentButton>
           </StyledTableCellThin>
         </StyledTableRow>
+      )}
       </>
   )
 };
