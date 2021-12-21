@@ -7,6 +7,7 @@ import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
 import { usePositionValue } from '../../hooks/usePositionValue';
 import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
+import { formatDecimalPlaces } from '../../utils/formatDecimal';
 import { useMemo } from 'react';
 
 // const mock = [
@@ -42,8 +43,6 @@ export const LiquidatablePosition = (positionData: any) => {
 
   const reward = parsedCurrentValue && parsedMaintenanceMarginRate && parsedCurrentValue * parsedMaintenanceMarginRate;
 
-  const maintenanceMargin = parsedMaintenanceMarginRate && parsedInitialOi && parsedMaintenanceMarginRate * parsedInitialOi;
-
   const liquidationPrice = parsedInitialOi && parsedMaintenanceMarginRate && parsedInitialOi * parsedMaintenanceMarginRate;
 
   const liquidatable = parsedCurrentValue && currentPrice && liquidationPrice > parsedCurrentValue;
@@ -55,18 +54,17 @@ export const LiquidatablePosition = (positionData: any) => {
 
   return (
       <>
-      {liquidatable ?? (
         <StyledTableRow hover={false}>
           <StyledTableCellThin component="th" scope="row">
-              {maintenanceMargin}
+              {formatDecimalPlaces(5, liquidationPrice)}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
-              {parsedCurrentValue}
+              {formatDecimalPlaces(5, parsedCurrentValue)}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
-              {reward}
+              {formatDecimalPlaces(5, reward)}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
@@ -79,7 +77,6 @@ export const LiquidatablePosition = (positionData: any) => {
               </TransparentButton>
           </StyledTableCellThin>
         </StyledTableRow>
-      )}
       </>
   )
 };
@@ -121,30 +118,6 @@ const Liquidate = () => {
                             positionData={position}
                             />
                       ))}
-                      {/* {mock.map((position, key) => (
-                          <StyledTableRow key={key.toString()} hover={false}>
-                              <StyledTableCellThin component="th" scope="row">
-                                  {position.maintenance}
-                              </StyledTableCellThin>
-
-                              <StyledTableCellThin align="left">
-                                  {position.value}
-                              </StyledTableCellThin>
-
-                              <StyledTableCellThin align="left">
-                                  {position.reward}
-                              </StyledTableCellThin>
-
-                              <StyledTableCellThin align="left">
-                                  <TransparentButton 
-                                      color={'#12B4FF'}
-                                      border={'none'}
-                                      onClick={position.callback}>
-                                      Liquidate
-                                  </TransparentButton>
-                              </StyledTableCellThin>
-                          </StyledTableRow>
-                      ))} */}
                   </TableHead>
                 </StyledTable>
           </TableContainer>

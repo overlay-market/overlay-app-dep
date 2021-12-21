@@ -1,3 +1,4 @@
+import { number } from "@lingui/core/cjs/formats";
 
 
 export function formatDecimalToPercentage(decimal?: number) {
@@ -6,7 +7,10 @@ export function formatDecimalToPercentage(decimal?: number) {
 
 export function formatDecimalPlaces(
   places: number, 
-  value?: string
+  value?: string | number
 ) : string | undefined {
-  return value ? Number(value).toFixed(places) : undefined
+  const isNum: boolean | undefined = value ? typeof value === 'number' : undefined;
+  const formatString = isNum !== undefined && isNum ? value?.toString() : value;
+
+  return value ? Number(formatString).toFixed(places) : undefined;
 };
