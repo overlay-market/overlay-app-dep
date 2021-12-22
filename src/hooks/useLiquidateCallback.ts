@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 import { utils } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
 import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
@@ -9,50 +9,40 @@ import { useTransactionAdder } from "../state/transactions/hooks";
 import { OVL_MARKET_ADDRESS, OVL_COLLATERAL_ADDRESS } from "../constants/addresses";
 import isZero from "../utils/isZero";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
-interface BuildCall {
+
+interface LiquidateCall {
   address: string;
   calldata: string;
   value: string;
 }
 
-interface BuildCallEstimate {
-  call: BuildCall;
+interface LiquidateCallEstimate {
+  call: LiquidateCall;
 }
 
-interface SuccessfulCall extends BuildCallEstimate {
-  call: BuildCall;
+interface SuccessfulCall extends LiquidateCallEstimate {
+  call: LiquidateCall;
   gasEstimate: BigNumber;
 }
 
-interface FailedCall extends BuildCallEstimate {
-  call: BuildCall;
+interface FailedCall extends LiquidateCallEstimate {
+  call: LiquidateCall;
   error: Error;
 }
 
-enum BuildCallbackState {
+enum LiquidateCallbackState {
   INVALID,
   LOADING,
   VALID,
 }
 
-function useBuildCallArguments(
-  buildData: any | undefined,
-  chainId: any | undefined
+function useLiquidateCallArguments(
+  positionId?: number, 
+  chainId?: any
 ) {
-  let calldata: any;
-
-  if (!buildData) calldata = undefined;
-  else {
-    calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits(buildData.typedValue),
-      leverage: Number(buildData.selectedLeverage),
-      isLong: buildData.isLong,
-      market: OVL_MARKET_ADDRESS[chainId],
-      minOI: Number(buildData.setSlippageValue),
-      deadline: 1
-    });
-
-  }
+  const calldata: any = positionId ? (
+      OVLCollateral.liquidateParameters({ positionId: positionId })
+    ) : undefined;
 
   return useMemo(() => {
     const txn: { address: string; calldata: string; value: string } = {
@@ -69,28 +59,25 @@ function useBuildCallArguments(
       },
     ];
   }, [calldata, chainId]);
-
 }
 
-export function useBuildCallback(
-  buildData: any // position to build
-): {
-  state: BuildCallbackState;
-  callback: null | (() => Promise<string>);
-  error: string | null;
+export function useLiquidateCallback(positionId?: number) : {
+  state: LiquidateCallbackState
+  callback: null | (() => Promise<string>)
+  error: string | null
 } {
   const { account, chainId, library } = useActiveWeb3React();
 
   const addTransaction = useTransactionAdder();
 
-  const buildCalls = useBuildCallArguments(buildData, chainId);
+  const liquidateCalls = useLiquidateCallArguments(positionId, chainId);
 
   return useMemo(() => {
 
-    if (!buildData || !library || !account || !chainId) {
+    if (!positionId || !library || !account || !chainId) {
 
       return {
-        state: BuildCallbackState.INVALID,
+        state: LiquidateCallbackState.INVALID,
         callback: null,
         error: "Missing Dependencies",
       };
@@ -98,12 +85,12 @@ export function useBuildCallback(
     }
 
     return {
-      state: BuildCallbackState.VALID,
+      state: LiquidateCallbackState.VALID,
       callback: async function onBuild(): Promise<string> {
 
-        const estimatedCalls: BuildCallEstimate[] = await Promise.all(
+        const estimatedCalls: LiquidateCallEstimate[] = await Promise.all(
 
-          buildCalls.map((call) => {
+          liquidateCalls.map((call) => {
 
             const { address, calldata, value } = call;
 
@@ -154,7 +141,7 @@ export function useBuildCallback(
         );
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        let bestCallOption: SuccessfulCall | BuildCallEstimate | undefined =
+        let bestCallOption: SuccessfulCall | LiquidateCallEstimate | undefined =
           estimatedCalls.find(
             (el, ix, list): el is SuccessfulCall =>
               "gasEstimate" in el &&
@@ -169,8 +156,8 @@ export function useBuildCallback(
 
           if (errorCalls.length > 0)
             throw "ERROR " + errorCalls[errorCalls.length - 1].error;
-          const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>(
-            (call): call is BuildCallEstimate => !("error" in call)
+          const firstNoErrorCall = estimatedCalls.find<LiquidateCallEstimate>(
+            (call): call is LiquidateCallEstimate => !("error" in call)
           );
           if (!firstNoErrorCall)
             throw new Error(
@@ -199,13 +186,13 @@ export function useBuildCallback(
           })
           .then((response: TransactionResponse) => {
 
-            addTransaction(response, {
-              type: TransactionType.BUILD_OVL_POSITION,
-              market: OVL_MARKET_ADDRESS[chainId],
-              collateral: buildData.typedValue,
-              isLong: buildData.isLong,
-              leverage: buildData.selectedLeverage,
-            });
+            // addTransaction(response, {
+            //   type: TransactionType.BUILD_OVL_POSITION,
+            //   market: OVL_MARKET_ADDRESS[chainId],
+            //   collateral: buildData.typedValue,
+            //   isLong: buildData.isLong,
+            //   leverage: buildData.selectedLeverage,
+            // });
 
             return response.hash;
 
@@ -225,5 +212,5 @@ export function useBuildCallback(
       },
       error: null,
     };
-  }, [buildData, library, account, chainId, buildCalls, addTransaction]);
+  }, [positionId, library, account, chainId, liquidateCalls, addTransaction]);
 }

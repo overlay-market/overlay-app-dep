@@ -749,7 +749,7 @@ export const BuildInterface = ({
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
         oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
-        fundingRate={"-0.0026"}
+        fundingRate={fundingRate}
       />
 
       <ConfirmTxnModal
