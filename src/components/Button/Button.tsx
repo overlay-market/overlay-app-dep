@@ -50,16 +50,6 @@ export const TxnSettingsButton = styled(BaseTemplateButton)`
   height: 40px;
 `;
 
-
-export const LightGreyButton = styled(BaseTemplateButton)<{ background?: string; border?: string; color?: string }>`
-  background: ${({ background }) => background ?? '#BDBDBD'};
-  color: ${({ color }) => ( color ? color : 'white' )};
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 8px;
-  border: ${({ border }) => ( border ? border : '1px solid #F2F2F2')};
-`
-
 export const TransparentButton = styled(BaseTemplateButton)<{ width?: string, underline?: boolean }>`
   background: transparent;
   color: ${({ color }) => ( color ? color : 'white' )};
