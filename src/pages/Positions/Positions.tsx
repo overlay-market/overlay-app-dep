@@ -1,19 +1,16 @@
 import { useState } from "react";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { useWalletModalToggle } from "../../state/application/hooks";
+import styled from "styled-components/macro";
 import Loader from "react-loader-spinner";
 import { ChevronRight } from "react-feather";
-import { Trans } from "@lingui/macro";
-import styled from "styled-components/macro";
-import { TEXT } from "../../theme/theme";
 import { Link } from "react-router-dom";
-import { PlanckCatLoader } from "../../components/Loaders/Loaders";
+import { utils } from "ethers";
 import { Button } from "rebass";
 import { Icon } from "../../components/Icon/Icon";
+import { useActiveWeb3React } from "../../hooks/web3";
 import { MarketCard } from "../../components/Card/MarketCard";
 import { useAccountPositions } from "../../state/positions/hooks";
-import { utils } from "ethers";
 import { useUnwindActionHandlers } from "../../state/unwind/hooks";
+import { useWalletModalToggle } from "../../state/application/hooks";
 
 const Container = styled.div`
   display: flex;
@@ -72,9 +69,7 @@ const CardContainer = styled(Link)<{ navigate?: boolean; border?: boolean }>`
   pointer-events: ${({ navigate }) => (navigate ? "auto" : "none")};
 
   :hover {
-    border-right: ${({ navigate }) =>
-      navigate ? "2px solid #12B4FF" : "none"};
-    border-left: ${({ navigate }) => (navigate ? "2px solid #12B4FF" : "none")};
+    background: #262626 !important;
   }
 `;
 
@@ -201,15 +196,10 @@ export const PositionCard = ({
 };
 
 export const Positions = () => {
-  const { account } = useActiveWeb3React();
-
   const toggleWalletModal = useWalletModalToggle();
-
-  const { isLoading, positions } = useAccountPositions(
-    account ? account : undefined
-  );
-
   const { onResetUnwindState } = useUnwindActionHandlers();
+  const { account } = useActiveWeb3React();
+  const { isLoading, positions } = useAccountPositions(account ? account : undefined);
 
   return (
     <MarketCard>

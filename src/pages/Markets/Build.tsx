@@ -112,7 +112,7 @@ export const Content = styled.div<{ color?: string }>`
   color: ${({ color }) => (color ? color : "#B9BABD")};
 `;
 
-export const OI = styled.div`
+export const OpenInterestValue = styled.div`
   font-size: 14px;
   text-align: right;
   min-width: 130px;
@@ -196,10 +196,11 @@ const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
 
-        <OI>
+        <OpenInterestValue>
           {" "}
-          {oiLong} / {oiCap}{" "}
-        </OI>
+          {oiLong} / {oiCap}
+          {" "}
+        </OpenInterestValue>
       </Detail>
 
       <Detail>
@@ -212,10 +213,11 @@ const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
 
-        <OI>
+        <OpenInterestValue>
           {" "}
-          {oiShort} / {oiCap}{" "}
-        </OI>
+          {oiShort} / {oiCap}
+          {" "}
+        </OpenInterestValue>
       </Detail>
 
       <Detail>
