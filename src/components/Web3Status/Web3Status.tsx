@@ -1,20 +1,18 @@
-import { useActiveWeb3React } from '../../hooks/web3';
+import styled from 'styled-components/macro';
 import { UnsupportedChainIdError } from '@web3-react/core';
-import { SupportedChainId } from '../../constants/chains';
-import { injected } from "../../connectors/connectors";
-import { shortenAddress } from '../../utils/web3';
-import { useETHBalances, useTokenBalance, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
-import { OVL } from '../../constants/tokens';
-import { Row } from '../Row/Row';
-import { TEXT } from '../../theme/theme';
+import { utils } from 'ethers';
 import { AlertTriangle } from 'react-feather';
 import { Trans } from '@lingui/macro';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { SupportedChainId } from '../../constants/chains';
+import { shortenAddress } from '../../utils/web3';
+import { OVL } from '../../constants/tokens';
+import { FlexRowContainer } from '../Container/Container';
+import { TEXT } from '../../theme/theme';
 import { useWalletModalToggle } from '../../state/application/hooks';
-import Dropdown from './Dropdown';
-import styled from 'styled-components/macro';
-import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 import { useOvlBalance } from '../../state/wallet/hooks';
-import { utils } from 'ethers';
+import Dropdown from './Dropdown';
+import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -45,7 +43,7 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
   margin-right: 3px;
 `;
 
-export const Account = styled(Row)`
+export const Account = styled(FlexRowContainer)`
   font-size: 12px;
   font-weight: 400;
   margin: auto 24px auto auto;
@@ -61,20 +59,20 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
   if (balance === 'Loading...') {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
             <Trans>
               Balance:
             </Trans>
             <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
               {balance}
             </TEXT.BoldSmall>
-        </Row>
+        </FlexRowContainer>
       </>
     )
   } else if (network === 'Mainnet') {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
             <TEXT.Small minWidth={'fit-content'}>
               <Trans>
                 Balance:
@@ -86,13 +84,13 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <TEXT.BoldSmall ml={1} mr={0}>
               OVL
             </TEXT.BoldSmall>
-        </Row>
+        </FlexRowContainer>
       </>
     )
   } else {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
             <Trans>
               Balance:
             </Trans>
@@ -102,7 +100,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <TEXT.BoldSmall ml={1} mr={0}>
               OVL
             </TEXT.BoldSmall>
-        </Row>
+        </FlexRowContainer>
       </>
     )
   }

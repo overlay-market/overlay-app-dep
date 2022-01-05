@@ -9,8 +9,7 @@ import {
   TxnSettingsButton,
 } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
-import { Column } from "../../components/Column/Column";
-import { Row } from "../../components/Row/Row";
+import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { Label, Input } from "@rebass/forms";
 import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { useActiveWeb3React } from "../../hooks/web3";
@@ -53,9 +52,7 @@ export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   color: ${({ active }) => (active ? "#F2F2F2" : "#10DCB1")};
 `;
 
-export const ShortPositionButton = styled(LightGreyButton)<{
-  active?: boolean;
-}>`
+export const ShortPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
   padding: 16px;
   margin: 4px 0;
@@ -87,7 +84,7 @@ export const ApproveButton = styled(LightGreyButton)`
   );
 `;
 
-export const InputContainer = styled(Row)`
+export const InputContainer = styled(FlexRowContainer)`
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid ${({ theme }) => theme.white};
@@ -104,7 +101,7 @@ export const AmountInput = styled(Input)`
   border-color: transparent !important;
 `;
 
-export const Detail = styled(Row)`
+export const Detail = styled(FlexRowContainer)`
   margin: 12px 0;
   width: 100%;
   display: flex;
@@ -167,7 +164,7 @@ const AdditionalDetails = ({
   fundingRate?: string | number;
 }) => {
   return (
-    <Column mt={"64px"} padding={"0 16px"}>
+    <FlexColumnContainer mt={"64px"} padding={"0 16px"}>
       <Detail>
         <Title> Fee </Title>
         <Content> {fee}% </Content>
@@ -234,7 +231,7 @@ const AdditionalDetails = ({
         <Title> Funding rate </Title>
         <Content color={"#10DCB1"}> ~ {fundingRate}% </Content>
       </Detail>
-    </Column>
+    </FlexColumnContainer>
   );
 };
 
@@ -465,13 +462,13 @@ export const BuildInterface = ({
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
-      <Column
+      <FlexColumnContainer
         padding={"0 16px"}
         as={"form"}
         onSubmit={(e: any) => e.preventDefault()}
         >
-        <Row margin={"0 0 32px 0"}>
-          <Column>
+        <FlexRowContainer margin={"0 0 32px 0"}>
+          <FlexColumnContainer>
             <TEXT.MediumHeader
               fontWeight={700}
               color={"white"}
@@ -493,7 +490,7 @@ export const BuildInterface = ({
                     ).toFixed(7)
                 : null}
             </TEXT.MediumHeader>
-          </Column>
+          </FlexColumnContainer>
           <Icon
             size={24}
             margin={"0 0 auto auto"}
@@ -506,10 +503,10 @@ export const BuildInterface = ({
           >
             {isTxnSettingsOpen ? (<X color={"#12B4FF"} />) : (<Sliders color={"#B9BABD"} />)}
           </Icon>
-        </Row>
+        </FlexRowContainer>
 
         <TransactionSettingModal isOpen={isTxnSettingsOpen}>
-          <Column>
+          <FlexColumnContainer>
             <TEXT.Body
               fontWeight={700}
               textAlign={"left"}
@@ -518,12 +515,12 @@ export const BuildInterface = ({
               Transaction Settings
             </TEXT.Body>
 
-            <Row padding={"8px 16px"}>
+            <FlexRowContainer padding={"8px 16px"}>
               <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
               <InfoTip tipFor={"Slippage Tolerance"}>Lorem Ipsum</InfoTip>
-            </Row>
+            </FlexRowContainer>
 
-            <Row padding={"0px 16px 16px"}>
+            <FlexRowContainer padding={"0px 16px 16px"}>
               <InputContainer width={"210px"} height={"40px"}>
                 <NumericalInput
                   value={setSlippageValue}
@@ -541,13 +538,13 @@ export const BuildInterface = ({
               >
                 Auto
               </TxnSettingsButton>
-            </Row>
+            </FlexRowContainer>
 
-            <Row padding={"8px 16px"}>
+            <FlexRowContainer padding={"8px 16px"}>
               <TEXT.Menu>Transaction Deadline</TEXT.Menu>
-            </Row>
+            </FlexRowContainer>
 
-            <Row padding={"0px 16px 16px"}>
+            <FlexRowContainer padding={"0px 16px 16px"}>
               <InputContainer width={"210px"} height={"40px"}>
                 <NumericalInput
                   value={txnDeadline}
@@ -556,9 +553,9 @@ export const BuildInterface = ({
                 />
                 <InputDescriptor>minutes</InputDescriptor>
               </InputContainer>
-            </Row>
+            </FlexRowContainer>
 
-            <Row
+            <FlexRowContainer
               margin={"auto 0 0 0"}
               padding={"16px"}
               borderTop={"1px solid white"}
@@ -579,11 +576,11 @@ export const BuildInterface = ({
               >
                 Save
               </TxnSettingsButton>
-            </Row>
-          </Column>
+            </FlexRowContainer>
+          </FlexColumnContainer>
         </TransactionSettingModal>
 
-        <Column>
+        <FlexColumnContainer>
           <LongPositionButton
             onClick={() => handleSelectPositionSide(true)}
             active={isLong}
@@ -597,7 +594,7 @@ export const BuildInterface = ({
           >
             Short
           </ShortPositionButton>
-        </Column>
+        </FlexColumnContainer>
 
         <LeverageSlider
           name={"leverage"}
@@ -613,7 +610,7 @@ export const BuildInterface = ({
           <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
             Amount
           </TEXT.Body>
-          <Row ml={"auto"} mb={"4px"} width={"auto"}>
+          <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
             <TransparentUnderlineButton
               border={"none"}
               onClick={() =>
@@ -666,7 +663,7 @@ export const BuildInterface = ({
             >
               Max
             </TransparentUnderlineButton>
-          </Row>
+          </FlexRowContainer>
         </Label>
         <InputContainer>
           <InputDescriptor>OVL</InputDescriptor>
@@ -693,7 +690,7 @@ export const BuildInterface = ({
             Build
           </BuildButton>
         )}
-      </Column>
+      </FlexColumnContainer>
 
       <AdditionalDetails
         fee={

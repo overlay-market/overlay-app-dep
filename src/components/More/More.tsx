@@ -16,11 +16,11 @@ import styled from 'styled-components/macro';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { MoreVertical, AlertCircle, Globe, ChevronLeft } from 'react-feather';
 import { TEXT } from '../../theme/theme';
-import { Row } from '../Row/Row';
+import { FlexRowContainer } from '../Container/Container';
 import { Fade } from '@material-ui/core';
 import { Trans } from '@lingui/macro';
 
-export const IconContainer = styled(Row)`
+export const IconContainer = styled(FlexRowContainer)`
   width: auto;
   min-width: 16px;
 `;

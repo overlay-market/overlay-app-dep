@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { NavLink, useLocation, useHistory } from 'react-router-dom';
 import { Image } from 'rebass';
 import { useDarkModeManager } from '../../state/user/hooks';
-import { Row } from '../Row/Row';
+import { FlexRowContainer } from '../Container/Container';
 import { Trans } from '@lingui/macro';
 import Burger from '../Hamburger/Hamburger';
 import styled from 'styled-components/macro';
@@ -36,7 +36,7 @@ export const LogoContainer = styled.div`
   margin: auto 16px auto 0px;
 `
 
-export const AccountContainer = styled(Row)`
+export const AccountContainer = styled(FlexRowContainer)`
   width: auto;
   margin-left: auto;
 `;

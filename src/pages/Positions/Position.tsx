@@ -1,37 +1,22 @@
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
-import { Container } from "../Markets/Market";
-import { Column } from "../../components/Column/Column";
-import { TEXT } from "../../theme/theme";
+import { BigNumber, utils } from "ethers";
 import { Label } from "@rebass/forms";
-import { Row } from "../../components/Row/Row";
+import { Container } from "../Markets/Market";
+import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { TEXT } from "../../theme/theme";
 import { Back } from "../../components/Back/Back";
-import {
-  TransparentUnderlineButton,
-  LightGreyButton,
-} from "../../components/Button/Button";
+import { TransparentUnderlineButton, LightGreyButton } from "../../components/Button/Button";
 import { InputContainer, InputDescriptor } from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
-import { PositionCard, PositionsCardHeader } from "./Positions";
-import { useOvlBalance } from "../../state/wallet/hooks";
 import { useActiveWeb3React } from "../../hooks/web3";
-import { api } from "../../state/data/slice";
 import { useAppDispatch } from "../../state/hooks";
-import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
-import { BigNumberish, utils } from "ethers";
 import { useAccountPositions } from "../../state/positions/hooks";
-import {
-  useUnwindState,
-  useUnwindActionHandlers,
-} from "../../state/unwind/hooks";
-import {
-  formatWeiToParsedString,
-  formatWeiToParsedNumber,
-} from "../../utils/formatWei";
+import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hooks";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { usePositionValue } from "../../hooks/usePositionValue";
-import { BigNumber } from "ethers";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import { formatDecimalPlaces } from "../../utils/formatDecimal";
 
@@ -57,7 +42,7 @@ export const ListItem = ({
   valueColor?: string;
 }) => {
   return (
-    <Row m={"2px 0"}>
+    <FlexRowContainer m={"2px 0"}>
       <TEXT.Body mr={"auto"} color={itemColor}>
         {item}
       </TEXT.Body>
@@ -65,7 +50,7 @@ export const ListItem = ({
       <TEXT.Body fontWeight={700} color={valueColor}>
         {value}
       </TEXT.Body>
-    </Row>
+    </FlexRowContainer>
   );
 };
 
@@ -165,20 +150,20 @@ export function Position({
       {handleSelectPosition(position?.number)}
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
 
-      <Column>
+      <FlexColumnContainer>
         <TEXT.MediumHeader fontWeight={700}>Close Position</TEXT.MediumHeader>
         <TEXT.MediumHeader>
           {position && position?.isLong
             ? formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
             : formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)}
         </TEXT.MediumHeader>
-      </Column>
+      </FlexColumnContainer>
 
       <Label htmlFor="Amount" mt={"24px"}>
         <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
           Unwind Amount
         </TEXT.Body>
-        <Row ml={"auto"} mb={"4px"} width={"auto"}>
+        <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
           <TransparentUnderlineButton
             onClick={() =>
               handleQuickInput(
@@ -231,7 +216,7 @@ export function Position({
           >
             Max
           </TransparentUnderlineButton>
-        </Row>
+        </FlexRowContainer>
       </Label>
       <InputContainer>
         <InputDescriptor>OVL</InputDescriptor>
@@ -243,7 +228,7 @@ export function Position({
       </InputContainer>
       <UnwindButton onClick={() => handleUnwind()}>Unwind</UnwindButton>
 
-      <Column mt={"48px"}>
+      <FlexColumnContainer mt={"48px"}>
         <ListItem item={"PnL"} valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} />
         <ListItem
           item={"Value"}
@@ -262,9 +247,9 @@ export function Position({
               : "loading..."
           }`}
         />
-      </Column>
+      </FlexColumnContainer>
 
-      <Column mt={"48px"}>
+      <FlexColumnContainer mt={"48px"}>
         <ListItem item={"Side"} value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} />
         <ListItem
           item={"Leverage"}
@@ -299,15 +284,15 @@ export function Position({
         />
         <ListItem item={"Notional"} value={"n/a"} />
         <ListItem item={"Maintenance"} value={"n/a"} />
-      </Column>
+      </FlexColumnContainer>
 
-      <Column mt={"48px"}>
+      <FlexColumnContainer mt={"48px"}>
         <ListItem item={"Entry Price"} value={ entryPrice ? `${entryPrice}` : 'loading'} />
         <ListItem item={"Current Price"} value={ currentPrice ? `${currentPrice}` : 'loading'} />
         <ListItem item={"Liquidation Price (est)"} value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} />
-      </Column>
+      </FlexColumnContainer>
 
-      <Column mt={"48px"}>
+      <FlexColumnContainer mt={"48px"}>
         <ListItem
           item={"Total Shares Outstanding"}
           value={`${
@@ -319,7 +304,7 @@ export function Position({
           }`}
         />
         <ListItem item={"Position Shares"} value={"n/a"} />
-      </Column>
+      </FlexColumnContainer>
     </Container>
   );
 }

@@ -4,13 +4,12 @@ import Modal from "../Modal/Modal";
 import {
   ModalContent,
   WalletHeader,
-  CloseIcon,
+  CloseIcon
 } from "../ConnectWalletModal/ConnectWalletModal";
 import { X } from "react-feather";
 import { TEXT } from "../../theme/theme";
 import { ListItem } from "../../pages/Positions/Position";
-import { Row } from "../Row/Row";
-import { Column } from "../Column/Column";
+import { FlexColumnContainer } from "../Container/Container";
 import { ActiveBlueButton } from "../Button/Button";
 
 export default function ConfirmTxnModal({
@@ -49,15 +48,15 @@ export default function ConfirmTxnModal({
             <X color={"white"} height={24} width={24} />
           </CloseIcon>
         </WalletHeader>
-        <Column mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
+        <FlexColumnContainer mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
           <TEXT.Body color={"white"} fontWeight={400}>
             Market
           </TEXT.Body>
 
           <TEXT.LargeHeader color={"white"}>ETH/USDC</TEXT.LargeHeader>
-        </Column>
+        </FlexColumnContainer>
 
-        <Column mt={"16px"} color={"white"}>
+        <FlexColumnContainer mt={"16px"} color={"white"}>
           <ListItem
             item={"Price"}
             itemColor={"#B9BABD"}
@@ -76,9 +75,9 @@ export default function ConfirmTxnModal({
             itemColor={"#B9BABD"}
             value={`${selectedLeverage}x`}
           />
-        </Column>
+        </FlexColumnContainer>
 
-        <Column mt={"48px"} color={"white"}>
+        <FlexColumnContainer mt={"48px"} color={"white"}>
           <ListItem item={"Fee"} itemColor={"#B9BABD"} value={`${buildFee}%`} />
 
           <ListItem
@@ -92,9 +91,9 @@ export default function ConfirmTxnModal({
             itemColor={"#B9BABD"}
             value={estimatedLiquidationPrice}
           />
-        </Column>
+        </FlexColumnContainer>
 
-        <Column mt={"48px"} color={"white"}>
+        <FlexColumnContainer mt={"48px"} color={"white"}>
           <ListItem
             item={"Collateral"}
             itemColor={"#B9BABD"}
@@ -106,7 +105,7 @@ export default function ConfirmTxnModal({
             itemColor={"#B9BABD"}
             value={`${adjustedOi} OVL`}
           />
-        </Column>
+        </FlexColumnContainer>
 
         <TEXT.Small color={"#B9BABD"} mt={"24px"} mb={"24px"}>
           The unwind price will be at least 2989.99 USDC or the transaction will
