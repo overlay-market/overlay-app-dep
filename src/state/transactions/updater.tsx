@@ -1,11 +1,11 @@
-import { RetryOptions, RetryableError, retry } from '../../utils/retry';
-import { checkedTransaction, finalizeTransaction } from './actions';
-import { useAddPopup, useBlockNumber } from '../application/hooks';
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { useCallback, useEffect, useMemo } from 'react'
-import { useActiveWeb3React } from '../../hooks/web3';
 import { ChainId } from '@sushiswap/sdk';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
 import { updateBlockNumber } from '../application/actions';
+import { useAddPopup, useBlockNumber } from '../application/hooks';
+import { checkedTransaction, finalizeTransaction } from './actions';
+import { RetryOptions, RetryableError, retry } from '../../utils/retry';
 
 
 interface TxInterface {

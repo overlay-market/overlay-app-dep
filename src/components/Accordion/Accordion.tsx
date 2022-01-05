@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'react-feather';
-import { Icon } from '../Icon/Icon';
 import styled from 'styled-components';
+import { ChevronDown } from 'react-feather';
+import { Icon } from '../Icon/Icon';
 
 const AccordionWrapper = styled.div`
 `;

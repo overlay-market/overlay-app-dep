@@ -1,21 +1,20 @@
 import { useState, useEffect } from "react";
-import Modal from "../Modal/Modal";
-import { useModalOpen, useWalletModalToggle } from "../../state/application/hooks";
-import { ApplicationModal } from "../../state/application/actions";
-import { TEXT } from "../../theme/theme";
-import { X } from "react-feather";
-// import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { UnsupportedChainIdError } from "@web3-react/core";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { SUPPORTED_WALLETS } from "../../constants/wallet";
-import { isMobile } from "react-device-detect"
-import { AbstractConnector } from "@web3-react/abstract-connector";
-import { injected } from "../../connectors/connectors";
-import usePrevious from "../../hooks/usePrevious";
-import PendingView from "./PendingView";
-import METAMASK_ICON from '../../assets/images/metamask.png';
-import WalletOption from './WalletOptions';
 import styled from 'styled-components/macro';
+import { X } from "react-feather";
+import { isMobile } from "react-device-detect"
+import { UnsupportedChainIdError } from "@web3-react/core";
+import { AbstractConnector } from "@web3-react/abstract-connector";
+import { TEXT } from "../../theme/theme";
+import { useActiveWeb3React } from "../../hooks/web3";
+import { injected } from "../../connectors/connectors";
+import { SUPPORTED_WALLETS } from "../../constants/wallet";
+import { ApplicationModal } from "../../state/application/actions";
+import { useModalOpen, useWalletModalToggle } from "../../state/application/hooks";
+import Modal from "../Modal/Modal";
+import PendingView from "./PendingView";
+import WalletOption from './WalletOptions';
+import usePrevious from "../../hooks/usePrevious";
+import METAMASK_ICON from '../../assets/images/metamask.png';
 
 export const ModalContent = styled.div`
   display: flex;
@@ -45,7 +44,7 @@ const WALLET_VIEWS = {
 };
 
 export default function ConnectWalletModal() {
-  const { active, account, connector, activate, error } = useActiveWeb3React();
+  const { account, connector, activate } = useActiveWeb3React();
 
   const walletModalOpen = useModalOpen(ApplicationModal.WALLET);
 

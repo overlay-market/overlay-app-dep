@@ -1,17 +1,17 @@
 import { useState, useEffect } from 'react';
 import { NavLink, useLocation, useHistory } from 'react-router-dom';
+import styled from 'styled-components/macro';
+import { Trans } from '@lingui/macro';
 import { Image } from 'rebass';
 import { useDarkModeManager } from '../../state/user/hooks';
 import { FlexRowContainer } from '../Container/Container';
-import { Trans } from '@lingui/macro';
-import Burger from '../Hamburger/Hamburger';
-import styled from 'styled-components/macro';
-import SlideMenu from '../SlideMenu/SlideMenu';
+import { enableLock, disableLock } from '../../utils/scrollLock';
 import More from '../More/More';
+import Burger from '../Hamburger/Hamburger';
+import SlideMenu from '../SlideMenu/SlideMenu';
 import Web3Status from '../Web3Status/Web3Status';
 import OverlayLogo from '../../assets/images/overlay-logo.png';
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
-import { enableLock, disableLock } from '../../utils/scrollLock';
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};

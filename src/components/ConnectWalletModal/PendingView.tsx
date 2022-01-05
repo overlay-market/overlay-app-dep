@@ -1,13 +1,12 @@
-import { AbstractConnector } from '@web3-react/abstract-connector';
 import styled from 'styled-components/macro';
+import Loader from 'react-loader-spinner';
+import { darken } from 'polished';
+import { AlertTriangle } from 'react-feather';
+import { AbstractConnector } from '@web3-react/abstract-connector';
+import { TEXT } from '../../theme/theme';
+import { injected } from '../../connectors/connectors';
 import { SUPPORTED_WALLETS } from '../../constants/wallet';
 import WalletOption from './WalletOptions';
-import { injected } from '../../connectors/connectors';
-import { darken } from 'polished';
-import { Trans } from '@lingui/macro';
-import { TEXT } from '../../theme/theme';
-import { AlertTriangle } from 'react-feather';
-import Loader from 'react-loader-spinner';
 
 const PendingSection = styled.div`
   align-items: center;

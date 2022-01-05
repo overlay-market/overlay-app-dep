@@ -1,17 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styled from 'styled-components/macro';
+import { Play, LogOut } from 'react-feather';
+import { Fade } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import { FlexRowContainer } from '../Container/Container';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { MenuButton } from '../Button/Button';
-import { Play, LogOut } from 'react-feather';
-import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper } from '../More/More';
 import { TEXT } from '../../theme/theme';
+import { MenuButton } from '../Button/Button';
 import { useActiveWeb3React } from '../../hooks/web3';
-import { Fade } from '@material-ui/core';
-import { useWalletModalToggle, useModalOpen } from '../../state/application/hooks';
+import { FlexRowContainer } from '../Container/Container';
 import { ApplicationModal } from '../../state/application/actions';
+import { useWalletModalToggle, useModalOpen } from '../../state/application/hooks';
+import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper } from '../More/More';
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;

@@ -1,14 +1,14 @@
-import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
-import { PageContainer } from "../../components/Container/Container";
-import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
-import { TransparentButton } from '../../components/Button/Button';
+import { useMemo } from 'react';
+import { TableContainer, TableHead, Paper } from '@material-ui/core';
 import { useAllPositions } from '../../state/positions/hooks';
-import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
 import { usePositionValue } from '../../hooks/usePositionValue';
-import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
 import { formatDecimalPlaces } from '../../utils/formatDecimal';
-import { useMemo } from 'react';
+import { TransparentButton } from '../../components/Button/Button';
+import { PageContainer } from "../../components/Container/Container";
+import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
+import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
+import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 
 // const mock = [
 //   {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
@@ -83,7 +83,7 @@ export const LiquidatablePosition = (positionData: any) => {
 
 const Liquidate = () => {
   const { allPositions } = useAllPositions();
-  
+
   return (
       <PageContainer maxWidth={'420px'}>
           <TableContainer component={Paper}>

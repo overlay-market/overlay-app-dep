@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MarketCard } from '../../components/Card/MarketCard';
-import { InfoColumn } from '../../components/InfoColumn/InfoColumn';
-import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
-import { FlexRowContainer } from '../../components/Container/Container';
 import { Label } from '@rebass/forms';
 import { TEXT } from '../../theme/theme';
+import { MarketCard } from '../../components/Card/MarketCard';
+import { InfoColumn } from '../../components/InfoColumn/InfoColumn';
+import { FlexRowContainer } from '../../components/Container/Container';
+import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { TransparentUnderlineButton, TransparentDarkGreyButton } from '../../components/Button/Button';
 import MagicBackground from '../../assets/images/magic-background.png';
 

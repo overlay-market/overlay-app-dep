@@ -1,17 +1,17 @@
 import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
+import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
 import { utils } from "ethers";
 import { Trans } from "@lingui/macro";
+import { TEXT } from "../../theme/theme";
+import { shortenAddress } from "../../utils/web3";
+import { useAllMarkets } from "../../state/markets/hooks";
 import { InfoTip } from "../../components/InfoTip/InfoTip";
+import { formatWeiToParsedNumber } from "../../utils/formatWei";
+import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
-import { TEXT } from "../../theme/theme";
-import { PageContainer } from "../../components/Container/Container";
-import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
-import { useAllMarkets } from "../../state/markets/hooks";
-import { formatWeiToParsedNumber } from "../../utils/formatWei";
-import { shortenAddress } from "../../utils/web3";
 
 const activeClassName = "INACTIVE";
 

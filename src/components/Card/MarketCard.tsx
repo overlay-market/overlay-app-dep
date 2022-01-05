@@ -1,7 +1,7 @@
+import styled from 'styled-components/macro';
+import { TEXT } from "../../theme/theme";
 import { Card } from "../../components/Card/Card";
 import { FlexColumnContainer } from "../../components/Container/Container";
-import { TEXT } from "../../theme/theme";
-import styled from 'styled-components/macro';
 
 const Container = styled(FlexColumnContainer)`
   padding: 24px 0 0;

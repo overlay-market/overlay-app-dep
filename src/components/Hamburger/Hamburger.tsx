@@ -1,6 +1,6 @@
 import React from 'react';
-import { bool, func } from 'prop-types';
 import styled from 'styled-components';
+import { bool, func } from 'prop-types';
 
 export const StyledBurger = styled.button<{open: boolean}>`
   position: block;

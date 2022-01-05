@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { bool } from 'prop-types';
-import { Accordion, AccordionSelection } from '../Accordion/Accordion';
 import { LanguageMenuItem } from '../More/More';
-import { useActiveLocale } from '../../hooks/useActiveLocale';
 import { SUPPORTED_LOCALES } from '../../constants/locales';
+import { useActiveLocale } from '../../hooks/useActiveLocale';
 import { useWindowDimensions } from '../../hooks/useWindowDimensions';
+import { Accordion, AccordionSelection } from '../Accordion/Accordion';
 
 const StyledMenu = styled.nav<{open: boolean, height: number, width: number}>`
   display: flex;

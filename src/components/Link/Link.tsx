@@ -1,6 +1,6 @@
+import styled from 'styled-components/macro';
 import { Link as RebassLink } from "rebass";
 import { Link } from "react-router-dom";
-import styled from 'styled-components/macro';
 
 export const MenuLink = styled(RebassLink).attrs(props => ({
   target: props.target || '_blank',

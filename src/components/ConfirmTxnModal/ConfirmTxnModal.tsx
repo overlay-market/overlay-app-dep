@@ -1,16 +1,10 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import Modal from "../Modal/Modal";
-import {
-  ModalContent,
-  WalletHeader,
-  CloseIcon
-} from "../ConnectWalletModal/ConnectWalletModal";
 import { X } from "react-feather";
+import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
+import { ActiveBlueButton } from "../Button/Button";
 import { ListItem } from "../../pages/Positions/Position";
 import { FlexColumnContainer } from "../Container/Container";
-import { ActiveBlueButton } from "../Button/Button";
+import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
 
 export default function ConfirmTxnModal({
   isOpen,

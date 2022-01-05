@@ -1,8 +1,8 @@
+import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { ArrowLeft } from "react-feather";
-import styled from "styled-components";
-import { Icon } from "../Icon/Icon";
 import { TEXT } from "../../theme/theme";
+import { Icon } from "../Icon/Icon";
 
 const Container = styled.div<{ margin?: string}>`
   display: flex;

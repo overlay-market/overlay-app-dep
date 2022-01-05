@@ -1,13 +1,12 @@
-import { Call, parseCallKey, toCallKey } from './utils'
-import { FunctionFragment, Interface } from '@ethersproject/abi'
-import { ListenerOptions, addMulticallListeners, removeMulticallListeners } from './actions'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { useEffect, useMemo } from 'react'
-
-import { BigNumber } from '@ethersproject/bignumber'
-import { Contract } from '@ethersproject/contracts'
-import { useActiveWeb3React } from '../../hooks/web3'
-import { useBlockNumber } from '../application/hooks'
+import { useEffect, useMemo } from 'react';
+import { BigNumber } from '@ethersproject/bignumber';
+import { FunctionFragment, Interface } from '@ethersproject/abi';
+import { Contract } from '@ethersproject/contracts';
+import { useBlockNumber } from '../application/hooks';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { Call, parseCallKey, toCallKey } from './utils';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { ListenerOptions, addMulticallListeners, removeMulticallListeners } from './actions';
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any

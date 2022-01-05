@@ -1,13 +1,5 @@
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper
-} from '@material-ui/core';
 import styled from 'styled-components/macro';
+import { Table, TableCell, TableRow } from '@material-ui/core';
 
 export const StyledTable = styled(Table)`
   white-space: nowrap !important;

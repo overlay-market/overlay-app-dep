@@ -1,6 +1,6 @@
 import { useActivePopups } from "../../state/application/hooks";
-import Popup from "./Popup";
 import { PopupType } from "../SnackbarAlert/SnackbarAlert";
+import Popup from "./Popup";
 
 const Popups = () => {
   const activePopups = useActivePopups();

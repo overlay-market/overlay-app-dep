@@ -1,9 +1,8 @@
 import { useCallback, useEffect } from "react";
+import { useSnackbar } from "notistack";
+import { PopupType } from "../SnackbarAlert/SnackbarAlert";
 import { PopupContent } from "../../state/application/actions";
 import { useRemovePopup } from "../../state/application/hooks";
-import { SnackbarAlert } from "../SnackbarAlert/SnackbarAlert";
-import { PopupType } from "../SnackbarAlert/SnackbarAlert";
-import { useSnackbar } from "notistack";
 
 export default function Popup({
   removeAfterMs,

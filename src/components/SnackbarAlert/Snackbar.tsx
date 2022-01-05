@@ -1,14 +1,12 @@
 import React, { forwardRef, useCallback } from "react";
-import classnames from "classnames";
-import { makeStyles } from "@material-ui/core/styles";
-import { useSnackbar, SnackbarContent } from "notistack";
-import Typography from "@material-ui/core/Typography";
+import { Clock, X, CheckCircle, AlertCircle } from "react-feather";
 import Card from "@material-ui/core/Card";
+import Typography from "@material-ui/core/Typography";
 import CardActions from "@material-ui/core/CardActions";
 import IconButton from "@material-ui/core/IconButton";
-import { Clock, X, CheckCircle, AlertCircle, Link } from "react-feather";
+import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar, SnackbarContent } from "notistack";
 import { PopupType } from "./SnackbarAlert";
-import { Icon } from "../Icon/Icon";
 import { ExternalLinkIcon } from "../ExternalLink/ExternalLink";
 
 const useStyles = makeStyles((theme) => ({

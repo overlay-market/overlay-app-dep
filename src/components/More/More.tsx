@@ -1,24 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import Button from '@material-ui/core/Button';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Grow from '@material-ui/core/Grow';
-import Paper from '@material-ui/core/Paper';
-import Popper from '@material-ui/core/Popper';
-import MenuItem from '@material-ui/core/MenuItem';
-import MenuList from '@material-ui/core/MenuList';
-import { ExternalLink } from '../ExternalLink/ExternalLink';
+import styled from 'styled-components/macro';
 import { Link } from 'react-router-dom';
-import { MenuLink } from '../Link/Link';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { MoreVertical, AlertCircle, Globe, ChevronLeft } from 'react-feather';
+import { Fade, MenuItem, MenuList, Paper, Button, Popper, ClickAwayListener } from '@material-ui/core';
 import { SupportedLocale, LOCALE_LABEL, SUPPORTED_LOCALES } from '../../constants/locales';
 import { useLocationLinkProps } from '../../hooks/useLocationLinkProps';
 import { useActiveLocale } from '../../hooks/useActiveLocale';
-import styled from 'styled-components/macro';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { MoreVertical, AlertCircle, Globe, ChevronLeft } from 'react-feather';
-import { TEXT } from '../../theme/theme';
 import { FlexRowContainer } from '../Container/Container';
-import { Fade } from '@material-ui/core';
-import { Trans } from '@lingui/macro';
+import { MenuLink } from '../Link/Link';
 
 export const IconContainer = styled(FlexRowContainer)`
   width: auto;

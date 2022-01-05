@@ -1,17 +1,16 @@
-import { Call, parseCallKey } from './utils'
-import { RetryableError, retry } from '../../utils/retry'
-import { errorFetchingMulticallResults, fetchingMulticallResults, updateMulticallResults } from './actions'
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { useEffect, useMemo, useRef } from 'react'
-
-import { AppState } from '../state'
-import { Contract } from 'ethers'
-import { chunkArray } from '../../utils/chunkArray'
-import { updateBlockNumber } from '../application/actions'
-import { useActiveWeb3React } from '../../hooks/web3'
-import { useBlockNumber } from '../application/hooks'
-import useDebounce from '../../hooks/useDebounce'
-import { useMulticall2Contract } from '../../hooks/useContract'
+import { useEffect, useMemo, useRef } from 'react';
+import { Contract } from 'ethers';
+import { AppState } from '../state';
+import { Call, parseCallKey } from './utils';
+import useDebounce from '../../hooks/useDebounce';
+import { chunkArray } from '../../utils/chunkArray';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { useBlockNumber } from '../application/hooks';
+import { RetryableError, retry } from '../../utils/retry';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { updateBlockNumber } from '../application/actions';
+import { useMulticall2Contract } from '../../hooks/useContract';
+import { errorFetchingMulticallResults, fetchingMulticallResults, updateMulticallResults } from './actions';
 
 /**
  * Fetches a chunk of calls, enforcing a minimum block number constraint

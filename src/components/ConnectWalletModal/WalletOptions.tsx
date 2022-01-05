@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import { ExternalLink } from '../ExternalLink/ExternalLink';
 import { TEXT } from '../../theme/theme';
+import { ExternalLink } from '../ExternalLink/ExternalLink';
 
 const InfoCard = styled.button<{ active?: boolean }>`
   background-color: transparent;

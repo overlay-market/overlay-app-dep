@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
-import { TOKEN_LABELS } from '../../constants/tokens';
 import { BuildInterface } from './Build';
 import { usePositionActionHandlers } from '../../state/positions/hooks';
 

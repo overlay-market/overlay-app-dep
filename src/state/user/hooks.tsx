@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 import { shallowEqual } from 'react-redux';
+import { updateUserLocale } from './actions';
 import { updateUserDarkMode } from './actions';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { SupportedLocale } from '../../constants/locales';
-import { updateUserLocale } from './actions';
 
 export function useIsDarkMode(): boolean {
   const { userDarkMode, matchesDarkMode } = useAppSelector(

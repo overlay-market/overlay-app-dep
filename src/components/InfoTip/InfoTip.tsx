@@ -1,7 +1,7 @@
 import ReactTooltip from "react-tooltip";
 import styled from 'styled-components/macro';
-import { Info } from "react-feather";
 import { isMobile } from "react-device-detect";
+import { Info } from "react-feather";
 
 const IconWrapper = styled.a<{ margin?: string }>`
   display: inline-flex !important;

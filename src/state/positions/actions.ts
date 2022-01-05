@@ -1,5 +1,4 @@
 import { createAction } from '@reduxjs/toolkit';
-import { Currency, CurrencyAmount } from '@uniswap/sdk-core';
 
 export enum PositionSide { 
   LONG = 'LONG',

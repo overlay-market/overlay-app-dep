@@ -1,10 +1,10 @@
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { useActiveWeb3React } from '../../hooks/web3';
-import { AppState } from '../state';
-import { useDispatch } from 'react-redux';
 import { useCallback, useMemo } from 'react';
-import { addPopup, PopupContent, setOpenModal, removePopup } from './actions';
+import { useDispatch } from 'react-redux';
+import { AppState } from '../state';
 import { ApplicationModal } from './actions';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { addPopup, PopupContent, setOpenModal, removePopup } from './actions';
 
 export function useBlockNumber(): number | undefined {
   const { chainId } = useActiveWeb3React();

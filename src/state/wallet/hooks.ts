@@ -1,17 +1,12 @@
-import { Currency, CurrencyAmount, Ether, JSBI, Token } from '@sushiswap/sdk'
-import {
-  useMultipleContractSingleData,
-  useSingleContractMultipleData,
-} from "../multicall/hooks";
-import { useAccountQuery } from '../data/enhanced';
 import { useMemo } from "react";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { isAddress } from '../../utils/web3';
-import { useMulticall2Contract } from '../../hooks/useContract';
 import { Interface } from '@ethersproject/abi'
+import { Currency, CurrencyAmount, Ether, JSBI, Token } from '@sushiswap/sdk'
+import { isAddress } from '../../utils/web3';
+import { useAccountQuery } from '../data/enhanced';
+import { useActiveWeb3React } from "../../hooks/web3";
+import { useMulticall2Contract } from '../../hooks/useContract';
+import { useMultipleContractSingleData, useSingleContractMultipleData } from "../multicall/hooks";
 import ERC20_ABI from '../../constants/abis/erc20.json'
-import ERC20_INTERFACE from "../../constants/abis/erc20";
-
 
 export function useOvlBalance(
   address: string | null | undefined

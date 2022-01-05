@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { IconButton, Snackbar } from "@material-ui/core";
-import { Alert, AlertTitle } from "@material-ui/lab";
-import CloseIcon from "@material-ui/icons/Close";
 import styled from "styled-components/macro";
+import CloseIcon from "@material-ui/icons/Close";
+import { Alert, AlertTitle } from "@material-ui/lab";
+import { IconButton, Snackbar } from "@material-ui/core";
 
 export enum PopupType {
   ERROR = "error",

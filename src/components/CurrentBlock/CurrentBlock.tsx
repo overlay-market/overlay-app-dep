@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
-
 import { useBlockNumber } from '../../state/application/hooks';
 import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
-import { TEXT } from '../../theme/theme';
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink';
 
 const StyledPolling = styled.div`

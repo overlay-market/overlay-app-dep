@@ -1,16 +1,15 @@
 import styled from 'styled-components/macro';
-import { UnsupportedChainIdError } from '@web3-react/core';
 import { utils } from 'ethers';
-import { AlertTriangle } from 'react-feather';
 import { Trans } from '@lingui/macro';
-import { useActiveWeb3React } from '../../hooks/web3';
-import { SupportedChainId } from '../../constants/chains';
-import { shortenAddress } from '../../utils/web3';
-import { OVL } from '../../constants/tokens';
-import { FlexRowContainer } from '../Container/Container';
+import { AlertTriangle } from 'react-feather';
+import { UnsupportedChainIdError } from '@web3-react/core';
 import { TEXT } from '../../theme/theme';
-import { useWalletModalToggle } from '../../state/application/hooks';
+import { shortenAddress } from '../../utils/web3';
+import { useActiveWeb3React } from '../../hooks/web3';
 import { useOvlBalance } from '../../state/wallet/hooks';
+import { SupportedChainId } from '../../constants/chains';
+import { FlexRowContainer } from '../Container/Container';
+import { useWalletModalToggle } from '../../state/application/hooks';
 import Dropdown from './Dropdown';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 

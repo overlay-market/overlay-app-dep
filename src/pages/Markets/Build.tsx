@@ -1,48 +1,39 @@
 import { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
-import { MarketCard } from "../../components/Card/MarketCard";
-import {
-  LightGreyButton,
-  TransparentUnderlineButton,
-  TransparentDarkGreyButton,
-  ActiveBlueButton,
-  TxnSettingsButton,
-} from "../../components/Button/Button";
-import { TEXT } from "../../theme/theme";
-import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
-import { Label, Input } from "@rebass/forms";
-import { usePositionActionHandlers } from "../../state/positions/hooks";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { usePositionState } from "../../state/positions/hooks";
-import { useOvlBalance } from "../../state/wallet/hooks";
-import { DefaultTxnSettings } from "../../state/positions/actions";
-import { OVL } from "../../constants/tokens";
-import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
-import { useDerivedBuildInfo } from "../../state/positions/hooks";
-import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
-import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
-import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
-import { Sliders, X } from "react-feather";
-import { Icon } from "../../components/Icon/Icon";
-import { InfoTip } from "../../components/InfoTip/InfoTip";
-import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
-import { useTransactionAdder } from "../../state/transactions/hooks";
-import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
-import TransactionPending from "../../components/Popup/TransactionPending";
-import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
-import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { utils } from "ethers";
-import { useAllMarkets } from "../../state/markets/hooks";
-import { Back } from "../../components/Back/Back";
+import { Label, Input } from "@rebass/forms";
+import { Sliders, X } from "react-feather";
+import { MarketCard } from "../../components/Card/MarketCard";
+import { LightGreyButton, TransparentUnderlineButton, TxnSettingsButton } from "../../components/Button/Button";
+import { TEXT } from "../../theme/theme";
+import { OVL } from "../../constants/tokens";
+import { Icon } from "../../components/Icon/Icon";
+import { useActiveWeb3React } from "../../hooks/web3";
+import { useOvlBalance } from "../../state/wallet/hooks";
+import { InfoTip } from "../../components/InfoTip/InfoTip";
+import { usePositionState } from "../../state/positions/hooks";
+import { useDerivedBuildInfo } from "../../state/positions/hooks";
+import { DefaultTxnSettings } from "../../state/positions/actions";
+import { usePositionActionHandlers } from "../../state/positions/hooks";
+import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
+import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
-import { useAccountPositions } from "../../state/positions/hooks";
+import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
+import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
+import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
+import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
+import { formatDecimalToPercentage } from "../../utils/formatDecimal";
+import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
+import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
+import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
+import { useBuildCallback } from "../../hooks/useBuildCallback";
+import { useAllMarkets } from "../../state/markets/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { useBuildFee } from "../../hooks/useBuildFee";
-import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
-import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
-import { formatDecimalToPercentage } from "../../utils/formatDecimal";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
+import TransactionPending from "../../components/Popup/TransactionPending";
+import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
 export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
   height: 48px;
@@ -261,15 +252,13 @@ export const BuildInterface = ({
 
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
 
-  const { account, chainId, library } = useActiveWeb3React();
+  const { account, chainId } = useActiveWeb3React();
 
   const ovl = chainId ? OVL[chainId] : undefined;
 
-  const { error, ovlBalance: userOvlBalance } = useOvlBalance(account);
+  const { ovlBalance: userOvlBalance } = useOvlBalance(account);
 
-  const { isLoading, markets } = useAllMarkets();
-
-  const { positions } = useAccountPositions(account);
+  const { markets } = useAllMarkets();
 
   const buildFee = useBuildFee();
   
@@ -296,10 +285,9 @@ export const BuildInterface = ({
     onResetBuildState,
   } = usePositionActionHandlers();
   
-  const { buildData, inputError } = useDerivedBuildInfo();
+  const { buildData } = useDerivedBuildInfo();
   
-  const { callback: buildCallback, error: buildCallbackError } =
-  useBuildCallback(buildData);
+  const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
   
   const handleResetTxnSettings = useCallback(
     (e: any) => {

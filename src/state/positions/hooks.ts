@@ -1,5 +1,7 @@
 import { useCallback, useMemo } from "react";
+import { parseUnits } from '@ethersproject/units';
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
+import JSBI from 'jsbi';
 import { 
   DefaultTxnSettings,
   typeInput, 
@@ -8,13 +10,9 @@ import {
   setSlippage,
   setTxnDeadline,
   resetBuildState } from "./actions";
-import { useAppDispatch, useAppSelector } from "../hooks";
 import { AppState } from "../state";
-import { Token } from "@uniswap/sdk-core";
 import { useActiveWeb3React } from "../../hooks/web3";
-import { parseUnits } from '@ethersproject/units';
-import JSBI from 'jsbi';
-import { Trans } from '@lingui/macro';
+import { useAppDispatch, useAppSelector } from "../hooks";
 import { useAccountQuery, usePositionsQuery } from "../data/generated";
 
 export function usePositionState(): AppState['position'] {
