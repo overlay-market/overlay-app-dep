@@ -1,5 +1,5 @@
 import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
-import { StyledContainer } from "../../components/Container/Container";
+import { PageContainer } from "../../components/Container/Container";
 import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 import { TransparentButton } from '../../components/Button/Button';
 import { useAllPositions } from '../../state/positions/hooks';
@@ -82,17 +82,10 @@ export const LiquidatablePosition = (positionData: any) => {
 };
 
 const Liquidate = () => {
-  const {
-    isLoading,
-    isError,
-    error,
-    isUninitialized,
-    allPositions
-  } = useAllPositions();
-
-  console.log('allPositions: ', allPositions);
+  const { allPositions } = useAllPositions();
+  
   return (
-      <StyledContainer maxWidth={'420px'}>
+      <PageContainer maxWidth={'420px'}>
           <TableContainer component={Paper}>
               <StyledTable>
                   <TableHead>
@@ -121,7 +114,7 @@ const Liquidate = () => {
                   </TableHead>
                 </StyledTable>
           </TableContainer>
-      </StyledContainer>
+      </PageContainer>
   )
 };
 

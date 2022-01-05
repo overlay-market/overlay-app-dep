@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledContainer = styled.div<{ maxWidth?: string}>`
+export const PageContainer = styled.div<{ maxWidth?: string}>`
   max-width: ${({ maxWidth }) => ( maxWidth ? maxWidth : '900px')};
   margin: auto;
   margin-top: 48px;

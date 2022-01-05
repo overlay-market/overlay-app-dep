@@ -18,20 +18,8 @@ import { usePositionState } from "../../state/positions/hooks";
 import { useOvlBalance } from "../../state/wallet/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
 import { OVL } from "../../constants/tokens";
-import {
-  OVL_ADDRESS,
-  OVL_COLLATERAL_ADDRESS,
-  OVL_MARKET_ADDRESS,
-} from "../../constants/addresses";
-import { maxAmountSpend } from "../../utils/maxAmountSpend";
-import {
-  ApprovalState,
-  useApproveCallback,
-} from "../../hooks/useApproveCallback";
-import {
-  useDerivedBuildInfo,
-  tryParseAmount,
-} from "../../state/positions/hooks";
+import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
+import { useDerivedBuildInfo } from "../../state/positions/hooks";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
@@ -47,14 +35,9 @@ import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { utils } from "ethers";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { Back } from "../../components/Back/Back";
-import {
-  formatWeiToParsedString,
-  formatWeiToParsedNumber,
-} from "../../utils/formatWei";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { useAccountPositions } from "../../state/positions/hooks";
 import { shortenAddress } from "../../utils/web3";
-import { useSingleCallResult } from "../../state/multicall/hooks";
-import { useCollateralManagerContract } from "../../hooks/useContract";
 import { useBuildFee } from "../../hooks/useBuildFee";
 import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
 import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
@@ -258,7 +241,7 @@ const AdditionalDetails = ({
 export const BuildInterface = ({
   marketId,
   marketPrice,
-}: {
+}:{
   marketId: string;
   marketPrice: string | number;
 }) => {
@@ -277,11 +260,9 @@ export const BuildInterface = ({
     txHash: undefined,
   });
 
-  const addTransaction = useTransactionAdder();
-
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
 
-  const isAuto = useIsTxnSettingsAuto();
+  const isTxnSettingsAuto = useIsTxnSettingsAuto();
 
   const { account, chainId, library } = useActiveWeb3React();
 
@@ -293,14 +274,13 @@ export const BuildInterface = ({
 
   const { positions } = useAccountPositions(account);
 
-  
   const buildFee = useBuildFee();
   
-  const filtered = markets?.filter((market, key) => {
+  const filteredMarketById = markets?.filter((market, key) => {
     return market.id === marketId;
   });
   
-  const market = filtered ? filtered[0] : null;
+  const market = filteredMarketById ? filteredMarketById[0] : null;
   
   const {
     selectedLeverage,
@@ -524,11 +504,7 @@ export const BuildInterface = ({
             position={"absolute"}
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
           >
-            {isTxnSettingsOpen ? (
-              <X color={"#12B4FF"} />
-            ) : (
-              <Sliders color={"#B9BABD"} />
-            )}
+            {isTxnSettingsOpen ? (<X color={"#12B4FF"} />) : (<Sliders color={"#B9BABD"} />)}
           </Icon>
         </Row>
 
@@ -544,10 +520,7 @@ export const BuildInterface = ({
 
             <Row padding={"8px 16px"}>
               <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
-
-              <InfoTip tipFor={"Slippage Tolerance"}>
-                <div>meow meow meow</div>
-              </InfoTip>
+              <InfoTip tipFor={"Slippage Tolerance"}>Lorem Ipsum</InfoTip>
             </Row>
 
             <Row padding={"0px 16px 16px"}>
@@ -560,7 +533,7 @@ export const BuildInterface = ({
                 <InputDescriptor>%</InputDescriptor>
               </InputContainer>
               <TxnSettingsButton
-                active={isAuto}
+                active={isTxnSettingsAuto}
                 onClick={handleResetTxnSettings}
                 width={"96px"}
                 margin={"0 0 0 auto"}
@@ -572,9 +545,6 @@ export const BuildInterface = ({
 
             <Row padding={"8px 16px"}>
               <TEXT.Menu>Transaction Deadline</TEXT.Menu>
-              <InfoTip tipFor={"Transaction Deadline"}>
-                <div>meow meow woof</div>
-              </InfoTip>
             </Row>
 
             <Row padding={"0px 16px 16px"}>

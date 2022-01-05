@@ -33,16 +33,11 @@ export const StyledTableRow = styled(TableRow)`
   background: ${({theme}) => theme.bg1};
   height: 69px;
 
-
   ${({theme}) => theme.mediaWidth.minMedium`
     height: auto;
 
     :hover { 
       background: #262626 !important;
-
-      >* {
-        font-weight: 900 !important;
-      }
     }
   `}
 `;

@@ -6,7 +6,7 @@ import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { Column } from "../../components/Column/Column";
 import { Row } from "../../components/Row/Row";
 import { TEXT } from "../../theme/theme";
-import { StyledContainer } from "../../components/Container/Container";
+import { PageContainer } from "../../components/Container/Container";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
 import {
   StyledTable,
@@ -51,16 +51,13 @@ const Markets = () => {
   const { isLoading, markets } = useAllMarkets();
 
   return (
-    <StyledContainer>
+    <PageContainer>
       <TableContainer component={Paper}>
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
                 <Trans> Market </Trans>
-                <InfoTip tipFor={"Market"}>
-                  <div> mega meow </div>
-                </InfoTip>
               </StyledHeaderCell>
 
               <StyledHeaderCell>
@@ -77,9 +74,6 @@ const Markets = () => {
 
               <StyledHeaderCell>
                 <Trans> Funding Rate </Trans>
-                <InfoTip tipFor={"Positions"}>
-                  <div> meow meow </div>
-                </InfoTip>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
@@ -102,6 +96,8 @@ const Markets = () => {
                       Number(utils.formatUnits(market.currentPrice.ask, 18))) /
                     2
                   ).toFixed(2)}
+
+                  {}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
@@ -152,7 +148,7 @@ const Markets = () => {
           </TableBody>
         </StyledTable>
       </TableContainer>
-    </StyledContainer>
+    </PageContainer>
   );
 };
 
