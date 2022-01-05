@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components/macro";
 import Loader from "react-loader-spinner";
 import { ChevronRight } from "react-feather";

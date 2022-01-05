@@ -4,7 +4,7 @@ import { utils } from "ethers";
 import { Label, Input } from "@rebass/forms";
 import { Sliders, X } from "react-feather";
 import { MarketCard } from "../../components/Card/MarketCard";
-import { LightGreyButton, TransparentUnderlineButton, TxnSettingsButton } from "../../components/Button/Button";
+import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TxnSettingsButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { OVL } from "../../constants/tokens";
 import { Icon } from "../../components/Icon/Icon";
@@ -35,36 +35,27 @@ import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import TransactionPending from "../../components/Popup/TransactionPending";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
-export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
-  height: 48px;
-  padding: 16px;
+const SelectPositionButton = styled(SelectActionButton)`
+  border: ${({ active }) => ( active ? 'none' : '' )};
   margin: 4px 0;
-  background: ${({ active }) => (active ? "#10DCB1" : "transparent")};
-  color: ${({ active }) => (active ? "#F2F2F2" : "#10DCB1")};
+`
+const SelectLongPositionButton = styled(SelectPositionButton)`
+  color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
+  background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
 `;
 
-export const ShortPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
-  height: 48px;
-  padding: 16px;
-  margin: 4px 0;
-  background: ${({ active }) => (active ? "#FF648A" : "transparent")};
-  color: ${({ active }) => (active ? "#F2F2F2" : "#FF648A")};
+const SelectShortPositionButton = styled(SelectPositionButton)`
+  color: ${({ active }) => (active ? '#0B0F1C' : '#FF648A')};
+  background: ${({ active }) => (active ? '#FF648A' : 'transparent')};
 `;
 
-export const BuildButton = styled(LightGreyButton)`
-  height: 48px;
-  padding: 16px;
-  margin: 4px 0;
-  background: transparent;
-  color: #71d2ff;
+const TriggerBuildButton = styled(TriggerActionButton)`
   margin-top: 24px;
 `;
 
-export const ApproveButton = styled(LightGreyButton)`
-  height: 48px;
-  padding: 16px;
-  margin: 4px 0;
+const TriggerApproveButton = styled(SelectActionButton)`
   margin-top: 24px;
+  border: none;
   background: linear-gradient(
     91.32deg,
     #10dcb1 0%,
@@ -571,19 +562,19 @@ export const BuildInterface = ({
         </TransactionSettingModal>
 
         <FlexColumnContainer>
-          <LongPositionButton
+          <SelectLongPositionButton
             onClick={() => handleSelectPositionSide(true)}
             active={isLong}
-          >
+            >
             Long
-          </LongPositionButton>
+          </SelectLongPositionButton>
 
-          <ShortPositionButton
+          <SelectShortPositionButton
             onClick={() => handleSelectPositionSide(false)}
             active={!isLong && isLong !== undefined}
-          >
+            >
             Short
-          </ShortPositionButton>
+          </SelectShortPositionButton>
         </FlexColumnContainer>
 
         <LeverageSlider
@@ -665,9 +656,13 @@ export const BuildInterface = ({
           />
         </InputContainer>
         {showApprovalFlow ? (
-          <ApproveButton onClick={handleApprove}>Approve</ApproveButton>
+          <TriggerApproveButton 
+            onClick={handleApprove}
+            >
+            Approve
+          </TriggerApproveButton>
         ) : (
-          <BuildButton
+          <TriggerBuildButton
             onClick={() => {
               setBuildState({
                 showConfirm: true,
@@ -676,9 +671,9 @@ export const BuildInterface = ({
                 txHash: undefined,
               });
             }}
-          >
+            >
             Build
-          </BuildButton>
+          </TriggerBuildButton>
         )}
       </FlexColumnContainer>
 

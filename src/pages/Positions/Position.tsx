@@ -18,16 +18,10 @@ import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hooks";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
-import { TransparentUnderlineButton, LightGreyButton } from "../../components/Button/Button";
+import { TransparentUnderlineButton, TriggerActionButton } from "../../components/Button/Button";
 
-const UnwindButton = styled(LightGreyButton)`
-  height: 48px;
-  padding: 16px;
-  margin: 4px 0;
-  background: transparent;
-  color: #71d2ff;
-  margin-top: 24px;
-  margin-bottom: 64px;
+const UnwindButton = styled(TriggerActionButton)`
+  margin: 24px 0;
 `;
 
 export const ListItem = ({

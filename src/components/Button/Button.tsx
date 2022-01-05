@@ -3,7 +3,7 @@ import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'reba
 
 type ButtonProps = Omit<ButtonPropsOriginal, 'css'>
 
-const BaseButton = styled(RebassButton)<
+const BaseTemplateButton = styled(RebassButton)<
   {
     padding?: string
     width?: string
@@ -14,23 +14,36 @@ const BaseButton = styled(RebassButton)<
     color?: any
   } & ButtonProps
 >`
-  padding: ${({ padding }) => (padding ? padding : '16px')};
   width: ${({ width }) => (width ? width : '100%')};
-  borderRadius: ${({ borderRadius }) => ( borderRadius ? borderRadius : '8px' )};
   color: ${({ color }) => ( color ? color : '#f2f2f2' )};
+  padding: ${({ padding }) => (padding ? padding : '16px')};
   border: ${({ border }) => ( border ? border : '1px solid #f2f2f2' )};
   cursor: pointer;
-  text-align: center;
   font-weight: 700;
+  text-align: center;
+  transition: transform 450ms ease;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
   sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: transform 450ms ease;
 `
 
-export const TxnSettingsButton = styled(BaseButton)`
+export const SelectActionButton = styled(BaseTemplateButton)`
+  color: ${({ disabled }) => ( disabled ? '#63656D' : '')};
+  cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
+  background: ${({ disabled }) => ( disabled ? '#D0D0D2' : '')};
+  height: 48px;
+  padding: 16px;
+  border-radius: 8px;
+`;
+
+export const TriggerActionButton = styled(SelectActionButton)`
+  color: ${({ active }) => ( active ? '#0B0F1C' : '#71d2ff' )};
+  background: ${({ active }) => ( active ? '#12B4FF' : 'transparent' )};
+`;
+
+export const TxnSettingsButton = styled(BaseTemplateButton)`
   background: ${({ active, disabled }) => ( active ? '#12B4FF' : disabled ? 'gray' : 'transparent')};
   color: ${({ disabled }) => ( disabled ? '#0B0F1C' : 'white' )};
   cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
@@ -38,7 +51,7 @@ export const TxnSettingsButton = styled(BaseButton)`
 `;
 
 
-export const LightGreyButton = styled(BaseButton)<{ background?: string; border?: string; color?: string }>`
+export const LightGreyButton = styled(BaseTemplateButton)<{ background?: string; border?: string; color?: string }>`
   background: ${({ background }) => background ?? '#BDBDBD'};
   color: ${({ color }) => ( color ? color : 'white' )};
   font-size: 14px;
@@ -47,7 +60,7 @@ export const LightGreyButton = styled(BaseButton)<{ background?: string; border?
   border: ${({ border }) => ( border ? border : '1px solid #F2F2F2')};
 `
 
-export const TransparentButton = styled(BaseButton)<{ width?: string, underline?: boolean }>`
+export const TransparentButton = styled(BaseTemplateButton)<{ width?: string, underline?: boolean }>`
   background: transparent;
   color: ${({ color }) => ( color ? color : 'white' )};
   padding: 0 8px;
@@ -60,14 +73,14 @@ export const TransparentUnderlineButton = styled(TransparentButton)`
   text-decoration: underline;
 `
 
-export const MenuButton = styled(BaseButton)`
+export const MenuButton = styled(BaseTemplateButton)`
   background: transparent;
   display: flex;
   font-size: 12px;
 `
 
 // Build Button base
-const BuildButton = styled(BaseButton)`
+const BuildButton = styled(BaseTemplateButton)`
   border-radius: 4px;
   font-size: 14px;
   font-weight: 700;

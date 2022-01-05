@@ -6,7 +6,6 @@ import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
 import { useAllMarkets } from "../../state/markets/hooks";
-import { InfoTip } from "../../components/InfoTip/InfoTip";
 import { formatWeiToParsedNumber } from "../../utils/formatWei";
 import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
