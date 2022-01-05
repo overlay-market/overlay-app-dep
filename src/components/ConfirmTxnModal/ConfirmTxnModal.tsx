@@ -1,7 +1,7 @@
 import { X } from "react-feather";
 import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
-import { ActiveBlueButton } from "../Button/Button";
+import { TriggerActionButton as TriggerConfirmBuildButton } from "../Button/Button";
 import { ListItem } from "../../pages/Positions/Position";
 import { FlexColumnContainer } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
@@ -106,9 +106,12 @@ export default function ConfirmTxnModal({
           revert.
         </TEXT.Small>
 
-        <ActiveBlueButton border={"none"} onClick={onConfirm}>
+        <TriggerConfirmBuildButton 
+          onClick={onConfirm}
+          active={true}
+          >
           Confirm Build
-        </ActiveBlueButton>
+        </TriggerConfirmBuildButton>
       </ModalContent>
     </Modal>
   );

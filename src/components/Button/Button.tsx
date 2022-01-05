@@ -30,6 +30,7 @@ const BaseTemplateButton = styled(RebassButton)<
 `
 
 export const SelectActionButton = styled(BaseTemplateButton)`
+  border: ${({ active }) => ( active ? 'none' : '' )};
   color: ${({ disabled }) => ( disabled ? '#63656D' : '')};
   cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
   background: ${({ disabled }) => ( disabled ? '#D0D0D2' : '')};
@@ -43,7 +44,7 @@ export const TriggerActionButton = styled(SelectActionButton)`
   background: ${({ active }) => ( active ? '#12B4FF' : 'transparent' )};
 `;
 
-export const TxnSettingsButton = styled(BaseTemplateButton)`
+export const TransactionSettingsButton = styled(BaseTemplateButton)`
   background: ${({ active, disabled }) => ( active ? '#12B4FF' : disabled ? 'gray' : 'transparent')};
   color: ${({ disabled }) => ( disabled ? '#0B0F1C' : 'white' )};
   cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
@@ -51,38 +52,20 @@ export const TxnSettingsButton = styled(BaseTemplateButton)`
 `;
 
 export const TransparentButton = styled(BaseTemplateButton)<{ width?: string, underline?: boolean }>`
-  background: transparent;
+  width: ${({width}) => (width ? width : 'auto')};
   color: ${({ color }) => ( color ? color : 'white' )};
   padding: 0 8px;
-  width: ${({width}) => (width ? width : 'auto')};
-  font-size: 12px;
   cursor: pointer;
-`
+  font-size: 12px;
+  background: transparent;
+`;
 
 export const TransparentUnderlineButton = styled(TransparentButton)`
   text-decoration: underline;
-`
+`;
 
 export const MenuButton = styled(BaseTemplateButton)`
   background: transparent;
   display: flex;
   font-size: 12px;
-`
-
-// Build Button base
-const BuildButton = styled(BaseTemplateButton)`
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #F2F2F2;
-  padding: 8px;
-`
-
-export const TransparentDarkGreyButton = styled(BuildButton)`
-  background: #505050;
-  opacity: 0.8;
-`
-
-export const ActiveBlueButton = styled(BuildButton)`
-  background: ${({theme}) => theme.blue3};
-`
+`;

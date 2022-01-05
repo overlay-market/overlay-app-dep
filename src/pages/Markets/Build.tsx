@@ -4,7 +4,7 @@ import { utils } from "ethers";
 import { Label, Input } from "@rebass/forms";
 import { Sliders, X } from "react-feather";
 import { MarketCard } from "../../components/Card/MarketCard";
-import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TxnSettingsButton } from "../../components/Button/Button";
+import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TransactionSettingsButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { OVL } from "../../constants/tokens";
 import { Icon } from "../../components/Icon/Icon";
@@ -35,18 +35,16 @@ import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import TransactionPending from "../../components/Popup/TransactionPending";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
-const SelectPositionButton = styled(SelectActionButton)`
-  border: ${({ active }) => ( active ? 'none' : '' )};
-  margin: 4px 0;
-`
-const SelectLongPositionButton = styled(SelectPositionButton)`
+const SelectLongPositionButton = styled(SelectActionButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
   background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
+  margin: 4px 0;
 `;
 
-const SelectShortPositionButton = styled(SelectPositionButton)`
+const SelectShortPositionButton = styled(SelectActionButton)`
   color: ${({ active }) => (active ? '#0B0F1C' : '#FF648A')};
   background: ${({ active }) => (active ? '#FF648A' : 'transparent')};
+  margin: 4px 0;
 `;
 
 const TriggerBuildButton = styled(TriggerActionButton)`
@@ -510,7 +508,7 @@ export const BuildInterface = ({
                 />
                 <InputDescriptor>%</InputDescriptor>
               </InputContainer>
-              <TxnSettingsButton
+              <TransactionSettingsButton
                 active={isTxnSettingsAuto}
                 onClick={handleResetTxnSettings}
                 width={"96px"}
@@ -518,7 +516,7 @@ export const BuildInterface = ({
                 padding={"0px"}
               >
                 Auto
-              </TxnSettingsButton>
+              </TransactionSettingsButton>
             </FlexRowContainer>
 
             <FlexRowContainer padding={"8px 16px"}>
@@ -541,7 +539,7 @@ export const BuildInterface = ({
               padding={"16px"}
               borderTop={"1px solid white"}
             >
-              <TxnSettingsButton
+              <TransactionSettingsButton
                 onClick={handleResetTxnSettings}
                 border={"none"}
                 width={"96px"}
@@ -549,14 +547,14 @@ export const BuildInterface = ({
                 padding={"0px"}
               >
                 Reset
-              </TxnSettingsButton>
-              <TxnSettingsButton
+              </TransactionSettingsButton>
+              <TransactionSettingsButton
                 onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
                 width={"96px"}
                 padding={"0px"}
               >
                 Save
-              </TxnSettingsButton>
+              </TransactionSettingsButton>
             </FlexRowContainer>
           </FlexColumnContainer>
         </TransactionSettingModal>
@@ -671,6 +669,7 @@ export const BuildInterface = ({
                 txHash: undefined,
               });
             }}
+
             >
             Build
           </TriggerBuildButton>
