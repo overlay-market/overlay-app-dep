@@ -8,27 +8,27 @@ import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/Con
 
 export default function ConfirmTxnModal({
   isOpen,
+  isLong,
+  buildFee,
   onConfirm,
   onDismiss,
-  marketPrice,
-  isLong,
-  selectedLeverage,
-  setSlippageValue,
-  buildFee,
-  adjustedCollateral,
   adjustedOi,
+  marketPrice,
+  setSlippageValue,
+  selectedLeverage,
+  adjustedCollateral,
   estimatedLiquidationPrice,
 }: {
   isOpen: boolean;
+  isLong: boolean | undefined;
+  buildFee: number | undefined | null;
   onConfirm?: () => void;
   onDismiss?: () => void;
-  marketPrice: string | undefined;
-  isLong: boolean | undefined;
-  selectedLeverage: number;
-  setSlippageValue: string;
-  buildFee: number | undefined | null;
-  adjustedCollateral: number | undefined;
   adjustedOi: number | undefined;
+  marketPrice: string | undefined;
+  setSlippageValue: string;
+  selectedLeverage: number;
+  adjustedCollateral: number | undefined;
   estimatedLiquidationPrice: any
 }) {
   return (
