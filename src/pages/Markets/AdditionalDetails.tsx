@@ -3,94 +3,120 @@ import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 
 const ContentContainer = styled(FlexColumnContainer)`
-  margin-top: 64px;
   padding: 0 16px;
+  margin-top: 64px;
 `;
 
 const AdditionalDetailRow = styled(FlexRowContainer)`
-  margin: 12px 0;
   width: 100%;
   display: flex;
+  margin: 12px 0;
 `;
 
-export const Title = styled.div`
+export const PositionDetailType = styled.div`
+  color: #b9babd;
   font-size: 14px;
   font-weight: 700;
-  color: #b9babd;
 `;
 
-export const Content = styled.div<{ color?: string }>`
-  margin-left: auto;
-  flex-direction: row;
+export const DetailValue = styled.div<{ color?: string }>`
+  color: ${({ color }) => (color ? color : "#B9BABD")};
   display: flex;
   font-size: 14px;
-  color: ${({ color }) => (color ? color : "#B9BABD")};
-`;
-
-export const OpenInterestValue = styled.div`
-  font-size: 14px;
-  text-align: right;
-  min-width: 130px;
+  margin-left: auto;
+  flex-direction: row;
+  `;
+  
+  export const OpenInterestValue = styled.div`
   color: #b9babd;
+  font-size: 14px;
+  min-width: 130px;
+  text-align: right;
 `;
 
 export const AdditionalDetails = ({
+  bidPrice,
+  askPrice,
   fee,
-  slippage,
-  estLiquidationPrice,
-  bid,
-  ask,
-  expectedOi,
+  oiCap,
   oiLong,
   oiShort,
-  oiCap,
+  slippage,
+  expectedOi,
   fundingRate,
+  estLiquidationPrice,
 }: {
+  bidPrice?: string | number;
+  askPrice?: string | number;
   fee?: string | number;
+  oiCap?: number;
+  oiLong?: number;
+  oiShort?: number;
   slippage?: string | number;
-  estLiquidationPrice?: string | number;
-  bid?: string | number;
-  ask?: string | number;
   expectedOi?: string | number;
-  oiLong?: number | undefined;
-  oiShort?: number | undefined;
-  oiCap?: number | undefined;
   fundingRate?: string | number;
+  estLiquidationPrice?: string | number;
 }) => {
   return (
     <ContentContainer>
       <AdditionalDetailRow>
-        <Title> Fee </Title>
-        <Content> {fee}% </Content>
+        <PositionDetailType> 
+          Fee 
+        </PositionDetailType>
+        <DetailValue> 
+          {fee}% 
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> Slippage </Title>
-        <Content> {slippage}% </Content>
+        <PositionDetailType> 
+          Slippage 
+        </PositionDetailType>
+        <DetailValue> 
+          {slippage}% 
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> Est. Liquidation </Title>
-        <Content> {estLiquidationPrice} </Content>
+        <PositionDetailType> 
+          Est. Liquidation 
+        </PositionDetailType>
+        <DetailValue> 
+          {estLiquidationPrice} 
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> Bid </Title>
-        <Content> ~{bid} </Content>
+        <PositionDetailType> 
+          Bid 
+        </PositionDetailType>
+        <DetailValue> 
+          ~{bidPrice} 
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> Ask </Title>
-        <Content> ~{ask} </Content>
+        <PositionDetailType> 
+          Ask 
+        </PositionDetailType>
+        <DetailValue> 
+          ~{askPrice} 
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> Expected OI </Title>
-        <Content> {expectedOi} OVL </Content>
+        <PositionDetailType> 
+          Expected OI 
+        </PositionDetailType>
+        <DetailValue> 
+          {expectedOi} OVL 
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> OI Long </Title>
+        <PositionDetailType> 
+          OI Long 
+        </PositionDetailType>
         <ProgressBar
           value={oiLong}
           max={oiCap}
@@ -98,7 +124,6 @@ export const AdditionalDetails = ({
           color={"#10DCB1"}
           margin={"0 0 0 auto"}
         />
-
         <OpenInterestValue>
           {" "}
           {oiLong} / {oiCap}
@@ -107,7 +132,9 @@ export const AdditionalDetails = ({
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> OI Short </Title>
+        <PositionDetailType> 
+          OI Short 
+        </PositionDetailType>
         <ProgressBar
           value={oiShort}
           max={oiCap}
@@ -115,7 +142,6 @@ export const AdditionalDetails = ({
           color={"#DC1F4E"}
           margin={"0 0 0 auto"}
         />
-
         <OpenInterestValue>
           {" "}
           {oiShort} / {oiCap}
@@ -124,8 +150,12 @@ export const AdditionalDetails = ({
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <Title> Funding rate </Title>
-        <Content color={"#10DCB1"}> ~ {fundingRate}% </Content>
+        <PositionDetailType> 
+          Funding rate 
+        </PositionDetailType>
+        <DetailValue color={"#10DCB1"}>
+           ~ {fundingRate}% 
+        </DetailValue>
       </AdditionalDetailRow>
     </ContentContainer>
   );

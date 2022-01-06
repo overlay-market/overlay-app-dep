@@ -590,12 +590,12 @@ export const BuildInterface = ({
         }
         slippage={setSlippageValue}
         estLiquidationPrice={estimatedLiquidationPrice}
-        bid={
+        bidPrice={
           market
             ? formatWeiToParsedString(market.currentPrice.bid, 10)
             : "loading"
         }
-        ask={
+        askPrice={
           market
             ? formatWeiToParsedString(market.currentPrice.ask, 10)
             : "loading"
