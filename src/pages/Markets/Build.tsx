@@ -128,10 +128,8 @@ export const BuildInterface = ({
   marketId: string;
   marketPrice: string | number;
 }) => {
-  const [
-    { showConfirm, attemptingTxn, txnErrorMessage, txHash },
-    setBuildState,
-  ] = useState<{
+  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
+  const [{ showConfirm, attemptingTxn, txnErrorMessage, txHash }, setBuildState] = useState<{
     showConfirm: boolean;
     attemptingTxn: boolean;
     txnErrorMessage: string | undefined;
@@ -143,23 +141,17 @@ export const BuildInterface = ({
     txHash: undefined,
   });
 
-  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
-
-  const isTxnSettingsAuto = useIsTxnSettingsAuto();
-
-  const { account, chainId } = useActiveWeb3React();
-
-  const ovl = chainId ? OVL[chainId] : undefined;
-
-  const { ovlBalance: userOvlBalance } = useOvlBalance(account);
-
   const { markets } = useAllMarkets();
-
+  const { buildData } = useDerivedBuildInfo();
+  const { account, chainId } = useActiveWeb3React();
+  const { ovlBalance: userOvlBalance } = useOvlBalance(account);
+  const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
+  const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const buildFee = useBuildFee();
   
-  const filteredMarketById = markets?.filter((market, key) => {
-    return market.id === marketId;
-  });
+  const ovl = chainId ? OVL[chainId] : undefined;
+
+  const filteredMarketById = markets?.filter((market, key) => market.id === marketId);
   
   const market = filteredMarketById ? filteredMarketById[0] : null;
   
@@ -180,9 +172,6 @@ export const BuildInterface = ({
     onResetBuildState,
   } = usePositionActionHandlers();
   
-  const { buildData } = useDerivedBuildInfo();
-  
-  const { callback: buildCallback, error: buildCallbackError } = useBuildCallback(buildData);
   
   const handleResetTxnSettings = useCallback(
     (e: any) => {
