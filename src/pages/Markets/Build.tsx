@@ -30,6 +30,7 @@ import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { useBuildFee } from "../../hooks/useBuildFee";
+import { AdditionalDetails } from "./AdditionalDetails";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import TransactionPending from "../../components/Popup/TransactionPending";
@@ -119,103 +120,6 @@ const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   z-index: 5;
   color: #f2f2f2;
 `;
-
-const AdditionalDetails = ({
-  fee,
-  slippage,
-  estLiquidationPrice,
-  bid,
-  ask,
-  expectedOi,
-  oiLong,
-  oiShort,
-  oiCap,
-  fundingRate,
-}: {
-  fee?: string | number;
-  slippage?: string | number;
-  estLiquidationPrice?: string | number;
-  bid?: string | number;
-  ask?: string | number;
-  expectedOi?: string | number;
-  oiLong?: number | undefined;
-  oiShort?: number | undefined;
-  oiCap?: number | undefined;
-  fundingRate?: string | number;
-}) => {
-  return (
-    <FlexColumnContainer mt={"64px"} padding={"0 16px"}>
-      <Detail>
-        <Title> Fee </Title>
-        <Content> {fee}% </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Slippage </Title>
-        <Content> {slippage}% </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Est. Liquidation </Title>
-        <Content> {estLiquidationPrice} </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Bid </Title>
-        <Content> ~{bid} </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Ask </Title>
-        <Content> ~{ask} </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Expected OI </Title>
-        <Content> {expectedOi} OVL </Content>
-      </Detail>
-
-      <Detail>
-        <Title> OI Long </Title>
-        <ProgressBar
-          value={oiLong}
-          max={oiCap}
-          width={"75px"}
-          color={"#10DCB1"}
-          margin={"0 0 0 auto"}
-        />
-
-        <OpenInterestValue>
-          {" "}
-          {oiLong} / {oiCap}
-          {" "}
-        </OpenInterestValue>
-      </Detail>
-
-      <Detail>
-        <Title> OI Short </Title>
-        <ProgressBar
-          value={oiShort}
-          max={oiCap}
-          width={"75px"}
-          color={"#DC1F4E"}
-          margin={"0 0 0 auto"}
-        />
-
-        <OpenInterestValue>
-          {" "}
-          {oiShort} / {oiCap}
-          {" "}
-        </OpenInterestValue>
-      </Detail>
-
-      <Detail>
-        <Title> Funding rate </Title>
-        <Content color={"#10DCB1"}> ~ {fundingRate}% </Content>
-      </Detail>
-    </FlexColumnContainer>
-  );
-};
 
 export const BuildInterface = ({
   marketId,

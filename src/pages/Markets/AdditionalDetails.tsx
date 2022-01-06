@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 
-const Container = styled(FlexColumnContainer)`
+const ContentContainer = styled(FlexColumnContainer)`
   margin-top: 64px;
   padding: 0 16px;
 `;
@@ -34,7 +34,7 @@ export const OpenInterestValue = styled.div`
   color: #b9babd;
 `;
 
-const AdditionalDetails = ({
+export const AdditionalDetails = ({
   fee,
   slippage,
   estLiquidationPrice,
@@ -58,7 +58,7 @@ const AdditionalDetails = ({
   fundingRate?: string | number;
 }) => {
   return (
-    <Container>
+    <ContentContainer>
       <AdditionalDetailRow>
         <Title> Fee </Title>
         <Content> {fee}% </Content>
@@ -127,6 +127,6 @@ const AdditionalDetails = ({
         <Title> Funding rate </Title>
         <Content color={"#10DCB1"}> ~ {fundingRate}% </Content>
       </AdditionalDetailRow>
-    </Container>
+    </ContentContainer>
   );
 };
