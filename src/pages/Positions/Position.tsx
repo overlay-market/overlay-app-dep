@@ -6,7 +6,6 @@ import { RouteComponentProps } from "react-router";
 import { TEXT } from "../../theme/theme";
 import { Container } from "../Markets/Market";
 import { Back } from "../../components/Back/Back";
-import { useAppDispatch } from "../../state/hooks";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { usePositionValue } from "../../hooks/usePositionValue";
 import { formatDecimalPlaces } from "../../utils/formatDecimal";
@@ -48,26 +47,17 @@ export const ListItem = ({
   );
 };
 
-export function Position({
-  match: {
-    params: { positionId },
-  },
-}: RouteComponentProps<{ positionId: string }>) {
+export function Position({match: {params: { positionId }}}: RouteComponentProps<{ positionId: string }>) {
   const { account } = useActiveWeb3React();
-
-  const dispatch = useAppDispatch();
-
   const { error, isLoading, positions } = useAccountPositions(account);
-
-  const filtered = positions?.filter((index, key) => {
-    return index.position.id === positionId;
-  });
-
+  const { typedValue, selectedPositionId } = useUnwindState();
+  const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(typedValue, selectedPositionId);
+  
+  const filtered = positions?.filter((index, key) => index.position.id === positionId);
   const position = filtered ? filtered[0].position : null;
 
-  const positionValue: BigNumber | null = usePositionValue(
-    position ? position.number : null
-  );
+  const positionValue: BigNumber | null = usePositionValue(position ? position.number : null);
 
   const PnL = positionValue && position?.cost ? formatWeiToParsedNumber((positionValue.sub(position.cost)), 18, 2) : undefined;
 
@@ -90,50 +80,30 @@ export function Position({
     formatWeiToParsedNumber(position?.totalSupply, 18, 18),
     formatWeiToParsedNumber(position?.oiShares, 18, 18)
   )
-  const { typedValue, selectedPositionId } = useUnwindState();
-
-  const { onUserInput, onSelectPositionId, onResetUnwindState } =
-    useUnwindActionHandlers();
 
   useEffect(() => {
     onResetUnwindState();
   }, [positionId, onResetUnwindState]);
 
-  const handleUserInput = useCallback(
-    (input: string) => {
-      onUserInput(input);
-    },
-    [onUserInput]
-  );
+  const handleUserInput = useCallback((input: string) => {
+      onUserInput(input)}, [onUserInput]);
 
   const handleQuickInput = (percentage: number, totalOi: string | null) => {
     let calculatedOi: string =
       percentage !== 100
         ? (Number(totalOi) * (percentage / 100)).toFixed(4)
         : (Number(totalOi) * (percentage / 100)).toFixed(18);
-
     return onUserInput(calculatedOi);
   };
 
-  const handleSelectPosition = useCallback(
-    (positionId: number) => {
-      onSelectPositionId(positionId);
-    },
-    [onSelectPositionId]
-  );
+  const handleSelectPosition = useCallback((positionId: number) => {
+      onSelectPositionId(positionId)}, [onSelectPositionId]);
 
   const handleClearInput = useCallback(() => {
-    onUserInput("");
-  }, [onUserInput]);
-
-  const { callback: unwindCallback, error: unwindCallbackError } =
-    useUnwindCallback(typedValue, selectedPositionId);
+    onUserInput("")}, [onUserInput]);
 
   const handleUnwind = useCallback(() => {
-    if (!unwindCallback) {
-      return;
-    }
-
+    if (!unwindCallback) return;
     unwindCallback()
       .then((success) => handleClearInput())
       .catch((err) => console.error("Error from handleUnwind: ", err));
@@ -154,63 +124,36 @@ export function Position({
       </FlexColumnContainer>
 
       <Label htmlFor="Amount" mt={"24px"}>
-        <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
-          Unwind Amount
-        </TEXT.Body>
-        <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
-          <TransparentUnderlineButton
-            onClick={() =>
-              handleQuickInput(
-                25,
-                position?.oiShares
-                  ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
-                  : null
-              )
-            }
-            border={"none"}
+      <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
+        Unwind Amount
+      </TEXT.Body>
+      <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
+        <TransparentUnderlineButton
+          onClick={() => handleQuickInput(25, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}
+          border={"none"}
           >
-            25%
-          </TransparentUnderlineButton>
-          <TransparentUnderlineButton
-            onClick={() =>
-              handleQuickInput(
-                50,
-                position?.oiShares
-                  ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
-                  : null
-              )
-            }
-            border={"none"}
+          25%
+        </TransparentUnderlineButton>
+        <TransparentUnderlineButton
+          onClick={() => handleQuickInput(50, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}
+          border={"none"}
           >
-            50%
-          </TransparentUnderlineButton>
-          <TransparentUnderlineButton
-            onClick={() =>
-              handleQuickInput(
-                75,
-                position?.oiShares
-                  ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2)
-                  : null
-              )
-            }
-            border={"none"}
+          50%
+        </TransparentUnderlineButton>
+        <TransparentUnderlineButton
+          onClick={() => handleQuickInput(75, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}
+          border={"none"}
           >
-            75%
-          </TransparentUnderlineButton>
-          <TransparentUnderlineButton
-            onClick={() =>
-              handleQuickInput(
-                100,
-                position?.oiShares
-                  ? utils.formatUnits(position?.oiShares, 18)
-                  : null
-              )
-            }
-            border={"none"}
+          75%
+        </TransparentUnderlineButton>
+        <TransparentUnderlineButton
+          onClick={() => handleQuickInput(100, position?.oiShares ? utils.formatUnits(position?.oiShares, 18) : null)}
+          border={"none"}
           >
-            Max
-          </TransparentUnderlineButton>
-        </FlexRowContainer>
+          Max
+        </TransparentUnderlineButton>
+      </FlexRowContainer>
+
       </Label>
       <InputContainer>
         <InputDescriptor>OVL</InputDescriptor>
@@ -220,84 +163,80 @@ export function Position({
           align={"right"}
         />
       </InputContainer>
-      <UnwindButton onClick={() => handleUnwind()}>Unwind</UnwindButton>
+      <UnwindButton onClick={() => handleUnwind()}>
+        Unwind
+      </UnwindButton>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem item={"PnL"} valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} />
+        <ListItem 
+          item={"PnL"} 
+          valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} 
+        />
         <ListItem
           item={"Value"}
-          value={
-            positionValue
-              ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL`
-              : "loading..."
-          }
+          value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "loading..."}
         />
         <ListItem
           item={"Open Interest"}
-          value={`${
-            position?.oiShares
-              ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) +
-                " OVL"
-              : "loading..."
-          }`}
+          value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
       </FlexColumnContainer>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem item={"Side"} value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} />
-        <ListItem
+        <ListItem 
+          item={"Side"} 
+          value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
+        />
+        <ListItem 
           item={"Leverage"}
           value={`${position?.leverage ? position.leverage : "loading"}`}
         />
         <ListItem
           item={"Debt"}
-          value={`${
-            position?.debt
-              ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) +
-                " OVL"
-              : "loading..."
-          }`}
+          value={`${position?.debt ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
         <ListItem
           item={"Cost"}
-          value={`${
-            position?.cost
-              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) +
-                " OVL"
-              : "loading..."
-          }`}
+          value={`${position?.cost ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
         <ListItem
           item={"Collateral"}
-          value={`${
-            position?.debt
-              ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) +
-                " OVL"
-              : "loading..."
-          }`}
+          value={`${position?.debt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
-        <ListItem item={"Notional"} value={"n/a"} />
-        <ListItem item={"Maintenance"} value={"n/a"} />
+        <ListItem 
+          item={"Notional"} 
+          value={"n/a"} 
+        />
+        <ListItem 
+          item={"Maintenance"} 
+          value={"n/a"} 
+        />
       </FlexColumnContainer>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem item={"Entry Price"} value={ entryPrice ? `${entryPrice}` : 'loading'} />
-        <ListItem item={"Current Price"} value={ currentPrice ? `${currentPrice}` : 'loading'} />
-        <ListItem item={"Liquidation Price (est)"} value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} />
+        <ListItem 
+          item={"Entry Price"} 
+          value={ entryPrice ? `${entryPrice}` : 'loading'} 
+        />
+        <ListItem 
+          item={"Current Price"} 
+          value={ currentPrice ? `${currentPrice}` : 'loading'} 
+        />
+        <ListItem 
+          item={"Liquidation Price (est)"} 
+          value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} 
+        />
       </FlexColumnContainer>
 
       <FlexColumnContainer mt={"48px"}>
         <ListItem
           item={"Total Shares Outstanding"}
-          value={`${
-            position?.totalSupply
-              ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(
-                  2
-                ) + " OVL"
-              : "loading..."
-          }`}
+          value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
-        <ListItem item={"Position Shares"} value={"n/a"} />
+        <ListItem 
+          item={"Position Shares"} 
+          value={"n/a"} 
+        />
       </FlexColumnContainer>
     </Container>
   );
