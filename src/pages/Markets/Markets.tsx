@@ -119,13 +119,13 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   <FlexRowContainer>
-                    <TEXT.Main color={"#10DCB1"} mr={"3px"}>
+                    <TEXT.AdjustableSize color={"#10DCB1"} mr={"3px"}>
                       n/a%
-                    </TEXT.Main>
+                    </TEXT.AdjustableSize>
                     /
-                    <TEXT.Main color={"#FF648A"} ml={"3px"}>
+                    <TEXT.AdjustableSize color={"#FF648A"} ml={"3px"}>
                       n/a%
-                    </TEXT.Main>
+                    </TEXT.AdjustableSize>
                   </FlexRowContainer>
                 </StyledTableCellThin>
               </StyledTableRow>

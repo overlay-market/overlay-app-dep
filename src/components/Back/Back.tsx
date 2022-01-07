@@ -28,15 +28,15 @@ export const Back = ({
       <>
         <Container onClick={() => history.goBack()} margin={margin}> 
           <Icon 
-              size={arrowSize}
-              clickable={true}
-              margin={'auto 3px auto auto'}
-              >
-                <ArrowLeft size={arrowSize} />
+            size={arrowSize}
+            clickable={true}
+            margin={'auto 3px auto auto'}
+            >
+            <ArrowLeft size={arrowSize} />
           </Icon>
-          <TEXT.Main fontSize={textSize}>
+          <TEXT.AdjustableSize fontSize={textSize}>
             Back
-          </TEXT.Main>
+          </TEXT.AdjustableSize>
         </Container>
       </>
     );

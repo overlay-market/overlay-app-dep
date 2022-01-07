@@ -77,7 +77,7 @@ const TextWrapper = styled(Text)<{ color: keyof Colors }>`
 type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
-  Main(props: TextProps) {
+  AdjustableSize(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'text2'} {...props} />
   },
   Link(props: TextProps) {
