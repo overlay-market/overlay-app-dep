@@ -182,9 +182,9 @@ export default function ConnectWalletModal() {
     <Modal isOpen={walletModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
       <ModalContent>
         <WalletHeader>
-          <TEXT.Body color={'white'} fontWeight={600} m={'auto 0'}>
+          <TEXT.StandardBody color={'white'} fontWeight={600} m={'auto 0'}>
               Connect to a wallet
-          </TEXT.Body>
+          </TEXT.StandardBody>
           <CloseIcon onClick={toggleWalletModal}>
             <X color={'white'} height={24} width={24} />
           </CloseIcon>

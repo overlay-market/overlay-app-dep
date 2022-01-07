@@ -80,12 +80,6 @@ export const TEXT = {
   AdjustableSize(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'text2'} {...props} />
   },
-  Link(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
-  },
-  Body(props: TextProps) {
-    return <TextWrapper fontSize={16} color={'text1'} {...props} />
-  },
   LargeHeader(props: TextProps) {
     return <TextWrapper fontWeight={600} fontSize={24} {...props} />
   },

@@ -35,17 +35,17 @@ export default function ConfirmTxnModal({
     <Modal isOpen={isOpen} onDismiss={() => null} width={"350px"}>
       <ModalContent>
         <WalletHeader>
-          <TEXT.Body color={"white"} fontWeight={600} m={"auto 0"}>
+          <TEXT.StandardBody color={"white"} fontWeight={600} m={"auto 0"}>
             Confirm Transaction
-          </TEXT.Body>
+          </TEXT.StandardBody>
           <CloseIcon onClick={onDismiss}>
             <X color={"white"} height={24} width={24} />
           </CloseIcon>
         </WalletHeader>
         <FlexColumnContainer mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
-          <TEXT.Body color={"white"} fontWeight={400}>
+          <TEXT.StandardBody color={"white"} fontWeight={400}>
             Market
-          </TEXT.Body>
+          </TEXT.StandardBody>
 
           <TEXT.LargeHeader color={"white"}>ETH/USDC</TEXT.LargeHeader>
         </FlexColumnContainer>

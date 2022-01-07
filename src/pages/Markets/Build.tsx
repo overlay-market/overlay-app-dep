@@ -344,13 +344,13 @@ export const BuildInterface = ({
 
         <TransactionSettingModal isOpen={isTxnSettingsOpen}>
           <FlexColumnContainer>
-            <TEXT.Body
+            <TEXT.StandardBody
               fontWeight={700}
               textAlign={"left"}
               margin={"24px auto 16px 16px"}
               >
               Transaction Settings
-            </TEXT.Body>
+            </TEXT.StandardBody>
 
             <FlexRowContainer padding={"8px 16px"}>
               <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
@@ -441,9 +441,9 @@ export const BuildInterface = ({
           onChange={handleLeverageInput}
         />
         <Label htmlFor="Amount" mt={"24px"}>
-          <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
+          <TEXT.StandardBody margin={"0 auto 4px 0"} color={"white"}>
             Amount
-          </TEXT.Body>
+          </TEXT.StandardBody>
           <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
             <TransparentUnderlineButton
               border={"none"}

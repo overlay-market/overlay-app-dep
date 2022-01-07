@@ -10,7 +10,7 @@ const Container = styled(FlexColumnContainer)`
   z-index: 6.9;
 `;
 
-const Title = styled(TEXT.Body)<{align?: string}>`
+const Title = styled(TEXT.StandardBody)<{align?: string}>`
   margin: 0 auto 8px 0 !important;
   font-weight: 700;
   text-align: ${({align}) => (align ? align : 'left')};

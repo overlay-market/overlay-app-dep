@@ -86,9 +86,9 @@ const Magic = ({
         align={'center'}
         >
         <Label htmlFor='Amount' mt={'24px'}>
-          <TEXT.Body margin={'0 auto 4px 0'} color={'white'}>
+          <TEXT.StandardBody margin={'0 auto 4px 0'} color={'white'}>
             Amount
-          </TEXT.Body>
+          </TEXT.StandardBody>
           <FlexRowContainer 
             ml={'auto'} 
             mb={'4px'} 
@@ -137,11 +137,11 @@ const Magic = ({
         </ButtonContainer>
       </MarketCard>
 
-      <TEXT.Body m={'48px 0 16px'}>✨ETH</TEXT.Body>
+      <TEXT.StandardBody m={'48px 0 16px'}>✨ETH</TEXT.StandardBody>
 
-      <TEXT.Body>
+      <TEXT.StandardBody>
         magicETH allows you to Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </TEXT.Body>
+      </TEXT.StandardBody>
     </Container>
     </>
   )

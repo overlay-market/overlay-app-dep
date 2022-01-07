@@ -36,13 +36,13 @@ export const ListItem = ({
 }) => {
   return (
     <FlexRowContainer m={"2px 0"}>
-      <TEXT.Body mr={"auto"} color={itemColor}>
+      <TEXT.StandardBody mr={"auto"} color={itemColor}>
         {item}
-      </TEXT.Body>
+      </TEXT.StandardBody>
 
-      <TEXT.Body fontWeight={700} color={valueColor}>
+      <TEXT.StandardBody fontWeight={700} color={valueColor}>
         {value}
-      </TEXT.Body>
+      </TEXT.StandardBody>
     </FlexRowContainer>
   );
 };
@@ -124,9 +124,9 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
       </FlexColumnContainer>
 
       <Label htmlFor="Amount" mt={"24px"}>
-      <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
+      <TEXT.StandardBody margin={"0 auto 4px 0"} color={"white"}>
         Unwind Amount
-      </TEXT.Body>
+      </TEXT.StandardBody>
       <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
         <TransparentUnderlineButton
           onClick={() => handleQuickInput(25, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}

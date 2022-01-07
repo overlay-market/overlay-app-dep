@@ -96,9 +96,9 @@ export default function WalletOption({
     <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
       <CardHeader>
         <CardText>
-          <TEXT.Body fontWeight={600} autoCapitalize={'true'}>
+          <TEXT.StandardBody fontWeight={600} autoCapitalize={'true'}>
             {header}
-          </TEXT.Body>
+          </TEXT.StandardBody>
 
           {active ? (
             <Connected>
