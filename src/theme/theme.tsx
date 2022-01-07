@@ -103,5 +103,26 @@ export const TEXT = {
   },
   BoldSmall(props: TextProps) {
     return <TextWrapper fontWeight={600} fontSize={12} {...props} />
+  },
+  Header1(props: TextProps) {
+    return <TextWrapper fontSize={20} fontWeight={400} {...props} />
+  },
+  BoldHeader1(props: TextProps) {
+    return <TextWrapper fontSize={20} fontWeight={700} {...props} />
+  },
+  StandardBody(props: TextProps) {
+    return <TextWrapper fontSize={16} fontWeight={400} {...props} />
+  },
+  BoldStandardBody(props: TextProps) {
+    return <TextWrapper fontSize={16} fontWeight={700} {...props} />
+  },
+  SmallBody(props: TextProps) {
+    return <TextWrapper fontSize={14} fontWeight={400} {...props} />
+  },
+  BoldSmallBody(props: TextProps) {
+    return <TextWrapper fontSize={14} fontWeight={700} {...props} />
+  },
+  LegalCopy(props: TextProps) {
+    return <TextWrapper fontSize={12} fontWeight={400} {...props} />    
   }
 }

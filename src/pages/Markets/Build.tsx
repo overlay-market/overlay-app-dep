@@ -29,7 +29,7 @@ import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { useBuildFee } from "../../hooks/useBuildFee";
-import { AdditionalDetails } from "./AdditionalDetails";
+import { AdditionalDetails } from "./AdditionalBuildDetails";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import TransactionPending from "../../components/Popup/TransactionPending";
