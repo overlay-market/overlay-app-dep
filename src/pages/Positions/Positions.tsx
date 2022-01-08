@@ -44,7 +44,6 @@ const CardCell = styled.div<{
   text-align: ${({ align }) => (align ? align : "left")};
   width: ${({ width }) => (width ? width : "auto")};
   font-size: 14px;
-  overflow: scroll;
 `;
 
 const Detail = styled.div<{

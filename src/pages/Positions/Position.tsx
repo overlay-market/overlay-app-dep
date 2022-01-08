@@ -23,21 +23,21 @@ const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
 `;
 
-export const ListItem = ({
-  item,
+export const AdditionalDetailRow = ({
+  detail,
   value,
-  itemColor,
+  detailColor,
   valueColor,
 }: {
-  item: string;
+  detail: string;
   value: string;
-  itemColor?: string;
+  detailColor?: string;
   valueColor?: string;
 }) => {
   return (
     <FlexRowContainer m={"2px 0"}>
-      <TEXT.StandardBody mr={"auto"} color={itemColor}>
-        {item}
+      <TEXT.StandardBody mr={"auto"} color={detailColor}>
+        {detail}
       </TEXT.StandardBody>
 
       <TEXT.StandardBody fontWeight={700} color={valueColor}>
@@ -168,73 +168,73 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
       </UnwindButton>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem 
-          item={"PnL"} 
+        <AdditionalDetailRow 
+          detail={"PnL"} 
           valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} 
         />
-        <ListItem
-          item={"Value"}
+        <AdditionalDetailRow
+          detail={"Value"}
           value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "loading..."}
         />
-        <ListItem
-          item={"Open Interest"}
+        <AdditionalDetailRow
+          detail={"Open Interest"}
           value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
       </FlexColumnContainer>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem 
-          item={"Side"} 
+        <AdditionalDetailRow 
+          detail={"Side"} 
           value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
         />
-        <ListItem 
-          item={"Leverage"}
+        <AdditionalDetailRow 
+          detail={"Leverage"}
           value={`${position?.leverage ? position.leverage : "loading"}`}
         />
-        <ListItem
-          item={"Debt"}
+        <AdditionalDetailRow
+          detail={"Debt"}
           value={`${position?.debt ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
-        <ListItem
-          item={"Cost"}
+        <AdditionalDetailRow
+          detail={"Cost"}
           value={`${position?.cost ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
-        <ListItem
-          item={"Collateral"}
+        <AdditionalDetailRow
+          detail={"Collateral"}
           value={`${position?.debt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
-        <ListItem 
-          item={"Notional"} 
+        <AdditionalDetailRow 
+          detail={"Notional"} 
           value={"n/a"} 
         />
-        <ListItem 
-          item={"Maintenance"} 
+        <AdditionalDetailRow 
+          detail={"Maintenance"} 
           value={"n/a"} 
         />
       </FlexColumnContainer>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem 
-          item={"Entry Price"} 
+        <AdditionalDetailRow 
+          detail={"Entry Price"} 
           value={ entryPrice ? `${entryPrice}` : 'loading'} 
         />
-        <ListItem 
-          item={"Current Price"} 
+        <AdditionalDetailRow 
+          detail={"Current Price"} 
           value={ currentPrice ? `${currentPrice}` : 'loading'} 
         />
-        <ListItem 
-          item={"Liquidation Price (est)"} 
+        <AdditionalDetailRow 
+          detail={"Liquidation Price (est)"} 
           value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} 
         />
       </FlexColumnContainer>
 
       <FlexColumnContainer mt={"48px"}>
-        <ListItem
-          item={"Total Shares Outstanding"}
+        <AdditionalDetailRow
+          detail={"Total Shares Outstanding"}
           value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
         />
-        <ListItem 
-          item={"Position Shares"} 
+        <AdditionalDetailRow 
+          detail={"Position Shares"} 
           value={"n/a"} 
         />
       </FlexColumnContainer>

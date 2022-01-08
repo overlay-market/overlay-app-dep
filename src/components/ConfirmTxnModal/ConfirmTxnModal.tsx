@@ -2,7 +2,7 @@ import { X } from "react-feather";
 import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
 import { TriggerActionButton as TriggerConfirmBuildButton } from "../Button/Button";
-import { ListItem } from "../../pages/Positions/Position";
+import { AdditionalDetailRow } from "../../pages/Positions/Position";
 import { FlexColumnContainer } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
 
@@ -53,52 +53,52 @@ export default function ConfirmTxnModal({
         </FlexColumnContainer>
 
         <FlexColumnContainer mt={"16px"} color={"white"}>
-          <ListItem
-            item={"Price"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Price"}
+            detailColor={"#B9BABD"}
             value={marketPrice ? marketPrice : "loading..."}
           />
 
-          <ListItem
-            item={"Side"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Side"}
+            detailColor={"#B9BABD"}
             valueColor={isLong ? "#10DCB1" : "#FF648A"}
             value={isLong ? "Long" : "Short"}
           />
 
-          <ListItem
-            item={"Leverage"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Leverage"}
+            detailColor={"#B9BABD"}
             value={`${selectedLeverage}x`}
           />
         </FlexColumnContainer>
 
         <FlexColumnContainer mt={"48px"} color={"white"}>
-          <ListItem item={"Fee"} itemColor={"#B9BABD"} value={`${buildFee}%`} />
+          <AdditionalDetailRow detail={"Fee"} detailColor={"#B9BABD"} value={`${buildFee}%`} />
 
-          <ListItem
-            item={"Slippage"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Slippage"}
+            detailColor={"#B9BABD"}
             value={`${setSlippageValue}%`}
           />
 
-          <ListItem
-            item={"Est. Liquidation"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Est. Liquidation"}
+            detailColor={"#B9BABD"}
             value={estimatedLiquidationPrice}
           />
         </FlexColumnContainer>
 
         <FlexColumnContainer mt={"48px"} color={"white"}>
-          <ListItem
-            item={"Collateral"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Collateral"}
+            detailColor={"#B9BABD"}
             value={`${adjustedCollateral} OVL`}
           />
 
-          <ListItem
-            item={"Expected OI"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Expected OI"}
+            detailColor={"#B9BABD"}
             value={`${adjustedOi} OVL`}
           />
         </FlexColumnContainer>
