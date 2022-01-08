@@ -80,25 +80,10 @@ export const TEXT = {
   AdjustableSize(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'text2'} {...props} />
   },
-  LargeHeader(props: TextProps) {
-    return <TextWrapper fontWeight={600} fontSize={24} {...props} />
-  },
-  MediumHeader(props: TextProps) {
-    return <TextWrapper fontSize={20} {...props} />
-  },
-  SubHeader(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={14} {...props} />
-  },
   Menu(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
-  Small(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={12} {...props} />
-  },
-  BoldSmall(props: TextProps) {
-    return <TextWrapper fontWeight={600} fontSize={12} {...props} />
-  },
-  Header1(props: TextProps) {
+  StandardHeader1(props: TextProps) {
     return <TextWrapper fontSize={20} fontWeight={400} {...props} />
   },
   BoldHeader1(props: TextProps) {
@@ -116,7 +101,10 @@ export const TEXT = {
   BoldSmallBody(props: TextProps) {
     return <TextWrapper fontSize={14} fontWeight={700} {...props} />
   },
-  LegalCopy(props: TextProps) {
+  Supplemental(props: TextProps) {
     return <TextWrapper fontSize={12} fontWeight={400} {...props} />    
+  },
+  BoldSupplemental(props: TextProps) {
+    return <TextWrapper fontSize={12} fontWeight={700} {...props} />    
   }
 }

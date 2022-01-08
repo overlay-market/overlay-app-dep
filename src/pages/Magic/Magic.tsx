@@ -131,9 +131,9 @@ const Magic = ({
             />
         </MagicDetail>
         <ButtonContainer>
-          <TEXT.Small textAlign={'right'} ml={'auto'} color={'white'}>
+          <TEXT.Supplemental textAlign={'right'} ml={'auto'} color={'white'}>
               Fee: 0.0%
-          </TEXT.Small>
+          </TEXT.Supplemental>
         </ButtonContainer>
       </MarketCard>
 

@@ -87,10 +87,10 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   <FlexColumnContainer align={"left"}>
-                    <TEXT.SubHeader>
+                    <TEXT.SmallBody>
                       {Number(utils.formatUnits(market.oiLong, 18)).toFixed(0)}/
                       {Number(utils.formatUnits(market.oiCap, 18)).toFixed(0)}
-                    </TEXT.SubHeader>
+                    </TEXT.SmallBody>
                     <ProgressBar
                       value={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
                       max={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
@@ -103,10 +103,10 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   <FlexColumnContainer align={"left"}>
-                    <TEXT.SubHeader>
+                    <TEXT.SmallBody>
                       {Number(utils.formatUnits(market.oiShort, 18)).toFixed(0)}
                       /{Number(utils.formatUnits(market.oiCap, 18)).toFixed(0)}
-                    </TEXT.SubHeader>
+                    </TEXT.SmallBody>
                     <ProgressBar
                       value={formatWeiToParsedNumber(market.oiShort, 18, 0)}
                       max={formatWeiToParsedNumber(market.oiCap, 18, 0)}

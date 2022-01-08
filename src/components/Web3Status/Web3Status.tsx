@@ -62,9 +62,9 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <Trans>
               Balance:
             </Trans>
-            <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
+            <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
               {balance}
-            </TEXT.BoldSmall>
+            </TEXT.BoldSupplemental>
         </FlexRowContainer>
       </>
     )
@@ -72,17 +72,17 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
     return (
       <>
         <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
-            <TEXT.Small minWidth={'fit-content'}>
+            <TEXT.Supplemental minWidth={'fit-content'}>
               <Trans>
                 Balance:
               </Trans>
-            </TEXT.Small>
-            <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
+            </TEXT.Supplemental>
+            <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
               {balance}
-            </TEXT.BoldSmall>
-            <TEXT.BoldSmall ml={1} mr={0}>
+            </TEXT.BoldSupplemental>
+            <TEXT.BoldSupplemental ml={1} mr={0}>
               OVL
-            </TEXT.BoldSmall>
+            </TEXT.BoldSupplemental>
         </FlexRowContainer>
       </>
     )
@@ -93,12 +93,12 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <Trans>
               Balance:
             </Trans>
-            <TEXT.BoldSmall ml={1} mr={0}>
+            <TEXT.BoldSupplemental ml={1} mr={0}>
               {balance}
-            </TEXT.BoldSmall>
-            <TEXT.BoldSmall ml={1} mr={0}>
+            </TEXT.BoldSupplemental>
+            <TEXT.BoldSupplemental ml={1} mr={0}>
               OVL
-            </TEXT.BoldSmall>
+            </TEXT.BoldSupplemental>
         </FlexRowContainer>
       </>
     )

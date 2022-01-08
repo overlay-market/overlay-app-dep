@@ -47,7 +47,9 @@ export default function ConfirmTxnModal({
             Market
           </TEXT.StandardBody>
 
-          <TEXT.LargeHeader color={"white"}>ETH/USDC</TEXT.LargeHeader>
+          <TEXT.BoldHeader1 color={"white"}>
+            ETH/USDC
+          </TEXT.BoldHeader1>
         </FlexColumnContainer>
 
         <FlexColumnContainer mt={"16px"} color={"white"}>
@@ -101,10 +103,10 @@ export default function ConfirmTxnModal({
           />
         </FlexColumnContainer>
 
-        <TEXT.Small color={"#B9BABD"} mt={"24px"} mb={"24px"}>
+        <TEXT.Supplemental color={"#B9BABD"} mt={"24px"} mb={"24px"}>
           The unwind price will be at least 2989.99 USDC or the transaction will
           revert.
-        </TEXT.Small>
+        </TEXT.Supplemental>
 
         <TriggerConfirmBuildButton 
           onClick={onConfirm}

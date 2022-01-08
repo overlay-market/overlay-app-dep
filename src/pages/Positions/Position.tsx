@@ -115,12 +115,12 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
 
       <FlexColumnContainer>
-        <TEXT.MediumHeader fontWeight={700}>Close Position</TEXT.MediumHeader>
-        <TEXT.MediumHeader>
+        <TEXT.StandardHeader1 fontWeight={700}>Close Position</TEXT.StandardHeader1>
+        <TEXT.StandardHeader1>
           {position && position?.isLong
             ? formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
             : formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)}
-        </TEXT.MediumHeader>
+        </TEXT.StandardHeader1>
       </FlexColumnContainer>
 
       <Label htmlFor="Amount" mt={"24px"}>

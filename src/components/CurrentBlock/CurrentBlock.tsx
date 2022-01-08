@@ -17,7 +17,7 @@ const StyledPolling = styled.div`
   z-index: 420;
 `
 
-const StyledPollingNumber = styled(TEXT.Small)<{ breathe: boolean; hovering: boolean }>`
+const StyledPollingNumber = styled(TEXT.Supplemental)<{ breathe: boolean; hovering: boolean }>`
   transition: opacity 0.25s ease;
   opacity: ${({ breathe, hovering }) => (hovering ? 0.7 : breathe ? 1 : 0.5)};
   :hover {

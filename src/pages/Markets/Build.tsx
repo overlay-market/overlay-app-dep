@@ -305,14 +305,14 @@ export const BuildInterface = ({
         >
         <FlexRowContainer margin={"0 0 32px 0"}>
           <FlexColumnContainer>
-            <TEXT.MediumHeader
+            <TEXT.StandardHeader1
               fontWeight={700}
               color={"white"}
               margin={"14px 0 0 0"}
               >
               {market ? shortenAddress(market?.id) : "loading..."}
-            </TEXT.MediumHeader>
-            <TEXT.MediumHeader 
+            </TEXT.StandardHeader1>
+            <TEXT.StandardHeader1 
               fontWeight={400} 
               color={"white"}
               >
@@ -326,7 +326,7 @@ export const BuildInterface = ({
                       utils.formatUnits(market?.currentPrice.ask, 18)
                     ).toFixed(7)
                 : null}
-            </TEXT.MediumHeader>
+            </TEXT.StandardHeader1>
           </FlexColumnContainer>
           <Icon
             size={24}
