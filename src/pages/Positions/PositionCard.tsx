@@ -2,48 +2,39 @@ import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import { Icon } from "../../components/Icon/Icon";
 import { ChevronRight } from "react-feather";
+import { FlexRowContainer } from "../../components/Container/Container";
 
-const CardHeader = styled.div`
-  width: 100%;
-  border-bottom: 1px solid #828282;
-  padding-bottom: 8px;
+const CardHeaderContainer = styled(FlexRowContainer)`
   color: white;
-  display: flex;
-  flex-direction: row;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #828282;
 `;
 
-const CardCell = styled.div<{
-  align?: string;
-  width?: string;
-}>`
-  text-align: ${({ align }) => (align ? align : "left")};
+const PositionCardColumn = styled.div<{ align?: string; width?: string; }>`
   width: ${({ width }) => (width ? width : "auto")};
+  text-align: ${({ align }) => (align ? align : "left")};
   font-size: 14px;
 `;
   
-const HeaderCell = styled(CardCell)`
+const HeaderCell = styled(PositionCardColumn)`
   font-weight: 700;
 `;
 
-const Detail = styled.div<{
-  fontWeight?: number;
-  color?: string;
-}>`
-  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 400)};
+const Detail = styled.div<{ fontWeight?: number; color?: string; }>`
   color: ${({ color }) => (color ? color : "white")};
+  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 400)};
   text-align: inherit;
 `;
 
 const CardContainer = styled(Link)<{ navigate?: boolean; border?: boolean }>`
+  pointer-events: ${({ navigate }) => (navigate ? "auto" : "none")};
+  border-bottom: ${({ border }) => (border ? "1px solid #828282" : "none")};
   display: flex;
   flex-direction: row;
-  border-bottom: ${({ border }) => (border ? "1px solid #828282" : "none")};
   width: 100%;
   padding: 16px 0;
   min-height: 69px;
   text-decoration: none;
-
-  pointer-events: ${({ navigate }) => (navigate ? "auto" : "none")};
 
   :hover {
     background: #262626 !important;
@@ -51,7 +42,7 @@ const CardContainer = styled(Link)<{ navigate?: boolean; border?: boolean }>`
 `;
 
 export const PositionTableHeader = () => (
-  <CardHeader>
+  <CardHeaderContainer>
     <HeaderCell align="left" width="50%">
       Position
     </HeaderCell>
@@ -63,7 +54,7 @@ export const PositionTableHeader = () => (
     <HeaderCell align="right" width="20%">
       PnL
     </HeaderCell>
-  </CardHeader>
+  </CardHeaderContainer>
 );
 
 export const PositionCard = ({
@@ -79,7 +70,7 @@ export const PositionCard = ({
   PnL,
   navigate,
   border,
-}: {
+}:{
   positionId: string;
   marketName: string;
   isLong: boolean | null;
@@ -99,7 +90,7 @@ export const PositionCard = ({
       border={border}
       to={`/positions/${positionId}`}
       >
-      <CardCell width="50%">
+      <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={"white"}>
           {marketName}
         </Detail>
@@ -125,15 +116,15 @@ export const PositionCard = ({
         <Detail color={"#C0C0C0"}>
           {positionSize} {collateralCurrency}
         </Detail>
-      </CardCell>
+      </PositionCardColumn>
 
-      <CardCell width="30%">
+      <PositionCardColumn width="30%">
         <Detail fontWeight={700} color={"white"}>
           {estLiquidationPrice}
         </Detail>
-      </CardCell>
+      </PositionCardColumn>
 
-      <CardCell width="20%" align="right">
+      <PositionCardColumn width="20%" align="right">
         <Detail fontWeight={700} color={"#10DCB1"}>
           {PnL}
         </Detail>
@@ -143,7 +134,7 @@ export const PositionCard = ({
             <ChevronRight />
           </Icon>
         )}
-      </CardCell>
+      </PositionCardColumn>
     </CardContainer>
   );
 };
