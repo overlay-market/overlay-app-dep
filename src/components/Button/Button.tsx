@@ -9,7 +9,7 @@ const BaseTemplateButton = styled(RebassButton)<
     width?: string
     borderRadius?: string
     border?: string
-    disabled?: boolean
+    isDisabled?: boolean
     active?: boolean
     color?: any
   } & ButtonProps
@@ -31,9 +31,8 @@ const BaseTemplateButton = styled(RebassButton)<
 
 export const SelectActionButton = styled(BaseTemplateButton)`
   border: ${({ active }) => ( active ? 'none' : '' )};
-  color: ${({ disabled }) => ( disabled ? '#63656D' : '')};
-  cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
-  background: ${({ disabled }) => ( disabled ? '#D0D0D2' : '')};
+  color: ${({ isDisabled }) => ( isDisabled ? '#63656D !important' : '')};
+  background: ${({ isDisabled }) => ( isDisabled ? '#D0D0D2 !important' : '')};
   height: 48px;
   padding: 16px;
   border-radius: 8px;
@@ -45,9 +44,9 @@ export const TriggerActionButton = styled(SelectActionButton)`
 `;
 
 export const TransactionSettingsButton = styled(BaseTemplateButton)`
-  background: ${({ active, disabled }) => ( active ? '#12B4FF' : disabled ? 'gray' : 'transparent')};
-  color: ${({ disabled }) => ( disabled ? '#0B0F1C' : 'white' )};
-  cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
+  background: ${({ active, isDisabled }) => ( active ? '#12B4FF' : isDisabled ? 'gray' : 'transparent')};
+  color: ${({ isDisabled }) => ( isDisabled ? '#0B0F1C' : 'white' )};
+  cursor: ${({ isDisabled }) => ( isDisabled ? 'none' : 'cursor' )};
   height: 40px;
 `;
 

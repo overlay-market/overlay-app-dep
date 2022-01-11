@@ -173,13 +173,9 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
           detail={"PnL"} 
           valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} 
         />
-        <AdditionalDetailRow
-          detail={"Value"}
-          value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "loading..."}
-        />
-        <AdditionalDetailRow
-          detail={"Open Interest"}
-          value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "loading..."}`}
+        <AdditionalDetailRow 
+          detail={"Side"} 
+          value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
         />
       </FlexColumnContainer>
 
@@ -192,9 +188,13 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
         clickableMargin={"auto"}
         >
         <FlexColumnContainer mt={"48px"}>
-          <AdditionalDetailRow 
-            detail={"Side"} 
-            value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
+          <AdditionalDetailRow
+            detail={"Value"}
+            value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "loading..."}
+          />
+          <AdditionalDetailRow
+            detail={"Open Interest"}
+            value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "loading..."}`}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}

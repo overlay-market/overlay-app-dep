@@ -207,6 +207,11 @@ export const BuildInterface = ({
     });
   }, [attemptingTxn, txnErrorMessage, txHash]);
   
+  const disableBuildButton: boolean = useMemo(() => {
+    return !typedValue || isLong === undefined ? true : false;
+  }, [typedValue, isLong]);
+  
+  console.log('disableBuildButton: ', disableBuildButton)
   const handleBuild = useCallback(() => {
     if (!typedValue) throw new Error("missing position input size");  
     if (isLong === undefined) throw new Error("please choose a long/short position");
@@ -497,6 +502,8 @@ export const BuildInterface = ({
                 txHash: undefined,
               });
             }}
+            isDisabled={disableBuildButton}
+            disabled={disableBuildButton}
             >
             Build
           </TriggerBuildButton>
