@@ -18,6 +18,7 @@ import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hook
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { TransparentUnderlineButton, TriggerActionButton } from "../../components/Button/Button";
+import { Accordion } from "../../components/Accordion/Accordion";
 
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
@@ -182,62 +183,68 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
         />
       </FlexColumnContainer>
 
-      <FlexColumnContainer mt={"48px"}>
-        <AdditionalDetailRow 
-          detail={"Side"} 
-          value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
-        />
-        <AdditionalDetailRow 
-          detail={"Leverage"}
-          value={`${position?.leverage ? position.leverage : "loading"}`}
-        />
-        <AdditionalDetailRow
-          detail={"Debt"}
-          value={`${position?.debt ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + " OVL" : "loading..."}`}
-        />
-        <AdditionalDetailRow
-          detail={"Cost"}
-          value={`${position?.cost ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
-        />
-        <AdditionalDetailRow
-          detail={"Collateral"}
-          value={`${position?.debt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
-        />
-        <AdditionalDetailRow 
-          detail={"Notional"} 
-          value={"n/a"} 
-        />
-        <AdditionalDetailRow 
-          detail={"Maintenance"} 
-          value={"n/a"} 
-        />
-      </FlexColumnContainer>
+      <Accordion 
+        activeAccordionText={"Less"}
+        inactiveAccordionText={"More"}
+        >
+        <FlexColumnContainer mt={"48px"}>
+          <AdditionalDetailRow 
+            detail={"Side"} 
+            value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
+          />
+          <AdditionalDetailRow 
+            detail={"Leverage"}
+            value={`${position?.leverage ? position.leverage : "loading"}`}
+          />
+          <AdditionalDetailRow
+            detail={"Debt"}
+            value={`${position?.debt ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + " OVL" : "loading..."}`}
+          />
+          <AdditionalDetailRow
+            detail={"Cost"}
+            value={`${position?.cost ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
+          />
+          <AdditionalDetailRow
+            detail={"Collateral"}
+            value={`${position?.debt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
+          />
+          <AdditionalDetailRow 
+            detail={"Notional"} 
+            value={"n/a"} 
+          />
+          <AdditionalDetailRow 
+            detail={"Maintenance"} 
+            value={"n/a"} 
+          />
+        </FlexColumnContainer>
 
-      <FlexColumnContainer mt={"48px"}>
-        <AdditionalDetailRow 
-          detail={"Entry Price"} 
-          value={ entryPrice ? `${entryPrice}` : 'loading'} 
-        />
-        <AdditionalDetailRow 
-          detail={"Current Price"} 
-          value={ currentPrice ? `${currentPrice}` : 'loading'} 
-        />
-        <AdditionalDetailRow 
-          detail={"Liquidation Price (est)"} 
-          value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} 
-        />
-      </FlexColumnContainer>
+        <FlexColumnContainer mt={"48px"}>
+          <AdditionalDetailRow 
+            detail={"Entry Price"} 
+            value={ entryPrice ? `${entryPrice}` : 'loading'} 
+          />
+          <AdditionalDetailRow 
+            detail={"Current Price"} 
+            value={ currentPrice ? `${currentPrice}` : 'loading'} 
+          />
+          <AdditionalDetailRow 
+            detail={"Liquidation Price (est)"} 
+            value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} 
+          />
+        </FlexColumnContainer>
 
-      <FlexColumnContainer mt={"48px"}>
-        <AdditionalDetailRow
-          detail={"Total Shares Outstanding"}
-          value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
-        />
-        <AdditionalDetailRow 
-          detail={"Position Shares"} 
-          value={"n/a"} 
-        />
-      </FlexColumnContainer>
+        <FlexColumnContainer mt={"48px"}>
+          <AdditionalDetailRow
+            detail={"Total Shares Outstanding"}
+            value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
+          />
+          <AdditionalDetailRow 
+            detail={"Position Shares"} 
+            value={"n/a"} 
+          />
+        </FlexColumnContainer>
+      </Accordion>
+      
     </Container>
   );
 }

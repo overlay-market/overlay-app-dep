@@ -14,12 +14,11 @@ import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, Sty
 
 const activeClassName = "INACTIVE";
 
-export const StyledNavLink = styled(NavLink).attrs({
-  activeClassName,
-})`
+export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   color: ${({ theme }) => theme.text1};
-  text-decoration: none;
   font-weight: 500;
+  text-decoration: none;
+  
   :hover {
     font-weight: 700;
   }
@@ -82,7 +81,6 @@ const Markets = () => {
                       Number(utils.formatUnits(market.currentPrice.ask, 18))) /
                     2
                   ).toFixed(2)}
-
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">

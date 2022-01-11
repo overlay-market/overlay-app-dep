@@ -71,45 +71,57 @@ const SlideMenu = ({
   open: boolean
   props?: any
 }) => {
-  const activeLocale = useActiveLocale();
-
-  const isHidden = open ? true : false;
-
-  const tabIndex = isHidden ? 0 : -1;
-
   const { height, width } = useWindowDimensions();
+  const activeLocale = useActiveLocale();
+  const isHidden = open ? true : false;
+  const tabIndex = isHidden ? 0 : -1;
 
   return (
     <StyledMenu 
-        open={open} 
-        aria-hidden={!isHidden} 
-        height={height}
-        width={width}
-        {...props}>
+      open={open} 
+      aria-hidden={!isHidden} 
+      height={height}
+      width={width}
+      {...props}
+      >
       <Content>
-        <StyledInternalLink tabIndex={tabIndex} to={'/markets'}>
+        <StyledInternalLink 
+          tabIndex={tabIndex} 
+          to={'/markets'}
+          >
           Markets
         </StyledInternalLink>
-        <StyledInternalLink tabIndex={tabIndex} to={'/positions'}>
+        <StyledInternalLink 
+          tabIndex={tabIndex} 
+          to={'/positions'}
+          >
           Positions
         </StyledInternalLink>
-        <StyledInternalLink tabIndex={tabIndex} to={'/magic'}>
+        <StyledInternalLink 
+          tabIndex={tabIndex} 
+          to={'/magic'}
+          >
           Magic
         </StyledInternalLink>
 
         <Separator/>
         
-        <StyledExternalLink href="https://overlay.market">
+        <StyledExternalLink 
+          href="https://overlay.market"
+          >
           Risks
         </StyledExternalLink>
-        <Accordion title={"Language"} >
+        <Accordion 
+          activeAccordionText={"Language"}
+          inactiveAccordionText={"Language"}
+          >
           {SUPPORTED_LOCALES.map((locale, key) => (
             <AccordionSelection key={key.toString()} >
               <LanguageMenuItem 
-                  locale={locale} 
-                  active={activeLocale === locale} 
-                  componentKey={key.toString()}
-                  />
+                locale={locale} 
+                active={activeLocale === locale} 
+                componentKey={key.toString()}
+                />
             </AccordionSelection>
           ))}
         </Accordion>
