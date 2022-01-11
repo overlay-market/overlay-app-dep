@@ -2,7 +2,7 @@ import Markets from "../pages/Markets/Markets";
 import Positions from "../pages/Positions/Positions";
 import Magic from "../pages/Magic/Magic";
 import { Market } from "../pages/Markets/Market";
-import { Position } from "../pages/Positions/Position";
+import { Unwind } from "../pages/Positions/Unwind";
 import { TOKEN_LABELS } from "../constants/tokens";
 
 const DynamicMarketBreadcrumbs = ({ match }: any) => (
@@ -32,7 +32,7 @@ const routesConfig = [
   },
   {
     path: "/positions/:positionId",
-    component: () => Position
+    component: () => Unwind
   },
   {
     path: "/magic",

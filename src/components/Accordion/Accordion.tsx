@@ -17,6 +17,7 @@ const ClickableDropdown = styled.div<{ width?: string; clickableMargin?: string 
   width: ${({ width }) => ( width ? width : '100%' )};
   margin: ${({ clickableMargin }) => ( clickableMargin ? clickableMargin : 'auto' )};
   display: flex;
+  cursor: pointer;
 `;
 
 const Content = styled.div<{ isOpen: boolean}>`

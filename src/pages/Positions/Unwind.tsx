@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { Label } from "@rebass/forms";
 import { BigNumber, utils } from "ethers";
@@ -48,7 +48,7 @@ export const AdditionalDetailRow = ({
   );
 };
 
-export function Position({match: {params: { positionId }}}: RouteComponentProps<{ positionId: string }>) {
+export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ positionId: string }>) {
   const { account } = useActiveWeb3React();
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
@@ -102,6 +102,10 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
 
   const handleClearInput = useCallback(() => {
     onUserInput("")}, [onUserInput]);
+
+  const disableUnwindButton: boolean = useMemo(() => {
+    return !unwindCallback || Number(typedValue) == 0 ? true : false;
+  }, [unwindCallback, typedValue]);
 
   const handleUnwind = useCallback(() => {
     if (!unwindCallback) return;
@@ -164,7 +168,11 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
           align={"right"}
         />
       </InputContainer>
-      <UnwindButton onClick={() => handleUnwind()}>
+      <UnwindButton 
+        onClick={() => handleUnwind()}
+        isDisabled={disableUnwindButton}
+        disabled={disableUnwindButton}
+        >
         Unwind
       </UnwindButton>
 

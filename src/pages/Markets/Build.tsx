@@ -211,11 +211,9 @@ export const BuildInterface = ({
     return !typedValue || isLong === undefined ? true : false;
   }, [typedValue, isLong]);
   
-  console.log('disableBuildButton: ', disableBuildButton)
   const handleBuild = useCallback(() => {
     if (!typedValue) throw new Error("missing position input size");  
     if (isLong === undefined) throw new Error("please choose a long/short position");
-    if (!selectedLeverage) throw new Error("please select a leverage value");
     if (!buildCallback) return;
     setBuildState({
       showConfirm: false,

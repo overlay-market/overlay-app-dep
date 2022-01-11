@@ -2,7 +2,7 @@ import { X } from "react-feather";
 import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
 import { TriggerActionButton as TriggerConfirmBuildButton } from "../Button/Button";
-import { AdditionalDetailRow } from "../../pages/Positions/Position";
+import { AdditionalDetailRow } from "../../pages/Positions/Unwind";
 import { FlexColumnContainer } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
 
