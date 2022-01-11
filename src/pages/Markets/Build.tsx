@@ -148,6 +148,7 @@ export const BuildInterface = ({
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const buildFee = useBuildFee();
   const ovl = chainId ? OVL[chainId] : undefined;
+  const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
 
   const filteredMarketById = markets?.filter((market, key) => market.id === marketId);
   const market = filteredMarketById ? filteredMarketById[0] : null;
@@ -183,6 +184,8 @@ export const BuildInterface = ({
       onAmountInput(input)}, [onAmountInput]);
           
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
+    if (totalSupply == '0' || totalSupply === null) return;
+
     let calculatedAmountByPercentage;
     if (percentage < 100) {
       calculatedAmountByPercentage = (
@@ -450,25 +453,25 @@ export const BuildInterface = ({
           <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(25, userOvlBalance ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2) : null)}
+              onClick={() => handleQuickInput(25, parsedUserOvlBalance ?? null)}
               >
               25%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(50, userOvlBalance ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2) : null)}
+              onClick={() => handleQuickInput(50, parsedUserOvlBalance ?? null)}
               >
               50%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(75, userOvlBalance ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2) : null)}
+              onClick={() => handleQuickInput(75, parsedUserOvlBalance ?? null)}
               >
               75%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
               border={"none"}
-              onClick={() => handleQuickInput(100, userOvlBalance ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2) : null)}
+              onClick={() => handleQuickInput(100, parsedUserOvlBalance ?? null)}
               >
               Max
             </TransparentUnderlineButton>

@@ -26,9 +26,9 @@ const Detail = styled.div<{ fontWeight?: number; color?: string; }>`
   text-align: inherit;
 `;
 
-const CardContainer = styled(Link)<{ navigate?: boolean; border?: boolean }>`
+const CardContainer = styled(Link)<{ navigate?: boolean; hasBorder?: boolean }>`
   pointer-events: ${({ navigate }) => (navigate ? "auto" : "none")};
-  border-bottom: ${({ border }) => (border ? "1px solid #828282" : "none")};
+  border-bottom: ${({ hasBorder }) => (hasBorder ? "1px solid #828282" : "none")};
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -69,7 +69,7 @@ export const PositionCard = ({
   estLiquidationPrice,
   PnL,
   navigate,
-  border,
+  hasBorder,
 }:{
   positionId: string;
   marketName: string;
@@ -82,12 +82,12 @@ export const PositionCard = ({
   estLiquidationPrice: string;
   PnL: number | string | undefined;
   navigate?: boolean;
-  border?: boolean;
+  hasBorder?: boolean;
 }) => {
   return (
     <CardContainer
       navigate={navigate}
-      border={border}
+      hasBorder={hasBorder}
       to={`/positions/${positionId}`}
       >
       <PositionCardColumn width="50%">

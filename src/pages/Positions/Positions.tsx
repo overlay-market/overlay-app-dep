@@ -86,7 +86,7 @@ export const Positions = () => {
                     estLiquidationPrice={position.liquidationPrice}
                     PnL={"0.10"}
                     navigate={true}
-                    border={true}
+                    hasBorder={true}
                   />
                 )})
             )}
