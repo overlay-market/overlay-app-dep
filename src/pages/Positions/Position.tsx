@@ -9,6 +9,7 @@ import { Back } from "../../components/Back/Back";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { usePositionValue } from "../../hooks/usePositionValue";
 import { formatDecimalPlaces } from "../../utils/formatDecimal";
+import { Accordion } from "../../components/Accordion/Accordion";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
 import { useAccountPositions } from "../../state/positions/hooks";
 import { InputContainer, InputDescriptor } from "../Markets/Build";
@@ -18,7 +19,6 @@ import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hook
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { TransparentUnderlineButton, TriggerActionButton } from "../../components/Button/Button";
-import { Accordion } from "../../components/Accordion/Accordion";
 
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
@@ -186,6 +186,8 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
       <Accordion 
         activeAccordionText={"Less"}
         inactiveAccordionText={"More"}
+        activeColor={"#12B4FF"}
+        inactiveColor={"#12B4FF"}
         >
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow 

@@ -6,10 +6,11 @@ import { Icon } from '../Icon/Icon';
 const AccordionWrapper = styled.div`
 `;
 
-const AccordionText = styled.div<{ fontFamily?: string }>`
-  font-size: 14px;
+const AccordionText = styled.div<{ color?: string }>`
   font-weight: 700;
+  font-size: 14px;
   margin: 12px 0;
+  color: ${({ color }) => (color)}
 `;
 
 const Clickable = styled.div`
@@ -18,9 +19,9 @@ const Clickable = styled.div`
 `;
 
 const Content = styled.div<{ isOpen: boolean}>`
-  display: block;
-  overflow: hidden;
   max-height: ${({ isOpen }) => ( isOpen ? '100vh' : '0vh' )};
+  overflow: hidden;
+  display: block;
 `;
   
 // display: ${({ isOpen }) => ( isOpen ? 'block' : 'none' )};
@@ -51,11 +52,11 @@ export const Accordion = ({
     <AccordionWrapper>
       <Clickable onClick={() => setOpen(!isOpen)}>
         {isOpen ? (
-          <AccordionText>
+          <AccordionText color={activeColor}>
             {activeAccordionText}
           </AccordionText>
         ):(
-          <AccordionText>
+          <AccordionText color={inactiveColor}>
             {inactiveAccordionText}
           </AccordionText>
         )}
@@ -64,7 +65,7 @@ export const Accordion = ({
           margin={'auto 0 auto auto'} 
           color={isOpen ? activeColor : inactiveColor}
           transform={isOpen ? 'rotate(180deg)' : ''}
-          > 
+          >
           <ChevronDown height={16} width={16} />
         </Icon>
       </Clickable>
