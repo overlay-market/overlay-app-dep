@@ -198,11 +198,11 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
-            value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "loading..."}
+            value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "..."}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "loading..."}`}
+            value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "..."}`}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}

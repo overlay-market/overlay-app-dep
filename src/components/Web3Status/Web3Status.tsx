@@ -108,7 +108,8 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.MAINNET]: 'Mainnet',
   [SupportedChainId.KOVAN]: 'Kovan',
-  [SupportedChainId.LOCALHOST]: 'LocalHost'
+  [SupportedChainId.LOCALHOST]: 'LocalHost',
+  [SupportedChainId.LOCALHOSTDEV]: 'LocalHostDev',
 };
 
 function Web3StatusInner() {
@@ -129,14 +130,6 @@ function Web3StatusInner() {
   const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
 
   const toggleWalletModal = useWalletModalToggle();
-
-  function useParsedWei(value: string, decimals: number) {
-    let formattedEther = utils.formatEther(value);
-
-    let formatDecimals = Number(formattedEther).toFixed(decimals);
-
-    return formatDecimals.toString();
-  }
 
   if (account) {
     // connected
@@ -163,6 +156,14 @@ function Web3StatusInner() {
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'Kovan' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'LocalHost' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'LocalHostDev' && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
         </Account>

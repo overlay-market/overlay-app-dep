@@ -509,16 +509,16 @@ export const BuildInterface = ({
       </FlexColumnContainer>
 
       <AdditionalDetails
-        bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "loading"}
-        askPrice={market ? formatWeiToParsedString(market.currentPrice.ask, 10) : "loading"}
-        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading"}
+        bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "..."}
+        askPrice={market ? formatWeiToParsedString(market.currentPrice.ask, 10) : "..."}
+        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "..."}
         oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
         slippage={setSlippageValue}
         fundingRate={fundingRate}
-        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : " - "}
-        estLiquidationPrice={estimatedLiquidationPrice}
+        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : "..."}
+        estLiquidationPrice={estimatedLiquidationPrice ? estimatedLiquidationPrice : '...'}
       />
       <ConfirmTxnModal
         isOpen={showConfirm}
