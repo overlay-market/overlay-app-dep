@@ -188,6 +188,8 @@ export function Position({match: {params: { positionId }}}: RouteComponentProps<
         inactiveAccordionText={"More"}
         activeColor={"#12B4FF"}
         inactiveColor={"#12B4FF"}
+        width={"fit-content"}
+        clickableMargin={"auto"}
         >
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow 

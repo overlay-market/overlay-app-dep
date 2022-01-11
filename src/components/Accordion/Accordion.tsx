@@ -9,13 +9,14 @@ const AccordionWrapper = styled.div`
 const AccordionText = styled.div<{ color?: string }>`
   font-weight: 700;
   font-size: 14px;
-  margin: 12px 0;
-  color: ${({ color }) => (color)}
+  margin: 12px 6px 12px 0px;
+  color: ${({ color }) => ( color )}
 `;
 
-const Clickable = styled.div`
+const ClickableDropdown = styled.div<{ width?: string; clickableMargin?: string }>`
+  width: ${({ width }) => ( width ? width : '100%' )};
+  margin: ${({ clickableMargin }) => ( clickableMargin ? clickableMargin : 'auto' )};
   display: flex;
-  width: 100%;
 `;
 
 const Content = styled.div<{ isOpen: boolean}>`
@@ -39,18 +40,26 @@ export const Accordion = ({
   children,
   activeColor,
   inactiveColor,
+  width,
+  clickableMargin
 }:{
   activeAccordionText: string | React.ReactNode
   inactiveAccordionText: string | React.ReactNode,
   children?: React.ReactNode
   activeColor?: string
   inactiveColor?: string
+  width?: string
+  clickableMargin?: string
 }) => {
   const [isOpen, setOpen] = useState(false);
 
   return(
     <AccordionWrapper>
-      <Clickable onClick={() => setOpen(!isOpen)}>
+      <ClickableDropdown 
+        onClick={() => setOpen(!isOpen)}
+        clickableMargin={clickableMargin}
+        width={width}
+        >
         {isOpen ? (
           <AccordionText color={activeColor}>
             {activeAccordionText}
@@ -68,7 +77,7 @@ export const Accordion = ({
           >
           <ChevronDown height={16} width={16} />
         </Icon>
-      </Clickable>
+      </ClickableDropdown>
       <Content isOpen={isOpen}>
         {children}
       </Content>
