@@ -4,7 +4,7 @@ import { utils } from "ethers";
 import { Label, Input } from "@rebass/forms";
 import { Sliders, X } from "react-feather";
 import { MarketCard } from "../../components/Card/MarketCard";
-import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TransactionSettingsButton } from "../../components/Button/Button";
+import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TransactionSettingsButton, ApproveTransactionButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { OVL } from "../../constants/tokens";
 import { Icon } from "../../components/Icon/Icon";
@@ -49,20 +49,6 @@ const SelectShortPositionButton = styled(SelectActionButton)`
 `;
 
 const TriggerBuildButton = styled(TriggerActionButton)`
-  margin-top: 24px;
-`;
-
-const TriggerApproveButton = styled(SelectActionButton)`
-  margin-top: 24px;
-  border: none;
-  background: linear-gradient(
-    91.32deg,
-    #10dcb1 0%,
-    #33e0eb 24.17%,
-    #12b4ff 52.11%,
-    #3d96ff 77.89%,
-    #7879f1 102.61%
-  );
 `;
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
@@ -77,6 +63,7 @@ export const NumericalInputContainer = styled(FlexRowContainer)`
   border: 1px solid ${({ theme }) => theme.white};
   border-radius: 4px;
   overflow: hidden;
+  margin-bottom: 24px;
 `;
 
 export const NumericalInputDescriptor = styled.div`
@@ -193,7 +180,7 @@ export const BuildInterface = ({
     if (isLong === undefined) throw new Error("please choose a long/short position");
     if (!buildCallback) return;
     setBuildState({
-      showConfirm: false,
+      showConfirm: true,
       attemptingTransaction: true,
       transactionErrorMessage: undefined,
       transactionHash: undefined,
@@ -230,7 +217,29 @@ export const BuildInterface = ({
   
   const handleApprove = useCallback(async () => {
     if (!typedValue) throw new Error("missing position input size");
-    await approveCallback();
+    setBuildState({
+      showConfirm: false,
+      attemptingTransaction: true,
+      transactionErrorMessage: undefined,
+      transactionHash: undefined,
+    });
+    approveCallback()
+      .then((hash) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: undefined,
+          transactionHash: undefined,
+        });
+      })
+      .catch((error) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: error,
+          transactionHash: undefined,
+        });
+      });
   }, [approveCallback, typedValue]);
   
   const fundingRate = useFundingRate(market?.id);
@@ -364,11 +373,10 @@ export const BuildInterface = ({
         </NumericalInputContainer>
 
         {showApprovalFlow ? (
-          <TriggerApproveButton 
+          <ApproveTransactionButton 
+            attemptingTransaction={attemptingTransaction}
             onClick={handleApprove}
-            >
-            Approve
-          </TriggerApproveButton>
+          />
         ) : (
           <TriggerBuildButton
             onClick={() => {

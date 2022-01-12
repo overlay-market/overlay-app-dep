@@ -1,7 +1,7 @@
 import { X } from "react-feather";
 import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
-import { TriggerActionButton as TriggerConfirmBuildButton } from "../Button/Button";
+import { TriggerActionButton as TriggerConfirmBuildButton, PendingActionButton as PendingConfirmationButton } from "../Button/Button";
 import { AdditionalDetailRow } from "../../pages/Positions/Unwind";
 import { FlexColumnContainer } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
@@ -110,12 +110,18 @@ export default function ConfirmTxnModal({
           revert.
         </TEXT.Supplemental>
 
-        <TriggerConfirmBuildButton 
-          onClick={onConfirm}
-          active={true}
-          >
-          Confirm Build
-        </TriggerConfirmBuildButton>
+        {attemptingTransaction ? (
+          <PendingConfirmationButton>
+            Pending confirmation...
+          </PendingConfirmationButton>
+        ):(
+          <TriggerConfirmBuildButton 
+            onClick={onConfirm}
+            active={true}
+            >
+            Confirm Build
+          </TriggerConfirmBuildButton>
+        )}
       </ModalContent>
     </Modal>
   );

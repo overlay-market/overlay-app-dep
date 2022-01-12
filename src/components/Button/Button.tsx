@@ -43,6 +43,32 @@ export const TriggerActionButton = styled(SelectActionButton)`
   background: ${({ active }) => ( active ? '#12B4FF' : 'transparent' )};
 `;
 
+export const PendingActionButton = styled(SelectActionButton)`
+  color: #0B0F1C;
+  border: none;
+  background: linear-gradient(91.32deg, #10DCB1 0%, #33E0EB 26.86%, #12B4FF 52.65%, #5295F9 77.89%, #9874FF 102.61%);
+`;
+
+export const ApproveTransactionButton = ({
+  attemptingTransaction,
+  onClick
+}:{
+  attemptingTransaction: boolean;
+  onClick: () => void;
+}) => (
+  <>
+    {attemptingTransaction ? (
+      <PendingActionButton>
+        Pending Confirmation...
+      </PendingActionButton>
+    ):(
+      <PendingActionButton onClick={onClick}>
+        Approve
+      </PendingActionButton>
+    )}
+  </>
+);
+
 export const TransactionSettingsButton = styled(BaseTemplateButton)`
   background: ${({ active, isDisabled }) => ( active ? '#12B4FF' : isDisabled ? 'gray' : 'transparent')};
   color: ${({ isDisabled }) => ( isDisabled ? '#0B0F1C' : 'white' )};
