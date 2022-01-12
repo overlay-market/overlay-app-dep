@@ -84,10 +84,10 @@ export const TEXT = {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
   StandardHeader1(props: TextProps) {
-    return <TextWrapper fontSize={20} fontWeight={400} {...props} />
+    return <TextWrapper fontSize={20} fontWeight={400} color={'white1'} {...props} />
   },
   BoldHeader1(props: TextProps) {
-    return <TextWrapper fontSize={20} fontWeight={700} {...props} />
+    return <TextWrapper fontSize={20} fontWeight={700} color={'white1'} {...props} />
   },
   StandardBody(props: TextProps) {
     return <TextWrapper fontSize={16} fontWeight={400} {...props} />

@@ -34,6 +34,7 @@ import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import TransactionPending from "../../components/Popup/TransactionPending";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
+import { TransactionSettingsModal } from "./TransactionSettingsModal";
 
 const SelectLongPositionButton = styled(SelectActionButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
@@ -64,10 +65,18 @@ const TriggerApproveButton = styled(SelectActionButton)`
   );
 `;
 
+const ControlInterfaceContainer = styled(FlexColumnContainer)`
+  padding: 16px;
+`;
+
+const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
+  padding: 16px 0 24px; 
+`;
+
 export const InputContainer = styled(FlexRowContainer)`
+  border: 1px solid ${({ theme }) => theme.white};
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid ${({ theme }) => theme.white};
 `;
 
 export const InputDescriptor = styled.div`
@@ -75,37 +84,6 @@ export const InputDescriptor = styled.div`
   font-size: 16px;
   color: #f2f2f2;
   padding: 8px;
-`;
-
-export const AmountInput = styled(Input)`
-  border-color: transparent !important;
-`;
-
-export const Detail = styled(FlexRowContainer)`
-  margin: 12px 0;
-  width: 100%;
-  display: flex;
-`;
-
-export const Title = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  color: #b9babd;
-`;
-
-export const Content = styled.div<{ color?: string }>`
-  margin-left: auto;
-  flex-direction: row;
-  display: flex;
-  font-size: 14px;
-  color: ${({ color }) => (color ? color : "#B9BABD")};
-`;
-
-export const OpenInterestValue = styled.div`
-  font-size: 14px;
-  text-align: right;
-  min-width: 130px;
-  color: #b9babd;
 `;
 
 const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
@@ -242,7 +220,7 @@ export const BuildInterface = ({
           txHash: undefined,
         });
       });
-  }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
+  }, [buildCallback, onResetBuildState, isLong, typedValue]);
   
   const [approval, approveCallback] = useApproveCallback(
     utils.parseUnits(typedValue ? typedValue : "0"),
@@ -304,124 +282,45 @@ export const BuildInterface = ({
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
-      <FlexColumnContainer
-        padding={"0 16px"}
-        as={"form"}
+      <ControlInterfaceContainer
         onSubmit={(e: any) => e.preventDefault()}
+        as={"form"}
         >
-        <FlexRowContainer margin={"0 0 32px 0"}>
-          <FlexColumnContainer>
-            <TEXT.StandardHeader1
-              fontWeight={700}
-              color={"white"}
-              margin={"14px 0 0 0"}
-              >
-              {market ? shortenAddress(market?.id) : "loading..."}
-            </TEXT.StandardHeader1>
-            <TEXT.StandardHeader1 
-              fontWeight={400} 
-              color={"white"}
-              >
-              {isLong === undefined && averagePrice}
-              {isLong !== undefined && market
-                ? isLong
-                  ? Number(
-                      utils.formatUnits(market?.currentPrice.bid, 18)
-                    ).toFixed(7)
-                  : Number(
-                      utils.formatUnits(market?.currentPrice.ask, 18)
-                    ).toFixed(7)
-                : null}
-            </TEXT.StandardHeader1>
-          </FlexColumnContainer>
+        <ControlInterfaceHeadContainer>
+          <TEXT.BoldHeader1>
+            {market ? shortenAddress(market?.id) : "loading..."}
+          </TEXT.BoldHeader1>
+          <TEXT.StandardHeader1>
+            {isLong === undefined && averagePrice}
+            {isLong !== undefined && market
+              ? isLong
+                ? formatWeiToParsedNumber(market?.currentPrice.bid, 18, 7)
+                : formatWeiToParsedNumber(market?.currentPrice.ask, 18, 7)
+              : null}
+          </TEXT.StandardHeader1>
           <Icon
+            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
             size={24}
-            top={"22px"}
-            right={"12px"}
+            top={"18px"}
+            right={"0px"}
             clickable={true}
             position={"absolute"}
             margin={"0 0 auto auto"}
             transform={"rotate(90deg)"}
-            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
             >
             {isTxnSettingsOpen ? <X color={"#12B4FF"} /> : <Sliders color={"#B9BABD"} />}
           </Icon>
-        </FlexRowContainer>
-
-        <TransactionSettingModal isOpen={isTxnSettingsOpen}>
-          <FlexColumnContainer>
-            <TEXT.StandardBody
-              fontWeight={700}
-              textAlign={"left"}
-              margin={"24px auto 16px 16px"}
-              >
-              Transaction Settings
-            </TEXT.StandardBody>
-
-            <FlexRowContainer padding={"8px 16px"}>
-              <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
-              <InfoTip tipFor={"Slippage Tolerance"}>Lorem Ipsum</InfoTip>
-            </FlexRowContainer>
-
-            <FlexRowContainer padding={"0px 16px 16px"}>
-              <InputContainer width={"210px"} height={"40px"}>
-                <NumericalInput
-                  value={setSlippageValue}
-                  onUserInput={onSetSlippage}
-                  align={"right"}
-                />
-                <InputDescriptor> % </InputDescriptor>
-              </InputContainer>
-              <TransactionSettingsButton
-                active={isTxnSettingsAuto}
-                onClick={handleResetTxnSettings}
-                width={"96px"}
-                margin={"0 0 0 auto"}
-                padding={"0px"}
-                >
-                Auto
-              </TransactionSettingsButton>
-            </FlexRowContainer>
-
-            <FlexRowContainer padding={"8px 16px"}>
-              <TEXT.Menu>Transaction Deadline</TEXT.Menu>
-            </FlexRowContainer>
-
-            <FlexRowContainer padding={"0px 16px 16px"}>
-              <InputContainer width={"210px"} height={"40px"}>
-                <NumericalInput
-                  value={txnDeadline}
-                  onUserInput={onSetTxnDeadline}
-                  align={"right"}
-                />
-                <InputDescriptor>minutes</InputDescriptor>
-              </InputContainer>
-            </FlexRowContainer>
-
-            <FlexRowContainer
-              margin={"auto 0 0 0"}
-              padding={"16px"}
-              borderTop={"1px solid white"}
-              >
-              <TransactionSettingsButton
-                onClick={handleResetTxnSettings}
-                border={"none"}
-                width={"96px"}
-                margin={"0 auto 0 0"}
-                padding={"0px"}
-                >
-                Reset
-              </TransactionSettingsButton>
-              <TransactionSettingsButton
-                onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
-                width={"96px"}
-                padding={"0px"}
-                >
-                Save
-              </TransactionSettingsButton>
-            </FlexRowContainer>
-          </FlexColumnContainer>
-        </TransactionSettingModal>
+        </ControlInterfaceHeadContainer>
+        
+        <TransactionSettingsModal 
+          isTxnSettingsOpen={isTxnSettingsOpen}
+          setSlippageValue={setSlippageValue}
+          isTxnSettingsAuto={isTxnSettingsAuto}
+          txnDeadline={txnDeadline}
+          onSetSlippage={onSetSlippage}
+          handleResetTxnSettings={handleResetTxnSettings}
+          onSetTxnDeadline={onSetTxnDeadline}
+        />
 
         <FlexColumnContainer>
           <SelectLongPositionButton
@@ -509,7 +408,7 @@ export const BuildInterface = ({
             Build
           </TriggerBuildButton>
         )}
-      </FlexColumnContainer>
+      </ControlInterfaceContainer>
 
       <AdditionalDetails
         bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "..."}
