@@ -1,10 +1,10 @@
 import React from 'react';
 import styled, { css } from 'styled-components/macro';
-import { animated, useTransition, useSpring } from 'react-spring';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
+import { animated, useTransition, useSpring } from 'react-spring';
 import { isMobile } from 'react-device-detect';
-import { transparentize } from 'polished';
 import { useGesture } from 'react-use-gesture';
+import { transparentize } from 'polished';
 
 const AnimatedDialogOverlay = animated(DialogOverlay);
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

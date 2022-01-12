@@ -1,13 +1,12 @@
-import { AbstractConnector } from '@web3-react/abstract-connector';
 import styled from 'styled-components/macro';
+import Loader from 'react-loader-spinner';
+import { darken } from 'polished';
+import { AlertTriangle } from 'react-feather';
+import { AbstractConnector } from '@web3-react/abstract-connector';
+import { TEXT } from '../../theme/theme';
+import { injected } from '../../connectors/connectors';
 import { SUPPORTED_WALLETS } from '../../constants/wallet';
 import WalletOption from './WalletOptions';
-import { injected } from '../../connectors/connectors';
-import { darken } from 'polished';
-import { Trans } from '@lingui/macro';
-import { TEXT } from '../../theme/theme';
-import { AlertTriangle } from 'react-feather';
-import Loader from 'react-loader-spinner';
 
 const PendingSection = styled.div`
   align-items: center;
@@ -94,9 +93,9 @@ export default function PendingView({
                 <IconContainer>
                   <AlertTriangle height={16} width={16} />
                 </IconContainer>
-                <TEXT.Body m={'auto 4px'} color={'#FF4343'}>
+                <TEXT.StandardBody m={'auto 4px'} color={'#FF4343'}>
                   Error connecting
-                </TEXT.Body>
+                </TEXT.StandardBody>
               </ErrorMessage>
 
               <ErrorButton
@@ -105,17 +104,17 @@ export default function PendingView({
                   connector && tryActivation(connector)
                 }}
               >
-                <TEXT.Body m={'auto 4px'} fontWeight={400}>
+                <TEXT.StandardBody m={'auto 4px'} fontWeight={400}>
                   Try again
-                </TEXT.Body>
+                </TEXT.StandardBody>
               </ErrorButton>
             </ErrorContainer>
           ) : (
             <>
               <Loader type="BallTriangle" height={30} width={30} color={'#12B4FF'}/>
-              <TEXT.Body m={'auto 8px'}>
+              <TEXT.StandardBody m={'auto 8px'}>
                 Initializing...
-              </TEXT.Body>
+              </TEXT.StandardBody>
             </>
           )}
         </LoadingContainer>

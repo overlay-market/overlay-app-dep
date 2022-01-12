@@ -1,5 +1,5 @@
-import { Label, Slider } from "@rebass/forms";
 import styled from 'styled-components/macro';
+import { Label, Slider } from "@rebass/forms";
 
 const SliderContainer = styled.div<{margin?: string}>`
   display: flex;

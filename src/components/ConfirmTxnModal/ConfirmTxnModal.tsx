@@ -1,121 +1,119 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
-import Modal from "../Modal/Modal";
-import {
-  ModalContent,
-  WalletHeader,
-  CloseIcon,
-} from "../ConnectWalletModal/ConnectWalletModal";
 import { X } from "react-feather";
+import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
-import { ListItem } from "../../pages/Positions/Position";
-import { Row } from "../Row/Row";
-import { Column } from "../Column/Column";
-import { ActiveBlueButton } from "../Button/Button";
+import { TriggerActionButton as TriggerConfirmBuildButton } from "../Button/Button";
+import { AdditionalDetailRow } from "../../pages/Positions/Unwind";
+import { FlexColumnContainer } from "../Container/Container";
+import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
 
 export default function ConfirmTxnModal({
   isOpen,
+  isLong,
+  buildFee,
   onConfirm,
   onDismiss,
-  marketPrice,
-  isLong,
-  selectedLeverage,
-  setSlippageValue,
-  buildFee,
-  adjustedCollateral,
   adjustedOi,
+  marketPrice,
+  setSlippageValue,
+  selectedLeverage,
+  adjustedCollateral,
   estimatedLiquidationPrice,
 }: {
   isOpen: boolean;
+  isLong: boolean | undefined;
+  buildFee: number | undefined | null;
   onConfirm?: () => void;
   onDismiss?: () => void;
-  marketPrice: string | undefined;
-  isLong: boolean | undefined;
-  selectedLeverage: number;
-  setSlippageValue: string;
-  buildFee: number | undefined | null;
-  adjustedCollateral: number | undefined;
   adjustedOi: number | undefined;
+  marketPrice: string | undefined;
+  setSlippageValue: string;
+  selectedLeverage: number;
+  adjustedCollateral: number | undefined;
   estimatedLiquidationPrice: any
 }) {
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={"350px"}>
       <ModalContent>
         <WalletHeader>
-          <TEXT.Body color={"white"} fontWeight={600} m={"auto 0"}>
+          <TEXT.StandardBody color={"white"} fontWeight={600} m={"auto 0"}>
             Confirm Transaction
-          </TEXT.Body>
+          </TEXT.StandardBody>
           <CloseIcon onClick={onDismiss}>
             <X color={"white"} height={24} width={24} />
           </CloseIcon>
         </WalletHeader>
-        <Column mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
-          <TEXT.Body color={"white"} fontWeight={400}>
+        <FlexColumnContainer mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
+          <TEXT.StandardBody color={"white"} fontWeight={400}>
             Market
-          </TEXT.Body>
+          </TEXT.StandardBody>
 
-          <TEXT.LargeHeader color={"white"}>ETH/USDC</TEXT.LargeHeader>
-        </Column>
+          <TEXT.BoldHeader1 color={"white"}>
+            ETH/USDC
+          </TEXT.BoldHeader1>
+        </FlexColumnContainer>
 
-        <Column mt={"16px"} color={"white"}>
-          <ListItem
-            item={"Price"}
-            itemColor={"#B9BABD"}
+        <FlexColumnContainer mt={"16px"} color={"white"}>
+          <AdditionalDetailRow
+            detail={"Price"}
+            detailColor={"#B9BABD"}
             value={marketPrice ? marketPrice : "loading..."}
           />
 
-          <ListItem
-            item={"Side"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Side"}
+            detailColor={"#B9BABD"}
             valueColor={isLong ? "#10DCB1" : "#FF648A"}
             value={isLong ? "Long" : "Short"}
           />
 
-          <ListItem
-            item={"Leverage"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Leverage"}
+            detailColor={"#B9BABD"}
             value={`${selectedLeverage}x`}
           />
-        </Column>
+        </FlexColumnContainer>
 
-        <Column mt={"48px"} color={"white"}>
-          <ListItem item={"Fee"} itemColor={"#B9BABD"} value={`${buildFee}%`} />
+        <FlexColumnContainer mt={"48px"} color={"white"}>
+          <AdditionalDetailRow detail={"Fee"} detailColor={"#B9BABD"} value={`${buildFee}%`} />
 
-          <ListItem
-            item={"Slippage"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Slippage"}
+            detailColor={"#B9BABD"}
             value={`${setSlippageValue}%`}
           />
 
-          <ListItem
-            item={"Est. Liquidation"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Est. Liquidation"}
+            detailColor={"#B9BABD"}
             value={estimatedLiquidationPrice}
           />
-        </Column>
+        </FlexColumnContainer>
 
-        <Column mt={"48px"} color={"white"}>
-          <ListItem
-            item={"Collateral"}
-            itemColor={"#B9BABD"}
+        <FlexColumnContainer mt={"48px"} color={"white"}>
+          <AdditionalDetailRow
+            detail={"Collateral"}
+            detailColor={"#B9BABD"}
             value={`${adjustedCollateral} OVL`}
           />
 
-          <ListItem
-            item={"Expected OI"}
-            itemColor={"#B9BABD"}
+          <AdditionalDetailRow
+            detail={"Expected OI"}
+            detailColor={"#B9BABD"}
             value={`${adjustedOi} OVL`}
           />
-        </Column>
+        </FlexColumnContainer>
 
-        <TEXT.Small color={"#B9BABD"} mt={"24px"} mb={"24px"}>
+        <TEXT.Supplemental color={"#B9BABD"} mt={"24px"} mb={"24px"}>
           The unwind price will be at least 2989.99 USDC or the transaction will
           revert.
-        </TEXT.Small>
+        </TEXT.Supplemental>
 
-        <ActiveBlueButton border={"none"} onClick={onConfirm}>
+        <TriggerConfirmBuildButton 
+          onClick={onConfirm}
+          active={true}
+          >
           Confirm Build
-        </ActiveBlueButton>
+        </TriggerConfirmBuildButton>
       </ModalContent>
     </Modal>
   );

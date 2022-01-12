@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import { ExternalLink } from '../ExternalLink/ExternalLink';
 import { TEXT } from '../../theme/theme';
+import { ExternalLink } from '../ExternalLink/ExternalLink';
 
 const InfoCard = styled.button<{ active?: boolean }>`
   background-color: transparent;
@@ -96,9 +96,9 @@ export default function WalletOption({
     <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
       <CardHeader>
         <CardText>
-          <TEXT.Body fontWeight={600} autoCapitalize={'true'}>
+          <TEXT.StandardBody fontWeight={600} autoCapitalize={'true'}>
             {header}
-          </TEXT.Body>
+          </TEXT.StandardBody>
 
           {active ? (
             <Connected>

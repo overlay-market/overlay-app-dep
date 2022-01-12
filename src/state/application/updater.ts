@@ -1,12 +1,12 @@
-import { SupportedChainId } from './../../constants/chains';
 import { useCallback, useEffect, useState } from 'react';
+import { SupportedChainId } from './../../constants/chains';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import useDebounce from '../../hooks/useDebounce';
-import useIsWindowVisible from '../../hooks/useIsWindowVisible';
+import { api, CHAIN_TAG } from '../data/enhanced';
 import { useActiveWeb3React } from '../../hooks/web3';
 import { updateBlockNumber, updateChainId } from './actions';
-import { api, CHAIN_TAG } from '../data/enhanced';
 import { supportedChainId } from '../../utils/supportedChainId';
+import useDebounce from '../../hooks/useDebounce';
+import useIsWindowVisible from '../../hooks/useIsWindowVisible';
 
 function useQueryCacheInvalidator() {
   const dispatch = useAppDispatch()

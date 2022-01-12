@@ -1,6 +1,6 @@
+import { Image } from 'rebass';
 import styled from 'styled-components/macro';
 import PlanckCatWhite from '../../assets/svg/planck-cat-white.svg';
-import { Image } from 'rebass';
 
 const LoaderContainer = styled.div`
   display: block;

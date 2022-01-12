@@ -1,9 +1,9 @@
 import { useMemo, useCallback, useEffect } from "react";
+import { AppState } from "../state";
+import { useAppSelector } from "../hooks";
+import { useAppQuery } from "../data/enhanced";
 import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
-import { useAppQuery } from "../data/enhanced";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { AppState } from "../state";
 
 
 export function useMarketsState(): AppState['markets'] {

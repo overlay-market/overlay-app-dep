@@ -1,20 +1,17 @@
-import { useActiveWeb3React } from '../../hooks/web3';
-import { UnsupportedChainIdError } from '@web3-react/core';
-import { SupportedChainId } from '../../constants/chains';
-import { injected } from "../../connectors/connectors";
-import { shortenAddress } from '../../utils/web3';
-import { useETHBalances, useTokenBalance, useTokenBalancesWithLoadingIndicator } from '../../state/wallet/hooks';
-import { OVL } from '../../constants/tokens';
-import { Row } from '../Row/Row';
-import { TEXT } from '../../theme/theme';
-import { AlertTriangle } from 'react-feather';
+import styled from 'styled-components/macro';
+import { utils } from 'ethers';
 import { Trans } from '@lingui/macro';
+import { AlertTriangle } from 'react-feather';
+import { UnsupportedChainIdError } from '@web3-react/core';
+import { TEXT } from '../../theme/theme';
+import { shortenAddress } from '../../utils/web3';
+import { useActiveWeb3React } from '../../hooks/web3';
+import { useOvlBalance } from '../../state/wallet/hooks';
+import { SupportedChainId } from '../../constants/chains';
+import { FlexRowContainer } from '../Container/Container';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import Dropdown from './Dropdown';
-import styled from 'styled-components/macro';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
-import { useOvlBalance } from '../../state/wallet/hooks';
-import { utils } from 'ethers';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -45,7 +42,7 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
   margin-right: 3px;
 `;
 
-export const Account = styled(Row)`
+export const Account = styled(FlexRowContainer)`
   font-size: 12px;
   font-weight: 400;
   margin: auto 24px auto auto;
@@ -61,48 +58,48 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
   if (balance === 'Loading...') {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
             <Trans>
               Balance:
             </Trans>
-            <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
+            <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
               {balance}
-            </TEXT.BoldSmall>
-        </Row>
+            </TEXT.BoldSupplemental>
+        </FlexRowContainer>
       </>
     )
   } else if (network === 'Mainnet') {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4}>
-            <TEXT.Small minWidth={'fit-content'}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
+            <TEXT.Supplemental minWidth={'fit-content'}>
               <Trans>
                 Balance:
               </Trans>
-            </TEXT.Small>
-            <TEXT.BoldSmall ml={1} mr={0} minWidth={'auto'}>
+            </TEXT.Supplemental>
+            <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
               {balance}
-            </TEXT.BoldSmall>
-            <TEXT.BoldSmall ml={1} mr={0}>
+            </TEXT.BoldSupplemental>
+            <TEXT.BoldSupplemental ml={1} mr={0}>
               OVL
-            </TEXT.BoldSmall>
-        </Row>
+            </TEXT.BoldSupplemental>
+        </FlexRowContainer>
       </>
     )
   } else {
     return (
       <>
-        <Row fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
             <Trans>
               Balance:
             </Trans>
-            <TEXT.BoldSmall ml={1} mr={0}>
+            <TEXT.BoldSupplemental ml={1} mr={0}>
               {balance}
-            </TEXT.BoldSmall>
-            <TEXT.BoldSmall ml={1} mr={0}>
+            </TEXT.BoldSupplemental>
+            <TEXT.BoldSupplemental ml={1} mr={0}>
               OVL
-            </TEXT.BoldSmall>
-        </Row>
+            </TEXT.BoldSupplemental>
+        </FlexRowContainer>
       </>
     )
   }
@@ -111,7 +108,8 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.MAINNET]: 'Mainnet',
   [SupportedChainId.KOVAN]: 'Kovan',
-  [SupportedChainId.LOCALHOST]: 'LocalHost'
+  [SupportedChainId.LOCALHOST]: 'LocalHost',
+  [SupportedChainId.LOCALHOSTDEV]: 'LocalHostDev',
 };
 
 function Web3StatusInner() {
@@ -132,14 +130,6 @@ function Web3StatusInner() {
   const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
 
   const toggleWalletModal = useWalletModalToggle();
-
-  function useParsedWei(value: string, decimals: number) {
-    let formattedEther = utils.formatEther(value);
-
-    let formatDecimals = Number(formattedEther).toFixed(decimals);
-
-    return formatDecimals.toString();
-  }
 
   if (account) {
     // connected
@@ -166,6 +156,14 @@ function Web3StatusInner() {
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'Kovan' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'LocalHost' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'LocalHostDev' && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
         </Account>

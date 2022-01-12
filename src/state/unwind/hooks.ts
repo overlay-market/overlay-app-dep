@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { useAppSelector, useAppDispatch } from "../hooks";
 import { AppState } from "../state";
+import { useAppSelector, useAppDispatch } from "../hooks";
 import { typeInput, selectPositionId, resetUnwindState } from './actions';
 
 export function useUnwindState(): AppState['unwind'] {

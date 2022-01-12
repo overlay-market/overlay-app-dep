@@ -1,85 +1,71 @@
-import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components';
 import styled from 'styled-components/macro';
+import { Button as RebassButton, ButtonProps as ButtonPropsOriginal } from 'rebass/styled-components';
 
 type ButtonProps = Omit<ButtonPropsOriginal, 'css'>
 
-const BaseButton = styled(RebassButton)<
+const BaseTemplateButton = styled(RebassButton)<
   {
     padding?: string
     width?: string
     borderRadius?: string
     border?: string
-    disabled?: boolean
+    isDisabled?: boolean
     active?: boolean
     color?: any
   } & ButtonProps
 >`
-  padding: ${({ padding }) => (padding ? padding : '16px')};
   width: ${({ width }) => (width ? width : '100%')};
-  borderRadius: ${({ borderRadius }) => ( borderRadius ? borderRadius : '8px' )};
   color: ${({ color }) => ( color ? color : '#f2f2f2' )};
+  padding: ${({ padding }) => (padding ? padding : '16px')};
   border: ${({ border }) => ( border ? border : '1px solid #f2f2f2' )};
   cursor: pointer;
-  text-align: center;
   font-weight: 700;
+  text-align: center;
+  transition: transform 450ms ease;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
   "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
   sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transition: transform 450ms ease;
 `
 
-export const TxnSettingsButton = styled(BaseButton)`
-  background: ${({ active, disabled }) => ( active ? '#12B4FF' : disabled ? 'gray' : 'transparent')};
-  color: ${({ disabled }) => ( disabled ? '#0B0F1C' : 'white' )};
-  cursor: ${({ disabled }) => ( disabled ? 'none' : 'cursor' )};
+export const SelectActionButton = styled(BaseTemplateButton)`
+  border: ${({ active }) => ( active ? 'none' : '' )};
+  color: ${({ isDisabled }) => ( isDisabled ? '#63656D !important' : '')};
+  background: ${({ isDisabled }) => ( isDisabled ? '#D0D0D2 !important' : '')};
+  height: 48px;
+  padding: 16px;
+  border-radius: 8px;
+`;
+
+export const TriggerActionButton = styled(SelectActionButton)`
+  color: ${({ active }) => ( active ? '#0B0F1C' : '#71d2ff' )};
+  background: ${({ active }) => ( active ? '#12B4FF' : 'transparent' )};
+`;
+
+export const TransactionSettingsButton = styled(BaseTemplateButton)`
+  background: ${({ active, isDisabled }) => ( active ? '#12B4FF' : isDisabled ? 'gray' : 'transparent')};
+  color: ${({ isDisabled }) => ( isDisabled ? '#0B0F1C' : 'white' )};
+  cursor: ${({ isDisabled }) => ( isDisabled ? 'none' : 'cursor' )};
   height: 40px;
 `;
 
-
-export const LightGreyButton = styled(BaseButton)<{ background?: string; border?: string; color?: string }>`
-  background: ${({ background }) => background ?? '#BDBDBD'};
-  color: ${({ color }) => ( color ? color : 'white' )};
-  font-size: 14px;
-  font-weight: 700;
-  border-radius: 8px;
-  border: ${({ border }) => ( border ? border : '1px solid #F2F2F2')};
-`
-
-export const TransparentButton = styled(BaseButton)<{ width?: string, underline?: boolean }>`
-  background: transparent;
+export const TransparentButton = styled(BaseTemplateButton)<{ width?: string, underline?: boolean }>`
+  width: ${({width}) => (width ? width : 'auto')};
   color: ${({ color }) => ( color ? color : 'white' )};
   padding: 0 8px;
-  width: ${({width}) => (width ? width : 'auto')};
-  font-size: 12px;
   cursor: pointer;
-`
+  font-size: 12px;
+  background: transparent;
+`;
 
 export const TransparentUnderlineButton = styled(TransparentButton)`
   text-decoration: underline;
-`
+  border: none;
+`;
 
-export const MenuButton = styled(BaseButton)`
+export const MenuButton = styled(BaseTemplateButton)`
   background: transparent;
   display: flex;
   font-size: 12px;
-`
-
-// Build Button base
-const BuildButton = styled(BaseButton)`
-  border-radius: 4px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #F2F2F2;
-  padding: 8px;
-`
-
-export const TransparentDarkGreyButton = styled(BuildButton)`
-  background: #505050;
-  opacity: 0.8;
-`
-
-export const ActiveBlueButton = styled(BuildButton)`
-  background: ${({theme}) => theme.blue3};
-`
+`;

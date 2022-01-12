@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MarketCard } from '../../components/Card/MarketCard';
-import { InfoColumn } from '../../components/InfoColumn/InfoColumn';
-import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
-import { Row } from '../../components/Row/Row';
 import { Label } from '@rebass/forms';
 import { TEXT } from '../../theme/theme';
-import { TransparentUnderlineButton, TransparentDarkGreyButton } from '../../components/Button/Button';
+import { MarketCard } from '../../components/Card/MarketCard';
+import { InfoColumn } from '../../components/InfoColumn/InfoColumn';
+import { FlexRowContainer } from '../../components/Container/Container';
+import { TransparentUnderlineButton } from '../../components/Button/Button';
+import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import MagicBackground from '../../assets/images/magic-background.png';
 
 const MagicWallpaper = styled.div`
@@ -46,7 +46,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
 `;
 
-const InputContainer = styled(Row)`
+const InputContainer = styled(FlexRowContainer)`
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid ${({theme}) => theme.white};
@@ -86,10 +86,10 @@ const Magic = ({
         align={'center'}
         >
         <Label htmlFor='Amount' mt={'24px'}>
-          <TEXT.Body margin={'0 auto 4px 0'} color={'white'}>
+          <TEXT.StandardBody margin={'0 auto 4px 0'} color={'white'}>
             Amount
-          </TEXT.Body>
-          <Row 
+          </TEXT.StandardBody>
+          <FlexRowContainer 
             ml={'auto'} 
             mb={'4px'} 
             width={'auto'}
@@ -98,7 +98,7 @@ const Magic = ({
             <TransparentUnderlineButton>50%</TransparentUnderlineButton>
             <TransparentUnderlineButton>75%</TransparentUnderlineButton>
             <TransparentUnderlineButton>Max</TransparentUnderlineButton>
-          </Row>
+          </FlexRowContainer>
         </Label>
         <InputContainer>
           <NumericalInput
@@ -131,20 +131,17 @@ const Magic = ({
             />
         </MagicDetail>
         <ButtonContainer>
-          <TEXT.Small textAlign={'right'} ml={'auto'} color={'white'}>
+          <TEXT.Supplemental textAlign={'right'} ml={'auto'} color={'white'}>
               Fee: 0.0%
-          </TEXT.Small>
-          <TransparentDarkGreyButton ml={'auto'} mt={'4px'} width={'100%'}>
-                Make some Magic
-          </TransparentDarkGreyButton>
+          </TEXT.Supplemental>
         </ButtonContainer>
       </MarketCard>
 
-      <TEXT.Body m={'48px 0 16px'}>✨ETH</TEXT.Body>
+      <TEXT.StandardBody m={'48px 0 16px'}>✨ETH</TEXT.StandardBody>
 
-      <TEXT.Body>
+      <TEXT.StandardBody>
         magicETH allows you to Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-      </TEXT.Body>
+      </TEXT.StandardBody>
     </Container>
     </>
   )

@@ -77,31 +77,34 @@ const TextWrapper = styled(Text)<{ color: keyof Colors }>`
 type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
-  Main(props: TextProps) {
+  AdjustableSize(props: TextProps) {
     return <TextWrapper fontWeight={500} color={'text2'} {...props} />
-  },
-  Link(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'primary1'} {...props} />
-  },
-  Body(props: TextProps) {
-    return <TextWrapper fontSize={16} color={'text1'} {...props} />
-  },
-  LargeHeader(props: TextProps) {
-    return <TextWrapper fontWeight={600} fontSize={24} {...props} />
-  },
-  MediumHeader(props: TextProps) {
-    return <TextWrapper fontSize={20} {...props} />
-  },
-  SubHeader(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
   Menu(props: TextProps) {
     return <TextWrapper fontWeight={400} fontSize={14} {...props} />
   },
-  Small(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={12} {...props} />
+  StandardHeader1(props: TextProps) {
+    return <TextWrapper fontSize={20} fontWeight={400} color={'white1'} {...props} />
   },
-  BoldSmall(props: TextProps) {
-    return <TextWrapper fontWeight={600} fontSize={12} {...props} />
+  BoldHeader1(props: TextProps) {
+    return <TextWrapper fontSize={20} fontWeight={700} color={'white1'} {...props} />
+  },
+  StandardBody(props: TextProps) {
+    return <TextWrapper fontSize={16} fontWeight={400} color={'white1'} {...props} />
+  },
+  BoldStandardBody(props: TextProps) {
+    return <TextWrapper fontSize={16} fontWeight={700} {...props} />
+  },
+  SmallBody(props: TextProps) {
+    return <TextWrapper fontSize={14} fontWeight={400} {...props} />
+  },
+  BoldSmallBody(props: TextProps) {
+    return <TextWrapper fontSize={14} fontWeight={700} {...props} />
+  },
+  Supplemental(props: TextProps) {
+    return <TextWrapper fontSize={12} fontWeight={400} {...props} />    
+  },
+  BoldSupplemental(props: TextProps) {
+    return <TextWrapper fontSize={12} fontWeight={700} {...props} />    
   }
 }

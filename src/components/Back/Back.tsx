@@ -1,8 +1,8 @@
+import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 import { ArrowLeft } from "react-feather";
-import styled from "styled-components";
-import { Icon } from "../Icon/Icon";
 import { TEXT } from "../../theme/theme";
+import { Icon } from "../Icon/Icon";
 
 const Container = styled.div<{ margin?: string}>`
   display: flex;
@@ -28,15 +28,15 @@ export const Back = ({
       <>
         <Container onClick={() => history.goBack()} margin={margin}> 
           <Icon 
-              size={arrowSize}
-              clickable={true}
-              margin={'auto 3px auto auto'}
-              >
-                <ArrowLeft size={arrowSize} />
+            size={arrowSize}
+            clickable={true}
+            margin={'auto 3px auto auto'}
+            >
+            <ArrowLeft size={arrowSize} />
           </Icon>
-          <TEXT.Main fontSize={textSize}>
+          <TEXT.AdjustableSize fontSize={textSize}>
             Back
-          </TEXT.Main>
+          </TEXT.AdjustableSize>
         </Container>
       </>
     );

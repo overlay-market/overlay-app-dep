@@ -1,99 +1,60 @@
 import { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
-import { MarketCard } from "../../components/Card/MarketCard";
-import {
-  LightGreyButton,
-  TransparentUnderlineButton,
-  TransparentDarkGreyButton,
-  ActiveBlueButton,
-  TxnSettingsButton,
-} from "../../components/Button/Button";
-import { TEXT } from "../../theme/theme";
-import { Column } from "../../components/Column/Column";
-import { Row } from "../../components/Row/Row";
-import { Label, Input } from "@rebass/forms";
-import { usePositionActionHandlers } from "../../state/positions/hooks";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { usePositionState } from "../../state/positions/hooks";
-import { useOvlBalance } from "../../state/wallet/hooks";
-import { DefaultTxnSettings } from "../../state/positions/actions";
-import { OVL } from "../../constants/tokens";
-import {
-  OVL_ADDRESS,
-  OVL_COLLATERAL_ADDRESS,
-  OVL_MARKET_ADDRESS,
-} from "../../constants/addresses";
-import { maxAmountSpend } from "../../utils/maxAmountSpend";
-import {
-  ApprovalState,
-  useApproveCallback,
-} from "../../hooks/useApproveCallback";
-import {
-  useDerivedBuildInfo,
-  tryParseAmount,
-} from "../../state/positions/hooks";
-import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
-import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
-import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
-import { Sliders, X } from "react-feather";
-import { Icon } from "../../components/Icon/Icon";
-import { InfoTip } from "../../components/InfoTip/InfoTip";
-import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
-import { useTransactionAdder } from "../../state/transactions/hooks";
-import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
-import TransactionPending from "../../components/Popup/TransactionPending";
-import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
-import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { utils } from "ethers";
-import { useAllMarkets } from "../../state/markets/hooks";
-import { Back } from "../../components/Back/Back";
-import {
-  formatWeiToParsedString,
-  formatWeiToParsedNumber,
-} from "../../utils/formatWei";
-import { useAccountPositions } from "../../state/positions/hooks";
-import { shortenAddress } from "../../utils/web3";
-import { useSingleCallResult } from "../../state/multicall/hooks";
-import { useCollateralManagerContract } from "../../hooks/useContract";
-import { useBuildFee } from "../../hooks/useBuildFee";
-import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
-import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
+import { Label, Input } from "@rebass/forms";
+import { Sliders, X } from "react-feather";
+import { MarketCard } from "../../components/Card/MarketCard";
+import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TransactionSettingsButton } from "../../components/Button/Button";
+import { TEXT } from "../../theme/theme";
+import { OVL } from "../../constants/tokens";
+import { Icon } from "../../components/Icon/Icon";
+import { useActiveWeb3React } from "../../hooks/web3";
+import { useOvlBalance } from "../../state/wallet/hooks";
+import { InfoTip } from "../../components/InfoTip/InfoTip";
+import { usePositionState } from "../../state/positions/hooks";
+import { useDerivedBuildInfo } from "../../state/positions/hooks";
+import { DefaultTxnSettings } from "../../state/positions/actions";
+import { usePositionActionHandlers } from "../../state/positions/hooks";
+import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
+import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
+import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
+import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
+import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
+import { TransactionSettingsModal } from "./TransactionSettingsModal";
 import { formatDecimalToPercentage } from "../../utils/formatDecimal";
+import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
+import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
+import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
+import { useBuildCallback } from "../../hooks/useBuildCallback";
+import { useAllMarkets } from "../../state/markets/hooks";
+import { shortenAddress } from "../../utils/web3";
+import { useBuildFee } from "../../hooks/useBuildFee";
+import { AdditionalDetails } from "./AdditionalBuildDetails";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
+import TransactionPending from "../../components/Popup/TransactionPending";
+import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
-export const LongPositionButton = styled(LightGreyButton)<{ active?: boolean }>`
-  height: 48px;
-  padding: 16px;
+const SelectLongPositionButton = styled(SelectActionButton)`
+  color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
+  background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
   margin: 4px 0;
-  background: ${({ active }) => (active ? "#10DCB1" : "transparent")};
-  color: ${({ active }) => (active ? "#F2F2F2" : "#10DCB1")};
 `;
 
-export const ShortPositionButton = styled(LightGreyButton)<{
-  active?: boolean;
-}>`
-  height: 48px;
-  padding: 16px;
+const SelectShortPositionButton = styled(SelectActionButton)`
+  color: ${({ active }) => (active ? '#0B0F1C' : '#FF648A')};
+  background: ${({ active }) => (active ? '#FF648A' : 'transparent')};
   margin: 4px 0;
-  background: ${({ active }) => (active ? "#FF648A" : "transparent")};
-  color: ${({ active }) => (active ? "#F2F2F2" : "#FF648A")};
 `;
 
-export const BuildButton = styled(LightGreyButton)`
-  height: 48px;
-  padding: 16px;
-  margin: 4px 0;
-  background: transparent;
-  color: #71d2ff;
+const TriggerBuildButton = styled(TriggerActionButton)`
   margin-top: 24px;
 `;
 
-export const ApproveButton = styled(LightGreyButton)`
-  height: 48px;
-  padding: 16px;
-  margin: 4px 0;
+const TriggerApproveButton = styled(SelectActionButton)`
   margin-top: 24px;
+  border: none;
   background: linear-gradient(
     91.32deg,
     #10dcb1 0%,
@@ -104,168 +65,44 @@ export const ApproveButton = styled(LightGreyButton)`
   );
 `;
 
-export const InputContainer = styled(Row)`
-  border-radius: 4px;
-  overflow: hidden;
-  border: 1px solid ${({ theme }) => theme.white};
+const ControlInterfaceContainer = styled(FlexColumnContainer)`
+  padding: 16px;
 `;
 
-export const InputDescriptor = styled.div`
+const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
+  padding: 16px 0 24px; 
+`;
+
+export const NumericalInputContainer = styled(FlexRowContainer)`
+  border: 1px solid ${({ theme }) => theme.white};
+  border-radius: 4px;
+  overflow: hidden;
+`;
+
+export const NumericalInputDescriptor = styled.div`
   background: transparent;
   font-size: 16px;
   color: #f2f2f2;
   padding: 8px;
 `;
 
-export const AmountInput = styled(Input)`
-  border-color: transparent !important;
+const NumericalInputLabel = styled(Label)`
+  margin-top: 24px !important;
 `;
 
-export const Detail = styled(Row)`
-  margin: 12px 0;
-  width: 100%;
-  display: flex;
+const NumericalInputTitle = styled(TEXT.StandardBody)`
+  margin-bottom: 4px !important;
 `;
-
-export const Title = styled.div`
-  font-size: 14px;
-  font-weight: 700;
-  color: #b9babd;
-`;
-
-export const Content = styled.div<{ color?: string }>`
-  margin-left: auto;
-  flex-direction: row;
-  display: flex;
-  font-size: 14px;
-  color: ${({ color }) => (color ? color : "#B9BABD")};
-`;
-
-export const OI = styled.div`
-  font-size: 14px;
-  text-align: right;
-  min-width: 130px;
-  color: #b9babd;
-`;
-
-const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
-  position: absolute;
-  border: 1px solid #d0d0d2;
-  height: 100%;
-  width: 100%;
-  border-radius: 8px;
-  backdrop-filter: blur(33px);
-  z-index: 5;
-  color: #f2f2f2;
-`;
-
-const AdditionalDetails = ({
-  fee,
-  slippage,
-  estLiquidationPrice,
-  bid,
-  ask,
-  expectedOi,
-  oiLong,
-  oiShort,
-  oiCap,
-  fundingRate,
-}: {
-  fee?: string | number;
-  slippage?: string | number;
-  estLiquidationPrice?: string | number;
-  bid?: string | number;
-  ask?: string | number;
-  expectedOi?: string | number;
-  oiLong?: number | undefined;
-  oiShort?: number | undefined;
-  oiCap?: number | undefined;
-  fundingRate?: string | number;
-}) => {
-  return (
-    <Column mt={"64px"} padding={"0 16px"}>
-      <Detail>
-        <Title> Fee </Title>
-        <Content> {fee}% </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Slippage </Title>
-        <Content> {slippage}% </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Est. Liquidation </Title>
-        <Content> {estLiquidationPrice} </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Bid </Title>
-        <Content> ~{bid} </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Ask </Title>
-        <Content> ~{ask} </Content>
-      </Detail>
-
-      <Detail>
-        <Title> Expected OI </Title>
-        <Content> {expectedOi} OVL </Content>
-      </Detail>
-
-      <Detail>
-        <Title> OI Long </Title>
-        <ProgressBar
-          value={oiLong}
-          max={oiCap}
-          width={"75px"}
-          color={"#10DCB1"}
-          margin={"0 0 0 auto"}
-        />
-
-        <OI>
-          {" "}
-          {oiLong} / {oiCap}{" "}
-        </OI>
-      </Detail>
-
-      <Detail>
-        <Title> OI Short </Title>
-        <ProgressBar
-          value={oiShort}
-          max={oiCap}
-          width={"75px"}
-          color={"#DC1F4E"}
-          margin={"0 0 0 auto"}
-        />
-
-        <OI>
-          {" "}
-          {oiShort} / {oiCap}{" "}
-        </OI>
-      </Detail>
-
-      <Detail>
-        <Title> Funding rate </Title>
-        <Content color={"#10DCB1"}> ~ {fundingRate}% </Content>
-      </Detail>
-    </Column>
-  );
-};
 
 export const BuildInterface = ({
   marketId,
   marketPrice,
-}: {
+}:{
   marketId: string;
   marketPrice: string | number;
 }) => {
-  const [
-    { showConfirm, attemptingTxn, txnErrorMessage, txHash },
-    setBuildState,
-  ] = useState<{
+  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
+  const [{ showConfirm, attemptingTxn, txnErrorMessage, txHash }, setBuildState] = useState<{
     showConfirm: boolean;
     attemptingTxn: boolean;
     txnErrorMessage: string | undefined;
@@ -277,30 +114,18 @@ export const BuildInterface = ({
     txHash: undefined,
   });
 
-  const addTransaction = useTransactionAdder();
-
-  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
-
-  const isAuto = useIsTxnSettingsAuto();
-
-  const { account, chainId, library } = useActiveWeb3React();
-
-  const ovl = chainId ? OVL[chainId] : undefined;
-
-  const { error, ovlBalance: userOvlBalance } = useOvlBalance(account);
-
-  const { isLoading, markets } = useAllMarkets();
-
-  const { positions } = useAccountPositions(account);
-
-  
+  const { markets } = useAllMarkets();
+  const { buildData } = useDerivedBuildInfo();
+  const { account, chainId } = useActiveWeb3React();
+  const { ovlBalance: userOvlBalance } = useOvlBalance(account);
+  const { callback: buildCallback } = useBuildCallback(buildData);
+  const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const buildFee = useBuildFee();
-  
-  const filtered = markets?.filter((market, key) => {
-    return market.id === marketId;
-  });
-  
-  const market = filtered ? filtered[0] : null;
+  const ovl = chainId ? OVL[chainId] : undefined;
+  const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
+
+  const filteredMarketById = markets?.filter((market, key) => market.id === marketId);
+  const market = filteredMarketById ? filteredMarketById[0] : null;
   
   const {
     selectedLeverage,
@@ -309,7 +134,6 @@ export const BuildInterface = ({
     setSlippageValue,
     txnDeadline,
   } = usePositionState();
-  
   const {
     onAmountInput,
     onSelectLeverage,
@@ -319,43 +143,24 @@ export const BuildInterface = ({
     onResetBuildState,
   } = usePositionActionHandlers();
   
-  const { buildData, inputError } = useDerivedBuildInfo();
-  
-  const { callback: buildCallback, error: buildCallbackError } =
-  useBuildCallback(buildData);
-  
-  const handleResetTxnSettings = useCallback(
-    (e: any) => {
+  const handleResetTxnSettings = useCallback((e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
       onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
-    },
-  [onSetSlippage, onSetTxnDeadline]
-  );
+    }, [onSetSlippage, onSetTxnDeadline]);
+
+  const handleLeverageInput = useCallback((e: any) => {
+      onSelectLeverage(e.target.value)}, [onSelectLeverage]);
+
+  const handleSelectPositionSide = useCallback((isLong: boolean) => {
+      onSelectPositionSide(isLong)}, [onSelectPositionSide]);
     
-  const handleLeverageInput = useCallback(
-    (e: any) => {
-      onSelectLeverage(e.target.value);
-    },
-  [onSelectLeverage]
-  );
-      
-  const handleSelectPositionSide = useCallback(
-    (isLong: boolean) => {
-      onSelectPositionSide(isLong);
-    },
-  [onSelectPositionSide]
-  );
-    
-  const handleUserInput = useCallback(
-    (input: string) => {
-      onAmountInput(input);
-    },
-  [onAmountInput]
-  );
+  const handleUserInput = useCallback((input: string) => {
+      onAmountInput(input)}, [onAmountInput]);
           
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
+    if (totalSupply == '0' || totalSupply === null) return;
+
     let calculatedAmountByPercentage;
-    
     if (percentage < 100) {
       calculatedAmountByPercentage = (
         Number(totalSupply) *
@@ -367,31 +172,26 @@ export const BuildInterface = ({
         (percentage / 100)
         ).toFixed(10);
     }
-        
     return handleUserInput(calculatedAmountByPercentage);
   };
               
   const handleDismiss = useCallback(() => {
     setBuildState({
-      showConfirm: false,
-      attemptingTxn,
-      txnErrorMessage,
-      txHash,
+      showConfirm: false, 
+      attemptingTxn, 
+      txnErrorMessage, 
+      txHash
     });
   }, [attemptingTxn, txnErrorMessage, txHash]);
   
+  const disableBuildButton: boolean = useMemo(() => {
+    return !typedValue || isLong === undefined ? true : false;
+  }, [typedValue, isLong]);
+  
   const handleBuild = useCallback(() => {
-    if (!typedValue) throw new Error("missing position input size");
-    
-    if (isLong === undefined)
-    throw new Error("please choose a long/short position");
-    
-    if (!selectedLeverage) throw new Error("please select a leverage value");
-    
-    if (!buildCallback) {
-      return;
-    }
-    
+    if (!typedValue) throw new Error("missing position input size");  
+    if (isLong === undefined) throw new Error("please choose a long/short position");
+    if (!buildCallback) return;
     setBuildState({
       showConfirm: false,
       attemptingTxn: true,
@@ -399,318 +199,178 @@ export const BuildInterface = ({
       txHash: undefined,
     });
     buildCallback()
-    .then((hash) => {
-      setBuildState({
-        showConfirm: false,
-        attemptingTxn: false,
-        txnErrorMessage: undefined,
-        txHash: hash,
+      .then((hash) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTxn: false,
+          txnErrorMessage: undefined,
+          txHash: hash,
+        });
+        onResetBuildState();
+      })
+      .catch((error) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTxn: false,
+          txnErrorMessage: error,
+          txHash: undefined,
+        });
       });
-      onResetBuildState();
-    })
-    .catch((error) => {
-      setBuildState({
-        showConfirm: false,
-        attemptingTxn: false,
-        txnErrorMessage: error,
-        txHash: undefined,
-      });
-    });
-  }, [buildCallback, onResetBuildState, isLong, selectedLeverage, typedValue]);
+  }, [buildCallback, onResetBuildState, isLong, typedValue]);
   
   const [approval, approveCallback] = useApproveCallback(
     utils.parseUnits(typedValue ? typedValue : "0"),
     ovl,
     account ?? undefined
-    );
+  );
 
   const showApprovalFlow = useMemo(() => {
-    return (
-      approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
-  );
+    return approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
   }, [approval]);
   
   const handleApprove = useCallback(async () => {
     if (!typedValue) throw new Error("missing position input size");
-    
     await approveCallback();
   }, [approveCallback, typedValue]);
   
   const fundingRate = useFundingRate(market?.id);
   
   const averagePrice = useMemo(() => {
-    return market
-    ? (
-      (Number(utils.formatUnits(market?.currentPrice.bid, 18)) +
-      Number(utils.formatUnits(market?.currentPrice.ask, 18))) /
-      2
-      ).toFixed(7)
-      : "loading...";
+    return market ? (
+          ( 
+            Number(utils.formatUnits(market?.currentPrice.bid, 18)) +
+            Number(utils.formatUnits(market?.currentPrice.ask, 18))
+          ) / 2
+        ).toFixed(7)
+        : "loading...";
     }, [market]);
     
-  const { lmbda, pressure, impactFee, pbnj } = useMarketImpactFee(
+  const { impactFee } = useMarketImpactFee(
     market ? market.id : undefined,
     isLong,
-    isLong !== undefined
-    ? isLong
-    ? market?.oiLong
-    : market?.oiShort
-    : undefined,
+    isLong !== undefined ? isLong ? market?.oiLong : market?.oiShort : undefined,
     market?.oiCap
-    );
+  );
     
-    const {
-      preAdjustedOi,
-      calculatedBuildFee,
-      calculatedImpactFee,
-      adjustedCollateral,
-      adjustedOi,
-      adjustedDebt
-    } = useEstimatedBuild(
-      selectedLeverage,
-      Number(typedValue),
-      buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
-      impactFee
-      );
+  const {
+    preAdjustedOi,
+    calculatedBuildFee,
+    calculatedImpactFee,
+    adjustedCollateral,
+    adjustedOi,
+    adjustedDebt
+  } = useEstimatedBuild(
+    selectedLeverage,
+    Number(typedValue),
+    buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
+    impactFee
+  );
         
-    const estimatedLiquidationPrice = useLiquidationPrice(
-      market?.id,
-      isLong,
-      formatWeiToParsedNumber(market?.currentPrice.bid, 18, 5),
-      formatWeiToParsedNumber(market?.currentPrice.ask, 18, 5),
-      adjustedDebt,
-      adjustedOi,
-      adjustedOi
-      );
+  const estimatedLiquidationPrice = useLiquidationPrice(
+    market?.id,
+    isLong,
+    formatWeiToParsedNumber(market?.currentPrice.bid, 18, 5),
+    formatWeiToParsedNumber(market?.currentPrice.ask, 18, 5),
+    adjustedDebt,
+    adjustedOi,
+    adjustedOi
+  );
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
-      <Column
-        padding={"0 16px"}
-        as={"form"}
+      <ControlInterfaceContainer
         onSubmit={(e: any) => e.preventDefault()}
+        as={"form"}
         >
-        <Row margin={"0 0 32px 0"}>
-          <Column>
-            <TEXT.MediumHeader
-              fontWeight={700}
-              color={"white"}
-              margin={"14px 0 0 0"}
-            >
-              {market ? shortenAddress(market?.id) : "loading..."}
-            </TEXT.MediumHeader>
-
-            <TEXT.MediumHeader fontWeight={400} color={"white"}>
-              {isLong === undefined && averagePrice}
-
-              {isLong !== undefined && market
-                ? isLong
-                  ? Number(
-                      utils.formatUnits(market?.currentPrice.bid, 18)
-                    ).toFixed(7)
-                  : Number(
-                      utils.formatUnits(market?.currentPrice.ask, 18)
-                    ).toFixed(7)
-                : null}
-            </TEXT.MediumHeader>
-          </Column>
+        <ControlInterfaceHeadContainer>
+          <TEXT.BoldHeader1>
+            {market ? shortenAddress(market?.id) : "loading..."}
+          </TEXT.BoldHeader1>
+          <TEXT.StandardHeader1>
+            {isLong === undefined && averagePrice}
+            {isLong !== undefined && market
+              ? isLong
+                ? formatWeiToParsedNumber(market?.currentPrice.bid, 18, 7)
+                : formatWeiToParsedNumber(market?.currentPrice.ask, 18, 7)
+              : null}
+          </TEXT.StandardHeader1>
           <Icon
+            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
             size={24}
+            top={"18px"}
+            right={"0px"}
+            clickable={true}
+            position={"absolute"}
             margin={"0 0 auto auto"}
             transform={"rotate(90deg)"}
-            clickable={true}
-            top={"22px"}
-            right={"12px"}
-            position={"absolute"}
-            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
-          >
-            {isTxnSettingsOpen ? (
-              <X color={"#12B4FF"} />
-            ) : (
-              <Sliders color={"#B9BABD"} />
-            )}
+            >
+            {isTxnSettingsOpen ? <X color={"#12B4FF"} /> : <Sliders color={"#B9BABD"} />}
           </Icon>
-        </Row>
-
-        <TransactionSettingModal isOpen={isTxnSettingsOpen}>
-          <Column>
-            <TEXT.Body
-              fontWeight={700}
-              textAlign={"left"}
-              margin={"24px auto 16px 16px"}
-            >
-              Transaction Settings
-            </TEXT.Body>
-
-            <Row padding={"8px 16px"}>
-              <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
-
-              <InfoTip tipFor={"Slippage Tolerance"}>
-                <div>meow meow meow</div>
-              </InfoTip>
-            </Row>
-
-            <Row padding={"0px 16px 16px"}>
-              <InputContainer width={"210px"} height={"40px"}>
-                <NumericalInput
-                  value={setSlippageValue}
-                  onUserInput={onSetSlippage}
-                  align={"right"}
-                />
-                <InputDescriptor>%</InputDescriptor>
-              </InputContainer>
-              <TxnSettingsButton
-                active={isAuto}
-                onClick={handleResetTxnSettings}
-                width={"96px"}
-                margin={"0 0 0 auto"}
-                padding={"0px"}
-              >
-                Auto
-              </TxnSettingsButton>
-            </Row>
-
-            <Row padding={"8px 16px"}>
-              <TEXT.Menu>Transaction Deadline</TEXT.Menu>
-              <InfoTip tipFor={"Transaction Deadline"}>
-                <div>meow meow woof</div>
-              </InfoTip>
-            </Row>
-
-            <Row padding={"0px 16px 16px"}>
-              <InputContainer width={"210px"} height={"40px"}>
-                <NumericalInput
-                  value={txnDeadline}
-                  onUserInput={onSetTxnDeadline}
-                  align={"right"}
-                />
-                <InputDescriptor>minutes</InputDescriptor>
-              </InputContainer>
-            </Row>
-
-            <Row
-              margin={"auto 0 0 0"}
-              padding={"16px"}
-              borderTop={"1px solid white"}
-            >
-              <TxnSettingsButton
-                onClick={handleResetTxnSettings}
-                border={"none"}
-                width={"96px"}
-                margin={"0 auto 0 0"}
-                padding={"0px"}
-              >
-                Reset
-              </TxnSettingsButton>
-              <TxnSettingsButton
-                onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
-                width={"96px"}
-                padding={"0px"}
-              >
-                Save
-              </TxnSettingsButton>
-            </Row>
-          </Column>
-        </TransactionSettingModal>
-
-        <Column>
-          <LongPositionButton
-            onClick={() => handleSelectPositionSide(true)}
-            active={isLong}
+        </ControlInterfaceHeadContainer>
+        <TransactionSettingsModal 
+          isTxnSettingsOpen={isTxnSettingsOpen}
+          setSlippageValue={setSlippageValue}
+          isTxnSettingsAuto={isTxnSettingsAuto}
+          txnDeadline={txnDeadline}
+          onSetSlippage={onSetSlippage}
+          handleResetTxnSettings={handleResetTxnSettings}
+          onSetTxnDeadline={onSetTxnDeadline}
+        />
+        <SelectLongPositionButton
+          onClick={() => handleSelectPositionSide(true)}
+          active={isLong}
           >
-            Long
-          </LongPositionButton>
-
-          <ShortPositionButton
-            onClick={() => handleSelectPositionSide(false)}
-            active={!isLong && isLong !== undefined}
+          Long
+        </SelectLongPositionButton>
+        <SelectShortPositionButton
+          onClick={() => handleSelectPositionSide(false)}
+          active={!isLong && isLong !== undefined}
           >
-            Short
-          </ShortPositionButton>
-        </Column>
-
+          Short
+        </SelectShortPositionButton>
         <LeverageSlider
-          name={"leverage"}
-          value={selectedLeverage}
-          step={1}
+          name={"Build Position Leverage"}
           min={1}
           max={5}
-          onChange={handleLeverageInput}
+          step={1}
           margin={"24px 0 0 0"}
+          value={selectedLeverage}
+          onChange={handleLeverageInput}
         />
-
-        <Label htmlFor="Amount" mt={"24px"}>
-          <TEXT.Body margin={"0 auto 4px 0"} color={"white"}>
-            Amount
-          </TEXT.Body>
-          <Row ml={"auto"} mb={"4px"} width={"auto"}>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() =>
-                handleQuickInput(
-                  25,
-                  userOvlBalance
-                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
-                    : null
-                )
-              }
-            >
+        <NumericalInputLabel htmlFor="Build Amount Input">
+          <NumericalInputTitle> Amount </NumericalInputTitle>
+          <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, parsedUserOvlBalance ?? null)}>
               25%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() =>
-                handleQuickInput(
-                  50,
-                  userOvlBalance
-                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
-                    : null
-                )
-              }
-            >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, parsedUserOvlBalance ?? null)}>
               50%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() =>
-                handleQuickInput(
-                  75,
-                  userOvlBalance
-                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
-                    : null
-                )
-              }
-            >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, parsedUserOvlBalance ?? null)}>
               75%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() =>
-                handleQuickInput(
-                  100,
-                  userOvlBalance
-                    ? Number(utils.formatUnits(userOvlBalance, 18)).toFixed(2)
-                    : null
-                )
-              }
-            >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(100, parsedUserOvlBalance ?? null)}>
               Max
             </TransparentUnderlineButton>
-          </Row>
-        </Label>
-        <InputContainer>
-          <InputDescriptor>OVL</InputDescriptor>
+          </FlexRowContainer>
+        </NumericalInputLabel>
+        <NumericalInputContainer>
+          <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
           <NumericalInput
-            // value={55}
-            value={typedValue?.toString()}
-            onUserInput={handleUserInput}
             align={"right"}
+            onUserInput={handleUserInput}
+            value={typedValue?.toString()}
           />
-        </InputContainer>
+        </NumericalInputContainer>
+
         {showApprovalFlow ? (
-          <ApproveButton onClick={handleApprove}>Approve</ApproveButton>
+          <TriggerApproveButton 
+            onClick={handleApprove}
+            >
+            Approve
+          </TriggerApproveButton>
         ) : (
-          <BuildButton
+          <TriggerBuildButton
             onClick={() => {
               setBuildState({
                 showConfirm: true,
@@ -719,56 +379,37 @@ export const BuildInterface = ({
                 txHash: undefined,
               });
             }}
-          >
+            isDisabled={disableBuildButton}
+            disabled={disableBuildButton}
+            >
             Build
-          </BuildButton>
+          </TriggerBuildButton>
         )}
-      </Column>
-
+        
+      </ControlInterfaceContainer>
       <AdditionalDetails
-        fee={
-          buildFee
-            ? formatDecimalToPercentage(
-                formatWeiToParsedNumber(buildFee, 18, 5)
-              )
-            : "loading"
-        }
-        slippage={setSlippageValue}
-        estLiquidationPrice={estimatedLiquidationPrice}
-        bid={
-          market
-            ? formatWeiToParsedString(market.currentPrice.bid, 10)
-            : "loading"
-        }
-        ask={
-          market
-            ? formatWeiToParsedString(market.currentPrice.ask, 10)
-            : "loading"
-        }
-        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : " - "}
+        bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "..."}
+        askPrice={market ? formatWeiToParsedString(market.currentPrice.ask, 10) : "..."}
+        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "..."}
+        oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
-        oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
-        fundingRate={"-0.0026"}
+        slippage={setSlippageValue}
+        fundingRate={fundingRate}
+        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : "..."}
+        estLiquidationPrice={estimatedLiquidationPrice ? estimatedLiquidationPrice : '...'}
       />
-
       <ConfirmTxnModal
         isOpen={showConfirm}
+        isLong={isLong}
+        buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        marketPrice={
-          market
-            ? isLong
-              ? formatWeiToParsedString(market.currentPrice.bid, 10)
-              : formatWeiToParsedString(market.currentPrice.ask, 10)
-            : "n/a"
-        }
-        isLong={isLong}
+        adjustedOi={adjustedOi}
+        marketPrice={market ? isLong ? formatWeiToParsedString(market.currentPrice.bid, 10) : formatWeiToParsedString(market.currentPrice.ask, 10) : "n/a"}
+        setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
-        adjustedOi={adjustedOi}
-        setSlippageValue={setSlippageValue}
-        buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         estimatedLiquidationPrice={estimatedLiquidationPrice}
       />
       <TransactionPending

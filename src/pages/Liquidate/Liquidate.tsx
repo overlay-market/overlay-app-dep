@@ -1,13 +1,14 @@
-import { TableBody, TableContainer, TableHead, Paper } from '@material-ui/core';
-import { StyledContainer } from "../../components/Container/Container";
-import { StyledTable, StyledTableCell, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
-import { TransparentButton } from '../../components/Button/Button';
+import { useMemo } from 'react';
+import { TableContainer, TableHead, Paper } from '@material-ui/core';
 import { useAllPositions } from '../../state/positions/hooks';
-import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
 import { usePositionValue } from '../../hooks/usePositionValue';
+import { formatDecimalPlaces } from '../../utils/formatDecimal';
+import { TransparentButton } from '../../components/Button/Button';
+import { PageContainer } from "../../components/Container/Container";
+import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
 import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
-import { useMemo } from 'react';
+import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 
 // const mock = [
 //   {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
@@ -42,28 +43,28 @@ export const LiquidatablePosition = (positionData: any) => {
 
   const reward = parsedCurrentValue && parsedMaintenanceMarginRate && parsedCurrentValue * parsedMaintenanceMarginRate;
 
-  const maintenanceMargin = parsedMaintenanceMarginRate && parsedInitialOi && parsedMaintenanceMarginRate * parsedInitialOi;
-
   const liquidationPrice = parsedInitialOi && parsedMaintenanceMarginRate && parsedInitialOi * parsedMaintenanceMarginRate;
 
-  const liquidatable = parsedCurrentValue && liquidationPrice > parsedCurrentValue;
+  const liquidatable = parsedCurrentValue && currentPrice && liquidationPrice > parsedCurrentValue;
 
   console.log('parsedCurrentValue: ', parsedCurrentValue);
   console.log('liquidationPrice: ', liquidationPrice);
+  console.log('currentPrice: ', currentPrice);
+
 
   return (
       <>
         <StyledTableRow hover={false}>
           <StyledTableCellThin component="th" scope="row">
-              {maintenanceMargin}
+              {formatDecimalPlaces(5, liquidationPrice)}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
-              {parsedCurrentValue}
+              {formatDecimalPlaces(5, parsedCurrentValue)}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
-              {reward}
+              {formatDecimalPlaces(5, reward)}
           </StyledTableCellThin>
 
           <StyledTableCellThin align="left">
@@ -81,17 +82,10 @@ export const LiquidatablePosition = (positionData: any) => {
 };
 
 const Liquidate = () => {
-  const {
-    isLoading,
-    isError,
-    error,
-    isUninitialized,
-    allPositions
-  } = useAllPositions();
+  const { allPositions } = useAllPositions();
 
-  console.log('allPositions: ', allPositions);
   return (
-      <StyledContainer maxWidth={'420px'}>
+      <PageContainer maxWidth={'420px'}>
           <TableContainer component={Paper}>
               <StyledTable>
                   <TableHead>
@@ -117,34 +111,10 @@ const Liquidate = () => {
                             positionData={position}
                             />
                       ))}
-                      {/* {mock.map((position, key) => (
-                          <StyledTableRow key={key.toString()} hover={false}>
-                              <StyledTableCellThin component="th" scope="row">
-                                  {position.maintenance}
-                              </StyledTableCellThin>
-
-                              <StyledTableCellThin align="left">
-                                  {position.value}
-                              </StyledTableCellThin>
-
-                              <StyledTableCellThin align="left">
-                                  {position.reward}
-                              </StyledTableCellThin>
-
-                              <StyledTableCellThin align="left">
-                                  <TransparentButton 
-                                      color={'#12B4FF'}
-                                      border={'none'}
-                                      onClick={position.callback}>
-                                      Liquidate
-                                  </TransparentButton>
-                              </StyledTableCellThin>
-                          </StyledTableRow>
-                      ))} */}
                   </TableHead>
                 </StyledTable>
           </TableContainer>
-      </StyledContainer>
+      </PageContainer>
   )
 };
 

@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
-
 import { useBlockNumber } from '../../state/application/hooks';
 import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
-import { TEXT } from '../../theme/theme';
 import { ExplorerDataType, getExplorerLink } from '../../utils/getExplorerLink';
 
 const StyledPolling = styled.div`
@@ -18,7 +17,7 @@ const StyledPolling = styled.div`
   z-index: 420;
 `
 
-const StyledPollingNumber = styled(TEXT.Small)<{ breathe: boolean; hovering: boolean }>`
+const StyledPollingNumber = styled(TEXT.Supplemental)<{ breathe: boolean; hovering: boolean }>`
   transition: opacity 0.25s ease;
   opacity: ${({ breathe, hovering }) => (hovering ? 0.7 : breathe ? 1 : 0.5)};
   :hover {

@@ -1,9 +1,9 @@
-import { darken } from 'polished';
 import React, { HTMLProps } from 'react';
-import { ArrowLeft, ExternalLink as LinkIconFeather, Trash, X } from 'react-feather';
-import { Link } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import { Link } from 'react-router-dom';
+import { darken } from 'polished';
 import { anonymizeLink } from '../../utils/anonymizeLink';
+import { ArrowLeft, ExternalLink as LinkIconFeather, X } from 'react-feather';
 
 export const ButtonText = styled.button`
   outline: none;

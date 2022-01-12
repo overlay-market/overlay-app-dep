@@ -1,19 +1,18 @@
 import { useEffect } from 'react';
 import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
-import { TOKEN_LABELS } from '../../constants/tokens';
 import { BuildInterface } from './Build';
 import { usePositionActionHandlers } from '../../state/positions/hooks';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 350px;
-  margin: 0 0 32px;
-  padding: 16px;
-  position: static;
   z-index: 0;
   color: white;
+  padding: 16px;
+  margin: 0 0 32px;
+  max-width: 350px;
+  position: static;
 
   ${({ theme }) => theme.mediaWidth.minMedium`
     padding: 16px 0;
@@ -22,12 +21,7 @@ export const Container = styled.div`
   `};
 `;
 
-
-export function Market(
-  { match: {params: { marketId }}
-}: RouteComponentProps<{ marketId: string }>
-) {
-
+export function Market({ match: {params: { marketId }}}: RouteComponentProps<{ marketId: string }>) {
   const { onResetBuildState } = usePositionActionHandlers();
 
   useEffect(() => {
@@ -38,9 +32,9 @@ export function Market(
     <>
       <Container>
         <BuildInterface 
-            marketId={marketId}
-            marketPrice={'2241.25'}
-            />
+          marketId={marketId}
+          marketPrice={'2241.25'}
+        />
       </Container>
     </>
   )

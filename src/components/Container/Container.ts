@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import { Box } from 'rebass/styled-components';
 
-export const StyledContainer = styled.div<{ maxWidth?: string}>`
+export const PageContainer = styled.div<{ maxWidth?: string}>`
   max-width: ${({ maxWidth }) => ( maxWidth ? maxWidth : '900px')};
   margin: auto;
   margin-top: 48px;
@@ -10,3 +11,31 @@ export const StyledContainer = styled.div<{ maxWidth?: string}>`
     background: ${({ theme }) => (theme.bg1)} !important;
   }
 `;
+
+const FlexContainer = styled(Box)<{
+  width?: string
+  align?: string
+  justify?: string
+  padding?: string
+  border?: string
+  borderRadius?: string
+  borderTop?: string
+}>`
+  display: flex;
+  position: relative;
+  width: ${({ width }) => width ?? '100%'}; 
+  align-items: ${({ align }) => align ?? 'center'};
+  justify-content: ${({ justify }) => justify ?? 'flex-start'};
+  padding: ${({ padding }) => padding};
+  border: ${({ border }) => border};
+  border-radius: ${({ borderRadius }) => borderRadius};
+  border-top: ${({ borderTop }) => borderTop ?? borderTop };
+`;
+
+export const FlexColumnContainer = styled(FlexContainer)`
+  flex-direction: column;
+`
+
+export const FlexRowContainer = styled(FlexContainer)`
+  flex-direction: row;
+`
