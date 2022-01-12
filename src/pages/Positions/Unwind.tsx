@@ -12,7 +12,7 @@ import { formatDecimalPlaces } from "../../utils/formatDecimal";
 import { Accordion } from "../../components/Accordion/Accordion";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
 import { useAccountPositions } from "../../state/positions/hooks";
-import { InputContainer, InputDescriptor } from "../Markets/Build";
+import { NumericalInputContainer, NumericalInputDescriptor } from "../Markets/Build";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hooks";
@@ -160,14 +160,14 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       </FlexRowContainer>
 
       </Label>
-      <InputContainer>
-        <InputDescriptor>OVL</InputDescriptor>
+      <NumericalInputContainer>
+        <NumericalInputDescriptor>OVL</NumericalInputDescriptor>
         <NumericalInput
           value={typedValue}
           onUserInput={handleUserInput}
           align={"right"}
         />
-      </InputContainer>
+      </NumericalInputContainer>
       <UnwindButton 
         onClick={() => handleUnwind()}
         isDisabled={disableUnwindButton}

@@ -5,7 +5,7 @@ import { TEXT } from '../../theme/theme';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { TransactionSettingsButton } from '../../components/Button/Button';
-import { InputContainer, InputDescriptor } from './Build';
+import { NumericalInputContainer, NumericalInputDescriptor } from './Build';
 
 const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
@@ -40,13 +40,12 @@ export const TransactionSettingsModal = ({
   return (
     <TransactionSettingModal isOpen={isTxnSettingsOpen}>
     <FlexColumnContainer>
-      <TEXT.StandardBody
-        fontWeight={700}
+      <TEXT.BoldStandardBody
         textAlign={"left"}
         margin={"24px auto 16px 16px"}
         >
         Transaction Settings
-      </TEXT.StandardBody>
+      </TEXT.BoldStandardBody>
 
       <FlexRowContainer padding={"8px 16px"}>
         <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
@@ -54,14 +53,14 @@ export const TransactionSettingsModal = ({
       </FlexRowContainer>
 
       <FlexRowContainer padding={"0px 16px 16px"}>
-        <InputContainer width={"210px"} height={"40px"}>
+        <NumericalInputContainer width={"210px"} height={"40px"}>
           <NumericalInput
             value={setSlippageValue}
             onUserInput={onSetSlippage}
             align={"right"}
           />
-          <InputDescriptor> % </InputDescriptor>
-        </InputContainer>
+          <NumericalInputDescriptor> % </NumericalInputDescriptor>
+        </NumericalInputContainer>
         <TransactionSettingsButton
           active={isTxnSettingsAuto}
           onClick={handleResetTxnSettings}
@@ -78,14 +77,14 @@ export const TransactionSettingsModal = ({
       </FlexRowContainer>
 
       <FlexRowContainer padding={"0px 16px 16px"}>
-        <InputContainer width={"210px"} height={"40px"}>
+        <NumericalInputContainer width={"210px"} height={"40px"}>
           <NumericalInput
             value={txnDeadline}
             onUserInput={onSetTxnDeadline}
             align={"right"}
           />
-          <InputDescriptor>minutes</InputDescriptor>
-        </InputContainer>
+          <NumericalInputDescriptor> minutes </NumericalInputDescriptor>
+        </NumericalInputContainer>
       </FlexRowContainer>
 
       <FlexRowContainer

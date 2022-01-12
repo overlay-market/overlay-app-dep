@@ -21,6 +21,7 @@ import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/fo
 import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
 import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
 import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
+import { TransactionSettingsModal } from "./TransactionSettingsModal";
 import { formatDecimalToPercentage } from "../../utils/formatDecimal";
 import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
@@ -34,7 +35,6 @@ import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import TransactionPending from "../../components/Popup/TransactionPending";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
-import { TransactionSettingsModal } from "./TransactionSettingsModal";
 
 const SelectLongPositionButton = styled(SelectActionButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
@@ -73,29 +73,25 @@ const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
   padding: 16px 0 24px; 
 `;
 
-export const InputContainer = styled(FlexRowContainer)`
+export const NumericalInputContainer = styled(FlexRowContainer)`
   border: 1px solid ${({ theme }) => theme.white};
   border-radius: 4px;
   overflow: hidden;
 `;
 
-export const InputDescriptor = styled.div`
+export const NumericalInputDescriptor = styled.div`
   background: transparent;
   font-size: 16px;
   color: #f2f2f2;
   padding: 8px;
 `;
 
-const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
-  display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
-  position: absolute;
-  border: 1px solid #d0d0d2;
-  height: 100%;
-  width: 100%;
-  border-radius: 8px;
-  backdrop-filter: blur(33px);
-  z-index: 5;
-  color: #f2f2f2;
+const NumericalInputLabel = styled(Label)`
+  margin-top: 24px !important;
+`;
+
+const NumericalInputTitle = styled(TEXT.StandardBody)`
+  margin-bottom: 4px !important;
 `;
 
 export const BuildInterface = ({
@@ -311,7 +307,6 @@ export const BuildInterface = ({
             {isTxnSettingsOpen ? <X color={"#12B4FF"} /> : <Sliders color={"#B9BABD"} />}
           </Icon>
         </ControlInterfaceHeadContainer>
-        
         <TransactionSettingsModal 
           isTxnSettingsOpen={isTxnSettingsOpen}
           setSlippageValue={setSlippageValue}
@@ -321,23 +316,20 @@ export const BuildInterface = ({
           handleResetTxnSettings={handleResetTxnSettings}
           onSetTxnDeadline={onSetTxnDeadline}
         />
-
-        <FlexColumnContainer>
-          <SelectLongPositionButton
-            onClick={() => handleSelectPositionSide(true)}
-            active={isLong}
-            >
-            Long
-          </SelectLongPositionButton>
-          <SelectShortPositionButton
-            onClick={() => handleSelectPositionSide(false)}
-            active={!isLong && isLong !== undefined}
-            >
-            Short
-          </SelectShortPositionButton>
-        </FlexColumnContainer>
+        <SelectLongPositionButton
+          onClick={() => handleSelectPositionSide(true)}
+          active={isLong}
+          >
+          Long
+        </SelectLongPositionButton>
+        <SelectShortPositionButton
+          onClick={() => handleSelectPositionSide(false)}
+          active={!isLong && isLong !== undefined}
+          >
+          Short
+        </SelectShortPositionButton>
         <LeverageSlider
-          name={"leverage"}
+          name={"Build Position Leverage"}
           min={1}
           max={5}
           step={1}
@@ -345,47 +337,31 @@ export const BuildInterface = ({
           value={selectedLeverage}
           onChange={handleLeverageInput}
         />
-        <Label htmlFor="Amount" mt={"24px"}>
-          <TEXT.StandardBody margin={"0 auto 4px 0"} color={"white"}>
-            Amount
-          </TEXT.StandardBody>
+        <NumericalInputLabel htmlFor="Build Amount Input">
+          <NumericalInputTitle> Amount </NumericalInputTitle>
           <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() => handleQuickInput(25, parsedUserOvlBalance ?? null)}
-              >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, parsedUserOvlBalance ?? null)}>
               25%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() => handleQuickInput(50, parsedUserOvlBalance ?? null)}
-              >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, parsedUserOvlBalance ?? null)}>
               50%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() => handleQuickInput(75, parsedUserOvlBalance ?? null)}
-              >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, parsedUserOvlBalance ?? null)}>
               75%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              border={"none"}
-              onClick={() => handleQuickInput(100, parsedUserOvlBalance ?? null)}
-              >
+            <TransparentUnderlineButton onClick={() => handleQuickInput(100, parsedUserOvlBalance ?? null)}>
               Max
             </TransparentUnderlineButton>
           </FlexRowContainer>
-        </Label>
-        <InputContainer>
-          <InputDescriptor>
-            OVL
-          </InputDescriptor>
+        </NumericalInputLabel>
+        <NumericalInputContainer>
+          <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
           <NumericalInput
             align={"right"}
             onUserInput={handleUserInput}
             value={typedValue?.toString()}
           />
-        </InputContainer>
+        </NumericalInputContainer>
         {showApprovalFlow ? (
           <TriggerApproveButton 
             onClick={handleApprove}
@@ -409,7 +385,6 @@ export const BuildInterface = ({
           </TriggerBuildButton>
         )}
       </ControlInterfaceContainer>
-
       <AdditionalDetails
         bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "..."}
         askPrice={market ? formatWeiToParsedString(market.currentPrice.ask, 10) : "..."}

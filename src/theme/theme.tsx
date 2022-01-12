@@ -90,7 +90,7 @@ export const TEXT = {
     return <TextWrapper fontSize={20} fontWeight={700} color={'white1'} {...props} />
   },
   StandardBody(props: TextProps) {
-    return <TextWrapper fontSize={16} fontWeight={400} {...props} />
+    return <TextWrapper fontSize={16} fontWeight={400} color={'white1'} {...props} />
   },
   BoldStandardBody(props: TextProps) {
     return <TextWrapper fontSize={16} fontWeight={700} {...props} />

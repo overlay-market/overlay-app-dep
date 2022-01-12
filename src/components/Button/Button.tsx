@@ -61,6 +61,7 @@ export const TransparentButton = styled(BaseTemplateButton)<{ width?: string, un
 
 export const TransparentUnderlineButton = styled(TransparentButton)`
   text-decoration: underline;
+  border: none;
 `;
 
 export const MenuButton = styled(BaseTemplateButton)`
