@@ -72,6 +72,7 @@ export const Accordion = ({
         )}
         <Icon 
           size={16} 
+          clickable={true}
           margin={'auto 0 auto auto'} 
           color={isOpen ? activeColor : inactiveColor}
           transform={isOpen ? 'rotate(180deg)' : ''}

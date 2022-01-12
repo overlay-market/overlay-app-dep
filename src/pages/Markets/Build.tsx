@@ -362,6 +362,7 @@ export const BuildInterface = ({
             value={typedValue?.toString()}
           />
         </NumericalInputContainer>
+
         {showApprovalFlow ? (
           <TriggerApproveButton 
             onClick={handleApprove}
@@ -384,6 +385,7 @@ export const BuildInterface = ({
             Build
           </TriggerBuildButton>
         )}
+        
       </ControlInterfaceContainer>
       <AdditionalDetails
         bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "..."}
