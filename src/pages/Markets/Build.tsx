@@ -102,16 +102,16 @@ export const BuildInterface = ({
   marketPrice: string | number;
 }) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
-  const [{ showConfirm, attemptingTxn, txnErrorMessage, txHash }, setBuildState] = useState<{
+  const [{ showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash }, setBuildState] = useState<{
     showConfirm: boolean;
-    attemptingTxn: boolean;
-    txnErrorMessage: string | undefined;
-    txHash: string | undefined;
+    attemptingTransaction: boolean;
+    transactionErrorMessage: string | undefined;
+    transactionHash: string | undefined;
   }>({
     showConfirm: false,
-    attemptingTxn: false,
-    txnErrorMessage: undefined,
-    txHash: undefined,
+    attemptingTransaction: false,
+    transactionErrorMessage: undefined,
+    transactionHash: undefined,
   });
 
   const { markets } = useAllMarkets();
@@ -178,11 +178,11 @@ export const BuildInterface = ({
   const handleDismiss = useCallback(() => {
     setBuildState({
       showConfirm: false, 
-      attemptingTxn, 
-      txnErrorMessage, 
-      txHash
+      attemptingTransaction, 
+      transactionErrorMessage, 
+      transactionHash
     });
-  }, [attemptingTxn, txnErrorMessage, txHash]);
+  }, [attemptingTransaction, transactionErrorMessage, transactionHash]);
   
   const disableBuildButton: boolean = useMemo(() => {
     return !typedValue || isLong === undefined ? true : false;
@@ -194,26 +194,26 @@ export const BuildInterface = ({
     if (!buildCallback) return;
     setBuildState({
       showConfirm: false,
-      attemptingTxn: true,
-      txnErrorMessage: undefined,
-      txHash: undefined,
+      attemptingTransaction: true,
+      transactionErrorMessage: undefined,
+      transactionHash: undefined,
     });
     buildCallback()
       .then((hash) => {
         setBuildState({
           showConfirm: false,
-          attemptingTxn: false,
-          txnErrorMessage: undefined,
-          txHash: hash,
+          attemptingTransaction: false,
+          transactionErrorMessage: undefined,
+          transactionHash: hash,
         });
         onResetBuildState();
       })
       .catch((error) => {
         setBuildState({
           showConfirm: false,
-          attemptingTxn: false,
-          txnErrorMessage: error,
-          txHash: undefined,
+          attemptingTransaction: false,
+          transactionErrorMessage: error,
+          transactionHash: undefined,
         });
       });
   }, [buildCallback, onResetBuildState, isLong, typedValue]);
@@ -374,9 +374,9 @@ export const BuildInterface = ({
             onClick={() => {
               setBuildState({
                 showConfirm: true,
-                attemptingTxn: false,
-                txnErrorMessage: undefined,
-                txHash: undefined,
+                attemptingTransaction: false,
+                transactionErrorMessage: undefined,
+                transactionHash: undefined,
               });
             }}
             isDisabled={disableBuildButton}
@@ -401,6 +401,7 @@ export const BuildInterface = ({
       />
       <ConfirmTxnModal
         isOpen={showConfirm}
+        attemptingTransaction={attemptingTransaction}
         isLong={isLong}
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
@@ -413,7 +414,7 @@ export const BuildInterface = ({
         estimatedLiquidationPrice={estimatedLiquidationPrice}
       />
       <TransactionPending
-        attemptingTxn={attemptingTxn}
+        attemptingTransaction={attemptingTransaction}
         severity={PopupType.WARNING}
       />
     </MarketCard>

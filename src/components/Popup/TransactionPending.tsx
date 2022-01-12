@@ -2,18 +2,18 @@ import { useSnackbar } from "notistack";
 import { PopupType } from "../SnackbarAlert/SnackbarAlert";
 
 export default function TransactionPending({
-  attemptingTxn,
+  attemptingTransaction,
   severity,
 }: {
-  attemptingTxn: boolean;
+  attemptingTransaction: boolean;
   severity: PopupType;
 }) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   let key: any = undefined;
 
-  const triggerPopup = ({ attemptingTxn }: { attemptingTxn: boolean }) => {
-    if (attemptingTxn) {
+  const triggerPopup = ({ attemptingTransaction }: { attemptingTransaction: boolean }) => {
+    if (attemptingTransaction) {
       key = enqueueSnackbar(`{"message": "Attempting Txn", "variant": "${severity}"}`, {
         variant: severity,
         preventDuplicate: true,
@@ -23,11 +23,11 @@ export default function TransactionPending({
 
   let TxnPendingAlert;
 
-  if (attemptingTxn) {
-    TxnPendingAlert = triggerPopup({ attemptingTxn });
+  if (attemptingTransaction) {
+    TxnPendingAlert = triggerPopup({ attemptingTransaction });
   }
 
-  if (!attemptingTxn && key !== undefined) {
+  if (!attemptingTransaction && key !== undefined) {
     closeSnackbar(key);
   }
 

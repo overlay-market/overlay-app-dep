@@ -8,6 +8,7 @@ import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/Con
 
 export default function ConfirmTxnModal({
   isOpen,
+  attemptingTransaction,
   isLong,
   buildFee,
   onConfirm,
@@ -20,6 +21,7 @@ export default function ConfirmTxnModal({
   estimatedLiquidationPrice,
 }: {
   isOpen: boolean;
+  attemptingTransaction: boolean;
   isLong: boolean | undefined;
   buildFee: number | undefined | null;
   onConfirm?: () => void;
