@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import { X as XIcon } from "react-feather";
 import { Icon } from "../Icon/Icon";
+import { animated, useSpring } from "react-spring";
 import TransactionPopup from "./TransactionPopup";
 import { FlexRowContainer } from "../Container/Container";
 import { PopupType } from "../SnackbarAlert/SnackbarAlert";
@@ -18,42 +19,21 @@ const PopupContainer = styled.div`
   z-index: 69420;
   border-radius: 8px;
   background: #3A3D48;
-`;
-
-const AnimatedTimerContainer = styled.div`
-  height: 5px;
-  position: relative;
-  background: transparent;
   overflow: hidden;
 `;
 
-const TimerBackground = styled.span`
-  display: block;
-  height: 100%;
+const Fader = styled.div`
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 2px;
+  background-color: #12B4FF;
 `;
 
-const faderAnimation = keyframes`
-  0% { width: 100%}
-  100% { width: 0% }
-`;
+const AnimatedFader = animated(Fader);
 
-const TimerProgress = styled.span<{ duration: number}>`
-  background-color: #e4c465;
-  animation-duration: 3ms;
-  animation-name: ${faderAnimation};
-  animation-timing-function: linear;
-  animation-fill-mode: forwards; 
-
-`;
-
-const AnimatedFader = ({ duration }:{duration: number}) => (
-  <AnimatedTimerContainer>
-    <TimerBackground>
-      <TimerProgress duration={duration} />
-    </TimerBackground>
-  </AnimatedTimerContainer>
-)
-
+  // background-color: ${({ theme }) => theme.bg3};
 export default function Popup({
   removeAfterMs,
   content,
@@ -91,6 +71,12 @@ export default function Popup({
     popupContent = <TransactionPopup hash={hash} success={success} summary={summary} />
   }
 
+  const faderStyle = useSpring({
+    from: { width: '100%' },
+    to: { width: '0%' },
+    config: { duration: removeAfterMs ?? undefined },
+  })
+
   return (
     <PopupContainer>
       <FlexRowContainer>
@@ -102,7 +88,7 @@ export default function Popup({
           <XIcon width={24} height={24} onClick={removeThisPopup} />
         </Icon>
       </FlexRowContainer>
-      {removeAfterMs !== null ? <AnimatedFader duration={removeAfterMs} /> : null}
+      {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}
     </PopupContainer>
   )
 }
