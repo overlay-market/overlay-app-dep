@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { X as XIcon } from "react-feather";
 import { Icon } from "../Icon/Icon";
 import TransactionPopup from "./TransactionPopup";
@@ -10,7 +10,7 @@ import { useRemovePopup } from "../../state/application/hooks";
 
 const PopupContainer = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: fixed;
   right: 16px;
   bottom: 40px;
@@ -20,27 +20,38 @@ const PopupContainer = styled.div`
   background: #3A3D48;
 `;
 
-const AnimatedFader = ({ duration }:{duration: number}) => (
-  <div className="h-[3px] bg-dark-800 w-full">
-    <style>{`
-      .animation {
-        animation-duration: ${duration}ms;
-        animation-name: fader;
-        animation-timing-function: linear;
-        animation-fill-mode: forwards;
-      }
-      @keyframes fader {
-        from {
-          width: 100%;
-        }
+const AnimatedTimerContainer = styled.div`
+  height: 5px;
+  position: relative;
+  background: transparent;
+  overflow: hidden;
+`;
 
-        to {
-          width: 0%;
-        }
-      }
-    `}</style>
-    <div className="animation h-[3px] bg-gradient-to-r from-blue to-pink" />
-  </div>
+const TimerBackground = styled.span`
+  display: block;
+  height: 100%;
+`;
+
+const faderAnimation = keyframes`
+  0% { width: 100%}
+  100% { width: 0% }
+`;
+
+const TimerProgress = styled.span<{ duration: number}>`
+  background-color: #e4c465;
+  animation-duration: 3ms;
+  animation-name: ${faderAnimation};
+  animation-timing-function: linear;
+  animation-fill-mode: forwards; 
+
+`;
+
+const AnimatedFader = ({ duration }:{duration: number}) => (
+  <AnimatedTimerContainer>
+    <TimerBackground>
+      <TimerProgress duration={duration} />
+    </TimerBackground>
+  </AnimatedTimerContainer>
 )
 
 export default function Popup({
