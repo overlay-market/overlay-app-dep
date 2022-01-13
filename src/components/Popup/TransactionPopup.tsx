@@ -5,6 +5,7 @@ import { Icon } from '../Icon/Icon';
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
 // import { getExplorerLink } from '../../functions/explorer'
+import { TransactionType } from '../../state/transactions/actions';
 import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
 import { FlexRowContainer, FlexColumnContainer } from '../Container/Container';
 
@@ -34,7 +35,7 @@ export default function TransactionPopup({
   hash: string
   success?: boolean
   summary?: string
-  info?: object
+  info?: any
 }) {
   const { chainId } = useActiveWeb3React()
 
@@ -49,7 +50,9 @@ export default function TransactionPopup({
       </Icon>
       <PopupTextContainer>
         <TEXT.BoldSmallBody>
-          {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)}
+          { info?.type === TransactionType.APPROVAL && 'Spending Limit Approved' }
+          { info?.type === TransactionType.BUILD_OVL_POSITION && 'Position Successfully Built'}
+          {/* {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)} */}
         </TEXT.BoldSmallBody>
         {chainId && hash && (
           <ExternalLink
