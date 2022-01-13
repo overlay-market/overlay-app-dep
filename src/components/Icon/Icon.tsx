@@ -48,8 +48,6 @@ export const Icon = ({
   color?: string
   transform?: string
   clickable?: boolean
-  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
-  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => any
   onClick?: (event: any) => any
   top?: string
   right?: string

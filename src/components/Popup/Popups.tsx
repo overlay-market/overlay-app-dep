@@ -5,6 +5,8 @@ import Popup from "./Popup";
 const Popups = () => {
   const activePopups = useActivePopups();
 
+  if (activePopups.length === 0) return <span />;
+  
   return (
     <>
       {activePopups.map((popup) => (
