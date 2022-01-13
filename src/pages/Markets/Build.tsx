@@ -33,7 +33,6 @@ import { useBuildFee } from "../../hooks/useBuildFee";
 import { AdditionalDetails } from "./AdditionalBuildDetails";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
-import TransactionPending from "../../components/Popup/TransactionPending";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
 const SelectLongPositionButton = styled(SelectActionButton)`
@@ -420,10 +419,6 @@ export const BuildInterface = ({
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
         estimatedLiquidationPrice={estimatedLiquidationPrice}
-      />
-      <TransactionPending
-        attemptingTransaction={attemptingTransaction}
-        severity={PopupType.WARNING}
       />
     </MarketCard>
   );
