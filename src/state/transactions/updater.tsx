@@ -106,6 +106,7 @@ export default function Updater(): null {
                     txn: {
                       hash,
                       success: receipt.status === 1,
+                      info: transactionInfo
                     },
                   },
                   hash
@@ -118,6 +119,7 @@ export default function Updater(): null {
                     txn: {
                       hash,
                       success: receipt.status === 1,
+                      info: transactionInfo
                     },
                   },
                   hash

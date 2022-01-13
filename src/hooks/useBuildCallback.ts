@@ -208,7 +208,6 @@ export function useBuildCallback(
                 isLong: buildData.isLong,
                 leverage: buildData.selectedLeverage
               },
-              false,
               null
             );
 

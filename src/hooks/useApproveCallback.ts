@@ -74,7 +74,6 @@ export function useApproveCallback(
         addTransaction(
           response,
           { type: TransactionType.APPROVAL, tokenAddress: currencyToken.address, spender },
-          true,
           null,
         )
       })

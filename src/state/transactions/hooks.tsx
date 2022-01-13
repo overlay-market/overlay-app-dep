@@ -9,7 +9,6 @@ import { addTransaction, TransactionInfo, TransactionType } from './actions';
 export function useTransactionAdder(): (
   response: TransactionResponse,
   info: TransactionInfo,
-  approval: boolean,
   error?: any
 ) => void {
   const { chainId, account } = useActiveWeb3React();
@@ -19,24 +18,18 @@ export function useTransactionAdder(): (
     (
       response: TransactionResponse,
       info: TransactionInfo,
-      approval: boolean,
       error?: any
     ) => {
       if (!account) return;
       if (!chainId) return;
 
       const { hash } = response;
-      const { type } = info;
 
       console.log('response: ', response);
       console.log('error: ', error);
       console.log('info: ', info);
 
-      if (info && type === TransactionType.APPROVAL) {
-        
-      }
       if (error) {
-        console.log('hi here');
         dispatch(addTransaction({ hash, from: account, info, chainId, error: error.message }))
       }
       if (!hash) {
