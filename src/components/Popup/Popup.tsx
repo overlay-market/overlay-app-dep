@@ -66,9 +66,9 @@ export default function Popup({
 
   if ('txn' in content) {
     const {
-      txn: { hash, success, summary },
+      txn: { hash, success, summary, info },
     } = content
-    popupContent = <TransactionPopup hash={hash} success={success} summary={summary} />
+    popupContent = <TransactionPopup hash={hash} success={success} summary={summary} info={info} />
   }
 
   const faderStyle = useSpring({
