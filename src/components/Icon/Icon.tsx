@@ -15,7 +15,7 @@ const IconWrapper = styled.div<{
   display: flex;
   height: ${({ size }) => ( size )}px;
   width: ${({ size }) => ( size )}px;
-  margin: ${({ margin }) => ( margin ? margin : 0 )};
+  margin: ${({ margin }) => ( margin ?? margin )};
   color: ${({ color }) => ( color ? color : '#fff' )};
   transform: ${({ transform }) => ( transform ? transform : 'rotate(0deg)' )};
   transition: transform 0.2s ease-out;

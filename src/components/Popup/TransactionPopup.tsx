@@ -1,20 +1,28 @@
 import { AlertCircle, CheckCircle } from 'react-feather';
 import styled from 'styled-components';
-import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
-// import { getExplorerLink } from '../../functions/explorer'
-import { useActiveWeb3React } from '../../hooks/web3';
 import { ExternalLink as ExternalLinkIcon } from 'react-feather';
-import { FlexRowContainer, FlexColumnContainer } from '../Container/Container';
-import { TEXT } from '../../theme/theme';
 import { Icon } from '../Icon/Icon';
+import { TEXT } from '../../theme/theme';
+import { useActiveWeb3React } from '../../hooks/web3';
+// import { getExplorerLink } from '../../functions/explorer'
+import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
+import { FlexRowContainer, FlexColumnContainer } from '../Container/Container';
 
 const PopupContentsContainer = styled(FlexRowContainer)`
   z-index: 420;
 `;
 
+const ExternalLinkContentsContainer = styled(FlexRowContainer)`
+  margin-top: 4px;
+`
+
 const PopupTextContainer = styled(FlexColumnContainer)`
   align-items: start;
   margin: 0 16px 0 12px;
+`;
+
+const IconContainer = styled(Icon)`
+  margin: 1px 3px 0;
 `;
 
 export default function TransactionPopup({
@@ -46,14 +54,14 @@ export default function TransactionPopup({
             // href={getExplorerLink(chainId, hash, 'transaction')}
             href={"yes"}
            >
-            <FlexRowContainer mt={'4px'}>
+            <ExternalLinkContentsContainer>
               <TEXT.SmallBody>
                 View on explorer 
               </TEXT.SmallBody>
-              <Icon margin={"1px 3px 0"}>
+              <IconContainer margin={"1px 3px 0"}>
                 <ExternalLinkIcon width={13} height={13} />
-              </Icon>
-            </FlexRowContainer>
+              </IconContainer>
+            </ExternalLinkContentsContainer>
           </ExternalLink>
         )}
       </PopupTextContainer>
