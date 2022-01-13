@@ -37,14 +37,12 @@ export default function Popup({
   removeAfterMs,
   content,
   popKey,
-  severity,
   title,
   children,
 }:{
   removeAfterMs: number | null;
   content: PopupContent;
   popKey: string;
-  severity: PopupType;
   title?: string;
   children?: React.ReactNode;
 }) {
@@ -65,7 +63,7 @@ export default function Popup({
   let popupContent;
 
   console.log('content: ', content);
-  
+
   if ('txn' in content) {
     const {
       txn: { hash, success, summary },

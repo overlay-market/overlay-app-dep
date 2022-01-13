@@ -15,7 +15,6 @@ const Popups = () => {
           content={popup.content} 
           popKey={popup.key} 
           removeAfterMs={popup.removeAfterMs}
-          severity={PopupType.SUCCESS}
         />
       ))}
     </>
