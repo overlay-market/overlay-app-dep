@@ -17,7 +17,7 @@ const BaseTemplateButton = styled(RebassButton)<
   width: ${({ width }) => (width ? width : '100%')};
   color: ${({ color }) => ( color ? color : '#f2f2f2' )};
   padding: ${({ padding }) => (padding ? padding : '16px')};
-  border: ${({ border }) => ( border ? border : '1px solid #f2f2f2' )};
+  border: ${({ border }) => ( border ?? border )};
   cursor: pointer;
   font-weight: 700;
   text-align: center;
@@ -30,7 +30,7 @@ const BaseTemplateButton = styled(RebassButton)<
 `
 
 export const SelectActionButton = styled(BaseTemplateButton)`
-  border: ${({ active }) => ( active ? 'none' : '' )};
+  border: ${({ active }) => ( active ? 'none !important' : '' )};
   color: ${({ isDisabled }) => ( isDisabled ? '#63656D !important' : '')};
   background: ${({ isDisabled }) => ( isDisabled ? '#D0D0D2 !important' : '')};
   height: 48px;

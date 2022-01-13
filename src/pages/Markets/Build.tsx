@@ -35,16 +35,18 @@ import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
-const SelectLongPositionButton = styled(SelectActionButton)`
+const SelectPositionSideButton = styled(SelectActionButton)`
+  border: 1px solid #f2f2f2;
+  margin: 4px 0;
+`
+const SelectLongPositionButton = styled(SelectPositionSideButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
   background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
-  margin: 4px 0;
 `;
 
-const SelectShortPositionButton = styled(SelectActionButton)`
+const SelectShortPositionButton = styled(SelectPositionSideButton)`
   color: ${({ active }) => (active ? '#0B0F1C' : '#FF648A')};
   background: ${({ active }) => (active ? '#FF648A' : 'transparent')};
-  margin: 4px 0;
 `;
 
 const TriggerBuildButton = styled(TriggerActionButton)`
