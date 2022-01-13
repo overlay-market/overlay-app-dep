@@ -187,11 +187,16 @@ export function useUnwindCallback(
           })
           .then((response: TransactionResponse) => {
 
-            addTransaction(response, {
-              type: TransactionType.UNWIND_OVL_POSITION,
-              positionId: positionId.toString(),
-              shares: unwindAmount
-            });
+            addTransaction(
+              response, 
+              {
+                type: TransactionType.UNWIND_OVL_POSITION,
+                positionId: positionId.toString(),
+                shares: unwindAmount
+              },
+              false,
+              null
+            );
 
             return response.hash;
           })

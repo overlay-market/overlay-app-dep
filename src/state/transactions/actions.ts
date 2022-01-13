@@ -59,6 +59,7 @@ export const addTransaction = createAction<{
   hash: string;
   from: string;
   info: TransactionInfo;
+  error: string;
 }>("transactions/addTransaction");
 
 export const clearAllTransactions = createAction<{

@@ -174,7 +174,7 @@ export function useBuildCallback(
           );
           if (!firstNoErrorCall)
             throw new Error(
-              "Unexpected error. Could not estimate gas for the swap."
+              "Unexpected error. Could not estimate gas for the build."
             );
           bestCallOption = firstNoErrorCall;
         }
@@ -199,13 +199,18 @@ export function useBuildCallback(
           })
           .then((response: TransactionResponse) => {
 
-            addTransaction(response, {
-              type: TransactionType.BUILD_OVL_POSITION,
-              market: OVL_MARKET_ADDRESS[chainId],
-              collateral: buildData.typedValue,
-              isLong: buildData.isLong,
-              leverage: buildData.selectedLeverage,
-            });
+            addTransaction(
+              response, 
+              {
+                type: TransactionType.BUILD_OVL_POSITION,
+                market: OVL_MARKET_ADDRESS[chainId],
+                collateral: buildData.typedValue,
+                isLong: buildData.isLong,
+                leverage: buildData.selectedLeverage
+              },
+              false,
+              null
+            );
 
             return response.hash;
 
@@ -214,12 +219,20 @@ export function useBuildCallback(
 
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
+              addTransaction(error, {
+                type: TransactionType.BUILD_OVL_POSITION,
+                market: OVL_MARKET_ADDRESS[chainId],
+                collateral: buildData.typedValue,
+                isLong: buildData.isLong,
+                leverage: buildData.selectedLeverage,
+              }, error);
               throw new Error("Transaction rejected.");
             } else {
+              
               // otherwise, the error was unexpected and we need to convey that
-              console.error(`Swap failed`, error, address, calldata, value);
+              console.error(`Build failed`, error, address, calldata, value);
 
-              throw new Error(`Swap failed: ${error}`);
+              throw new Error(`Build failed: ${error}`);
             }
           });
       },

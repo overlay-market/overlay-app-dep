@@ -33,7 +33,6 @@ const Fader = styled.div`
 
 const AnimatedFader = animated(Fader);
 
-  // background-color: ${({ theme }) => theme.bg3};
 export default function Popup({
   removeAfterMs,
   content,
@@ -63,7 +62,10 @@ export default function Popup({
     }
   }, [removeAfterMs, removeThisPopup])
 
-  let popupContent
+  let popupContent;
+
+  console.log('content: ', content);
+  
   if ('txn' in content) {
     const {
       txn: { hash, success, summary },
