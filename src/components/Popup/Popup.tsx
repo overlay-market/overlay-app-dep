@@ -12,10 +12,12 @@ const PopupContainer = styled.div`
   display: flex;
   flex-direction: row;
   position: fixed;
-  background: hsla(0,0%,100%,.85);
+  background: #3A3D48;
   z-index: 69420;
-  top: 70px;
-  right: 25px;
+  bottom: 40px;
+  right: 16px;
+  padding: 16px;
+  border-radius: 8px;
 `;
 
 const AnimatedFader = ({ duration }:{duration: number}) => (
