@@ -9,6 +9,7 @@ import { useTransactionAdder } from "../state/transactions/hooks";
 import { OVL_MARKET_ADDRESS, OVL_COLLATERAL_ADDRESS } from "../constants/addresses";
 import isZero from "../utils/isZero";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
+import { useAddPopup } from "../state/application/hooks";
 interface BuildCall {
   address: string;
   calldata: string;
@@ -80,9 +81,8 @@ export function useBuildCallback(
   error: string | null;
 } {
   const { account, chainId, library } = useActiveWeb3React();
-
   const addTransaction = useTransactionAdder();
-
+  const addPopup = useAddPopup();
   const buildCalls = useBuildCallArguments(buildData, chainId);
 
   return useMemo(() => {
@@ -217,13 +217,16 @@ export function useBuildCallback(
 
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
-              addTransaction(error, {
-                type: TransactionType.BUILD_OVL_POSITION,
-                market: OVL_MARKET_ADDRESS[chainId],
-                collateral: buildData.typedValue,
-                isLong: buildData.isLong,
-                leverage: buildData.selectedLeverage,
-              });
+              addPopup(
+                {
+                  txn: {
+                    hash,
+                    success: receipt.status === 1,
+                    info: transactionInfo
+                  },
+                },
+                hash
+              )
               throw new Error("Transaction rejected.");
             } else {
               
