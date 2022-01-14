@@ -7,9 +7,11 @@ import { TransactionType } from "./../state/transactions/actions";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useTransactionAdder } from "../state/transactions/hooks";
 import { OVL_MARKET_ADDRESS, OVL_COLLATERAL_ADDRESS } from "../constants/addresses";
-import isZero from "../utils/isZero";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
 import { useAddPopup } from "../state/application/hooks";
+import { currentTimeParsed } from "../utils/currentTime";
+import isZero from "../utils/isZero";
+
 interface BuildCall {
   address: string;
   calldata: string;
@@ -84,6 +86,7 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder();
   const addPopup = useAddPopup();
   const buildCalls = useBuildCallArguments(buildData, chainId);
+  const currentTimeForId = currentTimeParsed();
 
   return useMemo(() => {
 
@@ -220,12 +223,12 @@ export function useBuildCallback(
               addPopup(
                 {
                   txn: {
-                    hash,
-                    success: receipt.status === 1,
-                    info: transactionInfo
+                    hash: currentTimeForId,
+                    success: false,
+                    info: error
                   },
                 },
-                hash
+                currentTimeForId
               )
               throw new Error("Transaction rejected.");
             } else {

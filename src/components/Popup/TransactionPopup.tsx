@@ -1,4 +1,4 @@
-import { AlertCircle, CheckCircle } from 'react-feather';
+import { AlertTriangle, CheckCircle } from 'react-feather';
 import styled from 'styled-components';
 import { ExternalLink as ExternalLinkIcon } from 'react-feather';
 import { Icon } from '../Icon/Icon';
@@ -45,7 +45,7 @@ export default function TransactionPopup({
         {success ? (
           <CheckCircle width={22} height={22} color={"#10DCB1"} />
         ):(
-          <AlertCircle width={22} height={22} />
+          <AlertTriangle width={22} height={22} color={"#FF648A"} />
         )}
       </Icon>
       <PopupTextContainer>
@@ -53,8 +53,10 @@ export default function TransactionPopup({
           { info?.type === TransactionType.APPROVAL && 'Spending Limit Approved' }
           { info?.type === TransactionType.BUILD_OVL_POSITION && 'Position Successfully Built'}
           {/* {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)} */}
+
+          { info?.code === 4001 && 'Transaction Rejected'}
         </TEXT.BoldSmallBody>
-        {chainId && hash && (
+        {chainId && hash && success && (
           <ExternalLink
             // href={getExplorerLink(chainId, hash, 'transaction')}
             href={"yes"}

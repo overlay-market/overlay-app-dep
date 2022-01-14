@@ -68,7 +68,14 @@ export default function Popup({
     const {
       txn: { hash, success, summary, info },
     } = content
-    popupContent = <TransactionPopup hash={hash} success={success} summary={summary} info={info} />
+    popupContent = <TransactionPopup hash={hash} info={info} success={success} summary={summary} />
+  }
+
+  if ('info' in content) {
+    const {
+      txn: { hash, failed, summary, info },
+    } = content
+    popupContent = <TransactionPopup hash={hash} info={info} success={failed} summary={summary} />
   }
 
   const faderStyle = useSpring({
@@ -85,7 +92,7 @@ export default function Popup({
           clickable={true}
           color={'#0B0F1C'}
           >
-          <XIcon width={24} height={24} onClick={removeThisPopup} />
+          <XIcon width={16} height={16} onClick={removeThisPopup} />
         </Icon>
       </FlexRowContainer>
       {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}
