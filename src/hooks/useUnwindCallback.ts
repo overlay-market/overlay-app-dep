@@ -193,8 +193,7 @@ export function useUnwindCallback(
                 type: TransactionType.UNWIND_OVL_POSITION,
                 positionId: positionId.toString(),
                 shares: unwindAmount
-              },
-              null
+              }
             );
 
             return response.hash;

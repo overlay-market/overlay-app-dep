@@ -11,6 +11,7 @@ import { Icon } from "../../components/Icon/Icon";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useOvlBalance } from "../../state/wallet/hooks";
 import { InfoTip } from "../../components/InfoTip/InfoTip";
+import { useAddPopup } from "../../state/application/hooks";
 import { usePositionState } from "../../state/positions/hooks";
 import { useDerivedBuildInfo } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
@@ -50,6 +51,7 @@ const SelectShortPositionButton = styled(SelectPositionSideButton)`
 `;
 
 const TriggerBuildButton = styled(TriggerActionButton)`
+  border: 1px solid #f2f2f2;
 `;
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
@@ -107,6 +109,7 @@ export const BuildInterface = ({
   const { account, chainId } = useActiveWeb3React();
   const { ovlBalance: userOvlBalance } = useOvlBalance(account);
   const { callback: buildCallback } = useBuildCallback(buildData);
+  const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const buildFee = useBuildFee();
   const ovl = chainId ? OVL[chainId] : undefined;

@@ -9,7 +9,6 @@ import { addTransaction, TransactionInfo, TransactionType } from './actions';
 export function useTransactionAdder(): (
   response: TransactionResponse,
   info: TransactionInfo,
-  error?: any
 ) => void {
   const { chainId, account } = useActiveWeb3React();
   const dispatch = useAppDispatch();
@@ -18,7 +17,6 @@ export function useTransactionAdder(): (
     (
       response: TransactionResponse,
       info: TransactionInfo,
-      error?: any
     ) => {
       if (!account) return;
       if (!chainId) return;
@@ -26,17 +24,13 @@ export function useTransactionAdder(): (
       const { hash } = response;
 
       console.log('response: ', response);
-      console.log('error: ', error);
       console.log('info: ', info);
 
-      if (error) {
-        dispatch(addTransaction({ hash, from: account, info, chainId, error: error.message }))
-      }
       if (!hash) {
         console.error('No transaction hash found.')
         throw Error('No transaction hash found.')
       }
-      dispatch(addTransaction({ hash, from: account, info, chainId, error }))
+      dispatch(addTransaction({ hash, from: account, info, chainId }))
     },
     [dispatch, chainId, account]
   );

@@ -41,6 +41,10 @@ export const SelectActionButton = styled(BaseTemplateButton)`
 export const TriggerActionButton = styled(SelectActionButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#71d2ff' )};
   background: ${({ active }) => ( active ? '#12B4FF' : 'transparent' )};
+  
+  :hover {
+    border: 1px solid ${({ isDisabled }) => ( isDisabled ? '#FF648A' : '#71d2ff')};
+  }
 `;
 
 export const PendingActionButton = styled(SelectActionButton)`

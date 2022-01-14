@@ -207,8 +207,7 @@ export function useBuildCallback(
                 collateral: buildData.typedValue,
                 isLong: buildData.isLong,
                 leverage: buildData.selectedLeverage
-              },
-              null
+              }
             );
 
             return response.hash;
@@ -224,7 +223,7 @@ export function useBuildCallback(
                 collateral: buildData.typedValue,
                 isLong: buildData.isLong,
                 leverage: buildData.selectedLeverage,
-              }, error);
+              });
               throw new Error("Transaction rejected.");
             } else {
               
