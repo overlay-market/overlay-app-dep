@@ -4,13 +4,14 @@ import { utils } from "ethers";
 import { Label, Input } from "@rebass/forms";
 import { Sliders, X } from "react-feather";
 import { MarketCard } from "../../components/Card/MarketCard";
-import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TransactionSettingsButton } from "../../components/Button/Button";
+import { SelectActionButton, TriggerActionButton, TransparentUnderlineButton, TransactionSettingsButton, ApproveTransactionButton } from "../../components/Button/Button";
 import { TEXT } from "../../theme/theme";
 import { OVL } from "../../constants/tokens";
 import { Icon } from "../../components/Icon/Icon";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useOvlBalance } from "../../state/wallet/hooks";
 import { InfoTip } from "../../components/InfoTip/InfoTip";
+import { useAddPopup } from "../../state/application/hooks";
 import { usePositionState } from "../../state/positions/hooks";
 import { useDerivedBuildInfo } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
@@ -33,36 +34,24 @@ import { useBuildFee } from "../../hooks/useBuildFee";
 import { AdditionalDetails } from "./AdditionalBuildDetails";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
-import TransactionPending from "../../components/Popup/TransactionPending";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 
-const SelectLongPositionButton = styled(SelectActionButton)`
+const SelectPositionSideButton = styled(SelectActionButton)`
+  border: 1px solid #f2f2f2;
+  margin: 4px 0;
+`
+const SelectLongPositionButton = styled(SelectPositionSideButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
   background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
-  margin: 4px 0;
 `;
 
-const SelectShortPositionButton = styled(SelectActionButton)`
+const SelectShortPositionButton = styled(SelectPositionSideButton)`
   color: ${({ active }) => (active ? '#0B0F1C' : '#FF648A')};
   background: ${({ active }) => (active ? '#FF648A' : 'transparent')};
-  margin: 4px 0;
 `;
 
 const TriggerBuildButton = styled(TriggerActionButton)`
-  margin-top: 24px;
-`;
-
-const TriggerApproveButton = styled(SelectActionButton)`
-  margin-top: 24px;
-  border: none;
-  background: linear-gradient(
-    91.32deg,
-    #10dcb1 0%,
-    #33e0eb 24.17%,
-    #12b4ff 52.11%,
-    #3d96ff 77.89%,
-    #7879f1 102.61%
-  );
+  border: 1px solid #f2f2f2;
 `;
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
@@ -77,6 +66,7 @@ export const NumericalInputContainer = styled(FlexRowContainer)`
   border: 1px solid ${({ theme }) => theme.white};
   border-radius: 4px;
   overflow: hidden;
+  margin-bottom: 24px;
 `;
 
 export const NumericalInputDescriptor = styled.div`
@@ -102,16 +92,16 @@ export const BuildInterface = ({
   marketPrice: string | number;
 }) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
-  const [{ showConfirm, attemptingTxn, txnErrorMessage, txHash }, setBuildState] = useState<{
+  const [{ showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash }, setBuildState] = useState<{
     showConfirm: boolean;
-    attemptingTxn: boolean;
-    txnErrorMessage: string | undefined;
-    txHash: string | undefined;
+    attemptingTransaction: boolean;
+    transactionErrorMessage: string | undefined;
+    transactionHash: string | undefined;
   }>({
     showConfirm: false,
-    attemptingTxn: false,
-    txnErrorMessage: undefined,
-    txHash: undefined,
+    attemptingTransaction: false,
+    transactionErrorMessage: undefined,
+    transactionHash: undefined,
   });
 
   const { markets } = useAllMarkets();
@@ -119,6 +109,7 @@ export const BuildInterface = ({
   const { account, chainId } = useActiveWeb3React();
   const { ovlBalance: userOvlBalance } = useOvlBalance(account);
   const { callback: buildCallback } = useBuildCallback(buildData);
+  const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const buildFee = useBuildFee();
   const ovl = chainId ? OVL[chainId] : undefined;
@@ -178,11 +169,11 @@ export const BuildInterface = ({
   const handleDismiss = useCallback(() => {
     setBuildState({
       showConfirm: false, 
-      attemptingTxn, 
-      txnErrorMessage, 
-      txHash
+      attemptingTransaction, 
+      transactionErrorMessage, 
+      transactionHash
     });
-  }, [attemptingTxn, txnErrorMessage, txHash]);
+  }, [attemptingTransaction, transactionErrorMessage, transactionHash]);
   
   const disableBuildButton: boolean = useMemo(() => {
     return !typedValue || isLong === undefined ? true : false;
@@ -193,27 +184,27 @@ export const BuildInterface = ({
     if (isLong === undefined) throw new Error("please choose a long/short position");
     if (!buildCallback) return;
     setBuildState({
-      showConfirm: false,
-      attemptingTxn: true,
-      txnErrorMessage: undefined,
-      txHash: undefined,
+      showConfirm: true,
+      attemptingTransaction: true,
+      transactionErrorMessage: undefined,
+      transactionHash: undefined,
     });
     buildCallback()
       .then((hash) => {
         setBuildState({
           showConfirm: false,
-          attemptingTxn: false,
-          txnErrorMessage: undefined,
-          txHash: hash,
+          attemptingTransaction: false,
+          transactionErrorMessage: undefined,
+          transactionHash: hash,
         });
         onResetBuildState();
       })
       .catch((error) => {
         setBuildState({
           showConfirm: false,
-          attemptingTxn: false,
-          txnErrorMessage: error,
-          txHash: undefined,
+          attemptingTransaction: false,
+          transactionErrorMessage: error,
+          transactionHash: undefined,
         });
       });
   }, [buildCallback, onResetBuildState, isLong, typedValue]);
@@ -230,7 +221,29 @@ export const BuildInterface = ({
   
   const handleApprove = useCallback(async () => {
     if (!typedValue) throw new Error("missing position input size");
-    await approveCallback();
+    setBuildState({
+      showConfirm: false,
+      attemptingTransaction: true,
+      transactionErrorMessage: undefined,
+      transactionHash: undefined,
+    });
+    approveCallback()
+      .then((hash) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: undefined,
+          transactionHash: undefined,
+        });
+      })
+      .catch((error) => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: error,
+          transactionHash: undefined,
+        });
+      });
   }, [approveCallback, typedValue]);
   
   const fundingRate = useFundingRate(market?.id);
@@ -364,19 +377,18 @@ export const BuildInterface = ({
         </NumericalInputContainer>
 
         {showApprovalFlow ? (
-          <TriggerApproveButton 
+          <ApproveTransactionButton 
+            attemptingTransaction={attemptingTransaction}
             onClick={handleApprove}
-            >
-            Approve
-          </TriggerApproveButton>
+          />
         ) : (
           <TriggerBuildButton
             onClick={() => {
               setBuildState({
                 showConfirm: true,
-                attemptingTxn: false,
-                txnErrorMessage: undefined,
-                txHash: undefined,
+                attemptingTransaction: false,
+                transactionErrorMessage: undefined,
+                transactionHash: undefined,
               });
             }}
             isDisabled={disableBuildButton}
@@ -401,6 +413,7 @@ export const BuildInterface = ({
       />
       <ConfirmTxnModal
         isOpen={showConfirm}
+        attemptingTransaction={attemptingTransaction}
         isLong={isLong}
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
@@ -411,10 +424,6 @@ export const BuildInterface = ({
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
         estimatedLiquidationPrice={estimatedLiquidationPrice}
-      />
-      <TransactionPending
-        attemptingTxn={attemptingTxn}
-        severity={PopupType.WARNING}
       />
     </MarketCard>
   );

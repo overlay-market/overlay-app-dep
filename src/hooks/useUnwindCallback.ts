@@ -9,7 +9,8 @@ import { calculateGasMargin } from "../utils/calculateGasMargin";
 import { TransactionResponse } from "@ethersproject/providers";
 import isZero from "../utils/isZero";
 import { TransactionType } from "./../state/transactions/actions";
-
+import { useAddPopup } from "../state/application/hooks";
+import { currentTimeParsed } from "../utils/currentTime";
 interface UnwindCall {
   address: string;
   calldata: string;
@@ -78,9 +79,9 @@ export function useUnwindCallback(
   error: string | null;
 } {
   const { account, chainId, library } = useActiveWeb3React();
-
+  const addPopup = useAddPopup();
+  const currentTimeForId = currentTimeParsed();
   const addTransaction = useTransactionAdder();
-
   const unwindCalls = useUnwindCallArguments(unwindAmount, positionId, chainId);
 
   return useMemo(() => {
@@ -187,17 +188,30 @@ export function useUnwindCallback(
           })
           .then((response: TransactionResponse) => {
 
-            addTransaction(response, {
-              type: TransactionType.UNWIND_OVL_POSITION,
-              positionId: positionId.toString(),
-              shares: unwindAmount
-            });
+            addTransaction(
+              response, 
+              {
+                type: TransactionType.UNWIND_OVL_POSITION,
+                positionId: positionId.toString(),
+                shares: unwindAmount
+              }
+            );
 
             return response.hash;
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
+              addPopup(
+                {
+                  txn: {
+                    hash: currentTimeForId,
+                    success: false,
+                    info: error
+                  },
+                },
+                currentTimeForId
+              )
               throw new Error("Transaction rejected.");
             } else {
               // otherwise, the error was unexpected and we need to convey that
@@ -208,5 +222,5 @@ export function useUnwindCallback(
       },
       error: null,
     };
-  }, [unwindAmount, positionId, library, account, chainId, unwindCalls, addTransaction]);
+  }, [unwindAmount, positionId, library, account, chainId, unwindCalls, addTransaction, addPopup, currentTimeForId]);
 }

@@ -7,6 +7,7 @@ export type PopupContent =
         hash: string
         success: boolean
         summary?: string
+        info?: object
       }
     }
   | {

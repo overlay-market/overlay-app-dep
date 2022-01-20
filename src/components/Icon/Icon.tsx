@@ -15,7 +15,7 @@ const IconWrapper = styled.div<{
   display: flex;
   height: ${({ size }) => ( size )}px;
   width: ${({ size }) => ( size )}px;
-  margin: ${({ margin }) => ( margin ? margin : 0 )};
+  margin: ${({ margin }) => ( margin ?? margin )};
   color: ${({ color }) => ( color ? color : '#fff' )};
   transform: ${({ transform }) => ( transform ? transform : 'rotate(0deg)' )};
   transition: transform 0.2s ease-out;
@@ -48,8 +48,6 @@ export const Icon = ({
   color?: string
   transform?: string
   clickable?: boolean
-  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => void
-  // onClick?: (event: React.MouseEvent<HTMLDivElement>) => any
   onClick?: (event: any) => any
   top?: string
   right?: string

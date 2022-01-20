@@ -4,8 +4,8 @@ import { useCallback, useEffect, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
 import { updateBlockNumber } from '../application/actions';
 import { useAddPopup, useBlockNumber } from '../application/hooks';
-import { checkedTransaction, finalizeTransaction } from './actions';
 import { RetryOptions, RetryableError, retry } from '../../utils/retry';
+import { checkedTransaction, finalizeTransaction, TransactionType } from './actions';
 
 
 interface TxInterface {
@@ -78,7 +78,8 @@ export default function Updater(): null {
       .filter((hash) => shouldCheck(lastBlockNumber, transactions[hash]))
       .map((hash) => {
         const { promise, cancel } = getReceipt(hash)
-        
+        let transactionInfo = transactions[hash].info;
+
         promise
           .then((receipt) => {
             if (receipt) {
@@ -99,15 +100,45 @@ export default function Updater(): null {
                 })
               )
 
-              addPopup(
-                {
-                  txn: {
-                    hash,
-                    success: receipt.status === 1,
+              if (transactionInfo.type === TransactionType.APPROVAL) {
+                addPopup(
+                  {
+                    txn: {
+                      hash,
+                      success: receipt.status === 1,
+                      info: transactionInfo
+                    },
                   },
-                },
-                hash
-              )
+                  hash
+                )
+              }
+
+              if (transactionInfo.type === TransactionType.BUILD_OVL_POSITION) {
+                addPopup(
+                  {
+                    txn: {
+                      hash,
+                      success: receipt.status === 1,
+                      info: transactionInfo
+                    },
+                  },
+                  hash
+                )
+              }
+
+              if (transactionInfo.type === TransactionType.UNWIND_OVL_POSITION) {
+                addPopup(
+                  {
+                    txn: {
+                      hash,
+                      success: receipt.status === 2,
+                      info: transactionInfo
+                    },
+                  },
+                  hash
+                )
+              }
+
 
               // the receipt was fetched before the block, fast forward to that block to trigger balance updates
               if (receipt.blockNumber > lastBlockNumber) {
@@ -118,9 +149,9 @@ export default function Updater(): null {
             }
           })
           .catch((error) => {
-            if (!error.isCancelledError) {
-              console.error(`Failed to check transaction hash: ${hash}`, error)
-            }
+            // if (!error.isCancelledError) {
+            //   console.error(`Failed to check transaction hash: ${hash}`, error)
+            // }
           })
         return cancel
       })

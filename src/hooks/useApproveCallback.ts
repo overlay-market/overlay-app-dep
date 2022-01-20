@@ -1,14 +1,16 @@
-import { MaxUint256 } from '@ethersproject/constants'
-import { TransactionResponse } from '@ethersproject/providers'
-import { CurrencyAmount, Currency, Percent, Token } from '@uniswap/sdk-core'
-import { useCallback, useMemo } from 'react'
-import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks'
-import { TransactionType } from '../state/transactions/actions'
-import { calculateGasMargin } from '../utils/calculateGasMargin'
+import { MaxUint256 } from '@ethersproject/constants';
+import { TransactionResponse } from '@ethersproject/providers';
+import { CurrencyAmount, Currency, Percent, Token } from '@uniswap/sdk-core';
+import { useCallback, useMemo } from 'react';
+import { BigNumber, utils } from 'ethers';
+import { useAddPopup } from '../state/application/hooks';
+import { useTransactionAdder, useHasPendingApproval } from '../state/transactions/hooks';
+import { TransactionType } from '../state/transactions/actions';
+import { calculateGasMargin } from '../utils/calculateGasMargin';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './web3';
 import { useTokenAllowance } from './useTokenAllowance';
-import { BigNumber, utils } from 'ethers'
+import { currentTimeParsed } from '../utils/currentTime';
 
 export enum ApprovalState {
   UNKNOWN = 'UNKNOWN',
@@ -24,6 +26,8 @@ export function useApproveCallback(
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
+  const addPopup = useAddPopup();
+  const currentTimeForId = currentTimeParsed();
   const currentAllowance = useTokenAllowance(currencyToken, account ?? undefined, spender);
   const pendingApproval = useHasPendingApproval(currencyToken?.address, spender);
 
@@ -71,13 +75,28 @@ export function useApproveCallback(
         gasLimit: calculateGasMargin(estimatedGas),
       })
       .then((response: TransactionResponse) => {
-        addTransaction(response, { type: TransactionType.APPROVAL, tokenAddress: currencyToken.address, spender } )
+        addTransaction(
+          response,
+          { type: TransactionType.APPROVAL, tokenAddress: currencyToken.address, spender },
+        )
       })
       .catch((error: Error) => {
         console.debug('Failed to approve token', error);
+
+        addPopup(
+          {
+            txn: {
+              hash: currentTimeForId,
+              success: false,
+              info: error
+            },
+          },
+          currentTimeForId
+        )
+
         throw error;
       })
-  }, [approvalState, currencyToken, tokenContract, amountToApprove, spender, addTransaction]);
+  }, [approvalState, currencyToken, tokenContract, amountToApprove, spender, addTransaction, addPopup, currentTimeForId]);
 
   return [approvalState, approve];
 };
