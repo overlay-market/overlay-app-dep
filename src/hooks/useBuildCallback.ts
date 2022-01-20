@@ -85,8 +85,8 @@ export function useBuildCallback(
   const { account, chainId, library } = useActiveWeb3React();
   const addTransaction = useTransactionAdder();
   const addPopup = useAddPopup();
-  const buildCalls = useBuildCallArguments(buildData, chainId);
   const currentTimeForId = currentTimeParsed();
+  const buildCalls = useBuildCallArguments(buildData, chainId);
 
   return useMemo(() => {
 

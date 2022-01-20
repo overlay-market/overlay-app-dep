@@ -22,6 +22,7 @@ import { TransparentUnderlineButton, TriggerActionButton } from "../../component
 
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
+  border: 1px solid #f2f2f2;
 `;
 
 export const AdditionalDetailRow = ({
