@@ -55,6 +55,7 @@ export default function TransactionPopup({
           {/* {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)} */}
 
           { info?.code === 4001 && 'Transaction Rejected'}
+          { info?.code === -32603 && `Transaction Failed: ${info?.message}`}
         </TEXT.BoldSmallBody>
         {chainId && hash && success && (
           <ExternalLink
