@@ -126,6 +126,19 @@ export default function Updater(): null {
                 )
               }
 
+              if (transactionInfo.type === TransactionType.UNWIND_OVL_POSITION) {
+                addPopup(
+                  {
+                    txn: {
+                      hash,
+                      success: receipt.status === 2,
+                      info: transactionInfo
+                    },
+                  },
+                  hash
+                )
+              }
+
 
               // the receipt was fetched before the block, fast forward to that block to trigger balance updates
               if (receipt.blockNumber > lastBlockNumber) {

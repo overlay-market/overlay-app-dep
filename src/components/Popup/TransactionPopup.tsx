@@ -52,6 +52,7 @@ export default function TransactionPopup({
         <TEXT.BoldSmallBody>
           { info?.type === TransactionType.APPROVAL && 'Spending Limit Approved' }
           { info?.type === TransactionType.BUILD_OVL_POSITION && 'Position Successfully Built'}
+          { info?.type === TransactionType.UNWIND_OVL_POSITION && 'Unwind Successful'}
           {/* {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)} */}
 
           { info?.code === 4001 && 'Transaction Rejected'}

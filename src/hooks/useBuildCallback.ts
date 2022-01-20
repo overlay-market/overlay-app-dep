@@ -242,5 +242,5 @@ export function useBuildCallback(
       },
       error: null,
     };
-  }, [buildData, library, account, chainId, buildCalls, addTransaction]);
+  }, [buildData, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId]);
 }
