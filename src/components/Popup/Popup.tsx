@@ -12,11 +12,12 @@ import { useRemovePopup } from "../../state/application/hooks";
 const PopupContainer = styled.div`
   display: flex;
   flex-direction: column;
-  position: fixed;
+  position: relative;
   right: 16px;
   bottom: 40px;
   padding: 16px;
   z-index: 69420;
+  margin-top: 4px;
   border-radius: 8px;
   background: #3A3D48;
   overflow: hidden;
