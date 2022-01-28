@@ -102,9 +102,9 @@ export const TEXT = {
     return <TextWrapper fontSize={14} fontWeight={700} color={'white1'} {...props} />
   },
   Supplemental(props: TextProps) {
-    return <TextWrapper fontSize={12} fontWeight={400} {...props} />    
+    return <TextWrapper fontSize={12} fontWeight={400} color={'white1'} {...props} />    
   },
   BoldSupplemental(props: TextProps) {
-    return <TextWrapper fontSize={12} fontWeight={700} {...props} />    
+    return <TextWrapper fontSize={12} fontWeight={700} color={'white1'} {...props} />    
   }
 }
