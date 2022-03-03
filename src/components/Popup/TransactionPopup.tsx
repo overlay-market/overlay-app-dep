@@ -26,6 +26,10 @@ const IconContainer = styled(Icon)`
   margin: 1px 3px 0;
 `;
 
+const ErrorMessage = styled(TEXT.Supplemental)`
+  margin-top: 3px;
+`;
+
 export default function TransactionPopup({
   hash,
   success,
@@ -55,9 +59,16 @@ export default function TransactionPopup({
           { info?.type === TransactionType.UNWIND_OVL_POSITION && 'Unwind Successful'}
           {/* {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)} */}
 
-          { info?.code === 4001 && 'Transaction Rejected'}
-          { info?.code === -32603 && `Transaction Failed: ${info?.message}`}
+          { info?.code === 4001 && 'Transaction Rejected' }
+          { info?.code === -32603 && 'Transaction Failed' }
         </TEXT.BoldSmallBody>
+
+        {chainId && info?.message && (
+          <ErrorMessage>
+            { info?.message }
+          </ErrorMessage>
+        )}
+
         {chainId && hash && success && (
           <ExternalLink
             // href={getExplorerLink(chainId, hash, 'transaction')}
