@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { utils } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
-import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
+// import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
 import { useActiveWeb3React } from "./web3";
 import { TransactionType } from "./../state/transactions/actions";
 import { TransactionResponse } from "@ethersproject/providers";
@@ -46,14 +46,14 @@ function useBuildCallArguments(
 
   if (!buildData) calldata = undefined;
   else {
-    calldata = OVLCollateral.buildParameters({
-      collateral: utils.parseUnits(buildData.typedValue),
-      leverage: Number(buildData.selectedLeverage),
-      isLong: buildData.isLong,
-      market: OVL_MARKET_ADDRESS[chainId],
-      minOI: Number(buildData.setSlippageValue),
-      deadline: 1
-    });
+    // calldata = OVLCollateral.buildParameters({
+    //   collateral: utils.parseUnits(buildData.typedValue),
+    //   leverage: Number(buildData.selectedLeverage),
+    //   isLong: buildData.isLong,
+    //   market: OVL_MARKET_ADDRESS[chainId],
+    //   minOI: Number(buildData.setSlippageValue),
+    //   deadline: 1
+    // });
 
   }
 

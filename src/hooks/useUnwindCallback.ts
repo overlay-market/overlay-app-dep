@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
+// import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
 import { utils } from "ethers";
 import { OVL_COLLATERAL_ADDRESS } from "../constants/addresses";
 import { BigNumber } from "@ethersproject/bignumber";
@@ -47,10 +47,10 @@ function useUnwindCallArguments(
   if (unwindAmount === "" || !positionId) {
     calldata = undefined;
   } else {
-    calldata = OVLCollateral.unwindParameters({
-      shares: utils.parseUnits(unwindAmount),
-      positionId: positionId,
-    });
+    // calldata = OVLCollateral.unwindParameters({
+    //   shares: utils.parseUnits(unwindAmount),
+    //   positionId: positionId,
+    // });
   }
 
   return useMemo(() => {

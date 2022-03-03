@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { utils } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
-import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
+// import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
 import { useActiveWeb3React } from "./web3";
 import { TransactionType } from "./../state/transactions/actions";
 import { TransactionResponse } from "@ethersproject/providers";
@@ -40,9 +40,11 @@ function useLiquidateCallArguments(
   positionId?: number, 
   chainId?: any
 ) {
-  const calldata: any = positionId ? (
-      OVLCollateral.liquidateParameters({ positionId: positionId })
-    ) : undefined;
+  // const calldata: any = positionId ? (
+  //     OVLCollateral.liquidateParameters({ positionId: positionId })
+  //   ) : undefined;
+
+  const calldata = 'test';
 
   return useMemo(() => {
     const txn: { address: string; calldata: string; value: string } = {

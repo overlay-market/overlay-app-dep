@@ -85,12 +85,11 @@ const Markets = () => {
             <StyledTableCellThin align="left">
               <FlexColumnContainer align={"left"}>
                 <TEXT.SmallBody>
-                  {Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}/
-                  {Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}
+                  2500/5000
                 </TEXT.SmallBody>
                 <ProgressBar
-                  value={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
-                  max={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
+                  value={5000}
+                  max={10000}
                   color={"#10DCB1"}
                   width={"88px"}
                   margin={"0"}
@@ -101,12 +100,11 @@ const Markets = () => {
             <StyledTableCellThin align="left">
               <FlexColumnContainer align={"left"}>
                 <TEXT.SmallBody>
-                  {Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}
-                  /{Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}
+                  3750/5000
                 </TEXT.SmallBody>
                 <ProgressBar
-                  value={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
-                  max={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
+                  value={3750}
+                  max={5000}
                   color={"#DC1F4E"}
                   width={"88px"}
                   margin={"0"}
@@ -117,11 +115,11 @@ const Markets = () => {
             <StyledTableCellThin align="left">
               <FlexRowContainer>
                 <TEXT.AdjustableSize color={"#10DCB1"} mr={"3px"}>
-                  n/a%
+                 4%
                 </TEXT.AdjustableSize>
                 /
                 <TEXT.AdjustableSize color={"#FF648A"} ml={"3px"}>
-                  n/a%
+                 2.3%
                 </TEXT.AdjustableSize>
               </FlexRowContainer>
             </StyledTableCellThin>
