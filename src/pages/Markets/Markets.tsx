@@ -1,7 +1,7 @@
 import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
@@ -64,6 +64,70 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
+
+          <StyledTableRow
+            onClick={() => redirectToMarket('test-market')}
+            hover={true}
+            key={1}
+          >
+            <StyledTableCellThin component="th" scope="row">
+              RETH / RUSDC
+            </StyledTableCellThin>
+
+            <StyledTableCellThin align="left">
+              {(
+                (Number(utils.formatUnits(BigNumber.from("42"), 18)) +
+                  Number(utils.formatUnits(BigNumber.from("42"), 18))) /
+                2
+              ).toFixed(2)}
+            </StyledTableCellThin>
+
+            <StyledTableCellThin align="left">
+              <FlexColumnContainer align={"left"}>
+                <TEXT.SmallBody>
+                  {Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}/
+                  {Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}
+                </TEXT.SmallBody>
+                <ProgressBar
+                  value={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
+                  max={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
+                  color={"#10DCB1"}
+                  width={"88px"}
+                  margin={"0"}
+                />
+              </FlexColumnContainer>
+            </StyledTableCellThin>
+
+            <StyledTableCellThin align="left">
+              <FlexColumnContainer align={"left"}>
+                <TEXT.SmallBody>
+                  {Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}
+                  /{Number(utils.formatUnits(BigNumber.from("42"), 18)).toFixed(0)}
+                </TEXT.SmallBody>
+                <ProgressBar
+                  value={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
+                  max={formatWeiToParsedNumber(BigNumber.from("42"), 18, 0)}
+                  color={"#DC1F4E"}
+                  width={"88px"}
+                  margin={"0"}
+                />
+              </FlexColumnContainer>
+            </StyledTableCellThin>
+
+            <StyledTableCellThin align="left">
+              <FlexRowContainer>
+                <TEXT.AdjustableSize color={"#10DCB1"} mr={"3px"}>
+                  n/a%
+                </TEXT.AdjustableSize>
+                /
+                <TEXT.AdjustableSize color={"#FF648A"} ml={"3px"}>
+                  n/a%
+                </TEXT.AdjustableSize>
+              </FlexRowContainer>
+            </StyledTableCellThin>
+          </StyledTableRow>
+
+            
             {markets?.map((market, key) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
