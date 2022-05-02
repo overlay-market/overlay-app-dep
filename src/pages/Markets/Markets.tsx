@@ -49,7 +49,28 @@ const Markets = () => {
 
   const peripheryContract = useV1PeripheryContract();
   const prices = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses);
-  console.log('prices: ', prices);
+  const fundingRates = useSingleContractMultipleData(peripheryContract, 'fundingRate', marketAddresses);
+
+  const marketPrices = useMemo(() => {
+    return prices.map((market, index) => {
+      if (market.loading === true || market === undefined) return 'loading...';
+
+      return market?.result?.mid_;
+    })
+  }, [prices]);
+
+  const marketFundingRates = useMemo(() => {
+    return fundingRates.map((market, index) => {
+      if (market.loading === true || market === undefined) return 'loading...';
+
+      return market?.result?.fundingRate_;
+    })
+  }, [fundingRates]);
+
+  console.log('marketPrices: ', marketPrices);
+
+  console.log('marketFundingRates: ', marketFundingRates);
+
 
   return (
     <PageContainer>
