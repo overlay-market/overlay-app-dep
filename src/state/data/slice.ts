@@ -21,11 +21,36 @@ export const api = createApi({
   reducerPath: "dataApi",
   baseQuery: graphqlRequestBaseQuery(),
   endpoints: (builder) => ({
+    accountQuery: builder.query({
+      query: ({ account }) => ({
+        document: gql`
+          query account($account: ID!) {
+            account(id: $account) {
+              positions {
+                id
+              }
+              builds {
+                id
+              }
+              unwinds {
+                id
+              }
+              liquidates {
+                id
+              }
+            }
+          }
+        `,
+        variables: {
+          account,
+        },
+      }),
+    }),
     marketQuery: builder.query({
       query: ({ market }) => ({
         document: gql`
           query market($market: ID!) {
-            market(id: $account) {
+            market(id: $market) {
               id
               factory {
                 id
@@ -52,37 +77,6 @@ export const api = createApi({
         variables: {
           market,
         },
-      }),
-    }),
-    positionsQuery: builder.query({
-      query: () => ({
-        document: gql`
-          query positions{
-            positions {
-              id
-              number
-              market {
-                id
-                currentPrice {
-                  bid
-                  ask
-                  depth
-                }
-              }
-              isLong
-              leverage
-              pricePoint {
-                bid
-                ask
-                depth
-              }
-              oiShares
-              debt
-              cost
-              totalSupply
-            }
-          }
-        `
       }),
     }),
     marketsQuery: builder.query({
