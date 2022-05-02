@@ -98,29 +98,17 @@ export const api = createApi({
         `
       }),
     }),
-    appQuery: builder.query({
+    marketsQuery: builder.query({
       query: () => ({
         document: gql`
-          query app {
+          query markets {
             markets {
               id
-              base
-              quote
-              baseName
-              quoteName
-              baseSymbol
-              quoteSymbol
               oiLong
-              oiLongShares
               oiShort
-              oiShortShares
-              oiCap
-              updatePeriod
-              compoundPeriod
-              currentPrice {
-                bid
-                ask
-                depth
+              capNotional
+              positions {
+                id
               }
             }
           }

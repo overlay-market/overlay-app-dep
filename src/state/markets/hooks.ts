@@ -1,7 +1,7 @@
 import { useMemo, useCallback, useEffect } from "react";
 import { AppState } from "../state";
 import { useAppSelector } from "../hooks";
-import { useAppQuery } from "../data/enhanced";
+import { useMarketsQuery } from "../data/enhanced";
 import { useOVLFactoryContract, useMarketContract } from "../../hooks/useContract";
 import { useSingleCallResult, useSingleContractMultipleData } from "../multicall/hooks";
 
@@ -17,7 +17,7 @@ export function useAllMarkets() {
     isError, 
     error, 
     isUninitialized, 
-    data } = useAppQuery({}, { pollingInterval: 15000 });
+    data } = useMarketsQuery({}, { pollingInterval: 15000 });
 
   return useMemo(() => {
     return {

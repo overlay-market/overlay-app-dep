@@ -8,7 +8,7 @@ export const api = generatedApi.enhanceEndpoints({
     accountQuery: {
       providesTags: [CHAIN_TAG],
     },
-    appQuery: {
+    marketsQuery: {
       providesTags: [CHAIN_TAG],
     },
     positionsQuery: {
@@ -17,4 +17,4 @@ export const api = generatedApi.enhanceEndpoints({
   },
 });
 
-export const { useAccountQuery, useAppQuery, usePositionsQuery } = api;
+export const { useAccountQuery, useMarketsQuery, usePositionsQuery } = api;
