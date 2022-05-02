@@ -3,7 +3,6 @@ import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
 import { utils, BigNumber } from "ethers";
-import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
@@ -14,9 +13,8 @@ import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
 import { Interface } from "@ethersproject/abi";
-import { abi as OverlayV1State } from '../../constants/abis/OverlayV1State.json';
-
-const PERIPHERY_INTERFACE = new Interface(OverlayV1State);
+import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
+import { useV1PeripheryContract } from "../../hooks/useContract";
 
 const activeClassName = "INACTIVE";
 
@@ -43,13 +41,16 @@ const Markets = () => {
 
   // @TO-DO: use marketAddresses to initiate multicall 
   // to fetch per market values from periphery
-  const marketAddresses: (string | undefined)[] = useMemo(() => {
+  const marketAddresses = useMemo(() => {
     if (markets === undefined) return [];
 
-    return markets.markets.map((market) => (market.id))
+    return markets.markets.map((market) => [market.id])
   }, [markets])
 
-  const prices = useMultipleContractSingleData(marketAddresses, )
+  const peripheryContract = useV1PeripheryContract();
+  const prices = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses);
+  console.log('prices: ', prices);
+
   return (
     <PageContainer>
       <TableContainer component={Paper}>
