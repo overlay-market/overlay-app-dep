@@ -9,11 +9,14 @@ export enum ContractAddresses {
   OVL_ETH = 3, //at launch
 };
 
-// update as new contracts are deployed
+// archived contract addresses
 export const OVL_ADDRESS: AddressMap = constructSameAddressMap('0x04346e29fDef5dc5A7822793d9f00B5db73D6532');
 export const OVL_COLLATERAL_ADDRESS: AddressMap = constructSameAddressMap('0xc3d73beec840d95b0b70c660a9b8be2996b0cc17')
 export const OVL_MARKET_ADDRESS: AddressMap = constructSameAddressMap('0x6f49162bc17eba2b926f789522269a0e0f2a5884')
 export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15Ed9eb485Ec1B95c6F853cB57901629b0f1CF2');
+
+// v1-core contract addresses
+export const V1_PERIPHERY_ADDRESS: AddressMap = constructSameAddressMap('0xeCA28606F2BE3209550c5e347E825af200D916c4');
 
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',

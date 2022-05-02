@@ -25,7 +25,7 @@ export function useAllMarkets() {
       isError,
       error,
       isUninitialized,
-      markets: data?.markets
+      markets: data
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
 };

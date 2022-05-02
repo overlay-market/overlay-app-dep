@@ -114,7 +114,7 @@ export const BuildInterface = ({
   const ovl = chainId ? OVL[chainId] : undefined;
   // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
 
-  const filteredMarketById = markets?.filter((market, key) => market.id === marketId);
+  const filteredMarketById = markets?.markets.filter((market, key) => market.id === marketId);
   const market = filteredMarketById ? filteredMarketById[0] : null;
   
   const {

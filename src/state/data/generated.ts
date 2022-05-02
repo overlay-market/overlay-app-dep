@@ -1688,7 +1688,7 @@ export type MarketsQuery = (
   { __typename?: 'Query' }
   & { markets: Array<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'oiLong' | 'oiShort' | 'capNotional'>
+    & Pick<Market, 'id' | 'feedAddress' | 'oiLong' | 'oiShort' | 'capNotional'>
     & { positions: Array<(
       { __typename?: 'Position' }
       & Pick<Position, 'id'>
@@ -1761,6 +1761,7 @@ export const MarketsDocument = `
     query markets {
   markets {
     id
+    feedAddress
     oiLong
     oiShort
     capNotional

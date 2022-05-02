@@ -1,7 +1,9 @@
+import { useMemo } from "react";
 import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
 import { utils, BigNumber } from "ethers";
+import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
@@ -11,6 +13,10 @@ import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
+import { Interface } from "@ethersproject/abi";
+import { abi as OverlayV1State } from '../../constants/abis/OverlayV1State.json';
+
+const PERIPHERY_INTERFACE = new Interface(OverlayV1State);
 
 const activeClassName = "INACTIVE";
 
@@ -35,6 +41,15 @@ const Markets = () => {
     history.push(`/markets/${marketId}`);
   }
 
+  // @TO-DO: use marketAddresses to initiate multicall 
+  // to fetch per market values from periphery
+  const marketAddresses: (string | undefined)[] = useMemo(() => {
+    if (markets === undefined) return [];
+
+    return markets.markets.map((market) => (market.id))
+  }, [markets])
+
+  const prices = useMultipleContractSingleData(marketAddresses, )
   return (
     <PageContainer>
       <TableContainer component={Paper}>
@@ -65,7 +80,7 @@ const Markets = () => {
 
           <TableBody>
 
-          <StyledTableRow
+          {/* <StyledTableRow
             onClick={() => redirectToMarket('test-market')}
             hover={true}
             key={1}
@@ -123,10 +138,10 @@ const Markets = () => {
                 </TEXT.AdjustableSize>
               </FlexRowContainer>
             </StyledTableCellThin>
-          </StyledTableRow>
+          </StyledTableRow> */}
 
             
-            {markets?.map((market, key) => (
+            {markets?.markets.map((market, key) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
                 hover={true}

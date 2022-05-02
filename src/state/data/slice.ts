@@ -101,6 +101,7 @@ export const api = createApi({
           query markets {
             markets {
               id
+              feedAddress
               oiLong
               oiShort
               capNotional
