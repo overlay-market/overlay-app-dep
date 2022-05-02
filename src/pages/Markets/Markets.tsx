@@ -7,7 +7,7 @@ import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
 import { useAllMarkets } from "../../state/markets/hooks";
-import { formatWeiToParsedNumber } from "../../utils/formatWei";
+import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
 import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
@@ -163,11 +163,11 @@ const Markets = () => {
           </StyledTableRow> */}
 
             
-            {markets?.markets.map((market, key) => (
+            {markets?.markets.map((market, index) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
                 hover={true}
-                key={key.toString()}
+                key={index.toString()}
               >
                 <StyledTableCellThin component="th" scope="row">
                   {/* {market.baseName} / {market.quoteName} */}
@@ -175,17 +175,7 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {/* {(
-                    (Number(utils.formatUnits(market.currentPrice.bid, 18)) +
-                      Number(utils.formatUnits(market.currentPrice.ask, 18))) /
-                    2
-                  ).toFixed(2)} */}
-
-                  {(
-                    (Number(utils.formatUnits('1000', 18)) +
-                      Number(utils.formatUnits('1000', 18))) /
-                    2
-                  ).toFixed(2)}
+                  {formatWeiToParsedNumber(marketPrices[index], 18, 2)}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
@@ -223,11 +213,7 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <FlexRowContainer>
                     <TEXT.AdjustableSize color={"#10DCB1"} mr={"3px"}>
-                      n/a%
-                    </TEXT.AdjustableSize>
-                    /
-                    <TEXT.AdjustableSize color={"#FF648A"} ml={"3px"}>
-                      n/a%
+                      {formatWeiToParsedNumber(marketFundingRates[index], 18, 2)}%
                     </TEXT.AdjustableSize>
                   </FlexRowContainer>
                 </StyledTableCellThin>
