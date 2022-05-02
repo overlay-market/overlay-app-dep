@@ -1,5 +1,5 @@
 overrideExisting: true
-schema: "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1"
+schema: "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph"
 documents: "src/**/**/!(*.d).{ts,tsx}"
 generates:
   ./src/state/data/generated.ts:
