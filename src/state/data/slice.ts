@@ -21,49 +21,36 @@ export const api = createApi({
   reducerPath: "dataApi",
   baseQuery: graphqlRequestBaseQuery(),
   endpoints: (builder) => ({
-    accountQuery: builder.query({
-      query: ({ account }) => ({
+    marketQuery: builder.query({
+      query: ({ market }) => ({
         document: gql`
-          query account($account: ID!) {
-            account(id: $account) {
-              balanceOVL {
-                balance
-                locked
+          query market($market: ID!) {
+            market(id: $account) {
+              id
+              factory {
+                id
               }
-              balances{
-                position{
-                  id
-                  number
-                  isLong
-                  leverage
-                  oiShares
-                  debt
-                  cost
-                  liquidationPrice
-                  totalSupply
-                  collateralManager {
-                    id
-                    address
-                  }
-                  pricePoint{
-                    bid
-                    ask
-                    depth
-                  }
-                  market {
-                    id
-                    currentPrice {
-                      bid
-                      ask
-                    }
-                  }
-                }
-              }
+              k
+              lmbda
+              delta
+              capPayoff
+              capLeverage
+              circuitBreakerWindow
+              circuitBreakerMintTarget
+              maintenanceMarginFraction
+              maintenanceMarginBurnRate
+              liquidationFeeRate
+              tradingFeeRate
+              minCollateral
+              priceDriftUpperLimit
+              averageBlockTime
+              oiLong
+              oiShort
             }
           }
         `,
         variables: {
-          account,
+          market,
         },
       }),
     }),

@@ -176,29 +176,29 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
   return [isAuto, toggleSetTxnSettingsAuto];
 };
 
-export function useAccountPositions(
-  address: string | null | undefined
-) {
-  let accountAddress = address ? address.toLowerCase() : "";
+// export function useAccountPositions(
+//   address: string | null | undefined
+// ) {
+//   let accountAddress = address ? address.toLowerCase() : "";
 
-  const {
-    isLoading,
-    isError,
-    error,
-    isUninitialized,
-    data
-  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 15000 })
+//   const {
+//     isLoading,
+//     isError,
+//     error,
+//     isUninitialized,
+//     data
+//   } = useAccountQuery({ account: accountAddress }, { pollingInterval: 15000 })
 
-  return useMemo(() => {
-    return {
-      isLoading,
-      isError,
-      error,
-      isUninitialized,
-      positions: data?.account?.balances
-    } 
-  }, [ isLoading, isError, error, isUninitialized, data ])
-};
+//   return useMemo(() => {
+//     return {
+//       isLoading,
+//       isError,
+//       error,
+//       isUninitialized,
+//       positions: data?.account?.balances
+//     } 
+//   }, [ isLoading, isError, error, isUninitialized, data ])
+// };
 
 export function useAllPositions() {
   const {
