@@ -53,7 +53,7 @@ const Markets = () => {
 
   const marketPrices = useMemo(() => {
     return prices.map((market, index) => {
-      if (market.loading === true || market === undefined) return 'loading...';
+      if (market.loading === true || market === undefined) return undefined;
 
       return market?.result?.mid_;
     })
@@ -61,7 +61,7 @@ const Markets = () => {
 
   const marketFundingRates = useMemo(() => {
     return fundingRates.map((market, index) => {
-      if (market.loading === true || market === undefined) return 'loading...';
+      if (market.loading === true || market === undefined) return undefined;
 
       return market?.result?.fundingRate_;
     })
@@ -175,7 +175,13 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {formatWeiToParsedNumber(marketPrices[index], 18, 2)}
+                  {
+                    marketPrices[index] ? (
+                      formatWeiToParsedNumber(marketPrices[index], 18, 2)
+                    ):(
+                      'loading...'
+                    )
+                  }
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
@@ -212,8 +218,14 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   <FlexRowContainer>
-                    <TEXT.AdjustableSize color={"#10DCB1"} mr={"3px"}>
-                      {formatWeiToParsedNumber(marketFundingRates[index], 18, 2)}%
+                    <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
+                      {
+                        marketFundingRates[index] ? (
+                          formatWeiToParsedNumber(marketFundingRates[index], 18, 2) + '%'
+                        ):(
+                          'loading...'
+                        )
+                      }
                     </TEXT.AdjustableSize>
                   </FlexRowContainer>
                 </StyledTableCellThin>
