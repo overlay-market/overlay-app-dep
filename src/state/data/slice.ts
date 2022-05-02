@@ -10,11 +10,11 @@ import { SupportedChainId } from "../../constants/chains";
 
 const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   [SupportedChainId.MAINNET]:
-    "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1",
+    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
   [SupportedChainId.KOVAN]:
-    "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1",
+    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
   [SupportedChainId.LOCALHOST]:
-    "http://127.0.0.1:8000/subgraphs/name/overlay-market/overlay-v1",
+    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
 };
 
 export const api = createApi({
