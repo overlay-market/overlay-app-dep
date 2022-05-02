@@ -27,8 +27,24 @@ export const api = createApi({
           query account($account: ID!) {
             account(id: $account) {
               positions {
+              positionId
+              market {
                 id
               }
+              initialOi
+              initialDebt
+              initialCollateral
+              initialNotional
+              leverage
+              isLong
+              entryPrice
+              isLiquidated
+              currentOi
+              currentDebt
+              mint
+              createdAtTimestamp
+              createdAtBlockNumber
+            }
               builds {
                 id
               }

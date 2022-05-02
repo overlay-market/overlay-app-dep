@@ -7,7 +7,7 @@ import Markets from './Markets/Markets';
 import { Market } from './Markets/Market';
 import { Unwind } from './Positions/Unwind';
 import Positions from './Positions/Positions';
-import Liquidate from './Liquidate/Liquidate';
+// import Liquidate from './Liquidate/Liquidate';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
 import Popups from '../components/Popup/Popups';
@@ -32,7 +32,7 @@ const App = () => {
           <Route exact strict path="/positions" component={Positions} />
           <Route exact strict path="/positions/:positionId" component={Unwind} /> 
           <Route exact strict path="/magic" component={Magic} />
-          <Route exact strict path="/liquidate" component={Liquidate} />
+          {/* <Route exact strict path="/liquidate" component={Liquidate} /> */}
         </Switch>
       </Web3ReactManager>
       <CurrentBlock />

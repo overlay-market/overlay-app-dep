@@ -6,7 +6,7 @@ import { UnsupportedChainIdError } from '@web3-react/core';
 import { TEXT } from '../../theme/theme';
 import { shortenAddress } from '../../utils/web3';
 import { useActiveWeb3React } from '../../hooks/web3';
-import { useOvlBalance } from '../../state/wallet/hooks';
+// import { useOvlBalance } from '../../state/wallet/hooks';
 import { SupportedChainId } from '../../constants/chains';
 import { FlexRowContainer } from '../Container/Container';
 import { useWalletModalToggle } from '../../state/application/hooks';
@@ -127,7 +127,7 @@ function Web3StatusInner() {
 
   // const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
   
-  const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
+  // const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -136,7 +136,7 @@ function Web3StatusInner() {
     return (  
       <Web3StatusConnected>
 
-      {account && isLoading && chainId && (
+      {/* {account && isLoading && chainId && (
         <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
 
@@ -146,7 +146,7 @@ function Web3StatusInner() {
 
       {account && chainId && !ovlBalance && (
         <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
-      )}  
+      )}   */}
 
         <Account>
           {shortenAddress(account)}

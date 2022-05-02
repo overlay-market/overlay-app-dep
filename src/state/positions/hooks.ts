@@ -13,7 +13,7 @@ import {
 import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useAccountQuery, usePositionsQuery } from "../data/generated";
+import { useAccountQuery } from "../data/generated";
 
 export function usePositionState(): AppState['position'] {
   return useAppSelector((state) => state.position);
@@ -176,38 +176,18 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
   return [isAuto, toggleSetTxnSettingsAuto];
 };
 
-// export function useAccountPositions(
-//   address: string | null | undefined
-// ) {
-//   let accountAddress = address ? address.toLowerCase() : "";
+export function useAccountPositions(
+  address: string | null | undefined
+) {
+  let accountAddress = address ? address.toLowerCase() : "";
 
-//   const {
-//     isLoading,
-//     isError,
-//     error,
-//     isUninitialized,
-//     data
-//   } = useAccountQuery({ account: accountAddress }, { pollingInterval: 15000 })
-
-//   return useMemo(() => {
-//     return {
-//       isLoading,
-//       isError,
-//       error,
-//       isUninitialized,
-//       positions: data?.account?.balances
-//     } 
-//   }, [ isLoading, isError, error, isUninitialized, data ])
-// };
-
-export function useAllPositions() {
   const {
     isLoading,
     isError,
     error,
     isUninitialized,
     data
-  } = usePositionsQuery({}, { pollingInterval: 15000});
+  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 15000 })
 
   return useMemo(() => {
     return {
@@ -215,7 +195,7 @@ export function useAllPositions() {
       isError,
       error,
       isUninitialized,
-      allPositions: data?.positions
+      positions: data?.account?.positions
     } 
-  }, [ isLoading, isError, error, isUninitialized, data])
+  }, [ isLoading, isError, error, isUninitialized, data ])
 };

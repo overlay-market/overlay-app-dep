@@ -70,20 +70,22 @@ export const Positions = () => {
                 width={100}
               />
             ):(
-              positions?.map((positionData, key) => {
-                let position = positionData.position;
+              positions?.map((index, key) => {
+                let position = index;
                 return (
                   <PositionCard
                     key={key.toString()}
-                    positionId={position.id}
-                    marketName={position.number}
+                    positionId={position.positionId}
+                    marketName={position.market.id}
                     isLong={position.isLong}
                     leverage={position.leverage}
-                    positionSize={Number(utils.formatUnits(position.oiShares, 18)).toFixed(2)}
+                    positionSize={Number(utils.formatUnits(position.currentOi, 18)).toFixed(2)}
                     collateralCurrency={"OVL"}
                     quotePrice={"2410.0"}
                     quoteCurrency={"DAI"}
-                    estLiquidationPrice={position.liquidationPrice}
+                    // estLiquidationPrice={position.liquidationPrice}
+
+                    estLiquidationPrice={'10000000000000000'}
                     PnL={"0.10"}
                     navigate={true}
                     hasBorder={true}

@@ -138,9 +138,15 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {(
+                  {/* {(
                     (Number(utils.formatUnits(market.currentPrice.bid, 18)) +
                       Number(utils.formatUnits(market.currentPrice.ask, 18))) /
+                    2
+                  ).toFixed(2)} */}
+
+                  {(
+                    (Number(utils.formatUnits('1000', 18)) +
+                      Number(utils.formatUnits('1000', 18))) /
                     2
                   ).toFixed(2)}
                 </StyledTableCellThin>
@@ -149,11 +155,11 @@ const Markets = () => {
                   <FlexColumnContainer align={"left"}>
                     <TEXT.SmallBody>
                       {Number(utils.formatUnits(market.oiLong, 18)).toFixed(0)}/
-                      {Number(utils.formatUnits(market.oiCap, 18)).toFixed(0)}
+                      {Number(utils.formatUnits(market.capNotional, 18)).toFixed(0)}
                     </TEXT.SmallBody>
                     <ProgressBar
                       value={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
-                      max={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
+                      max={formatWeiToParsedNumber(market?.capNotional, 18, 0)}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -165,11 +171,11 @@ const Markets = () => {
                   <FlexColumnContainer align={"left"}>
                     <TEXT.SmallBody>
                       {Number(utils.formatUnits(market.oiShort, 18)).toFixed(0)}
-                      /{Number(utils.formatUnits(market.oiCap, 18)).toFixed(0)}
+                      /{Number(utils.formatUnits(market.capNotional, 18)).toFixed(0)}
                     </TEXT.SmallBody>
                     <ProgressBar
                       value={formatWeiToParsedNumber(market.oiShort, 18, 0)}
-                      max={formatWeiToParsedNumber(market.oiCap, 18, 0)}
+                      max={formatWeiToParsedNumber(market.capNotional, 18, 0)}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}

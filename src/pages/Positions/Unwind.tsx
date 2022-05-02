@@ -56,32 +56,29 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(typedValue, selectedPositionId);
   
-  const filtered = positions?.filter((index, key) => index.position.id === positionId);
-  const position = filtered ? filtered[0].position : null;
+  const filtered = positions?.filter((index, key) => index.positionId === positionId);
+  const position = filtered ? filtered[0] : null;
 
-  const positionValue: BigNumber | null = usePositionValue(position ? position.number : null);
+  const positionValue: BigNumber | null = usePositionValue(position ? position.currentOi : null);
 
-  const PnL = positionValue && position?.cost ? formatWeiToParsedNumber((positionValue.sub(position.cost)), 18, 2) : undefined;
+  const PnL = positionValue && position?.currentDebt ? formatWeiToParsedNumber((positionValue.sub(position.currentDebt)), 18, 2) : undefined;
 
-  const entryPrice: number | string | undefined = position && 
-      position.isLong !== undefined ? 
-        (position.isLong ? formatWeiToParsedNumber(position.pricePoint.ask, 18, 5) : formatWeiToParsedNumber(position.pricePoint.bid, 18, 5) )
-        : undefined;
+  const entryPrice: number | string | undefined = position && position.entryPrice;
 
-  const currentPrice: number | string | undefined = position &&
-      position.isLong !== undefined ? 
-        (position.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5))
-        : undefined;
+  // const currentPrice: number | string | undefined = position &&
+  //     position.isLong !== undefined ? 
+  //       (position.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5))
+  //       : undefined;
 
-  const estLiquidationPrice = useLiquidationPrice(
-    position?.market?.id,
-    position?.isLong,
-    entryPrice,
-    entryPrice,
-    formatWeiToParsedNumber(position?.debt, 18, 18),
-    formatWeiToParsedNumber(position?.totalSupply, 18, 18),
-    formatWeiToParsedNumber(position?.oiShares, 18, 18)
-  )
+  // const estLiquidationPrice = useLiquidationPrice(
+  //   position?.market?.id,
+  //   position?.isLong,
+  //   entryPrice,
+  //   entryPrice,
+  //   formatWeiToParsedNumber(position?.currentDebt, 18, 18),
+  //   formatWeiToParsedNumber(position?.totalSupply, 18, 18),
+  //   formatWeiToParsedNumber(position?.currentOi, 18, 18)
+  // )
 
   useEffect(() => {
     onResetUnwindState();
@@ -117,15 +114,15 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
 
   return (
     <Container>
-      {handleSelectPosition(position?.number)}
+      {handleSelectPosition(Number(position?.positionId))}
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
 
       <FlexColumnContainer>
         <TEXT.StandardHeader1 fontWeight={700}>Close Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1>
-          {position && position?.isLong
+          {/* {position && position?.isLong
             ? formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
-            : formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)}
+            : formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)} */}
         </TEXT.StandardHeader1>
       </FlexColumnContainer>
 
@@ -135,25 +132,25 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       </TEXT.StandardBody>
       <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(25, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(25, position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) : null)}
           border={"none"}
           >
           25%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(50, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(50, position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) : null)}
           border={"none"}
           >
           50%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(75, position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(75, position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) : null)}
           border={"none"}
           >
           75%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(100, position?.oiShares ? utils.formatUnits(position?.oiShares, 18) : null)}
+          onClick={() => handleQuickInput(100, position?.currentOi ? utils.formatUnits(position?.currentOi, 18) : null)}
           border={"none"}
           >
           Max
@@ -203,7 +200,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={`${position?.oiShares ? Number(utils.formatUnits(position?.oiShares, 18)).toFixed(2) + " OVL" : "..."}`}
+            value={`${position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) + " OVL" : "..."}`}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
@@ -211,16 +208,16 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow
             detail={"Debt"}
-            value={`${position?.debt ? Number(utils.formatUnits(position?.debt, 18)).toFixed(2) + " OVL" : "loading..."}`}
+            value={`${position?.currentDebt ? Number(utils.formatUnits(position?.currentDebt, 18)).toFixed(2) + " OVL" : "loading..."}`}
           />
-          <AdditionalDetailRow
+          {/* <AdditionalDetailRow
             detail={"Cost"}
             value={`${position?.cost ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
-          />
-          <AdditionalDetailRow
+          /> */}
+          {/* <AdditionalDetailRow
             detail={"Collateral"}
-            value={`${position?.debt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
-          />
+            value={`${position?.currentDebt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
+          /> */}
           <AdditionalDetailRow 
             detail={"Notional"} 
             value={"n/a"} 
@@ -236,24 +233,24 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             detail={"Entry Price"} 
             value={ entryPrice ? `${entryPrice}` : 'loading'} 
           />
-          <AdditionalDetailRow 
+          {/* <AdditionalDetailRow 
             detail={"Current Price"} 
             value={ currentPrice ? `${currentPrice}` : 'loading'} 
           />
           <AdditionalDetailRow 
             detail={"Liquidation Price (est)"} 
             value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} 
-          />
+          /> */}
         </FlexColumnContainer>
 
         <FlexColumnContainer mt={"48px"}>
-          <AdditionalDetailRow
+          {/* <AdditionalDetailRow
             detail={"Total Shares Outstanding"}
             value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
-          />
+          /> */}
           <AdditionalDetailRow 
             detail={"Position Shares"} 
-            value={"n/a"} 
+            value={`${position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) + " OVL" : "loading..."}`}
           />
         </FlexColumnContainer>
       </Accordion>
