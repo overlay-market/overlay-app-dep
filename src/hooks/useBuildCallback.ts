@@ -53,19 +53,29 @@ function useBuildCallArguments(
   else {
     calldata = marketContract.interface.encodeFunctionData("build", [
       utils.parseUnits(buildData.typedValue),
-      Number(buildData.selectedLeverage),
+      utils.parseUnits(buildData.selectedLeverage),
       buildData.isLong,
-      Number(buildData.setSlippageValue)
+      utils.parseUnits(buildData.setSlippageValue),
+      // Number(buildData.typedValue),
+      // Number(buildData.selectedLeverage),
+      // buildData.isLong,
+      // Number(buildData.setSlippageValue)
     ])
+    
+    console.log('buildData: ', buildData);
+    console.log('typedValue: ', utils.parseUnits(buildData.typedValue));
+    console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage))
+    console.log('isLong: ', buildData.isLong)
+    console.log('setSlippageValue: ', utils.parseUnits(buildData.setSlippageValue))
   }
 
   return useMemo(() => {
-    if (!buildData || !marketAddress || !chainId || !account || !marketContract) return []
+    if (!buildData || !marketAddress || !chainId || !account || !marketContract || !calldata) return []
 
     const txn: { address: string; calldata: string; value: string } = {
       address: marketAddress,
       calldata: calldata,
-      value: utils.parseEther("0").toHexString(),
+      value: '0x0',
     };
 
     return [
@@ -93,9 +103,11 @@ export function useBuildCallback(
   const currentTimeForId = currentTimeParsed();
   const buildCalls = useBuildCallArguments(buildData, marketAddress);
 
+  console.log('buildCalls: ', buildCalls);
+  
   return useMemo(() => {
 
-    if (!buildData || !library || !account || !chainId) {
+    if (!buildData || !library || !account || !chainId || !marketAddress) {
 
       return {
         state: BuildCallbackState.INVALID,
@@ -122,6 +134,8 @@ export function useBuildCallback(
               value: value,
             };
 
+            console.log('tx: ', tx);
+
             return library
               .estimateGas(tx)
               .then((gasEstimate) => { return { call, gasEstimate } })
@@ -131,6 +145,8 @@ export function useBuildCallback(
                   "Gas estimate failed, trying eth_call to extract error",
                   call
                 );
+                
+                console.log('gasError: ', gasError);
 
                 return library
                   .call(tx)
