@@ -10,7 +10,7 @@ import ERC20_ABI from '../constants/abis/erc20.json';
 import ERC20_BYTES32_ABI from '../constants/abis/erc20_bytes32.json';
 import OVL_COLLATERAL_ABI from '../constants/abis/OverlayV1OVLCollateral.json';
 import OVL_MOTHERSHIP_ABI from '../constants/abis/OverlayV1Mothership.json';
-import OVL_V1_MARKET_ABI from "../constants/abis/OverlayV1UniswapV3Market.json"
+import V1_MARKET_ABI from '../constants/abis/OverlayV1Market.json';
 import V1_PERIPHERY_ABI from "../constants/abis/OverlayV1State.json";
 
 // returns null on errors
@@ -53,7 +53,7 @@ export function useOVLFactoryContract(): Contract | null {
 };
 
 export function useMarketContract(address: string | undefined): Contract | null {
-  return useContract(address, OVL_V1_MARKET_ABI, false);
+  return useContract(address, V1_MARKET_ABI, false);
 };
 
 export function useCollateralManagerContract(): Contract | null {

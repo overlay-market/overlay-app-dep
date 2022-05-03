@@ -6,11 +6,13 @@ import { useActiveWeb3React } from "./web3";
 import { TransactionType } from "./../state/transactions/actions";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useTransactionAdder } from "../state/transactions/hooks";
-import { OVL_MARKET_ADDRESS, OVL_COLLATERAL_ADDRESS } from "../constants/addresses";
+import { useMarketContract } from "./useContract";
+import { OVL_MARKET_ADDRESS } from "../constants/addresses";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
 import { useAddPopup } from "../state/application/hooks";
 import { currentTimeParsed } from "../utils/currentTime";
 import isZero from "../utils/isZero";
+import { AbiCoder } from "@ethersproject/abi";
 
 interface BuildCall {
   address: string;
@@ -40,26 +42,28 @@ enum BuildCallbackState {
 
 function useBuildCallArguments(
   buildData: any | undefined,
-  chainId: any | undefined
+  marketAddress: any | undefined,
 ) {
   let calldata: any;
 
-  if (!buildData) calldata = undefined;
-  else {
-    // calldata = OVLCollateral.buildParameters({
-    //   collateral: utils.parseUnits(buildData.typedValue),
-    //   leverage: Number(buildData.selectedLeverage),
-    //   isLong: buildData.isLong,
-    //   market: OVL_MARKET_ADDRESS[chainId],
-    //   minOI: Number(buildData.setSlippageValue),
-    //   deadline: 1
-    // });
+  const { account, chainId } = useActiveWeb3React();
+  const marketContract = useMarketContract(marketAddress);
 
+  if (!buildData || !marketContract) calldata = undefined;
+  else {
+    calldata = marketContract.interface.encodeFunctionData("build", [
+      utils.parseUnits(buildData.typedValue),
+      Number(buildData.selectedLeverage),
+      buildData.isLong,
+      Number(buildData.setSlippageValue)
+    ])
   }
 
   return useMemo(() => {
+    if (!buildData || !marketAddress || !chainId || !account || !marketContract) return []
+
     const txn: { address: string; calldata: string; value: string } = {
-      address: OVL_COLLATERAL_ADDRESS[chainId],
+      address: marketAddress,
       calldata: calldata,
       value: utils.parseEther("0").toHexString(),
     };
@@ -71,12 +75,13 @@ function useBuildCallArguments(
         value: txn.value,
       },
     ];
-  }, [calldata, chainId]);
+  }, [calldata, marketAddress, chainId, account, buildData, marketContract]);
 
 }
 
 export function useBuildCallback(
-  buildData: any // position to build
+  buildData: any, // position to build
+  marketAddress: any
 ): {
   state: BuildCallbackState;
   callback: null | (() => Promise<string>);
@@ -86,7 +91,7 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder();
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
-  const buildCalls = useBuildCallArguments(buildData, chainId);
+  const buildCalls = useBuildCallArguments(buildData, marketAddress);
 
   return useMemo(() => {
 
