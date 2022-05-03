@@ -55,12 +55,18 @@ function useBuildCallArguments(
       utils.parseUnits(buildData.typedValue),
       utils.parseUnits(buildData.selectedLeverage),
       buildData.isLong,
-      utils.parseUnits(buildData.setSlippageValue),
+      // utils.parseUnits(buildData.setSlippageValue),
+      utils.parseUnits('2000000000000000000')
       // Number(buildData.typedValue),
       // Number(buildData.selectedLeverage),
       // buildData.isLong,
       // Number(buildData.setSlippageValue)
-    ])
+      // BigInt("2000000000000000000"),
+      // BigInt("1000000000000000000"),
+      // true,
+      // BigInt("2031184299945301600"),
+    ]
+    )
     
     console.log('buildData: ', buildData);
     console.log('typedValue: ', utils.parseUnits(buildData.typedValue));
@@ -80,7 +86,8 @@ function useBuildCallArguments(
 
     return [
       {
-        address: txn.address,
+        // address: txn.address,
+        address: '0xc3073c0bc1b4baf24fdc170ef4d3cb0e5c4b2ed2',
         calldata: calldata,
         value: txn.value,
       },
@@ -120,11 +127,8 @@ export function useBuildCallback(
     return {
       state: BuildCallbackState.VALID,
       callback: async function onBuild(): Promise<string> {
-
         const estimatedCalls: BuildCallEstimate[] = await Promise.all(
-
           buildCalls.map((call) => {
-
             const { address, calldata, value } = call;
 
             const tx = {
@@ -135,7 +139,6 @@ export function useBuildCallback(
             };
 
             console.log('tx: ', tx);
-
             return library
               .estimateGas(tx)
               .then((gasEstimate) => { return { call, gasEstimate } })
