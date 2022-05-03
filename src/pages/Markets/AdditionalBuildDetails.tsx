@@ -91,7 +91,7 @@ export const AdditionalDetails = ({
           Bid 
         </PositionDetailType>
         <DetailValue> 
-          ~{bidPrice} 
+          {bidPrice} 
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -100,7 +100,7 @@ export const AdditionalDetails = ({
           Ask 
         </PositionDetailType>
         <DetailValue> 
-          ~{askPrice} 
+          {askPrice} 
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -154,7 +154,7 @@ export const AdditionalDetails = ({
           Funding rate 
         </PositionDetailType>
         <DetailValue color={"#10DCB1"}>
-           ~ {fundingRate}% 
+           {fundingRate}
         </DetailValue>
       </AdditionalDetailRow>
     </ContentContainer>

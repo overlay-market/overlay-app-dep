@@ -34,7 +34,7 @@ export const AdditionalDetailRow = ({
   detail: string;
   value: string;
   detailColor?: string;
-  valueColor?: string;
+  valueColor?: string | number;
 }) => {
   return (
     <FlexRowContainer m={"2px 0"}>

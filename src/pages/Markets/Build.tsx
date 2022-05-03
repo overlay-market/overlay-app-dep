@@ -34,6 +34,8 @@ import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useMarket } from "../../state/markets/hooks";
+import { useSingleCallResult } from "../../state/multicall/hooks";
+import { useV1PeripheryContract } from "../../hooks/useContract";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -113,9 +115,32 @@ export const BuildInterface = ({
   const ovl = chainId ? OVL[chainId] : undefined;
   // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
 
+  // @TO-DO: pull market attributes
+  const peripheryContract = useV1PeripheryContract();
+
   const market = marketData?.market;
   const buildFee = market?.tradingFeeRate
-  
+  const fetchPrices = useSingleCallResult(peripheryContract, 'prices', [marketId])
+  const fetchFundingRate = useSingleCallResult(peripheryContract, 'fundingRate', [marketId])
+
+  const prices = useMemo(() => {
+    if (fetchPrices.loading === true || !fetchPrices.result) return {bid: 'loading...', ask: 'loading...', mid: 'loading...'};
+
+    return {
+      bid: formatWeiToParsedNumber(fetchPrices.result?.bid_, 18, 2)?.toString(),
+      ask: formatWeiToParsedNumber(fetchPrices.result?.ask_, 18, 2)?.toString(),
+      mid: formatWeiToParsedNumber(fetchPrices.result?.mid_, 18, 2)?.toString()
+    }
+  }, [fetchPrices])
+
+  const fundingRate = useMemo(() => {
+    if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading...';
+
+    return formatWeiToParsedNumber(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
+  }, [fetchFundingRate]);
+
+  console.log('prices: ', prices);
+
   const {
     selectedLeverage,
     isLong,
@@ -244,18 +269,6 @@ export const BuildInterface = ({
       });
   }, [approveCallback, typedValue]);
   
-  const fundingRate = useFundingRate(market?.id);
-  
-  // const averagePrice = useMemo(() => {
-  //   return market ? (
-  //         ( 
-  //           Number(utils.formatUnits(market?.currentPrice.bid, 18)) +
-  //           Number(utils.formatUnits(market?.currentPrice.ask, 18))
-  //         ) / 2
-  //       ).toFixed(7)
-  //       : "loading...";
-  //   }, [market]);
-    
   const { impactFee } = useMarketImpactFee(
     market ? market.id : undefined,
     isLong,
@@ -298,12 +311,7 @@ export const BuildInterface = ({
             {market ? shortenAddress(market?.id) : "loading..."}
           </TEXT.BoldHeader1>
           <TEXT.StandardHeader1>
-            {/* {isLong === undefined && averagePrice}
-            {isLong !== undefined && market
-              ? isLong
-                ? formatWeiToParsedNumber(market?.currentPrice.bid, 18, 7)
-                : formatWeiToParsedNumber(market?.currentPrice.ask, 18, 7)
-              : null} */}
+            {!isLong ? prices.bid : prices.ask}
           </TEXT.StandardHeader1>
           <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
@@ -424,8 +432,8 @@ export const BuildInterface = ({
       /> */}
 
       <AdditionalDetails
-        bidPrice={market ? formatWeiToParsedString('1000', 10) : "..."}
-        askPrice={market ? formatWeiToParsedString('1000', 10) : "..."}
+        bidPrice={prices.bid}
+        askPrice={prices.ask}
         fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "..."}
         oiCap={formatWeiToParsedNumber(market?.capNotional, 18, 0)}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
@@ -459,7 +467,7 @@ export const BuildInterface = ({
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
         adjustedOi={adjustedOi}
-        marketPrice={market ? isLong ? formatWeiToParsedString('1000', 10) : formatWeiToParsedString('1000', 10) : "n/a"}
+        marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
