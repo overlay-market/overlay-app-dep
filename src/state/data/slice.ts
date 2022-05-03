@@ -75,6 +75,7 @@ export const api = createApi({
               lmbda
               delta
               capPayoff
+              capNotional
               capLeverage
               circuitBreakerWindow
               circuitBreakerMintTarget

@@ -29,11 +29,11 @@ import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
 import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { shortenAddress } from "../../utils/web3";
-import { useBuildFee } from "../../hooks/useBuildFee";
 import { AdditionalDetails } from "./AdditionalBuildDetails";
 import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
+import { useMarket } from "../../state/markets/hooks";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -85,10 +85,10 @@ const NumericalInputTitle = styled(TEXT.StandardBody)`
 
 export const BuildInterface = ({
   marketId,
-  marketPrice,
+  marketPrice
 }:{
   marketId: string;
-  marketPrice: string | number;
+  marketPrice: string;
 }) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
   const [{ showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash }, setBuildState] = useState<{
@@ -103,19 +103,18 @@ export const BuildInterface = ({
     transactionHash: undefined,
   });
 
-  const { markets } = useAllMarkets();
+  const { marketData } = useMarket(marketId);
   const { buildData } = useDerivedBuildInfo();
   const { account, chainId } = useActiveWeb3React();
   // const { ovlBalance: userOvlBalance } = useOvlBalance(account);
   const { callback: buildCallback } = useBuildCallback(buildData);
   const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
-  const buildFee = useBuildFee();
   const ovl = chainId ? OVL[chainId] : undefined;
   // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
 
-  const filteredMarketById = markets?.markets.filter((market, key) => market.id === marketId);
-  const market = filteredMarketById ? filteredMarketById[0] : null;
+  const market = marketData?.market;
+  const buildFee = market?.tradingFeeRate
   
   const {
     selectedLeverage,

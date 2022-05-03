@@ -1673,7 +1673,7 @@ export type MarketQuery = (
   { __typename?: 'Query' }
   & { market?: Maybe<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime' | 'oiLong' | 'oiShort'>
+    & Pick<Market, 'id' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime' | 'oiLong' | 'oiShort'>
     & { factory: (
       { __typename?: 'Factory' }
       & Pick<Factory, 'id'>
@@ -1742,6 +1742,7 @@ export const MarketDocument = `
     lmbda
     delta
     capPayoff
+    capNotional
     capLeverage
     circuitBreakerWindow
     circuitBreakerMintTarget
