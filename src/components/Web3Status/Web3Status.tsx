@@ -6,7 +6,7 @@ import { UnsupportedChainIdError } from '@web3-react/core';
 import { TEXT } from '../../theme/theme';
 import { shortenAddress } from '../../utils/web3';
 import { useActiveWeb3React } from '../../hooks/web3';
-// import { useOvlBalance } from '../../state/wallet/hooks';
+import { useOvlBalance } from '../../state/wallet/hooks';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { SupportedChainId } from '../../constants/chains';
 import { OVL } from '../../constants/tokens';
@@ -119,19 +119,9 @@ function Web3StatusInner() {
 
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
 
-  // const userEthBalance = useETHBalances(account ? [account] : [])?.[
-  //   account ?? ""
-  // ];
+  const ovlBalance = useOvlBalance();
 
-  const ovl = chainId ? OVL[chainId] : undefined;
-
-  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
-
-  console.log('userOvlBalance: ', userOvlBalance);
-
-  // const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
-  
-  // const { isLoading, ovlBalance } = useOvlBalance( account ? account : undefined);
+  console.log('ovlBalance: ', ovlBalance?.toFixed(2));
 
   const toggleWalletModal = useWalletModalToggle();
 
@@ -140,17 +130,17 @@ function Web3StatusInner() {
     return (  
       <Web3StatusConnected>
 
-      {/* {account && isLoading && chainId && (
+      {account && chainId && !ovlBalance && (
         <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
 
       {account && chainId && ovlBalance && (
-        <TokenBalance balance={Number(utils.formatEther(ovlBalance)).toFixed(0).toString()} network={NETWORK_LABELS[chainId]} />
+        <TokenBalance balance={Number(ovlBalance?.toFixed(2))} network={NETWORK_LABELS[chainId]} />
       )}
 
       {account && chainId && !ovlBalance && (
         <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
-      )}   */}
+      )}  
 
         <Account>
           {shortenAddress(account)}
