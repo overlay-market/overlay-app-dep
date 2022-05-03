@@ -9,7 +9,7 @@ import { TransactionType } from '../state/transactions/actions';
 import { calculateGasMargin } from '../utils/calculateGasMargin';
 import { useTokenContract } from './useContract';
 import { useActiveWeb3React } from './web3';
-import { useTokenAllowance } from './useTokenAllowance';
+import { useMarketAllowance } from './useMarketAllowance';
 import { currentTimeParsed } from '../utils/currentTime';
 
 export enum ApprovalState {
@@ -21,14 +21,14 @@ export enum ApprovalState {
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
-  amountToApprove?: BigNumber | undefined,
   currencyToken?: Token,
+  amountToApprove?: BigNumber | undefined,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
-  const currentAllowance = useTokenAllowance(currencyToken, account ?? undefined, spender);
+  const currentAllowance = useMarketAllowance(spender, account ?? undefined);
   const pendingApproval = useHasPendingApproval(currencyToken?.address, spender);
 
   // check the current approval status
