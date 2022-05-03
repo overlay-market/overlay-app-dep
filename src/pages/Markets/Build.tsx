@@ -139,8 +139,6 @@ export const BuildInterface = ({
     return formatWeiToParsedNumber(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate]);
 
-  console.log('prices: ', prices);
-
   const {
     selectedLeverage,
     isLong,

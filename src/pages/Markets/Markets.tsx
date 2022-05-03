@@ -67,9 +67,9 @@ const Markets = () => {
     })
   }, [fundingRates]);
 
-  console.log('marketPrices: ', marketPrices);
+  // console.log('marketPrices: ', marketPrices);
 
-  console.log('marketFundingRates: ', marketFundingRates);
+  // console.log('marketFundingRates: ', marketFundingRates);
 
 
   return (

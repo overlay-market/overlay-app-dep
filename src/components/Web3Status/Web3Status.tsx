@@ -7,7 +7,9 @@ import { TEXT } from '../../theme/theme';
 import { shortenAddress } from '../../utils/web3';
 import { useActiveWeb3React } from '../../hooks/web3';
 // import { useOvlBalance } from '../../state/wallet/hooks';
+import { useTokenBalance } from '../../state/wallet/hooks';
 import { SupportedChainId } from '../../constants/chains';
+import { OVL } from '../../constants/tokens';
 import { FlexRowContainer } from '../Container/Container';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import Dropdown from './Dropdown';
@@ -121,9 +123,11 @@ function Web3StatusInner() {
   //   account ?? ""
   // ];
 
-  // const ovl = chainId ? OVL[chainId] : undefined;
+  const ovl = chainId ? OVL[chainId] : undefined;
 
-  // const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+  const userOvlBalance = useTokenBalance(account ?? undefined, ovl);
+
+  console.log('userOvlBalance: ', userOvlBalance);
 
   // const isLoadingBalance = useTokenBalancesWithLoadingIndicator(account ?? undefined, [ovl])[1];
   

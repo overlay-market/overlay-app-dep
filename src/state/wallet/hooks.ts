@@ -1,36 +1,14 @@
 import { useMemo } from "react";
 import { Interface } from '@ethersproject/abi'
-import { Currency, CurrencyAmount, Ether, JSBI, Token } from '@sushiswap/sdk'
+import { Currency, CurrencyAmount, Ether, Token } from '@uniswap/sdk-core'
+import JSBI from 'jsbi'
 import { isAddress } from '../../utils/web3';
 // import { useAccountQuery } from '../data/enhanced';
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useMulticall2Contract } from '../../hooks/useContract';
 import { useMultipleContractSingleData, useSingleContractMultipleData } from "../multicall/hooks";
+import { OVL } from "../../constants/tokens";
 import ERC20_ABI from '../../constants/abis/erc20.json'
-
-// export function useOvlBalance(
-//   address: string | null | undefined
-// ) {
-//   let queryAddress = address ? address.toLowerCase() : "";
-
-//   const {
-//     isLoading,
-//     isError,
-//     error,
-//     isUninitialized,
-//     data
-//   } = useAccountQuery({ account: queryAddress })
-  
-//   return useMemo(() => {
-//     return {
-//       isLoading,
-//       isError,
-//       error,
-//       isUninitialized,
-//       ovlBalance: data?.account?.balanceOVL?.balance
-//     } 
-//   }, [ isLoading, isError, error, isUninitialized, data ])
-// };
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
@@ -128,4 +106,19 @@ export function useTokenBalance(account?: string, token?: Token): CurrencyAmount
   const tokenBalances = useTokenBalances(account, [token])
   if (!token) return undefined
   return tokenBalances[token.address]
+}
+
+export function useOvlBalance(): CurrencyAmount<Token> | undefined {
+  const { account, chainId } = useActiveWeb3React();
+
+  const ovl = chainId ? OVL[chainId] : undefined;
+
+  const ovlBalance: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, ovl);
+
+  if (!ovl) return undefined;
+  
+  return CurrencyAmount.fromRawAmount(
+    ovl,
+    ovlBalance?.quotient ?? JSBI.BigInt(0)
+  );
 }

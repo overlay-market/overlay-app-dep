@@ -17,6 +17,7 @@ export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15
 
 // v1-core contract addresses
 export const V1_PERIPHERY_ADDRESS: AddressMap = constructSameAddressMap('0xeCA28606F2BE3209550c5e347E825af200D916c4');
+export const OVL_TOKEN_ADDRESS: AddressMap = constructSameAddressMap('0x04020e4fF78b629D79CcBd163fc6044af73588DC');
 
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',

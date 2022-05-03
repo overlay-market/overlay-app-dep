@@ -65,11 +65,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
 
   const entryPrice: number | string | undefined = position && position.entryPrice;
 
-  // const currentPrice: number | string | undefined = position &&
-  //     position.isLong !== undefined ? 
-  //       (position.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5))
-  //       : undefined;
-
   // const estLiquidationPrice = useLiquidationPrice(
   //   position?.market?.id,
   //   position?.isLong,
