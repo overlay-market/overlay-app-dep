@@ -81,7 +81,7 @@ function useBuildCallArguments(
 
 export function useBuildCallback(
   buildData: any, // position to build
-  marketAddress: any
+  marketAddress: any | undefined | null
 ): {
   state: BuildCallbackState;
   callback: null | (() => Promise<string>);
@@ -211,7 +211,7 @@ export function useBuildCallback(
               response, 
               {
                 type: TransactionType.BUILD_OVL_POSITION,
-                market: OVL_MARKET_ADDRESS[chainId],
+                market: marketAddress,
                 collateral: buildData.typedValue,
                 isLong: buildData.isLong,
                 leverage: buildData.selectedLeverage
@@ -247,5 +247,5 @@ export function useBuildCallback(
       },
       error: null,
     };
-  }, [buildData, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId]);
+  }, [buildData, marketAddress, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId]);
 }

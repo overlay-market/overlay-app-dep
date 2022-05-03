@@ -36,6 +36,7 @@ import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useMarket } from "../../state/markets/hooks";
 import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
+import { useOvlBalance } from "../../state/wallet/hooks";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -106,10 +107,11 @@ export const BuildInterface = ({
   });
 
   const { marketData } = useMarket(marketId);
+  const market = marketData?.market;
   const { buildData } = useDerivedBuildInfo();
   const { account, chainId } = useActiveWeb3React();
-  // const { ovlBalance: userOvlBalance } = useOvlBalance(account);
-  const { callback: buildCallback } = useBuildCallback(buildData);
+  const ovlBalance = useOvlBalance();
+  const { callback: buildCallback } = useBuildCallback(buildData, market?.id);
   const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const ovl = chainId ? OVL[chainId] : undefined;
@@ -118,7 +120,6 @@ export const BuildInterface = ({
   // @TO-DO: pull market attributes
   const peripheryContract = useV1PeripheryContract();
 
-  const market = marketData?.market;
   const buildFee = market?.tradingFeeRate
   const fetchPrices = useSingleCallResult(peripheryContract, 'prices', [marketId])
   const fetchFundingRate = useSingleCallResult(peripheryContract, 'fundingRate', [marketId])
@@ -267,26 +268,26 @@ export const BuildInterface = ({
       });
   }, [approveCallback, typedValue]);
   
-  const { impactFee } = useMarketImpactFee(
-    market ? market.id : undefined,
-    isLong,
-    isLong !== undefined ? isLong ? market?.oiLong : market?.oiShort : undefined,
-    market?.capNotional
-  );
+  // const { impactFee } = useMarketImpactFee(
+  //   market ? market.id : undefined,
+  //   isLong,
+  //   isLong !== undefined ? isLong ? market?.oiLong : market?.oiShort : undefined,
+  //   market?.capNotional
+  // );
     
-  const {
-    preAdjustedOi,
-    calculatedBuildFee,
-    calculatedImpactFee,
-    adjustedCollateral,
-    adjustedOi,
-    adjustedDebt
-  } = useEstimatedBuild(
-    selectedLeverage,
-    Number(typedValue),
-    buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
-    impactFee
-  );
+  // const {
+  //   preAdjustedOi,
+  //   calculatedBuildFee,
+  //   calculatedImpactFee,
+  //   adjustedCollateral,
+  //   adjustedOi,
+  //   adjustedDebt
+  // } = useEstimatedBuild(
+  //   selectedLeverage,
+  //   Number(typedValue),
+  //   buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
+  //   impactFee
+  // );
         
   // const estimatedLiquidationPrice = useLiquidationPrice(
   //   market?.id,
@@ -357,29 +358,16 @@ export const BuildInterface = ({
         <NumericalInputLabel htmlFor="Build Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
           <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
-            {/* <TransparentUnderlineButton onClick={() => handleQuickInput(25, parsedUserOvlBalance ?? null)}>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>
               25%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50, parsedUserOvlBalance ?? null)}>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}>
               50%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75, parsedUserOvlBalance ?? null)}>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}>
               75%
             </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(100, parsedUserOvlBalance ?? null)}>
-              Max
-            </TransparentUnderlineButton> */}
-
-            <TransparentUnderlineButton onClick={() => handleQuickInput(25, '1000')}>
-              25%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50, '1000')}>
-              50%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75, '1000')}>
-              75%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(100, '1000')}>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(100, ovlBalance?.toFixed(2) ?? null)}>
               Max
             </TransparentUnderlineButton>
           </FlexRowContainer>
@@ -438,7 +426,7 @@ export const BuildInterface = ({
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
         slippage={setSlippageValue}
         fundingRate={fundingRate}
-        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : "..."}
+        expectedOi={"..."}
         estLiquidationPrice={'1000'}
       />
 
@@ -464,11 +452,13 @@ export const BuildInterface = ({
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        adjustedOi={adjustedOi}
+        // adjustedOi={adjustedOi}
+        adjustedOi={0}
         marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
-        adjustedCollateral={adjustedCollateral}
+        // adjustedCollateral={adjustedCollateral}
+        adjustedCollateral={0}
         estimatedLiquidationPrice={'10000'}
       />
     </MarketCard>
