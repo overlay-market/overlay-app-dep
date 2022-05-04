@@ -67,6 +67,7 @@ export const TransactionSettingsModal = ({
           width={"96px"}
           margin={"0 0 auto auto"}
           padding={"0px"}
+          border={"1px solid #f2f2f2"}
           >
           Auto
         </TransactionSettingsButton>
@@ -101,13 +102,13 @@ export const TransactionSettingsModal = ({
           >
           Reset
         </TransactionSettingsButton>
-        <TransactionSettingsButton
+        {/* <TransactionSettingsButton
           // onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
           width={"96px"}
           padding={"0px"}
           >
           Save
-        </TransactionSettingsButton>
+        </TransactionSettingsButton> */}
       </FlexRowContainer>
     </FlexColumnContainer>
     </TransactionSettingModal>
