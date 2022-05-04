@@ -38,7 +38,8 @@ const PositionsContainer = styled.div`
 `;
 
 const LoadingContainer = styled.div`
-  display: block;
+  display: flex;
+  margin: 32px auto auto auto;
 `;
 
 const ConnectWalletToggleText = styled(Button)`
@@ -98,12 +99,14 @@ export const Positions = () => {
           <PositionTableHeader />
           <PositionsContainer>
             {isLoading ? (
-              <Loader
-                type="TailSpin"
-                color="#f2f2f2"
-                height={100}
-                width={100}
-              />
+              <LoadingContainer>
+                <Loader
+                  type="TailSpin"
+                  color="#f2f2f2"
+                  height={100}
+                  width={100}
+                />
+              </LoadingContainer>
             ):(
               positions?.map((index, key) => {
                 let position = index;
