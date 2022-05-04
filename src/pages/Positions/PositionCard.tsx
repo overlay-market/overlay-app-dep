@@ -75,11 +75,11 @@ export const PositionCard = ({
   marketName: string;
   isLong: boolean | null;
   leverage: number | string;
-  positionSize: number | string;
+  positionSize: number | string | undefined;
   collateralCurrency: string;
   quotePrice: number | string;
   quoteCurrency: string;
-  estLiquidationPrice: string;
+  estLiquidationPrice: string | undefined;
   PnL: number | string | undefined;
   navigate?: boolean;
   hasBorder?: boolean;
