@@ -54,11 +54,18 @@ function useUnwindCallArguments(
   if (!marketContract || unwindValue === "" || positionCurrentValue === undefined || !positionId || !account || isLong === undefined || prices === undefined) calldata = undefined;
   else {
     let unwindValueBigNumber = utils.parseUnits(unwindValue);
-    let fraction = unwindValueBigNumber.div(positionCurrentValue);
+    let parsedUnwindValue = unwindValueBigNumber.toString();
+    let parsedCurrentValue = positionCurrentValue.toString();
+    let fraction = Number(parsedUnwindValue) / Number(parsedCurrentValue);
 
+    console.log('unwindValueBigNumber: ',unwindValue.toString() )
+    console.log('denominator: ',positionCurrentValue.toString() )
+    console.log('fraction: ',  utils.parseUnits(fraction.toString()));
+
+    console.log('positionId: ', BigNumber.from(positionId.toString()))
     calldata = marketContract.interface.encodeFunctionData("unwind", [
-      utils.parseUnits(positionId.toString()),
-      fraction,
+      BigNumber.from(positionId.toString()),
+      utils.parseUnits(fraction.toString()),
       isLong ? utils.parseUnits('0') : utils.parseUnits('10000000')
     ]
     )
