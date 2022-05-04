@@ -185,7 +185,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <AdditionalDetailRow 
           detail={"Profit/Loss"} 
           valueColor={parsedPnL !== undefined && parsedPnL !== 0 ? ( parsedPnL < 0 ? "#FF648A" : "#10DCB1" ) : "#F2F2F2"}
-          value={PnL ? `${formatWeiToParsedNumber(PnL, 18, 2)}` : "loading..."}
+          value={PnL ? `${formatWeiToParsedNumber(PnL, 18, 2)} OVL` : "loading..."}
         />
         <AdditionalDetailRow 
           detail={"Side"} 

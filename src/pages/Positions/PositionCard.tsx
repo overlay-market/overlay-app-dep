@@ -126,7 +126,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="20%" align="right">
         <Detail fontWeight={700} color={"#10DCB1"}>
-          {PnL}
+          {PnL !== undefined ? `${PnL} OVL` : 'loading...'}
         </Detail>
 
         {navigate ?? (
