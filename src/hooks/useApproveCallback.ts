@@ -21,9 +21,9 @@ export enum ApprovalState {
 
 // returns a variable indicating the state of the approval and a function which approves if necessary or early returns
 export function useApproveCallback(
-  currencyToken?: Token,
   amountToApprove?: BigNumber | undefined,
-  spender?: string
+  spender?: string,
+  currencyToken?: Token
 ): [ApprovalState, () => Promise<void>] {
   const { account } = useActiveWeb3React();
   const addPopup = useAddPopup();

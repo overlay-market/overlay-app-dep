@@ -37,6 +37,7 @@ export const DetailValue = styled.div<{ color?: string }>`
 export const AdditionalDetails = ({
   bidPrice,
   askPrice,
+  midPrice,
   fee,
   oiCap,
   oiLong,
@@ -48,6 +49,7 @@ export const AdditionalDetails = ({
 }: {
   bidPrice?: string | number;
   askPrice?: string | number;
+  midPrice?: string | number;
   fee?: string | number;
   oiCap?: number;
   oiLong?: number;

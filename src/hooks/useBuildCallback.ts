@@ -43,20 +43,30 @@ enum BuildCallbackState {
 function useBuildCallArguments(
   buildData: any | undefined,
   marketAddress: any | undefined,
+  price: BigNumber | undefined
 ) {
   let calldata: any;
 
   const { account, chainId } = useActiveWeb3React();
   const marketContract = useMarketContract(marketAddress);
 
-  if (!buildData || !marketContract) calldata = undefined;
+  if (!buildData || typeof buildData.setSlippageValue !== 'string' || !marketContract || !price) calldata = undefined;
   else {
+    let increasePercentage = Number(buildData.setSlippageValue) + 100;
+    let decreasePercentage = 100 - Number(buildData.setSlippageValue);
+    let increaseNumerator = BigNumber.from(increasePercentage).toHexString()
+    let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
+    let base = BigNumber.from(100).toHexString()
+
+    console.log('short: ', price.mul(decreaseNumerator).div(base))
+    console.log('long: ', price.mul(increaseNumerator).div(base))
+
     calldata = marketContract.interface.encodeFunctionData("build", [
       utils.parseUnits(buildData.typedValue),
       utils.parseUnits(buildData.selectedLeverage),
       buildData.isLong,
       // utils.parseUnits(buildData.setSlippageValue),
-      utils.parseUnits('2000000000000000000')
+      buildData.isLong ? price.mul(increaseNumerator).div(base) : price.mul(decreaseNumerator).div(base)
       // Number(buildData.typedValue),
       // Number(buildData.selectedLeverage),
       // buildData.isLong,
@@ -67,12 +77,6 @@ function useBuildCallArguments(
       // BigInt("2031184299945301600"),
     ]
     )
-    
-    console.log('buildData: ', buildData);
-    console.log('typedValue: ', utils.parseUnits(buildData.typedValue));
-    console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage))
-    console.log('isLong: ', buildData.isLong)
-    console.log('setSlippageValue: ', utils.parseUnits(buildData.setSlippageValue))
   }
 
   return useMemo(() => {
@@ -98,7 +102,8 @@ function useBuildCallArguments(
 
 export function useBuildCallback(
   buildData: any, // position to build
-  marketAddress: any | undefined | null
+  marketAddress: any | undefined | null,
+  price: any,
 ): {
   state: BuildCallbackState;
   callback: null | (() => Promise<string>);
@@ -108,7 +113,7 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder();
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
-  const buildCalls = useBuildCallArguments(buildData, marketAddress);
+  const buildCalls = useBuildCallArguments(buildData, marketAddress, price);
 
   console.log('buildCalls: ', buildCalls);
   

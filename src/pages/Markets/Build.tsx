@@ -108,37 +108,42 @@ export const BuildInterface = ({
 
   const { marketData } = useMarket(marketId);
   const market = marketData?.market;
-  const { buildData } = useDerivedBuildInfo();
   const { account, chainId } = useActiveWeb3React();
   const ovlBalance = useOvlBalance();
-  const { callback: buildCallback } = useBuildCallback(buildData, market?.id);
   const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const ovl = chainId ? OVL[chainId] : undefined;
   // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
-
+  
   // @TO-DO: pull market attributes
   const peripheryContract = useV1PeripheryContract();
-
+  
   const buildFee = market?.tradingFeeRate
   const fetchPrices = useSingleCallResult(peripheryContract, 'prices', [marketId])
   const fetchFundingRate = useSingleCallResult(peripheryContract, 'fundingRate', [marketId])
-
+  
   const prices = useMemo(() => {
     if (fetchPrices.loading === true || !fetchPrices.result) return {bid: 'loading...', ask: 'loading...', mid: 'loading...'};
-
+    
+    console.log('_mid: ', fetchPrices.result?.mid_);
     return {
       bid: formatWeiToParsedNumber(fetchPrices.result?.bid_, 18, 2)?.toString(),
       ask: formatWeiToParsedNumber(fetchPrices.result?.ask_, 18, 2)?.toString(),
-      mid: formatWeiToParsedNumber(fetchPrices.result?.mid_, 18, 2)?.toString()
+      mid: formatWeiToParsedNumber(fetchPrices.result?.mid_, 18, 2)?.toString(),
+      _bid: fetchPrices.result?.bid_,
+      _ask: fetchPrices.result?.ask_,
+      _mid: fetchPrices.result?.mid_
     }
   }, [fetchPrices])
-
+  
   const fundingRate = useMemo(() => {
     if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading...';
-
+    
     return formatWeiToParsedNumber(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate]);
+  
+  const { buildData } = useDerivedBuildInfo();
+  const { callback: buildCallback } = useBuildCallback(buildData, market?.id, prices._mid);
 
   const {
     selectedLeverage,
@@ -233,8 +238,8 @@ export const BuildInterface = ({
   
   const [approval, approveCallback] = useApproveCallback(
     utils.parseUnits(typedValue ? typedValue : "0"),
-    ovl,
-    account ?? undefined
+    market?.id,
+    ovl
   );
 
   const showApprovalFlow = useMemo(() => {
@@ -310,7 +315,7 @@ export const BuildInterface = ({
             {market ? shortenAddress(market?.id) : "loading..."}
           </TEXT.BoldHeader1>
           <TEXT.StandardHeader1>
-            {!isLong ? prices.bid : prices.ask}
+            {prices.mid}
           </TEXT.StandardHeader1>
           <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
@@ -420,6 +425,7 @@ export const BuildInterface = ({
       <AdditionalDetails
         bidPrice={prices.bid}
         askPrice={prices.ask}
+        midPrice={prices.mid}
         fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "..."}
         oiCap={formatWeiToParsedNumber(market?.capNotional, 18, 0)}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
