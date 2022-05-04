@@ -1,6 +1,6 @@
 import styled from "styled-components/macro";
 import Loader from "react-loader-spinner";
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 import { Button } from "rebass";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { MarketCard } from "../../components/Card/MarketCard";
@@ -8,6 +8,8 @@ import { useAccountPositions } from "../../state/positions/hooks";
 import { useUnwindActionHandlers } from "../../state/unwind/hooks";
 import { PositionCard, PositionTableHeader } from "./PositionCard";
 import { useWalletModalToggle } from "../../state/application/hooks";
+import { shortenAddress } from "../../utils/web3";
+import { formatWeiToParsedString } from "../../utils/formatWei";
 
 const Container = styled.div`
   display: flex;
@@ -76,7 +78,7 @@ export const Positions = () => {
                   <PositionCard
                     key={key.toString()}
                     positionId={position.positionId}
-                    marketName={position.market.id}
+                    marketName={`${shortenAddress(position.market.id) + `-` + BigNumber.from(position.positionId).toString()}`}
                     isLong={position.isLong}
                     leverage={position.leverage}
                     positionSize={Number(utils.formatUnits(position.currentOi, 18)).toFixed(2)}
@@ -85,7 +87,7 @@ export const Positions = () => {
                     quoteCurrency={"DAI"}
                     // estLiquidationPrice={position.liquidationPrice}
 
-                    estLiquidationPrice={'10000000000000000'}
+                    estLiquidationPrice={'-'}
                     PnL={"0.10"}
                     navigate={true}
                     hasBorder={true}
