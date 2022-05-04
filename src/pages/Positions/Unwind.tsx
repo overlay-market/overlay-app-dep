@@ -7,7 +7,7 @@ import { TEXT } from "../../theme/theme";
 import { Container } from "../Markets/Market";
 import { Back } from "../../components/Back/Back";
 import { useActiveWeb3React } from "../../hooks/web3";
-import { usePositionValue } from "../../hooks/usePositionValue";
+import { usePositionInfo } from "../../hooks/usePositionInfo";
 import { formatDecimalPlaces } from "../../utils/formatDecimal";
 import { Accordion } from "../../components/Accordion/Accordion";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
@@ -59,9 +59,12 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
 
-  const positionValue: BigNumber | null = usePositionValue(position ? position.currentOi : null);
+  const positionDetails: BigNumber | null = usePositionInfo(position?.market.id, position?.positionId);
 
-  const PnL = positionValue && position?.currentDebt ? formatWeiToParsedNumber((positionValue.sub(position.currentDebt)), 18, 2) : undefined;
+  console.log('positionDetails: ', positionDetails)
+  // const PnL = positionValue ? utils.formatUnits(positionValue) : 0;
+  // const PnL = BigNumber.from(0);
+  // const PnL = positionValue && position?.currentDebt ? formatWeiToParsedNumber((positionValue.sub(position.currentDebt)), 18, 2) : undefined;
 
   const entryPrice: number | string | undefined = position && position.entryPrice;
 
@@ -171,8 +174,10 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
 
       <FlexColumnContainer mt={"48px"}>
         <AdditionalDetailRow 
-          detail={"PnL"} 
-          valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} 
+          detail={"Profit/Loss"} 
+          // valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} 
+          valueColor={"#10DCB1"}
+          value={`0 OVL`} 
         />
         <AdditionalDetailRow 
           detail={"Side"} 
@@ -191,7 +196,8 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
-            value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "..."}
+            // value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "..."}
+            value={"-"}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}

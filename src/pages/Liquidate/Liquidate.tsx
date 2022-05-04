@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 import { TableContainer, TableHead, Paper } from '@material-ui/core';
 import { useAccountPositions } from '../../state/positions/hooks';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
-import { usePositionValue } from '../../hooks/usePositionValue';
 import { formatDecimalPlaces } from '../../utils/formatDecimal';
 import { TransparentButton } from '../../components/Button/Button';
 import { PageContainer } from "../../components/Container/Container";
