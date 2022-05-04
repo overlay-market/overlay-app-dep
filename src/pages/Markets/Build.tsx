@@ -458,13 +458,13 @@ export const BuildInterface = ({
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
         // adjustedOi={adjustedOi}
-        adjustedOi={0}
+        adjustedOi={'-'}
         marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         // adjustedCollateral={adjustedCollateral}
-        adjustedCollateral={0}
-        estimatedLiquidationPrice={'10000'}
+        adjustedCollateral={'-'}
+        estimatedLiquidationPrice={'-'}
       />
     </MarketCard>
   );

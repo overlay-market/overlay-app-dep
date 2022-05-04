@@ -26,11 +26,11 @@ export default function ConfirmTxnModal({
   buildFee: number | undefined | null;
   onConfirm?: () => void;
   onDismiss?: () => void;
-  adjustedOi: number | undefined;
+  adjustedOi: number | string | undefined;
   marketPrice: string | undefined;
   setSlippageValue: string;
   selectedLeverage: string;
-  adjustedCollateral: number | undefined;
+  adjustedCollateral: number | string | undefined;
   estimatedLiquidationPrice: any
 }) {
   return (
@@ -106,7 +106,7 @@ export default function ConfirmTxnModal({
         </FlexColumnContainer>
 
         <TEXT.Supplemental color={"#B9BABD"} mt={"24px"} mb={"24px"}>
-          The unwind price will be at least 2989.99 USDC or the transaction will
+          The unwind price will be at least - or the transaction will
           revert.
         </TEXT.Supplemental>
 
