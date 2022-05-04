@@ -1,30 +1,32 @@
 import { useEffect, useState, useMemo } from "react";
-import { useCollateralManagerContract } from "./useContract";
+import { useV1PeripheryContract } from "./useContract";
 import { BigNumber } from "ethers";
 import { useBlockNumber } from "../state/application/hooks";
-import { ConsoleView } from "react-device-detect";
+import { useActiveWeb3React } from "./web3";
 
 export function useMaintenanceMargin(
-  market?: string
+  marketAddress?: string,
+  positionId?: string | number
 ): BigNumber | undefined {
-  const collateralManagerContract = useCollateralManagerContract();
+  const peripheryContract = useV1PeripheryContract();
   const blockNumber = useBlockNumber();
+  const { account } = useActiveWeb3React();
   const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
 
   useEffect(() => {
-    if (!collateralManagerContract || !market) return;
+    if (!peripheryContract || !marketAddress || !account || !blockNumber) return;
 
     (async () => {
       try {
-        setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
+        setMarginMaintenance(await peripheryContract.marginMaintenance(marketAddress, account, positionId))
       }
       catch (error) {
-        console.log('market inside usemm: ', market);
+        console.log('market inside usemm: ', marketAddress);
         console.error('error coming from usemm: ', error);
       }
 
     })();
-  }, [collateralManagerContract, market]);
+  }, [peripheryContract, marketAddress, positionId, blockNumber, account]);
 
   return useMemo(() => {
     return marginMaintenance;
