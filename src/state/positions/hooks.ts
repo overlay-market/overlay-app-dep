@@ -21,7 +21,7 @@ export function usePositionState(): AppState['position'] {
 
 export function usePositionActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;
-  onSelectLeverage: (selectedLeverage: number) => void;
+  onSelectLeverage: (selectedLeverage: string) => void;
   onSelectPositionSide: (isLong: boolean) => void;
   onSetSlippage: (setSlippageValue: DefaultTxnSettings | string) => void;
   onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string) => void;
@@ -37,7 +37,7 @@ export function usePositionActionHandlers(): {
   );
 
   const onSelectLeverage = useCallback(
-    (selectedLeverage: number) => {
+    (selectedLeverage: string) => {
       dispatch(selectLeverage({ selectedLeverage }))
     },
     [dispatch]

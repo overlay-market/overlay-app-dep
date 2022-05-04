@@ -29,7 +29,7 @@ export default function ConfirmTxnModal({
   adjustedOi: number | undefined;
   marketPrice: string | undefined;
   setSlippageValue: string;
-  selectedLeverage: number;
+  selectedLeverage: string;
   adjustedCollateral: number | undefined;
   estimatedLiquidationPrice: any
 }) {

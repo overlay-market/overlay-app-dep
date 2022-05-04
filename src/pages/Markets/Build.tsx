@@ -356,7 +356,7 @@ export const BuildInterface = ({
           max={5}
           step={1}
           margin={"24px 0 0 0"}
-          value={selectedLeverage}
+          value={Number(selectedLeverage)}
           onChange={handleLeverageInput}
         />
         <NumericalInputLabel htmlFor="Build Amount Input">
@@ -425,14 +425,14 @@ export const BuildInterface = ({
         bidPrice={prices.bid}
         askPrice={prices.ask}
         midPrice={prices.mid}
-        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "..."}
+        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading..."}
         oiCap={formatWeiToParsedNumber(market?.capNotional, 18, 0)}
         oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
         oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
         slippage={setSlippageValue}
         fundingRate={fundingRate}
-        expectedOi={"..."}
-        estLiquidationPrice={'1000'}
+        expectedOi={"-"}
+        estLiquidationPrice={'-'}
       />
 
       {/* <ConfirmTxnModal

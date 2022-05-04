@@ -33,7 +33,7 @@ export const SelectActionButton = styled(BaseTemplateButton)`
   border: ${({ active }) => ( active ? 'none !important' : '' )};
   color: ${({ isDisabled }) => ( isDisabled ? '#63656D !important' : '')};
   background: ${({ isDisabled }) => ( isDisabled ? '#D0D0D2 !important' : '')};
-  height: 48px;
+  height: auto;
   padding: 16px;
   border-radius: 8px;
 `;

@@ -12,7 +12,7 @@ import {
 
 export interface PositionState {
   readonly typedValue: string | undefined;
-  readonly selectedLeverage: number;
+  readonly selectedLeverage: string;
   readonly isLong: boolean | undefined;
   readonly inputCurrency: string | undefined;
   readonly setSlippageValue: DefaultTxnSettings | string;
@@ -21,7 +21,7 @@ export interface PositionState {
 
 export const initialState: PositionState = {
   typedValue: "",
-  selectedLeverage: 1,
+  selectedLeverage: "1",
   isLong: undefined,
   inputCurrency: OVL[1].address,
   setSlippageValue: "1",

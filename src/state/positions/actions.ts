@@ -11,7 +11,7 @@ export enum DefaultTxnSettings {
 };
 
 export const typeInput = createAction<{ typedValue: string | undefined }>('positions/typeInput');
-export const selectLeverage = createAction<{ selectedLeverage: number }>('positions/selectLeverage');
+export const selectLeverage = createAction<{ selectedLeverage: string }>('positions/selectLeverage');
 export const selectPositionSide = createAction<{ isLong: boolean }>('positions/selectPositionSide');
 export const setSlippage = createAction<{ setSlippageValue: DefaultTxnSettings | string }>('positions/setSlippage');
 export const setTxnDeadline = createAction<{ txnDeadline: DefaultTxnSettings | string  }>('positions/setTxnDeadline');

@@ -56,6 +56,12 @@ function useBuildCallArguments(
     let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
     let base = BigNumber.from(100).toHexString()
 
+    console.log('typedValue: ', utils.parseUnits(buildData.typedValue))
+    console.log('typedValue: ', buildData.typedValue)
+    console.log('selectedLeverage: ', buildData.selectedLeverage)
+    console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage))
+    console.log('isLong: ', buildData.isLong)
+
     console.log('short build pricePoint: ', price.mul(decreaseNumerator).div(base))
     console.log('long build pricePoint: ', price.mul(increaseNumerator).div(base))
 
