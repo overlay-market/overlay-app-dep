@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
-import { useCollateralManagerContract } from "./useContract";
+import { useV1PeripheryContract } from "./useContract";
 import { useBlockNumber } from "../state/application/hooks";
+import { useActiveWeb3React } from "./web3";
 import { BigNumber } from "ethers";
 import { formatWeiToParsedNumber } from "../utils/formatWei";
 import { useMaintenanceMargin } from "./useMaintenanceMargin";
@@ -17,39 +18,30 @@ import { useMaintenanceMargin } from "./useMaintenanceMargin";
 // OI(0) = open interest at entry
 
 export function useLiquidationPrice(
-  market?: string,
-  isLong?: boolean,
-  entryBidPrice?: any,
-  entryAskPrice?: any,
-  debt?: any,
-  entryOi?: any,
-  currentOi?: any
-) {
-  const collateralManagerContract = useCollateralManagerContract();
-  // const marginMaintenance = useMaintenanceMargin(market);
-
-  const [marginMaintenance, setMarginMaintenance] = useState<BigNumber>();
+  marketAddress?: string,
+  positionId?: string | number
+): BigNumber | undefined {
+  const peripheryContract = useV1PeripheryContract();
+  const blockNumber = useBlockNumber();
+  const { account } = useActiveWeb3React();
+  const [liquidationPrice, setLiquidationPrice] = useState<BigNumber>();
 
   useEffect(() => {
-    if (!collateralManagerContract || !market) return;
+    if (!peripheryContract || !marketAddress || !account || !blockNumber) return;
 
     (async () => {
-      setMarginMaintenance(await collateralManagerContract.marginMaintenance(market))
+      try {
+        setLiquidationPrice(await peripheryContract.liquidationPrice(marketAddress, account, positionId))
+      }
+      catch (error) {
+        console.log('market inside useLiquidationPrice: ', marketAddress);
+        console.error('error coming from useLiquidationPrice: ', error);
+      }
+
     })();
-  }, [collateralManagerContract, market]);
+  }, [peripheryContract, marketAddress, positionId, blockNumber, account]);
 
   return useMemo(() => {
-    if (!marginMaintenance && isLong !== undefined && !entryBidPrice && !entryAskPrice && !debt && !entryOi && !currentOi) return;
-
-    const parsedMarginMaintenance = marginMaintenance && formatWeiToParsedNumber(marginMaintenance, 18, 18);
-
-    let liquidationPrice = 
-      parsedMarginMaintenance ? (
-          isLong ? ( (entryAskPrice / currentOi) * (parsedMarginMaintenance * entryOi + debt) ) 
-          : ( (entryBidPrice / currentOi) * (2 * currentOi - debt - parsedMarginMaintenance * currentOi) )
-      ) : undefined;
-
     return liquidationPrice;
-
-  }, [marginMaintenance, isLong, entryBidPrice, entryAskPrice, debt, entryOi, currentOi]);
-}
+  }, [liquidationPrice]);
+};
