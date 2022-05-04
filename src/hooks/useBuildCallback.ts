@@ -104,6 +104,7 @@ export function useBuildCallback(
   buildData: any, // position to build
   marketAddress: any | undefined | null,
   price: any,
+  inputError: string | undefined
 ): {
   state: BuildCallbackState;
   callback: null | (() => Promise<string>);
@@ -119,8 +120,8 @@ export function useBuildCallback(
   
   return useMemo(() => {
 
-    if (!buildData || !library || !account || !chainId || !marketAddress) {
-
+    if (!buildData || !library || !account || !chainId || !marketAddress || inputError) {
+      console.log('inputError: ', inputError);
       return {
         state: BuildCallbackState.INVALID,
         callback: null,

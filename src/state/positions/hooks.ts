@@ -116,7 +116,7 @@ export function useDerivedBuildInfo(): {
     inputError = `Connect Wallet`
   }
 
-  if (!typedValue) {
+  if (typedValue === '') {
     inputError = `Input Collateral Amount`
   }
 
