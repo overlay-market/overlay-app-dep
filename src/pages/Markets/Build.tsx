@@ -38,6 +38,7 @@ import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useOvlBalance } from "../../state/wallet/hooks";
 import { useMarketOis } from "../../hooks/useMarketOis";
+import { useMarketCapOi } from "../../hooks/useMarketCapOi";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -118,6 +119,7 @@ export const BuildInterface = ({
   
   // @TO-DO: pull market attributes
   const ois = useMarketOis(marketId);
+  const capOi = useMarketCapOi(marketId);
   const peripheryContract = useV1PeripheryContract();
   
   const buildFee = market?.tradingFeeRate
@@ -426,7 +428,7 @@ export const BuildInterface = ({
         askPrice={prices.ask}
         midPrice={prices.mid}
         fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading..."}
-        oiCap={formatWeiToParsedNumber(market?.capNotional, 18, 0)}
+        oiCap={ capOi && formatWeiToParsedNumber(capOi, 18, 0)}
         oiLong={ ois && formatWeiToParsedNumber(ois.oiLong_, 18, 0)}
         oiShort={ ois && formatWeiToParsedNumber(ois.oiShort_, 18, 0)}
         slippage={setSlippageValue}
