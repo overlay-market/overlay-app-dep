@@ -279,19 +279,17 @@ export const BuildInterface = ({
   //   market?.capNotional
   // );
     
-  // const {
-  //   preAdjustedOi,
-  //   calculatedBuildFee,
-  //   calculatedImpactFee,
-  //   adjustedCollateral,
-  //   adjustedOi,
-  //   adjustedDebt
-  // } = useEstimatedBuild(
-  //   selectedLeverage,
-  //   Number(typedValue),
-  //   buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
-  //   impactFee
-  // );
+  const {
+    preAdjustedOi,
+    calculatedBuildFee,
+    adjustedCollateral,
+    adjustedOi,
+    adjustedDebt
+  } = useEstimatedBuild(
+    selectedLeverage,
+    Number(typedValue),
+    buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
+  );
         
   // const estimatedLiquidationPrice = useLiquidationPrice(
   //   market?.id,
@@ -457,13 +455,13 @@ export const BuildInterface = ({
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        // adjustedOi={adjustedOi}
-        adjustedOi={'-'}
+        adjustedOi={adjustedOi}
+        // adjustedOi={'-'}
         marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
-        // adjustedCollateral={adjustedCollateral}
-        adjustedCollateral={'-'}
+        adjustedCollateral={adjustedCollateral}
+        // adjustedCollateral={'-'}
         estimatedLiquidationPrice={'-'}
       />
     </MarketCard>
