@@ -124,8 +124,6 @@ export const BuildInterface = ({
   
   const prices = useMemo(() => {
     if (fetchPrices.loading === true || !fetchPrices.result) return {bid: 'loading...', ask: 'loading...', mid: 'loading...'};
-    
-    console.log('_mid: ', fetchPrices.result?.mid_);
     return {
       bid: formatWeiToParsedNumber(fetchPrices.result?.bid_, 18, 2)?.toString(),
       ask: formatWeiToParsedNumber(fetchPrices.result?.ask_, 18, 2)?.toString(),

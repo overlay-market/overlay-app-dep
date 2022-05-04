@@ -1,18 +1,15 @@
 import { useMemo } from "react";
 import { utils } from "ethers";
 import { BigNumber } from "@ethersproject/bignumber";
-// import { OVLCollateral } from "@overlay-market/overlay-v1-sdk";
 import { useActiveWeb3React } from "./web3";
 import { TransactionType } from "./../state/transactions/actions";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useTransactionAdder } from "../state/transactions/hooks";
 import { useMarketContract } from "./useContract";
-import { OVL_MARKET_ADDRESS } from "../constants/addresses";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
 import { useAddPopup } from "../state/application/hooks";
 import { currentTimeParsed } from "../utils/currentTime";
 import isZero from "../utils/isZero";
-import { AbiCoder } from "@ethersproject/abi";
 
 interface BuildCall {
   address: string;
@@ -58,23 +55,14 @@ function useBuildCallArguments(
     let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
     let base = BigNumber.from(100).toHexString()
 
-    console.log('short: ', price.mul(decreaseNumerator).div(base))
-    console.log('long: ', price.mul(increaseNumerator).div(base))
+    console.log('short build pricePoint: ', price.mul(decreaseNumerator).div(base))
+    console.log('long build pricePoint: ', price.mul(increaseNumerator).div(base))
 
     calldata = marketContract.interface.encodeFunctionData("build", [
       utils.parseUnits(buildData.typedValue),
       utils.parseUnits(buildData.selectedLeverage),
       buildData.isLong,
-      // utils.parseUnits(buildData.setSlippageValue),
       buildData.isLong ? price.mul(increaseNumerator).div(base) : price.mul(decreaseNumerator).div(base)
-      // Number(buildData.typedValue),
-      // Number(buildData.selectedLeverage),
-      // buildData.isLong,
-      // Number(buildData.setSlippageValue)
-      // BigInt("2000000000000000000"),
-      // BigInt("1000000000000000000"),
-      // true,
-      // BigInt("2031184299945301600"),
     ]
     )
   }
@@ -272,5 +260,5 @@ export function useBuildCallback(
       },
       error: null,
     };
-  }, [buildData, marketAddress, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId]);
+  }, [buildData, marketAddress, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId, inputError]);
 }
