@@ -26,6 +26,7 @@ import { usePositionNotional } from "../../hooks/usePositionNotional";
 import { useMaintenanceMargin } from "../../hooks/useMaintenanceMargin";
 import { usePositionCollateral } from "../../hooks/usePositionCollateral";
 import { usePositionCost } from "../../hooks/usePositionCost";
+import { useMarketPrices } from "../../hooks/useMarketPrices";
 
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
@@ -67,7 +68,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const position = filtered ? filtered[0] : null;
 
   const positionInfo = usePositionInfo(position?.market.id, positionId);
-
+  const isLong = positionInfo ? positionInfo.isLong : undefined;
   const collateral = usePositionCollateral(position?.market.id, positionId);
   const cost = usePositionCost(position?.market.id, positionId);
   const value = usePositionValue(position?.market.id, positionId);
@@ -76,10 +77,13 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const notional = usePositionNotional(position?.market.id, positionId);
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId);
   const liquidationPrice = useLiquidationPrice(position?.market.id, positionId);
-  // const PnL = positionValue ? utils.formatUnits(positionValue) : 0;
-  // const PnL = BigNumber.from(0);
-  // const PnL = positionValue && position?.currentDebt ? formatWeiToParsedNumber((positionValue.sub(position.currentDebt)), 18, 2) : undefined;
+  const prices = useMarketPrices(position?.market.id);
 
+  const bidPrice = prices ? prices.bid_ : null;
+  const askPrice = prices ? prices.ask_ : null;
+
+  const PnL = cost && value ? value.sub(cost) : null;
+  const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0;
   const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
   // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
 
@@ -122,11 +126,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
 
       <FlexColumnContainer>
-        <TEXT.StandardHeader1 fontWeight={700}>Close Position</TEXT.StandardHeader1>
-        <TEXT.StandardHeader1>
-          {/* {position && position?.isLong
-            ? formatWeiToParsedNumber(position?.pricePoint.bid, 18, 7)
-            : formatWeiToParsedNumber(position?.pricePoint.ask, 18, 7)} */}
+        <TEXT.StandardHeader1 fontWeight={700} m={'4px'}>Close Position</TEXT.StandardHeader1>
+        <TEXT.StandardHeader1 minHeight={'30px'}>
+          {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : 'loading...' }
         </TEXT.StandardHeader1>
       </FlexColumnContainer>
 
@@ -181,13 +183,14 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       <FlexColumnContainer mt={"48px"}>
         <AdditionalDetailRow 
           detail={"Profit/Loss"} 
-          // valueColor={PnL && PnL < 0 ? "#FF648A" : "#10DCB1"} value={`${PnL} OVL`} 
-          valueColor={"#10DCB1"}
-          value={`0 OVL`} 
+          valueColor={parsedPnL !== undefined && parsedPnL !== 0 ? ( parsedPnL < 0 ? "#FF648A" : "#10DCB1" ) : "#F2F2F2"}
+          value={PnL ? `${formatWeiToParsedNumber(PnL, 18, 2)}` : "loading..."}
         />
         <AdditionalDetailRow 
           detail={"Side"} 
-          value={`${position?.isLong ? "Long" : "Short"}`} valueColor={`${position?.isLong ? "#10DCB1" : "#FF648A" }`} 
+          // valueColor={isLong !== undefined ? (isLong ? "#10DCB1" : "#FF648A") : "loading..."} 
+          valueColor={"#F2F2F2"}
+          value={isLong !== undefined ? (isLong ? "Long" : "Short") : "loading..."} 
         />
       </FlexColumnContainer>
 
@@ -203,15 +206,14 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           <AdditionalDetailRow
             detail={"Value"}
             value={value ? `${formatWeiToParsedNumber(value, 18, 2)} OVL` : "loading..."}
-            // value={"-"}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={oi ? `${formatWeiToParsedNumber(oi, 18, 2)} OVL` : "loading..."}
+            value={oi ? `${formatWeiToParsedNumber(oi, 18, 2)}` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
-            value={`${position?.leverage ? position.leverage : "loading"}`}
+            value={`${position?.leverage ? position.leverage : "loading..."}`}
           />
           <AdditionalDetailRow
             detail={"Debt"}
@@ -238,12 +240,12 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow 
             detail={"Entry Price"} 
-            value={ entryPrice ? `${entryPrice}` : 'loading'} 
+            value={ entryPrice ? `${entryPrice}` : 'loading...'} 
           />
-          {/* <AdditionalDetailRow 
+          <AdditionalDetailRow 
             detail={"Current Price"} 
-            value={ currentPrice ? `${currentPrice}` : 'loading'} 
-          /> */}
+            value={ isLong ? `${formatWeiToParsedNumber(bidPrice, 18, 2)}` : `${formatWeiToParsedNumber(askPrice, 18, 2)}`} 
+          />
           <AdditionalDetailRow 
             detail={"Liquidation Price (est)"} 
             value={liquidationPrice ? `${formatWeiToParsedNumber(liquidationPrice, 18, 2)}` : "loading..."}
