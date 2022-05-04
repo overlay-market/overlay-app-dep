@@ -53,6 +53,8 @@ const Markets = () => {
   const peripheryContract = useV1PeripheryContract();
   const prices = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses);
   const fundingRates = useSingleContractMultipleData(peripheryContract, 'fundingRate', marketAddresses);
+  const ois = useSingleContractMultipleData(peripheryContract, 'ois', marketAddresses);
+  const capOis = useSingleContractMultipleData(peripheryContract, 'capOi', marketAddresses);
 
   const marketPrices = useMemo(() => {
     return prices.map((market, index) => {
@@ -69,6 +71,26 @@ const Markets = () => {
       return market?.result?.fundingRate_;
     })
   }, [fundingRates, blockNumber]);
+
+  const marketOis = useMemo(() => {
+    return ois.map((market, index) => {
+      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
+
+      return market?.result;
+    })
+  }, [ois, blockNumber])
+
+  const marketCapOis = useMemo(() => {
+    return capOis.map((market, index) => {
+      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
+
+      return market?.result?.capOi_;
+    })
+  }, [capOis, blockNumber])
+
+  // console.log('marketOis: ', marketOis);
+
+  console.log('marketCapOis: ', marketCapOis);
 
   // console.log('marketPrices: ', marketPrices);
 
@@ -190,12 +212,21 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <FlexColumnContainer align={"left"}>
                     <TEXT.SmallBody>
-                      {Number(utils.formatUnits(market.oiLong, 18)).toFixed(0)}/
-                      {Number(utils.formatUnits(market.capNotional, 18)).toFixed(0)}
+                      {
+                        marketOis[index] ? (
+                          formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 0)
+                        ) : '...'
+                      }
+                      /
+                      {
+                        marketCapOis[index] ? (
+                          formatWeiToParsedNumber(marketCapOis[index], 18, 0)
+                        ) : '...'
+                      }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
-                      max={formatWeiToParsedNumber(market?.capNotional, 18, 0)}
+                      value={formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 0)}
+                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 0)}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -206,12 +237,21 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <FlexColumnContainer align={"left"}>
                     <TEXT.SmallBody>
-                      {Number(utils.formatUnits(market.oiShort, 18)).toFixed(0)}
-                      /{Number(utils.formatUnits(market.capNotional, 18)).toFixed(0)}
+                      {
+                        marketOis[index] ? (
+                          formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 0)
+                        ) : '...'
+                      }
+                      /
+                      {
+                        marketCapOis[index] ? (
+                          formatWeiToParsedNumber(marketCapOis[index], 18, 0)
+                        ) : '...'
+                      }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(market.oiShort, 18, 0)}
-                      max={formatWeiToParsedNumber(market.capNotional, 18, 0)}
+                      value={formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 0)}
+                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 0)}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}

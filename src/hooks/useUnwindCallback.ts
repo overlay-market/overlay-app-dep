@@ -53,6 +53,7 @@ function useUnwindCallArguments(
 
   if (!marketContract || unwindValue === "" || positionCurrentValue === undefined || !positionId || !account || isLong === undefined || prices === undefined) calldata = undefined;
   else {
+    // OI has units of OVL / (quoteCurrency / baseCurrency) = OVL * baseCurrency / quoteCurrency
     let unwindValueBigNumber = utils.parseUnits(unwindValue);
     let parsedUnwindValue = unwindValueBigNumber.toString();
     let parsedCurrentValue = positionCurrentValue.toString();
