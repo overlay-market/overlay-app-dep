@@ -19,6 +19,13 @@ import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hook
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { TransparentUnderlineButton, TriggerActionButton } from "../../components/Button/Button";
+import { usePositionValue } from "../../hooks/usePositionValue";
+import { usePositionOi } from "../../hooks/usePositionOi";
+import { usePositionDebt } from "../../hooks/usePositionDebt";
+import { usePositionNotional } from "../../hooks/usePositionNotional";
+import { useMaintenanceMargin } from "../../hooks/useMaintenanceMargin";
+import { usePositionCollateral } from "../../hooks/usePositionCollateral";
+import { usePositionCost } from "../../hooks/usePositionCost";
 
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
@@ -59,26 +66,23 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
 
-  const positionInfo = usePositionInfo(position?.market.id, position?.positionId);
+  const positionInfo = usePositionInfo(position?.market.id, positionId);
 
-  console.log('positionInfo: ', positionInfo)
+  const collateral = usePositionCollateral(position?.market.id, positionId);
+  const cost = usePositionCost(position?.market.id, positionId);
+  const value = usePositionValue(position?.market.id, positionId);
+  const oi = usePositionOi(position?.market.id, positionId);
+  const debt = usePositionDebt(position?.market.id, positionId);
+  const notional = usePositionNotional(position?.market.id, positionId);
+  const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId);
+  const liquidationPrice = useLiquidationPrice(position?.market.id, positionId);
   // const PnL = positionValue ? utils.formatUnits(positionValue) : 0;
   // const PnL = BigNumber.from(0);
   // const PnL = positionValue && position?.currentDebt ? formatWeiToParsedNumber((positionValue.sub(position.currentDebt)), 18, 2) : undefined;
 
   const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
-  const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
+  // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
 
-  console.log('notional: ', notional);
-  // const estLiquidationPrice = useLiquidationPrice(
-  //   position?.market?.id,
-  //   position?.isLong,
-  //   entryPrice,
-  //   entryPrice,
-  //   formatWeiToParsedNumber(position?.currentDebt, 18, 18),
-  //   formatWeiToParsedNumber(position?.totalSupply, 18, 18),
-  //   formatWeiToParsedNumber(position?.currentOi, 18, 18)
-  // )
 
   useEffect(() => {
     onResetUnwindState();
@@ -198,12 +202,12 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
-            // value={positionValue ? `${formatWeiToParsedNumber(positionValue, 18, 2)} OVL` : "..."}
-            value={"-"}
+            value={value ? `${formatWeiToParsedNumber(value, 18, 2)} OVL` : "loading..."}
+            // value={"-"}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={`${position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) + " OVL" : "..."}`}
+            value={oi ? `${formatWeiToParsedNumber(oi, 18, 2)} OVL` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
@@ -211,23 +215,23 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow
             detail={"Debt"}
-            value={`${position?.currentDebt ? Number(utils.formatUnits(position?.currentDebt, 18)).toFixed(2) + " OVL" : "loading..."}`}
+            value={debt ? `${formatWeiToParsedNumber(debt, 18, 2)} OVL` : "loading..."}
           />
-          {/* <AdditionalDetailRow
+          <AdditionalDetailRow
             detail={"Cost"}
-            value={`${position?.cost ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
-          /> */}
-          {/* <AdditionalDetailRow
+            value={cost ? `${formatWeiToParsedNumber(cost, 18, 2)} OVL` : "loading..."}
+          />
+          <AdditionalDetailRow
             detail={"Collateral"}
-            value={`${position?.currentDebt ? Number(utils.formatUnits(position?.cost, 18)).toFixed(2) + " OVL" : "loading..."}`}
-          /> */}
+            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 2)} OVL` : "loading..."}
+          />
           <AdditionalDetailRow 
             detail={"Notional"} 
-            value={"n/a"} 
+            value={notional ? `${formatWeiToParsedNumber(notional, 18, 2)} OVL` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Maintenance"} 
-            value={"n/a"} 
+            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 2)} OVL` : "loading..."}
           />
         </FlexColumnContainer>
 
@@ -239,23 +243,23 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           {/* <AdditionalDetailRow 
             detail={"Current Price"} 
             value={ currentPrice ? `${currentPrice}` : 'loading'} 
-          />
+          /> */}
           <AdditionalDetailRow 
             detail={"Liquidation Price (est)"} 
-            value={ estLiquidationPrice ? `${formatDecimalPlaces(5, estLiquidationPrice.toString())}` : 'loading'} 
-          /> */}
+            value={liquidationPrice ? `${formatWeiToParsedNumber(liquidationPrice, 18, 2)}` : "loading..."}
+          />
         </FlexColumnContainer>
 
-        <FlexColumnContainer mt={"48px"}>
-          {/* <AdditionalDetailRow
+        {/* <FlexColumnContainer mt={"48px"}>
+          <AdditionalDetailRow
             detail={"Total Shares Outstanding"}
             value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
-          /> */}
+          />
           <AdditionalDetailRow 
             detail={"Position Shares"} 
             value={`${position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) + " OVL" : "loading..."}`}
           />
-        </FlexColumnContainer>
+        </FlexColumnContainer> */}
       </Accordion>
       
     </Container>

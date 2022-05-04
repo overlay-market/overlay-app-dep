@@ -1,34 +1,32 @@
 import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
-import { BigNumber } from "ethers";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
 
-export function useMaintenanceMargin(
+export function useMarketPrices(
   marketAddress?: string,
-  positionId?: string | number
-): BigNumber | undefined {
+): any | undefined {
   const peripheryContract = useV1PeripheryContract();
   const blockNumber = useBlockNumber();
   const { account } = useActiveWeb3React();
-  const [maintenanceMargin, setMaintenanceMargin] = useState<BigNumber>();
+  const [prices, setPrices] = useState();
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return;
 
     (async () => {
       try {
-        setMaintenanceMargin(await peripheryContract.maintenanceMargin(marketAddress, account, positionId))
+        setPrices(await peripheryContract.prices(marketAddress))
       }
       catch (error) {
-        console.log('market inside usemm: ', marketAddress);
-        console.error('error coming from usemm: ', error);
+        console.log('market inside useMarketPrice: ', marketAddress);
+        console.error('error coming from useMarketPrice: ', error);
       }
 
     })();
-  }, [peripheryContract, marketAddress, positionId, blockNumber, account]);
+  }, [peripheryContract, marketAddress, blockNumber, account]);
 
   return useMemo(() => {
-    return maintenanceMargin;
-  }, [maintenanceMargin]);
+    return prices;
+  }, [prices]);
 };
