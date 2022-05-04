@@ -65,7 +65,7 @@ export const TransactionSettingsModal = ({
           active={isTxnSettingsAuto}
           onClick={handleResetTxnSettings}
           width={"96px"}
-          margin={"0 0 0 auto"}
+          margin={"0 0 auto auto"}
           padding={"0px"}
           >
           Auto
