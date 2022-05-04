@@ -11,6 +11,7 @@ import isZero from "../utils/isZero";
 import { TransactionType } from "./../state/transactions/actions";
 import { useAddPopup } from "../state/application/hooks";
 import { currentTimeParsed } from "../utils/currentTime";
+import { useMarketContract } from "./useContract";
 interface UnwindCall {
   address: string;
   calldata: string;
@@ -38,24 +39,36 @@ enum UnwindCallbackState {
 }
 
 function useUnwindCallArguments(
-  unwindAmount: string,
+  marketAddress: string | undefined,
+  unwindValue: string,
+  positionCurrentValue: BigNumber | undefined,
   positionId: number | null,
-  chainId: any
+  isLong: boolean | undefined,
+  prices: any | undefined
 ) {
   let calldata: any;
 
-  if (unwindAmount === "" || !positionId) {
-    calldata = undefined;
-  } else {
-    // calldata = OVLCollateral.unwindParameters({
-    //   shares: utils.parseUnits(unwindAmount),
-    //   positionId: positionId,
-    // });
+  const { account, chainId } = useActiveWeb3React();
+  const marketContract = useMarketContract(marketAddress);
+
+  if (!marketContract || unwindValue === "" || positionCurrentValue === undefined || !positionId || !account || isLong === undefined || prices === undefined) calldata = undefined;
+  else {
+    let unwindValueBigNumber = utils.parseUnits(unwindValue);
+    let fraction = unwindValueBigNumber.div(positionCurrentValue);
+
+    calldata = marketContract.interface.encodeFunctionData("unwind", [
+      utils.parseUnits(positionId.toString()),
+      fraction,
+      isLong ? utils.parseUnits('0') : utils.parseUnits('10000000')
+    ]
+    )
   }
 
   return useMemo(() => {
+    if (!marketAddress || unwindValue === "" || !positionCurrentValue || !positionId || !account || !chainId) return [];
+
     const txn: { address: string; calldata: string; value: string } = {
-      address: OVL_COLLATERAL_ADDRESS[chainId],
+      address: marketAddress,
       calldata: calldata,
       value: utils.parseEther("0").toHexString(),
     };
@@ -67,12 +80,16 @@ function useUnwindCallArguments(
         value: txn.value,
       },
     ];
-  }, [calldata, chainId]);
+  }, [calldata, chainId, account, marketAddress, positionCurrentValue, positionId, unwindValue]);
 };
 
 export function useUnwindCallback(
-  unwindAmount: string,
-  positionId: number | null
+  marketAddress: string | undefined,
+  unwindValue: string,
+  positionCurrentValue: BigNumber | undefined,
+  positionId: number | null,
+  isLong: boolean | undefined,
+  prices: any| undefined
 ) : {
   state: UnwindCallbackState;
   callback: null | (() => Promise<string>);
@@ -82,10 +99,10 @@ export function useUnwindCallback(
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
   const addTransaction = useTransactionAdder();
-  const unwindCalls = useUnwindCallArguments(unwindAmount, positionId, chainId);
+  const unwindCalls = useUnwindCallArguments(marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices);
 
   return useMemo(() => {
-    if (!unwindAmount || !positionId || !library || !account || !chainId) {
+    if (!unwindValue || !positionId || !library || !account || !chainId) {
       return {
         state: UnwindCallbackState.INVALID,
         callback: null,
@@ -193,7 +210,7 @@ export function useUnwindCallback(
               {
                 type: TransactionType.UNWIND_OVL_POSITION,
                 positionId: positionId.toString(),
-                shares: unwindAmount
+                shares: unwindValue
               }
             );
 
@@ -222,5 +239,5 @@ export function useUnwindCallback(
       },
       error: null,
     };
-  }, [unwindAmount, positionId, library, account, chainId, unwindCalls, addTransaction, addPopup, currentTimeForId]);
+  }, [unwindValue, positionId, library, account, chainId, unwindCalls, addTransaction, addPopup, currentTimeForId]);
 }

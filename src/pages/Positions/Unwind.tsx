@@ -61,12 +61,10 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { account } = useActiveWeb3React();
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
-  const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
-  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(typedValue, selectedPositionId);
   
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
-
+  
   const positionInfo = usePositionInfo(position?.market.id, positionId);
   const isLong = positionInfo ? positionInfo.isLong : undefined;
   const collateral = usePositionCollateral(position?.market.id, positionId);
@@ -78,16 +76,19 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId);
   const liquidationPrice = useLiquidationPrice(position?.market.id, positionId);
   const prices = useMarketPrices(position?.market.id);
-
+  
   const bidPrice = prices ? prices.bid_ : null;
   const askPrice = prices ? prices.ask_ : null;
-
+  
   const PnL = cost && value ? value.sub(cost) : null;
   const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0;
   const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
   // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
-
-
+  
+  const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, selectedPositionId, isLong, prices);
+  // console.log('selectedPositionId: ', selectedPositionId)
+  
   useEffect(() => {
     onResetUnwindState();
   }, [positionId, onResetUnwindState]);
@@ -138,25 +139,25 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       </TEXT.StandardBody>
       <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(25, position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(25, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
           border={"none"}
           >
           25%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(50, position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(50, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
           border={"none"}
           >
           50%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(75, position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(75, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
           border={"none"}
           >
           75%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(100, position?.currentOi ? utils.formatUnits(position?.currentOi, 18) : null)}
+          onClick={() => handleQuickInput(100, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
           border={"none"}
           >
           Max
