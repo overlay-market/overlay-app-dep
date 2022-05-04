@@ -40,14 +40,15 @@ enum BuildCallbackState {
 function useBuildCallArguments(
   buildData: any | undefined,
   marketAddress: any | undefined,
-  price: BigNumber | undefined
+  price: BigNumber | undefined,
+  inputError: string | undefined
 ) {
   let calldata: any;
 
   const { account, chainId } = useActiveWeb3React();
   const marketContract = useMarketContract(marketAddress);
 
-  if (!buildData || typeof buildData.setSlippageValue !== 'string' || !marketContract || !price) calldata = undefined;
+  if (!buildData || inputError || !marketContract || !price) calldata = undefined;
   else {
     let increasePercentage = Number(buildData.setSlippageValue) + 100;
     let decreasePercentage = 100 - Number(buildData.setSlippageValue);
@@ -102,7 +103,7 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder();
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
-  const buildCalls = useBuildCallArguments(buildData, marketAddress, price);
+  const buildCalls = useBuildCallArguments(buildData, marketAddress, price, inputError);
 
   console.log('buildCalls: ', buildCalls);
   

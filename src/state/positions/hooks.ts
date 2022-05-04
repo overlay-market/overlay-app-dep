@@ -99,7 +99,7 @@ export function useDerivedBuildInfo(): {
   let buildData: object | undefined;
 
   // if any inputs missing, will not allow buildCallback to be created
-  if (!typedValue || !selectedLeverage || isLong === null) {
+  if (typedValue === '' || isLong === null || isLong === undefined) {
     buildData = undefined;
   } else {
     buildData = {
