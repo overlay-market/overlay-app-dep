@@ -59,15 +59,17 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
 
-  const positionDetails: BigNumber | null = usePositionInfo(position?.market.id, position?.positionId);
+  const positionInfo = usePositionInfo(position?.market.id, position?.positionId);
 
-  console.log('positionDetails: ', positionDetails)
+  console.log('positionInfo: ', positionInfo)
   // const PnL = positionValue ? utils.formatUnits(positionValue) : 0;
   // const PnL = BigNumber.from(0);
   // const PnL = positionValue && position?.currentDebt ? formatWeiToParsedNumber((positionValue.sub(position.currentDebt)), 18, 2) : undefined;
 
-  const entryPrice: number | string | undefined = position && position.entryPrice;
+  const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
+  const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
 
+  console.log('notional: ', notional);
   // const estLiquidationPrice = useLiquidationPrice(
   //   position?.market?.id,
   //   position?.isLong,

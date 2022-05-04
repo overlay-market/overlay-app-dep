@@ -8,7 +8,7 @@ import { useSingleCallResult } from "../state/multicall/hooks";
 export function usePositionInfo(
   marketAddress: string | undefined,
   positionId: string | number | undefined
-  ): BigNumber | null {
+  ): any | null {
   const contract = useV1PeripheryContract();
   const currentBlock = useBlockNumber();
   const { account } = useActiveWeb3React();

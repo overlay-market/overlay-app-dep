@@ -12,9 +12,9 @@ import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
-import { Interface } from "@ethersproject/abi";
 import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
+import { useBlockNumber } from "../../state/application/hooks";
 
 const activeClassName = "INACTIVE";
 
@@ -33,7 +33,10 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 
 const Markets = () => {
   const history = useHistory();
+  const blockNumber = useBlockNumber();
   const { markets } = useAllMarkets();
+  
+  console.log('markets: ', markets);
   
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`);
@@ -53,19 +56,19 @@ const Markets = () => {
 
   const marketPrices = useMemo(() => {
     return prices.map((market, index) => {
-      if (market.loading === true || market === undefined) return undefined;
+      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
 
       return market?.result?.mid_;
     })
-  }, [prices]);
+  }, [prices, blockNumber]);
 
   const marketFundingRates = useMemo(() => {
     return fundingRates.map((market, index) => {
-      if (market.loading === true || market === undefined) return undefined;
+      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
 
       return market?.result?.fundingRate_;
     })
-  }, [fundingRates]);
+  }, [fundingRates, blockNumber]);
 
   // console.log('marketPrices: ', marketPrices);
 
