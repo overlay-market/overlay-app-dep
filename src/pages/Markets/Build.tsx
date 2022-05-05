@@ -210,8 +210,10 @@ export const BuildInterface = ({
   }, [attemptingTransaction, transactionErrorMessage, transactionHash]);
   
   const disableBuildButton: boolean = useMemo(() => {
-    return !typedValue || isLong === undefined ? true : false;
-  }, [typedValue, isLong]);
+    if (!typedValue || !minCollateral || isLong === undefined) return true;
+    if (minCollateral > Number(typedValue)) return true;
+    return false;
+  }, [typedValue, isLong, minCollateral]);
   
   const handleBuild = useCallback(() => {
     if (!typedValue) throw new Error("missing position input size");  

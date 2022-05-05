@@ -51,7 +51,7 @@ function useBuildCallArguments(
   const marketContract = useMarketContract(marketAddress);
 
   if (!buildData || inputError || !marketContract || !price || !minCollateral) calldata = undefined;
-  else if (minCollateral > buildData.typedValue) calldata = undefined;
+  else if (minCollateral > Number(buildData.typedValue)) calldata = undefined;
   else {
     let increasePercentage = Number(buildData.setSlippageValue) + 100;
     let decreasePercentage = 100 - Number(buildData.setSlippageValue);
