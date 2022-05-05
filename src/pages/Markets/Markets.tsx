@@ -264,7 +264,7 @@ const Markets = () => {
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
                         marketFundingRates[index] ? (
-                          formatWeiToParsedNumber(marketFundingRates[index], 18, 5) + '%'
+                          formatWeiToParsedString(marketFundingRates[index], 18) + '%'
                         ):(
                           'loading...'
                         )
