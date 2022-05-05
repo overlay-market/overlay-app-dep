@@ -10,6 +10,7 @@ import { calculateGasMargin } from "../utils/calculateGasMargin";
 import { useAddPopup } from "../state/application/hooks";
 import { currentTimeParsed } from "../utils/currentTime";
 import isZero from "../utils/isZero";
+import { formatWeiToParsedNumber } from "../utils/formatWei";
 
 interface BuildCall {
   address: string;
@@ -41,6 +42,7 @@ function useBuildCallArguments(
   buildData: any | undefined,
   marketAddress: any | undefined,
   price: BigNumber | undefined,
+  minCollateral: number | undefined,
   inputError: string | undefined
 ) {
   let calldata: any;
@@ -48,7 +50,8 @@ function useBuildCallArguments(
   const { account, chainId } = useActiveWeb3React();
   const marketContract = useMarketContract(marketAddress);
 
-  if (!buildData || inputError || !marketContract || !price) calldata = undefined;
+  if (!buildData || inputError || !marketContract || !price || !minCollateral) calldata = undefined;
+  else if (minCollateral > buildData.typedValue) calldata = undefined;
   else {
     let increasePercentage = Number(buildData.setSlippageValue) + 100;
     let decreasePercentage = 100 - Number(buildData.setSlippageValue);
@@ -99,6 +102,7 @@ export function useBuildCallback(
   buildData: any, // position to build
   marketAddress: any | undefined | null,
   price: any,
+  minCollateral: number | undefined,
   inputError: string | undefined
 ): {
   state: BuildCallbackState;
@@ -109,7 +113,7 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder();
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
-  const buildCalls = useBuildCallArguments(buildData, marketAddress, price, inputError);
+  const buildCalls = useBuildCallArguments(buildData, marketAddress, price, minCollateral, inputError);
 
   console.log('buildCalls: ', buildCalls);
   

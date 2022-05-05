@@ -150,7 +150,7 @@ export const BuildInterface = ({
   }, [fetchFundingRate]);
   
   const { buildData, parsedAmount, inputError } = useDerivedBuildInfo();
-  const { callback: buildCallback } = useBuildCallback(buildData, market?.id, prices._mid, inputError);
+  const { callback: buildCallback } = useBuildCallback(buildData, market?.id, prices._mid, minCollateral, inputError);
 
   const {
     selectedLeverage,
