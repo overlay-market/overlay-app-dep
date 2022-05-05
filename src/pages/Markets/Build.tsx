@@ -119,6 +119,9 @@ export const BuildInterface = ({
   
   // @TO-DO: pull market attributes
   const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined;
+  const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined;
+  console.log('minCollateral: ', minCollateral);
+
   const ois = useMarketOis(marketId);
   const capOi = useMarketCapOi(marketId);
   const peripheryContract = useV1PeripheryContract();
