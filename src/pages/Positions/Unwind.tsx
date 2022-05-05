@@ -63,7 +63,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { typedValue, selectedPositionId } = useUnwindState();
   
   console.log('positions: ', positions);
-  
+
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
   
@@ -216,7 +216,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
-            value={`${position?.leverage ? position.leverage : "loading..."}`}
+            value={position?.leverage ? `${Math.round(Number(position.leverage))}x` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Debt"}

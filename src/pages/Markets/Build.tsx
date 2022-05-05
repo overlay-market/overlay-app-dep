@@ -118,6 +118,7 @@ export const BuildInterface = ({
   // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
   
   // @TO-DO: pull market attributes
+  const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined;
   const ois = useMarketOis(marketId);
   const capOi = useMarketCapOi(marketId);
   const peripheryContract = useV1PeripheryContract();
@@ -357,8 +358,8 @@ export const BuildInterface = ({
         <LeverageSlider
           name={"Build Position Leverage"}
           min={1}
-          max={5}
-          step={1}
+          max={capLeverage ?? 1}
+          step={.1}
           margin={"24px 0 0 0"}
           value={Number(selectedLeverage)}
           onChange={handleLeverageInput}
