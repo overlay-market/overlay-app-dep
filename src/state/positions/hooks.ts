@@ -99,7 +99,7 @@ export function useDerivedBuildInfo(): {
   let buildData: object | undefined;
 
   // if any inputs missing, will not allow buildCallback to be created
-  if (typedValue === '' || isLong === null || isLong === undefined) {
+  if (typedValue === '' || typedValue === '.' || isLong === null || isLong === undefined) {
     buildData = undefined;
   } else {
     buildData = {
@@ -116,7 +116,7 @@ export function useDerivedBuildInfo(): {
     inputError = `Connect Wallet`
   }
 
-  if (typedValue === '') {
+  if (typedValue === '' || typedValue === '.') {
     inputError = `Input Collateral Amount`
   }
 

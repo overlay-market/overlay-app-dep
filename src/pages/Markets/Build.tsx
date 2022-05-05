@@ -239,8 +239,10 @@ export const BuildInterface = ({
       });
   }, [buildCallback, onResetBuildState, isLong, typedValue]);
   
+  console.log('typedValue: ', typedValue);
+
   const [approval, approveCallback] = useApproveCallback(
-    utils.parseUnits(typedValue ? typedValue : "0"),
+    typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : "0") : undefined,
     market?.id,
     ovl
   );
