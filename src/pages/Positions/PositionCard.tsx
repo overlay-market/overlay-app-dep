@@ -84,6 +84,8 @@ export const PositionCard = ({
   navigate?: boolean;
   hasBorder?: boolean;
 }) => {
+  let parsedLeverage = Math.round(Number(leverage));
+  
   return (
     <CardContainer
       navigate={navigate}
@@ -103,13 +105,13 @@ export const PositionCard = ({
 
         {isLong === true && (
           <Detail fontWeight={700} color={"#10DCB1"}>
-            Long {leverage}x
+            Long {parsedLeverage}x
           </Detail>
         )}
 
         {isLong === false && (
           <Detail fontWeight={700} color={"#FF648A"}>
-            Short {leverage}x
+            Short {parsedLeverage}x
           </Detail>
         )}
 

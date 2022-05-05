@@ -62,6 +62,8 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
   
+  console.log('positions: ', positions);
+  
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
   
