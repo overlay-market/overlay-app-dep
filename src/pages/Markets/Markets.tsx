@@ -214,19 +214,19 @@ const Markets = () => {
                     <TEXT.SmallBody>
                       {
                         marketOis[index] ? (
-                          formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 0)
+                          formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 5)
                         ) : '...'
                       }
                       /
                       {
                         marketCapOis[index] ? (
-                          formatWeiToParsedNumber(marketCapOis[index], 18, 0)
+                          formatWeiToParsedNumber(marketCapOis[index], 18, 5)
                         ) : '...'
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 0)}
-                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 0)}
+                      value={formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 5)}
+                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 5)}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -239,19 +239,19 @@ const Markets = () => {
                     <TEXT.SmallBody>
                       {
                         marketOis[index] ? (
-                          formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 0)
+                          formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 5)
                         ) : '...'
                       }
                       /
                       {
                         marketCapOis[index] ? (
-                          formatWeiToParsedNumber(marketCapOis[index], 18, 0)
+                          formatWeiToParsedNumber(marketCapOis[index], 18, 5)
                         ) : '...'
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 0)}
-                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 0)}
+                      value={formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 5)}
+                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 5)}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}
@@ -264,7 +264,7 @@ const Markets = () => {
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
                         marketFundingRates[index] ? (
-                          formatWeiToParsedNumber(marketFundingRates[index], 18, 2) + '%'
+                          formatWeiToParsedNumber(marketFundingRates[index], 18, 5) + '%'
                         ):(
                           'loading...'
                         )
