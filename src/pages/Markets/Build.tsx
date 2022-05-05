@@ -70,7 +70,7 @@ export const NumericalInputContainer = styled(FlexRowContainer)`
   border: 1px solid ${({ theme }) => theme.white};
   border-radius: 4px;
   overflow: hidden;
-  margin-bottom: 24px;
+  margin-bottom: 0px;
 `;
 
 export const NumericalInputDescriptor = styled.div`
@@ -87,6 +87,10 @@ const NumericalInputLabel = styled(Label)`
 const NumericalInputTitle = styled(TEXT.StandardBody)`
   margin-bottom: 4px !important;
 `;
+
+const NumericalInputBottomText = styled(TEXT.Supplemental)`
+  margin: 4px 0 24px auto !important;
+`
 
 export const BuildInterface = ({
   marketId,
@@ -394,6 +398,9 @@ export const BuildInterface = ({
             value={typedValue?.toString()}
           />
         </NumericalInputContainer>
+          <NumericalInputBottomText>
+            minimum: {minCollateral}
+          </NumericalInputBottomText>
 
         {showApprovalFlow ? (
           <ApproveTransactionButton 

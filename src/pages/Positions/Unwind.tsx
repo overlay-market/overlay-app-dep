@@ -141,25 +141,25 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       </TEXT.StandardBody>
       <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(25, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(25, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
           border={"none"}
           >
           25%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(50, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(50, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
           border={"none"}
           >
           50%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(75, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(75, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
           border={"none"}
           >
           75%
         </TransparentUnderlineButton>
         <TransparentUnderlineButton
-          onClick={() => handleQuickInput(100, value ? Number(utils.formatUnits(value, 18)).toFixed(2) : null)}
+          onClick={() => handleQuickInput(100, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
           border={"none"}
           >
           Max
@@ -208,11 +208,11 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
-            value={value ? `${formatWeiToParsedNumber(value, 18, 2)} OVL` : "loading..."}
+            value={value ? `${formatWeiToParsedNumber(value, 18, 5)} OVL` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={oi ? `${formatWeiToParsedNumber(oi, 18, 2)}` : "loading..."}
+            value={oi ? `${formatWeiToParsedNumber(oi, 18, 5)}` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
@@ -220,23 +220,23 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow
             detail={"Debt"}
-            value={debt ? `${formatWeiToParsedNumber(debt, 18, 2)} OVL` : "loading..."}
+            value={debt ? `${formatWeiToParsedNumber(debt, 18, 5)} OVL` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Cost"}
-            value={cost ? `${formatWeiToParsedNumber(cost, 18, 2)} OVL` : "loading..."}
+            value={cost ? `${formatWeiToParsedNumber(cost, 18, 5)} OVL` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Collateral"}
-            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 2)} OVL` : "loading..."}
+            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 5)} OVL` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Notional"} 
-            value={notional ? `${formatWeiToParsedNumber(notional, 18, 2)} OVL` : "loading..."}
+            value={notional ? `${formatWeiToParsedNumber(notional, 18, 5)} OVL` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Maintenance"} 
-            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 2)} OVL` : "loading..."}
+            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 5)} OVL` : "loading..."}
           />
         </FlexColumnContainer>
 
