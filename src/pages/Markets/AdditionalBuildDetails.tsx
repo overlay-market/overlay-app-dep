@@ -111,7 +111,7 @@ export const AdditionalDetails = ({
           Expected OI 
         </PositionDetailType>
         <DetailValue> 
-          {expectedOi} OVL 
+          {expectedOi}
         </DetailValue>
       </AdditionalDetailRow>
 

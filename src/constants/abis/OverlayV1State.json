@@ -157,6 +157,40 @@
   {
     "inputs": [
       {
+        "internalType": "contract IOverlayV1Market",
+        "name": "market",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "leverage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "costEstimate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "cost_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "feed",
         "type": "address"
@@ -234,6 +268,40 @@
       }
     ],
     "name": "debt",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "debt_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IOverlayV1Market",
+        "name": "market",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "leverage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "debtEstimate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -395,6 +463,40 @@
         "type": "address"
       },
       {
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "leverage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "liquidationPriceEstimate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "liquidationPrice_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IOverlayV1Market",
+        "name": "market",
+        "type": "address"
+      },
+      {
         "internalType": "address",
         "name": "owner",
         "type": "address"
@@ -406,6 +508,40 @@
       }
     ],
     "name": "maintenanceMargin",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "maintenanceMargin_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IOverlayV1Market",
+        "name": "market",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "leverage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "maintenanceMarginEstimate",
     "outputs": [
       {
         "internalType": "uint256",
@@ -637,6 +773,40 @@
         "internalType": "contract IOverlayV1Market",
         "name": "market",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "leverage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "oiEstimate",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "oi_",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IOverlayV1Market",
+        "name": "market",
+        "type": "address"
       }
     ],
     "name": "ois",
@@ -674,6 +844,72 @@
       }
     ],
     "name": "position",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "uint96",
+            "name": "notional",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint96",
+            "name": "debt",
+            "type": "uint96"
+          },
+          {
+            "internalType": "uint48",
+            "name": "entryToMidRatio",
+            "type": "uint48"
+          },
+          {
+            "internalType": "bool",
+            "name": "isLong",
+            "type": "bool"
+          },
+          {
+            "internalType": "bool",
+            "name": "liquidated",
+            "type": "bool"
+          },
+          {
+            "internalType": "uint256",
+            "name": "oiShares",
+            "type": "uint256"
+          }
+        ],
+        "internalType": "struct Position.Info",
+        "name": "position_",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "contract IOverlayV1Market",
+        "name": "market",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "leverage",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      }
+    ],
+    "name": "positionEstimate",
     "outputs": [
       {
         "components": [
