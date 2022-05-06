@@ -5,6 +5,7 @@ import { ChevronRight } from "react-feather";
 import { FlexRowContainer } from "../../components/Container/Container";
 import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
 import { useMemo } from "react";
+import { ConsoleView } from "react-device-detect";
 
 const CardHeaderContainer = styled(FlexRowContainer)`
   color: white;
@@ -90,10 +91,10 @@ export const PositionCard = ({
 }) => {
   let parsedLeverage = Math.round(Number(leverage));
   let PnL = positionValue && positionCost ? positionValue - positionCost : null;
-  let fixedPnL = PnL ? PnL.toFixed(4) : null;
+  let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralCurrency}` : null);
 
   const indicatorColor = useMemo(() => {
-    if (!fixedPnL || Number(fixedPnL) === 0) return '#F2F2F2';
+    if (!fixedPnL || Number(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2';
     if (Number(fixedPnL) > 0) return '#10DCB1';
     else return '#FF648A';
   }, [fixedPnL])
@@ -128,7 +129,7 @@ export const PositionCard = ({
         )}
 
         <Detail color={"#C0C0C0"}>
-          {positionValue ? `${positionValue} ${collateralCurrency}` : 'loading...'}
+          {positionValue !== undefined ? `${positionValue} ${collateralCurrency}` : 'loading...'}
         </Detail>
       </PositionCardColumn>
 
@@ -140,7 +141,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="30%" align="right">
         <Detail fontWeight={700} color={indicatorColor}>
-          {fixedPnL ? `${fixedPnL} OVL` : 'loading...'}
+          {fixedPnL ? `${fixedPnL}` : 'loading...'}
         </Detail>
 
         {navigate ?? (
