@@ -16,7 +16,7 @@ export const OVL_MARKET_ADDRESS: AddressMap = constructSameAddressMap('0x6f49162
 export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15Ed9eb485Ec1B95c6F853cB57901629b0f1CF2');
 
 // v1-core contract addresses
-export const V1_PERIPHERY_ADDRESS: AddressMap = constructSameAddressMap('0xeCA28606F2BE3209550c5e347E825af200D916c4');
+export const V1_PERIPHERY_ADDRESS: AddressMap = constructSameAddressMap('0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5');
 export const OVL_TOKEN_ADDRESS: AddressMap = constructSameAddressMap('0x04020e4ff78b629d79ccbd163fc6044af73588dc');
 
 export const MULTICALL2_ADDRESS: AddressMap = {
