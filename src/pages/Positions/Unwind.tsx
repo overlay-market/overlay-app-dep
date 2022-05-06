@@ -62,7 +62,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
   
-  console.log('positions: ', positions);
+  // console.log('positions: ', positions);
 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
@@ -208,35 +208,43 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
-            value={value ? `${formatWeiToParsedNumber(value, 18, 5)} OVL` : "loading..."}
+            value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={oi ? `${formatWeiToParsedNumber(oi, 18, 5)}` : "loading..."}
+            value={oi ? `${formatWeiToParsedNumber(oi, 18, 10)}` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
-            value={position?.leverage ? `${Math.round(Number(position.leverage))}x` : "loading..."}
+            value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Debt"}
-            value={debt ? `${formatWeiToParsedNumber(debt, 18, 5)} OVL` : "loading..."}
+            value={debt ? `${formatWeiToParsedNumber(debt, 18, 4)} OVL` : "loading..."}
           />
           <AdditionalDetailRow
             detail={"Cost"}
-            value={cost ? `${formatWeiToParsedNumber(cost, 18, 5)} OVL` : "loading..."}
+            value={cost ? `${formatWeiToParsedNumber(cost, 18, 4)} OVL` : "loading..."}
           />
           <AdditionalDetailRow
-            detail={"Collateral"}
-            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 5)} OVL` : "loading..."}
+            detail={"Current Collateral"}
+            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 4)} OVL` : "loading..."}
           />
           <AdditionalDetailRow 
-            detail={"Notional"} 
-            value={notional ? `${formatWeiToParsedNumber(notional, 18, 5)} OVL` : "loading..."}
+            detail={"Current Notional"} 
+            value={notional ? `${formatWeiToParsedNumber(notional, 18, 4)} OVL` : "loading..."}
+          />
+          <AdditionalDetailRow
+            detail={"Initial Collateral"}
+            value={position?.initialCollateral ? `${formatWeiToParsedNumber(position?.initialCollateral, 18, 4)} OVL` : "loading..."}
+          />
+          <AdditionalDetailRow 
+            detail={"Initial Notional"} 
+            value={position?.initialNotional ? `${formatWeiToParsedNumber(position?.initialNotional, 18, 4)} OVL` : "loading..."}
           />
           <AdditionalDetailRow 
             detail={"Maintenance"} 
-            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 5)} OVL` : "loading..."}
+            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 4)} OVL` : "loading..."}
           />
         </FlexColumnContainer>
 

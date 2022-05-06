@@ -121,7 +121,7 @@ function Web3StatusInner() {
 
   const ovlBalance = useOvlBalance();
 
-  console.log('ovlBalance: ', ovlBalance?.toFixed(2));
+  // console.log('ovlBalance: ', ovlBalance?.toFixed(2));
 
   const toggleWalletModal = useWalletModalToggle();
 

@@ -16,10 +16,7 @@ export function usePositionInfo(
 
   useEffect(() => {
     if (!marketAddress || !positionId || !contract || !currentBlock || !account) return;
-
-    console.log('marketAddress: ', marketAddress);
-    console.log('positionId: ', positionId);
-    console.log('account: ', account);
+    
     (async () => {
       setValue(await contract.position(marketAddress, account, positionId));
     })();

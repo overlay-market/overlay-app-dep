@@ -100,6 +100,8 @@ export default function Updater(): null {
                 })
               )
 
+              console.log('receipt: ', receipt);
+
               if (transactionInfo.type === TransactionType.APPROVAL) {
                 addPopup(
                   {
@@ -131,7 +133,7 @@ export default function Updater(): null {
                   {
                     txn: {
                       hash,
-                      success: receipt.status === 2,
+                      success: receipt.status === 1,
                       info: transactionInfo
                     },
                   },

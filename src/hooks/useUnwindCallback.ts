@@ -226,6 +226,7 @@ export function useUnwindCallback(
           })
           .catch((error) => {
             // if the user rejected the tx, pass this along
+            console.log('error from useUnwindCallback: ', error);
             if (error?.code === 4001) {
               addPopup(
                 {

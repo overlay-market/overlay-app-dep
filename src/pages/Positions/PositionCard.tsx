@@ -89,7 +89,7 @@ export const PositionCard = ({
   navigate?: boolean;
   hasBorder?: boolean;
 }) => {
-  let parsedLeverage = Math.round(Number(leverage));
+  let parsedLeverage = Number(leverage).toFixed(1);
   let PnL = positionValue && positionCost ? positionValue - positionCost : null;
   let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralCurrency}` : null);
 
