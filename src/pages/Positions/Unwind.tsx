@@ -29,6 +29,11 @@ import { usePositionCost } from "../../hooks/usePositionCost";
 import { useMarketPrices } from "../../hooks/useMarketPrices";
 import { Icon } from "../../components/Icon/Icon";
 import { Sliders, X } from "react-feather";
+import { TransactionSettingsModal } from "../Markets/TransactionSettingsModal";
+import { usePositionState } from "../../state/positions/hooks";
+import { usePositionActionHandlers } from "../../state/positions/hooks";
+import { DefaultTxnSettings } from "../../state/positions/actions";
+import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 
 const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
   padding: 16px 0 24px; 
@@ -37,6 +42,10 @@ const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
   border: 1px solid #f2f2f2;
+`;
+
+const UnwindInterface = styled.div`
+
 `;
 
 export const AdditionalDetailRow = ({
@@ -70,6 +79,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { typedValue, selectedPositionId } = useUnwindState();
   
   // console.log('positions: ', positions);
+  const isTxnSettingsAuto = useIsTxnSettingsAuto();
+  const { setSlippageValue, txnDeadline } = usePositionState();
+  const { onSetSlippage, onSetTxnDeadline } = usePositionActionHandlers();
 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
@@ -101,6 +113,11 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   useEffect(() => {
     onResetUnwindState();
   }, [positionId, onResetUnwindState]);
+
+  const handleResetTxnSettings = useCallback((e: any) => {
+    onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
+    onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
+  }, [onSetSlippage, onSetTxnDeadline]);
 
   const handleUserInput = useCallback((input: string) => {
       onUserInput(input)}, [onUserInput]);
@@ -134,7 +151,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
     <Container>
       {handleSelectPosition(Number(position?.positionId))}
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
-
+      <UnwindInterface>
       <ControlInterfaceHeadContainer>
         <TEXT.StandardHeader1 fontWeight={700} m={'4px'}>Close Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
@@ -153,6 +170,15 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             {isTxnSettingsOpen ? <X color={"#12B4FF"} /> : <Sliders color={"#B9BABD"} />}
           </Icon>
       </ControlInterfaceHeadContainer>
+      <TransactionSettingsModal 
+          isTxnSettingsOpen={isTxnSettingsOpen}
+          setSlippageValue={setSlippageValue}
+          isTxnSettingsAuto={isTxnSettingsAuto}
+          txnDeadline={txnDeadline}
+          onSetSlippage={onSetSlippage}
+          handleResetTxnSettings={handleResetTxnSettings}
+          onSetTxnDeadline={onSetTxnDeadline}
+        />
 
       <Label htmlFor="Amount" mt={"24px"}>
       <TEXT.StandardBody margin={"0 auto 4px 0"} color={"white"}>
@@ -201,7 +227,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         >
         Unwind
       </UnwindButton>
-
+      </UnwindInterface>
       <FlexColumnContainer mt={"48px"}>
         <AdditionalDetailRow 
           detail={"Profit/Loss"} 
