@@ -128,7 +128,7 @@ export const PositionCard = ({
         )}
 
         <Detail color={"#C0C0C0"}>
-          {positionValue} {collateralCurrency}
+          {positionValue ? `${positionValue} ${collateralCurrency}` : 'loading...'}
         </Detail>
       </PositionCardColumn>
 
