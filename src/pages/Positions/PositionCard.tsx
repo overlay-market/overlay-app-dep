@@ -94,8 +94,8 @@ export const PositionCard = ({
   let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralCurrency}` : null);
 
   const indicatorColor = useMemo(() => {
-    if (!fixedPnL || Number(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2';
-    if (Number(fixedPnL) > 0) return '#10DCB1';
+    if (!fixedPnL || parseFloat(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2';
+    if (parseFloat(fixedPnL) > 0) return '#10DCB1';
     else return '#FF648A';
   }, [fixedPnL])
 
