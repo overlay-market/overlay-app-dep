@@ -248,8 +248,6 @@ export const BuildInterface = ({
         });
       });
   }, [buildCallback, onResetBuildState, isLong, typedValue]);
-  
-  console.log('typedValue: ', typedValue);
 
   const [approval, approveCallback] = useApproveCallback(
     typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : "0") : undefined,

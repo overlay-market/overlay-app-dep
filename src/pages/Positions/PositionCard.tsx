@@ -92,10 +92,6 @@ export const PositionCard = ({
   let PnL = positionValue && positionCost ? positionValue - positionCost : null;
   let fixedPnL = PnL ? PnL.toFixed(4) : null;
 
-  console.log('PnL :', PnL);
-  console.log('Number(PnL): ', typeof PnL?.toFixed(2))
-  console.log('fixedPnL: ', Number(fixedPnL))
-
   const indicatorColor = useMemo(() => {
     if (!fixedPnL || Number(fixedPnL) === 0) return '#F2F2F2';
     if (Number(fixedPnL) > 0) return '#10DCB1';
@@ -136,13 +132,13 @@ export const PositionCard = ({
         </Detail>
       </PositionCardColumn>
 
-      <PositionCardColumn width="30%">
+      <PositionCardColumn width="20%">
         <Detail fontWeight={700} color={"white"}>
           {estLiquidationPrice}
         </Detail>
       </PositionCardColumn>
 
-      <PositionCardColumn width="20%" align="right">
+      <PositionCardColumn width="30%" align="right">
         <Detail fontWeight={700} color={indicatorColor}>
           {fixedPnL ? `${fixedPnL} OVL` : 'loading...'}
         </Detail>
