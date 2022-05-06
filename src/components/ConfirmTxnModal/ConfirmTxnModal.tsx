@@ -13,7 +13,7 @@ export default function ConfirmTxnModal({
   buildFee,
   onConfirm,
   onDismiss,
-  adjustedOi,
+  expectedOi,
   marketPrice,
   setSlippageValue,
   selectedLeverage,
@@ -26,7 +26,7 @@ export default function ConfirmTxnModal({
   buildFee: number | undefined | null;
   onConfirm?: () => void;
   onDismiss?: () => void;
-  adjustedOi: number | string | undefined;
+  expectedOi: number | string | undefined;
   marketPrice: string | undefined;
   setSlippageValue: string;
   selectedLeverage: string;
@@ -93,17 +93,17 @@ export default function ConfirmTxnModal({
 
         <FlexColumnContainer mt={"48px"} color={"white"}>
           <AdditionalDetailRow
-            detail={"Collateral"}
+            detail={"Estimated Collateral"}
             detailColor={"#B9BABD"}
             // value={`${adjustedCollateral} OVL`}
             value={'-'}
           />
 
           <AdditionalDetailRow
-            detail={"Expected OI"}
+            detail={"Estimated OI"}
             detailColor={"#B9BABD"}
-            // value={`${adjustedOi} OVL`}
-            value={'-'}
+            value={`${expectedOi}`}
+            // value={'-'}
           />
         </FlexColumnContainer>
 

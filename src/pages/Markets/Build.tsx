@@ -17,7 +17,7 @@ import { DefaultTxnSettings } from "../../state/positions/actions";
 import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
-import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
+import { formatWeiToParsedString, formatWeiToParsedNumber, formatFundingRateToDaily } from "../../utils/formatWei";
 import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
 import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
 import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
@@ -152,7 +152,7 @@ export const BuildInterface = ({
     if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading...';
     
     console.log('fetchFundingRate.result?.[0]: ', formatWeiToParsedString(fetchFundingRate.result?.[0], 18))
-    return formatWeiToParsedNumber(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
+    return formatFundingRateToDaily(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate]);
   
   const { buildData, parsedAmount, inputError } = useDerivedBuildInfo();
@@ -480,14 +480,14 @@ export const BuildInterface = ({
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        adjustedOi={adjustedOi}
         // adjustedOi={'-'}
         marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
         // adjustedCollateral={'-'}
-        estimatedLiquidationPrice={'-'}
+        expectedOi={estimatedOi && typedValue !== '' ? formatWeiToParsedNumber(estimatedOi, 18, 5) : '-'}
+        estimatedLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPrice, 18, 5) : '-'}
       />
     </MarketCard>
   );
