@@ -39,7 +39,8 @@ import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useOvlBalance } from "../../state/wallet/hooks";
 import { useMarketOis } from "../../hooks/useMarketOis";
 import { useMarketCapOi } from "../../hooks/useMarketCapOi";
-import { useEstimatedBuildOi } from "../../hooks/useEstimatedBuildOi";
+import { useEstimatedBuildOi } from "../../hooks/useEstimatedBuildOi"
+import { useEstimatedBuildLiquidationPrice } from "../../hooks/useEstimatedBuildLiquidationPrice";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -288,8 +289,10 @@ export const BuildInterface = ({
   }, [approveCallback, typedValue]);
   
   const estimatedOi = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
+  const estimatedLiquidationPrice = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
 
   console.log('estimatedOi: ', estimatedOi);
+  console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice);
 
   // const { impactFee } = useMarketImpactFee(
   //   market ? market.id : undefined,
@@ -452,7 +455,7 @@ export const BuildInterface = ({
         slippage={setSlippageValue}
         fundingRate={fundingRate}
         expectedOi={estimatedOi && typedValue !== '' ? formatWeiToParsedNumber(estimatedOi, 18, 5) : '-'}
-        estLiquidationPrice={'-'}
+        estLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPrice, 18, 5) : '-'}
       />
 
       {/* <ConfirmTxnModal

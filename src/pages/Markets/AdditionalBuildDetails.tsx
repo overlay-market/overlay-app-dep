@@ -81,7 +81,7 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
-          Est. Liquidation 
+          Est. Liquidation Price
         </PositionDetailType>
         <DetailValue> 
           {estLiquidationPrice} 
