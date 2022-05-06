@@ -10,7 +10,7 @@ import { useUnwindActionHandlers } from "../../state/unwind/hooks";
 import { PositionCard, PositionTableHeader } from "./PositionCard";
 import { useWalletModalToggle } from "../../state/application/hooks";
 import { shortenAddress } from "../../utils/web3";
-import { formatWeiToParsedString } from "../../utils/formatWei";
+import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
@@ -61,7 +61,7 @@ export const Positions = () => {
   const { account } = useActiveWeb3React();
   const { isLoading, positions } = useAccountPositions(account ? account : undefined);
 
-  console.log('positions: ', positions);
+  // console.log('positions: ', positions);
 
   const positionsCallData = useMemo(() => {
     if (!positions || positions === undefined || !account || !blockNumber) return [];
@@ -72,6 +72,7 @@ export const Positions = () => {
   const peripheryContract = useV1PeripheryContract();
   const fetchLiquidationPrices = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', positionsCallData);
   const fetchPositionValues = useSingleContractMultipleData(peripheryContract, "value", positionsCallData);
+  const fetchPositionCosts = useSingleContractMultipleData(peripheryContract, "cost", positionsCallData);
 
   const liquidationPrices = useMemo(() => {
     return fetchLiquidationPrices.map((position, index) => {
@@ -79,16 +80,26 @@ export const Positions = () => {
 
       return position?.result?.liquidationPrice_;
     })
-  }, [fetchLiquidationPrices, blockNumber])
+  }, [fetchLiquidationPrices, blockNumber]);
 
+  
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
       if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
-
+      
       return position?.result?.value_;
     })
-  }, [fetchPositionValues, blockNumber])
+  }, [fetchPositionValues, blockNumber]);
+  
+  const positionCosts = useMemo(() => {
+    return fetchPositionCosts.map((position, index) => {
+      if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
 
+      return position?.result?.cost_;
+    })
+  }, [fetchPositionCosts, blockNumber]);
+
+  
   return (
     <MarketCard>
       {onResetUnwindState()}
@@ -117,13 +128,13 @@ export const Positions = () => {
                     marketName={`${shortenAddress(position.market.id) + `-` + BigNumber.from(position.positionId).toString()}`}
                     isLong={position.isLong}
                     leverage={position.leverage}
-                    positionSize={positionValues !== undefined ? formatWeiToParsedString(positionValues[key], 2) : 'loading...'}
+                    positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}
+                    positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
                     collateralCurrency={"OVL"}
                     quotePrice={"-"}
                     quoteCurrency={"-"}
                     // estLiquidationPrice={position.liquidationPrice}
                     estLiquidationPrice={liquidationPrices !== undefined ? formatWeiToParsedString(liquidationPrices[key], 2) : 'loading...'}
-                    PnL={"-"}
                     navigate={true}
                     hasBorder={true}
                   />

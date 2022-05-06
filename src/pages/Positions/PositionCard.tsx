@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Icon } from "../../components/Icon/Icon";
 import { ChevronRight } from "react-feather";
 import { FlexRowContainer } from "../../components/Container/Container";
+import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
+import { useMemo } from "react";
 
 const CardHeaderContainer = styled(FlexRowContainer)`
   color: white;
@@ -62,12 +64,13 @@ export const PositionCard = ({
   marketName,
   isLong,
   leverage,
-  positionSize,
+  positionValue,
+  positionCost,
   collateralCurrency,
   quotePrice,
   quoteCurrency,
   estLiquidationPrice,
-  PnL,
+  // PnL,
   navigate,
   hasBorder,
 }:{
@@ -75,17 +78,30 @@ export const PositionCard = ({
   marketName: string;
   isLong: boolean | null;
   leverage: number | string;
-  positionSize: number | string | undefined;
+  positionValue: number | null | undefined;
+  positionCost: number | null | undefined;
   collateralCurrency: string;
   quotePrice: number | string;
   quoteCurrency: string;
   estLiquidationPrice: string | undefined;
-  PnL: number | string | undefined;
+  // PnL: number | string | undefined;
   navigate?: boolean;
   hasBorder?: boolean;
 }) => {
   let parsedLeverage = Math.round(Number(leverage));
-  
+  let PnL = positionValue && positionCost ? positionValue - positionCost : null;
+  let fixedPnL = PnL ? PnL.toFixed(4) : null;
+
+  console.log('PnL :', PnL);
+  console.log('Number(PnL): ', typeof PnL?.toFixed(2))
+  console.log('fixedPnL: ', Number(fixedPnL))
+
+  const indicatorColor = useMemo(() => {
+    if (!fixedPnL || Number(fixedPnL) === 0) return '#F2F2F2';
+    if (Number(fixedPnL) > 0) return '#10DCB1';
+    else return '#FF648A';
+  }, [fixedPnL])
+
   return (
     <CardContainer
       navigate={navigate}
@@ -116,7 +132,7 @@ export const PositionCard = ({
         )}
 
         <Detail color={"#C0C0C0"}>
-          {positionSize} {collateralCurrency}
+          {positionValue} {collateralCurrency}
         </Detail>
       </PositionCardColumn>
 
@@ -127,8 +143,8 @@ export const PositionCard = ({
       </PositionCardColumn>
 
       <PositionCardColumn width="20%" align="right">
-        <Detail fontWeight={700} color={"#10DCB1"}>
-          {PnL !== undefined ? `${PnL} OVL` : 'loading...'}
+        <Detail fontWeight={700} color={indicatorColor}>
+          {fixedPnL ? `${fixedPnL} OVL` : 'loading...'}
         </Detail>
 
         {navigate ?? (
