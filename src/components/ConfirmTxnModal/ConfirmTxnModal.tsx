@@ -95,13 +95,15 @@ export default function ConfirmTxnModal({
           <AdditionalDetailRow
             detail={"Collateral"}
             detailColor={"#B9BABD"}
-            value={`${adjustedCollateral} OVL`}
+            // value={`${adjustedCollateral} OVL`}
+            value={'-'}
           />
 
           <AdditionalDetailRow
             detail={"Expected OI"}
             detailColor={"#B9BABD"}
-            value={`${adjustedOi} OVL`}
+            // value={`${adjustedOi} OVL`}
+            value={'-'}
           />
         </FlexColumnContainer>
 
