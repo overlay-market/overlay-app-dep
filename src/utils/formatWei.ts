@@ -22,3 +22,15 @@ export function formatWeiToParsedNumber(wei: BigNumberish | string | undefined, 
   }
 };
 
+export function formatFundingRateToDaily(wei: BigNumberish | string | undefined, decimals: number, round: number){
+  let roundedDailyPercentage;
+
+  if (wei) {
+    let rate = formatWeiToParsedNumber(wei, decimals, 10);
+    let dailyRate = rate && rate * 86400;
+    let dailyPercentage = dailyRate && dailyRate * 100;
+    roundedDailyPercentage = dailyPercentage?.toFixed(round)
+  }
+  
+  return roundedDailyPercentage;
+}

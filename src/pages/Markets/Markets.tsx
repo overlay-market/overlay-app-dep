@@ -7,7 +7,7 @@ import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
 import { useAllMarkets } from "../../state/markets/hooks";
-import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
+import { formatWeiToParsedNumber, formatWeiToParsedString, formatFundingRateToDaily } from "../../utils/formatWei";
 import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
@@ -264,7 +264,7 @@ const Markets = () => {
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
                         marketFundingRates[index] ? (
-                          formatWeiToParsedString(marketFundingRates[index], 18) + '%'
+                          formatFundingRateToDaily(marketFundingRates[index], 18, 2) + '%'
                         ):(
                           'loading...'
                         )
