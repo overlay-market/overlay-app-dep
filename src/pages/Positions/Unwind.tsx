@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useMemo } from "react";
+import React, { useEffect, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { Label } from "@rebass/forms";
 import { BigNumber, utils } from "ethers";
@@ -27,6 +27,12 @@ import { useMaintenanceMargin } from "../../hooks/useMaintenanceMargin";
 import { usePositionCollateral } from "../../hooks/usePositionCollateral";
 import { usePositionCost } from "../../hooks/usePositionCost";
 import { useMarketPrices } from "../../hooks/useMarketPrices";
+import { Icon } from "../../components/Icon/Icon";
+import { Sliders, X } from "react-feather";
+
+const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
+  padding: 16px 0 24px; 
+`;
 
 const UnwindButton = styled(TriggerActionButton)`
   margin: 24px 0;
@@ -58,6 +64,7 @@ export const AdditionalDetailRow = ({
 };
 
 export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ positionId: string }>) {
+  const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
   const { account } = useActiveWeb3React();
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
@@ -128,12 +135,24 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       {handleSelectPosition(Number(position?.positionId))}
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
 
-      <FlexColumnContainer>
+      <ControlInterfaceHeadContainer>
         <TEXT.StandardHeader1 fontWeight={700} m={'4px'}>Close Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
           {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : 'loading...' }
         </TEXT.StandardHeader1>
-      </FlexColumnContainer>
+        <Icon
+            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+            size={24}
+            top={"18px"}
+            right={"0px"}
+            clickable={true}
+            position={"absolute"}
+            margin={"0 0 auto auto"}
+            transform={"rotate(90deg)"}
+            >
+            {isTxnSettingsOpen ? <X color={"#12B4FF"} /> : <Sliders color={"#B9BABD"} />}
+          </Icon>
+      </ControlInterfaceHeadContainer>
 
       <Label htmlFor="Amount" mt={"24px"}>
       <TEXT.StandardBody margin={"0 auto 4px 0"} color={"white"}>
