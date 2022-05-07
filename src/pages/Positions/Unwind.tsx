@@ -112,6 +112,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { onAmountInput, onSelectPositionId, onResetUnwindState, onSetSlippage, onSetTxnDeadline } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, selectedPositionId, isLong, prices);
   // console.log('selectedPositionId: ', selectedPositionId)
+  console.log('unwindCallback: ', unwindCallback)
   
   useEffect(() => {
     onResetUnwindState();
@@ -140,7 +141,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
     onAmountInput("")}, [onAmountInput]);
 
   const disableUnwindButton: boolean = useMemo(() => {
-    return !unwindCallback || Number(typedValue) == 0 ? true : false;
+    return !unwindCallback || parseFloat(typedValue) === 0 ? true : false;
   }, [unwindCallback, typedValue]);
 
   const handleUnwind = useCallback(() => {

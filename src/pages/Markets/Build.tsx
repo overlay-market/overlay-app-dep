@@ -234,12 +234,18 @@ export const BuildInterface = ({
     buildCallback()
       .then((hash) => {
         setBuildState({
+          showConfirm: true,
+          attemptingTransaction: true,
+          transactionErrorMessage: undefined,
+          transactionHash: hash,
+        });
+        onResetBuildState();
+        setBuildState({
           showConfirm: false,
           attemptingTransaction: false,
           transactionErrorMessage: undefined,
           transactionHash: hash,
         });
-        onResetBuildState();
       })
       .catch((error) => {
         setBuildState({

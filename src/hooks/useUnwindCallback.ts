@@ -51,7 +51,9 @@ function useUnwindCallArguments(
   const { account, chainId } = useActiveWeb3React();
   const marketContract = useMarketContract(marketAddress);
 
-  if (!marketContract || unwindValue === "" || positionCurrentValue === undefined || !positionId || !account || isLong === undefined || prices === undefined) calldata = undefined;
+  console.log('positionId: ', positionId === null);
+
+  if (!marketContract || unwindValue === "" || positionCurrentValue === undefined || positionId === null || !account || isLong === undefined || prices === undefined) calldata = undefined;
   else {
     // OI has units of OVL / (quoteCurrency / baseCurrency) = OVL * baseCurrency / quoteCurrency
     let unwindValueBigNumber = utils.parseUnits(unwindValue);
@@ -110,7 +112,7 @@ export function useUnwindCallback(
   const unwindCalls = useUnwindCallArguments(marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices);
 
   return useMemo(() => {
-    if (!unwindValue || !positionId || !library || !account || !chainId) {
+    if (!unwindValue || positionId === null || !library || !account || !chainId) {
       return {
         state: UnwindCallbackState.INVALID,
         callback: null,
