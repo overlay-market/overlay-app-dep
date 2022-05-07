@@ -146,9 +146,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const handleUnwind = useCallback(() => {
     if (!unwindCallback) return;
     unwindCallback()
-      .then((success) => handleClearInput())
+      .then((success) => onResetUnwindState())
       .catch((err) => console.error("Error from handleUnwind: ", err));
-  }, [unwindCallback, handleClearInput]);
+  }, [unwindCallback, onResetUnwindState]);
 
   return (
     <Container>
@@ -159,7 +159,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         as={"form"}
         >
       <ControlInterfaceHeadContainer>
-        <TEXT.StandardHeader1 fontWeight={700} m={'4px'}>Close Position</TEXT.StandardHeader1>
+        <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>Close Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
           {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : 'loading...' }
         </TEXT.StandardHeader1>
@@ -248,14 +248,14 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         />
       </FlexColumnContainer>
 
-      <Accordion 
+      {/* <Accordion 
         activeAccordionText={"Less"}
         inactiveAccordionText={"More"}
         activeColor={"#12B4FF"}
         inactiveColor={"#12B4FF"}
         width={"fit-content"}
         clickableMargin={"auto"}
-        >
+        > */}
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
@@ -324,7 +324,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             value={`${position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) + " OVL" : "loading..."}`}
           />
         </FlexColumnContainer> */}
-      </Accordion>
+      {/* </Accordion> */}
       
     </Container>
   );
