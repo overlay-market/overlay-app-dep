@@ -3,6 +3,7 @@ import { AppState } from "../state";
 import { useAppSelector, useAppDispatch } from "../hooks";
 import { typeInput, selectPositionId, resetUnwindState, setSlippage, setTxnDeadline } from './actions';
 import { DefaultTxnSettings } from "./actions";
+import { useActiveWeb3React } from "../../hooks/web3";
 
 export function useUnwindState(): AppState['unwind'] {
   return useAppSelector((state) => state.unwind);

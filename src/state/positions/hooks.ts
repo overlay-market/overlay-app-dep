@@ -135,42 +135,6 @@ export function useDerivedBuildInfo(): {
   }
 }
 
-export function useDerivedUnwindInfo(): {
-  unwindData: object | undefined
-  inputError?: string
-  parsedAmount?: string
-} {
-  const { account } = useActiveWeb3React();
-
-  const { typedValue, setSlippageValue, txnDeadline } = usePositionState();
-
-  let unwindData: object | undefined;
-
-  if (typedValue === '' || typedValue === '.') unwindData = undefined;
-  else {
-    unwindData = {
-      setSlippageValue,
-      txnDeadline
-    };
-  }
-
-  let inputError: string | undefined;
-
-  if (!account) {
-    inputError = `Connect Wallet`;
-  }
-
-  if (typedValue === '' || typedValue === '.') {
-    inputError = `Input Unwind Amount`;
-  }
-
-  return {
-    unwindData,
-    inputError,
-    parsedAmount: typedValue
-  }
-}
-
 // try to parse a user entered amount for a given token
 export function tryParseAmount<T extends Currency>(value?: string, currency?: T): CurrencyAmount<T> | undefined {
   if (!value || !currency) {

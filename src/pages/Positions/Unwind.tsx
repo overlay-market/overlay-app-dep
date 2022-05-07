@@ -109,7 +109,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
   // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
   
-  const { onAmountInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
+  const { onAmountInput, onSelectPositionId, onResetUnwindState, onSetSlippage, onSetTxnDeadline } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, selectedPositionId, isLong, prices);
   // console.log('selectedPositionId: ', selectedPositionId)
   
@@ -130,14 +130,14 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       percentage !== 100
         ? (Number(totalOi) * (percentage / 100)).toFixed(4)
         : (Number(totalOi) * (percentage / 100)).toFixed(18);
-    return onUserInput(calculatedOi);
+    return onAmountInput(calculatedOi);
   };
 
   const handleSelectPosition = useCallback((positionId: number) => {
       onSelectPositionId(positionId)}, [onSelectPositionId]);
 
   const handleClearInput = useCallback(() => {
-    onUserInput("")}, [onUserInput]);
+    onAmountInput("")}, [onAmountInput]);
 
   const disableUnwindButton: boolean = useMemo(() => {
     return !unwindCallback || Number(typedValue) == 0 ? true : false;

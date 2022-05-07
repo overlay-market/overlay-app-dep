@@ -1,14 +1,18 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { typeInput, selectPositionId, resetUnwindState } from "./actions";
+import { DefaultTxnSettings, typeInput, selectPositionId, resetUnwindState, setSlippage, setTxnDeadline } from "./actions";
 
 export interface UnwindState {
   readonly typedValue: string
   readonly selectedPositionId: number | null
+  readonly setSlippageValue: DefaultTxnSettings | string;
+  readonly txnDeadline: DefaultTxnSettings | string;
 };
 
 export const initialState: UnwindState = {
   typedValue: "",
-  selectedPositionId: null
+  selectedPositionId: null,
+  setSlippageValue: "1",
+  txnDeadline: "30",
 };
 
 export default createReducer<UnwindState>(initialState, (builder) =>
@@ -28,5 +32,13 @@ export default createReducer<UnwindState>(initialState, (builder) =>
       (state) => {
           state.typedValue = "";
           state.selectedPositionId = null;
+          state.setSlippageValue = initialState.setSlippageValue;
+          state.txnDeadline = initialState.txnDeadline;
       })
+    .addCase(setSlippage, (state, action) => {
+      state.setSlippageValue = action.payload.setSlippageValue;
+    })
+    .addCase(setTxnDeadline, (state, { payload: { txnDeadline } }) => {
+      state.txnDeadline = txnDeadline;
+    })
 );
