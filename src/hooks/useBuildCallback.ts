@@ -60,6 +60,7 @@ function useBuildCallArguments(
     let base = BigNumber.from(100).toHexString()
 
     // console.log('typedValue: ', utils.parseUnits(buildData.typedValue).toString())
+    // console.log('typedValue alternative: ', BigNumber.from(buildData.typedValue))
     // console.log('typedValue: ', buildData.typedValue)
     // console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage).toString())
     // console.log('isLong: ', buildData.isLong)

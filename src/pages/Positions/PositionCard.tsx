@@ -6,6 +6,7 @@ import { FlexRowContainer } from "../../components/Container/Container";
 import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
 import { useMemo } from "react";
 import { ConsoleView } from "react-device-detect";
+import { BigNumber } from "ethers";
 
 const CardHeaderContainer = styled(FlexRowContainer)`
   color: white;
@@ -67,6 +68,7 @@ export const PositionCard = ({
   leverage,
   positionValue,
   positionCost,
+  positionOi,
   collateralCurrency,
   quotePrice,
   quoteCurrency,
@@ -81,6 +83,7 @@ export const PositionCard = ({
   leverage: number | string;
   positionValue: number | null | undefined;
   positionCost: number | null | undefined;
+  positionOi: number | null | undefined;
   collateralCurrency: string;
   quotePrice: number | string;
   quoteCurrency: string;
@@ -110,6 +113,10 @@ export const PositionCard = ({
           {marketName}
         </Detail>
 
+        <Detail fontWeight={700} color={"white"}>
+          ID: {BigNumber.from(positionId).toString()}
+        </Detail>
+
         {isLong === null && (
           <Detail fontWeight={700} color={"#C0C0C0"}>
             loading...
@@ -129,7 +136,7 @@ export const PositionCard = ({
         )}
 
         <Detail color={"#C0C0C0"}>
-          {positionValue !== undefined ? `${positionValue} ${collateralCurrency}` : 'loading...'}
+          {positionOi !== undefined ? `${positionOi}` : 'loading...'}
         </Detail>
       </PositionCardColumn>
 

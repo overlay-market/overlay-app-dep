@@ -73,6 +73,7 @@ export const Positions = () => {
   const fetchLiquidationPrices = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', positionsCallData);
   const fetchPositionValues = useSingleContractMultipleData(peripheryContract, "value", positionsCallData);
   const fetchPositionCosts = useSingleContractMultipleData(peripheryContract, "cost", positionsCallData);
+  const fetchPositionOis = useSingleContractMultipleData(peripheryContract, "oi", positionsCallData);
 
   const liquidationPrices = useMemo(() => {
     return fetchLiquidationPrices.map((position, index) => {
@@ -99,7 +100,15 @@ export const Positions = () => {
     })
   }, [fetchPositionCosts, blockNumber]);
 
-  
+    const positionOis = useMemo(() => {
+    return fetchPositionOis.map((position, index) => {
+      if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
+
+      return position?.result?.oi_;
+    })
+  }, [fetchPositionOis, blockNumber]);
+  console.log('positionOis: ', positionOis);
+
   return (
     <MarketCard>
       {onResetUnwindState()}
@@ -125,15 +134,16 @@ export const Positions = () => {
                   <PositionCard
                     key={key.toString()}
                     positionId={position.positionId}
-                    marketName={`${shortenAddress(position.market.id) + `-` + BigNumber.from(position.positionId).toString()}`}
+                    // marketName={`${shortenAddress(position.market.id) + `-` + BigNumber.from(position.positionId).toString()}`}
+                    marketName={`${shortenAddress(position.market.id)}`}
                     isLong={position.isLong}
                     leverage={position.leverage}
                     positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}
                     positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
+                    positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
                     collateralCurrency={"OVL"}
                     quotePrice={"-"}
                     quoteCurrency={"-"}
-                    // estLiquidationPrice={position.liquidationPrice}
                     estLiquidationPrice={liquidationPrices !== undefined ? formatWeiToParsedString(liquidationPrices[key], 2) : 'loading...'}
                     navigate={true}
                     hasBorder={true}

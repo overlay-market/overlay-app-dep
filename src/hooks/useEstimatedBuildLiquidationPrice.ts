@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 
 export function useEstimatedBuildLiquidationPrice(
   marketAddress?: string,
@@ -24,7 +24,7 @@ export function useEstimatedBuildLiquidationPrice(
     
     (async () => {
       try {
-        setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, formatCollateral, formatLeverage, isLong))
+        setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, utils.parseUnits(collateral), formatLeverage, isLong))
       }
       catch (error) {
         console.log('market inside useEstimatedBuildLiquidationPrice: ', marketAddress);
