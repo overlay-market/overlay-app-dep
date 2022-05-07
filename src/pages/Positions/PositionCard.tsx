@@ -136,7 +136,7 @@ export const PositionCard = ({
         )}
 
         <Detail color={"#C0C0C0"}>
-          {positionOi !== undefined ? `${positionOi}` : 'loading...'}
+          OI: {positionOi !== undefined ? `${positionOi}` : 'loading...'}
         </Detail>
       </PositionCardColumn>
 
