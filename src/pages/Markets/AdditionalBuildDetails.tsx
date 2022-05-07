@@ -40,6 +40,7 @@ export const AdditionalDetails = ({
   midPrice,
   fee,
   oiCap,
+  capPayoff,
   oiLong,
   oiShort,
   slippage,
@@ -52,6 +53,7 @@ export const AdditionalDetails = ({
   midPrice?: string | number;
   fee?: string | number;
   oiCap?: number;
+  capPayoff?: number;
   oiLong?: number;
   oiShort?: number;
   slippage?: string | number;
@@ -81,15 +83,6 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
-          Est. Liquidation Price
-        </PositionDetailType>
-        <DetailValue> 
-          {estLiquidationPrice} 
-        </DetailValue>
-      </AdditionalDetailRow>
-
-      <AdditionalDetailRow>
-        <PositionDetailType> 
           Bid 
         </PositionDetailType>
         <DetailValue> 
@@ -103,6 +96,15 @@ export const AdditionalDetails = ({
         </PositionDetailType>
         <DetailValue> 
           {askPrice} 
+        </DetailValue>
+      </AdditionalDetailRow>
+
+      <AdditionalDetailRow>
+        <PositionDetailType> 
+          Est. Liquidation Price
+        </PositionDetailType>
+        <DetailValue> 
+          {estLiquidationPrice} 
         </DetailValue>
       </AdditionalDetailRow>
 

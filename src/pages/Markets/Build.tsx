@@ -125,6 +125,7 @@ export const BuildInterface = ({
   
   // @TO-DO: pull market attributes
   const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined;
+  const capPayoff = market ? formatWeiToParsedNumber(market.capPayoff, 18, 2) : undefined;
   const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined;
 
   const ois = useMarketOis(marketId);
@@ -290,7 +291,7 @@ export const BuildInterface = ({
   const estimatedOi = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
 
-  console.log('estimatedOi: ', estimatedOi);
+  // console.log('estimatedOi: ', estimatedOi);
   console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice);
 
   // const { impactFee } = useMarketImpactFee(
@@ -449,6 +450,7 @@ export const BuildInterface = ({
         midPrice={prices.mid}
         fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading..."}
         oiCap={ capOi && formatWeiToParsedNumber(capOi, 18, 5)}
+        capPayoff = { capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={ ois && formatWeiToParsedNumber(ois.oiLong_, 18, 5)}
         oiShort={ ois && formatWeiToParsedNumber(ois.oiShort_, 18, 5)}
         slippage={setSlippageValue}

@@ -16,10 +16,12 @@ export function useEstimatedBuildLiquidationPrice(
   const [estimatedLiquidationPrice, setEstimatedLiquidationPrice] = useState();
 
   useEffect(() => {
-    if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || !isLong || !account || !blockNumber) return;
+    if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || isLong === undefined || !account || !blockNumber) return;
     let formatCollateral = utils.parseUnits(collateral);
     let formatLeverage = utils.parseUnits(leverage);
 
+    console.log('formatCollateral: ', formatCollateral);
+    
     (async () => {
       try {
         setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, formatCollateral, formatLeverage, isLong))

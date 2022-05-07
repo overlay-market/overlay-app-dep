@@ -56,19 +56,18 @@ function useBuildCallArguments(
     let increasePercentage = Number(buildData.setSlippageValue) + 100;
     let decreasePercentage = 100 - Number(buildData.setSlippageValue);
     let increaseNumerator = BigNumber.from(increasePercentage).toHexString()
-    console.log('increaseNumerator: ', increaseNumerator);
     let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
     let base = BigNumber.from(100).toHexString()
 
-    console.log('typedValue: ', utils.parseUnits(buildData.typedValue).toString())
+    // console.log('typedValue: ', utils.parseUnits(buildData.typedValue).toString())
     // console.log('typedValue: ', buildData.typedValue)
-    console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage).toString())
+    // console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage).toString())
     // console.log('isLong: ', buildData.isLong)
 
-    console.log('short build pricePoint: ', price.mul(decreaseNumerator).div(base))
-    console.log('long build pricePoint: ', price.mul(increaseNumerator).div(base))
+    // console.log('short build pricePoint: ', price.mul(decreaseNumerator).div(base))
+    // console.log('long build pricePoint: ', price.mul(increaseNumerator).div(base))
 
-    console.log('test: ', price.mul(increaseNumerator).div(base))
+    // console.log('test: ', price.mul(increaseNumerator).div(base))
     calldata = marketContract.interface.encodeFunctionData("build", [
       utils.parseUnits(buildData.typedValue),
       utils.parseUnits(buildData.selectedLeverage),
