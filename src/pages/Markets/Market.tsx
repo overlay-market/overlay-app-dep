@@ -5,7 +5,7 @@ import { BuildInterface } from './Build';
 import { usePositionActionHandlers } from '../../state/positions/hooks';
 
 export const Container = styled.div`
-  display: flex;
+  display: flex !important;
   flex-direction: column;
   z-index: 0;
   color: white;

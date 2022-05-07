@@ -35,6 +35,10 @@ import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 
+const ControlInterfaceContainer = styled(FlexColumnContainer)`
+  padding: 16px;
+`;
+
 const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
   padding: 16px 0 24px; 
 `;
@@ -151,7 +155,10 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
     <Container>
       {handleSelectPosition(Number(position?.positionId))}
       <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
-      <UnwindInterface>
+      <ControlInterfaceContainer
+        onSubmit={(e: any) => e.preventDefault()}
+        as={"form"}
+        >
       <ControlInterfaceHeadContainer>
         <TEXT.StandardHeader1 fontWeight={700} m={'4px'}>Close Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
@@ -227,7 +234,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         >
         Unwind
       </UnwindButton>
-      </UnwindInterface>
+      </ControlInterfaceContainer>
       <FlexColumnContainer mt={"48px"}>
         <AdditionalDetailRow 
           detail={"Profit/Loss"} 
