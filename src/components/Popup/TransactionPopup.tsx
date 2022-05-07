@@ -4,7 +4,7 @@ import { ExternalLink as ExternalLinkIcon } from 'react-feather';
 import { Icon } from '../Icon/Icon';
 import { TEXT } from '../../theme/theme';
 import { useActiveWeb3React } from '../../hooks/web3';
-// import { getExplorerLink } from '../../functions/explorer'
+import { getExplorerLink, ExplorerDataType } from '../../utils/getExplorerLink';
 import { TransactionType } from '../../state/transactions/actions';
 import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
 import { FlexRowContainer, FlexColumnContainer } from '../Container/Container';
@@ -71,8 +71,7 @@ export default function TransactionPopup({
 
         {chainId && hash && success && (
           <ExternalLink
-            // href={getExplorerLink(chainId, hash, 'transaction')}
-            href={"yes"}
+            href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}
            >
             <ExternalLinkContentsContainer>
               <TEXT.SmallBody>
