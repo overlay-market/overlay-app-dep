@@ -85,7 +85,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   // console.log('positions: ', positions);
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const { setSlippageValue, txnDeadline } = usePositionState();
-  const { onSetSlippage, onSetTxnDeadline } = usePositionActionHandlers();
 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
@@ -110,7 +109,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
   // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
   
-  const { onUserInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
+  const { onAmountInput, onSelectPositionId, onResetUnwindState } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, selectedPositionId, isLong, prices);
   // console.log('selectedPositionId: ', selectedPositionId)
   
@@ -124,7 +123,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   }, [onSetSlippage, onSetTxnDeadline]);
 
   const handleUserInput = useCallback((input: string) => {
-      onUserInput(input)}, [onUserInput]);
+    onAmountInput(input)}, [onAmountInput]);
 
   const handleQuickInput = (percentage: number, totalOi: string | null) => {
     let calculatedOi: string =
