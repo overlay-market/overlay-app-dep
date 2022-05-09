@@ -138,6 +138,10 @@ export const PositionCard = ({
         <Detail color={"#C0C0C0"}>
           OI: {positionOi !== undefined ? `${positionOi}` : 'loading...'}
         </Detail>
+
+        <Detail color={"#C0C0C0"}>
+          Value: {positionValue !== undefined ? `${positionValue} ${collateralCurrency}` : 'loading...'}
+        </Detail>
       </PositionCardColumn>
 
       <PositionCardColumn width="20%">
