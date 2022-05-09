@@ -56,15 +56,16 @@ function useUnwindCallArguments(
   if (!marketContract || unwindValue === "" || unwindValue === "." || positionCurrentValue === undefined || positionId === null || !account || isLong === undefined || prices === undefined) calldata = undefined;
   else {
     // OI has units of OVL / (quoteCurrency / baseCurrency) = OVL * baseCurrency / quoteCurrency
-    let unwindValueBigNumber = utils.parseUnits(unwindValue);
-    let parsedUnwindValue = unwindValueBigNumber.toString();
-    let parsedCurrentValue = positionCurrentValue.toString();
-    let fraction = Number(parsedUnwindValue) / Number(parsedCurrentValue);
+    // let unwindValueBigNumber = utils.parseUnits(unwindValue);
+    // let parsedUnwindValue = unwindValueBigNumber.toString();
+    // let parsedCurrentValue = positionCurrentValue.toString();
+    // let fraction = Number(parsedUnwindValue) / Number(parsedCurrentValue);
 
-    console.log('unwindValueBigNumber: ',unwindValue.toString() )
-    console.log('denominator: ',positionCurrentValue.toString() )
+    let fraction = Number(unwindValue) / 100;
+    // console.log('unwindValueBigNumber: ',unwindValue.toString() )
+    // console.log('denominator: ',positionCurrentValue.toString() )
     console.log('fraction: ',  utils.parseUnits(fraction.toString()));
-    console.log('positionId: ', positionId);
+    // console.log('positionId: ', positionId);
 
     calldata = marketContract.interface.encodeFunctionData("unwind", [
       BigNumber.from(positionId),
