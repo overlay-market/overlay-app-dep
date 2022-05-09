@@ -53,7 +53,7 @@ function useUnwindCallArguments(
 
   console.log('positionId: ', positionId === null);
 
-  if (!marketContract || unwindValue === "" || positionCurrentValue === undefined || positionId === null || !account || isLong === undefined || prices === undefined) calldata = undefined;
+  if (!marketContract || unwindValue === "" || unwindValue === "." || positionCurrentValue === undefined || positionId === null || !account || isLong === undefined || prices === undefined) calldata = undefined;
   else {
     // OI has units of OVL / (quoteCurrency / baseCurrency) = OVL * baseCurrency / quoteCurrency
     let unwindValueBigNumber = utils.parseUnits(unwindValue);
@@ -64,8 +64,8 @@ function useUnwindCallArguments(
     console.log('unwindValueBigNumber: ',unwindValue.toString() )
     console.log('denominator: ',positionCurrentValue.toString() )
     console.log('fraction: ',  utils.parseUnits(fraction.toString()));
+    console.log('positionId: ', BigNumber.from(positionId.toString()));
 
-    console.log('positionId: ', BigNumber.from(positionId.toString()))
     calldata = marketContract.interface.encodeFunctionData("unwind", [
       BigNumber.from(positionId.toString()),
       utils.parseUnits(fraction.toString()),
@@ -112,7 +112,7 @@ export function useUnwindCallback(
   const unwindCalls = useUnwindCallArguments(marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices);
 
   return useMemo(() => {
-    if (!unwindValue || positionId === null || !library || !account || !chainId) {
+    if (!unwindValue || unwindValue === '.' || positionId === null || !library || !account || !chainId) {
       return {
         state: UnwindCallbackState.INVALID,
         callback: null,
