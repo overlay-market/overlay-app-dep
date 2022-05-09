@@ -94,7 +94,8 @@ export const PositionCard = ({
 }) => {
   let parsedLeverage = Number(leverage).toFixed(1);
   let PnL = positionValue && positionCost ? positionValue - positionCost : null;
-  let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralCurrency}` : null);
+  // let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralCurrency}` : null);
+  let fixedPnL = positionValue === 0 ? '0' : (PnL ? `${PnL.toFixed(4)}` : null);
 
   const indicatorColor = useMemo(() => {
     if (!fixedPnL || parseFloat(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2';
@@ -152,7 +153,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="30%" align="right">
         <Detail fontWeight={700} color={indicatorColor}>
-          {fixedPnL ? `${fixedPnL}` : 'loading...'}
+          {fixedPnL ? `${fixedPnL} ${collateralCurrency}` : 'loading...'}
         </Detail>
 
         {navigate ?? (
