@@ -110,7 +110,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
   
   const { onAmountInput, onSelectPositionId, onResetUnwindState, onSetSlippage, onSetTxnDeadline } = useUnwindActionHandlers();
-  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, selectedPositionId, isLong, prices);
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, positionId, isLong, prices);
   // console.log('selectedPositionId: ', selectedPositionId)
   console.log('unwindCallback: ', unwindCallback)
   

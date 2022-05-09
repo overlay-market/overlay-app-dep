@@ -42,7 +42,7 @@ function useUnwindCallArguments(
   marketAddress: string | undefined,
   unwindValue: string,
   positionCurrentValue: BigNumber | undefined,
-  positionId: number | null,
+  positionId: string | null,
   isLong: boolean | undefined,
   prices: any | undefined
 ) {
@@ -64,10 +64,10 @@ function useUnwindCallArguments(
     console.log('unwindValueBigNumber: ',unwindValue.toString() )
     console.log('denominator: ',positionCurrentValue.toString() )
     console.log('fraction: ',  utils.parseUnits(fraction.toString()));
-    console.log('positionId: ', BigNumber.from(positionId.toString()));
+    console.log('positionId: ', positionId);
 
     calldata = marketContract.interface.encodeFunctionData("unwind", [
-      BigNumber.from(positionId.toString()),
+      BigNumber.from(positionId),
       utils.parseUnits(fraction.toString()),
       isLong ? utils.parseUnits('0') : utils.parseUnits('10000000')
     ]
@@ -97,7 +97,7 @@ export function useUnwindCallback(
   marketAddress: string | undefined,
   unwindValue: string,
   positionCurrentValue: BigNumber | undefined,
-  positionId: number | null,
+  positionId: string | null,
   isLong: boolean | undefined,
   prices: any| undefined
 ) : {
