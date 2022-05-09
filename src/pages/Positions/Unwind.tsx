@@ -231,9 +231,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           </TransparentUnderlineButton>
         </FlexRowContainer>
       </PercentageSlider>
-      <Label htmlFor="Amount" mt={"24px"}>
+      {/* <Label htmlFor="Amount" mt={"24px"}>
 
-      </Label>
+      </Label> */}
       {/* <NumericalInputContainer>
         <NumericalInputDescriptor>OVL</NumericalInputDescriptor>
         <NumericalInput
