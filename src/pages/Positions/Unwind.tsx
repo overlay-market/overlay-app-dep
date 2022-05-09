@@ -34,6 +34,7 @@ import { usePositionState } from "../../state/positions/hooks";
 import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
+import { PercentageSlider } from "../../components/PercentageSlider/PercentageSlider";
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
   padding: 16px;
@@ -51,6 +52,10 @@ const UnwindButton = styled(TriggerActionButton)`
 const UnwindInterface = styled.div`
 
 `;
+
+const UnwindAmount = styled.div`
+  margin-right: auto;
+`
 
 export const AdditionalDetailRow = ({
   detail,
@@ -123,15 +128,16 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
     onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
   }, [onSetSlippage, onSetTxnDeadline]);
 
-  const handleUserInput = useCallback((input: string) => {
-    onAmountInput(input)}, [onAmountInput]);
+  const handleUserAmount = useCallback((e: any) => {
+    onAmountInput(e.target.value)}, [onAmountInput]
+  )
 
-  const handleQuickInput = (percentage: number, totalOi: string | null) => {
-    let calculatedOi: string =
-      percentage !== 100
-        ? (Number(totalOi) * (percentage / 100)).toFixed(4)
-        : (Number(totalOi) * (percentage / 100)).toFixed(18);
-    return onAmountInput(calculatedOi);
+  // const handleUserInput = useCallback((input: string) => {
+  //   onAmountInput(input)}, [onAmountInput]);
+
+  const handleQuickInput = (percentage: number) => {
+    if (percentage < 0 || percentage > 100) return onAmountInput('0');
+    return onAmountInput(percentage.toString());
   };
 
   const handleSelectPosition = useCallback((positionId: number) => {
@@ -160,7 +166,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         as={"form"}
         >
       <ControlInterfaceHeadContainer>
-        <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>Close Position</TEXT.StandardHeader1>
+        <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>Unwind Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
           {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : 'loading...' }
         </TEXT.StandardHeader1>
@@ -186,47 +192,56 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           handleResetTxnSettings={handleResetTxnSettings}
           onSetTxnDeadline={onSetTxnDeadline}
         />
-
-      <Label htmlFor="Amount" mt={"24px"}>
-      <TEXT.StandardBody margin={"0 auto 4px 0"} color={"white"}>
-        Unwind Amount
+      <TEXT.StandardBody margin={"0 auto 24px 0"} color={"white"}>
+        Amount
       </TEXT.StandardBody>
-      <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
-        <TransparentUnderlineButton
-          onClick={() => handleQuickInput(25, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
-          border={"none"}
-          >
-          25%
-        </TransparentUnderlineButton>
-        <TransparentUnderlineButton
-          onClick={() => handleQuickInput(50, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
-          border={"none"}
-          >
-          50%
-        </TransparentUnderlineButton>
-        <TransparentUnderlineButton
-          onClick={() => handleQuickInput(75, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
-          border={"none"}
-          >
-          75%
-        </TransparentUnderlineButton>
-        <TransparentUnderlineButton
-          onClick={() => handleQuickInput(100, value ? Number(utils.formatUnits(value, 18)).toFixed(5) : null)}
-          border={"none"}
-          >
-          Max
-        </TransparentUnderlineButton>
-      </FlexRowContainer>
+
+      <PercentageSlider 
+        name={"Unwind Position Amount"}
+        min={0}
+        max={100}
+        step={1}
+        value={Number(typedValue)}
+        onChange={handleUserAmount}
+        >
+        <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
+          <TransparentUnderlineButton
+            onClick={() => handleQuickInput(25)}
+            border={"none"}
+            >
+            25%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton
+            onClick={() => handleQuickInput(50)}
+            border={"none"}
+            >
+            50%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton
+            onClick={() => handleQuickInput(75)}
+            border={"none"}
+            >
+            75%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton
+            onClick={() => handleQuickInput(100)}
+            border={"none"}
+            >
+            Max
+          </TransparentUnderlineButton>
+        </FlexRowContainer>
+      </PercentageSlider>
+      <Label htmlFor="Amount" mt={"24px"}>
 
       </Label>
-      <NumericalInputContainer>
+      {/* <NumericalInputContainer>
         <NumericalInputDescriptor>OVL</NumericalInputDescriptor>
         <NumericalInput
           value={typedValue}
           onUserInput={handleUserInput}
           align={"right"}
         />
-      </NumericalInputContainer>
+      </NumericalInputContainer> */}
       <UnwindButton 
         onClick={() => handleUnwind()}
         isDisabled={disableUnwindButton}
