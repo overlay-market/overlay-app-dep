@@ -151,7 +151,8 @@ function Web3StatusInner() {
     // connected
     return (  
       <Web3StatusConnected>
-
+      
+      
       {account && chainId && !ovlBalance && (
         <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
