@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import styled from 'styled-components/macro';
 import { utils } from 'ethers';
 import { Trans } from '@lingui/macro';
@@ -12,6 +13,8 @@ import { SupportedChainId } from '../../constants/chains';
 import { OVL } from '../../constants/tokens';
 import { FlexRowContainer } from '../Container/Container';
 import { useWalletModalToggle } from '../../state/application/hooks';
+import { useAllTransactions } from '../../state/transactions/hooks';
+import { TransactionDetails } from '../../state/transactions/reducer'
 import Dropdown from './Dropdown';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 
@@ -51,6 +54,20 @@ export const Account = styled(FlexRowContainer)`
   display: flex;
   flex-direction: row;
 `;
+
+/**
+ * Returns whether a transaction happened in the last day (86400 seconds * 1000 milliseconds / second)
+ * @param tx to check for recency
+ */
+ export function isTransactionRecent(tx: TransactionDetails): boolean {
+  return new Date().getTime() - tx.addedTime < 86_400_000
+}
+
+// we want the latest one to come first, so return negative if a is after b
+function newTransactionsFirst(a: TransactionDetails, b: TransactionDetails) {
+  return b.addedTime - a.addedTime
+}
+
 interface TokenBalanceProps {
   balance: any
   network: string
@@ -115,12 +132,19 @@ const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
 function Web3StatusInner() {
   const { account, chainId, error } = useActiveWeb3React();
 
+  const allTransactions = useAllTransactions();
+
+  const sortedRecentTransactions = useMemo(() => {
+    const txs = Object.values(allTransactions)
+    return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
+  }, [allTransactions])
+
+  const pending = sortedRecentTransactions.filter((tx) => !tx.receipt).map((tx) => tx.hash)
+
+  const hasPendingTransactions = !!pending.length
+
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
-
   const ovlBalance = useOvlBalance();
-
-  // console.log('ovlBalance: ', ovlBalance?.toFixed(2));
-
   const toggleWalletModal = useWalletModalToggle();
 
   if (account) {
