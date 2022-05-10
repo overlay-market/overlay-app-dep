@@ -97,12 +97,12 @@ const SlideMenu = ({
           >
           Positions
         </StyledInternalLink>
-        <StyledInternalLink 
+        {/* <StyledInternalLink 
           tabIndex={tabIndex} 
           to={'/magic'}
           >
           Magic
-        </StyledInternalLink>
+        </StyledInternalLink> */}
 
         <Separator/>
         
