@@ -17,6 +17,7 @@ import { useAllTransactions } from '../../state/transactions/hooks';
 import { TransactionDetails } from '../../state/transactions/reducer'
 import Dropdown from './Dropdown';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
+import Loader from '../Loaders/Loaders';
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -53,6 +54,18 @@ export const Account = styled(FlexRowContainer)`
   margin: auto 24px auto auto;
   display: flex;
   flex-direction: row;
+`;
+
+const PendingTransactions = styled.div`
+  display: flex;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+  flex-direction: row;
+  white-space: nowrap;
+  align-items: center;
+  font-size: 12px;
+  margin: 4px 8px 4px 4px;
+  padding: 0 4px;
 `;
 
 /**
@@ -151,8 +164,13 @@ function Web3StatusInner() {
     // connected
     return (  
       <Web3StatusConnected>
-      
-      
+      {hasPendingTransactions && (
+        <PendingTransactions>
+          {pending?.length} pending&nbsp;
+          <Loader size="12px" stroke="white" />
+        </PendingTransactions>
+      )}
+
       {account && chainId && !ovlBalance && (
         <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
       )}
