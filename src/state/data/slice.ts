@@ -13,8 +13,6 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
     "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
   [SupportedChainId.KOVAN]:
     "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
-  [SupportedChainId.LOCALHOST]:
-    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
 };
 
 export const api = createApi({
