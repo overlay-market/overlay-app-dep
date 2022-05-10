@@ -34,3 +34,16 @@ export function formatFundingRateToDaily(wei: BigNumberish | string | undefined,
   
   return roundedDailyPercentage;
 }
+
+export function formatFundingRateToAnnual(wei: BigNumberish | string | undefined, decimals: number, round: number){
+  let roundedAnnualPercentage;
+
+  if (wei) {
+    let rate = formatWeiToParsedNumber(wei, decimals, 10);
+    let dailyRate = rate && rate * 86400;
+    let annualPercentage = dailyRate && dailyRate * 100 * 365;
+    roundedAnnualPercentage = annualPercentage?.toFixed(round)
+  }
+  
+  return roundedAnnualPercentage;
+}
