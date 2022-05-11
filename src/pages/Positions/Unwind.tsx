@@ -37,7 +37,7 @@ import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 import { PercentageSlider } from "../../components/PercentageSlider/PercentageSlider";
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
-  padding: 0px;
+  padding: 16px;
 `;
 
 const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`

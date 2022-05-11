@@ -15,6 +15,7 @@ import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, Sty
 import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
+import Loader from "../../components/Loaders/Loaders";
 
 const activeClassName = "INACTIVE";
 
@@ -196,7 +197,7 @@ const Markets = () => {
               >
                 <StyledTableCellThin component="th" scope="row">
                   {/* {market.baseName} / {market.quoteName} */}
-                  {shortenAddress(market.id)}
+                  {market.id ? shortenAddress(market.id) : <Loader stroke="white" size="12px" />}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
@@ -204,7 +205,7 @@ const Markets = () => {
                     marketPrices[index] ? (
                       formatWeiToParsedNumber(marketPrices[index], 18, 2)
                     ):(
-                      'loading...'
+                      <Loader stroke="white" size="12px" />
                     )
                   }
                 </StyledTableCellThin>
@@ -215,13 +216,13 @@ const Markets = () => {
                       {
                         marketOis[index] ? (
                           formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 5)
-                        ) : '...'
+                        ) : <Loader stroke="white" size="12px" />
                       }
                       /
                       {
                         marketCapOis[index] ? (
                           formatWeiToParsedNumber(marketCapOis[index], 18, 5)
-                        ) : '...'
+                        ) : <Loader stroke="white" size="12px" />
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
@@ -240,13 +241,13 @@ const Markets = () => {
                       {
                         marketOis[index] ? (
                           formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 5)
-                        ) : '...'
+                        ) : <Loader stroke="white" size="12px" />
                       }
                       /
                       {
                         marketCapOis[index] ? (
                           formatWeiToParsedNumber(marketCapOis[index], 18, 5)
-                        ) : '...'
+                        ) : <Loader stroke="white" size="12px" />
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
@@ -266,7 +267,7 @@ const Markets = () => {
                         marketFundingRates[index] ? (
                           `${formatFundingRateToDaily(marketFundingRates[index], 18, 2)}% [${formatFundingRateToAnnual(marketFundingRates[index], 18, 2)}%]`
                         ):(
-                          'loading...'
+                          <Loader stroke="white" size="12px" />
                         )
                       }
                     </TEXT.AdjustableSize>
