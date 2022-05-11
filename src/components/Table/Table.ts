@@ -3,6 +3,10 @@ import { Table, TableCell, TableRow } from '@material-ui/core';
 
 export const StyledTable = styled(Table)`
   white-space: nowrap !important;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    table-layout: fixed !important;
+  `}
 `;
 
 export const StyledTableCell = styled(TableCell)<{ width?: number }>`
