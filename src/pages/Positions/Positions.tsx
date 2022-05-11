@@ -43,14 +43,16 @@ const LoadingContainer = styled.div`
 `;
 
 const ConnectWalletToggleText = styled(Button)`
-  width: 100%;
-  height: 33vh;
   cursor: pointer;
   font-weight: 700;
   background: none;
+  border: 1px solid #12B4FF !important;
+  border-radius: 24px !important;
+  padding: 16px 48px !important;
+  color: white;
 
   :hover {
-    opacity: 0.7;
+    color: #12B4FF;
   }
 `;
 
@@ -155,7 +157,7 @@ export const Positions = () => {
         ):(
           <LoadingContainer>
             <ConnectWalletToggleText onClick={toggleWalletModal}>
-              Please connect wallet
+              Connect to a wallet
             </ConnectWalletToggleText>
           </LoadingContainer>
         )}
