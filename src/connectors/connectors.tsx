@@ -16,9 +16,9 @@ export const injected = new InjectedConnector({
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 
-// if (typeof INFURA_KEY === 'undefined') {
-//   throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
-// }
+if (typeof INFURA_KEY === 'undefined') {
+  throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
+}
 
 const NETWORK_URLS: { [key in SupportedChainId]: string } = {
   [SupportedChainId.MAINNET]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
