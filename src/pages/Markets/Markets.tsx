@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
 import { utils, BigNumber } from "ethers";
+import { Interface } from "@ethersproject/abi";
 import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
@@ -13,8 +14,9 @@ import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
 import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
-import { useV1PeripheryContract } from "../../hooks/useContract";
+import { useUniswapV3Feed, useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
+import UNISWAP_V3_FEED_ABI from '../../constants/abis/OverlayV1UniswapV3Feed.json';
 import Loader from "../../components/Loaders/Loaders";
 
 const activeClassName = "INACTIVE";
@@ -31,6 +33,8 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
     font-weight: 700;
   }
 `;
+
+const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI);
 
 const Markets = () => {
   const history = useHistory();
@@ -51,11 +55,24 @@ const Markets = () => {
     return markets.markets.map((market) => [market.id])
   }, [markets])
 
+  const feedAddresses = useMemo(() => {
+    if (markets === undefined) return [];
+
+    return markets.markets.map((market) => market.feedAddress)
+  }, [markets]);
+
   const peripheryContract = useV1PeripheryContract();
+
   const prices = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses);
   const fundingRates = useSingleContractMultipleData(peripheryContract, 'fundingRate', marketAddresses);
   const ois = useSingleContractMultipleData(peripheryContract, 'ois', marketAddresses);
   const capOis = useSingleContractMultipleData(peripheryContract, 'capOi', marketAddresses);
+
+  const baseTokens = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketBaseToken');
+  const quoteTokens = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken');
+
+  const baseTokenSymbols = 
+  console.log('baseTokens: ', baseTokens);
 
   const marketPrices = useMemo(() => {
     return prices.map((market, index) => {
