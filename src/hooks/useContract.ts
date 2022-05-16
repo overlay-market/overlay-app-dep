@@ -13,6 +13,7 @@ import OVL_MOTHERSHIP_ABI from '../constants/abis/OverlayV1Mothership.json';
 import V1_MARKET_ABI from '../constants/abis/OverlayV1Market.json';
 import V1_PERIPHERY_ABI from "../constants/abis/OverlayV1State.json";
 import OVL_TOKEN_ABI from '../constants/abis/OverlayV1Token.json';
+import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json';
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
@@ -46,6 +47,11 @@ export function useMulticall2Contract(): Contract | null {
 export function useV1PeripheryContract(): Contract | null {
   const { chainId } = useActiveWeb3React();
   return useContract(chainId && V1_PERIPHERY_ADDRESS[chainId], V1_PERIPHERY_ABI, false);
+};
+
+export function useUniswapV3Feed(address: string | undefined): Contract | null { 
+  const { chainId } = useActiveWeb3React();
+  return useContract(chainId && address, UNISWAP_V3_FEED_ABI, false);
 };
 
 export function useOVLFactoryContract(): Contract | null {

@@ -1,0 +1,252 @@
+[
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_marketPool", "type": "address" },
+      {
+        "internalType": "address",
+        "name": "_marketBaseToken",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_marketQuoteToken",
+        "type": "address"
+      },
+      {
+        "internalType": "uint128",
+        "name": "_marketBaseAmount",
+        "type": "uint128"
+      },
+      { "internalType": "address", "name": "_ovlXPool", "type": "address" },
+      { "internalType": "address", "name": "_ovl", "type": "address" },
+      { "internalType": "uint256", "name": "_microWindow", "type": "uint256" },
+      { "internalType": "uint256", "name": "_macroWindow", "type": "uint256" },
+      {
+        "internalType": "uint256",
+        "name": "_cardinalityMarketMinimum",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_cardinalityOvlXMinimum",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  { "inputs": [], "name": "T", "type": "error" },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "pool", "type": "address" },
+      { "internalType": "uint32[]", "name": "secondsAgos", "type": "uint32[]" },
+      { "internalType": "uint32[]", "name": "windows", "type": "uint32[]" },
+      { "internalType": "uint256[]", "name": "nowIdxs", "type": "uint256[]" }
+    ],
+    "name": "consult",
+    "outputs": [
+      {
+        "internalType": "int24[]",
+        "name": "arithmeticMeanTicks_",
+        "type": "int24[]"
+      },
+      {
+        "internalType": "uint128[]",
+        "name": "harmonicMeanLiquidities_",
+        "type": "uint128[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "feedFactory",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "int24", "name": "tick", "type": "int24" },
+      { "internalType": "uint128", "name": "baseAmount", "type": "uint128" },
+      { "internalType": "address", "name": "baseToken", "type": "address" },
+      { "internalType": "address", "name": "quoteToken", "type": "address" }
+    ],
+    "name": "getQuoteAtTick",
+    "outputs": [
+      { "internalType": "uint256", "name": "quoteAmount_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int24",
+        "name": "arithmeticMeanTickMarket",
+        "type": "int24"
+      },
+      {
+        "internalType": "uint128",
+        "name": "harmonicMeanLiquidityMarket",
+        "type": "uint128"
+      },
+      {
+        "internalType": "int24",
+        "name": "arithmeticMeanTickOvlX",
+        "type": "int24"
+      }
+    ],
+    "name": "getReserveInOvl",
+    "outputs": [
+      { "internalType": "uint256", "name": "reserveInOvl_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "int24",
+        "name": "arithmeticMeanTickMarket",
+        "type": "int24"
+      },
+      {
+        "internalType": "uint128",
+        "name": "harmonicMeanLiquidityMarket",
+        "type": "uint128"
+      }
+    ],
+    "name": "getReserveInX",
+    "outputs": [
+      { "internalType": "uint256", "name": "reserveInX_", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "latest",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "timestamp", "type": "uint256" },
+          {
+            "internalType": "uint256",
+            "name": "microWindow",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "macroWindow",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceOverMicroWindow",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceOverMacroWindow",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "priceOneMacroWindowAgo",
+            "type": "uint256"
+          },
+          {
+            "internalType": "uint256",
+            "name": "reserveOverMicroWindow",
+            "type": "uint256"
+          },
+          { "internalType": "bool", "name": "hasReserve", "type": "bool" }
+        ],
+        "internalType": "struct Oracle.Data",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "macroWindow",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketBaseAmount",
+    "outputs": [{ "internalType": "uint128", "name": "", "type": "uint128" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketBaseToken",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketPool",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketQuoteToken",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketToken0",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "marketToken1",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "microWindow",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ovl",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "ovlXPool",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "x",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
