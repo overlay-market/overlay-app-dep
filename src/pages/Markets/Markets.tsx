@@ -211,8 +211,17 @@ const Markets = () => {
                 key={index.toString()}
               >
                 <StyledTableCellThin component="th" scope="row">
-                  {/* {market.baseName} / {market.quoteName} */}
-                  {baseTokens[index]} / {quoteTokens[index]}
+                  {baseTokens[index] === 'loading' ? (
+                    <Loader stroke="white" size="12px" />
+                  ):(
+                    baseTokens[index]
+                  )}
+                  /
+                  {quoteTokens[index] === 'loading' ? (
+                    <Loader stroke="white" size="12px" />
+                  ):(
+                    quoteTokens[index]
+                  )}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
