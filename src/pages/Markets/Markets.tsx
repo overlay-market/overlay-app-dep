@@ -92,20 +92,19 @@ const Markets = () => {
 
   const baseTokenSymbols = useMultipleContractSingleData(baseTokenAddresses, ERC20_INTERFACE, 'symbol');
   const quoteTokenSymbols = useMultipleContractSingleData(quoteTokenAddresses, ERC20_INTERFACE, 'symbol');
-
+  
   const marketBaseTokenSymbols = useMemo(() => {
     return baseTokenSymbols.map((token, index) => {
-      if (token.loading === true || token === undefined || blockNumber === undefined) return undefined;
-      
+      if (token.loading === true || token === undefined || blockNumber === undefined) return 'loading';
+      if (token?.result === undefined) return 'loading';
       return token?.result;
     })
   }, [baseTokenSymbols, blockNumber]);
   
-  console.log("marketBaseTokenSymbols:", marketBaseTokenSymbols);
   const marketQuoteTokenSymbols = useMemo(() => {
     return quoteTokenSymbols.map((token, index) => {
-      if (token.loading === true || token === undefined || blockNumber === undefined) return undefined;
-
+      if (token.loading === true || token === undefined || blockNumber === undefined) return 'loading';
+      if (token?.result === undefined) return 'loading';
       return token?.result;
     })
   }, [quoteTokenSymbols, blockNumber]);
