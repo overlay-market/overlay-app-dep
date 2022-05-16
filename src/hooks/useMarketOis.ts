@@ -12,7 +12,7 @@ export function useMarketOis(
   const [ois, setOis] = useState();
 
   useEffect(() => {
-    if (!peripheryContract || !marketAddress || !account || !blockNumber) return;
+    if (!peripheryContract || !marketAddress || !blockNumber) return;
 
     (async () => {
       try {

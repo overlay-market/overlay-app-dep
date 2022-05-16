@@ -19,6 +19,7 @@ import { useBlockNumber } from "../../state/application/hooks";
 import UNISWAP_V3_FEED_ABI from '../../constants/abis/OverlayV1UniswapV3Feed.json';
 import ERC20_INTERFACE from "../../constants/abis/erc20";
 import Loader from "../../components/Loaders/Loaders";
+import { useMarketNames } from "../../hooks/useMarketName";
 
 const activeClassName = "INACTIVE";
 
@@ -69,45 +70,7 @@ const Markets = () => {
   const ois = useSingleContractMultipleData(peripheryContract, 'ois', marketAddresses);
   const capOis = useSingleContractMultipleData(peripheryContract, 'capOi', marketAddresses);
 
-  const baseTokens = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketBaseToken');
-  const quoteTokens = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken');
-
-  const baseTokenAddresses = useMemo(() => {
-    if (baseTokens === []) return [];
-
-    return baseTokens.map((token) => {
-      let address = token?.result && token.result[0]
-      return address;
-    });
-  }, [baseTokens]);
-
-  const quoteTokenAddresses = useMemo(() => {
-    if (quoteTokens === []) return [];
-
-    return quoteTokens.map((token) => {
-      let address = token?.result && token.result[0]
-      return address;
-    });
-  }, [quoteTokens]);
-
-  const baseTokenSymbols = useMultipleContractSingleData(baseTokenAddresses, ERC20_INTERFACE, 'symbol');
-  const quoteTokenSymbols = useMultipleContractSingleData(quoteTokenAddresses, ERC20_INTERFACE, 'symbol');
-  
-  const marketBaseTokenSymbols = useMemo(() => {
-    return baseTokenSymbols.map((token, index) => {
-      if (token.loading === true || token === undefined || blockNumber === undefined) return 'loading';
-      if (token?.result === undefined) return 'loading';
-      return token?.result;
-    })
-  }, [baseTokenSymbols, blockNumber]);
-  
-  const marketQuoteTokenSymbols = useMemo(() => {
-    return quoteTokenSymbols.map((token, index) => {
-      if (token.loading === true || token === undefined || blockNumber === undefined) return 'loading';
-      if (token?.result === undefined) return 'loading';
-      return token?.result;
-    })
-  }, [quoteTokenSymbols, blockNumber]);
+  const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
 
   const marketPrices = useMemo(() => {
     return prices.map((market, index) => {
@@ -249,10 +212,7 @@ const Markets = () => {
               >
                 <StyledTableCellThin component="th" scope="row">
                   {/* {market.baseName} / {market.quoteName} */}
-                  {marketBaseTokenSymbols && marketQuoteTokenSymbols ? 
-                      (`${marketBaseTokenSymbols[index]}/${marketQuoteTokenSymbols[index]}`)
-                      : 
-                      <Loader stroke="white" size="12px" />}
+                  {baseTokens[index]} / {quoteTokens[index]}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">

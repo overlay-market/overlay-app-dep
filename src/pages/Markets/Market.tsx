@@ -25,11 +25,6 @@ export const Container = styled.div`
 export function Market({ match: {params: { marketId }}}: RouteComponentProps<{ marketId: string }>) {
   const { onResetBuildState } = usePositionActionHandlers();
 
-  const mockFeeds = ['0xf9c02c4406355f8f0ff26b690e5b651e7080dd26', '0xf9c02c4406355f8f0ff26b690e5b651e7080dd26']
-  const marketName = useMarketNames(mockFeeds);
-
-  console.log('marketNames: ', marketName);
-  
   useEffect(() => {
     onResetBuildState();
   }, [marketId, onResetBuildState]);
