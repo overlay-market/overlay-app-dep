@@ -1649,7 +1649,7 @@ export type AccountQuery = (
       & Pick<Position, 'positionId' | 'initialOi' | 'initialDebt' | 'initialCollateral' | 'initialNotional' | 'leverage' | 'isLong' | 'entryPrice' | 'isLiquidated' | 'currentOi' | 'currentDebt' | 'mint' | 'createdAtTimestamp' | 'createdAtBlockNumber'>
       & { market: (
         { __typename?: 'Market' }
-        & Pick<Market, 'id'>
+        & Pick<Market, 'id' | 'feedAddress'>
       ) }
     )>, builds: Array<(
       { __typename?: 'Build' }
@@ -1704,6 +1704,7 @@ export const AccountDocument = `
       positionId
       market {
         id
+        feedAddress
       }
       initialOi
       initialDebt

@@ -14,6 +14,7 @@ import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/fo
 import { useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
+import { useMarketNames } from "../../hooks/useMarketName";
 
 const Container = styled.div`
   display: flex;
@@ -65,6 +66,16 @@ export const Positions = () => {
 
   // console.log('positions: ', positions);
 
+  const feedAddresses = useMemo(() => {
+    if (positions === undefined) return [];
+
+    return positions.map((position) => position.market.feedAddress)
+  }, [positions]);
+
+  const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
+
+  console.log('baseTokens: ', baseTokens);
+
   const positionsCallData = useMemo(() => {
     if (!positions || positions === undefined || !account || !blockNumber) return [];
 
@@ -109,7 +120,6 @@ export const Positions = () => {
       return position?.result?.oi_;
     })
   }, [fetchPositionOis, blockNumber]);
-  console.log('positionOis: ', positionOis);
 
   return (
     <MarketCard>
@@ -137,7 +147,10 @@ export const Positions = () => {
                     key={key.toString()}
                     positionId={position.positionId}
                     // marketName={`${shortenAddress(position.market.id) + `-` + BigNumber.from(position.positionId).toString()}`}
-                    marketName={`${shortenAddress(position.market.id)}`}
+                    // marketName={`${shortenAddress(position.market.id)}`}
+                    marketName={`${baseTokens[key]}/${quoteTokens[key]}`}
+                    baseToken={`${baseTokens[key]}`}
+                    quoteToken={`${quoteTokens[key]}`}
                     isLong={position.isLong}
                     leverage={position.leverage}
                     positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}

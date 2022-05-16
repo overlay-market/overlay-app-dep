@@ -28,6 +28,7 @@ export const api = createApi({
               positionId
               market {
                 id
+                feedAddress
               }
               initialOi
               initialDebt

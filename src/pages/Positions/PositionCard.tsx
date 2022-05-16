@@ -7,6 +7,7 @@ import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/fo
 import { useMemo } from "react";
 import { ConsoleView } from "react-device-detect";
 import { BigNumber } from "ethers";
+import Loader from "../../components/Loaders/Loaders";
 
 const CardHeaderContainer = styled(FlexRowContainer)`
   color: white;
@@ -64,6 +65,8 @@ export const PositionTableHeader = () => (
 export const PositionCard = ({
   positionId,
   marketName,
+  baseToken,
+  quoteToken,
   isLong,
   leverage,
   positionValue,
@@ -79,6 +82,8 @@ export const PositionCard = ({
 }:{
   positionId: string;
   marketName: string;
+  baseToken: string;
+  quoteToken: string;
   isLong: boolean | null;
   leverage: number | string;
   positionValue: number | null | undefined;
@@ -111,7 +116,17 @@ export const PositionCard = ({
       >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={"white"}>
-          {marketName}
+          {baseToken === 'loading' ? (
+            <Loader stroke="white" size="12px" />
+          ):(
+            baseToken
+          )}
+          /
+          {quoteToken === 'loading' ? (
+            <Loader stroke="white" size="12px" />
+          ):(
+            quoteToken
+          )}
         </Detail>
 
         <Detail fontWeight={700} color={"white"}>
