@@ -66,6 +66,7 @@ export const api = createApi({
           query market($market: ID!) {
             market(id: $market) {
               id
+              feedAddress
               factory {
                 id
               }

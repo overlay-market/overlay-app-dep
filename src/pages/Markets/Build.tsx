@@ -41,6 +41,8 @@ import { useMarketOis } from "../../hooks/useMarketOis";
 import { useMarketCapOi } from "../../hooks/useMarketCapOi";
 import { useEstimatedBuildOi } from "../../hooks/useEstimatedBuildOi"
 import { useEstimatedBuildLiquidationPrice } from "../../hooks/useEstimatedBuildLiquidationPrice";
+import { useMarketName } from "../../hooks/useMarketName";
+import Loader from "../../components/Loaders/Loaders";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -123,6 +125,9 @@ export const BuildInterface = ({
   const ovl = chainId ? OVL[chainId] : undefined;
   // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
   
+  // @TO-DO: pull market name from feed
+  const { baseToken, quoteToken } = useMarketName(market?.feedAddress);
+
   // @TO-DO: pull market attributes
   const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined;
   const capPayoff = market ? formatWeiToParsedNumber(market.capPayoff, 18, 2) : undefined;
@@ -337,7 +342,13 @@ export const BuildInterface = ({
         >
         <ControlInterfaceHeadContainer>
           <TEXT.BoldHeader1>
-            {market ? shortenAddress(market?.id) : "loading..."}
+            {
+              baseToken === 'loading' && quoteToken === 'loading' ? (
+                <Loader stroke="white" size="12px" />
+              ):(
+                `${baseToken}/${quoteToken}`
+              )
+            }
           </TEXT.BoldHeader1>
           <TEXT.StandardHeader1>
             {prices.mid}

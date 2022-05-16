@@ -791,7 +791,7 @@ export type Position = {
   initialDebt: Scalars['BigInt'];
   initialCollateral: Scalars['BigInt'];
   initialNotional: Scalars['BigInt'];
-  leverage: Scalars['BigInt'];
+  leverage: Scalars['BigDecimal'];
   isLong: Scalars['Boolean'];
   entryPrice: Scalars['BigInt'];
   isLiquidated: Scalars['Boolean'];
@@ -904,14 +904,14 @@ export type Position_Filter = {
   initialNotional_lte?: Maybe<Scalars['BigInt']>;
   initialNotional_in?: Maybe<Array<Scalars['BigInt']>>;
   initialNotional_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  leverage?: Maybe<Scalars['BigInt']>;
-  leverage_not?: Maybe<Scalars['BigInt']>;
-  leverage_gt?: Maybe<Scalars['BigInt']>;
-  leverage_lt?: Maybe<Scalars['BigInt']>;
-  leverage_gte?: Maybe<Scalars['BigInt']>;
-  leverage_lte?: Maybe<Scalars['BigInt']>;
-  leverage_in?: Maybe<Array<Scalars['BigInt']>>;
-  leverage_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  leverage?: Maybe<Scalars['BigDecimal']>;
+  leverage_not?: Maybe<Scalars['BigDecimal']>;
+  leverage_gt?: Maybe<Scalars['BigDecimal']>;
+  leverage_lt?: Maybe<Scalars['BigDecimal']>;
+  leverage_gte?: Maybe<Scalars['BigDecimal']>;
+  leverage_lte?: Maybe<Scalars['BigDecimal']>;
+  leverage_in?: Maybe<Array<Scalars['BigDecimal']>>;
+  leverage_not_in?: Maybe<Array<Scalars['BigDecimal']>>;
   isLong?: Maybe<Scalars['Boolean']>;
   isLong_not?: Maybe<Scalars['Boolean']>;
   isLong_in?: Maybe<Array<Scalars['Boolean']>>;
@@ -1673,7 +1673,7 @@ export type MarketQuery = (
   { __typename?: 'Query' }
   & { market?: Maybe<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime' | 'oiLong' | 'oiShort'>
+    & Pick<Market, 'id' | 'feedAddress' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime' | 'oiLong' | 'oiShort'>
     & { factory: (
       { __typename?: 'Factory' }
       & Pick<Factory, 'id'>
@@ -1735,6 +1735,7 @@ export const MarketDocument = `
     query market($market: ID!) {
   market(id: $market) {
     id
+    feedAddress
     factory {
       id
     }
