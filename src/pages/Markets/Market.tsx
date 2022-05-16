@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { BuildInterface } from './Build';
 import { usePositionActionHandlers } from '../../state/positions/hooks';
-import { useMarketName } from '../../hooks/useMarketName';
+import { useMarketName, useMarketNames } from '../../hooks/useMarketName';
 
 export const Container = styled.div`
   display: flex !important;
@@ -25,9 +25,10 @@ export const Container = styled.div`
 export function Market({ match: {params: { marketId }}}: RouteComponentProps<{ marketId: string }>) {
   const { onResetBuildState } = usePositionActionHandlers();
 
-  const marketName = useMarketName('0xf9c02c4406355f8f0ff26b690e5b651e7080dd26');
+  const mockFeeds = ['0xf9c02c4406355f8f0ff26b690e5b651e7080dd26', '0xf9c02c4406355f8f0ff26b690e5b651e7080dd26']
+  const marketName = useMarketNames(mockFeeds);
 
-  console.log('marketName: ', marketName);
+  console.log('marketNames: ', marketName);
   
   useEffect(() => {
     onResetBuildState();
