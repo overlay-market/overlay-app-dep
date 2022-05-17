@@ -43,7 +43,7 @@ const Markets = () => {
   const blockNumber = useBlockNumber();
   const { markets } = useAllMarkets();
   
-  console.log('markets: ', markets);
+  // console.log('markets: ', markets);
   
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`);
@@ -104,15 +104,6 @@ const Markets = () => {
     })
   }, [capOis, blockNumber])
 
-  // console.log('marketOis: ', marketOis);
-
-  console.log('marketCapOis: ', marketCapOis);
-
-  // console.log('marketPrices: ', marketPrices);
-
-  // console.log('marketFundingRates: ', marketFundingRates);
-
-
   return (
     <PageContainer>
       <TableContainer component={Paper}>
@@ -136,74 +127,12 @@ const Markets = () => {
               </StyledHeaderCell>
 
               <StyledHeaderCell>
-                <Trans> Funding Rate [APR%] </Trans>
+                <Trans> Funding Rate </Trans>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
 
           <TableBody>
-
-          {/* <StyledTableRow
-            onClick={() => redirectToMarket('test-market')}
-            hover={true}
-            key={1}
-          >
-            <StyledTableCellThin component="th" scope="row">
-              RETH / RUSDC
-            </StyledTableCellThin>
-
-            <StyledTableCellThin align="left">
-              {(
-                (Number(utils.formatUnits(BigNumber.from("42"), 18)) +
-                  Number(utils.formatUnits(BigNumber.from("42"), 18))) /
-                2
-              ).toFixed(2)}
-            </StyledTableCellThin>
-
-            <StyledTableCellThin align="left">
-              <FlexColumnContainer align={"left"}>
-                <TEXT.SmallBody>
-                  2500/5000
-                </TEXT.SmallBody>
-                <ProgressBar
-                  value={5000}
-                  max={10000}
-                  color={"#10DCB1"}
-                  width={"88px"}
-                  margin={"0"}
-                />
-              </FlexColumnContainer>
-            </StyledTableCellThin>
-
-            <StyledTableCellThin align="left">
-              <FlexColumnContainer align={"left"}>
-                <TEXT.SmallBody>
-                  3750/5000
-                </TEXT.SmallBody>
-                <ProgressBar
-                  value={3750}
-                  max={5000}
-                  color={"#DC1F4E"}
-                  width={"88px"}
-                  margin={"0"}
-                />
-              </FlexColumnContainer>
-            </StyledTableCellThin>
-
-            <StyledTableCellThin align="left">
-              <FlexRowContainer>
-                <TEXT.AdjustableSize color={"#10DCB1"} mr={"3px"}>
-                 4%
-                </TEXT.AdjustableSize>
-                /
-                <TEXT.AdjustableSize color={"#FF648A"} ml={"3px"}>
-                 2.3%
-                </TEXT.AdjustableSize>
-              </FlexRowContainer>
-            </StyledTableCellThin>
-          </StyledTableRow> */}
-
-            
             {markets?.markets.map((market, index) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}

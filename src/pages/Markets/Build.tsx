@@ -142,7 +142,7 @@ export const BuildInterface = ({
   const fetchFundingRate = useSingleCallResult(peripheryContract, 'fundingRate', [marketId])
   
   const prices = useMemo(() => {
-    if (fetchPrices.loading === true || !fetchPrices.result) return {bid: 'loading...', ask: 'loading...', mid: 'loading...'};
+    if (fetchPrices.loading === true || !fetchPrices.result) return {bid: 'loading', ask: 'loading', mid: 'loading'};
     return {
       bid: formatWeiToParsedNumber(fetchPrices.result?.bid_, 18, 2)?.toString(),
       ask: formatWeiToParsedNumber(fetchPrices.result?.ask_, 18, 2)?.toString(),
@@ -154,7 +154,7 @@ export const BuildInterface = ({
   }, [fetchPrices])
   
   const fundingRate = useMemo(() => {
-    if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading...';
+    if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading';
     
     console.log('fetchFundingRate.result?.[0]: ', formatWeiToParsedString(fetchFundingRate.result?.[0], 18))
     return formatFundingRateToDaily(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
@@ -351,7 +351,7 @@ export const BuildInterface = ({
             }
           </TEXT.BoldHeader1>
           <TEXT.StandardHeader1>
-            {prices.mid}
+            {prices.mid === 'loading' ?  <Loader stroke="white" size="12px" /> : prices.mid}
           </TEXT.StandardHeader1>
           <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
@@ -422,7 +422,7 @@ export const BuildInterface = ({
           />
         </NumericalInputContainer>
           <NumericalInputBottomText>
-            minimum: {minCollateral}
+            minimum: {minCollateral !== undefined ? minCollateral : <Loader stroke="white" size="12px" /> }
           </NumericalInputBottomText>
 
         {showApprovalFlow ? (
@@ -448,24 +448,12 @@ export const BuildInterface = ({
         )}
         
       </ControlInterfaceContainer>
-      {/* <AdditionalDetails
-        bidPrice={market ? formatWeiToParsedString(market.currentPrice.bid, 10) : "..."}
-        askPrice={market ? formatWeiToParsedString(market.currentPrice.ask, 10) : "..."}
-        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "..."}
-        oiCap={formatWeiToParsedNumber(market?.oiCap, 18, 0)}
-        oiLong={formatWeiToParsedNumber(market?.oiLong, 18, 0)}
-        oiShort={formatWeiToParsedNumber(market?.oiShort, 18, 0)}
-        slippage={setSlippageValue}
-        fundingRate={fundingRate}
-        expectedOi={adjustedOi ? adjustedOi.toFixed(2) : "..."}
-        estLiquidationPrice={estimatedLiquidationPrice ? estimatedLiquidationPrice : '...'}
-      /> */}
 
       <AdditionalDetails
         bidPrice={prices.bid}
         askPrice={prices.ask}
         midPrice={prices.mid}
-        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading..."}
+        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading"}
         oiCap={ capOi && formatWeiToParsedNumber(capOi, 18, 5)}
         capPayoff = { capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={ ois && formatWeiToParsedNumber(ois.oiLong_, 18, 5)}

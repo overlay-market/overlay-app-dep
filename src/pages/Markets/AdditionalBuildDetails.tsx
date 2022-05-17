@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import Loader from "../../components/Loaders/Loaders";
 
 const ContentContainer = styled(FlexColumnContainer)`
   padding: 0 16px;
@@ -68,7 +69,11 @@ export const AdditionalDetails = ({
           Fee 
         </PositionDetailType>
         <DetailValue> 
-          {fee}% 
+          {fee === 'loading' ? (
+             <Loader stroke="white" size="12px" />
+           ):(
+            `${fee}%`
+           )}
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -85,8 +90,12 @@ export const AdditionalDetails = ({
         <PositionDetailType> 
           Bid 
         </PositionDetailType>
-        <DetailValue> 
-          {bidPrice} 
+        <DetailValue>
+          {bidPrice === 'loading' ? (
+             <Loader stroke="white" size="12px" />
+           ):(
+            bidPrice
+           )}
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -95,7 +104,11 @@ export const AdditionalDetails = ({
           Ask 
         </PositionDetailType>
         <DetailValue> 
-          {askPrice} 
+          {askPrice === 'loading' ? (
+             <Loader stroke="white" size="12px" />
+           ):(
+            askPrice
+           )}
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -129,9 +142,9 @@ export const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
         <OpenInterestValue>
-          {" "}
-          {oiLong} / {oiCap}
-          {" "}
+          {oiLong ? oiLong : <Loader stroke="white" size="12px" /> }
+           / 
+          {oiCap ? oiCap : <Loader stroke="white" size="12px" /> }
         </OpenInterestValue>
       </AdditionalDetailRow>
 
@@ -147,9 +160,9 @@ export const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
         <OpenInterestValue>
-          {" "}
-          {oiShort} / {oiCap}
-          {" "}
+          {oiShort ? oiShort : <Loader stroke="white" size="12px" /> }
+           / 
+          {oiCap ? oiCap : <Loader stroke="white" size="12px" /> }
         </OpenInterestValue>
       </AdditionalDetailRow>
 
@@ -158,7 +171,11 @@ export const AdditionalDetails = ({
           Funding rate 
         </PositionDetailType>
         <DetailValue color={"#10DCB1"}>
-           {fundingRate}
+           {fundingRate === 'loading' ? (
+             <Loader stroke="white" size="12px" />
+           ):(
+             fundingRate
+           )}
         </DetailValue>
       </AdditionalDetailRow>
     </ContentContainer>
