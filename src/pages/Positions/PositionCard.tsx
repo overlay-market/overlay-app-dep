@@ -72,7 +72,7 @@ export const PositionCard = ({
   positionValue,
   positionCost,
   positionOi,
-  collateralCurrency,
+  collateralToken,
   quotePrice,
   quoteCurrency,
   estLiquidationPrice,
@@ -89,7 +89,7 @@ export const PositionCard = ({
   positionValue: number | null | undefined;
   positionCost: number | null | undefined;
   positionOi: number | null | undefined;
-  collateralCurrency: string;
+  collateralToken: string;
   quotePrice: number | string;
   quoteCurrency: string;
   estLiquidationPrice: string | undefined;
@@ -99,7 +99,7 @@ export const PositionCard = ({
 }) => {
   let parsedLeverage = Number(leverage).toFixed(1);
   let PnL = positionValue && positionCost ? positionValue - positionCost : null;
-  // let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralCurrency}` : null);
+  // let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralToken}` : null);
   let fixedPnL = positionValue === 0 ? '0' : (PnL ? `${PnL.toFixed(4)}` : null);
 
   const indicatorColor = useMemo(() => {
@@ -116,17 +116,9 @@ export const PositionCard = ({
       >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={"white"}>
-          {baseToken === 'loading' ? (
-            <Loader stroke="white" size="12px" />
-          ):(
-            baseToken
-          )}
+          {baseToken === 'loading' ? <Loader stroke="white" size="12px" /> : baseToken}
           /
-          {quoteToken === 'loading' ? (
-            <Loader stroke="white" size="12px" />
-          ):(
-            quoteToken
-          )}
+          {quoteToken === 'loading' ? <Loader stroke="white" size="12px" /> : quoteToken}
         </Detail>
 
         <Detail fontWeight={700} color={"white"}>
@@ -152,11 +144,11 @@ export const PositionCard = ({
         )}
 
         <Detail color={"#C0C0C0"}>
-          OI: {positionOi !== undefined ? `${positionOi}` : 'loading...'}
+          OI: {positionOi === undefined ? 'loading...' : positionOi}
         </Detail>
 
         <Detail color={"#C0C0C0"}>
-          Value: {positionValue !== undefined ? `${positionValue} ${collateralCurrency}` : 'loading...'}
+          Value: {positionValue === undefined ? 'loading...' : `${positionValue} ${collateralToken}`}
         </Detail>
       </PositionCardColumn>
 
@@ -168,7 +160,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="30%" align="right">
         <Detail fontWeight={700} color={indicatorColor}>
-          {fixedPnL ? `${fixedPnL} ${collateralCurrency}` : 'loading...'}
+          {fixedPnL ? `${fixedPnL} ${collateralToken}` : 'loading...'}
         </Detail>
 
         {navigate ?? (

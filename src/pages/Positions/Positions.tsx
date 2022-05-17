@@ -157,7 +157,7 @@ export const Positions = () => {
                     positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}
                     positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
                     positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
-                    collateralCurrency={"OVL"}
+                    collateralToken={"OVL"}
                     quotePrice={"-"}
                     quoteCurrency={"-"}
                     estLiquidationPrice={liquidationPrices !== undefined ? formatWeiToParsedString(liquidationPrices[key], 2) : 'loading...'}
