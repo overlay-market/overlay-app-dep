@@ -40,7 +40,7 @@ const PositionsContainer = styled.div`
 
 const LoadingContainer = styled.div`
   display: flex;
-  margin: 32px auto auto auto;
+  margin: 44px auto auto auto;
 `;
 
 const ConnectWalletToggleText = styled(Button)`
@@ -51,6 +51,7 @@ const ConnectWalletToggleText = styled(Button)`
   border-radius: 8px !important;
   padding: 16px 60px !important;
   color: white;
+  margin-top: 16px !important;
 
   :hover {
     color: #12B4FF;
