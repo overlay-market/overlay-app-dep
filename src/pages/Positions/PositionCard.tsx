@@ -159,7 +159,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="30%" align="right">
         <Detail fontWeight={700} color={indicatorColor}>
-          {fixedPnL ? `${fixedPnL} ${collateralToken}` : 'loading...'}
+          {fixedPnL ? `${fixedPnL} ${collateralToken}` : <Loader stroke="white" size="12px" />}
         </Detail>
 
         {navigate ?? (
