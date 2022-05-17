@@ -136,8 +136,8 @@ export const Positions = () => {
                 <Loader
                   type="TailSpin"
                   color="#f2f2f2"
-                  height={100}
-                  width={100}
+                  height={33}
+                  width={33}
                 />
               </LoadingContainer>
             ):(
