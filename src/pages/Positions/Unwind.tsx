@@ -35,6 +35,7 @@ import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 import { PercentageSlider } from "../../components/PercentageSlider/PercentageSlider";
+import { useMarketName } from "../../hooks/useMarketName";
 import Loader from "../../components/Loaders/Loaders";
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
@@ -95,6 +96,8 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
   const position = filtered ? filtered[0] : null;
   
+  const { baseToken, quoteToken } = useMarketName(position?.market.feedAddress);
+
   const positionInfo = usePositionInfo(position?.market.id, positionId);
   const isLong = positionInfo ? positionInfo.isLong : undefined;
   const collateral = usePositionCollateral(position?.market.id, positionId);
@@ -167,7 +170,17 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         as={"form"}
         >
       <ControlInterfaceHeadContainer>
-        <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>Unwind Position</TEXT.StandardHeader1>
+        <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>
+            {
+              baseToken === 'loading' && quoteToken === 'loading' ? (
+                <Loader stroke="white" size="12px" />
+              ):(
+                `${baseToken}/${quoteToken}`
+              )
+            }
+
+          {/* Unwind Position */}
+        </TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
           {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : <Loader stroke="white" size="12px" />  }
         </TEXT.StandardHeader1>
@@ -194,7 +207,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           onSetTxnDeadline={onSetTxnDeadline}
         />
       <TEXT.StandardBody margin={"0 auto 24px 0"} color={"white"}>
-        Amount
+        Unwind Amount
       </TEXT.StandardBody>
 
       <PercentageSlider 

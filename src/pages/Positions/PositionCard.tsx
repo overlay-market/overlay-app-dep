@@ -64,7 +64,7 @@ export const PositionTableHeader = () => (
 
 export const PositionCard = ({
   positionId,
-  marketName,
+  marketId,
   baseToken,
   quoteToken,
   isLong,
@@ -81,7 +81,7 @@ export const PositionCard = ({
   hasBorder,
 }:{
   positionId: string;
-  marketName: string;
+  marketId: string;
   baseToken: string;
   quoteToken: string;
   isLong: boolean | null;
@@ -99,7 +99,6 @@ export const PositionCard = ({
 }) => {
   let parsedLeverage = Number(leverage).toFixed(1);
   let PnL = positionValue && positionCost ? positionValue - positionCost : null;
-  // let fixedPnL = positionValue === 0 ? 'Closed' : (PnL ? `${PnL.toFixed(4)} ${collateralToken}` : null);
   let fixedPnL = positionValue === 0 ? '0' : (PnL ? `${PnL.toFixed(4)}` : null);
 
   const indicatorColor = useMemo(() => {

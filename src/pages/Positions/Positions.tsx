@@ -127,46 +127,45 @@ export const Positions = () => {
       {onResetUnwindState()}
       <Container>
         <PageHeader> Positions </PageHeader>
+        
         {account ? (
           <>
-          <PositionTableHeader />
-          <PositionsContainer>
-            {isLoading ? (
-              <LoadingContainer>
-                <Loader
-                  type="TailSpin"
-                  color="#f2f2f2"
-                  height={33}
-                  width={33}
-                />
-              </LoadingContainer>
-            ):(
-              positions?.map((index, key) => {
-                let position = index;
-                return (
-                  <PositionCard
-                    key={key.toString()}
-                    positionId={position.positionId}
-                    // marketName={`${shortenAddress(position.market.id) + `-` + BigNumber.from(position.positionId).toString()}`}
-                    // marketName={`${shortenAddress(position.market.id)}`}
-                    marketName={`${baseTokens[key]}/${quoteTokens[key]}`}
-                    baseToken={`${baseTokens[key]}`}
-                    quoteToken={`${quoteTokens[key]}`}
-                    isLong={position.isLong}
-                    leverage={position.leverage}
-                    positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}
-                    positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
-                    positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
-                    collateralToken={"OVL"}
-                    quotePrice={"-"}
-                    quoteCurrency={"-"}
-                    estLiquidationPrice={liquidationPrices !== undefined ? formatWeiToParsedString(liquidationPrices[key], 2) : 'loading...'}
-                    navigate={true}
-                    hasBorder={true}
+            <PositionTableHeader />
+            <PositionsContainer>
+              {isLoading ? (
+                <LoadingContainer>
+                  <Loader
+                    type="TailSpin"
+                    color="#f2f2f2"
+                    height={33}
+                    width={33}
                   />
-                )})
-            )}
-          </PositionsContainer>
+                </LoadingContainer>
+              ):(
+                positions?.map((index, key) => {
+                  let position = index;
+                  return (
+                    <PositionCard
+                      key={key.toString()}
+                      positionId={position.positionId}
+                      marketId={position.market.id}
+                      baseToken={`${baseTokens[key]}`}
+                      quoteToken={`${quoteTokens[key]}`}
+                      isLong={position.isLong}
+                      leverage={position.leverage}
+                      positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}
+                      positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
+                      positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
+                      collateralToken={"OVL"}
+                      quotePrice={"-"}
+                      quoteCurrency={"-"}
+                      estLiquidationPrice={liquidationPrices !== undefined ? formatWeiToParsedString(liquidationPrices[key], 2) : 'loading...'}
+                      navigate={true}
+                      hasBorder={true}
+                    />
+                  )})
+              )}
+            </PositionsContainer>
           </>
         ):(
           <LoadingContainer>
