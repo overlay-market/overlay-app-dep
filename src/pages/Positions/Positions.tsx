@@ -48,12 +48,13 @@ const ConnectWalletToggleText = styled(Button)`
   font-weight: 700;
   background: none;
   border: 1px solid #12B4FF !important;
-  border-radius: 24px !important;
-  padding: 16px 48px !important;
+  border-radius: 8px !important;
+  padding: 16px 60px !important;
   color: white;
 
   :hover {
     color: #12B4FF;
+    box-shadow: 0 0px 5px #12B4FF;
   }
 `;
 
