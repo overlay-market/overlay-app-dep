@@ -97,6 +97,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const position = filtered ? filtered[0] : null;
   
   const { baseToken, quoteToken } = useMarketName(position?.market.feedAddress);
+  const positionIdConverted =  BigNumber.from(positionId).toString();
 
   const positionInfo = usePositionInfo(position?.market.id, positionId);
   const isLong = positionInfo ? positionInfo.isLong : undefined;
@@ -171,6 +172,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         >
       <ControlInterfaceHeadContainer>
         <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>
+          ID: {positionIdConverted}
+        </TEXT.StandardHeader1>
+        <TEXT.StandardHeader1 fontWeight={500} m={'0 4px 4px 4px'}>
             {
               baseToken === 'loading' && quoteToken === 'loading' ? (
                 <Loader stroke="white" size="12px" />
