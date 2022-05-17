@@ -31,6 +31,10 @@ const PageHeader = styled.div`
   margin-bottom: 48px;
   font-weight: 700;
   color: white;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    padding-top: 16px;
+  `}
 `;
 
 const PositionsContainer = styled.div`

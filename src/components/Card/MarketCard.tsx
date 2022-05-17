@@ -10,7 +10,7 @@ const Container = styled(FlexColumnContainer)`
   z-index: 6.9;
 
   ${({theme}) => theme.mediaWidth.minSmall`
-    padding: 24px 0 0;
+    padding-top: 16px;
   `}
 `;
 
