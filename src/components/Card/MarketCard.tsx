@@ -4,10 +4,14 @@ import { Card } from "../../components/Card/Card";
 import { FlexColumnContainer } from "../../components/Container/Container";
 
 const Container = styled(FlexColumnContainer)`
-  padding: 24px 0 0;
+  padding: 0;
   max-width: 500px;
   margin: auto;
   z-index: 6.9;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    padding: 24px 0 0;
+  `}
 `;
 
 const Title = styled(TEXT.StandardBody)<{align?: string}>`

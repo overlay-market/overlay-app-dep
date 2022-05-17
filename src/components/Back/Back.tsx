@@ -9,7 +9,12 @@ const Container = styled.div<{ margin?: string}>`
   flex-direction: row;
   width: auto;
   cursor: pointer;
-  margin: ${({ margin }) => margin ?? margin};
+  margin-right: auto;
+  margin-bottom: 0px;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    margin-bottom: 32px; 
+  `}}
 `;
 
 
@@ -26,7 +31,7 @@ export const Back = ({
     
     return (
       <>
-        <Container onClick={() => history.goBack()} margin={margin}> 
+        <Container onClick={() => history.goBack()}> 
           <Icon 
             size={arrowSize}
             clickable={true}

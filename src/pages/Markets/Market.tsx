@@ -10,7 +10,7 @@ export const Container = styled.div`
   flex-direction: column;
   z-index: 0;
   color: white;
-  padding: 16px;
+  padding: 0 16px 16px;
   margin: 0 auto 32px;
   max-width: 350px;
   position: static;
