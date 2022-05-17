@@ -15,7 +15,7 @@ const Container = styled(FlexColumnContainer)`
 `;
 
 const Title = styled(TEXT.StandardBody)<{align?: string}>`
-  margin: 0 auto 8px 0 !important;
+  margin: 0 auto 0 0 !important;
   font-weight: 700;
   text-align: ${({align}) => (align ? align : 'left')};
   width: 100%;

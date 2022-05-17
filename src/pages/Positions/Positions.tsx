@@ -28,7 +28,7 @@ const Container = styled.div`
 const PageHeader = styled.div`
   font-size: 20px;
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 48px;
   font-weight: 700;
   color: white;
 `;
