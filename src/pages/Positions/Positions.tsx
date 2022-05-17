@@ -44,7 +44,11 @@ const PositionsContainer = styled.div`
 
 const LoadingContainer = styled.div`
   display: flex;
-  margin: 44px auto auto auto;
+  margin: 8px auto auto auto;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    margin-top: 44px;
+  `}
 `;
 
 const ConnectWalletToggleText = styled(Button)`
