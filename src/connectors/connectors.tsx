@@ -1,7 +1,7 @@
 import { Web3Provider } from '@ethersproject/providers';
 import { InjectedConnector } from '@web3-react/injected-connector'
 import { SupportedChainId } from '../constants/chains';
-// import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { NetworkConnector } from './NetworkConnector';
 import getLibrary from '../utils/getLibrary';
 
@@ -35,10 +35,8 @@ export function getNetworkLibrary(): Web3Provider {
   return (networkLibrary = networkLibrary ?? getLibrary(network.provider))
 }
 
-// mainnet only
-// export const walletconnect = new WalletConnectConnector({
-//   // rpc: RPC,
-//   bridge: 'https://bridge.walletconnect.org',
-//   qrcode: true,
-//   pollingInterval: 15000,
-// })
+export const walletconnect = new WalletConnectConnector({
+  supportedChainIds: SUPPORTED_CHAIN_IDS,
+  rpc: NETWORK_URLS,
+  qrcode: true,
+})

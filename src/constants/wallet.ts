@@ -1,5 +1,5 @@
 import { AbstractConnector } from '@web3-react/abstract-connector';
-import { injected } from '../connectors/connectors';
+import { injected, walletconnect } from '../connectors/connectors';
 import METAMASK_ICON from '../assets/images/metamask.png';
 import WALLETCONNECT_ICON from '../assets/images/walletconnect.svg';
 
@@ -30,12 +30,12 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Easy-to-use browser extension.',
     href: null,
   },
-  // WALLET_CONNECT: {
-  //   connector: walletconnect,
-  //   name: 'WalletConnect',
-  //   iconURL: WALLETCONNECT_ICON,
-  //   description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
-  //   href: null,
-  //   mobile: true,
-  // }
+  WALLET_CONNECT: {
+    connector: walletconnect,
+    name: 'WalletConnect',
+    iconURL: WALLETCONNECT_ICON,
+    description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
+    href: null,
+    mobile: true,
+  }
 };
