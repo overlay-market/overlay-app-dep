@@ -51,11 +51,13 @@ const SelectPositionSideButton = styled(SelectActionButton)`
 const SelectLongPositionButton = styled(SelectPositionSideButton)`
   color: ${({ active }) => ( active ? '#0B0F1C' : '#10DCB1' )};
   background: ${({ active }) => ( active ? '#10DCB1' : 'transparent' )};
+  border: ${({ active }) => ( active && '1px solid #10DCB1' )};
 `;
 
 const SelectShortPositionButton = styled(SelectPositionSideButton)`
   color: ${({ active }) => (active ? '#0B0F1C' : '#FF648A')};
   background: ${({ active }) => (active ? '#FF648A' : 'transparent')};
+  border: ${({ active }) => ( active && '1px solid #FF648A')};
 `;
 
 const TriggerBuildButton = styled(TriggerActionButton)`

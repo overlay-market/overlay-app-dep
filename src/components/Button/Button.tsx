@@ -29,8 +29,8 @@ const BaseTemplateButton = styled(RebassButton)<
   sans-serif;
 `
 
+// border: ${({ active }) => ( active ? 'none !important' : '' )};
 export const SelectActionButton = styled(BaseTemplateButton)`
-  border: ${({ active }) => ( active ? 'none !important' : '' )};
   color: ${({ isDisabled }) => ( isDisabled ? '#63656D !important' : '')};
   background: ${({ isDisabled }) => ( isDisabled ? '#D0D0D2 !important' : '')};
   height: auto;
