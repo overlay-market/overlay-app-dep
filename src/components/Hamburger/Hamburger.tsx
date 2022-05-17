@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { bool, func } from 'prop-types';
 
 export const StyledBurger = styled.button<{open: boolean}>`
-  min-width: 24px;
+  min-width: 16px;
   align-items: center;
   position: block;
   top: 5%;

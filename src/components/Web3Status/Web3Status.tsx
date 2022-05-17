@@ -51,7 +51,7 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
 export const Account = styled(FlexRowContainer)`
   font-size: 12px;
   font-weight: 400;
-  margin: auto 16px auto auto;
+  margin: auto 12px auto auto;
   display: flex;
   flex-direction: row;
 
@@ -71,6 +71,18 @@ const PendingTransactions = styled.div`
   margin: 4px 8px 4px 4px;
   padding: 0 4px;
 `;
+
+const BalanceContainer = styled(FlexRowContainer)`
+  margin-right: 12px;
+  font-size: 12px;
+  font-weight: 400;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    margin-right: 16px;
+  `}
+`;
+
+
 
 /**
  * Returns whether a transaction happened in the last day (86400 seconds * 1000 milliseconds / second)
@@ -94,20 +106,20 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
   if (balance === 'Loading...') {
     return (
       <>
-        <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
+        <BalanceContainer>
             <Trans>
               Balance:
             </Trans>
             <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
               {balance}
             </TEXT.BoldSupplemental>
-        </FlexRowContainer>
+        </BalanceContainer>
       </>
     )
   } else if (network === 'Mainnet') {
     return (
       <>
-        <FlexRowContainer fontSize={12} fontWeight={400} mr={4}>
+        <BalanceContainer>
             <TEXT.Supplemental minWidth={'fit-content'}>
               <Trans>
                 Balance:
@@ -119,13 +131,13 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <TEXT.BoldSupplemental ml={1} mr={0}>
               OVL
             </TEXT.BoldSupplemental>
-        </FlexRowContainer>
+        </BalanceContainer>
       </>
     )
   } else {
     return (
       <>
-        <FlexRowContainer fontSize={12} fontWeight={400} mr={3} minWidth={'auto'}>
+        <BalanceContainer minWidth={'auto'}>
             <Trans>
               Balance:
             </Trans>
@@ -135,7 +147,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <TEXT.BoldSupplemental ml={1} mr={0}>
               OVL
             </TEXT.BoldSupplemental>
-        </FlexRowContainer>
+        </BalanceContainer>
       </>
     )
   }
