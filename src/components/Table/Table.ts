@@ -3,9 +3,12 @@ import { Table, TableCell, TableRow } from '@material-ui/core';
 
 export const StyledTable = styled(Table)`
   white-space: nowrap !important;
+  table-layout: fixed !important;
+  width: 625px !important;
 
   ${({theme}) => theme.mediaWidth.minSmall`
     table-layout: fixed !important;
+    width: 100% !important;
   `}
 `;
 
