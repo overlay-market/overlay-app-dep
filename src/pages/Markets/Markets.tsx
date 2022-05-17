@@ -218,7 +218,7 @@ const Markets = () => {
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
                         marketFundingRates[index] ? (
-                          `${formatFundingRateToDaily(marketFundingRates[index], 18, 2)}% [${formatFundingRateToAnnual(marketFundingRates[index], 18, 2)}%]`
+                          `${formatFundingRateToDaily(marketFundingRates[index], 18, 2)}% (${formatFundingRateToAnnual(marketFundingRates[index], 18, 2)}%)`
                         ):(
                           <Loader stroke="white" size="12px" />
                         )
