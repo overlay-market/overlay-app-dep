@@ -51,9 +51,13 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
 export const Account = styled(FlexRowContainer)`
   font-size: 12px;
   font-weight: 400;
-  margin: auto 24px auto auto;
+  margin: auto 16px auto auto;
   display: flex;
   flex-direction: row;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+      margin: auto 24px auto auto;
+  `}
 `;
 
 const PendingTransactions = styled.div`
@@ -121,7 +125,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
   } else {
     return (
       <>
-        <FlexRowContainer fontSize={12} fontWeight={400} mr={4} minWidth={'auto'}>
+        <FlexRowContainer fontSize={12} fontWeight={400} mr={3} minWidth={'auto'}>
             <Trans>
               Balance:
             </Trans>
