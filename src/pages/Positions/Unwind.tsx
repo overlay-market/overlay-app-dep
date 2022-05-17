@@ -35,6 +35,7 @@ import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 import { PercentageSlider } from "../../components/PercentageSlider/PercentageSlider";
+import Loader from "../../components/Loaders/Loaders";
 
 const ControlInterfaceContainer = styled(FlexColumnContainer)`
   padding: 16px;
@@ -75,7 +76,7 @@ export const AdditionalDetailRow = ({
       </TEXT.StandardBody>
 
       <TEXT.StandardBody fontWeight={700} color={valueColor}>
-        {value}
+        {value === 'loading' ? <Loader stroke="white" size="12px" /> : value}
       </TEXT.StandardBody>
     </FlexRowContainer>
   );
@@ -168,7 +169,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
       <ControlInterfaceHeadContainer>
         <TEXT.StandardHeader1 fontWeight={700} m={'0 4px 4px 4px'}>Unwind Position</TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
-          {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : 'loading...' }
+          {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : <Loader stroke="white" size="12px" />  }
         </TEXT.StandardHeader1>
         <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
@@ -254,13 +255,13 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <AdditionalDetailRow 
           detail={"Profit/Loss"} 
           valueColor={parsedPnL !== undefined && parsedPnL !== 0 ? ( parsedPnL < 0 ? "#FF648A" : "#10DCB1" ) : "#F2F2F2"}
-          value={PnL ? `${formatWeiToParsedNumber(PnL, 18, 2)} OVL` : "loading..."}
+          value={PnL ? `${formatWeiToParsedNumber(PnL, 18, 2)} OVL` : "loading"}
         />
         <AdditionalDetailRow 
           detail={"Side"} 
           // valueColor={isLong !== undefined ? (isLong ? "#10DCB1" : "#FF648A") : "loading..."} 
           valueColor={"#F2F2F2"}
-          value={isLong !== undefined ? (isLong ? "Long" : "Short") : "loading..."} 
+          value={isLong !== undefined ? (isLong ? "Long" : "Short") : "loading"} 
         />
       </FlexColumnContainer>
 
@@ -275,58 +276,58 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow
             detail={"Value"}
-            value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : "loading..."}
+            value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={oi ? `${formatWeiToParsedNumber(oi, 18, 10)}` : "loading..."}
+            value={oi ? `${formatWeiToParsedNumber(oi, 18, 10)}` : "loading"}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
-            value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : "loading..."}
+            value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : "loading"}
           />
           <AdditionalDetailRow
             detail={"Debt"}
-            value={debt ? `${formatWeiToParsedNumber(debt, 18, 4)} OVL` : "loading..."}
+            value={debt ? `${formatWeiToParsedNumber(debt, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow
             detail={"Cost"}
-            value={cost ? `${formatWeiToParsedNumber(cost, 18, 4)} OVL` : "loading..."}
+            value={cost ? `${formatWeiToParsedNumber(cost, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow
             detail={"Current Collateral"}
-            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 4)} OVL` : "loading..."}
+            value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow 
             detail={"Current Notional"} 
-            value={notional ? `${formatWeiToParsedNumber(notional, 18, 4)} OVL` : "loading..."}
+            value={notional ? `${formatWeiToParsedNumber(notional, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow
             detail={"Initial Collateral"}
-            value={position?.initialCollateral ? `${formatWeiToParsedNumber(position?.initialCollateral, 18, 4)} OVL` : "loading..."}
+            value={position?.initialCollateral ? `${formatWeiToParsedNumber(position?.initialCollateral, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow 
             detail={"Initial Notional"} 
-            value={position?.initialNotional ? `${formatWeiToParsedNumber(position?.initialNotional, 18, 4)} OVL` : "loading..."}
+            value={position?.initialNotional ? `${formatWeiToParsedNumber(position?.initialNotional, 18, 4)} OVL` : "loading"}
           />
           <AdditionalDetailRow 
             detail={"Maintenance"} 
-            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 4)} OVL` : "loading..."}
+            value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 4)} OVL` : "loading"}
           />
         </FlexColumnContainer>
 
         <FlexColumnContainer mt={"48px"}>
           <AdditionalDetailRow 
             detail={"Entry Price"} 
-            value={ entryPrice ? `${entryPrice}` : 'loading...'} 
+            value={ entryPrice ? `${entryPrice}` : 'loading'} 
           />
           <AdditionalDetailRow 
             detail={"Current Price"} 
-            value={ isLong ? `${formatWeiToParsedNumber(bidPrice, 18, 2)}` : `${formatWeiToParsedNumber(askPrice, 18, 2)}`} 
+            value={ bidPrice && askPrice ? (isLong ? `${formatWeiToParsedNumber(bidPrice, 18, 2)}` : `${formatWeiToParsedNumber(askPrice, 18, 2)}`) : 'loading'} 
           />
           <AdditionalDetailRow 
             detail={"Liquidation Price (est)"} 
-            value={liquidationPrice ? `${formatWeiToParsedNumber(liquidationPrice, 18, 2)}` : "loading..."}
+            value={liquidationPrice ? `${formatWeiToParsedNumber(liquidationPrice, 18, 2)}` : "loading"}
           />
         </FlexColumnContainer>
 
