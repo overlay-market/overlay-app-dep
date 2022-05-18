@@ -13,7 +13,7 @@ const Container = styled.div<{ margin?: string}>`
   margin-bottom: 0px;
 
   ${({theme}) => theme.mediaWidth.minSmall`
-    margin-bottom: 32px; 
+    margin-bottom: 16px; 
   `}}
 `;
 

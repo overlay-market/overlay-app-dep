@@ -304,8 +304,17 @@ export const BuildInterface = ({
   const estimatedOi = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
 
+  const slippageDelta = isLong ? 1 + (parseFloat(setSlippageValue) / 100) : 1 - (parseFloat(setSlippageValue) / 100);
+
+  console.log('slippageDelta: ', slippageDelta);
+  const estimatedBuildPrice = prices.mid !== 'loading' && prices.mid !== undefined && isLong !== undefined ? 
+      isLong ? (parseFloat(prices.mid) * slippageDelta) : (parseFloat(prices.mid) * slippageDelta)
+      : undefined;
+
   // console.log('estimatedOi: ', estimatedOi);
   console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice);
+  // console.log('prices.mid: ', prices.mid);
+  console.log('estimatedBuildPrice: ', estimatedBuildPrice);
 
   // const { impactFee } = useMarketImpactFee(
   //   market ? market.id : undefined,
