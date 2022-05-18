@@ -65,8 +65,8 @@ function useBuildCallArguments(
     // console.log('selectedLeverage: ', utils.parseUnits(buildData.selectedLeverage).toString())
     // console.log('isLong: ', buildData.isLong)
 
-    console.log('short build pricePoint: ', price.mul(decreaseNumerator).div(base))
-    console.log('long build pricePoint: ', price.mul(increaseNumerator).div(base))
+    // console.log('short build pricePoint: ', price.mul(decreaseNumerator).div(base))
+    // console.log('long build pricePoint: ', price.mul(increaseNumerator).div(base))
 
     // console.log('test: ', price.mul(increaseNumerator).div(base))
     calldata = marketContract.interface.encodeFunctionData("build", [

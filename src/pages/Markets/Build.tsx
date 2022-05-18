@@ -180,7 +180,7 @@ export const BuildInterface = ({
     onSetTxnDeadline,
     onResetBuildState,
   } = usePositionActionHandlers();
-  
+
   const handleResetTxnSettings = useCallback((e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);
       onSetTxnDeadline(DefaultTxnSettings.DEFAULT_DEADLINE);
@@ -302,19 +302,28 @@ export const BuildInterface = ({
   }, [approveCallback, typedValue]);
   
   const estimatedOi = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
-  const estimatedLiquidationPrice = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
+  const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
+  const estimatedLiquidationPrice = estimatedLiquidationPriceResult && formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5);
 
   const slippageDelta = isLong ? 1 + (parseFloat(setSlippageValue) / 100) : 1 - (parseFloat(setSlippageValue) / 100);
-
-  console.log('slippageDelta: ', slippageDelta);
-  const estimatedBuildPrice = prices.mid !== 'loading' && prices.mid !== undefined && isLong !== undefined ? 
+  const estimatedBuildPrice = prices.mid !== undefined && prices.mid !== 'loading' && isLong !== undefined ? 
       isLong ? (parseFloat(prices.mid) * slippageDelta) : (parseFloat(prices.mid) * slippageDelta)
       : undefined;
+    
+  const showUnderwaterFlow = estimatedBuildPrice && estimatedLiquidationPrice ? 
+      isLong ? estimatedLiquidationPrice > estimatedBuildPrice : estimatedLiquidationPrice > estimatedBuildPrice
+      : false;
+
 
   // console.log('estimatedOi: ', estimatedOi);
-  console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice);
+  console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice); 
+  // console.log('liq > build price: ', estimatedLiquidationPrice > estimatedBuildPrice);
+  console.log('slippageDelta: ', slippageDelta);
+  console.log('estimatedBuildPrice:' , estimatedBuildPrice);
+  console.log('showUnderwaterFlow: ', showUnderwaterFlow);
+
   // console.log('prices.mid: ', prices.mid);
-  console.log('estimatedBuildPrice: ', estimatedBuildPrice);
+  // console.log('estimatedBuildPrice: ', estimatedBuildPrice);
 
   // const { impactFee } = useMarketImpactFee(
   //   market ? market.id : undefined,
@@ -436,27 +445,37 @@ export const BuildInterface = ({
             minimum: {minCollateral !== undefined ? minCollateral : <Loader stroke="white" size="12px" /> }
           </NumericalInputBottomText>
 
-        {showApprovalFlow ? (
-          <ApproveTransactionButton 
-            attemptingTransaction={attemptingTransaction}
-            onClick={handleApprove}
-          />
-        ) : (
-          <TriggerBuildButton
-            onClick={() => {
-              setBuildState({
-                showConfirm: true,
-                attemptingTransaction: false,
-                transactionErrorMessage: undefined,
-                transactionHash: undefined,
-              });
-            }}
-            isDisabled={disableBuildButton}
-            disabled={disableBuildButton}
-            >
-            Build
+        {
+          showUnderwaterFlow ? (
+            <TriggerBuildButton
+              onClick={() => null}
+              isDisabled={true}
+              disabled={true}
+              >
+            Position Underwater
           </TriggerBuildButton>
-        )}
+          ) : showApprovalFlow ? (
+            <ApproveTransactionButton 
+              attemptingTransaction={attemptingTransaction}
+              onClick={handleApprove}
+            />
+          ) : (
+            <TriggerBuildButton
+              onClick={() => {
+                setBuildState({
+                  showConfirm: true,
+                  attemptingTransaction: false,
+                  transactionErrorMessage: undefined,
+                  transactionHash: undefined,
+                });
+              }}
+              isDisabled={disableBuildButton}
+              disabled={disableBuildButton}
+              >
+              Build
+            </TriggerBuildButton>
+          )
+        }
         
       </ControlInterfaceContainer>
 
@@ -472,7 +491,7 @@ export const BuildInterface = ({
         slippage={setSlippageValue}
         fundingRate={fundingRate}
         expectedOi={estimatedOi && typedValue !== '' ? formatWeiToParsedNumber(estimatedOi, 18, 5) : '-'}
-        estLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPrice, 18, 5) : '-'}
+        estLiquidationPrice={estimatedLiquidationPriceResult && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : '-'}
       />
 
       {/* <ConfirmTxnModal
@@ -504,7 +523,7 @@ export const BuildInterface = ({
         adjustedCollateral={adjustedCollateral}
         // adjustedCollateral={'-'}
         expectedOi={estimatedOi && typedValue !== '' ? formatWeiToParsedNumber(estimatedOi, 18, 5) : '-'}
-        estimatedLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPrice, 18, 5) : '-'}
+        estimatedLiquidationPrice={estimatedLiquidationPriceResult && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : '-'}
       />
     </MarketCard>
   );
