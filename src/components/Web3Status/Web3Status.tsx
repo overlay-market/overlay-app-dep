@@ -87,7 +87,10 @@ const BalanceContainer = styled(FlexRowContainer)`
 const Amount = styled(FlexRowContainer)`
   margin-left: 4px;
   font-weight: 500;
-  min-width: 90px;
+  
+  ${({theme}) => theme.mediaWidth.minSmall`
+    min-width: 85px;
+  `}
 `;
 
 /**
