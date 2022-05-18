@@ -31,9 +31,10 @@ const PageHeader = styled.div`
   margin-bottom: 48px;
   font-weight: 700;
   color: white;
+  padding-top: 16px;
 
   ${({theme}) => theme.mediaWidth.minSmall`
-    padding-top: 16px;
+    padding-top: 0px;
   `}
 `;
 

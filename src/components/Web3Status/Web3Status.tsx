@@ -14,7 +14,9 @@ import { OVL } from '../../constants/tokens';
 import { FlexRowContainer } from '../Container/Container';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useAllTransactions } from '../../state/transactions/hooks';
-import { TransactionDetails } from '../../state/transactions/reducer'
+import { TransactionDetails } from '../../state/transactions/reducer';
+import { useSpring, animated } from 'react-spring';
+import NumberSpring from '../NumberSpring/NumberSpring';
 import Dropdown from './Dropdown';
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal';
 import Loader from '../Loaders/Loaders';
@@ -82,7 +84,11 @@ const BalanceContainer = styled(FlexRowContainer)`
   `}
 `;
 
-
+const Amount = styled(FlexRowContainer)`
+  margin-left: 4px;
+  font-weight: 500;
+  min-width: 90px;
+`;
 
 /**
  * Returns whether a transaction happened in the last day (86400 seconds * 1000 milliseconds / second)
@@ -111,7 +117,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
               Balance:
             </Trans>
             <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
-              {balance}
+              <Loader size="12px" stroke="white" />
             </TEXT.BoldSupplemental>
         </BalanceContainer>
       </>
@@ -125,12 +131,9 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
                 Balance:
               </Trans>
             </TEXT.Supplemental>
-            <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
-              {balance}
-            </TEXT.BoldSupplemental>
-            <TEXT.BoldSupplemental ml={1} mr={0}>
-              OVL
-            </TEXT.BoldSupplemental>
+            <Amount>
+              {NumberSpring(balance, 'OVL')}
+            </Amount>
         </BalanceContainer>
       </>
     )
@@ -141,12 +144,9 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
             <Trans>
               Balance:
             </Trans>
-            <TEXT.BoldSupplemental ml={1} mr={0}>
-              {balance}
-            </TEXT.BoldSupplemental>
-            <TEXT.BoldSupplemental ml={1} mr={0}>
-              OVL
-            </TEXT.BoldSupplemental>
+            <Amount>
+              {NumberSpring(balance, 'OVL')}
+            </Amount>
         </BalanceContainer>
       </>
     )
