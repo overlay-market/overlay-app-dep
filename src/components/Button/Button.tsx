@@ -44,6 +44,7 @@ export const TriggerActionButton = styled(SelectActionButton)`
   
   :hover {
     border: 1px solid ${({ isDisabled }) => ( isDisabled ? '#FF648A' : '#71d2ff')};
+    box-shadow: ${({ isDisabled }) => ( isDisabled ? '0 0px 7px #FF648A' : '')};
   }
 `;
 
