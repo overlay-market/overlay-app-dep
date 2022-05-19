@@ -316,11 +316,11 @@ export const BuildInterface = ({
 
 
   // console.log('estimatedOi: ', estimatedOi);
-  console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice); 
+  // console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice); 
   // console.log('liq > build price: ', estimatedLiquidationPrice > estimatedBuildPrice);
-  console.log('slippageDelta: ', slippageDelta);
-  console.log('estimatedBuildPrice:' , estimatedBuildPrice);
-  console.log('showUnderwaterFlow: ', showUnderwaterFlow);
+  // console.log('slippageDelta: ', slippageDelta);
+  // console.log('estimatedBuildPrice:' , estimatedBuildPrice);
+  // console.log('showUnderwaterFlow: ', showUnderwaterFlow);
 
   // console.log('prices.mid: ', prices.mid);
   // console.log('estimatedBuildPrice: ', estimatedBuildPrice);

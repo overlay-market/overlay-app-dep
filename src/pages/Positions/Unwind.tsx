@@ -66,7 +66,7 @@ export const AdditionalDetailRow = ({
   valueColor,
 }: {
   detail: string;
-  value: string;
+  value: string | number;
   detailColor?: string;
   valueColor?: string | number;
 }) => {
@@ -108,21 +108,28 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const debt = usePositionDebt(position?.market.id, positionId);
   const notional = usePositionNotional(position?.market.id, positionId);
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId);
-  const liquidationPrice = useLiquidationPrice(position?.market.id, positionId);
+  const liquidationPriceResult = useLiquidationPrice(position?.market.id, positionId);
+  const liquidationPrice = liquidationPriceResult && formatWeiToParsedNumber(liquidationPriceResult, 18, 2);
+
   const prices = useMarketPrices(position?.market.id);
   
-  const bidPrice = prices ? prices.bid_ : null;
-  const askPrice = prices ? prices.ask_ : null;
+  const bidPrice = prices ? formatWeiToParsedNumber(prices.bid_, 18, 2) : null;
+  const askPrice = prices ? formatWeiToParsedNumber(prices.ask_, 18, 2) : null;
   
   const PnL = cost && value ? value.sub(cost) : null;
   const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0;
   const entryPrice: number | string | null | undefined = position && formatWeiToParsedNumber(position.entryPrice, 18, 2);
-  // const notional = positionInfo && formatWeiToParsedNumber(positionInfo[0], 18, 2);
   
+  const showUnderwaterFlow = (liquidationPrice && bidPrice && askPrice) ?
+      isLong ? (liquidationPrice > bidPrice) : (liquidationPrice < askPrice)
+      : false;
+
+  // console.log('liquidationPrice: ', liquidationPrice);
+  // console.log('bidPrice: ', bidPrice);
+  // console.log('showUnderwaterFlow: ', showUnderwaterFlow);
+
   const { onAmountInput, onSelectPositionId, onResetUnwindState, onSetSlippage, onSetTxnDeadline } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, positionId, isLong, prices);
-  // console.log('selectedPositionId: ', selectedPositionId)
-  console.log('unwindCallback: ', unwindCallback)
   
   useEffect(() => {
     onResetUnwindState();
@@ -186,7 +193,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           {/* Unwind Position */}
         </TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
-          {isLong !== undefined ? (isLong ? formatWeiToParsedNumber(bidPrice, 18, 2) : formatWeiToParsedNumber(askPrice, 18, 2)) : <Loader stroke="white" size="12px" />  }
+          {isLong !== undefined ? (isLong ? bidPrice : askPrice) : <Loader stroke="white" size="12px" />  }
         </TEXT.StandardHeader1>
         <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
@@ -260,13 +267,24 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           align={"right"}
         />
       </NumericalInputContainer> */}
-      <UnwindButton 
-        onClick={() => handleUnwind()}
-        isDisabled={disableUnwindButton}
-        disabled={disableUnwindButton}
-        >
-        Unwind
-      </UnwindButton>
+
+      {showUnderwaterFlow ? (
+        <UnwindButton 
+          onClick={() => null}
+          isDisabled={true}
+          disabled={true}
+          >
+          Position Underwater
+        </UnwindButton>
+      ):(
+        <UnwindButton 
+          onClick={() => handleUnwind()}
+          isDisabled={disableUnwindButton}
+          disabled={disableUnwindButton}
+          >
+          Unwind
+        </UnwindButton>
+      )}
       </ControlInterfaceContainer>
       <FlexColumnContainer mt={"48px"}>
         <AdditionalDetailRow 
@@ -340,11 +358,11 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow 
             detail={"Current Price"} 
-            value={ bidPrice && askPrice ? (isLong ? `${formatWeiToParsedNumber(bidPrice, 18, 2)}` : `${formatWeiToParsedNumber(askPrice, 18, 2)}`) : 'loading'} 
+            value={ bidPrice && askPrice ? (isLong ? bidPrice : askPrice) : 'loading'} 
           />
           <AdditionalDetailRow 
             detail={"Liquidation Price (est)"} 
-            value={liquidationPrice ? `${formatWeiToParsedNumber(liquidationPrice, 18, 2)}` : "loading"}
+            value={liquidationPrice ? liquidationPrice : "loading"}
           />
         </FlexColumnContainer>
 
