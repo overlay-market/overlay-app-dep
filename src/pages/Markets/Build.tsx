@@ -158,7 +158,7 @@ export const BuildInterface = ({
   const fundingRate = useMemo(() => {
     if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading';
     
-    console.log('fetchFundingRate.result?.[0]: ', formatWeiToParsedString(fetchFundingRate.result?.[0], 18))
+    // console.log('fetchFundingRate.result?.[0]: ', formatWeiToParsedString(fetchFundingRate.result?.[0], 18))
     return formatFundingRateToDaily(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate]);
   
@@ -310,13 +310,15 @@ export const BuildInterface = ({
       isLong ? (parseFloat(prices.mid) * slippageDelta) : (parseFloat(prices.mid) * slippageDelta)
       : undefined;
     
-  const showUnderwaterFlow = estimatedBuildPrice && estimatedLiquidationPrice ? 
-      isLong ? estimatedLiquidationPrice > estimatedBuildPrice : estimatedLiquidationPrice > estimatedBuildPrice
+  const showUnderwaterFlow = prices.mid !== undefined && prices.mid !=='loading' && estimatedLiquidationPrice ? 
+      isLong ? estimatedLiquidationPrice > prices.mid : estimatedLiquidationPrice < prices.mid
       : false;
 
 
   // console.log('estimatedOi: ', estimatedOi);
-  // console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice); 
+  console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice); 
+  // console.log('estimatedBuildPrice:', estimatedBuildPrice);
+  console.log('prices.mid: ', prices.mid);
   // console.log('liq > build price: ', estimatedLiquidationPrice > estimatedBuildPrice);
   // console.log('slippageDelta: ', slippageDelta);
   // console.log('estimatedBuildPrice:' , estimatedBuildPrice);
