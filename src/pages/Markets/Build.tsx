@@ -23,14 +23,12 @@ import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
 import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
 import { TransactionSettingsModal } from "./TransactionSettingsModal";
 import { formatDecimalToPercentage } from "../../utils/formatDecimal";
-import { useMarketImpactFee } from "../../hooks/useMarketImpactFee";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
 import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { useAllMarkets } from "../../state/markets/hooks";
 import { shortenAddress } from "../../utils/web3";
 import { AdditionalDetails } from "./AdditionalBuildDetails";
-import { useFundingRate } from "../../hooks/useFundingRate";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import ConfirmTxnModal from "../../components/ConfirmTxnModal/ConfirmTxnModal";
 import { useMarket } from "../../state/markets/hooks";
@@ -323,13 +321,6 @@ export const BuildInterface = ({
       isLong ? estimatedOi + oiLong > capOi : estimatedOi + oiShort > capOi
       : false;
 
-  // const { impactFee } = useMarketImpactFee(
-  //   market ? market.id : undefined,
-  //   isLong,
-  //   isLong !== undefined ? isLong ? market?.oiLong : market?.oiShort : undefined,
-  //   market?.capNotional
-  // );
-    
   const {
     preAdjustedOi,
     calculatedBuildFee,
@@ -341,16 +332,6 @@ export const BuildInterface = ({
     Number(typedValue),
     buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
   );
-        
-  // const estimatedLiquidationPrice = useLiquidationPrice(
-  //   market?.id,
-  //   isLong,
-  //   formatWeiToParsedNumber(market?.currentPrice.bid, 18, 5),
-  //   formatWeiToParsedNumber(market?.currentPrice.ask, 18, 5),
-  //   adjustedDebt,
-  //   adjustedOi,
-  //   adjustedOi
-  // );
 
   return (
     <MarketCard align={"left"} padding={"0px"}>
