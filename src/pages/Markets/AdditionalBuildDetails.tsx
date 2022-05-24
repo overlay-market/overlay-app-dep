@@ -53,7 +53,7 @@ export const AdditionalDetails = ({
   askPrice?: string | number;
   midPrice?: string | number;
   fee?: string | number;
-  oiCap?: number;
+  oiCap?: number | null;
   capPayoff?: number;
   oiLong?: number;
   oiShort?: number;

@@ -140,7 +140,7 @@ export const BuildInterface = ({
   const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 4) : null;
 
   const capOiResult = useMarketCapOi(marketId);
-  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 4) : undefined;
+  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 4) : null;
 
   const peripheryContract = useV1PeripheryContract();
   
@@ -319,23 +319,9 @@ export const BuildInterface = ({
       isLong ? estimatedLiquidationPrice > prices.mid : estimatedLiquidationPrice < prices.mid
       : false;
 
-  // const exceedOiCap = estimatedOi !== undefined && ois !== undefined && capOi !== undefined ?
-  //     isLong ? estimatedOi + formatWeiToParsedNumber(ois.oiLong_, 18, 4) > formatWeiToParsedNumber(capOi, 18, 4) : estimatedOi + formatWeiToParsedNumber(ois.oiShort_, 18, 4) > formatWeiToParsedNumber(capOi, 18, 4)
-  //     : false;
-
-  // console.log('exceedOiCap: ', exceedOiCap);
-  console.log('ois: ', ois);
-  console.log('estimatedOi: ', estimatedOi);
-  console.log('estimatedLiquidationPrice: ', estimatedLiquidationPrice); 
-  // console.log('estimatedBuildPrice:', estimatedBuildPrice);
-  // console.log('prices.mid: ', prices.mid);
-  // console.log('liq > build price: ', estimatedLiquidationPrice > estimatedBuildPrice);
-  // console.log('slippageDelta: ', slippageDelta);
-  // console.log('estimatedBuildPrice:' , estimatedBuildPrice);
-  // console.log('showUnderwaterFlow: ', showUnderwaterFlow);
-
-  // console.log('prices.mid: ', prices.mid);
-  // console.log('estimatedBuildPrice: ', estimatedBuildPrice);
+  const exceedOiCap = oiLong && oiShort && capOi ?
+      isLong ? estimatedOi + oiLong > capOi : estimatedOi + oiShort > capOi
+      : false;
 
   // const { impactFee } = useMarketImpactFee(
   //   market ? market.id : undefined,
@@ -464,8 +450,16 @@ export const BuildInterface = ({
               isDisabled={true}
               disabled={true}
               >
-            Position Underwater
-          </TriggerBuildButton>
+              Position Underwater
+           </TriggerBuildButton>
+          ) : exceedOiCap ? (
+            <TriggerBuildButton
+              onClick={() => null}
+              isDisabled={true}
+              disabled={true}
+              >
+              Exceed OI Cap
+           </TriggerBuildButton>
           ) : showApprovalFlow ? (
             <ApproveTransactionButton 
               attemptingTransaction={attemptingTransaction}

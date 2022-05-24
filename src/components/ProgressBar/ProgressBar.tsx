@@ -35,7 +35,7 @@ export const ProgressBar = ({
   margin
 }:{
   value: number | undefined
-  max: number | undefined
+  max: number | undefined | null
   color: string
   width: string
   margin?: string | undefined
