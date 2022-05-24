@@ -138,10 +138,10 @@ export const BuildInterface = ({
   const ois = useMarketOis(marketId);
   const oiLong = ois && ois[0] ? formatWeiToParsedNumber(ois[0], 18, 4) : null;
   const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 4) : null;
-  
-  console.log('oiLong: ', oiLong);
 
-  const capOi = useMarketCapOi(marketId);
+  const capOiResult = useMarketCapOi(marketId);
+  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 4) : undefined;
+
   const peripheryContract = useV1PeripheryContract();
   
   const buildFee = market?.tradingFeeRate
@@ -496,7 +496,7 @@ export const BuildInterface = ({
         askPrice={prices.ask}
         midPrice={prices.mid}
         fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : "loading"}
-        oiCap={ capOi && formatWeiToParsedNumber(capOi, 18, 5)}
+        oiCap={capOi}
         capPayoff = { capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={ ois && formatWeiToParsedNumber(ois.oiLong_, 18, 5)}
         oiShort={ ois && formatWeiToParsedNumber(ois.oiShort_, 18, 5)}
