@@ -317,6 +317,8 @@ export const BuildInterface = ({
       isLong ? estimatedLiquidationPrice > prices.mid : estimatedLiquidationPrice < prices.mid
       : false;
 
+  console.log('estimatedOi: ', estimatedOi);
+  
   const exceedOiCap = oiLong && oiShort && capOi ?
       isLong ? estimatedOi + oiLong > capOi : estimatedOi + oiShort > capOi
       : false;

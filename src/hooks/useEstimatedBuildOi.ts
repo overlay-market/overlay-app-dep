@@ -25,7 +25,6 @@ export function useEstimatedBuildOi(
         setEstimatedOi(await peripheryContract.oiEstimate(marketAddress, formatCollateral, formatLeverage, isLong))
       }
       catch (error) {
-        console.log('market inside useEstimatedBuildOi: ', marketAddress);
         console.error('error coming from useEstimatedBuildOi: ', error);
       }
 
@@ -33,6 +32,7 @@ export function useEstimatedBuildOi(
   }, [peripheryContract, marketAddress, collateral, leverage, isLong, blockNumber, account]);
 
   return useMemo(() => {
+    if (!collateral || collateral === '.') return 0;
     return estimatedOi;
-  }, [estimatedOi]);
+  }, [estimatedOi, collateral]);
 };
