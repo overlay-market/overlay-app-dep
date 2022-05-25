@@ -304,7 +304,9 @@ export const BuildInterface = ({
       });
   }, [approveCallback, typedValue]);
   
-  const estimatedOi = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
+  const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong);
+  const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 5) : null;
+
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult && formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5);
 
@@ -317,9 +319,7 @@ export const BuildInterface = ({
       isLong ? estimatedLiquidationPrice > prices.mid : estimatedLiquidationPrice < prices.mid
       : false;
 
-  console.log('estimatedOi: ', estimatedOi);
-  
-  const exceedOiCap = oiLong && oiShort && capOi ?
+  const exceedOiCap = oiLong && oiShort && capOi && estimatedOi ?
       isLong ? estimatedOi + oiLong > capOi : estimatedOi + oiShort > capOi
       : false;
 
@@ -479,7 +479,7 @@ export const BuildInterface = ({
         oiShort={ ois && formatWeiToParsedNumber(ois.oiShort_, 18, 5)}
         slippage={setSlippageValue}
         fundingRate={fundingRate}
-        expectedOi={estimatedOi && typedValue !== '' ? formatWeiToParsedNumber(estimatedOi, 18, 5) : '-'}
+        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : '-'}
         estLiquidationPrice={estimatedLiquidationPriceResult && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : '-'}
       />
 
@@ -511,7 +511,7 @@ export const BuildInterface = ({
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
         // adjustedCollateral={'-'}
-        expectedOi={estimatedOi && typedValue !== '' ? formatWeiToParsedNumber(estimatedOi, 18, 5) : '-'}
+        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : '-'}
         estimatedLiquidationPrice={estimatedLiquidationPriceResult && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : '-'}
       />
     </MarketCard>
