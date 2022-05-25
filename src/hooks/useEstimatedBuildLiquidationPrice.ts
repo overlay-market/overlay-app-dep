@@ -9,7 +9,7 @@ export function useEstimatedBuildLiquidationPrice(
   collateral?: any,
   leverage?: any,
   isLong?: any
-): any | undefined {
+): any {
   const peripheryContract = useV1PeripheryContract();
   const blockNumber = useBlockNumber();
   const { account } = useActiveWeb3React();
@@ -32,6 +32,7 @@ export function useEstimatedBuildLiquidationPrice(
   }, [peripheryContract, marketAddress, collateral, leverage, isLong, blockNumber, account]);
 
   return useMemo(() => {
+    if (!collateral || collateral === '.') return null;
     return estimatedLiquidationPrice;
-  }, [estimatedLiquidationPrice]);
+  }, [estimatedLiquidationPrice, collateral]);
 };

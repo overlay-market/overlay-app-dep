@@ -312,13 +312,15 @@ export const BuildInterface = ({
       isLong ? (parseFloat(prices.mid) * slippageDelta) : (parseFloat(prices.mid) * slippageDelta)
       : undefined;
     
-  const showUnderwaterFlow = prices.mid !== undefined && prices.mid !=='loading' && estimatedLiquidationPrice ? 
-      isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid)
-      : false;
+  const showUnderwaterFlow = useMemo(() => {
+      if (prices.mid === undefined || prices.mid === 'loading' || !estimatedLiquidationPrice) return false;
+
+      return isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid);
+  }, [prices, isLong, estimatedLiquidationPrice]);
 
   const exceedOiCap = useMemo(() => {
       if (!oiLong || !oiShort || !capOi || !estimatedOi || isLong === undefined) return false;
-
+      
       return isLong ? (estimatedOi + oiLong > capOi) : (estimatedOi + oiShort > capOi);
   }, [isLong, oiLong, oiShort, capOi, estimatedOi]);
 
