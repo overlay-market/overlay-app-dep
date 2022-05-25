@@ -316,9 +316,11 @@ export const BuildInterface = ({
       isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid)
       : false;
 
-  const exceedOiCap = oiLong && oiShort && capOi && estimatedOi ?
-      isLong ? estimatedOi + oiLong > capOi : estimatedOi + oiShort > capOi
-      : false;
+  const exceedOiCap = useMemo(() => {
+      if (!oiLong || !oiShort || !capOi || !estimatedOi || isLong === undefined) return false;
+
+      return isLong ? (estimatedOi + oiLong > capOi) : (estimatedOi + oiShort > capOi);
+  }, [isLong, oiLong, oiShort, capOi, estimatedOi]);
 
   const {
     preAdjustedOi,
