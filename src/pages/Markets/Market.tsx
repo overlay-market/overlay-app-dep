@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { BuildInterface } from './Build';
 import { usePositionActionHandlers } from '../../state/positions/hooks';
-import { useMarketName, useMarketNames } from '../../hooks/useMarketName';
 
 export const Container = styled.div`
   display: flex !important;
@@ -30,13 +29,8 @@ export function Market({ match: {params: { marketId }}}: RouteComponentProps<{ m
   }, [marketId, onResetBuildState]);
 
   return (
-    <>
-      <Container>
-        <BuildInterface 
-          marketId={marketId}
-          marketPrice={'2241.25'}
-        />
-      </Container>
-    </>
+    <Container>
+      <BuildInterface marketId={marketId} />
+    </Container>
   )
 };

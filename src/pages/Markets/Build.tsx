@@ -98,10 +98,8 @@ const NumericalInputBottomText = styled(TEXT.Supplemental)`
 
 export const BuildInterface = ({
   marketId,
-  marketPrice
 }:{
   marketId: string;
-  marketPrice: string;
 }) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
   const [{ showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash }, setBuildState] = useState<{
@@ -123,7 +121,6 @@ export const BuildInterface = ({
   const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const ovl = chainId ? OVL[chainId] : undefined;
-  // const parsedUserOvlBalance = userOvlBalance ? formatWeiToParsedString(userOvlBalance, 2) : null;
   
   // @TO-DO: pull market name from feed
   const { baseToken, quoteToken } = useMarketName(market?.feedAddress);
@@ -480,23 +477,8 @@ export const BuildInterface = ({
         slippage={setSlippageValue}
         fundingRate={fundingRate}
         expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : '-'}
-        estLiquidationPrice={estimatedLiquidationPriceResult && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : '-'}
+        estLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
       />
-
-      {/* <ConfirmTxnModal
-        isOpen={showConfirm}
-        attemptingTransaction={attemptingTransaction}
-        isLong={isLong}
-        buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
-        onConfirm={() => handleBuild()}
-        onDismiss={handleDismiss}
-        adjustedOi={adjustedOi}
-        marketPrice={market ? isLong ? formatWeiToParsedString(market.currentPrice.bid, 10) : formatWeiToParsedString(market.currentPrice.ask, 10) : "n/a"}
-        setSlippageValue={setSlippageValue}
-        selectedLeverage={selectedLeverage}
-        adjustedCollateral={adjustedCollateral}
-        estimatedLiquidationPrice={estimatedLiquidationPrice}
-      /> */}
 
       <ConfirmTxnModal
         isOpen={showConfirm}
@@ -505,14 +487,12 @@ export const BuildInterface = ({
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        // adjustedOi={'-'}
         marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
-        // adjustedCollateral={'-'}
         expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : '-'}
-        estimatedLiquidationPrice={estimatedLiquidationPriceResult && typedValue !== '' ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : '-'}
+        estimatedLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
       />
     </MarketCard>
   );
