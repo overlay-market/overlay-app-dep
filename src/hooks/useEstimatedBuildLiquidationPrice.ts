@@ -19,15 +19,12 @@ export function useEstimatedBuildLiquidationPrice(
     if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || isLong === undefined || !account || !blockNumber) return;
     let formatCollateral = utils.parseUnits(collateral);
     let formatLeverage = utils.parseUnits(leverage);
-
-    console.log('formatCollateral: ', formatCollateral);
     
     (async () => {
       try {
-        setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, utils.parseUnits(collateral), formatLeverage, isLong))
+        setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, formatCollateral, formatLeverage, isLong))
       }
       catch (error) {
-        console.log('market inside useEstimatedBuildLiquidationPrice: ', marketAddress);
         console.error('error coming from useEstimatedBuildLiquidationPrice: ', error);
       }
 

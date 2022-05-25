@@ -308,7 +308,7 @@ export const BuildInterface = ({
   const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 5) : null;
 
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
-  const estimatedLiquidationPrice = estimatedLiquidationPriceResult && formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5);
+  const estimatedLiquidationPrice = estimatedLiquidationPriceResult ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : null;
 
   const slippageDelta = isLong ? 1 + (parseFloat(setSlippageValue) / 100) : 1 - (parseFloat(setSlippageValue) / 100);
   const estimatedBuildPrice = prices.mid !== undefined && prices.mid !== 'loading' && isLong !== undefined ? 
@@ -316,7 +316,7 @@ export const BuildInterface = ({
       : undefined;
     
   const showUnderwaterFlow = prices.mid !== undefined && prices.mid !=='loading' && estimatedLiquidationPrice ? 
-      isLong ? estimatedLiquidationPrice > prices.mid : estimatedLiquidationPrice < prices.mid
+      isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid)
       : false;
 
   const exceedOiCap = oiLong && oiShort && capOi && estimatedOi ?
