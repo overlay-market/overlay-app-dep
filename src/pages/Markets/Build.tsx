@@ -485,6 +485,8 @@ export const BuildInterface = ({
       />
 
       <ConfirmTxnModal
+        baseToken={baseToken === 'loading' ? null : baseToken}
+        quoteToken={quoteToken === 'loading' ? null : quoteToken}
         isOpen={showConfirm}
         attemptingTransaction={attemptingTransaction}
         isLong={isLong}

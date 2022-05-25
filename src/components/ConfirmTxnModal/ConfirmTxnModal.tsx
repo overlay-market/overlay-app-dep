@@ -5,8 +5,11 @@ import { TriggerActionButton as TriggerConfirmBuildButton, PendingActionButton a
 import { AdditionalDetailRow } from "../../pages/Positions/Unwind";
 import { FlexColumnContainer } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
+import Loader from "../Loaders/Loaders";
 
 export default function ConfirmTxnModal({
+  baseToken,
+  quoteToken,
   isOpen,
   attemptingTransaction,
   isLong,
@@ -20,6 +23,8 @@ export default function ConfirmTxnModal({
   adjustedCollateral,
   estimatedLiquidationPrice,
 }: {
+  baseToken?: string;
+  quoteToken?: string;
   isOpen: boolean;
   attemptingTransaction: boolean;
   isLong: boolean | undefined;
@@ -50,7 +55,7 @@ export default function ConfirmTxnModal({
           </TEXT.StandardBody>
 
           <TEXT.BoldHeader1 color={"white"}>
-            ETH/USDC
+            {baseToken ? baseToken : <Loader stroke="white" size="12px" />}/{quoteToken ? quoteToken : <Loader stroke="white" size="12px" />}
           </TEXT.BoldHeader1>
         </FlexColumnContainer>
 
