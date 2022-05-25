@@ -320,7 +320,7 @@ export const BuildInterface = ({
 
   const exceedOiCap = useMemo(() => {
       if (!oiLong || !oiShort || !capOi || !estimatedOi || isLong === undefined) return false;
-      
+
       return isLong ? (estimatedOi + oiLong > capOi) : (estimatedOi + oiShort > capOi);
   }, [isLong, oiLong, oiShort, capOi, estimatedOi]);
 
@@ -442,7 +442,7 @@ export const BuildInterface = ({
               isDisabled={true}
               disabled={true}
               >
-              Exceed OI Cap
+              Exceeds OI Cap
            </TriggerBuildButton>
           ) : showApprovalFlow ? (
             <ApproveTransactionButton 
