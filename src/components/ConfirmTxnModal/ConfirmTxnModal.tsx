@@ -84,13 +84,13 @@ export default function ConfirmTxnModal({
           <AdditionalDetailRow detail={"Fee"} detailColor={"#B9BABD"} value={`${buildFee}%`} />
 
           <AdditionalDetailRow
-            detail={"Slippage"}
+            detail={"Slippage Tolerance"}
             detailColor={"#B9BABD"}
             value={`${setSlippageValue}%`}
           />
 
           <AdditionalDetailRow
-            detail={"Est. Liquidation"}
+            detail={"Est. Liquidation Price"}
             detailColor={"#B9BABD"}
             value={estimatedLiquidationPrice}
           />
@@ -100,8 +100,8 @@ export default function ConfirmTxnModal({
           <AdditionalDetailRow
             detail={"Estimated Collateral"}
             detailColor={"#B9BABD"}
-            // value={`${adjustedCollateral} OVL`}
-            value={'-'}
+            value={`${adjustedCollateral} OVL`}
+            // value={'-'}
           />
 
           <AdditionalDetailRow
@@ -113,7 +113,7 @@ export default function ConfirmTxnModal({
         </FlexColumnContainer>
 
         <TEXT.Supplemental color={"#B9BABD"} mt={"24px"} mb={"24px"}>
-          The unwind price will be at least - or the transaction will
+          The received price will be at least - or the transaction will
           revert.
         </TEXT.Supplemental>
 
