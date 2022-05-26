@@ -74,9 +74,7 @@ export const Positions = () => {
   const { onResetUnwindState } = useUnwindActionHandlers();
   const { account } = useActiveWeb3React();
   const { isLoading, positions } = useAccountPositions(account ? account : undefined);
-
-  // console.log('positions: ', positions);
-
+  
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return [];
 
@@ -84,8 +82,6 @@ export const Positions = () => {
   }, [positions]);
 
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
-
-  console.log('baseTokens: ', baseTokens);
 
   const positionsCallData = useMemo(() => {
     if (!positions || positions === undefined || !account || !blockNumber) return [];

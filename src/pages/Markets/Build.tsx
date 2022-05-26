@@ -40,6 +40,7 @@ import { useMarketCapOi } from "../../hooks/useMarketCapOi";
 import { useEstimatedBuildOi } from "../../hooks/useEstimatedBuildOi"
 import { useEstimatedBuildLiquidationPrice } from "../../hooks/useEstimatedBuildLiquidationPrice";
 import { useMarketName } from "../../hooks/useMarketName";
+import { OVL_TOKEN_ADDRESS } from "../../constants/addresses";
 import Loader from "../../components/Loaders/Loaders";
 
 const SelectPositionSideButton = styled(SelectActionButton)`
@@ -118,12 +119,13 @@ export const BuildInterface = ({
   const market = marketData?.market;
   const { account, chainId } = useActiveWeb3React();
   const ovlBalance = useOvlBalance();
-  const addPopup = useAddPopup();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const ovl = chainId ? OVL[chainId] : undefined;
   
   // @TO-DO: pull market name from feed
-  const { baseToken, quoteToken } = useMarketName(market?.feedAddress);
+  const { baseToken, quoteToken, quoteTokenAddress } = useMarketName(market?.feedAddress);
+
+  const isInverseMarket = chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null;
 
   // @TO-DO: pull market attributes
   const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined;

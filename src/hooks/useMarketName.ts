@@ -22,7 +22,9 @@ export function useMarketName(feedAddress?: string) {
 
   return {
     baseToken: baseTokenSymbolResult.result?.[0] ?? 'loading',
-    quoteToken: quoteTokenSymbolResult.result?.[0] ?? 'loading'
+    quoteToken: quoteTokenSymbolResult.result?.[0] ?? 'loading',
+    baseTokenAddress: baseTokenAddress && baseTokenAddress.toLowerCase(),
+    quoteTokenAddress: quoteTokenAddress && quoteTokenAddress.toLowerCase()
   }
 }
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI);
@@ -71,6 +73,6 @@ export function useMarketNames(feedAddresses: any) {
 
   return {
     baseTokens: marketBaseTokenSymbols,
-    quoteTokens: marketQuoteTokenSymbols
+    quoteTokens: marketQuoteTokenSymbols,
   }
 }
