@@ -472,6 +472,9 @@ export const BuildInterface = ({
       </ControlInterfaceContainer>
 
       <AdditionalDetails
+        isInverseMarket={isInverseMarket}
+        baseToken={baseToken === 'loading' ? null : baseToken}
+        quoteToken={quoteToken === 'loading' ? null : quoteToken}
         bidPrice={prices.bid}
         askPrice={prices.ask}
         midPrice={prices.mid}
@@ -482,7 +485,7 @@ export const BuildInterface = ({
         oiShort={ ois && formatWeiToParsedNumber(ois.oiShort_, 18, 5)}
         slippage={setSlippageValue}
         fundingRate={fundingRate}
-        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : '-'}
+        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : null}
         estLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
       />
 
@@ -499,7 +502,7 @@ export const BuildInterface = ({
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
-        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : '-'}
+        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : null}
         estimatedLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
       />
     </MarketCard>

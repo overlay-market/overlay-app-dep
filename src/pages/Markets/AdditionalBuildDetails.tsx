@@ -36,6 +36,9 @@ export const DetailValue = styled.div<{ color?: string }>`
 `;
 
 export const AdditionalDetails = ({
+  isInverseMarket,
+  baseToken,
+  quoteToken,
   bidPrice,
   askPrice,
   midPrice,
@@ -49,6 +52,9 @@ export const AdditionalDetails = ({
   fundingRate,
   estLiquidationPrice,
 }: {
+  isInverseMarket?: boolean | null;
+  baseToken?: string;
+  quoteToken?: string;
   bidPrice?: string | number;
   askPrice?: string | number;
   midPrice?: string | number;
@@ -58,10 +64,14 @@ export const AdditionalDetails = ({
   oiLong?: number;
   oiShort?: number;
   slippage?: string | number;
-  expectedOi?: string | number;
+  expectedOi?: string | number | null;
   fundingRate?: string | number;
   estLiquidationPrice?: string | number;
 }) => {
+
+  console.log('baseToken: ', baseToken);
+  console.log('quoteToken: ', quoteToken);
+
   return (
     <ContentContainer>
       <AdditionalDetailRow>
@@ -126,7 +136,10 @@ export const AdditionalDetails = ({
           Expected OI 
         </PositionDetailType>
         <DetailValue> 
-          {expectedOi}
+          {expectedOi && baseToken && quoteToken ? 
+            expectedOi + ' ' + (isInverseMarket ? baseToken : quoteToken)
+            : '-'
+          } 
         </DetailValue>
       </AdditionalDetailRow>
 

@@ -31,7 +31,7 @@ export default function ConfirmTxnModal({
   buildFee: number | undefined | null;
   onConfirm?: () => void;
   onDismiss?: () => void;
-  expectedOi: number | string | undefined;
+  expectedOi?: number | string | null;
   marketPrice: string | undefined;
   setSlippageValue: string;
   selectedLeverage: string;
