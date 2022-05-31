@@ -39,12 +39,13 @@ export const SelectActionButton = styled(BaseTemplateButton)`
 `;
 
 export const TriggerActionButton = styled(SelectActionButton)`
-  color: ${({ active }) => ( active ? '#0B0F1C' : '#71d2ff' )};
+  color: ${({ theme, active }) => ( active ? theme.white : '#71d2ff' )};
   background: ${({ active }) => ( active ? '#12B4FF' : 'transparent' )};
+  border: 1px solid transparent;
   
   :hover {
     border: 1px solid ${({ isDisabled }) => ( isDisabled ? '#FF648A' : '#71d2ff')};
-    box-shadow: ${({ isDisabled }) => ( isDisabled ? '0 0px 7px #FF648A' : '')};
+    box-shadow: ${({ isDisabled }) => ( isDisabled ? '0 0px 7px #FF648A' : '0 0px 5px')};
   }
 `;
 
