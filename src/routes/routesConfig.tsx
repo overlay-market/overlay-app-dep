@@ -1,6 +1,7 @@
 import Markets from "../pages/Markets/Markets";
 import Positions from "../pages/Positions/Positions";
 import Magic from "../pages/Magic/Magic";
+import Liquidate from "../pages/Liquidate/Liquidate";
 import { Market } from "../pages/Markets/Market";
 import { Unwind } from "../pages/Positions/Unwind";
 import { TOKEN_LABELS } from "../constants/tokens";
@@ -37,6 +38,10 @@ const routesConfig = [
   {
     path: "/magic",
     component: () => Magic
+  },
+  {
+    path: "/liquidate",
+    component: () => Liquidate
   }
 ];
 

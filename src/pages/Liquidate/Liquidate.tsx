@@ -80,41 +80,41 @@ import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, Sty
 //   )
 // };
 
-// const Liquidate = () => {
-//   const { allPositions } = useAllPositions();
+const Liquidate = () => {
+  // const { allPositions } = useAllPositions();
 
-//   return (
-//       <PageContainer maxWidth={'420px'}>
-//           <TableContainer component={Paper}>
-//               <StyledTable>
-//                   <TableHead>
-//                       <StyledTableHeaderRow>
-//                           <StyledHeaderCell width={25}>
-//                               Maintenance
-//                           </StyledHeaderCell>
+  return (
+      <PageContainer maxWidth={'420px'}>
+          <TableContainer component={Paper}>
+              <StyledTable>
+                  <TableHead>
+                      <StyledTableHeaderRow>
+                          <StyledHeaderCell width={25}>
+                              Maintenance
+                          </StyledHeaderCell>
 
-//                           <StyledHeaderCell width={25}>
-//                               Value
-//                           </StyledHeaderCell>
+                          <StyledHeaderCell width={25}>
+                              Value
+                          </StyledHeaderCell>
 
-//                           <StyledHeaderCell width={25}>
-//                               Reward (est.)
-//                           </StyledHeaderCell>
+                          <StyledHeaderCell width={25}>
+                              Reward (est.)
+                          </StyledHeaderCell>
 
-//                           <StyledHeaderCell width={25}>
-//                           </StyledHeaderCell>  
-//                       </StyledTableHeaderRow>
+                          <StyledHeaderCell width={25}>
+                          </StyledHeaderCell>  
+                      </StyledTableHeaderRow>
 
-//                       {allPositions?.map((position, key) => (
-//                           <LiquidatablePosition
-//                             positionData={position}
-//                             />
-//                       ))}
-//                   </TableHead>
-//                 </StyledTable>
-//           </TableContainer>
-//       </PageContainer>
-//   )
-// };
+                      {/* {allPositions?.map((position, key) => (
+                          <LiquidatablePosition
+                            positionData={position}
+                            />
+                      ))} */}
+                  </TableHead>
+                </StyledTable>
+          </TableContainer>
+      </PageContainer>
+  )
+};
 
-// export default Liquidate;
+export default Liquidate;
