@@ -199,3 +199,24 @@ export function useAccountPositions(
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
 };
+
+
+export function useAllPositions() {
+  const {
+    isLoading,
+    isError,
+    error,
+    isUninitialized,
+    data
+  } = usePositionsQuery({}, { pollingInterval: 15000 })
+
+  return useMemo(() => {
+    return {
+      isLoading,
+      isError,
+      error,
+      isUninitialized,
+      markets: data
+    } 
+  }, [ isLoading, isError, error, isUninitialized, data ])
+};
