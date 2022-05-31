@@ -114,6 +114,23 @@ export const api = createApi({
         `
       }),
     }),
+    positionsQuery: builder.query({
+      query: () => ({
+        document: gql`
+          query positions {
+            positions{
+              id
+              owner {
+                id
+              }
+              market {
+                id
+              }
+            }
+        }
+        `
+      }),
+    }),
   }),
 });
 

@@ -13,7 +13,7 @@ import {
 import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useAccountQuery } from "../data/generated";
+import { useAccountQuery, usePositionsQuery } from "../data/generated";
 
 export function usePositionState(): AppState['position'] {
   return useAppSelector((state) => state.position);

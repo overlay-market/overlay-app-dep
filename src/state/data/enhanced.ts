@@ -14,7 +14,10 @@ export const api = generatedApi.enhanceEndpoints({
     marketsQuery: {
       providesTags: [CHAIN_TAG],
     },
+    positionsQuery: {
+      providesTags: [CHAIN_TAG],
+    }
   },
 });
 
-export const { useMarketQuery, useMarketsQuery, useAccountQuery } = api;
+export const { useMarketQuery, useMarketsQuery, useAccountQuery, usePositionsQuery } = api;
