@@ -132,7 +132,9 @@ const Liquidate = () => {
 
   return (
       <PageContainer maxWidth={'420px'}>
-        <PageHeader> Liquidatable Positions </PageHeader>
+        <PageHeader> 
+          {/* Liquidatable Positions  */}
+        </PageHeader>
           <TableContainer component={Paper}>
               <StyledTable>
                   <TableHead>
