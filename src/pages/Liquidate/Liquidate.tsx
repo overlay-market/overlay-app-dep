@@ -157,11 +157,31 @@ const Liquidate = () => {
                           </StyledHeaderCell>  
                       </StyledTableHeaderRow>
 
-                      {/* {allPositions?.map((position, key) => (
-                          <LiquidatablePosition
-                            positionData={position}
-                            />
-                      ))} */}
+                      {liquidatablePositions?.map((position, key) => (
+                        <StyledTableRow hover={false}>
+                          <StyledTableCellThin component="th" scope="row">
+                            {maintenanceMargins !== undefined ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 5): null}
+                          </StyledTableCellThin>
+
+                          <StyledTableCellThin align="left">
+                            {positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5): null}
+                          </StyledTableCellThin>
+
+                          <StyledTableCellThin align="left">
+                            {liquidationFees !== undefined ? formatWeiToParsedNumber(liquidationFees[key], 18, 5): null}
+                          </StyledTableCellThin>
+
+                          <StyledTableCellThin align="left">
+                              <TransparentButton 
+                                  color={'#12B4FF'}
+                                  border={'none'}
+                                  // onClick={() => ()}
+                                  >
+                                  Liquidate
+                              </TransparentButton>
+                          </StyledTableCellThin>
+                        </StyledTableRow>
+                      ))}
                   </TableHead>
                 </StyledTable>
           </TableContainer>
