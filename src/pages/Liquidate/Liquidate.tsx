@@ -30,7 +30,13 @@ const LiquidateButton = ({
     if (!ownerAddress) throw new Error("missing owner address")
     if (!positionId) throw new Error("missing position id")
     if (!liquidateCallback) return;
-    liquidateCallback();
+    liquidateCallback()
+      .then((hash) => {
+        console.log('liquidation txn hash: ', hash)
+      })
+      .catch((error) => {
+        console.log('liquidation txn error: ', error);
+      });
   }, [liquidateCallback, marketAddress, ownerAddress, positionId])
 
   return (
