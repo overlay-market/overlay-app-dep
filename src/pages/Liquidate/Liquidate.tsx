@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
 import { TableContainer, TableHead, Paper } from '@material-ui/core';
 import { useAccountPositions } from '../../state/positions/hooks';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
@@ -14,77 +14,35 @@ import { useSingleContractMultipleData } from '../../state/multicall/hooks';
 import { useBlockNumber } from '../../state/application/hooks';
 import { useLiquidateCallback } from '../../hooks/useLiquidateCallback';
 
-// const mock = [
-//   {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
-//   {maintenance: '3.00 OVL', value: '2.00 OVL', reward: '0.50 OVL', callback: (() => null)},
-//   {maintenance: '0.10 OVL', value: '0.01 OVL', reward: '0.00001 OVL', callback: (() => null)},
-// ]
+const LiquidateButton = ({
+  marketAddress, 
+  ownerAddress, 
+  positionId
+}:{
+  marketAddress?: string,
+  ownerAddress?: string,
+  positionId?: string
+}) => {
+  const { callback: liquidateCallback } = useLiquidateCallback(marketAddress, ownerAddress, positionId);
 
-// export const LiquidatablePosition = (positionData: any) => {
-//   let position = positionData.positionData;
+  const handleLiquidate = useCallback(() => {
+    if (!marketAddress) throw new Error("missing market address")
+    if (!ownerAddress) throw new Error("missing owner address")
+    if (!positionId) throw new Error("missing position id")
+    if (!liquidateCallback) return;
+    liquidateCallback();
+  }, [liquidateCallback, marketAddress, ownerAddress, positionId])
 
-//   const estimatedLiquidationPrice = useLiquidationPrice(
-//     position.market.id,
-//     position.isLong,
-//     position.pricePoint.bid,
-//     position.pricePoint.ask,
-//     position.debt,
-//     position.totalSupply,
-//     position.oiShares
-//   );
-
-//   const maintenanceMarginRate = useMaintenanceMargin(position.market.id);
-
-//   const currentValue = usePositionValue(position.number ? position.number : null);
-//   const currentPrice = positionData.isLong ? formatWeiToParsedNumber(position.market.currentPrice.bid, 18, 5) : formatWeiToParsedNumber(position.market.currentPrice.ask, 18, 5);
-
-//   const parsedCurrentValue = currentValue ? formatWeiToParsedNumber(currentValue, 18, 10) : undefined;
-//   const parsedMaintenanceMarginRate = maintenanceMarginRate ? formatWeiToParsedNumber(maintenanceMarginRate, 18, 10) : undefined;
-//   const parsedCurrentOi = position.oiShares ? formatWeiToParsedNumber(position.oiShares, 18, 10) : undefined;
-//   const parsedInitialOi = position.totalSupply && formatWeiToParsedNumber(position.totalSupply, 18, 10);
-
-//   const nominalMaintenanceMargin: BigInt | number | any = parsedCurrentOi && parsedMaintenanceMarginRate && parsedCurrentOi * parsedMaintenanceMarginRate;
-
-//   const reward = parsedCurrentValue && parsedMaintenanceMarginRate && parsedCurrentValue * parsedMaintenanceMarginRate;
-
-//   const liquidationPrice = parsedInitialOi && parsedMaintenanceMarginRate && parsedInitialOi * parsedMaintenanceMarginRate;
-
-//   const liquidatable = parsedCurrentValue && currentPrice && liquidationPrice > parsedCurrentValue;
-
-//   console.log('parsedCurrentValue: ', parsedCurrentValue);
-//   console.log('liquidationPrice: ', liquidationPrice);
-//   console.log('currentPrice: ', currentPrice);
-
-
-//   return (
-//       <>
-//         <StyledTableRow hover={false}>
-//           <StyledTableCellThin component="th" scope="row">
-//               {formatDecimalPlaces(5, liquidationPrice)}
-//           </StyledTableCellThin>
-
-//           <StyledTableCellThin align="left">
-//               {formatDecimalPlaces(5, parsedCurrentValue)}
-//           </StyledTableCellThin>
-
-//           <StyledTableCellThin align="left">
-//               {formatDecimalPlaces(5, reward)}
-//           </StyledTableCellThin>
-
-//           <StyledTableCellThin align="left">
-//               <TransparentButton 
-//                   color={'#12B4FF'}
-//                   border={'none'}
-//                   // onClick={() => ()}
-//                   >
-//                   Liquidate
-//               </TransparentButton>
-//           </StyledTableCellThin>
-//         </StyledTableRow>
-//       </>
-//   )
-// };
-
+  return (
+    <TransparentButton 
+      color={'#12B4FF'}
+      border={'none'}
+      onClick={() => handleLiquidate()}
+      >
+      Liquidate
+    </TransparentButton>
+  )
+}
 const Liquidate = () => {
   const { positions } = useAllPositions();
   const blockNumber = useBlockNumber();
@@ -173,15 +131,7 @@ const Liquidate = () => {
                           </StyledTableCellThin>
 
                           <StyledTableCellThin align="left">
-                            {positionsCallData && (
-                              <TransparentButton 
-                                  color={'#12B4FF'}
-                                  border={'none'}
-                                  // onClick={() => useLiquidateCallback(positionsCallData[key]?.[0], positionsCallData[key]?.[1], positionsCallData[key]?.[2])}
-                                  >
-                                  Liquidate
-                              </TransparentButton>
-                              )}
+                              <LiquidateButton marketAddress={positionsCallData[key]?.[0]} ownerAddress={positionsCallData[key]?.[1]} positionId={positionsCallData[key]?.[2]} />
                           </StyledTableCellThin>
                         </StyledTableRow>
                       ))}

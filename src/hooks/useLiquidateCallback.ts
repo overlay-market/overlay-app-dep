@@ -39,7 +39,7 @@ enum LiquidateCallbackState {
 function useLiquidateCallArguments(
   marketAddress?: string,
   ownerAddress?: string,
-  positionId?: number, 
+  positionId?: string, 
   chainId?: any
 ) {
   let calldata: any;
@@ -72,7 +72,7 @@ function useLiquidateCallArguments(
   }, [calldata, chainId, marketAddress, ownerAddress, positionId]);
 }
 
-export function useLiquidateCallback(marketAddress?: string, ownerAddress?: string, positionId?: number) : {
+export function useLiquidateCallback(marketAddress?: string, ownerAddress?: string, positionId?: string) : {
   state: LiquidateCallbackState
   callback: null | (() => Promise<string>)
   error: string | null
