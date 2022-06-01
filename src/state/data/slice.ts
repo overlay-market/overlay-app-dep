@@ -120,12 +120,14 @@ export const api = createApi({
           query positions {
             positions{
               id
+              positionId
               owner {
                 id
               }
               market {
                 id
               }
+              isLiquidated
             }
         }
         `

@@ -216,7 +216,7 @@ export function useAllPositions() {
       isError,
       error,
       isUninitialized,
-      markets: data
+      positions: data?.positions
     } 
   }, [ isLoading, isError, error, isUninitialized, data ])
 };

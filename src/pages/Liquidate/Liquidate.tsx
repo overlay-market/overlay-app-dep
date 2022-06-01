@@ -8,6 +8,10 @@ import { PageContainer } from "../../components/Container/Container";
 import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
 import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
+import { useAllPositions } from '../../state/positions/hooks';
+import { useV1PeripheryContract } from '../../hooks/useContract';
+import { useSingleContractMultipleData } from '../../state/multicall/hooks';
+import { useBlockNumber } from '../../state/application/hooks';
 
 // const mock = [
 //   {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
@@ -81,7 +85,28 @@ import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, Sty
 // };
 
 const Liquidate = () => {
-  // const { allPositions } = useAllPositions();
+  const { positions } = useAllPositions();
+  const blockNumber = useBlockNumber();
+
+  const positionsCallData = useMemo(() => {
+    if (positions === undefined || !positions) return [];
+
+    return positions.map((position) => {
+      if (position.isLiquidated) return;
+      return [position.market.id, position.owner.id, position.positionId]
+    })
+  }, [positions])
+
+  const peripheryContract = useV1PeripheryContract();
+  const fetchLiquidatablePositions = useSingleContractMultipleData(peripheryContract, "liquidatable", positionsCallData);
+
+  const liquidatablePositions = useMemo(() => {
+    return fetchLiquidatablePositions.map((position, index) => {
+      if (position.loading === true || position === undefined || !blockNumber) return undefined;
+
+      return position?.result?.liquidatable_;
+    })
+  }, [fetchLiquidatablePositions, blockNumber])
 
   return (
       <PageContainer maxWidth={'420px'}>

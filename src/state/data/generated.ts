@@ -1703,7 +1703,7 @@ export type PositionsQuery = (
   { __typename?: 'Query' }
   & { positions: Array<(
     { __typename?: 'Position' }
-    & Pick<Position, 'id'>
+    & Pick<Position, 'id' | 'positionId' | 'isLiquidated'>
     & { owner: (
       { __typename?: 'Account' }
       & Pick<Account, 'id'>
@@ -1796,12 +1796,14 @@ export const PositionsDocument = `
     query positions {
   positions {
     id
+    positionId
     owner {
       id
     }
     market {
       id
     }
+    isLiquidated
   }
 }
     `;
