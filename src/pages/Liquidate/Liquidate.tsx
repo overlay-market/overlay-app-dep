@@ -1,4 +1,5 @@
 import { useMemo, useCallback } from 'react';
+import styled from 'styled-components';
 import { TableContainer, TableHead, Paper } from '@material-ui/core';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
 import { TransparentButton } from '../../components/Button/Button';
@@ -9,6 +10,17 @@ import { useV1PeripheryContract } from '../../hooks/useContract';
 import { useSingleContractMultipleData } from '../../state/multicall/hooks';
 import { useBlockNumber } from '../../state/application/hooks';
 import { useLiquidateCallback } from '../../hooks/useLiquidateCallback';
+import Loader from '../../components/Loaders/Loaders';
+
+const LoadingContainer = styled.div`
+  display: flex;
+  margin: 8px auto auto auto;
+  justify-content: center;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    margin-top: 44px;
+  `}
+`;
 
 const LiquidateButton = ({
   marketAddress, 
@@ -79,6 +91,8 @@ const Liquidate = () => {
     })
   }, [fetchLiquidatablePositions, blockNumber]);
 
+  console.log('liquidatablePositions: ', liquidatablePositions);
+
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
@@ -131,6 +145,18 @@ const Liquidate = () => {
                         const liquidationFee = liquidationFees !== undefined && liquidationFees ? formatWeiToParsedNumber(liquidationFees[key], 18, 5) : null;
                         const isLiquidated = isLiquidatedPositions[key];
 
+                        if (key === 0 && liquidatablePositions && liquidatablePositions[0] === undefined) {
+                          return (
+                              <LoadingContainer>
+                                <Loader
+                                  type="TailSpin"
+                                  color="#f2f2f2"
+                                  height={33}
+                                  width={33}
+                                />
+                              </LoadingContainer>
+                          )
+                        }
                         if (maintenanceMargin && maintenanceMargin !== 0 && !isLiquidated) {
                           return (
                             <StyledTableRow hover={false}>
@@ -151,8 +177,7 @@ const Liquidate = () => {
                               </StyledTableCellThin>
                             </StyledTableRow>
                           )
-                        }
-                      })}
+                      }})}
                   </TableHead>
                 </StyledTable>
           </TableContainer>
