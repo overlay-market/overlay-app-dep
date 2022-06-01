@@ -99,6 +99,9 @@ const Liquidate = () => {
 
   const peripheryContract = useV1PeripheryContract();
   const fetchLiquidatablePositions = useSingleContractMultipleData(peripheryContract, "liquidatable", positionsCallData);
+  const fetchPositionValues = useSingleContractMultipleData(peripheryContract, "value", positionsCallData);
+  const fetchLiquidationFees = useSingleContractMultipleData(peripheryContract, "liquidationFee", positionsCallData);
+  const fetchMaintenanceMargins = useSingleContractMultipleData(peripheryContract, "maintenanceMargin", positionsCallData);
 
   const liquidatablePositions = useMemo(() => {
     return fetchLiquidatablePositions.map((position, index) => {
@@ -106,7 +109,31 @@ const Liquidate = () => {
 
       return position?.result?.liquidatable_;
     })
-  }, [fetchLiquidatablePositions, blockNumber])
+  }, [fetchLiquidatablePositions, blockNumber]);
+
+  const positionValues = useMemo(() => {
+    return fetchPositionValues.map((position, index) => {
+      if (position.loading === true || position === undefined || !blockNumber) return undefined;
+
+      return position?.result?.value_;
+    })
+  }, [fetchPositionValues, blockNumber])
+
+  const liquidationFees = useMemo(() => {
+    return fetchLiquidationFees.map((position, index) => {
+      if (position.loading === true || position === undefined || !blockNumber) return undefined;
+
+      return position?.result?.liquidationFee_;
+    })
+  }, [fetchLiquidationFees, blockNumber])
+
+  const maintenanceMargins = useMemo(() => {
+    return fetchMaintenanceMargins.map((position, index) => {
+      if (position.loading === true || position === undefined || !blockNumber) return undefined;
+
+      return position?.result?.maintenanceMargin_;
+    })
+  }, [fetchMaintenanceMargins, blockNumber])
 
   return (
       <PageContainer maxWidth={'420px'}>
