@@ -57,8 +57,15 @@ const Liquidate = () => {
     if (positions === undefined || !positions) return [];
 
     return positions.map((position) => {
-      if (position.isLiquidated) return;
       return [position.market.id, position.owner.id, position.positionId]
+    })
+  }, [positions])
+
+  const isLiquidatedPositions = useMemo(() => {
+    if (positions === undefined || !positions) return [];
+
+    return positions.map((position) => {
+      return position.isLiquidated;
     })
   }, [positions])
 
@@ -122,25 +129,34 @@ const Liquidate = () => {
                           </StyledHeaderCell>  
                       </StyledTableHeaderRow>
 
-                      {liquidatablePositions?.map((position, key) => (
-                        <StyledTableRow hover={false}>
-                          <StyledTableCellThin component="th" scope="row">
-                            {maintenanceMargins !== undefined ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 5): null}
-                          </StyledTableCellThin>
+                      {liquidatablePositions?.map((position, key) => {
+                        const maintenanceMargin = maintenanceMargins !== undefined && maintenanceMargins ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 5) : null;
+                        const positionValue = positionValues !== undefined && positionValues ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null;
+                        const liquidationFee = liquidationFees !== undefined && liquidationFees ? formatWeiToParsedNumber(liquidationFees[key], 18, 5) : null;
+                        const isLiquidated = isLiquidatedPositions[key];
 
-                          <StyledTableCellThin align="left">
-                            {positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5): null}
-                          </StyledTableCellThin>
+                        if (maintenanceMargin && maintenanceMargin !== 0 && !isLiquidated) {
+                          return (
+                            <StyledTableRow hover={false}>
+                              <StyledTableCellThin component="th" scope="row">
+                                {maintenanceMargin} OVL
+                              </StyledTableCellThin>
 
-                          <StyledTableCellThin align="left">
-                            {liquidationFees !== undefined ? formatWeiToParsedNumber(liquidationFees[key], 18, 5): null}
-                          </StyledTableCellThin>
+                              <StyledTableCellThin align="left">
+                                {positionValue} OVL
+                              </StyledTableCellThin>
 
-                          <StyledTableCellThin align="left">
-                              <LiquidateButton marketAddress={positionsCallData[key]?.[0]} ownerAddress={positionsCallData[key]?.[1]} positionId={positionsCallData[key]?.[2]} />
-                          </StyledTableCellThin>
-                        </StyledTableRow>
-                      ))}
+                              <StyledTableCellThin align="left">
+                                {liquidationFee} OVL
+                              </StyledTableCellThin>
+
+                              <StyledTableCellThin align="left">
+                                  <LiquidateButton marketAddress={positionsCallData[key]?.[0]} ownerAddress={positionsCallData[key]?.[1]} positionId={positionsCallData[key]?.[2]} />
+                              </StyledTableCellThin>
+                            </StyledTableRow>
+                          )
+                        }
+                      })}
                   </TableHead>
                 </StyledTable>
           </TableContainer>
