@@ -9,7 +9,8 @@ import { useTransactionAdder } from "../state/transactions/hooks";
 import isZero from "../utils/isZero";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
 import { useMarketContract } from "./useContract";
-
+import { useAddPopup } from "../state/application/hooks";
+import { currentTimeParsed } from "../utils/currentTime";
 interface LiquidateCall {
   address: string;
   calldata: string;
@@ -78,10 +79,10 @@ export function useLiquidateCallback(marketAddress?: string, ownerAddress?: stri
   error: string | null
 } {
   const { account, chainId, library } = useActiveWeb3React();
-
   const addTransaction = useTransactionAdder();
-
+  const addPopup = useAddPopup();
   const liquidateCalls = useLiquidateCallArguments(marketAddress, ownerAddress, positionId, chainId);
+  const currentTimeForId = currentTimeParsed();
 
   return useMemo(() => {
 
@@ -197,13 +198,10 @@ export function useLiquidateCallback(marketAddress?: string, ownerAddress?: stri
           })
           .then((response: TransactionResponse) => {
 
-            // addTransaction(response, {
-            //   type: TransactionType.BUILD_OVL_POSITION,
-            //   market: OVL_MARKET_ADDRESS[chainId],
-            //   collateral: buildData.typedValue,
-            //   isLong: buildData.isLong,
-            //   leverage: buildData.selectedLeverage,
-            // });
+            addTransaction(response, {
+              type: TransactionType.LIQUIDATE_OVL_POSITION,
+              positionId: positionId
+            });
 
             return response.hash;
 
@@ -212,6 +210,16 @@ export function useLiquidateCallback(marketAddress?: string, ownerAddress?: stri
 
             // if the user rejected the tx, pass this along
             if (error?.code === 4001) {
+              addPopup(
+                {
+                  txn: {
+                    hash: currentTimeForId,
+                    success: false,
+                    info: error
+                  },
+                },
+                currentTimeForId
+              )
               throw new Error("Transaction rejected.");
             } else {
               // otherwise, the error was unexpected and we need to convey that
@@ -223,5 +231,5 @@ export function useLiquidateCallback(marketAddress?: string, ownerAddress?: stri
       },
       error: null,
     };
-  }, [positionId, library, account, chainId, liquidateCalls, addTransaction]);
+  }, [positionId, library, account, chainId, liquidateCalls, addTransaction, addPopup, currentTimeForId]);
 }

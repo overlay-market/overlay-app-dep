@@ -1,12 +1,8 @@
 import { useMemo, useCallback } from 'react';
 import { TableContainer, TableHead, Paper } from '@material-ui/core';
-import { useAccountPositions } from '../../state/positions/hooks';
 import { formatWeiToParsedNumber } from '../../utils/formatWei';
-import { formatDecimalPlaces } from '../../utils/formatDecimal';
 import { TransparentButton } from '../../components/Button/Button';
 import { PageContainer } from "../../components/Container/Container";
-import { useLiquidationPrice } from '../../hooks/useLiquidationPrice';
-import { useMaintenanceMargin } from '../../hooks/useMaintenanceMargin';
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 import { useAllPositions } from '../../state/positions/hooks';
 import { useV1PeripheryContract } from '../../hooks/useContract';
