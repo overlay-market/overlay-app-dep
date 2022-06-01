@@ -6,9 +6,9 @@ import { useActiveWeb3React } from "./web3";
 import { TransactionType } from "./../state/transactions/actions";
 import { TransactionResponse } from "@ethersproject/providers";
 import { useTransactionAdder } from "../state/transactions/hooks";
-import { OVL_MARKET_ADDRESS, OVL_COLLATERAL_ADDRESS } from "../constants/addresses";
 import isZero from "../utils/isZero";
 import { calculateGasMargin } from "../utils/calculateGasMargin";
+import { useMarketContract } from "./useContract";
 
 interface LiquidateCall {
   address: string;
@@ -37,20 +37,29 @@ enum LiquidateCallbackState {
 }
 
 function useLiquidateCallArguments(
+  marketAddress?: string,
+  ownerAddress?: string,
   positionId?: number, 
   chainId?: any
 ) {
-  // const calldata: any = positionId ? (
-  //     OVLCollateral.liquidateParameters({ positionId: positionId })
-  //   ) : undefined;
+  let calldata: any;
+  const marketContract = useMarketContract(marketAddress);
 
-  const calldata = 'test';
+  if (!ownerAddress || !positionId || !marketContract) calldata = undefined;
+  else {
+    calldata = marketContract.interface.encodeFunctionData("liquidate", [
+      ownerAddress,
+      positionId
+    ])
+  }
 
   return useMemo(() => {
+    if (!ownerAddress || !marketAddress || !positionId || !chainId) return [];
+
     const txn: { address: string; calldata: string; value: string } = {
-      address: OVL_COLLATERAL_ADDRESS[chainId],
+      address: marketAddress,
       calldata: calldata,
-      value: utils.parseEther("0").toHexString(),
+      value: '0x0',
     };
 
     return [
@@ -60,10 +69,10 @@ function useLiquidateCallArguments(
         value: txn.value,
       },
     ];
-  }, [calldata, chainId]);
+  }, [calldata, chainId, marketAddress, ownerAddress, positionId]);
 }
 
-export function useLiquidateCallback(positionId?: number) : {
+export function useLiquidateCallback(marketAddress?: string, ownerAddress?: string, positionId?: number) : {
   state: LiquidateCallbackState
   callback: null | (() => Promise<string>)
   error: string | null
@@ -72,7 +81,7 @@ export function useLiquidateCallback(positionId?: number) : {
 
   const addTransaction = useTransactionAdder();
 
-  const liquidateCalls = useLiquidateCallArguments(positionId, chainId);
+  const liquidateCalls = useLiquidateCallArguments(marketAddress, ownerAddress, positionId, chainId);
 
   return useMemo(() => {
 

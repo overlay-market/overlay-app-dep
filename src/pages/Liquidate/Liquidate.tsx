@@ -12,6 +12,7 @@ import { useAllPositions } from '../../state/positions/hooks';
 import { useV1PeripheryContract } from '../../hooks/useContract';
 import { useSingleContractMultipleData } from '../../state/multicall/hooks';
 import { useBlockNumber } from '../../state/application/hooks';
+import { useLiquidateCallback } from '../../hooks/useLiquidateCallback';
 
 // const mock = [
 //   {maintenance: '1.97 OVL', value: '1.90 OVL', reward: '0.01 OVL', callback: (() => null)},
@@ -172,13 +173,15 @@ const Liquidate = () => {
                           </StyledTableCellThin>
 
                           <StyledTableCellThin align="left">
+                            {positionsCallData && (
                               <TransparentButton 
                                   color={'#12B4FF'}
                                   border={'none'}
-                                  // onClick={() => ()}
+                                  // onClick={() => useLiquidateCallback(positionsCallData[key]?.[0], positionsCallData[key]?.[1], positionsCallData[key]?.[2])}
                                   >
                                   Liquidate
                               </TransparentButton>
+                              )}
                           </StyledTableCellThin>
                         </StyledTableRow>
                       ))}
