@@ -17,7 +17,7 @@ export const Container = styled.div`
   ${({ theme }) => theme.mediaWidth.minMedium`
     padding: 16px 0;
     position: relative;
-    margin: 0 auto 32px;
+    margin: 0 auto 48px;
   `};
 `;
 

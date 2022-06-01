@@ -22,6 +22,19 @@ const LoadingContainer = styled.div`
   `}
 `;
 
+const PageHeader = styled.div`
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 44px;
+  font-weight: 700;
+  color: white;
+  padding-top: 16px;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    padding-top: 16px;
+  `}
+`;
+
 const LiquidateButton = ({
   marketAddress, 
   ownerAddress, 
@@ -119,6 +132,7 @@ const Liquidate = () => {
 
   return (
       <PageContainer maxWidth={'420px'}>
+        <PageHeader> Liquidatable Positions </PageHeader>
           <TableContainer component={Paper}>
               <StyledTable>
                   <TableHead>
