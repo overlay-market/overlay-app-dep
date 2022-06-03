@@ -10,6 +10,7 @@ import Positions from './Positions/Positions';
 import Liquidate from './Liquidate/Liquidate';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
+import Stake from './Stake/Stake';
 import Popups from '../components/Popup/Popups';
 
 export const AppWrapper = styled.div`
@@ -33,6 +34,7 @@ const App = () => {
           <Route exact strict path="/positions/:positionId" component={Unwind} /> 
           <Route exact strict path="/magic" component={Magic} />
           <Route exact strict path="/liquidate" component={Liquidate} />
+          <Route exact strict path="/stake" component={Stake} />
         </Switch>
       </Web3ReactManager>
       <CurrentBlock />
