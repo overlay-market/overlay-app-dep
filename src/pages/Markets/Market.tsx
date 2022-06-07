@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import styled from 'styled-components';
 import { RouteComponentProps } from 'react-router';
 import { BuildInterface } from './Build';
 import { usePositionActionHandlers } from '../../state/positions/hooks';

@@ -26,7 +26,7 @@ import { usePositionNotional } from "../../hooks/usePositionNotional";
 import { useMaintenanceMargin } from "../../hooks/useMaintenanceMargin";
 import { usePositionCollateral } from "../../hooks/usePositionCollateral";
 import { usePositionCost } from "../../hooks/usePositionCost";
-import { useMarketPrices } from "../../hooks/useMarketPrices";
+import { useMarketPrice } from "../../hooks/useMarketPrices";
 import { Icon } from "../../components/Icon/Icon";
 import { Sliders, X } from "react-feather";
 import { TransactionSettingsModal } from "../Markets/TransactionSettingsModal";
@@ -101,7 +101,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const liquidationPriceResult = useLiquidationPrice(position?.market.id, positionId);
   const liquidationPrice = liquidationPriceResult && formatWeiToParsedNumber(liquidationPriceResult, 18, 2);
 
-  const prices = useMarketPrices(position?.market.id);
+  const prices = useMarketPrice(position?.market.id);
   
   const bidPrice = prices ? formatWeiToParsedNumber(prices.bid_, 18, 2) : null;
   const askPrice = prices ? formatWeiToParsedNumber(prices.ask_, 18, 2) : null;

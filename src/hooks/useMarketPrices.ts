@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
+import { useMultipleContractSingleData, useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
 
-export function useMarketPrices(
+export function useMarketPrice(
   marketAddress?: string,
 ): any | undefined {
   const peripheryContract = useV1PeripheryContract();
@@ -30,3 +31,22 @@ export function useMarketPrices(
     return prices;
   }, [prices]);
 };
+
+export function useMarketPrices(marketAddresses?: any) {
+  const peripheryContract = useV1PeripheryContract();
+  const blockNumber = useBlockNumber();
+  const { chainId } = useActiveWeb3React();
+
+  const pricesResult = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses);
+
+  return useMemo(() => {
+    return pricesResult.map((market) => {
+      if (!chainId || !blockNumber || !market) return null;
+
+      let marketPrice = market?.result && market.result[0];
+      return marketPrice;
+    })
+  }, [pricesResult, blockNumber, chainId])
+
+
+}

@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
-import { utils, BigNumber } from "ethers";
 import { Interface } from "@ethersproject/abi";
 import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
@@ -17,9 +16,9 @@ import { useMultipleContractSingleData, useSingleContractMultipleData } from "..
 import { useUniswapV3Feed, useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
 import UNISWAP_V3_FEED_ABI from '../../constants/abis/OverlayV1UniswapV3Feed.json';
-import ERC20_INTERFACE from "../../constants/abis/erc20";
 import Loader from "../../components/Loaders/Loaders";
 import { useMarketNames } from "../../hooks/useMarketName";
+import { useMarketPrices } from "../../hooks/useMarketPrices";
 
 const activeClassName = "INACTIVE";
 
@@ -42,9 +41,7 @@ const Markets = () => {
   const history = useHistory();
   const blockNumber = useBlockNumber();
   const { markets } = useAllMarkets();
-  
-  // console.log('markets: ', markets);
-  
+
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`);
   }
@@ -71,14 +68,19 @@ const Markets = () => {
   const capOis = useSingleContractMultipleData(peripheryContract, 'capOi', marketAddresses);
 
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
+  const marketPrices = useMarketPrices(marketAddresses);
 
-  const marketPrices = useMemo(() => {
-    return prices.map((market, index) => {
-      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
+  // console.log('marketPrices1: ', marketPrices1);
 
-      return market?.result?.mid_;
-    })
-  }, [prices, blockNumber]);
+  // const marketPrices = useMemo(() => {
+  //   return prices.map((market, index) => {
+  //     if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
+
+  //     return market?.result?.mid_;
+  //   })
+  // }, [prices, blockNumber]);
+
+  console.log('marketPrices: ', marketPrices);
 
   const marketFundingRates = useMemo(() => {
     return fundingRates.map((market, index) => {
