@@ -21,6 +21,7 @@ import { useMarketNames } from "../../hooks/useMarketName";
 import { useMarketPrices } from "../../hooks/useMarketPrices";
 import { useFundingRates } from "../../hooks/useFundingRates";
 import { useMarketOis } from "../../hooks/useMarketOis";
+import { useMarketCapOis } from "../../hooks/useMarketCapOi";
 
 const activeClassName = "INACTIVE";
 
@@ -62,21 +63,11 @@ const Markets = () => {
     return markets.markets.map((market) => market.feedAddress)
   }, [markets]);
 
-  const peripheryContract = useV1PeripheryContract();
-  const capOis = useSingleContractMultipleData(peripheryContract, 'capOi', marketAddresses);
-
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
   const marketPrices = useMarketPrices(marketAddresses);
   const marketFundingRates = useFundingRates(marketAddresses);
   const marketOis = useMarketOis(marketAddresses);
-
-  const marketCapOis = useMemo(() => {
-    return capOis.map((market, index) => {
-      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
-
-      return market?.result?.capOi_;
-    })
-  }, [capOis, blockNumber])
+  const marketCapOis = useMarketCapOis(marketAddresses);
 
   return (
     <PageContainer>

@@ -23,5 +23,4 @@ export function useFundingRates(marketAddresses: any) {
       return marketFundingRate;
     })
   }, [fundingRatesResult, blockNumber, chainId])
-
 }
