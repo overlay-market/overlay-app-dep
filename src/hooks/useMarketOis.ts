@@ -3,6 +3,7 @@ import { useV1PeripheryContract } from "./useContract";
 import { useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
+import { formatWeiToParsedNumber } from "../utils/formatWei";
 
 /**
  * Returns open interest for input market address
@@ -50,7 +51,10 @@ export function useMarketOis(marketAddresses?: any) {
       if (!chainId || !blockNumber || !market) return null;
 
       let marketOi = market?.result && market.result;
-      return marketOi;
+      return {
+        oiLong: marketOi?.oiLong_ ? formatWeiToParsedNumber(marketOi.oiLong_, 18, 5) : undefined,
+        oiShort: marketOi?.oiShort_ ? formatWeiToParsedNumber(marketOi.oiShort_, 18, 5) : undefined,
+      };
     })
   }, [oisResult, blockNumber, chainId])
 

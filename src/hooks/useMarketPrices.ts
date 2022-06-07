@@ -3,6 +3,7 @@ import { useV1PeripheryContract } from "./useContract";
 import { useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
+import { formatWeiToParsedNumber } from "../utils/formatWei";
 
 export function useMarketPrice(
   marketAddress?: string,
@@ -37,7 +38,7 @@ export function useMarketPrice(
  * @param marketAddresses array of market addresses to query market mid prices for
  * @returns market mid prices associated with input market addresses
  */
-export function useMarketPrices(marketAddresses?: any) {
+export function useMarketMidPrices(marketAddresses?: any) {
   const peripheryContract = useV1PeripheryContract();
   const blockNumber = useBlockNumber();
   const { chainId } = useActiveWeb3React();
@@ -49,7 +50,7 @@ export function useMarketPrices(marketAddresses?: any) {
       if (!chainId || !blockNumber || !market) return null;
 
       let marketPrice = market?.result && market.result[0];
-      return marketPrice;
+      return formatWeiToParsedNumber(marketPrice, 18, 5);
     })
   }, [pricesResult, blockNumber, chainId])
 }

@@ -13,7 +13,7 @@ import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
 import Loader from "../../components/Loaders/Loaders";
 import { useMarketNames } from "../../hooks/useMarketName";
-import { useMarketPrices } from "../../hooks/useMarketPrices";
+import { useMarketMidPrices } from "../../hooks/useMarketPrices";
 import { useFundingRates } from "../../hooks/useFundingRates";
 import { useMarketOis } from "../../hooks/useMarketOis";
 import { useMarketCapOis } from "../../hooks/useMarketCapOi";
@@ -54,7 +54,7 @@ const Markets = () => {
   }, [markets]);
 
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
-  const prices = useMarketPrices(marketAddresses);
+  const prices = useMarketMidPrices(marketAddresses);
   const fundingRates = useFundingRates(marketAddresses);
   const ois = useMarketOis(marketAddresses);
   const capOis = useMarketCapOis(marketAddresses);
@@ -109,23 +109,13 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {
-                    prices[index] ? (
-                      formatWeiToParsedNumber(prices[index], 18, 2)
-                    ):(
-                      <Loader stroke="white" size="12px" />
-                    )
-                  }
+                  {prices[index] ? prices[index] : <Loader stroke="white" size="12px" />}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
-                      {
-                        ois[index] ? (
-                          formatWeiToParsedNumber(ois[index]?.oiLong_, 18, 5)
-                        ) : <Loader stroke="white" size="12px" />
-                      }
+                      {ois[index]?.oiLong ? ois[index]?.oiLong : <Loader stroke="white" size="12px" />}
                       /
                       {
                         capOis[index] ? (
@@ -134,7 +124,7 @@ const Markets = () => {
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(ois[index]?.oiLong_, 18, 5)}
+                      value={ois[index]?.oiLong}
                       max={formatWeiToParsedNumber(capOis[index], 18, 5)}
                       color={"#10DCB1"}
                       width={"88px"}
@@ -146,11 +136,7 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
-                      {
-                        ois[index] ? (
-                          formatWeiToParsedNumber(ois[index]?.oiShort_, 18, 5)
-                        ) : <Loader stroke="white" size="12px" />
-                      }
+                      {ois[index]?.oiShort ? ois[index]?.oiShort : <Loader stroke="white" size="12px" />}
                       /
                       {
                         capOis[index] ? (
@@ -159,7 +145,7 @@ const Markets = () => {
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(ois[index]?.oiShort_, 18, 5)}
+                      value={ois[index]?.oiShort}
                       max={formatWeiToParsedNumber(capOis[index], 18, 5)}
                       color={"#DC1F4E"}
                       width={"88px"}
