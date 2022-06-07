@@ -17,6 +17,23 @@ export const PageContainer = styled.div<{ maxWidth?: string}>`
   `};
 `;
 
+export const InterfaceWrapper = styled.div`
+  display: flex !important;
+  flex-direction: column;
+  z-index: 0;
+  color: white;
+  padding: 0 16px 16px;
+  margin: 0 auto 32px;
+  max-width: 350px;
+  position: static;
+
+  ${({ theme }) => theme.mediaWidth.minMedium`
+    padding: 16px 0;
+    position: relative;
+    margin: 0 auto 48px;
+  `}
+`;
+
 const FlexContainer = styled(Box)<{
   width?: string
   align?: string

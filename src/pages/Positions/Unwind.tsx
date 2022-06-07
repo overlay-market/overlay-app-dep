@@ -4,7 +4,7 @@ import { Label } from "@rebass/forms";
 import { BigNumber, utils } from "ethers";
 import { RouteComponentProps } from "react-router";
 import { TEXT } from "../../theme/theme";
-import { Container } from "../Markets/Market";
+import { InterfaceWrapper } from "../../components/Container/Container";
 import { Back } from "../../components/Back/Back";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { usePositionInfo } from "../../hooks/usePositionInfo";
@@ -170,7 +170,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   }, [unwindCallback, onResetUnwindState]);
 
   return (
-    <Container>
+    <InterfaceWrapper>
       {handleSelectPosition(Number(position?.positionId))}
       <Back arrowSize={16} textSize={16} margin="0 auto 64px 0" />
       <ControlInterfaceContainer
@@ -378,6 +378,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         </FlexColumn> */}
       {/* </Accordion> */}
       
-    </Container>
+    </InterfaceWrapper>
   );
 }

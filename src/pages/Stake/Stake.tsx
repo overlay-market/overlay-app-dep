@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
-import { Container } from "../Markets/Market";
+import { InterfaceWrapper } from "../../components/Container/Container";
 import { TEXT } from "../../theme/theme";
 import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { TransparentButton, TransparentUnderlineButton, SelectActionButton } from "../../components/Button/Button";
@@ -10,7 +10,7 @@ import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaultId: string }>) {
 
   return (
-    <Container>
+    <InterfaceWrapper>
       <FlexColumn>
         <TEXT.StandardBody>
           Pool
@@ -73,6 +73,6 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
           Collect Rewards
         </SelectActionButton>
       </FlexColumn>
-    </Container>
+    </InterfaceWrapper>
   )
 };
