@@ -2,7 +2,8 @@ import Markets from "../pages/Markets/Markets";
 import Positions from "../pages/Positions/Positions";
 import Magic from "../pages/Magic/Magic";
 import Liquidate from "../pages/Liquidate/Liquidate";
-import Stake from "../pages/Stake/Vaults";
+import Vaults from "../pages/Stake/Vaults";
+import { Stake } from "../pages/Stake/Stake";
 import { Market } from "../pages/Markets/Market";
 import { Unwind } from "../pages/Positions/Unwind";
 import { TOKEN_LABELS } from "../constants/tokens";
@@ -46,6 +47,10 @@ const routesConfig = [
   }, 
   {
     path: "/stake",
+    component: () => Vaults
+  },
+  {
+    path: "/stake/:vaultId",
     component: () => Stake
   }
 ];

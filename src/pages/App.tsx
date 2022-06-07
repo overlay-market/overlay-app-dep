@@ -11,6 +11,7 @@ import Liquidate from './Liquidate/Liquidate';
 import styled from 'styled-components/macro';
 import Magic from './Magic/Magic';
 import Vaults from './Stake/Vaults';
+import { Stake } from './Stake/Stake';
 import Popups from '../components/Popup/Popups';
 
 export const AppWrapper = styled.div`
@@ -35,6 +36,7 @@ const App = () => {
           <Route exact strict path="/magic" component={Magic} />
           <Route exact strict path="/liquidate" component={Liquidate} />
           <Route exact strict path="/stake" component={Vaults} />
+          <Route exact strict path="/stake/:vaultId" component={Stake} />
         </Switch>
       </Web3ReactManager>
       <CurrentBlock />

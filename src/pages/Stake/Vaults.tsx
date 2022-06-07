@@ -36,7 +36,7 @@ export const Vaults = () => {
           </TableHead>
 
           <TableBody>
-            <StyledTableRow>
+            <StyledTableRow onClick={() => redirectToVault("1")}>
               <StyledTableCellThin component="th" scope="row">
                 OVL/ETH UNI v3 LP
               </StyledTableCellThin>
