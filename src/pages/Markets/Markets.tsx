@@ -19,6 +19,7 @@ import UNISWAP_V3_FEED_ABI from '../../constants/abis/OverlayV1UniswapV3Feed.jso
 import Loader from "../../components/Loaders/Loaders";
 import { useMarketNames } from "../../hooks/useMarketName";
 import { useMarketPrices } from "../../hooks/useMarketPrices";
+import { useFundingRates } from "../../hooks/useFundingRates";
 
 const activeClassName = "INACTIVE";
 
@@ -61,22 +62,12 @@ const Markets = () => {
   }, [markets]);
 
   const peripheryContract = useV1PeripheryContract();
-
-  const prices = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses);
-  const fundingRates = useSingleContractMultipleData(peripheryContract, 'fundingRate', marketAddresses);
   const ois = useSingleContractMultipleData(peripheryContract, 'ois', marketAddresses);
   const capOis = useSingleContractMultipleData(peripheryContract, 'capOi', marketAddresses);
 
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
   const marketPrices = useMarketPrices(marketAddresses);
-
-  const marketFundingRates = useMemo(() => {
-    return fundingRates.map((market, index) => {
-      if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
-
-      return market?.result?.fundingRate_;
-    })
-  }, [fundingRates, blockNumber]);
+  const marketFundingRates = useFundingRates(marketAddresses);
 
   const marketOis = useMemo(() => {
     return ois.map((market, index) => {
