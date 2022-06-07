@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
+import { formatWeiToParsedNumber } from "../utils/formatWei";
 import { useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
@@ -52,7 +53,7 @@ export function useMarketCapOis(marketAddresses?: any) {
       if (!chainId || !blockNumber || !market) return null;
 
       let marketCapOi = market?.result && market.result[0];
-      return marketCapOi;
+      return formatWeiToParsedNumber(marketCapOi, 18, 5);
     })
   }, [capOisResult, blockNumber, chainId])
 }

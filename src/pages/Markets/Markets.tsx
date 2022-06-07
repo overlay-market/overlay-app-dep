@@ -95,17 +95,9 @@ const Markets = () => {
                 key={index.toString()}
               >
                 <StyledTableCellThin component="th" scope="row">
-                  {baseTokens[index] === 'loading' ? (
-                    <Loader stroke="white" size="12px" />
-                  ):(
-                    baseTokens[index]
-                  )}
+                  {baseTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : baseTokens[index]}
                   /
-                  {quoteTokens[index] === 'loading' ? (
-                    <Loader stroke="white" size="12px" />
-                  ):(
-                    quoteTokens[index]
-                  )}
+                  {quoteTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : quoteTokens[index]}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
@@ -117,15 +109,11 @@ const Markets = () => {
                     <TEXT.SmallBody>
                       {ois[index]?.oiLong ? ois[index]?.oiLong : <Loader stroke="white" size="12px" />}
                       /
-                      {
-                        capOis[index] ? (
-                          formatWeiToParsedNumber(capOis[index], 18, 5)
-                        ) : <Loader stroke="white" size="12px" />
-                      }
+                      {capOis[index] ? capOis[index] : <Loader stroke="white" size="12px" />}
                     </TEXT.SmallBody>
                     <ProgressBar
                       value={ois[index]?.oiLong}
-                      max={formatWeiToParsedNumber(capOis[index], 18, 5)}
+                      max={capOis[index]}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -138,15 +126,11 @@ const Markets = () => {
                     <TEXT.SmallBody>
                       {ois[index]?.oiShort ? ois[index]?.oiShort : <Loader stroke="white" size="12px" />}
                       /
-                      {
-                        capOis[index] ? (
-                          formatWeiToParsedNumber(capOis[index], 18, 5)
-                        ) : <Loader stroke="white" size="12px" />
-                      }
+                      {capOis[index] ? capOis[index] : <Loader stroke="white" size="12px" />}
                     </TEXT.SmallBody>
                     <ProgressBar
                       value={ois[index]?.oiShort}
-                      max={formatWeiToParsedNumber(capOis[index], 18, 5)}
+                      max={capOis[index]}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}
