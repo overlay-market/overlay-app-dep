@@ -7,14 +7,13 @@ export const PageContainer = styled.div<{ maxWidth?: string}>`
   margin-top: 48px;
   padding: 16px;
 
-  
   > div {
     background: ${({ theme }) => (theme.bg1)} !important;
   }
 
   ${({ theme }) => theme.mediaWidth.minMedium`
     margin: 0 auto 48px;
-  `};
+  `}
 `;
 
 export const InterfaceWrapper = styled.div`

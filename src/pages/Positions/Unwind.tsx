@@ -51,14 +51,6 @@ const UnwindButton = styled(TriggerActionButton)`
   border: 1px solid #f2f2f2;
 `;
 
-const UnwindInterface = styled.div`
-
-`;
-
-const UnwindAmount = styled.div`
-  margin-right: auto;
-`
-
 export const AdditionalDetailRow = ({
   detail,
   value,
@@ -88,8 +80,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { account } = useActiveWeb3React();
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
-  
-  // console.log('positions: ', positions);
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const { setSlippageValue, txnDeadline } = usePositionState();
 
@@ -123,10 +113,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const showUnderwaterFlow = (liquidationPrice && bidPrice && askPrice) ?
       isLong ? (liquidationPrice > bidPrice) : (liquidationPrice < askPrice)
       : false;
-
-  // console.log('liquidationPrice: ', liquidationPrice);
-  // console.log('bidPrice: ', bidPrice);
-  // console.log('showUnderwaterFlow: ', showUnderwaterFlow);
 
   const { onAmountInput, onSelectPositionId, onResetUnwindState, onSetSlippage, onSetTxnDeadline } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, positionId, isLong, prices);
@@ -189,8 +175,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
                 `${baseToken}/${quoteToken}`
               )
             }
-
-          {/* Unwind Position */}
         </TEXT.StandardHeader1>
         <TEXT.StandardHeader1 minHeight={'30px'}>
           {isLong !== undefined ? (isLong ? bidPrice : askPrice) : <Loader stroke="white" size="12px" />  }
@@ -294,7 +278,6 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         />
         <AdditionalDetailRow 
           detail={"Side"} 
-          // valueColor={isLong !== undefined ? (isLong ? "#10DCB1" : "#FF648A") : "loading..."} 
           valueColor={"#F2F2F2"}
           value={isLong !== undefined ? (isLong ? "Long" : "Short") : "loading"} 
         />
