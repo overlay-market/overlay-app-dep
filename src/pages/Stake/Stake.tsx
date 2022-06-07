@@ -12,6 +12,7 @@ const ControlInterfaceContainer = styled(FlexColumnContainer)`
 `;
 
 const RewardInterfaceContainer = styled(FlexColumnContainer)`
+  margin-top: 16px;
   background: #262626;
 `;
 
@@ -72,6 +73,19 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
         </SelectActionButton>
       </ControlInterfaceContainer>
 
+      <RewardInterfaceContainer>
+        <FlexRowContainer>
+          <TEXT.BoldStandardBody>
+            Rewards
+          </TEXT.BoldStandardBody>
+          <TEXT.StandardBody>
+            0.0 OVL
+          </TEXT.StandardBody>
+        </FlexRowContainer>
+        <SelectActionButton>
+          Collect Rewards
+        </SelectActionButton>
+      </RewardInterfaceContainer>
     </Container>
   )
 };
