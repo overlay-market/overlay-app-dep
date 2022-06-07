@@ -20,7 +20,7 @@ import Loader from "../../components/Loaders/Loaders";
 import { useMarketNames } from "../../hooks/useMarketName";
 import { useMarketPrices } from "../../hooks/useMarketPrices";
 import { useFundingRates } from "../../hooks/useFundingRates";
-
+import { useMarketOis } from "../../hooks/useMarketOis";
 const activeClassName = "INACTIVE";
 
 export const StyledNavLink = styled(NavLink).attrs({activeClassName})`

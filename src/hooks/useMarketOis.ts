@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
+import { useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
 
@@ -32,3 +33,25 @@ export function useMarketOi(marketAddress?: string): any | undefined {
     return ois;
   }, [ois]);
 };
+
+/**
+ * Returns open interests for input market addresses
+ * @param marketAddresses marketAddresses to query for
+ */
+export function useMarketOis(marketAddresses?: any) {
+  const peripheryContract = useV1PeripheryContract();
+  const blockNumber = useBlockNumber();
+  const { chainId } = useActiveWeb3React();
+
+  const oisResult = useSingleContractMultipleData(peripheryContract, 'ois', marketAddresses);
+
+  return useMemo(() => {
+    return oisResult.map((market) => {
+      if (!chainId || !blockNumber || !market) return null;
+
+      let marketOi = market?.result && market.result;
+      return marketOi;
+    })
+  }, [oisResult, blockNumber, chainId])
+
+}
