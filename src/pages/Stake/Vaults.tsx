@@ -4,7 +4,7 @@ import { PageContainer } from "../../components/Container/Container";
 import { TableContainer, TableHead, TableBody, Paper } from '@material-ui/core';
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 
-export const Stake = () => {
+export const Vaults = () => {
   const history = useHistory();
 
   function redirectToVault(vaultId: string) {
@@ -60,4 +60,4 @@ export const Stake = () => {
   )
 };
 
-export default Stake;
+export default Vaults;
