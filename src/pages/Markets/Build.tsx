@@ -85,11 +85,11 @@ export const NumericalInputDescriptor = styled.div`
   padding: 8px;
 `;
 
-const NumericalInputLabel = styled(Label)`
+export const NumericalInputLabel = styled(Label)`
   margin-top: 24px !important;
 `;
 
-const NumericalInputTitle = styled(TEXT.StandardBody)`
+export const NumericalInputTitle = styled(TEXT.StandardBody)`
   margin-bottom: 4px !important;
 `;
 
