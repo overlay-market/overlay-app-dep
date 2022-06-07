@@ -1,9 +1,16 @@
 import styled from "styled-components"
+import { NavLink, useHistory } from "react-router-dom";
 import { PageContainer } from "../../components/Container/Container";
-import { TableContainer, TableHead, Paper } from '@material-ui/core';
+import { TableContainer, TableHead, TableBody, Paper } from '@material-ui/core';
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
 
 export const Stake = () => {
+  const history = useHistory();
+
+  function redirectToVault(vaultId: string) {
+    history.push(`/stake/${vaultId}`);
+  }
+
   return (
     <PageContainer maxWidth={'690px'}>
       <TableContainer component={Paper}>
@@ -27,6 +34,26 @@ export const Stake = () => {
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
+
+          <TableBody>
+            <StyledTableRow>
+              <StyledTableCellThin component="th" scope="row">
+                OVL/ETH UNI v3 LP
+              </StyledTableCellThin>
+              <StyledTableCellThin component="th" scope="row">
+                -
+              </StyledTableCellThin>
+              <StyledTableCellThin component="th" scope="row">
+                -
+              </StyledTableCellThin>
+              <StyledTableCellThin component="th" scope="row">
+                -
+              </StyledTableCellThin>
+              <StyledTableCellThin component="th" scope="row">
+                -
+              </StyledTableCellThin>
+            </StyledTableRow>
+          </TableBody>
         </StyledTable>
       </TableContainer>
     </PageContainer>
