@@ -3,7 +3,7 @@ import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
 import { TriggerActionButton as TriggerConfirmBuildButton, PendingActionButton as PendingConfirmationButton } from "../Button/Button";
 import { AdditionalDetailRow } from "../../pages/Positions/Unwind";
-import { FlexColumnContainer } from "../Container/Container";
+import { FlexColumn } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
 import Loader from "../Loaders/Loaders";
 
@@ -49,7 +49,7 @@ export default function ConfirmTxnModal({
             <X color={"white"} height={24} width={24} />
           </CloseIcon>
         </WalletHeader>
-        <FlexColumnContainer mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
+        <FlexColumn mt={"24px"} mr={"auto"} width={"auto"} align={"start"}>
           <TEXT.StandardBody color={"white"} fontWeight={400}>
             Market
           </TEXT.StandardBody>
@@ -57,9 +57,9 @@ export default function ConfirmTxnModal({
           <TEXT.BoldHeader1 color={"white"}>
             {baseToken ? baseToken : <Loader stroke="white" size="12px" />}/{quoteToken ? quoteToken : <Loader stroke="white" size="12px" />}
           </TEXT.BoldHeader1>
-        </FlexColumnContainer>
+        </FlexColumn>
 
-        <FlexColumnContainer mt={"16px"} color={"white"}>
+        <FlexColumn mt={"16px"} color={"white"}>
           <AdditionalDetailRow
             detail={"Price"}
             detailColor={"#B9BABD"}
@@ -78,9 +78,9 @@ export default function ConfirmTxnModal({
             detailColor={"#B9BABD"}
             value={`${selectedLeverage}x`}
           />
-        </FlexColumnContainer>
+        </FlexColumn>
 
-        <FlexColumnContainer mt={"48px"} color={"white"}>
+        <FlexColumn mt={"48px"} color={"white"}>
           <AdditionalDetailRow detail={"Fee"} detailColor={"#B9BABD"} value={`${buildFee}%`} />
 
           <AdditionalDetailRow
@@ -94,9 +94,9 @@ export default function ConfirmTxnModal({
             detailColor={"#B9BABD"}
             value={estimatedLiquidationPrice}
           />
-        </FlexColumnContainer>
+        </FlexColumn>
 
-        <FlexColumnContainer mt={"48px"} color={"white"}>
+        <FlexColumn mt={"48px"} color={"white"}>
           <AdditionalDetailRow
             detail={"Estimated Collateral"}
             detailColor={"#B9BABD"}
@@ -110,7 +110,7 @@ export default function ConfirmTxnModal({
             value={`${expectedOi}`}
             // value={'-'}
           />
-        </FlexColumnContainer>
+        </FlexColumn>
 
         <TEXT.Supplemental color={"#B9BABD"} mt={"24px"} mb={"24px"}>
           The received price will be at least - or the transaction will

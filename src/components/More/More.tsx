@@ -7,10 +7,10 @@ import { Fade, MenuItem, MenuList, Paper, Button, Popper, ClickAwayListener } fr
 import { SupportedLocale, LOCALE_LABEL, SUPPORTED_LOCALES } from '../../constants/locales';
 import { useLocationLinkProps } from '../../hooks/useLocationLinkProps';
 import { useActiveLocale } from '../../hooks/useActiveLocale';
-import { FlexRowContainer } from '../Container/Container';
+import { FlexRow } from '../Container/Container';
 import { MenuLink } from '../Link/Link';
 
-export const IconContainer = styled(FlexRowContainer)`
+export const IconContainer = styled(FlexRow)`
   width: auto;
   min-width: 16px;
 `;

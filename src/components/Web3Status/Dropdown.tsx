@@ -8,7 +8,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { TEXT } from '../../theme/theme';
 import { MenuButton } from '../Button/Button';
 import { useActiveWeb3React } from '../../hooks/web3';
-import { FlexRowContainer } from '../Container/Container';
+import { FlexRow } from '../Container/Container';
 import { ApplicationModal } from '../../state/application/actions';
 import { useWalletModalToggle, useModalOpen } from '../../state/application/hooks';
 import { StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper } from '../More/More';
@@ -17,7 +17,7 @@ export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
 `;
 
-export const Web3Status = styled(FlexRowContainer)`
+export const Web3Status = styled(FlexRow)`
   border: 1px solid white;
   border-radius: 20px;
   display: flex;

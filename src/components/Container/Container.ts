@@ -37,10 +37,10 @@ const FlexContainer = styled(Box)<{
   border-top: ${({ borderTop }) => borderTop ?? borderTop };
 `;
 
-export const FlexColumnContainer = styled(FlexContainer)`
+export const FlexColumn = styled(FlexContainer)`
   flex-direction: column;
 `
 
-export const FlexRowContainer = styled(FlexContainer)`
+export const FlexRow = styled(FlexContainer)`
   flex-direction: row;
 `

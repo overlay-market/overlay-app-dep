@@ -4,7 +4,7 @@ import { X as XIcon } from "react-feather";
 import { Icon } from "../Icon/Icon";
 import { animated, useSpring } from "react-spring";
 import TransactionPopup from "./TransactionPopup";
-import { FlexRowContainer } from "../Container/Container";
+import { FlexRow } from "../Container/Container";
 import { PopupType } from "../SnackbarAlert/SnackbarAlert";
 import { PopupContent } from "../../state/application/actions";
 import { useRemovePopup } from "../../state/application/hooks";
@@ -87,7 +87,7 @@ export default function Popup({
 
   return (
     <PopupContainer>
-      <FlexRowContainer>
+      <FlexRow>
         {popupContent}
         <Icon 
           clickable={true}
@@ -95,7 +95,7 @@ export default function Popup({
           >
           <XIcon width={16} height={16} onClick={removeThisPopup} />
         </Icon>
-      </FlexRowContainer>
+      </FlexRow>
       {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}
     </PopupContainer>
   )

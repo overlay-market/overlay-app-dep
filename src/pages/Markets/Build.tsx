@@ -16,7 +16,7 @@ import { useDerivedBuildInfo } from "../../state/positions/hooks";
 import { DefaultTxnSettings } from "../../state/positions/actions";
 import { usePositionActionHandlers } from "../../state/positions/hooks";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
-import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { formatWeiToParsedString, formatWeiToParsedNumber, formatFundingRateToDaily } from "../../utils/formatWei";
 import { ApprovalState, useApproveCallback } from "../../hooks/useApproveCallback";
 import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
@@ -63,15 +63,15 @@ const TriggerBuildButton = styled(TriggerActionButton)`
   border: 1px solid #f2f2f2;
 `;
 
-const ControlInterfaceContainer = styled(FlexColumnContainer)`
+const ControlInterfaceContainer = styled(FlexColumn)`
   padding: 16px;
 `;
 
-const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
+const ControlInterfaceHeadContainer = styled(FlexColumn)`
   padding: 16px 0 24px; 
 `;
 
-export const NumericalInputContainer = styled(FlexRowContainer)`
+export const NumericalInputContainer = styled(FlexRow)`
   border: 1px solid ${({ theme }) => theme.white};
   border-radius: 4px;
   overflow: hidden;
@@ -402,7 +402,7 @@ export const BuildInterface = ({
         />
         <NumericalInputLabel htmlFor="Build Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
-          <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
+          <FlexRow ml="auto" mb="4px" width="auto">
             <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>
               25%
             </TransparentUnderlineButton>
@@ -415,7 +415,7 @@ export const BuildInterface = ({
             <TransparentUnderlineButton onClick={() => handleQuickInput(100, ovlBalance?.toFixed(2) ?? null)}>
               Max
             </TransparentUnderlineButton>
-          </FlexRowContainer>
+          </FlexRow>
         </NumericalInputLabel>
         <NumericalInputContainer>
           <NumericalInputDescriptor> OVL </NumericalInputDescriptor>

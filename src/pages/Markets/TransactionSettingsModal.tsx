@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { FlexColumnContainer, FlexRowContainer } from '../../components/Container/Container';
+import { FlexColumn, FlexRow } from '../../components/Container/Container';
 import { TEXT } from '../../theme/theme';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
@@ -39,7 +39,7 @@ export const TransactionSettingsModal = ({
 
   return (
     <TransactionSettingModal isOpen={isTxnSettingsOpen}>
-    <FlexColumnContainer>
+    <FlexColumn>
       <TEXT.BoldStandardBody
         textAlign={"left"}
         margin={"24px auto 16px 16px"}
@@ -47,12 +47,12 @@ export const TransactionSettingsModal = ({
         Transaction Settings
       </TEXT.BoldStandardBody>
 
-      <FlexRowContainer padding={"8px 16px"}>
+      <FlexRow padding="8px 16px">
         <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
         <InfoTip tipFor={"Slippage Tolerance"}>Lorem Ipsum</InfoTip>
-      </FlexRowContainer>
+      </FlexRow>
 
-      <FlexRowContainer padding={"0px 16px 16px"}>
+      <FlexRow padding="0px 16px 16px">
         <NumericalInputContainer width={"210px"} height={"40px"}>
           <NumericalInput
             value={setSlippageValue}
@@ -71,13 +71,13 @@ export const TransactionSettingsModal = ({
           >
           Auto
         </TransactionSettingsButton>
-      </FlexRowContainer>
+      </FlexRow>
 
-      <FlexRowContainer padding={"8px 16px"}>
+      <FlexRow padding="8px 16px">
         <TEXT.Menu>Transaction Deadline</TEXT.Menu>
-      </FlexRowContainer>
+      </FlexRow>
 
-      <FlexRowContainer padding={"0px 16px 16px"}>
+      <FlexRow padding="0px 16px 16px">
         <NumericalInputContainer width={"210px"} height={"40px"}>
           <NumericalInput
             value={txnDeadline}
@@ -86,13 +86,9 @@ export const TransactionSettingsModal = ({
           />
           <NumericalInputDescriptor> minutes </NumericalInputDescriptor>
         </NumericalInputContainer>
-      </FlexRowContainer>
+      </FlexRow>
 
-      <FlexRowContainer
-        margin={"auto 0 0 0"}
-        padding={"16px"}
-        borderTop={"1px solid white"}
-        >
+      <FlexRow margin="auto 0 0 0" padding="16px" borderTop="1px solid white">
         <TransactionSettingsButton
           onClick={handleResetTxnSettings}
           border={"none"}
@@ -109,8 +105,8 @@ export const TransactionSettingsModal = ({
           >
           Save
         </TransactionSettingsButton> */}
-      </FlexRowContainer>
-    </FlexColumnContainer>
+      </FlexRow>
+    </FlexColumn>
     </TransactionSettingModal>
 
   )

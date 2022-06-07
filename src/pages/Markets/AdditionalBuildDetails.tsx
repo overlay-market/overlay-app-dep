@@ -1,14 +1,14 @@
 import styled from "styled-components";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
-import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import Loader from "../../components/Loaders/Loaders";
 
-const ContentContainer = styled(FlexColumnContainer)`
+const ContentContainer = styled(FlexColumn)`
   padding: 0 16px;
   margin-top: 64px;
 `;
 
-const AdditionalDetailRow = styled(FlexRowContainer)`
+const AdditionalDetailRow = styled(FlexRow)`
   width: 100%;
   display: flex;
   margin: 12px 0;

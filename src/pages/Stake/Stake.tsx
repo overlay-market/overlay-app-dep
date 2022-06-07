@@ -2,21 +2,21 @@ import styled from "styled-components";
 import { RouteComponentProps } from "react-router";
 import { Container } from "../Markets/Market";
 import { TEXT } from "../../theme/theme";
-import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { TransparentButton, TransparentUnderlineButton, SelectActionButton } from "../../components/Button/Button";
 import { NumericalInputContainer, NumericalInputTitle, NumericalInputLabel, NumericalInputDescriptor } from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 
-const ControlInterfaceContainer = styled(FlexColumnContainer)`
+const ControlInterfaceContainer = styled(FlexColumn)`
   background: #262626;
 `;
 
-const RewardInterfaceContainer = styled(FlexColumnContainer)`
+const RewardInterfaceContainer = styled(FlexColumn)`
   margin-top: 16px;
   background: #262626;
 `;
 
-const HeaderContainer = styled(FlexColumnContainer)`
+const HeaderContainer = styled(FlexColumn)`
 
 `;
 
@@ -34,18 +34,18 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
       </HeaderContainer>
 
       <ControlInterfaceContainer>
-        <FlexRowContainer>
+        <FlexRow>
           <TransparentButton width={'50%'}>
             Stake
           </TransparentButton>
           <TransparentButton width={'50%'}>
             Withdraw
           </TransparentButton>
-        </FlexRowContainer>
+        </FlexRow>
 
         <NumericalInputLabel htmlFor="Stake Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
-          <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
+          <FlexRow ml={"auto"} mb={"4px"} width={"auto"}>
             <TransparentUnderlineButton>
               25%
             </TransparentUnderlineButton>
@@ -58,7 +58,7 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
             <TransparentUnderlineButton>
               Max
             </TransparentUnderlineButton>
-          </FlexRowContainer>        
+          </FlexRow>        
         </NumericalInputLabel>
         <NumericalInputContainer>
           <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
@@ -74,14 +74,14 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
       </ControlInterfaceContainer>
 
       <RewardInterfaceContainer>
-        <FlexRowContainer>
+        <FlexRow>
           <TEXT.BoldStandardBody>
             Rewards
           </TEXT.BoldStandardBody>
           <TEXT.StandardBody>
             0.0 OVL
           </TEXT.StandardBody>
-        </FlexRowContainer>
+        </FlexRow>
         <SelectActionButton>
           Collect Rewards
         </SelectActionButton>

@@ -4,7 +4,7 @@ import { Label } from '@rebass/forms';
 import { TEXT } from '../../theme/theme';
 import { MarketCard } from '../../components/Card/MarketCard';
 import { InfoColumn } from '../../components/InfoColumn/InfoColumn';
-import { FlexRowContainer } from '../../components/Container/Container';
+import { FlexRow } from '../../components/Container/Container';
 import { TransparentUnderlineButton } from '../../components/Button/Button';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import MagicBackground from '../../assets/images/magic-background.png';
@@ -46,7 +46,7 @@ const ButtonContainer = styled.div`
   flex-direction: column;
 `;
 
-const InputContainer = styled(FlexRowContainer)`
+const InputContainer = styled(FlexRow)`
   border-radius: 4px;
   overflow: hidden;
   border: 1px solid ${({theme}) => theme.white};
@@ -89,7 +89,7 @@ const Magic = ({
           <TEXT.StandardBody margin={'0 auto 4px 0'} color={'white'}>
             Amount
           </TEXT.StandardBody>
-          <FlexRowContainer 
+          <FlexRow 
             ml={'auto'} 
             mb={'4px'} 
             width={'auto'}
@@ -98,7 +98,7 @@ const Magic = ({
             <TransparentUnderlineButton>50%</TransparentUnderlineButton>
             <TransparentUnderlineButton>75%</TransparentUnderlineButton>
             <TransparentUnderlineButton>Max</TransparentUnderlineButton>
-          </FlexRowContainer>
+          </FlexRow>
         </Label>
         <InputContainer>
           <NumericalInput

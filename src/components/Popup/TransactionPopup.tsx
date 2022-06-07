@@ -7,17 +7,17 @@ import { useActiveWeb3React } from '../../hooks/web3';
 import { getExplorerLink, ExplorerDataType } from '../../utils/getExplorerLink';
 import { TransactionType } from '../../state/transactions/actions';
 import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
-import { FlexRowContainer, FlexColumnContainer } from '../Container/Container';
+import { FlexRow, FlexColumn } from '../Container/Container';
 
-const PopupContentsContainer = styled(FlexRowContainer)`
+const PopupContentsContainer = styled(FlexRow)`
   z-index: 420;
 `;
 
-const ExternalLinkContentsContainer = styled(FlexRowContainer)`
+const ExternalLinkContentsContainer = styled(FlexRow)`
   margin-top: 4px;
 `
 
-const PopupTextContainer = styled(FlexColumnContainer)`
+const PopupTextContainer = styled(FlexColumn)`
   align-items: start;
   margin: 0 16px 0 12px;
 `;

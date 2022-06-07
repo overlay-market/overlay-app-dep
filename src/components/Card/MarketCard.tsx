@@ -1,9 +1,9 @@
 import styled from 'styled-components/macro';
 import { TEXT } from "../../theme/theme";
 import { Card } from "../../components/Card/Card";
-import { FlexColumnContainer } from "../../components/Container/Container";
+import { FlexColumn } from "../../components/Container/Container";
 
-const Container = styled(FlexColumnContainer)`
+const Container = styled(FlexColumn)`
   padding: 0;
   max-width: 500px;
   margin: auto;

@@ -11,7 +11,7 @@ import { useOvlBalance } from '../../state/wallet/hooks';
 import { useTokenBalance } from '../../state/wallet/hooks';
 import { SupportedChainId } from '../../constants/chains';
 import { OVL } from '../../constants/tokens';
-import { FlexRowContainer } from '../Container/Container';
+import { FlexRow } from '../Container/Container';
 import { useWalletModalToggle } from '../../state/application/hooks';
 import { useAllTransactions } from '../../state/transactions/hooks';
 import { TransactionDetails } from '../../state/transactions/reducer';
@@ -50,7 +50,7 @@ export const StyledAlertTriangle = styled(AlertTriangle)`
   margin-right: 3px;
 `;
 
-export const Account = styled(FlexRowContainer)`
+export const Account = styled(FlexRow)`
   font-size: 12px;
   font-weight: 400;
   margin: auto 12px auto auto;
@@ -74,7 +74,7 @@ const PendingTransactions = styled.div`
   padding: 0 4px;
 `;
 
-const BalanceContainer = styled(FlexRowContainer)`
+const BalanceContainer = styled(FlexRow)`
   margin-right: 12px;
   font-size: 12px;
   font-weight: 400;
@@ -84,7 +84,7 @@ const BalanceContainer = styled(FlexRowContainer)`
   `}
 `;
 
-const Amount = styled(FlexRowContainer)`
+const Amount = styled(FlexRow)`
   margin-left: 4px;
   font-weight: 500;
   

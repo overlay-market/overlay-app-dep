@@ -4,7 +4,7 @@ import styled from 'styled-components/macro';
 import { Trans } from '@lingui/macro';
 import { Image } from 'rebass';
 import { useDarkModeManager } from '../../state/user/hooks';
-import { FlexRowContainer } from '../Container/Container';
+import { FlexRow } from '../Container/Container';
 import { enableLock, disableLock } from '../../utils/scrollLock';
 import More from '../More/More';
 import Burger from '../Hamburger/Hamburger';
@@ -36,7 +36,7 @@ export const LogoContainer = styled.div`
   margin: auto 16px auto 0px;
 `
 
-export const AccountContainer = styled(FlexRowContainer)`
+export const AccountContainer = styled(FlexRow)`
   width: auto;
   margin-left: auto;
 `;

@@ -11,7 +11,7 @@ import { useAllMarkets } from "../../state/markets/hooks";
 import { formatWeiToParsedNumber, formatWeiToParsedString, formatFundingRateToDaily, formatFundingRateToAnnual } from "../../utils/formatWei";
 import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
-import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
 import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { useUniswapV3Feed, useV1PeripheryContract } from "../../hooks/useContract";
@@ -164,7 +164,7 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  <FlexColumnContainer align={"left"}>
+                  <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
                       {
                         marketOis[index] ? (
@@ -185,11 +185,11 @@ const Markets = () => {
                       width={"88px"}
                       margin={"0"}
                     />
-                  </FlexColumnContainer>
+                  </FlexColumn>
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  <FlexColumnContainer align={"left"}>
+                  <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
                       {
                         marketOis[index] ? (
@@ -210,11 +210,11 @@ const Markets = () => {
                       width={"88px"}
                       margin={"0"}
                     />
-                  </FlexColumnContainer>
+                  </FlexColumn>
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  <FlexRowContainer>
+                  <FlexRow>
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
                         marketFundingRates[index] ? (
@@ -224,7 +224,7 @@ const Markets = () => {
                         )
                       }
                     </TEXT.AdjustableSize>
-                  </FlexRowContainer>
+                  </FlexRow>
                 </StyledTableCellThin>
               </StyledTableRow>
             ))}

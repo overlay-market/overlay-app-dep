@@ -17,7 +17,7 @@ import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hooks";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
-import { FlexColumnContainer, FlexRowContainer } from "../../components/Container/Container";
+import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { TransparentUnderlineButton, TriggerActionButton } from "../../components/Button/Button";
 import { usePositionValue } from "../../hooks/usePositionValue";
 import { usePositionOi } from "../../hooks/usePositionOi";
@@ -38,11 +38,11 @@ import { PercentageSlider } from "../../components/PercentageSlider/PercentageSl
 import { useMarketName } from "../../hooks/useMarketName";
 import Loader from "../../components/Loaders/Loaders";
 
-const ControlInterfaceContainer = styled(FlexColumnContainer)`
+const ControlInterfaceContainer = styled(FlexColumn)`
   padding: 16px;
 `;
 
-const ControlInterfaceHeadContainer = styled(FlexColumnContainer)`
+const ControlInterfaceHeadContainer = styled(FlexColumn)`
   padding: 16px 0 24px; 
 `;
 
@@ -71,7 +71,7 @@ export const AdditionalDetailRow = ({
   valueColor?: string | number;
 }) => {
   return (
-    <FlexRowContainer m={"2px 0"}>
+    <FlexRow m={"2px 0"}>
       <TEXT.StandardBody mr={"auto"} color={detailColor}>
         {detail}
       </TEXT.StandardBody>
@@ -79,7 +79,7 @@ export const AdditionalDetailRow = ({
       <TEXT.StandardBody fontWeight={700} color={valueColor}>
         {value === 'loading' ? <Loader stroke="white" size="12px" /> : value}
       </TEXT.StandardBody>
-    </FlexRowContainer>
+    </FlexRow>
   );
 };
 
@@ -172,7 +172,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   return (
     <Container>
       {handleSelectPosition(Number(position?.positionId))}
-      <Back arrowSize={16} textSize={16} margin={"0 auto 64px 0"} />
+      <Back arrowSize={16} textSize={16} margin="0 auto 64px 0" />
       <ControlInterfaceContainer
         onSubmit={(e: any) => e.preventDefault()}
         as={"form"}
@@ -229,7 +229,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         value={Number(typedValue)}
         onChange={handleUserAmount}
         >
-        <FlexRowContainer ml={"auto"} mb={"4px"} width={"auto"}>
+        <FlexRow ml="auto" mb="4px" width="auto">
           <TransparentUnderlineButton
             onClick={() => handleQuickInput(25)}
             border={"none"}
@@ -254,7 +254,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             >
             Max
           </TransparentUnderlineButton>
-        </FlexRowContainer>
+        </FlexRow>
       </PercentageSlider>
       {/* <Label htmlFor="Amount" mt={"24px"}>
 
@@ -286,7 +286,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         </UnwindButton>
       )}
       </ControlInterfaceContainer>
-      <FlexColumnContainer mt={"48px"}>
+      <FlexColumn mt="48px">
         <AdditionalDetailRow 
           detail={"Profit/Loss"} 
           valueColor={parsedPnL !== undefined && parsedPnL !== 0 ? ( parsedPnL < 0 ? "#FF648A" : "#10DCB1" ) : "#F2F2F2"}
@@ -298,7 +298,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           valueColor={"#F2F2F2"}
           value={isLong !== undefined ? (isLong ? "Long" : "Short") : "loading"} 
         />
-      </FlexColumnContainer>
+      </FlexColumn>
 
       {/* <Accordion 
         activeAccordionText={"Less"}
@@ -308,7 +308,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
         width={"fit-content"}
         clickableMargin={"auto"}
         > */}
-        <FlexColumnContainer mt={"48px"}>
+        <FlexColumn mt="48px">
           <AdditionalDetailRow
             detail={"Value"}
             value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : "loading"}
@@ -349,9 +349,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             detail={"Maintenance"} 
             value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 4)} OVL` : "loading"}
           />
-        </FlexColumnContainer>
+        </FlexColumn>
 
-        <FlexColumnContainer mt={"48px"}>
+        <FlexColumn mt="48px">
           <AdditionalDetailRow 
             detail={"Entry Price"} 
             value={ entryPrice ? `${entryPrice}` : 'loading'} 
@@ -364,9 +364,9 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             detail={"Liquidation Price (est)"} 
             value={liquidationPrice ? liquidationPrice : "loading"}
           />
-        </FlexColumnContainer>
+        </FlexColumn>
 
-        {/* <FlexColumnContainer mt={"48px"}>
+        {/* <FlexColumn mt={"48px"}>
           <AdditionalDetailRow
             detail={"Total Shares Outstanding"}
             value={`${position?.totalSupply ? Number(utils.formatUnits(position?.totalSupply, 18)).toFixed(2) + " OVL" : "loading..."}`}
@@ -375,7 +375,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
             detail={"Position Shares"} 
             value={`${position?.currentOi ? Number(utils.formatUnits(position?.currentOi, 18)).toFixed(2) + " OVL" : "loading..."}`}
           />
-        </FlexColumnContainer> */}
+        </FlexColumn> */}
       {/* </Accordion> */}
       
     </Container>

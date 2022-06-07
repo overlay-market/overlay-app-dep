@@ -2,14 +2,14 @@ import styled from "styled-components/macro";
 import { Link } from "react-router-dom";
 import { Icon } from "../../components/Icon/Icon";
 import { ChevronRight } from "react-feather";
-import { FlexRowContainer } from "../../components/Container/Container";
+import { FlexRow } from "../../components/Container/Container";
 import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
 import { useMemo } from "react";
 import { ConsoleView } from "react-device-detect";
 import { BigNumber } from "ethers";
 import Loader from "../../components/Loaders/Loaders";
 
-const CardHeaderContainer = styled(FlexRowContainer)`
+const CardHeaderContainer = styled(FlexRow)`
   color: white;
   padding-bottom: 8px;
   border-bottom: 1px solid #828282;
