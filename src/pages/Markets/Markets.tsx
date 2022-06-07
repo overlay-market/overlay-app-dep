@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import styled from "styled-components/macro";
 import { NavLink, useHistory } from "react-router-dom";
 import { TableBody, TableContainer, TableHead, Paper } from "@material-ui/core";
-import { Interface } from "@ethersproject/abi";
 import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
@@ -12,10 +11,6 @@ import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from "../../components/Table/Table";
-import { useMultipleContractSingleData, useSingleContractMultipleData } from "../../state/multicall/hooks";
-import { useUniswapV3Feed, useV1PeripheryContract } from "../../hooks/useContract";
-import { useBlockNumber } from "../../state/application/hooks";
-import UNISWAP_V3_FEED_ABI from '../../constants/abis/OverlayV1UniswapV3Feed.json';
 import Loader from "../../components/Loaders/Loaders";
 import { useMarketNames } from "../../hooks/useMarketName";
 import { useMarketPrices } from "../../hooks/useMarketPrices";
@@ -38,11 +33,8 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `;
 
-const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI);
-
 const Markets = () => {
   const history = useHistory();
-  const blockNumber = useBlockNumber();
   const { markets } = useAllMarkets();
 
   function redirectToMarket(marketId: string) {
@@ -53,21 +45,19 @@ const Markets = () => {
   // to fetch per market values from periphery
   const marketAddresses = useMemo(() => {
     if (markets === undefined) return [];
-
     return markets.markets.map((market) => [market.id])
   }, [markets])
 
   const feedAddresses = useMemo(() => {
     if (markets === undefined) return [];
-
     return markets.markets.map((market) => market.feedAddress)
   }, [markets]);
 
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
-  const marketPrices = useMarketPrices(marketAddresses);
-  const marketFundingRates = useFundingRates(marketAddresses);
-  const marketOis = useMarketOis(marketAddresses);
-  const marketCapOis = useMarketCapOis(marketAddresses);
+  const prices = useMarketPrices(marketAddresses);
+  const fundingRates = useFundingRates(marketAddresses);
+  const ois = useMarketOis(marketAddresses);
+  const capOis = useMarketCapOis(marketAddresses);
 
   return (
     <PageContainer>
@@ -120,8 +110,8 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   {
-                    marketPrices[index] ? (
-                      formatWeiToParsedNumber(marketPrices[index], 18, 2)
+                    prices[index] ? (
+                      formatWeiToParsedNumber(prices[index], 18, 2)
                     ):(
                       <Loader stroke="white" size="12px" />
                     )
@@ -132,20 +122,20 @@ const Markets = () => {
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
                       {
-                        marketOis[index] ? (
-                          formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 5)
+                        ois[index] ? (
+                          formatWeiToParsedNumber(ois[index]?.oiLong_, 18, 5)
                         ) : <Loader stroke="white" size="12px" />
                       }
                       /
                       {
-                        marketCapOis[index] ? (
-                          formatWeiToParsedNumber(marketCapOis[index], 18, 5)
+                        capOis[index] ? (
+                          formatWeiToParsedNumber(capOis[index], 18, 5)
                         ) : <Loader stroke="white" size="12px" />
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(marketOis[index]?.oiLong_, 18, 5)}
-                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 5)}
+                      value={formatWeiToParsedNumber(ois[index]?.oiLong_, 18, 5)}
+                      max={formatWeiToParsedNumber(capOis[index], 18, 5)}
                       color={"#10DCB1"}
                       width={"88px"}
                       margin={"0"}
@@ -157,20 +147,20 @@ const Markets = () => {
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
                       {
-                        marketOis[index] ? (
-                          formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 5)
+                        ois[index] ? (
+                          formatWeiToParsedNumber(ois[index]?.oiShort_, 18, 5)
                         ) : <Loader stroke="white" size="12px" />
                       }
                       /
                       {
-                        marketCapOis[index] ? (
-                          formatWeiToParsedNumber(marketCapOis[index], 18, 5)
+                        capOis[index] ? (
+                          formatWeiToParsedNumber(capOis[index], 18, 5)
                         ) : <Loader stroke="white" size="12px" />
                       }
                     </TEXT.SmallBody>
                     <ProgressBar
-                      value={formatWeiToParsedNumber(marketOis[index]?.oiShort_, 18, 5)}
-                      max={formatWeiToParsedNumber(marketCapOis[index], 18, 5)}
+                      value={formatWeiToParsedNumber(ois[index]?.oiShort_, 18, 5)}
+                      max={formatWeiToParsedNumber(capOis[index], 18, 5)}
                       color={"#DC1F4E"}
                       width={"88px"}
                       margin={"0"}
@@ -182,8 +172,8 @@ const Markets = () => {
                   <FlexRow>
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
-                        marketFundingRates[index] ? (
-                          `${formatFundingRateToDaily(marketFundingRates[index], 18, 2)}% (${formatFundingRateToAnnual(marketFundingRates[index], 18, 2)}%)`
+                        fundingRates[index] ? (
+                          `${formatFundingRateToDaily(fundingRates[index], 18, 2)}% (${formatFundingRateToAnnual(fundingRates[index], 18, 2)}%)`
                         ):(
                           <Loader stroke="white" size="12px" />
                         )
