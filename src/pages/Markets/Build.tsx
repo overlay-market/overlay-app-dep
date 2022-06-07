@@ -35,7 +35,7 @@ import { useMarket } from "../../state/markets/hooks";
 import { useSingleCallResult } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useOvlBalance } from "../../state/wallet/hooks";
-import { useMarketOis } from "../../hooks/useMarketOis";
+import { useMarketOi } from "../../hooks/useMarketOis";
 import { useMarketCapOi } from "../../hooks/useMarketCapOi";
 import { useEstimatedBuildOi } from "../../hooks/useEstimatedBuildOi"
 import { useEstimatedBuildLiquidationPrice } from "../../hooks/useEstimatedBuildLiquidationPrice";
@@ -132,7 +132,7 @@ export const BuildInterface = ({
   const capPayoff = market ? formatWeiToParsedNumber(market.capPayoff, 18, 2) : undefined;
   const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined;
 
-  const ois = useMarketOis(marketId);
+  const ois = useMarketOi(marketId);
   const oiLong = ois && ois[0] ? formatWeiToParsedNumber(ois[0], 18, 4) : null;
   const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 4) : null;
 

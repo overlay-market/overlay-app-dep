@@ -32,6 +32,11 @@ export function useMarketPrice(
   }, [prices]);
 };
 
+/**
+ * 
+ * @param marketAddresses array of market addresses to query market mid prices for
+ * @returns market mid prices associated with input market addresses
+ */
 export function useMarketPrices(marketAddresses?: any) {
   const peripheryContract = useV1PeripheryContract();
   const blockNumber = useBlockNumber();
@@ -47,6 +52,4 @@ export function useMarketPrices(marketAddresses?: any) {
       return marketPrice;
     })
   }, [pricesResult, blockNumber, chainId])
-
-
 }

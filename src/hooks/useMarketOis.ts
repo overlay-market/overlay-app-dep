@@ -3,9 +3,11 @@ import { useV1PeripheryContract } from "./useContract";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
 
-export function useMarketOis(
-  marketAddress?: string,
-): any | undefined {
+/**
+ * Returns open interest for input market address
+ * @param marketAddress address of market to query for
+ */
+export function useMarketOi(marketAddress?: string): any | undefined {
   const peripheryContract = useV1PeripheryContract();
   const blockNumber = useBlockNumber();
   const { account } = useActiveWeb3React();
