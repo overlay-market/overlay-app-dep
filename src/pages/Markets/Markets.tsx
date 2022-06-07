@@ -70,18 +70,6 @@ const Markets = () => {
   const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
   const marketPrices = useMarketPrices(marketAddresses);
 
-  // console.log('marketPrices1: ', marketPrices1);
-
-  // const marketPrices = useMemo(() => {
-  //   return prices.map((market, index) => {
-  //     if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;
-
-  //     return market?.result?.mid_;
-  //   })
-  // }, [prices, blockNumber]);
-
-  console.log('marketPrices: ', marketPrices);
-
   const marketFundingRates = useMemo(() => {
     return fundingRates.map((market, index) => {
       if (market.loading === true || market === undefined || blockNumber === undefined) return undefined;

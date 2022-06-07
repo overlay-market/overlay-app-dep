@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
-import { useMultipleContractSingleData, useSingleContractMultipleData } from "../state/multicall/hooks";
+import { useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
 
