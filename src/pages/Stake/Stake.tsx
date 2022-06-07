@@ -7,33 +7,20 @@ import { TransparentButton, TransparentUnderlineButton, SelectActionButton } fro
 import { NumericalInputContainer, NumericalInputTitle, NumericalInputLabel, NumericalInputDescriptor } from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 
-const ControlInterfaceContainer = styled(FlexColumn)`
-  background: #262626;
-`;
-
-const RewardInterfaceContainer = styled(FlexColumn)`
-  margin-top: 16px;
-  background: #262626;
-`;
-
-const HeaderContainer = styled(FlexColumn)`
-
-`;
-
 export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaultId: string }>) {
 
   return (
     <Container>
-      <HeaderContainer>
+      <FlexColumn>
         <TEXT.StandardBody>
           Pool
         </TEXT.StandardBody>
         <TEXT.BoldHeader1>
           OVL/ETH UNI v3 LP
         </TEXT.BoldHeader1>
-      </HeaderContainer>
+      </FlexColumn>
 
-      <ControlInterfaceContainer>
+      <FlexColumn style={{ background: '#262626' }}>
         <FlexRow>
           <TransparentButton width={'50%'}>
             Stake
@@ -71,9 +58,9 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
         <SelectActionButton>
           Stake
         </SelectActionButton>
-      </ControlInterfaceContainer>
+      </FlexColumn>
 
-      <RewardInterfaceContainer>
+      <FlexColumn style={{ marginTop: '16px', background: '#262626' }}>
         <FlexRow>
           <TEXT.BoldStandardBody>
             Rewards
@@ -85,7 +72,7 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
         <SelectActionButton>
           Collect Rewards
         </SelectActionButton>
-      </RewardInterfaceContainer>
+      </FlexColumn>
     </Container>
   )
 };
