@@ -10,6 +10,8 @@ DEPLOYED CONTRACTS:
 | OverlayV1Token | Rinkeby | https://rinkeby.etherscan.io/address/0x82913654067f94b72aefb10dbc69ff4db3f16176 |
 | UniswapV3Factory | Rinkeby | https://rinkeby.etherscan.io/address/0x1F98431c8aD98523631AE4a59f267346ea31F984#code |
 | OverlayV1Factory | Rinkeby | https://rinkeby.etherscan.io/address/0xE79BD387201EC0c33c9539294056652bC3b32B7D#code |
+| Overlay Uniswap V3-Staker Fork | Rinkeby | https://rinkeby.etherscan.io/address/0x096155D1CEa6010a562fe60a49ACf470292252c8 |
+
 
 Scripts:
 
