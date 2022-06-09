@@ -6,6 +6,7 @@ DEPLOYED CONTRACTS:
 | OverlayV1State | Kovan | https://kovan.etherscan.io/address/0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5#code |
 | OverlayV1Factory | Kovan | https://kovan.etherscan.io/address/0x8cCD181113c7Ae40f31D5e8178a98A1A60B55c4C#code |
 | OverlayV1Token | Kovan | https://kovan.etherscan.io/address/0x04020e4ff78b629d79ccbd163fc6044af73588dc#code |
+| Overlay Uniswap V3-Staker Fork | Kovan | https://kovan.etherscan.io/address/0xa247C657d0B64b1C750F591b9791Ac8C0AE6809F#readContract |
 | OverlayV1Token | Rinkeby | https://rinkeby.etherscan.io/address/0x82913654067f94b72aefb10dbc69ff4db3f16176 |
 | UniswapV3Factory | Rinkeby | https://rinkeby.etherscan.io/address/0x1F98431c8aD98523631AE4a59f267346ea31F984#code |
 | OverlayV1Factory | Rinkeby | https://rinkeby.etherscan.io/address/0xE79BD387201EC0c33c9539294056652bC3b32B7D#code |
