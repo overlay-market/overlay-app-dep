@@ -1673,7 +1673,7 @@ export type MarketQuery = (
   { __typename?: 'Query' }
   & { market?: Maybe<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'feedAddress' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime' | 'oiLong' | 'oiShort'>
+    & Pick<Market, 'id' | 'feedAddress' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime'>
     & { factory: (
       { __typename?: 'Factory' }
       & Pick<Factory, 'id'>
@@ -1773,8 +1773,6 @@ export const MarketDocument = `
     minCollateral
     priceDriftUpperLimit
     averageBlockTime
-    oiLong
-    oiShort
   }
 }
     `;

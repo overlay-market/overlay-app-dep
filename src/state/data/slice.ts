@@ -88,8 +88,6 @@ export const api = createApi({
               minCollateral
               priceDriftUpperLimit
               averageBlockTime
-              oiLong
-              oiShort
             }
           }
         `,

@@ -69,9 +69,6 @@ export const AdditionalDetails = ({
   estLiquidationPrice?: string | number;
 }) => {
 
-  console.log('baseToken: ', baseToken);
-  console.log('quoteToken: ', quoteToken);
-
   return (
     <ContentContainer>
       <AdditionalDetailRow>

@@ -121,7 +121,7 @@ export const BuildInterface = ({
   const ovlBalance = useOvlBalance();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
   const ovl = chainId ? OVL[chainId] : undefined;
-  
+
   // @TO-DO: pull market name from feed
   const { baseToken, quoteToken, quoteTokenAddress } = useMarketName(market?.feedAddress);
 
