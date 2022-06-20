@@ -159,6 +159,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
 const NETWORK_LABELS: { [chainId in SupportedChainId | number]: string } = {
   [SupportedChainId.MAINNET]: 'Mainnet',
   [SupportedChainId.KOVAN]: 'Kovan',
+  [SupportedChainId.RINKEBY]: 'Rinkeby',
 };
 
 function Web3StatusInner() {
@@ -210,6 +211,10 @@ function Web3StatusInner() {
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'Kovan' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'Rinkeby' && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 

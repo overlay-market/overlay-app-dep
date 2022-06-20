@@ -3,6 +3,7 @@ import { SupportedChainId } from '../constants/chains'
 const MAINNET_AND_TESTNETS = [
   SupportedChainId.MAINNET,
   SupportedChainId.KOVAN,
+  SupportedChainId.RINKEBY
 ]
 
 export function constructSameAddressMap<T extends string>(

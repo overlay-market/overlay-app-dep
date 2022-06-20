@@ -8,6 +8,7 @@ import getLibrary from '../utils/getLibrary';
 const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
   SupportedChainId.MAINNET,
   SupportedChainId.KOVAN,
+  SupportedChainId.RINKEBY
 ];
 
 export const injected = new InjectedConnector({
@@ -23,6 +24,7 @@ if (typeof INFURA_KEY === 'undefined') {
 const NETWORK_URLS: { [key in SupportedChainId]: string } = {
   [SupportedChainId.MAINNET]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.KOVAN]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
+  [SupportedChainId.RINKEBY]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
 }
 
 export const network = new NetworkConnector({

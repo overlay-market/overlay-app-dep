@@ -17,11 +17,13 @@ export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15
 
 // v1-core contract addresses
 export const V1_PERIPHERY_ADDRESS: AddressMap = {
+  [ChainId.MAINNET]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5', // TO-DO: Change
   [ChainId.KOVAN]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5',
   [ChainId.RINKEBY]: '0x11495884878A38709959e1102Ba0e559BE826F4e'
 };
 
 export const OVL_TOKEN_ADDRESS: AddressMap = {
+  [ChainId.MAINNET]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc', // TO-DO: Change
   [ChainId.KOVAN]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc',
   [ChainId.RINKEBY]: '0x82913654067F94b72AEFB10dBC69Ff4Db3F16176'
 };
