@@ -16,8 +16,15 @@ export const OVL_MARKET_ADDRESS: AddressMap = constructSameAddressMap('0x6f49162
 export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15Ed9eb485Ec1B95c6F853cB57901629b0f1CF2');
 
 // v1-core contract addresses
-export const V1_PERIPHERY_ADDRESS: AddressMap = constructSameAddressMap('0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5');
-export const OVL_TOKEN_ADDRESS: AddressMap = constructSameAddressMap('0x04020e4ff78b629d79ccbd163fc6044af73588dc');
+export const V1_PERIPHERY_ADDRESS: AddressMap = {
+  [ChainId.KOVAN]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5',
+  [ChainId.RINKEBY]: '0x11495884878A38709959e1102Ba0e559BE826F4e'
+};
+
+export const OVL_TOKEN_ADDRESS: AddressMap = {
+  [ChainId.KOVAN]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc',
+  [ChainId.RINKEBY]: '0x82913654067F94b72AEFB10dBC69Ff4Db3F16176'
+};
 
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -43,8 +50,4 @@ export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.HARMONY_TESTNET]: '',
   [ChainId.OKEX]: '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
   [ChainId.OKEX_TESTNET]: '',
-}
-
-export const V1_FACTORY_ADDRESS: AddressMap = {
-  [ChainId.KOVAN]: '0x9b642848aaEeeFFc1caecCD5CC29F394A876a599',
-}
+};
