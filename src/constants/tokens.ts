@@ -6,7 +6,7 @@ import { ContractAddresses } from './addresses';
 export const OVL: { [chainId: number]: Token } = {
   [SupportedChainId.MAINNET]: new Token(SupportedChainId.MAINNET, OVL_TOKEN_ADDRESS[1], 18, 'OVL', 'Overlay'),
   [SupportedChainId.KOVAN]: new Token(SupportedChainId.KOVAN, OVL_TOKEN_ADDRESS[42], 18, 'OVL', 'Overlay'),
-  // [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, OVL_TOKEN_ADDRESS[4], 18, 'OVL', 'Overlay')
+  [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, OVL_TOKEN_ADDRESS[4], 18, 'OVL', 'Overlay')
 }
 
 export const TOKEN_LABELS: { [tokenId in ContractAddresses | number]: string } = {
