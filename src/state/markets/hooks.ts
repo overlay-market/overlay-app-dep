@@ -18,7 +18,7 @@ export function useMarket(marketAddress?: string) {
     error,
     isUninitialized,
     data
-  } = useMarketQuery({ market: address }, { pollingInterval: 15000 })
+  } = useMarketQuery({ market: address }, { pollingInterval: 3000 })
 
   return useMemo(() => {
     return {
@@ -37,7 +37,7 @@ export function useAllMarkets() {
     isError, 
     error, 
     isUninitialized, 
-    data } = useMarketsQuery({}, { pollingInterval: 15000 });
+    data } = useMarketsQuery({}, { pollingInterval: 3000 });
 
   return useMemo(() => {
     return {

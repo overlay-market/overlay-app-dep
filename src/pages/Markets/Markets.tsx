@@ -37,8 +37,6 @@ const Markets = () => {
   const history = useHistory();
   const { markets } = useAllMarkets();
 
-  console.log('markets: ', markets);
-  
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`);
   }
@@ -57,6 +55,9 @@ const Markets = () => {
   const prices = useMarketMidPrices(marketAddresses);
   const fundingRates = useFundingRates(marketAddresses);
   const ois = useMarketOis(marketAddresses);
+
+  console.log('ois: ', ois);
+
   const capOis = useMarketCapOis(marketAddresses);
 
   return (
@@ -107,9 +108,9 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
-                      {ois[index]?.oiLong ? ois[index]?.oiLong : <Loader stroke="white" size="12px" />}
+                      {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? ois[index]?.oiLong : <Loader stroke="white" size="12px" />}
                       /
-                      {capOis[index] ? capOis[index] : <Loader stroke="white" size="12px" />}
+                      {capOis[index] || capOis[index] === 0 ? capOis[index] : <Loader stroke="white" size="12px" />}
                     </TEXT.SmallBody>
                     <ProgressBar
                       value={ois[index]?.oiLong}
@@ -124,9 +125,9 @@ const Markets = () => {
                 <StyledTableCellThin align="left">
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
-                      {ois[index]?.oiShort ? ois[index]?.oiShort : <Loader stroke="white" size="12px" />}
+                      {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? ois[index]?.oiShort : <Loader stroke="white" size="12px" />}
                       /
-                      {capOis[index] ? capOis[index] : <Loader stroke="white" size="12px" />}
+                      {capOis[index] || capOis[index] === 0 ? capOis[index] : <Loader stroke="white" size="12px" />}
                     </TEXT.SmallBody>
                     <ProgressBar
                       value={ois[index]?.oiShort}
