@@ -13,6 +13,8 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
     "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
   [SupportedChainId.KOVAN]:
     "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
+  [SupportedChainId.RINKEBY]:
+    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby"
 };
 
 export const api = createApi({
@@ -103,8 +105,6 @@ export const api = createApi({
             markets {
               id
               feedAddress
-              oiLong
-              oiShort
               capNotional
               positions {
                 id
@@ -148,7 +148,10 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
       const chainId = (getState() as AppState).application.chainId;
 
       // if chainId in state is null, set default query to Mainnet
-      const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : CHAIN_SUBGRAPH_URL[1];
+      console.log('chainId: ', chainId);
+      const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : undefined;
+
+      console.log('subgraphUrl: ', subgraphUrl);
 
       if (!subgraphUrl) {
         return {
