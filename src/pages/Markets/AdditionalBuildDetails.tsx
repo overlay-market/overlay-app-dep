@@ -155,9 +155,9 @@ export const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
         <OpenInterestValue>
-          {oiLong ? oiLong : <Loader stroke="white" size="12px" /> }
+          {oiLong || oiLong === 0 ? oiLong : <Loader stroke="white" size="12px" /> }
            / 
-          {oiCap ? oiCap : <Loader stroke="white" size="12px" /> }
+          {oiCap || oiLong === 0 ? oiCap : <Loader stroke="white" size="12px" /> }
         </OpenInterestValue>
       </AdditionalDetailRow>
 
@@ -173,9 +173,9 @@ export const AdditionalDetails = ({
           margin={"0 0 0 auto"}
         />
         <OpenInterestValue>
-          {oiShort ? oiShort : <Loader stroke="white" size="12px" /> }
+          {oiShort || oiShort === 0 ? oiShort : <Loader stroke="white" size="12px" /> }
            / 
-          {oiCap ? oiCap : <Loader stroke="white" size="12px" /> }
+          {oiCap || oiCap === 0 ? oiCap : <Loader stroke="white" size="12px" /> }
         </OpenInterestValue>
       </AdditionalDetailRow>
 
