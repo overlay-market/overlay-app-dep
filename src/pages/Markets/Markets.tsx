@@ -6,7 +6,7 @@ import { Trans } from "@lingui/macro";
 import { TEXT } from "../../theme/theme";
 import { shortenAddress } from "../../utils/web3";
 import { useAllMarkets } from "../../state/markets/hooks";
-import { formatWeiToParsedNumber, formatWeiToParsedString, formatFundingRateToDaily, formatFundingRateToAnnual } from "../../utils/formatWei";
+import { formatFundingRateToDaily, formatFundingRateToAnnual } from "../../utils/formatWei";
 import { PageContainer } from "../../components/Container/Container";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumn, FlexRow } from "../../components/Container/Container";
@@ -41,8 +41,6 @@ const Markets = () => {
     history.push(`/markets/${marketId}`);
   }
 
-  // @TO-DO: use marketAddresses to initiate multicall 
-  // to fetch per market values from periphery
   const marketAddresses = useMemo(() => {
     if (markets === undefined) return [];
     return markets.markets.map((market) => [market.id])
