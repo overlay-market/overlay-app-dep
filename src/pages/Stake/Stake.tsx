@@ -6,9 +6,17 @@ import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { TransparentButton, TransparentUnderlineButton, SelectActionButton } from "../../components/Button/Button";
 import { NumericalInputContainer, NumericalInputTitle, NumericalInputLabel, NumericalInputDescriptor } from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
+import { AdditionalStakingDetails } from "./AdditionalStakingDetails";
+import { Back } from "../../components/Back/Back";
 
 const StakeButton = styled(SelectActionButton)`
+  border: 1px solid white;
   margin-top: 8px;
+  background: transparent;
+`;
+
+const ClaimButton = styled(SelectActionButton)`
+  border: 1px solid white;
   background: transparent;
 `;
 
@@ -17,11 +25,18 @@ const StakeInterface = styled.div`
   background: #262626;
 `;
 
+const RewardsContainer = styled(FlexColumn)`
+  background: #262626;
+  margin-top: 16px;
+  padding: 16px;
+`;
+
 export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaultId: string }>) {
 
   return (
     <InterfaceWrapper>
-      <FlexColumn>
+      <Back arrowSize={12} textSize={12} />
+      <FlexColumn margin="8px 0">
         <TEXT.StandardBody>
           Pool
         </TEXT.StandardBody>
@@ -70,8 +85,8 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
         </StakeButton>
       </StakeInterface>
 
-      <FlexColumn style={{ marginTop: '16px', background: '#262626' }}>
-        <FlexRow>
+      <RewardsContainer>
+        <FlexRow margin="0 0 8px">
           <TEXT.BoldStandardBody>
             Rewards
           </TEXT.BoldStandardBody>
@@ -79,10 +94,12 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
             0.0 OVL
           </TEXT.StandardBody>
         </FlexRow>
-        <SelectActionButton>
+        <ClaimButton>
           Collect Rewards
-        </SelectActionButton>
-      </FlexColumn>
+        </ClaimButton>
+      </RewardsContainer>
+
+      <AdditionalStakingDetails />
     </InterfaceWrapper>
   )
 };
