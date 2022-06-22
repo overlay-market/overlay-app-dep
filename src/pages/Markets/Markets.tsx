@@ -55,9 +55,6 @@ const Markets = () => {
   const prices = useMarketMidPrices(marketAddresses);
   const fundingRates = useFundingRates(marketAddresses);
   const ois = useMarketOis(marketAddresses);
-
-  console.log('ois: ', ois);
-
   const capOis = useMarketCapOis(marketAddresses);
 
   return (

@@ -154,7 +154,7 @@ export const AdditionalDetails = ({
         <OpenInterestValue>
           {oiLong || oiLong === 0 ? oiLong : <Loader stroke="white" size="12px" /> }
            / 
-          {oiCap || oiLong === 0 ? oiCap : <Loader stroke="white" size="12px" /> }
+          {oiCap || oiCap === 0 ? oiCap : <Loader stroke="white" size="12px" /> }
         </OpenInterestValue>
       </AdditionalDetailRow>
 

@@ -7,6 +7,16 @@ import { TransparentButton, TransparentUnderlineButton, SelectActionButton } fro
 import { NumericalInputContainer, NumericalInputTitle, NumericalInputLabel, NumericalInputDescriptor } from "../Markets/Build";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 
+const StakeButton = styled(SelectActionButton)`
+  margin-top: 8px;
+  background: transparent;
+`;
+
+const StakeInterface = styled.div`
+  padding: 16px;
+  background: #262626;
+`;
+
 export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaultId: string }>) {
 
   return (
@@ -20,7 +30,7 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
         </TEXT.BoldHeader1>
       </FlexColumn>
 
-      <FlexColumn style={{ background: '#262626' }}>
+      <StakeInterface style={{ background: '#262626' }}>
         <FlexRow>
           <TransparentButton width={'50%'}>
             Stake
@@ -55,10 +65,10 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
             value={"0"}
           />
         </NumericalInputContainer>
-        <SelectActionButton>
+        <StakeButton>
           Stake
-        </SelectActionButton>
-      </FlexColumn>
+        </StakeButton>
+      </StakeInterface>
 
       <FlexColumn style={{ marginTop: '16px', background: '#262626' }}>
         <FlexRow>
