@@ -7,9 +7,9 @@ import {
 import { AppState } from "../state";
 import { useAppSelector, useAppDispatch } from './../hooks';
 
-// export function useStakeState(): AppState['stake'] {
-//   return useAppSelector((state) => state.stake);
-// };
+export function useStakeState(): AppState['stake'] {
+  return useAppSelector((state) => state.stake);
+};
 
 export function useStakeActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;

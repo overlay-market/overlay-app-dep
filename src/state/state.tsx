@@ -7,6 +7,7 @@ import position from './positions/reducer';
 import unwind from './unwind/reducer';
 import transactions from './transactions/reducer';
 import markets from './markets/reducer';
+import stake from './stake/reducer';
 import { updateVersion } from './global/actions';
 import { api as dataApi } from './data/slice'
 
@@ -21,6 +22,7 @@ const store = configureStore({
     unwind,
     transactions,
     markets,
+    stake,
     [dataApi.reducerPath]: dataApi.reducer,
   },
   middleware: (getDefaultMiddleware) => 
