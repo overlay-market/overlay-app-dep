@@ -298,7 +298,7 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
           />
           <AdditionalDetailRow
             detail={"Open Interest"}
-            value={oi ? `${formatWeiToParsedNumber(oi, 18, 10)}` : "loading"}
+            value={oi ? `${formatWeiToParsedNumber(oi, 18, 18)}` : "loading"}
           />
           <AdditionalDetailRow 
             detail={"Leverage"}
