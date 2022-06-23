@@ -22,6 +22,8 @@ export default function ConfirmTxnModal({
   selectedLeverage,
   adjustedCollateral,
   estimatedLiquidationPrice,
+  transactionHash,
+  transactionErrorMessage,
 }: {
   baseToken?: string;
   quoteToken?: string;
@@ -37,6 +39,8 @@ export default function ConfirmTxnModal({
   selectedLeverage: string;
   adjustedCollateral: number | string | undefined;
   estimatedLiquidationPrice: any
+  transactionHash?: any
+  transactionErrorMessage?: any
 }) {
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={"350px"}>

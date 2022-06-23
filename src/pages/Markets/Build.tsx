@@ -137,7 +137,7 @@ export const BuildInterface = ({
   const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 4) : null;
 
   const capOiResult = useMarketCapOi(marketId);
-  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 4) : null;
+  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 10) : null;
 
   const peripheryContract = useV1PeripheryContract();
   
@@ -246,13 +246,13 @@ export const BuildInterface = ({
           transactionErrorMessage: undefined,
           transactionHash: hash,
         });
-        onResetBuildState();
         setBuildState({
           showConfirm: false,
           attemptingTransaction: false,
           transactionErrorMessage: undefined,
           transactionHash: hash,
         });
+        // onResetBuildState();
       })
       .catch((error) => {
         setBuildState({
@@ -502,6 +502,8 @@ export const BuildInterface = ({
         adjustedCollateral={adjustedCollateral}
         expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : null}
         estimatedLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
+        transactionHash={transactionHash}
+        transactionErrorMessage={transactionErrorMessage}
       />
     </MarketCard>
   );

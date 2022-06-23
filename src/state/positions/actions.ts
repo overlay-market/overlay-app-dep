@@ -15,4 +15,4 @@ export const selectLeverage = createAction<{ selectedLeverage: string }>('positi
 export const selectPositionSide = createAction<{ isLong: boolean }>('positions/selectPositionSide');
 export const setSlippage = createAction<{ setSlippageValue: DefaultTxnSettings | string }>('positions/setSlippage');
 export const setTxnDeadline = createAction<{ txnDeadline: DefaultTxnSettings | string  }>('positions/setTxnDeadline');
-export const resetBuildState = createAction<void>('unwind/resetBuildState');
+export const resetBuildState = createAction<void>('positions/resetBuildState');
