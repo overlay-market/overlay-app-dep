@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ChevronDown } from 'react-feather';
 import { Icon } from '../Icon/Icon';
 
-const AccordionWrapper = styled.div`
+const AccordionWrapper = styled.div<{ borderColor?: string }>`
 `;
 
 const AccordionText = styled.div<{ color?: string }>`
@@ -20,10 +20,11 @@ const ClickableDropdown = styled.div<{ width?: string; clickableMargin?: string 
   cursor: pointer;
 `;
 
-const Content = styled.div<{ isOpen: boolean}>`
+const Content = styled.div<{ isOpen: boolean }>`
   max-height: ${({ isOpen }) => ( isOpen ? '100vh' : '0vh' )};
   overflow: hidden;
   display: block;
+  padding: ${({ isOpen }) => ( isOpen ? '16px 0' : 'auto')};
 `;
   
 // display: ${({ isOpen }) => ( isOpen ? 'block' : 'none' )};
@@ -42,7 +43,7 @@ export const Accordion = ({
   activeColor,
   inactiveColor,
   width,
-  clickableMargin
+  clickableMargin,
 }:{
   activeAccordionText: string | React.ReactNode
   inactiveAccordionText: string | React.ReactNode,

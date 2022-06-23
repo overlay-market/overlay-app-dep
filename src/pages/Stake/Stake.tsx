@@ -8,6 +8,7 @@ import { NumericalInputContainer, NumericalInputTitle, NumericalInputLabel, Nume
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { AdditionalStakingDetails } from "./AdditionalStakingDetails";
 import { Back } from "../../components/Back/Back";
+import { Accordion } from "../../components/Accordion/Accordion";
 
 const StakeButton = styled(SelectActionButton)`
   border: 1px solid white;
@@ -23,12 +24,21 @@ const ClaimButton = styled(SelectActionButton)`
 const StakeInterface = styled.div`
   padding: 16px;
   background: #262626;
+  border-radius: 8px;
 `;
 
 const RewardsContainer = styled(FlexColumn)`
   background: #262626;
   margin-top: 16px;
   padding: 16px;
+  border-radius: 8px;
+`;
+
+const AccordionContainer = styled.div`
+  border: 1px solid red;
+  border-radius: 8px;
+  margin: 16px;
+  padding: 0 8px;
 `;
 
 export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaultId: string }>) {
@@ -100,6 +110,18 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
       </RewardsContainer>
 
       <AdditionalStakingDetails />
+
+      <AccordionContainer>
+        <Accordion 
+          width="auto"
+          activeAccordionText={'Pool Risks'}
+          activeColor={'red'}
+          inactiveColor={'red'}
+          inactiveAccordionText={'Pool Risks'}
+          >
+          Meowie Wowie
+        </Accordion>
+      </AccordionContainer>
     </InterfaceWrapper>
   )
 };
