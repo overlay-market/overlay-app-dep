@@ -275,7 +275,7 @@ export const BuildInterface = ({
   }, [approval]);
   
   const handleApprove = useCallback(async () => {
-    if (!typedValue) throw new Error("missing position input size");
+    // if (!typedValue) throw new Error("missing position input size");
     setBuildState({
       showConfirm: false,
       attemptingTransaction: true,
@@ -302,8 +302,8 @@ export const BuildInterface = ({
   }, [approveCallback, typedValue]);
   
   const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong);
-  const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 5) : null;
-
+  const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 18) : null;
+  
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : null;
 

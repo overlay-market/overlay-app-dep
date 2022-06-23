@@ -9,7 +9,7 @@ export function useEstimatedBuild(
   
   const calculatedBuildFee = preAdjustedOi && buildFee ? (preAdjustedOi * buildFee) : undefined;
 
-  const adjustedCollateral = collateral && calculatedBuildFee ? (collateral - calculatedBuildFee) : undefined;
+  const adjustedCollateral = collateral && calculatedBuildFee ? (collateral + calculatedBuildFee) : undefined;
   const adjustedOi = adjustedCollateral ? (adjustedCollateral * Number(selectedLeverage)) : undefined;
   const adjustedDebt = adjustedCollateral && adjustedOi ? adjustedOi - adjustedCollateral: undefined;
 
