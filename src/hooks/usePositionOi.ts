@@ -22,7 +22,6 @@ export function usePositionOi(
       }
       catch (error) {
         console.log('market inside usePositionOi: ', marketAddress);
-        console.error('error coming from usePositionOi: ', error);
       }
 
     })();

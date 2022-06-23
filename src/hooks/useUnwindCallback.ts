@@ -62,11 +62,6 @@ function useUnwindCallArguments(
     // let fraction = Number(parsedUnwindValue) / Number(parsedCurrentValue);
 
     let fraction = Number(unwindValue) / 100;
-    // console.log('unwindValueBigNumber: ',unwindValue.toString() )
-    // console.log('denominator: ',positionCurrentValue.toString() )
-    console.log('positionId: ', BigNumber.from(positionId));
-    console.log('fraction: ',  utils.parseUnits(fraction.toString()));
-    // console.log('positionId: ', positionId);
 
     calldata = marketContract.interface.encodeFunctionData("unwind", [
       BigNumber.from(positionId),
@@ -167,6 +162,16 @@ export function useUnwindCallback(
                     };
                   })
                   .catch((callError) => {
+                    addPopup(
+                      {
+                        txn: {
+                          hash: currentTimeForId,
+                          success: false,
+                          info: callError.error.message
+                        },
+                      },
+                      currentTimeForId
+                    )
                     console.debug("Call threw error", call, callError);
                     return { call, error: new Error(callError) };
                   });

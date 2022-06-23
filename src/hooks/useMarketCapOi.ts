@@ -26,7 +26,6 @@ export function useMarketCapOi(
       }
       catch (error) {
         console.log('market inside useMarketCapOi: ', marketAddress);
-        console.error('error coming from useMarketCapOi: ', error);
       }
 
     })();

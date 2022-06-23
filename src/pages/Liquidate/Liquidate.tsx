@@ -104,8 +104,6 @@ const Liquidate = () => {
     })
   }, [fetchLiquidatablePositions, blockNumber]);
 
-  console.log('liquidatablePositions: ', liquidatablePositions);
-
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;

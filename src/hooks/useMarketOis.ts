@@ -24,7 +24,6 @@ export function useMarketOi(marketAddress?: string): any | undefined {
       }
       catch (error) {
         console.log('market inside useMarketOis: ', marketAddress);
-        console.error('error coming from useMarketOis: ', error);
       }
 
     })();

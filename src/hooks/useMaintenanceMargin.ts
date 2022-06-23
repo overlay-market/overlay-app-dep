@@ -22,7 +22,6 @@ export function useMaintenanceMargin(
       }
       catch (error) {
         console.log('market inside useMaintenanceMargin: ', marketAddress);
-        console.error('error coming from useMaintenanceMargin: ', error);
       }
 
     })();

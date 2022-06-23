@@ -159,8 +159,6 @@ export const BuildInterface = ({
   
   const fundingRate = useMemo(() => {
     if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading';
-    
-    // console.log('fetchFundingRate.result?.[0]: ', formatWeiToParsedString(fetchFundingRate.result?.[0], 18))
     return formatFundingRateToDaily(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate]);
   

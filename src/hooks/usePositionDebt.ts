@@ -22,7 +22,6 @@ export function usePositionDebt(
       }
       catch (error) {
         console.log('market inside usePositionDebt: ', marketAddress);
-        console.error('error coming from usePositionDebt: ', error);
       }
 
     })();

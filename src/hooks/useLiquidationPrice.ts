@@ -35,7 +35,6 @@ export function useLiquidationPrice(
       }
       catch (error) {
         console.log('market inside useLiquidationPrice: ', marketAddress);
-        console.error('error coming from useLiquidationPrice: ', error);
       }
 
     })();

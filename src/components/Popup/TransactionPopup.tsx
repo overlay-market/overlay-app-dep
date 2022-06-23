@@ -43,9 +43,6 @@ export default function TransactionPopup({
 }) {
   const { chainId } = useActiveWeb3React()
 
-  console.log('info from transactionpopup: ', info);
-  console.log('typeof info from transactionpopup: ', typeof info);
-
   return (
     <PopupContentsContainer>
       <Icon>
@@ -77,6 +74,7 @@ export default function TransactionPopup({
             {info}
           </ErrorMessage>
         )}
+        
         {chainId && hash && success && (
           <ExternalLink
             href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}

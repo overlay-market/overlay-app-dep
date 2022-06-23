@@ -164,8 +164,6 @@ export function useBuildCallback(
                   })
                   .catch((callError) => {
 
-                    console.log('callError from useBuildCallback gas estimation: ', callError.error.message);
-
                     addPopup(
                       {
                         txn: {

@@ -22,7 +22,6 @@ export function usePositionNotional(
       }
       catch (error) {
         console.log('market inside usePositionNotional: ', marketAddress);
-        console.error('error coming from usePositionNotional: ', error);
       }
 
     })();

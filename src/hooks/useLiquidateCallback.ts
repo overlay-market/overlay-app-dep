@@ -143,6 +143,17 @@ export function useLiquidateCallback(marketAddress?: string, ownerAddress?: stri
                   })
                   .catch((callError) => {
 
+                    addPopup(
+                      {
+                        txn: {
+                          hash: currentTimeForId,
+                          success: false,
+                          info: callError.error.message
+                        },
+                      },
+                      currentTimeForId
+                    )
+                    
                     console.debug("Call threw error", call, callError);
 
                     return { call, error: new Error(callError) };

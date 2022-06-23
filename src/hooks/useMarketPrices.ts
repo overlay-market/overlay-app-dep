@@ -22,7 +22,6 @@ export function useMarketPrice(
       }
       catch (error) {
         console.log('market inside useMarketPrice: ', marketAddress);
-        console.error('error coming from useMarketPrice: ', error);
       }
 
     })();
