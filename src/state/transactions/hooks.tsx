@@ -23,9 +23,6 @@ export function useTransactionAdder(): (
 
       const { hash } = response;
 
-      console.log('response: ', response);
-      console.log('info: ', info);
-
       if (!hash) {
         console.error('No transaction hash found.')
         throw Error('No transaction hash found.')

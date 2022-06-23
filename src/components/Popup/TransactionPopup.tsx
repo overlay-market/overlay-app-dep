@@ -43,6 +43,9 @@ export default function TransactionPopup({
 }) {
   const { chainId } = useActiveWeb3React()
 
+  console.log('info from transactionpopup: ', info);
+  console.log('typeof info from transactionpopup: ', typeof info);
+
   return (
     <PopupContentsContainer>
       <Icon>
@@ -59,7 +62,6 @@ export default function TransactionPopup({
           { info?.type === TransactionType.UNWIND_OVL_POSITION && 'Unwind Successful'}
           { info?.type === TransactionType.LIQUIDATE_OVL_POSITION && 'Liquidation Successful'}
           {/* {summary ?? 'Hash: ' + hash.slice(0, 8) + '...' + hash.slice(58, 65)} */}
-
           { info?.code === 4001 && 'Transaction Rejected' }
           { info?.code === -32603 && 'Transaction Failed' }
         </TEXT.BoldSmallBody>
@@ -70,6 +72,11 @@ export default function TransactionPopup({
           </ErrorMessage>
         )}
 
+        {chainId && typeof info === 'string' && (
+          <ErrorMessage>
+            {info}
+          </ErrorMessage>
+        )}
         {chainId && hash && success && (
           <ExternalLink
             href={getExplorerLink(chainId, hash, ExplorerDataType.TRANSACTION)}
