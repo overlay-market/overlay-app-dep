@@ -43,6 +43,8 @@ export default function TransactionPopup({
 }) {
   const { chainId } = useActiveWeb3React()
 
+  console.log('info from TransactionPopup: ', info);
+
   return (
     <PopupContentsContainer>
       <Icon>
@@ -66,12 +68,6 @@ export default function TransactionPopup({
         {chainId && info?.message && (
           <ErrorMessage>
             { info?.message }
-          </ErrorMessage>
-        )}
-
-        {chainId && typeof info === 'string' && (
-          <ErrorMessage>
-            {info}
           </ErrorMessage>
         )}
         

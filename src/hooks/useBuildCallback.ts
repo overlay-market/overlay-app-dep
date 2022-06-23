@@ -108,7 +108,7 @@ export function useBuildCallback(
   return useMemo(() => {
 
     if (!buildData || !library || !account || !chainId || !marketAddress || inputError) {
-      console.log('inputError: ', inputError);
+      // console.log('inputError: ', inputError);
       return {
         state: BuildCallbackState.INVALID,
         callback: null,
@@ -164,12 +164,14 @@ export function useBuildCallback(
                   })
                   .catch((callError) => {
 
+                    console.log('callError: ', callError.error);
+
                     addPopup(
                       {
                         txn: {
                           hash: currentTimeForId,
                           success: false,
-                          info: callError.error.message
+                          info: callError.error
                         },
                       },
                       currentTimeForId
