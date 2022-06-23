@@ -100,7 +100,7 @@ export function Stake({match: {params: { vaultId }}}: RouteComponentProps<{ vaul
           <TEXT.BoldStandardBody>
             Rewards
           </TEXT.BoldStandardBody>
-          <TEXT.StandardBody>
+          <TEXT.StandardBody ml="auto">
             0.0 OVL
           </TEXT.StandardBody>
         </FlexRow>
