@@ -100,6 +100,8 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   {prices[index] ? prices[index] : <Loader stroke="white" size="12px" />}
+                  &nbsp;
+                  {quoteTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : quoteTokens[index]} per {baseTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : baseTokens[index]}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
@@ -141,7 +143,7 @@ const Markets = () => {
                     <TEXT.AdjustableSize color={"#f2f2f2"} mr={"3px"}>
                       {
                         fundingRates[index] ? (
-                          `${formatFundingRateToDaily(fundingRates[index], 18, 2)}% (${formatFundingRateToAnnual(fundingRates[index], 18, 2)}%)`
+                          `${formatFundingRateToDaily(fundingRates[index], 18, 2)}% (~${formatFundingRateToAnnual(fundingRates[index], 18, 2)}% APR)`
                         ):(
                           <Loader stroke="white" size="12px" />
                         )

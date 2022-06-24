@@ -49,7 +49,7 @@ export function useMarketMidPrices(marketAddresses?: any) {
       if (!chainId || !blockNumber || !market) return null;
 
       let marketPrice = market?.result && market.result[0];
-      return formatWeiToParsedNumber(marketPrice, 18, 5);
+      return formatWeiToParsedNumber(marketPrice, 18, 2);
     })
   }, [pricesResult, blockNumber, chainId])
 }

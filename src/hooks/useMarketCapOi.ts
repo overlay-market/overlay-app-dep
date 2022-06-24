@@ -52,7 +52,7 @@ export function useMarketCapOis(marketAddresses?: any) {
       if (!chainId || !blockNumber || !market) return null;
 
       let marketCapOi = market?.result && market.result[0];
-      return formatWeiToParsedNumber(marketCapOi, 18, 5);
+      return formatWeiToParsedNumber(marketCapOi, 18, 2);
     })
   }, [capOisResult, blockNumber, chainId])
 }

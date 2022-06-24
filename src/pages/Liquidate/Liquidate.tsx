@@ -154,9 +154,9 @@ const Liquidate = () => {
                       </StyledTableHeaderRow>
 
                       {liquidatablePositions?.map((position, key) => {
-                        const maintenanceMargin = maintenanceMargins !== undefined && maintenanceMargins ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 5) : null;
-                        const positionValue = positionValues !== undefined && positionValues ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null;
-                        const liquidationFee = liquidationFees !== undefined && liquidationFees ? formatWeiToParsedNumber(liquidationFees[key], 18, 10) : null;
+                        const maintenanceMargin = maintenanceMargins !== undefined && maintenanceMargins ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 2) : null;
+                        const positionValue = positionValues !== undefined && positionValues ? formatWeiToParsedNumber(positionValues[key], 18, 2) : null;
+                        const liquidationFee = liquidationFees !== undefined && liquidationFees ? formatWeiToParsedNumber(liquidationFees[key], 18, 2) : null;
                         const isLiquidated = isLiquidatedPositions[key];
 
                         if (key === 0 && liquidatablePositions && liquidatablePositions[0] === undefined) {

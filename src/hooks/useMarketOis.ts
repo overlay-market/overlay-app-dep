@@ -51,8 +51,8 @@ export function useMarketOis(marketAddresses?: any) {
 
       let marketOi = market?.result && market.result;
       return {
-        oiLong: marketOi?.oiLong_ ? formatWeiToParsedNumber(marketOi.oiLong_, 18, 5) : undefined,
-        oiShort: marketOi?.oiShort_ ? formatWeiToParsedNumber(marketOi.oiShort_, 18, 5) : undefined,
+        oiLong: marketOi?.oiLong_ ? formatWeiToParsedNumber(marketOi.oiLong_, 18, 2) : undefined,
+        oiShort: marketOi?.oiShort_ ? formatWeiToParsedNumber(marketOi.oiShort_, 18, 2) : undefined,
       };
     })
   }, [oisResult, blockNumber, chainId])
