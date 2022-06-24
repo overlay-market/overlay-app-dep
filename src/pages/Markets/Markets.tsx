@@ -108,7 +108,7 @@ const Markets = () => {
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
                       {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? ois[index]?.oiLong : <Loader stroke="white" size="12px" />}
-                      /
+                      &nbsp;/&nbsp;
                       {capOis[index] || capOis[index] === 0 ? capOis[index] : <Loader stroke="white" size="12px" />}
                     </TEXT.SmallBody>
                     <ProgressBar
@@ -125,7 +125,7 @@ const Markets = () => {
                   <FlexColumn align={"left"}>
                     <TEXT.SmallBody>
                       {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? ois[index]?.oiShort : <Loader stroke="white" size="12px" />}
-                      /
+                      &nbsp;/&nbsp;
                       {capOis[index] || capOis[index] === 0 ? capOis[index] : <Loader stroke="white" size="12px" />}
                     </TEXT.SmallBody>
                     <ProgressBar

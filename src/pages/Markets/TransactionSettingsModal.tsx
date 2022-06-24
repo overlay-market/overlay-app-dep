@@ -5,7 +5,7 @@ import { TEXT } from '../../theme/theme';
 import { InfoTip } from '../../components/InfoTip/InfoTip';
 import { NumericalInput } from '../../components/NumericalInput/NumericalInput';
 import { TransactionSettingsButton } from '../../components/Button/Button';
-import { NumericalInputContainer, NumericalInputDescriptor } from './Build';
+import { NumericalInputContainer } from './Build';
 
 const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
@@ -17,6 +17,13 @@ const TransactionSettingModal = styled.div<{ isOpen?: boolean }>`
   backdrop-filter: blur(33px);
   z-index: 5;
   color: #f2f2f2;
+`;
+
+const NumericalInputDescriptor = styled.div`
+  background: transparent;
+  font-size: 16px;
+  color: #f2f2f2;
+  padding: 8px 8px 8px 0;
 `;
 
 export const TransactionSettingsModal = ({
