@@ -65,11 +65,83 @@ export default function TransactionPopup({
           { info?.code === -32603 && 'Transaction Failed' }
         </TEXT.BoldSmallBody>
 
-        {chainId && info?.message && (
+        {chainId && info?.message === "execution reverted: OVLV1:lev<min" && (
+          <ErrorMessage>
+            Leverage must be at least 1.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:lev>max" && (
+          <ErrorMessage>
+            Leverage is greater than max.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:fraction>max" && (
+          <ErrorMessage>
+            Fraction cannot equal greater than 1.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:fraction<min" && (
+          <ErrorMessage>
+            Fraction cannot equal less than 0.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:!position" && (
+          <ErrorMessage>
+            Position does not currently exist.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:collateral<min" && (
+          <ErrorMessage>
+            Input collateral is less than minimum required collateral.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:oi>cap" && (
+          <ErrorMessage>
+            Attempting to build position that will exceed market oi cap!
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:slippage>max" && (
+          <ErrorMessage>
+            User selected price limit is outside the range of the current market price.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:!data" && (
+          <ErrorMessage>
+            Market price volatility has exceeded risk tolerance in the last hour.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:oi==0" && (
+          <ErrorMessage>
+            Underlying price feed price points are too high. Unable to reliably estimate oi.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:liquidatable" && (
+          <ErrorMessage>
+            Cannot build/unwind due to being liquidatable at execution time.
+          </ErrorMessage>
+        )}
+
+        {chainId && info?.message === "execution reverted: OVLV1:!liquidatable" && (
+          <ErrorMessage>
+            Position is currently not liquidatable. 
+          </ErrorMessage>
+        )}
+
+        {/* {chainId && info?.message && (
           <ErrorMessage>
             { info?.message }
           </ErrorMessage>
-        )}
+        )} */}
         
         {chainId && hash && success && (
           <ExternalLink

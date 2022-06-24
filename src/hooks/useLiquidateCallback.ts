@@ -148,7 +148,7 @@ export function useLiquidateCallback(marketAddress?: string, ownerAddress?: stri
                         txn: {
                           hash: currentTimeForId,
                           success: false,
-                          info: callError.error.message
+                          info: callError.error
                         },
                       },
                       currentTimeForId

@@ -167,7 +167,7 @@ export function useUnwindCallback(
                         txn: {
                           hash: currentTimeForId,
                           success: false,
-                          info: callError.error.message
+                          info: callError.error
                         },
                       },
                       currentTimeForId
