@@ -849,18 +849,23 @@
         "components": [
           {
             "internalType": "uint96",
-            "name": "notional",
+            "name": "notionalInitial",
             "type": "uint96"
           },
           {
             "internalType": "uint96",
-            "name": "debt",
+            "name": "debtInitial",
             "type": "uint96"
           },
           {
-            "internalType": "uint48",
-            "name": "entryToMidRatio",
-            "type": "uint48"
+            "internalType": "int24",
+            "name": "midTick",
+            "type": "int24"
+          },
+          {
+            "internalType": "int24",
+            "name": "entryTick",
+            "type": "int24"
           },
           {
             "internalType": "bool",
@@ -873,9 +878,14 @@
             "type": "bool"
           },
           {
-            "internalType": "uint256",
+            "internalType": "uint240",
             "name": "oiShares",
-            "type": "uint256"
+            "type": "uint240"
+          },
+          {
+            "internalType": "uint16",
+            "name": "fractionRemaining",
+            "type": "uint16"
           }
         ],
         "internalType": "struct Position.Info",
@@ -915,18 +925,23 @@
         "components": [
           {
             "internalType": "uint96",
-            "name": "notional",
+            "name": "notionalInitial",
             "type": "uint96"
           },
           {
             "internalType": "uint96",
-            "name": "debt",
+            "name": "debtInitial",
             "type": "uint96"
           },
           {
-            "internalType": "uint48",
-            "name": "entryToMidRatio",
-            "type": "uint48"
+            "internalType": "int24",
+            "name": "midTick",
+            "type": "int24"
+          },
+          {
+            "internalType": "int24",
+            "name": "entryTick",
+            "type": "int24"
           },
           {
             "internalType": "bool",
@@ -939,9 +954,14 @@
             "type": "bool"
           },
           {
-            "internalType": "uint256",
+            "internalType": "uint240",
             "name": "oiShares",
-            "type": "uint256"
+            "type": "uint240"
+          },
+          {
+            "internalType": "uint16",
+            "name": "fractionRemaining",
+            "type": "uint16"
           }
         ],
         "internalType": "struct Position.Info",
