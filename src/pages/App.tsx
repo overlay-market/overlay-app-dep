@@ -32,7 +32,7 @@ const App = () => {
           <Route exact strict path="/markets" component={Markets} />
           <Route exact strict path="/markets/:marketId" component={Market} />
           <Route exact strict path="/positions" component={Positions} />
-          <Route exact strict path="/positions/:positionId" component={Unwind} /> 
+          <Route exact strict path="/positions/:marketId/:positionId" component={Unwind} /> 
           <Route exact strict path="/magic" component={Magic} />
           <Route exact strict path="/liquidate" component={Liquidate} />
           <Route exact strict path="/stake" component={Vaults} />

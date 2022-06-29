@@ -75,7 +75,7 @@ export const AdditionalDetailRow = ({
   );
 };
 
-export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ positionId: string }>) {
+export function Unwind({match: {params: { marketId, positionId }}}: RouteComponentProps<{ marketId: string, positionId: string }>) {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
   const { account } = useActiveWeb3React();
   const { error, isLoading, positions } = useAccountPositions(account);
@@ -84,6 +84,10 @@ export function Unwind({match: {params: { positionId }}}: RouteComponentProps<{ 
   const { setSlippageValue, txnDeadline } = usePositionState();
 
   const filtered = positions?.filter((index, key) => index.positionId === positionId);
+
+  console.log('marketId in unwind: ', marketId);
+  console.log('positionId in unwind: ', positionId);
+
   const position = filtered ? filtered[0] : null;
   
   const { baseToken, quoteToken } = useMarketName(position?.market.feedAddress);

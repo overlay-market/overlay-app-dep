@@ -63,6 +63,7 @@ export const PositionTableHeader = () => (
 );
 
 export const PositionCard = ({
+  id,
   positionId,
   marketId,
   baseToken,
@@ -80,6 +81,7 @@ export const PositionCard = ({
   navigate,
   hasBorder,
 }:{
+  id: string;
   positionId: string;
   marketId: string;
   baseToken: string;
@@ -111,7 +113,8 @@ export const PositionCard = ({
     <CardContainer
       navigate={navigate}
       hasBorder={hasBorder}
-      to={`/positions/${positionId}`}
+      to={`/positions/${marketId}/${positionId}`}
+      // to={`/positions/${id}`}
       >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={"white"}>
@@ -121,7 +124,7 @@ export const PositionCard = ({
         </Detail>
 
         <Detail fontWeight={700} color={"white"}>
-          ID: {BigNumber.from(positionId).toString()}
+          ID: {(positionId).toString()}
         </Detail>
 
         {isLong === null && (

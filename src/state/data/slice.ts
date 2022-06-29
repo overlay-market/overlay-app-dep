@@ -27,6 +27,7 @@ export const api = createApi({
           query account($account: ID!) {
             account(id: $account) {
               positions {
+              id
               positionId
               market {
                 id

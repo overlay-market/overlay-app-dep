@@ -75,6 +75,8 @@ export const Positions = () => {
   const { account } = useActiveWeb3React();
   const { isLoading, positions } = useAccountPositions(account ? account : undefined);
   
+  console.log('positions: ', positions);
+  
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return [];
 
@@ -153,6 +155,7 @@ export const Positions = () => {
                   return (
                     <PositionCard
                       key={key.toString()}
+                      id={position.positionId}
                       positionId={position.positionId}
                       marketId={position.market.id}
                       baseToken={`${baseTokens[key]}`}

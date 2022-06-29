@@ -1646,7 +1646,7 @@ export type AccountQuery = (
     { __typename?: 'Account' }
     & { positions: Array<(
       { __typename?: 'Position' }
-      & Pick<Position, 'positionId' | 'initialOi' | 'initialDebt' | 'initialCollateral' | 'initialNotional' | 'leverage' | 'isLong' | 'entryPrice' | 'isLiquidated' | 'currentOi' | 'currentDebt' | 'mint' | 'createdAtTimestamp' | 'createdAtBlockNumber'>
+      & Pick<Position, 'id' | 'positionId' | 'initialOi' | 'initialDebt' | 'initialCollateral' | 'initialNotional' | 'leverage' | 'isLong' | 'entryPrice' | 'isLiquidated' | 'currentOi' | 'currentDebt' | 'mint' | 'createdAtTimestamp' | 'createdAtBlockNumber'>
       & { market: (
         { __typename?: 'Market' }
         & Pick<Market, 'id' | 'feedAddress'>
@@ -1719,6 +1719,7 @@ export const AccountDocument = `
     query account($account: ID!) {
   account(id: $account) {
     positions {
+      id
       positionId
       market {
         id
