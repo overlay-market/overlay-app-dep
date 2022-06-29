@@ -47,7 +47,7 @@ export const AdditionalDetails = ({
   capPayoff,
   oiLong,
   oiShort,
-  slippage,
+  slippageTolerance,
   expectedOi,
   fundingRate,
   estLiquidationPrice,
@@ -63,7 +63,7 @@ export const AdditionalDetails = ({
   capPayoff?: number;
   oiLong?: number;
   oiShort?: number;
-  slippage?: string | number;
+  slippageTolerance?: string | number;
   expectedOi?: string | number | null;
   fundingRate?: string | number;
   estLiquidationPrice?: string | number;
@@ -86,10 +86,10 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
-          Slippage 
+          Slippage Tolerance
         </PositionDetailType>
         <DetailValue> 
-          {slippage}% 
+          {slippageTolerance}% 
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -178,7 +178,7 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
-          Funding rate 
+          Funding Rate 
         </PositionDetailType>
         <DetailValue color={"#10DCB1"}>
            {fundingRate === 'loading' ? (

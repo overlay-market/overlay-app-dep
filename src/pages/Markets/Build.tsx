@@ -481,7 +481,7 @@ export const BuildInterface = ({
         capPayoff = { capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={ ois && formatWeiToParsedNumber(ois.oiLong_, 18, 5)}
         oiShort={ ois && formatWeiToParsedNumber(ois.oiShort_, 18, 5)}
-        slippage={setSlippageValue}
+        slippageTolerance={setSlippageValue}
         fundingRate={fundingRate}
         expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : null}
         estLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
