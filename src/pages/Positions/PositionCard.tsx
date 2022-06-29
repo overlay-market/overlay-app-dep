@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import styled from "styled-components/macro";
 import { BigNumberish } from "ethers";
 import { Link } from "react-router-dom";
@@ -5,7 +6,6 @@ import { Icon } from "../../components/Icon/Icon";
 import { ChevronRight } from "react-feather";
 import { FlexRow } from "../../components/Container/Container";
 import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
-import { useMemo } from "react";
 import { ConsoleView } from "react-device-detect";
 import { BigNumber } from "ethers";
 import Loader from "../../components/Loaders/Loaders";
@@ -101,7 +101,12 @@ export const PositionCard = ({
   hasBorder?: boolean;
 }) => {
   let parsedLeverage = Number(leverage).toFixed(1);
-  let PnL = positionValue && positionCost ? positionValue - positionCost : null;
+  const PnL = useMemo(() => {
+    if (positionValue === null || positionValue === undefined || positionCost === null || positionCost === undefined) return null;
+    return positionValue - positionCost;
+  }, [positionValue, positionCost])
+
+
   let fixedPnL = positionValue === 0 ? '0' : (PnL ? `${PnL.toFixed(4)}` : null);
 
   const indicatorColor = useMemo(() => {
@@ -162,7 +167,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="30%" align="right">
         <Detail fontWeight={700} color={indicatorColor}>
-          {fixedPnL ? `${fixedPnL} ${collateralToken}` : <Loader stroke="white" size="12px" />}
+          {PnL ? `${PnL} ${collateralToken}` : <Loader stroke="white" size="12px" />}
         </Detail>
 
         {navigate ?? (
