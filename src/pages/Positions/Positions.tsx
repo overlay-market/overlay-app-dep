@@ -10,14 +10,12 @@ import { useUnwindActionHandlers } from "../../state/unwind/hooks";
 import { PositionCard, PositionTableHeader } from "./PositionCard";
 import { useWalletModalToggle } from "../../state/application/hooks";
 import { shortenAddress } from "../../utils/web3";
-import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
-import { useSingleContractMultipleData } from "../../state/multicall/hooks";
-import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
 import { useMarketNames } from "../../hooks/useMarketName";
 import { usePositionValues } from "../../hooks/usePositionValue";
 import { usePositionCosts } from "../../hooks/usePositionCost";
 import { useLiquidationPrices } from "../../hooks/useLiquidationPrice";
+import { usePositionOis } from "../../hooks/usePositionOi";
 
 const Container = styled.div`
   display: flex;
@@ -80,7 +78,6 @@ export const Positions = () => {
   
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return [];
-
     return positions.map((position) => position.market.feedAddress)
   }, [positions]);
 
@@ -88,33 +85,21 @@ export const Positions = () => {
 
   const positionsCallData = useMemo(() => {
     if (!positions || positions === undefined || !account || !blockNumber) return [];
-
     return positions.map((position) => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
-
-  const peripheryContract = useV1PeripheryContract();
 
   const values = usePositionValues(positionsCallData);
   const costs = usePositionCosts(positionsCallData);
   const liquidationPrices = useLiquidationPrices(positionsCallData);
-  
-  const fetchPositionOis = useSingleContractMultipleData(peripheryContract, "oi", positionsCallData);
-
-
-
-    const positionOis = useMemo(() => {
-    return fetchPositionOis.map((position, index) => {
-      if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
-
-      return position?.result?.oi_;
-    })
-  }, [fetchPositionOis, blockNumber]);
+  const ois = usePositionOis(positionsCallData);
 
   return (
     <MarketCard>
       {onResetUnwindState()}
       <Container>
-        <PageHeader> Positions </PageHeader>
+        <PageHeader> 
+          Positions 
+        </PageHeader>
         
         {account ? (
           <>
@@ -144,7 +129,7 @@ export const Positions = () => {
                       leverage={position.leverage}
                       positionValue={values[key] !== undefined ? values[key] : null}
                       positionCost={costs[key] !== undefined ? costs[key] : null}
-                      positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
+                      positionOi={ois[key] !== undefined ? ois[key] : null}
                       collateralToken={"OVL"}
                       quotePrice={"-"}
                       quoteCurrency={"-"}
