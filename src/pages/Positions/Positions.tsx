@@ -15,6 +15,7 @@ import { useSingleContractMultipleData } from "../../state/multicall/hooks";
 import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
 import { useMarketNames } from "../../hooks/useMarketName";
+import { usePositionValues } from "../../hooks/usePositionValue";
 
 const Container = styled.div`
   display: flex;
@@ -75,8 +76,6 @@ export const Positions = () => {
   const { account } = useActiveWeb3React();
   const { isLoading, positions } = useAccountPositions(account ? account : undefined);
   
-  console.log('positions: ', positions);
-  
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return [];
 
@@ -92,8 +91,11 @@ export const Positions = () => {
   }, [positions, account, blockNumber])
 
   const peripheryContract = useV1PeripheryContract();
+
+  const values = usePositionValues(positionsCallData);
+
+
   const fetchLiquidationPrices = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', positionsCallData);
-  const fetchPositionValues = useSingleContractMultipleData(peripheryContract, "value", positionsCallData);
   const fetchPositionCosts = useSingleContractMultipleData(peripheryContract, "cost", positionsCallData);
   const fetchPositionOis = useSingleContractMultipleData(peripheryContract, "oi", positionsCallData);
 
@@ -105,15 +107,7 @@ export const Positions = () => {
     })
   }, [fetchLiquidationPrices, blockNumber]);
 
-  
-  const positionValues = useMemo(() => {
-    return fetchPositionValues.map((position, index) => {
-      if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
-      
-      return position?.result?.value_;
-    })
-  }, [fetchPositionValues, blockNumber]);
-  
+
   const positionCosts = useMemo(() => {
     return fetchPositionCosts.map((position, index) => {
       if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
@@ -122,6 +116,8 @@ export const Positions = () => {
     })
   }, [fetchPositionCosts, blockNumber]);
 
+  console.log('positionCosts: ', positionCosts);
+  
     const positionOis = useMemo(() => {
     return fetchPositionOis.map((position, index) => {
       if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
@@ -162,7 +158,7 @@ export const Positions = () => {
                       quoteToken={`${quoteTokens[key]}`}
                       isLong={position.isLong}
                       leverage={position.leverage}
-                      positionValue={positionValues !== undefined ? formatWeiToParsedNumber(positionValues[key], 18, 5) : null}
+                      positionValue={values[key] !== undefined ? values[key] : null}
                       positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
                       positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
                       collateralToken={"OVL"}

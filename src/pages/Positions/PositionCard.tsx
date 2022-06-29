@@ -1,4 +1,5 @@
 import styled from "styled-components/macro";
+import { BigNumberish } from "ethers";
 import { Link } from "react-router-dom";
 import { Icon } from "../../components/Icon/Icon";
 import { ChevronRight } from "react-feather";
