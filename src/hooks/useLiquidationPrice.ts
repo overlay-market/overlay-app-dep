@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useV1PeripheryContract } from "./useContract";
+import { useSingleContractMultipleData } from "../state/multicall/hooks";
 import { useBlockNumber } from "../state/application/hooks";
 import { useActiveWeb3React } from "./web3";
 import { BigNumber } from "ethers";
@@ -44,3 +45,20 @@ export function useLiquidationPrice(
     return liquidationPrice;
   }, [liquidationPrice]);
 };
+
+export function useLiquidationPrices(positionsCallData: any) {
+  const peripheryContract = useV1PeripheryContract();
+  const blockNumber = useBlockNumber();
+  const { chainId } = useActiveWeb3React();
+
+  const callResult = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', positionsCallData);
+
+  return useMemo(() => {
+    return callResult.map((position) => {
+      if (!chainId || !blockNumber || !position) return null;
+
+      let liquidationPrice = position?.result && position.result[0];
+      return formatWeiToParsedNumber(liquidationPrice, 18, 4);
+    })
+  }, [callResult, blockNumber, chainId])
+}

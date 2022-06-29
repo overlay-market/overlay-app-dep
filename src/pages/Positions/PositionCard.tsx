@@ -95,7 +95,7 @@ export const PositionCard = ({
   collateralToken: string;
   quotePrice: number | string;
   quoteCurrency: string;
-  estLiquidationPrice: string | undefined;
+  estLiquidationPrice: number | string | null | undefined;
   // PnL: number | string | undefined;
   navigate?: boolean;
   hasBorder?: boolean;

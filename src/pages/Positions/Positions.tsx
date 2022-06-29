@@ -17,6 +17,7 @@ import { useBlockNumber } from "../../state/application/hooks";
 import { useMarketNames } from "../../hooks/useMarketName";
 import { usePositionValues } from "../../hooks/usePositionValue";
 import { usePositionCosts } from "../../hooks/usePositionCost";
+import { useLiquidationPrices } from "../../hooks/useLiquidationPrice";
 
 const Container = styled.div`
   display: flex;
@@ -95,17 +96,10 @@ export const Positions = () => {
 
   const values = usePositionValues(positionsCallData);
   const costs = usePositionCosts(positionsCallData);
-
-  const fetchLiquidationPrices = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', positionsCallData);
+  const liquidationPrices = useLiquidationPrices(positionsCallData);
+  
   const fetchPositionOis = useSingleContractMultipleData(peripheryContract, "oi", positionsCallData);
 
-  const liquidationPrices = useMemo(() => {
-    return fetchLiquidationPrices.map((position, index) => {
-      if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
-
-      return position?.result?.liquidationPrice_;
-    })
-  }, [fetchLiquidationPrices, blockNumber]);
 
 
     const positionOis = useMemo(() => {
@@ -154,7 +148,7 @@ export const Positions = () => {
                       collateralToken={"OVL"}
                       quotePrice={"-"}
                       quoteCurrency={"-"}
-                      estLiquidationPrice={liquidationPrices !== undefined ? formatWeiToParsedString(liquidationPrices[key], 2) : 'loading...'}
+                      estLiquidationPrice={liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'}
                       navigate={true}
                       hasBorder={true}
                     />
