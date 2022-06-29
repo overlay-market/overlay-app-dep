@@ -113,8 +113,7 @@ export const PositionCard = ({
     <CardContainer
       navigate={navigate}
       hasBorder={hasBorder}
-      to={`/positions/${marketId}/${positionId}`}
-      // to={`/positions/${id}`}
+      to={`/positions/${id}/${positionId}`}
       >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={"white"}>

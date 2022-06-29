@@ -155,7 +155,7 @@ export const Positions = () => {
                   return (
                     <PositionCard
                       key={key.toString()}
-                      id={position.positionId}
+                      id={position.id}
                       positionId={position.positionId}
                       marketId={position.market.id}
                       baseToken={`${baseTokens[key]}`}

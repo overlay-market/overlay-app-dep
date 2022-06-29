@@ -34,7 +34,7 @@ const routesConfig = [
     component: () => Positions
   },
   {
-    path: "/positions/:marketId/:positionId",
+    path: "/positions/:marketPositionId/:positionId",
     component: () => Unwind
   },
   {
