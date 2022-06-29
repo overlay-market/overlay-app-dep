@@ -16,6 +16,7 @@ import { useV1PeripheryContract } from "../../hooks/useContract";
 import { useBlockNumber } from "../../state/application/hooks";
 import { useMarketNames } from "../../hooks/useMarketName";
 import { usePositionValues } from "../../hooks/usePositionValue";
+import { usePositionCosts } from "../../hooks/usePositionCost";
 
 const Container = styled.div`
   display: flex;
@@ -93,10 +94,9 @@ export const Positions = () => {
   const peripheryContract = useV1PeripheryContract();
 
   const values = usePositionValues(positionsCallData);
-
+  const costs = usePositionCosts(positionsCallData);
 
   const fetchLiquidationPrices = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', positionsCallData);
-  const fetchPositionCosts = useSingleContractMultipleData(peripheryContract, "cost", positionsCallData);
   const fetchPositionOis = useSingleContractMultipleData(peripheryContract, "oi", positionsCallData);
 
   const liquidationPrices = useMemo(() => {
@@ -108,16 +108,6 @@ export const Positions = () => {
   }, [fetchLiquidationPrices, blockNumber]);
 
 
-  const positionCosts = useMemo(() => {
-    return fetchPositionCosts.map((position, index) => {
-      if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
-
-      return position?.result?.cost_;
-    })
-  }, [fetchPositionCosts, blockNumber]);
-
-  console.log('positionCosts: ', positionCosts);
-  
     const positionOis = useMemo(() => {
     return fetchPositionOis.map((position, index) => {
       if (position.loading === true || position === undefined || blockNumber === undefined) return undefined;
@@ -159,7 +149,7 @@ export const Positions = () => {
                       isLong={position.isLong}
                       leverage={position.leverage}
                       positionValue={values[key] !== undefined ? values[key] : null}
-                      positionCost={positionCosts !== undefined ? formatWeiToParsedNumber(positionCosts[key], 18 , 5) : null}
+                      positionCost={costs[key] !== undefined ? costs[key] : null}
                       positionOi={positionOis !== undefined ? formatWeiToParsedNumber(positionOis[key], 18 , 5) : null}
                       collateralToken={"OVL"}
                       quotePrice={"-"}
