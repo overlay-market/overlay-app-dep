@@ -18,7 +18,7 @@ export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15
 // v1-core contract addresses
 export const V1_PERIPHERY_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5', // TO-DO: Change
-  [ChainId.KOVAN]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5',
+  [ChainId.KOVAN]: '0x06C76062730aD18aBdc3C9198b3EB283f7bb3627',
   [ChainId.RINKEBY]: '0x11495884878A38709959e1102Ba0e559BE826F4e'
 };
 
