@@ -133,11 +133,11 @@ export const BuildInterface = ({
   const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined;
 
   const ois = useMarketOi(marketId);
-  const oiLong = ois && ois[0] ? formatWeiToParsedNumber(ois[0], 18, 2) : null;
-  const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 2) : null;
+  const oiLong = ois && ois[0] ? formatWeiToParsedNumber(ois[0], 18, 4) : null;
+  const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 4) : null;
 
   const capOiResult = useMarketCapOi(marketId);
-  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 2) : null;
+  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 4) : null;
 
   const peripheryContract = useV1PeripheryContract();
   
