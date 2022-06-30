@@ -121,6 +121,24 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
+          Price Impact
+        </PositionDetailType>
+        <DetailValue> 
+          -
+        </DetailValue>
+      </AdditionalDetailRow>
+
+      <AdditionalDetailRow>
+        <PositionDetailType> 
+          Est. Received Price
+        </PositionDetailType>
+        <DetailValue> 
+          -
+        </DetailValue>
+      </AdditionalDetailRow>
+
+      <AdditionalDetailRow>
+        <PositionDetailType> 
           Est. Liquidation Price
         </PositionDetailType>
         <DetailValue> 
