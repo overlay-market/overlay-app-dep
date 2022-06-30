@@ -40,6 +40,8 @@ import { useMarketCapOi } from "../../hooks/useMarketCapOi";
 import { useEstimatedBuildOi } from "../../hooks/useEstimatedBuildOi"
 import { useEstimatedBuildLiquidationPrice } from "../../hooks/useEstimatedBuildLiquidationPrice";
 import { useMarketName } from "../../hooks/useMarketName";
+import { useFractionOfCapOi } from "../../hooks/useFractionOfCapOi";
+import { useBid } from "../../hooks/useBid";
 import { OVL_TOKEN_ADDRESS } from "../../constants/addresses";
 import Loader from "../../components/Loaders/Loaders";
 
@@ -303,7 +305,10 @@ export const BuildInterface = ({
   
   const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong);
   const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 18) : null;
-  
+
+  const estimatedFractionOfCapOi = useFractionOfCapOi(market?.id, estimatedOiResult);
+  const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi);
+
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : null;
 
