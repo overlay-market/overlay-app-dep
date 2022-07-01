@@ -507,6 +507,8 @@ export const BuildInterface = ({
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
+        estimatedBid={estimatedBid}
+        estimatedAsk={estimatedAsk}
         marketPrice={!isLong ? prices.bid : prices.ask}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}

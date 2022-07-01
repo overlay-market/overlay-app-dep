@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { X } from "react-feather";
 import Modal from "../Modal/Modal";
 import { TEXT } from "../../theme/theme";
@@ -5,6 +6,8 @@ import { TriggerActionButton as TriggerConfirmBuildButton, PendingActionButton a
 import { AdditionalDetailRow } from "../../pages/Positions/Unwind";
 import { FlexColumn } from "../Container/Container";
 import { ModalContent, WalletHeader, CloseIcon } from "../ConnectWalletModal/ConnectWalletModal";
+import { formatWeiToParsedNumber } from "../../utils/formatWei";
+import { BigNumber, BigNumberish } from "ethers";
 import Loader from "../Loaders/Loaders";
 
 export default function ConfirmTxnModal({
@@ -17,6 +20,8 @@ export default function ConfirmTxnModal({
   onConfirm,
   onDismiss,
   expectedOi,
+  estimatedBid,
+  estimatedAsk,
   marketPrice,
   setSlippageValue,
   selectedLeverage,
@@ -34,6 +39,8 @@ export default function ConfirmTxnModal({
   onConfirm?: () => void;
   onDismiss?: () => void;
   expectedOi?: number | string | null;
+  estimatedBid?: BigNumberish
+  estimatedAsk?: BigNumberish
   marketPrice: string | undefined;
   setSlippageValue: string;
   selectedLeverage: string;
@@ -42,8 +49,12 @@ export default function ConfirmTxnModal({
   transactionHash?: any
   transactionErrorMessage?: any
 }) {
-  // console.log('transactionHash in ConfirmTxnModal: ', transactionHash);
-  // console.log('transactionErrorMessage: ', transactionErrorMessage);
+
+  const price = useMemo(() => {
+    if (isLong === undefined) return null;
+    if (estimatedBid === undefined || estimatedAsk === undefined) return null;
+    return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
+  }, [isLong, estimatedBid, estimatedAsk])
   
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={"350px"}>
@@ -76,7 +87,7 @@ export default function ConfirmTxnModal({
             <AdditionalDetailRow
               detail={"Price"}
               detailColor={"#B9BABD"}
-              value={marketPrice ? marketPrice : "loading..."}
+              value={price ? price : "loading..."}
             />
   
             <AdditionalDetailRow
