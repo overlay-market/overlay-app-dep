@@ -480,6 +480,7 @@ export const BuildInterface = ({
         isInverseMarket={isInverseMarket}
         baseToken={baseToken === 'loading' ? null : baseToken}
         quoteToken={quoteToken === 'loading' ? null : quoteToken}
+        typedValue={typedValue}
         isLong={isLong}
         estimatedBid={estimatedBid}
         estimatedAsk={estimatedAsk}

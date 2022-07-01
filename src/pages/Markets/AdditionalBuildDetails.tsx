@@ -42,6 +42,7 @@ export const AdditionalDetails = ({
   isLong,
   baseToken,
   quoteToken,
+  typedValue,
   estimatedBid,
   estimatedAsk,
   bidPrice,
@@ -61,6 +62,7 @@ export const AdditionalDetails = ({
   isLong?: boolean;
   baseToken?: string;
   quoteToken?: string;
+  typedValue?: string;
   estimatedBid?: any;
   estimatedAsk?: any;
   bidPrice?: string | number | any;
@@ -84,16 +86,14 @@ export const AdditionalDetails = ({
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null;
-    if (isLong === undefined || bidPrice === undefined || askPrice === undefined) return null;
+    if (!typedValue || isLong === undefined || bidPrice === undefined || askPrice === undefined) return null;
     if (bidPrice === 'loading' || askPrice === 'loading') return <Loader stroke="white" size="12px" />;
 
     const priceImpactValue = isLong ? estimatedReceivedPrice - askPrice : bidPrice - estimatedReceivedPrice;
     const priceImpactPercentage = isLong ? (priceImpactValue / askPrice) * 100 : (priceImpactValue / bidPrice) * 100;
 
     return priceImpactPercentage.toFixed(2);
-  }, [estimatedReceivedPrice, isLong, bidPrice, askPrice]);
-
-  console.log('priceImpact: ', priceImpact);
+  }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice]);
 
   return (
     <ContentContainer>
