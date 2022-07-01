@@ -76,18 +76,12 @@ const Liquidate = () => {
 
   const positionsCallData = useMemo(() => {
     if (positions === undefined || !positions) return [];
-
-    return positions.map((position) => {
-      return [position.market.id, position.owner.id, position.positionId]
-    })
-  }, [positions])
+    return positions.map((position: any) => [position.market.id, position.owner.id, position.positionId])
+  }, [positions]);
 
   const isLiquidatedPositions = useMemo(() => {
     if (positions === undefined || !positions) return [];
-
-    return positions.map((position) => {
-      return position.isLiquidated;
-    })
+    return positions.map((position: any) => position.isLiquidated)
   }, [positions])
 
   const peripheryContract = useV1PeripheryContract();
@@ -99,7 +93,6 @@ const Liquidate = () => {
   const liquidatablePositions = useMemo(() => {
     return fetchLiquidatablePositions.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
-
       return position?.result?.liquidatable_;
     })
   }, [fetchLiquidatablePositions, blockNumber]);
@@ -108,7 +101,6 @@ const Liquidate = () => {
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
-
       return position?.result?.value_;
     })
   }, [fetchPositionValues, blockNumber])
@@ -116,7 +108,6 @@ const Liquidate = () => {
   const liquidationFees = useMemo(() => {
     return fetchLiquidationFees.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
-
       return position?.result?.liquidationFee_;
     })
   }, [fetchLiquidationFees, blockNumber])
@@ -124,7 +115,6 @@ const Liquidate = () => {
   const maintenanceMargins = useMemo(() => {
     return fetchMaintenanceMargins.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
-
       return position?.result?.maintenanceMargin_;
     })
   }, [fetchMaintenanceMargins, blockNumber])

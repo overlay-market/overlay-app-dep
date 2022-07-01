@@ -9,7 +9,7 @@ export default function NumberSpring(inputValue?: number, text?: string) {
     return (
       <>
         <animated.div>
-          {props.value.interpolate((x) => (x as number).toFixed(2))} 
+          {props.value.interpolate((x) => (x as number).toFixed(4))} 
         </animated.div>
         &nbsp;
         {text}

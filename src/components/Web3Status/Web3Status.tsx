@@ -178,6 +178,7 @@ function Web3StatusInner() {
 
   const isUnsupportedChainIdError = error instanceof UnsupportedChainIdError;
   const ovlBalance = useOvlBalance();
+
   const toggleWalletModal = useWalletModalToggle();
 
   if (account) {
@@ -196,7 +197,7 @@ function Web3StatusInner() {
       )}
 
       {account && chainId && ovlBalance && (
-        <TokenBalance balance={Number(ovlBalance?.toFixed(2))} network={NETWORK_LABELS[chainId]} />
+        <TokenBalance balance={Number(ovlBalance?.toFixed(4))} network={NETWORK_LABELS[chainId]} />
       )}
 
       {account && chainId && !ovlBalance && (
