@@ -104,6 +104,7 @@ const Liquidate = () => {
     })
   }, [fetchLiquidatablePositions, blockNumber]);
 
+
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
@@ -171,7 +172,7 @@ const Liquidate = () => {
                               </LoadingContainer>
                           )
                         }
-                        if (maintenanceMargin && maintenanceMargin !== 0 && !isLiquidated) {
+                        if (position && maintenanceMargin && maintenanceMargin !== 0 && !isLiquidated) {
                           return (
                             <StyledTableRow hover={false}>
                               <StyledTableCellThin component="th" scope="row">
