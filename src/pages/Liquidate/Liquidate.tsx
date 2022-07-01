@@ -10,7 +10,11 @@ import { useV1PeripheryContract } from '../../hooks/useContract';
 import { useSingleContractMultipleData } from '../../state/multicall/hooks';
 import { useBlockNumber } from '../../state/application/hooks';
 import { useLiquidateCallback } from '../../hooks/useLiquidateCallback';
+import { shortenAddress } from '../../utils/web3';
+import { getExplorerLink, ExplorerDataType } from '../../utils/getExplorerLink';
+import { useActiveWeb3React } from '../../hooks/web3';
 import Loader from '../../components/Loaders/Loaders';
+import { ExternalLink } from '../../components/ExternalLink/ExternalLink';
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -72,6 +76,7 @@ const LiquidateButton = ({
 }
 const Liquidate = () => {
   const { positions } = useAllPositions();
+  const { chainId } = useActiveWeb3React();
   const blockNumber = useBlockNumber();
 
   const positionsCallData = useMemo(() => {
@@ -85,18 +90,17 @@ const Liquidate = () => {
   }, [positions])
 
   const peripheryContract = useV1PeripheryContract();
-  const fetchLiquidatablePositions = useSingleContractMultipleData(peripheryContract, "liquidatable", positionsCallData);
+  const fetchCheckLiquidatablePositions = useSingleContractMultipleData(peripheryContract, "liquidatable", positionsCallData);
   const fetchPositionValues = useSingleContractMultipleData(peripheryContract, "value", positionsCallData);
   const fetchLiquidationFees = useSingleContractMultipleData(peripheryContract, "liquidationFee", positionsCallData);
   const fetchMaintenanceMargins = useSingleContractMultipleData(peripheryContract, "maintenanceMargin", positionsCallData);
 
   const liquidatablePositions = useMemo(() => {
-    return fetchLiquidatablePositions.map((position, index) => {
+    return fetchCheckLiquidatablePositions.map((position, index) => {
       if (position.loading === true || position === undefined || !blockNumber) return undefined;
       return position?.result?.liquidatable_;
     })
-  }, [fetchLiquidatablePositions, blockNumber]);
-
+  }, [fetchCheckLiquidatablePositions, blockNumber]);
 
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
@@ -120,7 +124,7 @@ const Liquidate = () => {
   }, [fetchMaintenanceMargins, blockNumber])
 
   return (
-      <PageContainer maxWidth={'420px'}>
+      <PageContainer maxWidth={'800px'}>
         <PageHeader> 
           {/* Liquidatable Positions  */}
         </PageHeader>
@@ -128,19 +132,27 @@ const Liquidate = () => {
               <StyledTable>
                   <TableHead>
                       <StyledTableHeaderRow>
-                          <StyledHeaderCell width={25}>
+                          <StyledHeaderCell width={20}>
+                              Market
+                          </StyledHeaderCell>
+
+                          <StyledHeaderCell width={10}>
+                              Position ID
+                          </StyledHeaderCell>
+
+                          <StyledHeaderCell width={20}>
                               Maintenance
                           </StyledHeaderCell>
 
-                          <StyledHeaderCell width={25}>
+                          <StyledHeaderCell width={20}>
                               Value
                           </StyledHeaderCell>
 
-                          <StyledHeaderCell width={25}>
+                          <StyledHeaderCell width={20}>
                               Reward (est.)
                           </StyledHeaderCell>
 
-                          <StyledHeaderCell width={25}>
+                          <StyledHeaderCell width={10}>
                           </StyledHeaderCell>  
                       </StyledTableHeaderRow>
 
@@ -165,6 +177,18 @@ const Liquidate = () => {
                         if (position && maintenanceMargin && maintenanceMargin !== 0 && !isLiquidated) {
                           return (
                             <StyledTableRow hover={false}>
+                              <StyledTableCellThin component="th" scope="row">
+                                { chainId && positionsCallData[key][0] && (
+                                  <ExternalLink href={getExplorerLink(chainId, positionsCallData[key][0], ExplorerDataType.ADDRESS)}>
+                                    { shortenAddress(positionsCallData[key][0]) }
+                                  </ExternalLink>
+                                )}
+                              </StyledTableCellThin>
+
+                              <StyledTableCellThin component="th" scope="row">
+                                { positionsCallData[key][2] }
+                              </StyledTableCellThin>
+
                               <StyledTableCellThin component="th" scope="row">
                                 {maintenanceMargin} OVL
                               </StyledTableCellThin>
