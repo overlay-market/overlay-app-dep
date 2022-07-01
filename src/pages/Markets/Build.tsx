@@ -317,6 +317,7 @@ export const BuildInterface = ({
   const estimatedReceivedPrice = useMemo(() => {
     if (isLong === undefined || prices.mid === undefined) return null;
     if (prices.mid === 'loading') return <Loader stroke="white" size="12px" />
+    // currently interface lagging when new input collateral received
     if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
   }, [prices, isLong, estimatedBid, estimatedAsk]);
