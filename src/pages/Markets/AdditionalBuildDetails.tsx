@@ -1,6 +1,8 @@
+import { useMemo } from "react";
 import styled from "styled-components";
 import { ProgressBar } from "../../components/ProgressBar/ProgressBar";
 import { FlexColumn, FlexRow } from "../../components/Container/Container";
+import { formatWeiToParsedNumber } from "../../utils/formatWei";
 import Loader from "../../components/Loaders/Loaders";
 
 const ContentContainer = styled(FlexColumn)`
@@ -37,8 +39,11 @@ export const DetailValue = styled.div<{ color?: string }>`
 
 export const AdditionalDetails = ({
   isInverseMarket,
+  isLong,
   baseToken,
   quoteToken,
+  estimatedBid,
+  estimatedAsk,
   bidPrice,
   askPrice,
   midPrice,
@@ -53,8 +58,11 @@ export const AdditionalDetails = ({
   estLiquidationPrice,
 }: {
   isInverseMarket?: boolean | null;
+  isLong?: boolean;
   baseToken?: string;
   quoteToken?: string;
+  estimatedBid?: any;
+  estimatedAsk?: any;
   bidPrice?: string | number;
   askPrice?: string | number;
   midPrice?: string | number;
@@ -68,6 +76,11 @@ export const AdditionalDetails = ({
   fundingRate?: string | number;
   estLiquidationPrice?: string | number;
 }) => {
+
+  const estimatedReceivedPrice = useMemo(() => {
+    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) return '-';
+    return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
+  }, [isLong, estimatedBid, estimatedAsk])
 
   return (
     <ContentContainer>
@@ -84,14 +97,6 @@ export const AdditionalDetails = ({
         </DetailValue>
       </AdditionalDetailRow>
 
-      <AdditionalDetailRow>
-        <PositionDetailType> 
-          Slippage Tolerance
-        </PositionDetailType>
-        <DetailValue> 
-          {slippageTolerance}% 
-        </DetailValue>
-      </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType> 
@@ -121,6 +126,15 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
+          Est. Received Price
+        </PositionDetailType>
+        <DetailValue> 
+          { estimatedReceivedPrice }
+        </DetailValue>
+      </AdditionalDetailRow>
+
+      <AdditionalDetailRow>
+        <PositionDetailType> 
           Price Impact
         </PositionDetailType>
         <DetailValue> 
@@ -130,10 +144,10 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType> 
-          Est. Received Price
+          Slippage Tolerance
         </PositionDetailType>
         <DetailValue> 
-          -
+          {slippageTolerance}% 
         </DetailValue>
       </AdditionalDetailRow>
 

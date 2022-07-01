@@ -311,8 +311,6 @@ export const BuildInterface = ({
   const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi);
   const estimatedAsk = useAsk(market?.id, estimatedFractionOfCapOi);
 
-  console.log('estimatedBid: ', estimatedBid);
-
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : null;
 
@@ -482,6 +480,9 @@ export const BuildInterface = ({
         isInverseMarket={isInverseMarket}
         baseToken={baseToken === 'loading' ? null : baseToken}
         quoteToken={quoteToken === 'loading' ? null : quoteToken}
+        isLong={isLong}
+        estimatedBid={estimatedBid}
+        estimatedAsk={estimatedAsk}
         bidPrice={prices.bid}
         askPrice={prices.ask}
         midPrice={prices.mid}
