@@ -313,21 +313,21 @@ export const BuildInterface = ({
 
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : null;
-
-  const slippageDelta = isLong ? 1 + (parseFloat(setSlippageValue) / 100) : 1 - (parseFloat(setSlippageValue) / 100);
-  const estimatedBuildPrice = prices.mid !== undefined && prices.mid !== 'loading' && isLong !== undefined ? 
-      isLong ? (parseFloat(prices.mid) * slippageDelta) : (parseFloat(prices.mid) * slippageDelta)
-      : undefined;
     
+  const estimatedReceivedPrice = useMemo(() => {
+    if (isLong === undefined || prices.mid === undefined) return null;
+    if (prices.mid === 'loading') return <Loader stroke="white" size="12px" />
+    if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
+    return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
+  }, [prices, isLong, estimatedBid, estimatedAsk]);
+
   const showUnderwaterFlow = useMemo(() => {
       if (prices.mid === undefined || prices.mid === 'loading' || !estimatedLiquidationPrice) return false;
-
       return isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid);
   }, [prices, isLong, estimatedLiquidationPrice]);
 
   const exceedOiCap = useMemo(() => {
       if (!oiLong || !oiShort || !capOi || !estimatedOi || isLong === undefined) return false;
-
       return isLong ? (estimatedOi + oiLong > capOi) : (estimatedOi + oiShort > capOi);
   }, [isLong, oiLong, oiShort, capOi, estimatedOi]);
 
@@ -360,7 +360,7 @@ export const BuildInterface = ({
             }
           </TEXT.BoldHeader1>
           <TEXT.StandardHeader1>
-            {prices.mid === 'loading' ?  <Loader stroke="white" size="12px" /> : prices.mid}
+            { estimatedReceivedPrice }
           </TEXT.StandardHeader1>
           <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
