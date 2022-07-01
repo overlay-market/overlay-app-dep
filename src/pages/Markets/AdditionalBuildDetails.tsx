@@ -63,8 +63,8 @@ export const AdditionalDetails = ({
   quoteToken?: string;
   estimatedBid?: any;
   estimatedAsk?: any;
-  bidPrice?: string | number;
-  askPrice?: string | number;
+  bidPrice?: string | number | any;
+  askPrice?: string | number | any;
   midPrice?: string | number;
   fee?: string | number;
   oiCap?: number | null;
@@ -78,9 +78,22 @@ export const AdditionalDetails = ({
 }) => {
 
   const estimatedReceivedPrice = useMemo(() => {
-    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) return '-';
+    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) return null;
     return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
   }, [isLong, estimatedBid, estimatedAsk])
+
+  const priceImpact = useMemo(() => {
+    if (!estimatedReceivedPrice) return null;
+    if (isLong === undefined || bidPrice === undefined || askPrice === undefined) return null;
+    if (bidPrice === 'loading' || askPrice === 'loading') return <Loader stroke="white" size="12px" />;
+
+    const priceImpactValue = isLong ? estimatedReceivedPrice - askPrice : bidPrice - estimatedReceivedPrice;
+    const priceImpactPercentage = isLong ? (priceImpactValue / askPrice) * 100 : (priceImpactValue / bidPrice) * 100;
+
+    return priceImpactPercentage.toFixed(2);
+  }, [estimatedReceivedPrice, isLong, bidPrice, askPrice]);
+
+  console.log('priceImpact: ', priceImpact);
 
   return (
     <ContentContainer>
@@ -129,7 +142,7 @@ export const AdditionalDetails = ({
           Est. Received Price
         </PositionDetailType>
         <DetailValue> 
-          { estimatedReceivedPrice }
+          { estimatedReceivedPrice ? estimatedReceivedPrice : '-' }
         </DetailValue>
       </AdditionalDetailRow>
 
@@ -138,7 +151,7 @@ export const AdditionalDetails = ({
           Price Impact
         </PositionDetailType>
         <DetailValue> 
-          -
+          { priceImpact ? `${priceImpact}%` : `-` }
         </DetailValue>
       </AdditionalDetailRow>
 
