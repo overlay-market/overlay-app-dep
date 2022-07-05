@@ -179,7 +179,7 @@ export const AdditionalDetails = ({
         </PositionDetailType>
         <DetailValue> 
           {expectedOi && baseToken && quoteToken ? 
-            expectedOi + ' ' + (isInverseMarket ? baseToken : quoteToken)
+            expectedOi + ' ' + (isInverseMarket ? quoteToken : baseToken)
             : '-'
           } 
         </DetailValue>

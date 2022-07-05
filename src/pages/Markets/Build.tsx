@@ -480,7 +480,7 @@ export const BuildInterface = ({
               isDisabled={true}
               disabled={true}
               >
-              Slippage too high
+              Slippage Too High
            </TriggerBuildButton>
           ) : exceedOiCap ? (
             <TriggerBuildButton
