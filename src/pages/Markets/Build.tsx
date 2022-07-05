@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
-import { utils } from "ethers";
+import { utils, BigNumberish } from "ethers";
 import { Label, Input } from "@rebass/forms";
 import { Sliders, X } from "react-feather";
 import { MarketCard } from "../../components/Card/MarketCard";
@@ -148,7 +148,14 @@ export const BuildInterface = ({
   const fetchPrices = useSingleCallResult(peripheryContract, 'prices', [marketId])
   const fetchFundingRate = useSingleCallResult(peripheryContract, 'fundingRate', [marketId])
   
-  const prices = useMemo(() => {
+  const prices: {
+    bid?: string | number | any
+    ask?: string | number | any
+    mid?: string | number | any
+    _bid?: BigNumberish
+    _ask?: BigNumberish
+    _mid?: BigNumberish
+  } = useMemo(() => {
     if (fetchPrices.loading === true || !fetchPrices.result) return {bid: 'loading', ask: 'loading', mid: 'loading'};
     return {
       bid: formatWeiToParsedNumber(fetchPrices.result?.bid_, 18, 2)?.toString(),
@@ -315,12 +322,29 @@ export const BuildInterface = ({
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5) : null;
     
   const estimatedReceivedPrice = useMemo(() => {
-    if (isLong === undefined || prices.mid === undefined) return null;
-    if (prices.mid === 'loading') return <Loader stroke="white" size="12px" />
-    // currently interface lagging when new input collateral received
-    if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
+    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) return null;
+    // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
-  }, [prices, isLong, estimatedBid, estimatedAsk]);
+  }, [isLong, estimatedBid, estimatedAsk]);
+
+  // const estimatedReceivedPrice = useMemo(() => {
+  //   if (isLong === undefined || prices.mid === undefined) return null;
+  //   if (prices.mid === 'loading') return <Loader stroke="white" size="12px" />
+  //   // currently interface lagging when new input collateral received
+  //   if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
+  //   return isLong ? formatWeiToParsedNumber(estimatedAsk, 18, 2) : formatWeiToParsedNumber(estimatedBid, 18, 2);
+  // }, [prices, isLong, estimatedBid, estimatedAsk]);
+
+  const priceImpact = useMemo(() => {
+    if (!estimatedReceivedPrice) return null;
+    if (!typedValue || isLong === undefined || prices.bid === undefined || prices.ask === undefined) return null;
+    if (prices.bid === 'loading' || prices.ask === 'loading') return <Loader stroke="white" size="12px" />;
+
+    const priceImpactValue = isLong ? estimatedReceivedPrice - prices.ask : prices.bid - estimatedReceivedPrice;
+    const priceImpactPercentage = isLong ? (priceImpactValue / prices.ask) * 100 : (priceImpactValue / prices.bid) * 100;
+
+    return priceImpactPercentage.toFixed(2);
+  }, [estimatedReceivedPrice, typedValue, isLong, prices.bid, prices.ask]);
 
   const showUnderwaterFlow = useMemo(() => {
       if (prices.mid === undefined || prices.mid === 'loading' || !estimatedLiquidationPrice) return false;
