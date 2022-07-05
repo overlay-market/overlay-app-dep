@@ -346,6 +346,12 @@ export const BuildInterface = ({
     return priceImpactPercentage.toFixed(2);
   }, [estimatedReceivedPrice, typedValue, isLong, prices.bid, prices.ask]);
 
+  const isSlippageTooHigh: boolean | null = useMemo(() => {
+    if (!estimatedReceivedPrice || !priceImpact) return null;
+    if (!setSlippageValue) return null;
+    return Number(priceImpact) - Number(setSlippageValue) > 0 ? true : false;
+  }, [estimatedReceivedPrice, priceImpact, setSlippageValue]);
+
   const showUnderwaterFlow = useMemo(() => {
       if (prices.mid === undefined || prices.mid === 'loading' || !estimatedLiquidationPrice) return false;
       return isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid);
@@ -467,6 +473,14 @@ export const BuildInterface = ({
               disabled={true}
               >
               Position Underwater
+           </TriggerBuildButton>
+          ) : isSlippageTooHigh ? (
+            <TriggerBuildButton
+              onClick={() => null}
+              isDisabled={true}
+              disabled={true}
+              >
+              Slippage too high
            </TriggerBuildButton>
           ) : exceedOiCap ? (
             <TriggerBuildButton
