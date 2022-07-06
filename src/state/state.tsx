@@ -3,7 +3,7 @@ import { save, load } from 'redux-localstorage-simple';
 import user from './user/reducer';
 import application from './application/reducer';
 import multicall from './multicall/reducer';
-import position from './positions/reducer';
+import build from './build/reducer';
 import unwind from './unwind/reducer';
 import transactions from './transactions/reducer';
 import markets from './markets/reducer';
@@ -18,7 +18,7 @@ const store = configureStore({
     application,
     user,
     multicall,
-    position,
+    build,
     unwind,
     transactions,
     markets,

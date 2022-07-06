@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { BuildInterface } from './Build';
-import { usePositionActionHandlers } from '../../state/positions/hooks';
+import { useBuildActionHandlers } from '../../state/build/hooks';
 import { InterfaceWrapper } from '../../components/Container/Container';
 
 export function Market({ match: {params: { marketId }}}: RouteComponentProps<{ marketId: string }>) {
-  const { onResetBuildState } = usePositionActionHandlers();
+  const { onResetBuildState } = useBuildActionHandlers();
 
   useEffect(() => {
     onResetBuildState();

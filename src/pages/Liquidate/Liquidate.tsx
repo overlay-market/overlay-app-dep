@@ -5,7 +5,7 @@ import { formatWeiToParsedNumber } from '../../utils/formatWei';
 import { TransparentButton } from '../../components/Button/Button';
 import { PageContainer } from "../../components/Container/Container";
 import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
-import { useAllPositions } from '../../state/positions/hooks';
+import { useAllPositions } from '../../state/build/hooks';
 import { useV1PeripheryContract } from '../../hooks/useContract';
 import { useSingleContractMultipleData } from '../../state/multicall/hooks';
 import { useBlockNumber } from '../../state/application/hooks';

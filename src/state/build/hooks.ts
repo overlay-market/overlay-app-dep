@@ -15,11 +15,11 @@ import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { useAccountQuery, usePositionsQuery } from "../data/generated";
 
-export function usePositionState(): AppState['position'] {
-  return useAppSelector((state) => state.position);
+export function useBuildState(): AppState['build'] {
+  return useAppSelector((state) => state.build);
 }
 
-export function usePositionActionHandlers(): {
+export function useBuildActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;
   onSelectLeverage: (selectedLeverage: string) => void;
   onSelectPositionSide: (isLong: boolean) => void;
@@ -94,7 +94,7 @@ export function useDerivedBuildInfo(): {
     isLong,
     setSlippageValue,
     txnDeadline
-  } = usePositionState();
+  } = useBuildState();
 
   let buildData: object | undefined;
 
@@ -154,7 +154,7 @@ export function tryParseAmount<T extends Currency>(value?: string, currency?: T)
 }
 
 export function useIsTxnSettingsAuto() : boolean {
-  const { setSlippageValue, txnDeadline } = useAppSelector(((state) => state.position));
+  const { setSlippageValue, txnDeadline } = useAppSelector(((state) => state.build));
 
   if (setSlippageValue === DefaultTxnSettings.DEFAULT_SLIPPAGE && txnDeadline === DefaultTxnSettings.DEFAULT_DEADLINE) return true;
   else return false;

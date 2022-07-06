@@ -5,7 +5,7 @@ import { utils, BigNumber } from "ethers";
 import { Button } from "rebass";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { MarketCard } from "../../components/Card/MarketCard";
-import { useAccountPositions } from "../../state/positions/hooks";
+import { useAccountPositions } from "../../state/build/hooks";
 import { useUnwindActionHandlers } from "../../state/unwind/hooks";
 import { PositionCard, PositionTableHeader } from "./PositionCard";
 import { useWalletModalToggle } from "../../state/application/hooks";

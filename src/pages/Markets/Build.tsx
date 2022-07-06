@@ -11,10 +11,10 @@ import { Icon } from "../../components/Icon/Icon";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { InfoTip } from "../../components/InfoTip/InfoTip";
 import { useAddPopup } from "../../state/application/hooks";
-import { usePositionState } from "../../state/positions/hooks";
-import { useDerivedBuildInfo } from "../../state/positions/hooks";
-import { DefaultTxnSettings } from "../../state/positions/actions";
-import { usePositionActionHandlers } from "../../state/positions/hooks";
+import { useBuildState } from "../../state/build/hooks";
+import { useDerivedBuildInfo } from "../../state/build/hooks";
+import { DefaultTxnSettings } from "../../state/build/actions";
+import { useBuildActionHandlers } from "../../state/build/hooks";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
 import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { formatWeiToParsedString, formatWeiToParsedNumber, formatFundingRateToDaily } from "../../utils/formatWei";
@@ -23,7 +23,7 @@ import { LeverageSlider } from "../../components/LeverageSlider/LeverageSlider";
 import { PopupType } from "../../components/SnackbarAlert/SnackbarAlert";
 import { TransactionSettingsModal } from "./TransactionSettingsModal";
 import { formatDecimalToPercentage } from "../../utils/formatDecimal";
-import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
+import { useIsTxnSettingsAuto } from "../../state/build/hooks";
 import { useEstimatedBuild } from "../../hooks/useEstimatedBuild";
 import { useBuildCallback } from "../../hooks/useBuildCallback";
 import { useAllMarkets } from "../../state/markets/hooks";
@@ -181,7 +181,7 @@ export const BuildInterface = ({
     typedValue,
     setSlippageValue,
     txnDeadline,
-  } = usePositionState();
+  } = useBuildState();
   const {
     onAmountInput,
     onSelectLeverage,
@@ -189,7 +189,7 @@ export const BuildInterface = ({
     onSetSlippage,
     onSetTxnDeadline,
     onResetBuildState,
-  } = usePositionActionHandlers();
+  } = useBuildActionHandlers();
 
   const handleResetTxnSettings = useCallback((e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE);

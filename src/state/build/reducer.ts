@@ -10,7 +10,7 @@ import {
   resetBuildState
 } from "./actions";
 
-export interface PositionState {
+export interface BuildState {
   readonly typedValue: string | undefined;
   readonly selectedLeverage: string;
   readonly isLong: boolean | undefined;
@@ -19,7 +19,7 @@ export interface PositionState {
   readonly txnDeadline: DefaultTxnSettings | string;
 }
 
-export const initialState: PositionState = {
+export const initialState: BuildState = {
   typedValue: "",
   selectedLeverage: "1",
   isLong: undefined,
@@ -28,7 +28,7 @@ export const initialState: PositionState = {
   txnDeadline: "30",
 };
 
-export default createReducer<PositionState>(initialState, (builder) =>
+export default createReducer<BuildState>(initialState, (builder) =>
   builder
     .addCase(typeInput, (state, { payload: { typedValue } }) => {
       state.typedValue = typedValue;

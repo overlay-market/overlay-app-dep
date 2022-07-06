@@ -11,7 +11,7 @@ import { usePositionInfo } from "../../hooks/usePositionInfo";
 import { formatDecimalPlaces } from "../../utils/formatDecimal";
 import { Accordion } from "../../components/Accordion/Accordion";
 import { useUnwindCallback } from "../../hooks/useUnwindCallback";
-import { useAccountPositions } from "../../state/positions/hooks";
+import { useAccountPositions } from "../../state/build/hooks";
 import { NumericalInputContainer, NumericalInputDescriptor } from "../Markets/Build";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
@@ -30,10 +30,10 @@ import { useMarketPrice } from "../../hooks/useMarketPrices";
 import { Icon } from "../../components/Icon/Icon";
 import { Sliders, X } from "react-feather";
 import { TransactionSettingsModal } from "../Markets/TransactionSettingsModal";
-import { usePositionState } from "../../state/positions/hooks";
-import { usePositionActionHandlers } from "../../state/positions/hooks";
-import { DefaultTxnSettings } from "../../state/positions/actions";
-import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
+import { useBuildState } from "../../state/build/hooks";
+import { useBuildActionHandlers } from "../../state/build/hooks";
+import { DefaultTxnSettings } from "../../state/build/actions";
+import { useIsTxnSettingsAuto } from "../../state/build/hooks";
 import { PercentageSlider } from "../../components/PercentageSlider/PercentageSlider";
 import { useMarketName } from "../../hooks/useMarketName";
 import { useFractionOfCapOi } from "../../hooks/useFractionOfCapOi";
@@ -84,7 +84,7 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
   const { error, isLoading, positions } = useAccountPositions(account);
   const { typedValue, selectedPositionId } = useUnwindState();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
-  const { setSlippageValue, txnDeadline } = usePositionState();
+  const { setSlippageValue, txnDeadline } = useBuildState();
 
   const filtered = positions?.filter((index, key) => index.id === marketPositionId);
 
