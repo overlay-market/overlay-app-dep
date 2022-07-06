@@ -36,6 +36,9 @@ import { DefaultTxnSettings } from "../../state/positions/actions";
 import { useIsTxnSettingsAuto } from "../../state/positions/hooks";
 import { PercentageSlider } from "../../components/PercentageSlider/PercentageSlider";
 import { useMarketName } from "../../hooks/useMarketName";
+import { useFractionOfCapOi } from "../../hooks/useFractionOfCapOi";
+import { useBid } from "../../hooks/useBid";
+import { useAsk } from "../../hooks/useAsk";
 import Loader from "../../components/Loaders/Loaders";
 
 const ControlInterfaceContainer = styled(FlexColumn)`
@@ -102,10 +105,30 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
   const liquidationPriceResult = useLiquidationPrice(position?.market.id, positionId);
   const liquidationPrice = liquidationPriceResult && formatWeiToParsedNumber(liquidationPriceResult, 18, 2);
 
+  const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi);
+  const estimatedBid = useBid(position?.market.id, fractionOfCapOi);
+  const estimatedAsk = useAsk(position?.market.id, fractionOfCapOi);
+
+  const estimatedReceivedPrice = useMemo(() => {
+    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) return null;
+    // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
+    return isLong ? formatWeiToParsedNumber(estimatedBid, 18, 2) : formatWeiToParsedNumber(estimatedAsk, 18, 2);
+  }, [isLong, estimatedBid, estimatedAsk]);
+
   const prices = useMarketPrice(position?.market.id);
   
   const bidPrice = prices ? formatWeiToParsedNumber(prices.bid_, 18, 2) : null;
   const askPrice = prices ? formatWeiToParsedNumber(prices.ask_, 18, 2) : null;
+  
+  const priceImpact = useMemo(() => {
+    if (!estimatedReceivedPrice) return null;
+    if (!typedValue || isLong === undefined || !bidPrice || !askPrice) return null;
+
+    const priceImpactValue = isLong ? estimatedReceivedPrice - askPrice :  bidPrice - estimatedReceivedPrice;
+    const priceImpactPercentage = isLong ? (priceImpactValue / askPrice) * 100 : (priceImpactValue / bidPrice) * 100;
+
+    return priceImpactPercentage.toFixed(2);
+  }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice]);
   
   const PnL = cost && value ? value.sub(cost) : null;
   const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0;
@@ -343,6 +366,14 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
           <AdditionalDetailRow 
             detail={"Current Price"} 
             value={ bidPrice && askPrice ? (isLong ? bidPrice : askPrice) : 'loading'} 
+          />
+          <AdditionalDetailRow 
+            detail={"Est. Received Price"} 
+            value={ estimatedReceivedPrice ? estimatedReceivedPrice : 'loading'} 
+          />
+          <AdditionalDetailRow 
+            detail={"Price Impact"} 
+            value={ priceImpact ? `${priceImpact}%` : '-'} 
           />
           <AdditionalDetailRow 
             detail={"Liquidation Price (est)"} 
