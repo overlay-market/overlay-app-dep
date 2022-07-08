@@ -82,9 +82,9 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false);
   const { account } = useActiveWeb3React();
   const { error, isLoading, positions } = useAccountPositions(account);
-  const { typedValue, selectedPositionId } = useUnwindState();
+  const { typedValue, selectedPositionId, setSlippageValue, txnDeadline } = useUnwindState();
+  const { onAmountInput, onSelectPositionId, onSetSlippage, onSetTxnDeadline, onResetUnwindState } = useUnwindActionHandlers();
   const isTxnSettingsAuto = useIsTxnSettingsAuto();
-  const { setSlippageValue, txnDeadline } = useBuildState();
 
   const filtered = positions?.filter((index, key) => index.id === marketPositionId);
 
@@ -138,7 +138,6 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
       isLong ? (liquidationPrice > bidPrice) : (liquidationPrice < askPrice)
       : false;
 
-  const { onAmountInput, onSelectPositionId, onResetUnwindState, onSetSlippage, onSetTxnDeadline } = useUnwindActionHandlers();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, positionId, isLong, prices);
   
   useEffect(() => {

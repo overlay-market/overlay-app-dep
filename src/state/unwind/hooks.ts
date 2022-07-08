@@ -11,7 +11,7 @@ export function useUnwindState(): AppState['unwind'] {
 
 export function useUnwindActionHandlers(): {
   onAmountInput: (typedValue: string) => void;
-  onSelectPositionId: (selectedPosition: number | null) => void;
+  onSelectPositionId: (selectedPositionId: number | null) => void;
   onSetSlippage: (setSlippageValue: DefaultTxnSettings | string) => void;
   onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string) => void;
   onResetUnwindState: () => void;
