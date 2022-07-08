@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useMemo, useState } from "react";
 import styled from "styled-components";
 import { Label } from "@rebass/forms";
-import { BigNumber, utils } from "ethers";
+import { BigNumber, utils, BigNumberish } from "ethers";
 import { RouteComponentProps } from "react-router";
 import { TEXT } from "../../theme/theme";
 import { InterfaceWrapper } from "../../components/Container/Container";
@@ -115,10 +115,39 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
     return isLong ? formatWeiToParsedNumber(estimatedBid, 18, 2) : formatWeiToParsedNumber(estimatedAsk, 18, 2);
   }, [isLong, estimatedBid, estimatedAsk]);
 
-  const prices = useMarketPrice(position?.market.id);
-  
-  const bidPrice = prices ? formatWeiToParsedNumber(prices.bid_, 18, 2) : null;
-  const askPrice = prices ? formatWeiToParsedNumber(prices.ask_, 18, 2) : null;
+  const fetchPrices = useMarketPrice(position?.market.id);
+
+  // console.log('fetchPrices: ', fetchPrices);
+
+  const prices: {
+    bid?: string | number | any
+    ask?: string | number | any
+    mid?: string | number | any
+    _bid?: BigNumberish
+    _ask?: BigNumberish
+    _mid?: BigNumberish
+  } = useMemo(() => {
+    if (fetchPrices === undefined || !fetchPrices) return {
+      bid: 'loading', 
+      ask: 'loading', 
+      mid: 'loading',
+      _bid: undefined,
+      _asK: undefined,
+      _mid: undefined
+    };
+
+    return {
+      bid: formatWeiToParsedNumber(fetchPrices[0], 18, 2)?.toString(),
+      ask: formatWeiToParsedNumber(fetchPrices[1], 18, 2)?.toString(),
+      mid: formatWeiToParsedNumber(fetchPrices[2], 18, 2)?.toString(),
+      _bid: fetchPrices.bid_,
+      _ask: fetchPrices.ask_,
+      _mid: fetchPrices.mid_
+    }
+  }, [fetchPrices])
+
+  const bidPrice = fetchPrices ? formatWeiToParsedNumber(fetchPrices.bid_, 18, 2) : null;
+  const askPrice = fetchPrices ? formatWeiToParsedNumber(fetchPrices.ask_, 18, 2) : null;
   
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null;
@@ -141,6 +170,9 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
   const { unwindData, parsedAmount, inputError } = useDerivedUnwindInfo();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(unwindData, position?.market.id, typedValue, value, positionId, isLong, prices);
   
+  // console.log('unwindData: ', unwindData);
+  // console.log('prices: ', prices);
+
   useEffect(() => {
     onResetUnwindState();
   }, [positionId, onResetUnwindState]);

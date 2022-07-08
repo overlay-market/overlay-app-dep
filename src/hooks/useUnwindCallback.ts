@@ -52,22 +52,22 @@ function useUnwindCallArguments(
   const { account, chainId } = useActiveWeb3React();
   const marketContract = useMarketContract(marketAddress);
 
-  console.log('positionId: ', positionId === null);
-
-  if (!marketContract || unwindValue === "" || unwindValue === "." || positionCurrentValue === undefined || positionId === null || !account || isLong === undefined || prices === undefined) calldata = undefined;
+  if (!unwindData || !marketContract || unwindValue === "" || unwindValue === "." || positionCurrentValue === undefined || positionId === null || !account || isLong === undefined || prices._bid === undefined || prices._ask === undefined) calldata = undefined;
   else {
-    // OI has units of OVL / (quoteCurrency / baseCurrency) = OVL * baseCurrency / quoteCurrency
-    // let unwindValueBigNumber = utils.parseUnits(unwindValue);
-    // let parsedUnwindValue = unwindValueBigNumber.toString();
-    // let parsedCurrentValue = positionCurrentValue.toString();
-    // let fraction = Number(parsedUnwindValue) / Number(parsedCurrentValue);
+    let increasePercentage = Number(unwindData.setSlippageValue) + 100;
+    let decreasePercentage = 100 - Number(unwindData.setSlippageValue);
+    let increaseNumerator = BigNumber.from(increasePercentage).toHexString()
+    let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
+    let base = BigNumber.from(100).toHexString()
 
     let fraction = Number(unwindValue) / 100;
 
+    console.log('prices._bid.mul(decreaseNumerator).div(base): ', prices._bid.mul(decreaseNumerator).div(base));
+    
     calldata = marketContract.interface.encodeFunctionData("unwind", [
       BigNumber.from(positionId),
       utils.parseUnits(fraction.toString()),
-      isLong ? utils.parseUnits('0') : utils.parseUnits('10000000')
+      isLong ? prices._bid.mul(decreaseNumerator).div(base) : prices._ask.mul(increaseNumerator).div(base)
     ]
     )
   }
