@@ -39,6 +39,7 @@ enum UnwindCallbackState {
 }
 
 function useUnwindCallArguments(
+  unwindData: any | undefined,
   marketAddress: string | undefined,
   unwindValue: string,
   positionCurrentValue: BigNumber | undefined,
@@ -91,6 +92,7 @@ function useUnwindCallArguments(
 };
 
 export function useUnwindCallback(
+  unwindData: any,
   marketAddress: string | undefined,
   unwindValue: string,
   positionCurrentValue: BigNumber | undefined,
@@ -106,10 +108,10 @@ export function useUnwindCallback(
   const addPopup = useAddPopup();
   const currentTimeForId = currentTimeParsed();
   const addTransaction = useTransactionAdder();
-  const unwindCalls = useUnwindCallArguments(marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices);
+  const unwindCalls = useUnwindCallArguments(unwindData, marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices);
 
   return useMemo(() => {
-    if (!unwindValue || unwindValue === '.' || positionId === null || !library || !account || !chainId) {
+    if (!unwindData || !unwindValue || unwindValue === '.' || positionId === null || !library || !account || !chainId) {
       return {
         state: UnwindCallbackState.INVALID,
         callback: null,

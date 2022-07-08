@@ -15,7 +15,7 @@ import { useAccountPositions } from "../../state/build/hooks";
 import { NumericalInputContainer, NumericalInputDescriptor } from "../Markets/Build";
 import { useLiquidationPrice } from "../../hooks/useLiquidationPrice";
 import { NumericalInput } from "../../components/NumericalInput/NumericalInput";
-import { useUnwindState, useUnwindActionHandlers } from "../../state/unwind/hooks";
+import { useUnwindState, useUnwindActionHandlers, useDerivedUnwindInfo } from "../../state/unwind/hooks";
 import { formatWeiToParsedString, formatWeiToParsedNumber } from "../../utils/formatWei";
 import { FlexColumn, FlexRow } from "../../components/Container/Container";
 import { TransparentUnderlineButton, TriggerActionButton } from "../../components/Button/Button";
@@ -138,7 +138,8 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
       isLong ? (liquidationPrice > bidPrice) : (liquidationPrice < askPrice)
       : false;
 
-  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(position?.market.id, typedValue, value, positionId, isLong, prices);
+  const { unwindData, parsedAmount, inputError } = useDerivedUnwindInfo();
+  const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(unwindData, position?.market.id, typedValue, value, positionId, isLong, prices);
   
   useEffect(() => {
     onResetUnwindState();
