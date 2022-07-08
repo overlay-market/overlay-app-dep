@@ -153,8 +153,8 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
     if (!estimatedReceivedPrice) return null;
     if (!typedValue || isLong === undefined || !bidPrice || !askPrice) return null;
 
-    const priceImpactValue = isLong ? estimatedReceivedPrice - askPrice :  bidPrice - estimatedReceivedPrice;
-    const priceImpactPercentage = isLong ? (priceImpactValue / askPrice) * 100 : (priceImpactValue / bidPrice) * 100;
+    const priceImpactValue = isLong ? bidPrice - estimatedReceivedPrice :  estimatedReceivedPrice - askPrice;
+    const priceImpactPercentage = isLong ? (priceImpactValue / bidPrice) * 100 : (priceImpactValue / askPrice) * 100;
 
     return priceImpactPercentage.toFixed(2);
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice]);
@@ -169,9 +169,6 @@ export function Unwind({match: {params: { marketPositionId, positionId }}}: Rout
 
   const { unwindData, parsedAmount, inputError } = useDerivedUnwindInfo();
   const { callback: unwindCallback, error: unwindCallbackError } = useUnwindCallback(unwindData, position?.market.id, typedValue, value, positionId, isLong, prices);
-  
-  // console.log('unwindData: ', unwindData);
-  // console.log('prices: ', prices);
 
   useEffect(() => {
     onResetUnwindState();
