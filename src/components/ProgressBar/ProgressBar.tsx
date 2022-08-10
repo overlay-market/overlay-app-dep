@@ -17,7 +17,7 @@ const ProgressBackground = styled.div`
 `
 
 const Bar = styled.div<{width?: number; color: string}>`
-  height: 8px;
+  height: 6px;
   border-radius: 30px;
   background-image: linear-gradient(
     to bottom,
@@ -45,8 +45,7 @@ export const ProgressBar = ({
   margin?: string | undefined
 }) => {
   const [progressValue, setProgressValue] = useState(0)
-
-  let currentPercentage = max && value ? (value / max) * 100 : 0
+  const currentPercentage = max && value ? (value / max) * 100 : 0
 
   useEffect(() => {
     if (progressValue !== currentPercentage) {
