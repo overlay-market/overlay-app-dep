@@ -55,9 +55,8 @@ export function useMarketNames(feedAddresses: any) {
 
   const baseTokenAddresses = useMemo(() => {
     if (baseTokens === []) return []
-
     return baseTokens.map(token => {
-      let address = token?.result && token.result[0]
+      const address = token?.result && token.result[0]
       return address
     })
   }, [baseTokens])
@@ -66,7 +65,7 @@ export function useMarketNames(feedAddresses: any) {
     if (quoteTokens === []) return []
 
     return quoteTokens.map(token => {
-      let address = token?.result && token.result[0]
+      const address = token?.result && token.result[0]
       return address
     })
   }, [quoteTokens])

@@ -18,7 +18,7 @@ export const HeaderContainer = styled.div`
   display: flex;
   flex-direction: row;
   width: auto;
-  max-width: 900px;
+  max-width: 1200px;
   margin: auto;
   padding: 24px 16px 24px;
   position: sticky;

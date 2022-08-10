@@ -72,21 +72,17 @@ const Markets = () => {
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
-                <Trans> Market </Trans>
+                <Trans>Market</Trans>
               </StyledHeaderCell>
-
               <StyledHeaderCell>
                 <Trans> Price </Trans>
               </StyledHeaderCell>
-
               <StyledHeaderCell>
                 <Trans> OI Long </Trans>
               </StyledHeaderCell>
-
               <StyledHeaderCell>
                 <Trans> OI Short </Trans>
               </StyledHeaderCell>
-
               <StyledHeaderCell>
                 <Trans> Funding Rate </Trans>
               </StyledHeaderCell>
@@ -143,7 +139,7 @@ const Markets = () => {
                       value={ois[index]?.oiLong}
                       max={capOis[index]}
                       color={'#10DCB1'}
-                      width={'88px'}
+                      // width={'88px'}
                       margin={'0'}
                     />
                   </FlexColumn>
@@ -168,7 +164,7 @@ const Markets = () => {
                       value={ois[index]?.oiShort}
                       max={capOis[index]}
                       color={'#DC1F4E'}
-                      width={'88px'}
+                      // width={'88px'}
                       margin={'0'}
                     />
                   </FlexColumn>
