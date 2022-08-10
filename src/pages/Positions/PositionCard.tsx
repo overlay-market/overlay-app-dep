@@ -100,7 +100,8 @@ export const PositionCard = ({
   navigate?: boolean;
   hasBorder?: boolean;
 }) => {
-  let parsedLeverage = Number(leverage).toFixed(1);
+  const parsedLeverage = Number(leverage).toFixed(1);
+
   const PnL = useMemo(() => {
     if (positionValue === null || positionValue === undefined || positionCost === null || positionCost === undefined) return null;
     return positionValue - positionCost;
