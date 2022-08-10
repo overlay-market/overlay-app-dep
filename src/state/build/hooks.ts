@@ -176,18 +176,21 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
   return [isAuto, toggleSetTxnSettingsAuto];
 };
 
-export function useAccountPositions(
-  address: string | null | undefined
+export function useQuerySubgraphAccountPositions(
+  address: string | null | undefined,
+  blockNumber?: number | undefined
 ) {
-  let accountAddress = address ? address.toLowerCase() : "";
+  const accountAddress = address ? address.toLowerCase() : "";
 
+  // polling interval in ms
+  // 1 s = 1000ms
   const {
     isLoading,
     isError,
     error,
     isUninitialized,
     data
-  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 1000 })
+  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 14000 })
 
   return useMemo(() => {
     return {
@@ -197,7 +200,7 @@ export function useAccountPositions(
       isUninitialized,
       positions: data?.account?.positions
     } 
-  }, [ isLoading, isError, error, isUninitialized, data ])
+  }, [isLoading, isError, error, isUninitialized, data])
 };
 
 
@@ -208,7 +211,7 @@ export function useAllPositions() {
     error,
     isUninitialized,
     data
-  } = usePositionsQuery({}, { pollingInterval: 1000 })
+  } = usePositionsQuery({}, { pollingInterval: 14000 })
 
   return useMemo(() => {
     return {

@@ -4,7 +4,7 @@ import Loader from 'react-loader-spinner'
 import {Button} from 'rebass'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {MarketCard} from '../../components/Card/MarketCard'
-import {useAccountPositions} from '../../state/build/hooks'
+import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
 import {useWalletModalToggle} from '../../state/application/hooks'
@@ -72,9 +72,7 @@ export const Positions = () => {
   const blockNumber = useBlockNumber()
   const {onResetUnwindState} = useUnwindActionHandlers()
   const {account} = useActiveWeb3React()
-  const {isLoading, positions} = useAccountPositions(
-    account ? account : undefined,
-  )
+  const {isLoading, positions} = useQuerySubgraphAccountPositions(account)
 
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return []
