@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react';
-import { NavLink, useLocation, useHistory } from 'react-router-dom';
-import styled from 'styled-components/macro';
-import { Trans } from '@lingui/macro';
-import { Image } from 'rebass';
-import { useDarkModeManager } from '../../state/user/hooks';
-import { FlexRow } from '../Container/Container';
-import { enableLock, disableLock } from '../../utils/scrollLock';
-import More from '../More/More';
-import Burger from '../Hamburger/Hamburger';
-import SlideMenu from '../SlideMenu/SlideMenu';
-import Web3Status from '../Web3Status/Web3Status';
-import OverlayLogo from '../../assets/images/overlay-logo.png';
-import LightOverlayLogo from '../../assets/images/overlay-logo-light.png';
+import {useState, useEffect} from 'react'
+import {NavLink, useLocation, useHistory} from 'react-router-dom'
+import styled from 'styled-components/macro'
+import {Trans} from '@lingui/macro'
+import {Image} from 'rebass'
+import {useDarkModeManager} from '../../state/user/hooks'
+import {FlexRow} from '../Container/Container'
+import {enableLock, disableLock} from '../../utils/scrollLock'
+import More from '../More/More'
+import Burger from '../Hamburger/Hamburger'
+import SlideMenu from '../SlideMenu/SlideMenu'
+import Web3Status from '../Web3Status/Web3Status'
+import OverlayLogo from '../../assets/images/overlay-logo.png'
+import LightOverlayLogo from '../../assets/images/overlay-logo-light.png'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
@@ -24,7 +24,7 @@ export const HeaderContainer = styled.div`
   position: sticky;
   z-index: 420;
 
-  ${({ theme }) => theme.mediaWidth.minSmall`
+  ${({theme}) => theme.mediaWidth.minSmall`
     width: auto;
     padding: 32px 16px 24px;
   `};
@@ -39,7 +39,7 @@ export const LogoContainer = styled.div`
 export const AccountContainer = styled(FlexRow)`
   width: auto;
   margin-left: auto;
-`;
+`
 
 const activeClassName = 'ACTIVE'
 
@@ -57,91 +57,82 @@ export const StyledLink = styled(NavLink).attrs({
     color: ${({theme}) => theme.text4};
   }
 
-  ${({ theme }) => theme.mediaWidth.minSmall`
+  ${({theme}) => theme.mediaWidth.minSmall`
     display: flex;
   `};
 `
 
 export default function Header() {
-  const [darkMode, toggleDarkMode] = useDarkModeManager();
-  
-  const [open, setOpen] = useState(false);
+  const [darkMode] = useDarkModeManager()
+  const [open, setOpen] = useState(false)
+  const history = useHistory()
+  const menuId = 'main-menu'
 
-  const history = useHistory();
-
-  const menuId = "main-menu";
-  
-  let location = useLocation().pathname;
+  let location = useLocation().pathname
 
   // close menu when at new route
   useEffect(() => {
     if (open) {
-      setOpen((open) => false)
-    };
-  }, [location])
+      setOpen(open => false)
+    }
+  }, [location, open])
 
   // disable scroll when mobile menu open
   useEffect(() => {
     if (open) {
-      enableLock();
+      enableLock()
     } else {
-      disableLock();
+      disableLock()
     }
-  }, [open]);
+  }, [open])
 
   const returnHome = () => {
-    history.push(`/markets`);
-  };
+    history.push(`/markets`)
+  }
 
   return (
     <HeaderContainer>
       <LogoContainer onClick={returnHome}>
         {darkMode ? (
-          <Image 
-            src={LightOverlayLogo} 
-            alt={'Overlay Logo Light'} 
+          <Image
+            src={LightOverlayLogo}
+            alt={'Overlay Logo Light'}
             height={'100%'}
             width={'100%'}
             minHeight={'32px'}
             minWidth={'32px'}
-            />
-          ) : (
-          <Image 
-            src={OverlayLogo} 
-            alt={'Overlay Logo'} 
+          />
+        ) : (
+          <Image
+            src={OverlayLogo}
+            alt={'Overlay Logo'}
             height={'100%'}
             width={'100%'}
             minHeight={'32px'}
             minWidth={'32px'}
-            />
-          )}
+          />
+        )}
       </LogoContainer>
 
       <StyledLink to={'/markets'}>
-        <Trans>
-          Markets
-        </Trans>
+        <Trans>Markets</Trans>
       </StyledLink>
 
       <StyledLink to={'/positions'}>
-        <Trans>
-          Positions
-        </Trans>
+        <Trans>Positions</Trans>
       </StyledLink>
 
       <StyledLink to={'/liquidate'}>
-        <Trans>
-          Liquidate
-        </Trans>
+        <Trans>Liquidate</Trans>
       </StyledLink>
 
       <AccountContainer>
-         <Web3Status/>
-         <More/>
-         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
+        <Web3Status />
+        <More />
+        <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
       </AccountContainer>
 
       <SlideMenu open={open} />
     </HeaderContainer>
-  );
-};
+  )
+}

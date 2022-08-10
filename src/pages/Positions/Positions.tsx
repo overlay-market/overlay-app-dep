@@ -1,21 +1,19 @@
-import { useMemo } from "react";
-import styled from "styled-components/macro";
-import Loader from "react-loader-spinner";
-import { utils, BigNumber } from "ethers";
-import { Button } from "rebass";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { MarketCard } from "../../components/Card/MarketCard";
-import { useAccountPositions } from "../../state/build/hooks";
-import { useUnwindActionHandlers } from "../../state/unwind/hooks";
-import { PositionCard, PositionTableHeader } from "./PositionCard";
-import { useWalletModalToggle } from "../../state/application/hooks";
-import { shortenAddress } from "../../utils/web3";
-import { useBlockNumber } from "../../state/application/hooks";
-import { useMarketNames } from "../../hooks/useMarketName";
-import { usePositionValues } from "../../hooks/usePositionValue";
-import { usePositionCosts } from "../../hooks/usePositionCost";
-import { useLiquidationPrices } from "../../hooks/useLiquidationPrice";
-import { usePositionOis } from "../../hooks/usePositionOi";
+import {useMemo} from 'react'
+import styled from 'styled-components/macro'
+import Loader from 'react-loader-spinner'
+import {Button} from 'rebass'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {MarketCard} from '../../components/Card/MarketCard'
+import {useAccountPositions} from '../../state/build/hooks'
+import {useUnwindActionHandlers} from '../../state/unwind/hooks'
+import {PositionCard, PositionTableHeader} from './PositionCard'
+import {useWalletModalToggle} from '../../state/application/hooks'
+import {useBlockNumber} from '../../state/application/hooks'
+import {useMarketNames} from '../../hooks/useMarketName'
+import {usePositionValues} from '../../hooks/usePositionValue'
+import {usePositionCosts} from '../../hooks/usePositionCost'
+import {useLiquidationPrices} from '../../hooks/useLiquidationPrice'
+import {usePositionOis} from '../../hooks/usePositionOi'
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +22,7 @@ const Container = styled.div`
   margin: 0 auto 32px;
   position: static;
   z-index: 0;
-`;
+`
 
 const PageHeader = styled.div`
   font-size: 20px;
@@ -37,12 +35,12 @@ const PageHeader = styled.div`
   ${({theme}) => theme.mediaWidth.minSmall`
     padding-top: 0px;
   `}
-`;
+`
 
 const PositionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-`;
+`
 
 const LoadingContainer = styled.div`
   display: flex;
@@ -51,56 +49,61 @@ const LoadingContainer = styled.div`
   ${({theme}) => theme.mediaWidth.minSmall`
     margin-top: 44px;
   `}
-`;
+`
 
 const ConnectWalletToggleText = styled(Button)`
   cursor: pointer;
   font-weight: 700;
   background: none;
-  border: 1px solid #12B4FF !important;
+  border: 1px solid #12b4ff !important;
   border-radius: 8px !important;
   padding: 16px 60px !important;
   color: white;
   margin-top: 16px !important;
 
   :hover {
-    color: #12B4FF;
-    box-shadow: 0 0px 5px #12B4FF;
+    color: #12b4ff;
+    box-shadow: 0 0px 5px #12b4ff;
   }
-`;
+`
 
 export const Positions = () => {
-  const toggleWalletModal = useWalletModalToggle();
-  const blockNumber = useBlockNumber();
-  const { onResetUnwindState } = useUnwindActionHandlers();
-  const { account } = useActiveWeb3React();
-  const { isLoading, positions } = useAccountPositions(account ? account : undefined);
-  
-  const feedAddresses = useMemo(() => {
-    if (positions === undefined) return [];
-    return positions.map((position) => position.market.feedAddress)
-  }, [positions]);
+  const toggleWalletModal = useWalletModalToggle()
+  const blockNumber = useBlockNumber()
+  const {onResetUnwindState} = useUnwindActionHandlers()
+  const {account} = useActiveWeb3React()
+  const {isLoading, positions} = useAccountPositions(
+    account ? account : undefined,
+  )
 
-  const { baseTokens, quoteTokens } = useMarketNames(feedAddresses);
+  const feedAddresses = useMemo(() => {
+    if (positions === undefined) return []
+    return positions.map(position => position.market.feedAddress)
+  }, [positions])
+
+  const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
 
   const positionsCallData = useMemo(() => {
-    if (!positions || positions === undefined || !account || !blockNumber) return [];
-    return positions.map((position) => [position.market.id, account, position.positionId])
+    if (!positions || positions === undefined || !account || !blockNumber)
+      return []
+    return positions.map(position => [
+      position.market.id,
+      account,
+      position.positionId,
+    ])
   }, [positions, account, blockNumber])
 
-  const values = usePositionValues(positionsCallData);
-  const costs = usePositionCosts(positionsCallData);
-  const liquidationPrices = useLiquidationPrices(positionsCallData);
-  const ois = usePositionOis(positionsCallData);
+  const values = usePositionValues(positionsCallData)
+  const costs = usePositionCosts(positionsCallData)
+  const liquidationPrices = useLiquidationPrices(positionsCallData)
+  const ois = usePositionOis(positionsCallData)
 
   return (
     <MarketCard>
       {onResetUnwindState()}
       <Container>
-        <PageHeader> 
-          Positions 
-        </PageHeader>
-        
+        <PageHeader>Positions</PageHeader>
+
         {account ? (
           <>
             <PositionTableHeader />
@@ -114,9 +117,9 @@ export const Positions = () => {
                     width={33}
                   />
                 </LoadingContainer>
-              ):(
+              ) : (
                 positions?.map((index, key) => {
-                  let position = index;
+                  let position = index
                   return (
                     <PositionCard
                       key={key.toString()}
@@ -127,21 +130,30 @@ export const Positions = () => {
                       quoteToken={`${quoteTokens[key]}`}
                       isLong={position.isLong}
                       leverage={position.leverage}
-                      positionValue={values[key] !== undefined ? values[key] : null}
-                      positionCost={costs[key] !== undefined ? costs[key] : null}
+                      positionValue={
+                        values[key] !== undefined ? values[key] : null
+                      }
+                      positionCost={
+                        costs[key] !== undefined ? costs[key] : null
+                      }
                       positionOi={ois[key] !== undefined ? ois[key] : null}
-                      collateralToken={"OVL"}
-                      quotePrice={"-"}
-                      quoteCurrency={"-"}
-                      estLiquidationPrice={liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'}
+                      collateralToken={'OVL'}
+                      quotePrice={'-'}
+                      quoteCurrency={'-'}
+                      estLiquidationPrice={
+                        liquidationPrices[key] !== undefined
+                          ? liquidationPrices[key]
+                          : 'loading...'
+                      }
                       navigate={true}
                       hasBorder={true}
                     />
-                  )})
+                  )
+                })
               )}
             </PositionsContainer>
           </>
-        ):(
+        ) : (
           <LoadingContainer>
             <ConnectWalletToggleText onClick={toggleWalletModal}>
               Connect to a wallet
@@ -150,7 +162,7 @@ export const Positions = () => {
         )}
       </Container>
     </MarketCard>
-  );
-};
+  )
+}
 
-export default Positions;
+export default Positions

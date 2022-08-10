@@ -1,35 +1,34 @@
-import styled from 'styled-components/macro';
-import { Label, Slider } from "@rebass/forms";
+import styled from 'styled-components/macro'
+import {Label, Slider} from '@rebass/forms'
 
 const SliderContainer = styled.div<{margin?: string}>`
   display: flex;
   flex-direction: column;
   width: 100%;
   margin: ${({margin}) => (margin ? margin : '0')};
-`;
+`
 
 const Header = styled.div`
   font-size: 16px;
   color: ${({theme}) => theme.text1};
-`;
+`
 
-const Value = styled.div`
-  font-size: 16px;
-  margin-left: auto;
-  color: ${({theme}) => theme.text1};
-`;
+// const Value = styled.div`
+//   font-size: 16px;
+//   margin-left: auto;
+//   color: ${({theme}) => theme.text1};
+// `;
 
-const Subheader = styled.div`
-  font-size: 12px;
-  color: ${({theme}) => theme.text1};
-  margin-left: 4px;
-`;
+// const Subheader = styled.div`
+//   font-size: 12px;
+//   color: ${({theme}) => theme.text1};
+//   margin-left: 4px;
+// `;
 
 const StyledLabel = styled(Label)`
   align-items: baseline;
   margin-bottom: 8px !important;
-`;
-
+`
 
 export const PercentageSlider = ({
   value,
@@ -41,7 +40,7 @@ export const PercentageSlider = ({
   step,
   margin,
   children,
-}:{
+}: {
   value: number
   liquidationPrice?: any
   onChange: React.ChangeEventHandler<HTMLInputElement>
@@ -52,16 +51,14 @@ export const PercentageSlider = ({
   margin?: string
   children?: React.ReactNode
 }) => {
-  return (  
+  return (
     <SliderContainer margin={margin}>
       <StyledLabel htmlFor={name}>
-        <Header>
-          {value}%
-        </Header>
+        <Header>{value}%</Header>
 
         {children}
       </StyledLabel>
-      <Slider 
+      <Slider
         value={value}
         name={name}
         min={min}
@@ -70,7 +67,7 @@ export const PercentageSlider = ({
         onChange={onChange}
         backgroundColor={'#F2F2F2'}
         color={'#12B4FF'}
-        />
+      />
     </SliderContainer>
   )
-};
+}

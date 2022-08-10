@@ -1,13 +1,12 @@
-import { useCallback, useEffect } from "react";
-import styled, { keyframes } from "styled-components";
-import { X as XIcon } from "react-feather";
-import { Icon } from "../Icon/Icon";
-import { animated, useSpring } from "react-spring";
-import TransactionPopup from "./TransactionPopup";
-import { FlexRow } from "../Container/Container";
-import { PopupType } from "../SnackbarAlert/SnackbarAlert";
-import { PopupContent } from "../../state/application/actions";
-import { useRemovePopup } from "../../state/application/hooks";
+import {useCallback, useEffect} from 'react'
+import styled from 'styled-components'
+import {X as XIcon} from 'react-feather'
+import {Icon} from '../Icon/Icon'
+import {animated, useSpring} from 'react-spring'
+import TransactionPopup from './TransactionPopup'
+import {FlexRow} from '../Container/Container'
+import {PopupContent} from '../../state/application/actions'
+import {useRemovePopup} from '../../state/application/hooks'
 
 const PopupContainer = styled.div`
   display: flex;
@@ -19,9 +18,9 @@ const PopupContainer = styled.div`
   z-index: 69420;
   margin-top: 4px;
   border-radius: 8px;
-  background: #3A3D48;
+  background: #3a3d48;
   overflow: hidden;
-`;
+`
 
 const Fader = styled.div`
   position: absolute;
@@ -29,10 +28,10 @@ const Fader = styled.div`
   left: 0px;
   width: 100%;
   height: 2px;
-  background-color: #12B4FF;
-`;
+  background-color: #12b4ff;
+`
 
-const AnimatedFader = animated(Fader);
+const AnimatedFader = animated(Fader)
 
 export default function Popup({
   removeAfterMs,
@@ -40,15 +39,18 @@ export default function Popup({
   popKey,
   title,
   children,
-}:{
-  removeAfterMs: number | null;
-  content: PopupContent;
-  popKey: string;
-  title?: string;
-  children?: React.ReactNode;
+}: {
+  removeAfterMs: number | null
+  content: PopupContent
+  popKey: string
+  title?: string
+  children?: React.ReactNode
 }) {
   const removePopup = useRemovePopup()
-  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup])
+  const removeThisPopup = useCallback(
+    () => removePopup(popKey),
+    [popKey, removePopup],
+  )
   useEffect(() => {
     if (removeAfterMs === null) return undefined
 
@@ -61,38 +63,49 @@ export default function Popup({
     }
   }, [removeAfterMs, removeThisPopup])
 
-  let popupContent;
+  let popupContent
 
-  console.log('content: ', content);
+  console.log('content: ', content)
 
   if ('txn' in content) {
     const {
-      txn: { hash, success, summary, info },
+      txn: {hash, success, summary, info},
     } = content
-    popupContent = <TransactionPopup hash={hash} info={info} success={success} summary={summary} />
+    popupContent = (
+      <TransactionPopup
+        hash={hash}
+        info={info}
+        success={success}
+        summary={summary}
+      />
+    )
   }
 
   if ('info' in content) {
     const {
-      txn: { hash, failed, summary, info },
+      txn: {hash, failed, summary, info},
     } = content
-    popupContent = <TransactionPopup hash={hash} info={info} success={failed} summary={summary} />
+    popupContent = (
+      <TransactionPopup
+        hash={hash}
+        info={info}
+        success={failed}
+        summary={summary}
+      />
+    )
   }
 
   const faderStyle = useSpring({
-    from: { width: '100%' },
-    to: { width: '0%' },
-    config: { duration: removeAfterMs ?? undefined },
+    from: {width: '100%'},
+    to: {width: '0%'},
+    config: {duration: removeAfterMs ?? undefined},
   })
 
   return (
     <PopupContainer>
       <FlexRow>
         {popupContent}
-        <Icon 
-          clickable={true}
-          color={'#0B0F1C'}
-          >
+        <Icon clickable={true} color={'#0B0F1C'}>
           <XIcon width={16} height={16} onClick={removeThisPopup} />
         </Icon>
       </FlexRow>

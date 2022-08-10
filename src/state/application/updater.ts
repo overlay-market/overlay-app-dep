@@ -1,12 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
-import { SupportedChainId } from './../../constants/chains';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { api, CHAIN_TAG } from '../data/enhanced';
-import { useActiveWeb3React } from '../../hooks/web3';
-import { updateBlockNumber, updateChainId } from './actions';
-import { supportedChainId } from '../../utils/supportedChainId';
-import useDebounce from '../../hooks/useDebounce';
-import useIsWindowVisible from '../../hooks/useIsWindowVisible';
+import {useCallback, useEffect, useState} from 'react'
+import {useAppDispatch, useAppSelector} from '../hooks'
+import {api, CHAIN_TAG} from '../data/enhanced'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {updateBlockNumber, updateChainId} from './actions'
+import {supportedChainId} from '../../utils/supportedChainId'
+import useDebounce from '../../hooks/useDebounce'
+import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 
 function useQueryCacheInvalidator() {
   const dispatch = useAppDispatch()
@@ -14,7 +13,7 @@ function useQueryCacheInvalidator() {
   // subscribe to `chainId` changes in the redux store rather than Web3
   // this will ensure that when `invalidateTags` is called, the latest
   // `chainId` is available in redux to build the subgraph url
-  const chainId = useAppSelector((state) => state.application.chainId)
+  const chainId = useAppSelector(state => state.application.chainId)
 
   useEffect(() => {
     dispatch(api.util.invalidateTags([CHAIN_TAG]))
@@ -22,41 +21,53 @@ function useQueryCacheInvalidator() {
 }
 
 export default function Updater(): null {
-  const { library, chainId } = useActiveWeb3React()
+  const {library, chainId} = useActiveWeb3React()
   const dispatch = useAppDispatch()
 
   const windowVisible = useIsWindowVisible()
 
-  const [state, setState] = useState<{ chainId: number | undefined; blockNumber: number | null }>({
+  const [state, setState] = useState<{
+    chainId: number | undefined
+    blockNumber: number | null
+  }>({
     chainId,
     blockNumber: null,
   })
 
-  useQueryCacheInvalidator();
+  useQueryCacheInvalidator()
 
   const blockNumberCallback = useCallback(
     (blockNumber: number) => {
-      setState((state) => {
+      setState(state => {
         if (chainId === state.chainId) {
-          if (typeof state.blockNumber !== 'number') return { chainId, blockNumber }
-          return { chainId, blockNumber: Math.max(blockNumber, state.blockNumber) }
+          if (typeof state.blockNumber !== 'number')
+            return {chainId, blockNumber}
+          return {
+            chainId,
+            blockNumber: Math.max(blockNumber, state.blockNumber),
+          }
         }
         return state
       })
     },
-    [chainId, setState]
+    [chainId, setState],
   )
 
   // attach/detach listeners
   useEffect(() => {
     if (!library || !chainId || !windowVisible) return undefined
 
-    setState({ chainId, blockNumber: null })
+    setState({chainId, blockNumber: null})
 
     library
       .getBlockNumber()
       .then(blockNumberCallback)
-      .catch((error) => console.error(`Failed to get block number for chainId: ${chainId}`, error))
+      .catch(error =>
+        console.error(
+          `Failed to get block number for chainId: ${chainId}`,
+          error,
+        ),
+      )
 
     library.on('block', blockNumberCallback)
     return () => {
@@ -67,13 +78,32 @@ export default function Updater(): null {
   const debouncedState = useDebounce(state, 100)
 
   useEffect(() => {
-    if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
-    dispatch(updateBlockNumber({ chainId: debouncedState.chainId, blockNumber: debouncedState.blockNumber }))
-  }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
+    if (
+      !debouncedState.chainId ||
+      !debouncedState.blockNumber ||
+      !windowVisible
+    )
+      return
+    dispatch(
+      updateBlockNumber({
+        chainId: debouncedState.chainId,
+        blockNumber: debouncedState.blockNumber,
+      }),
+    )
+  }, [
+    windowVisible,
+    dispatch,
+    debouncedState.blockNumber,
+    debouncedState.chainId,
+  ])
 
   useEffect(() => {
     dispatch(
-      updateChainId({ chainId: debouncedState.chainId ? supportedChainId(debouncedState.chainId) ?? null : null })
+      updateChainId({
+        chainId: debouncedState.chainId
+          ? supportedChainId(debouncedState.chainId) ?? null
+          : null,
+      }),
     )
   }, [dispatch, debouncedState.chainId])
 

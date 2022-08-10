@@ -1,38 +1,64 @@
-import { useEffect, useState, useMemo } from "react";
-import { useV1PeripheryContract } from "./useContract";
-import { useBlockNumber } from "../state/application/hooks";
-import { useActiveWeb3React } from "./web3";
-import { utils, BigNumber } from "ethers";
+import {useEffect, useState, useMemo} from 'react'
+import {useV1PeripheryContract} from './useContract'
+import {useBlockNumber} from '../state/application/hooks'
+import {useActiveWeb3React} from './web3'
+import {utils} from 'ethers'
 
 export function useEstimatedBuildLiquidationPrice(
   marketAddress?: string,
   collateral?: any,
   leverage?: any,
-  isLong?: any
+  isLong?: any,
 ): any {
-  const peripheryContract = useV1PeripheryContract();
-  const blockNumber = useBlockNumber();
-  const { account } = useActiveWeb3React();
-  const [estimatedLiquidationPrice, setEstimatedLiquidationPrice] = useState();
+  const peripheryContract = useV1PeripheryContract()
+  const blockNumber = useBlockNumber()
+  const {account} = useActiveWeb3React()
+  const [estimatedLiquidationPrice, setEstimatedLiquidationPrice] = useState()
 
   useEffect(() => {
-    if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || isLong === undefined || !account || !blockNumber) return;
-    let formatCollateral = utils.parseUnits(collateral);
-    let formatLeverage = utils.parseUnits(leverage);
-    
-    (async () => {
-      try {
-        setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, formatCollateral, formatLeverage, isLong))
-      }
-      catch (error) {
-        console.error('error coming from useEstimatedBuildLiquidationPrice: ', error);
-      }
+    if (
+      !peripheryContract ||
+      !marketAddress ||
+      !collateral ||
+      collateral === '.' ||
+      !leverage ||
+      isLong === undefined ||
+      !account ||
+      !blockNumber
+    )
+      return
+    let formatCollateral = utils.parseUnits(collateral)
+    let formatLeverage = utils.parseUnits(leverage)
 
-    })();
-  }, [peripheryContract, marketAddress, collateral, leverage, isLong, blockNumber, account]);
+    ;(async () => {
+      try {
+        setEstimatedLiquidationPrice(
+          await peripheryContract.liquidationPriceEstimate(
+            marketAddress,
+            formatCollateral,
+            formatLeverage,
+            isLong,
+          ),
+        )
+      } catch (error) {
+        console.error(
+          'error coming from useEstimatedBuildLiquidationPrice: ',
+          error,
+        )
+      }
+    })()
+  }, [
+    peripheryContract,
+    marketAddress,
+    collateral,
+    leverage,
+    isLong,
+    blockNumber,
+    account,
+  ])
 
   return useMemo(() => {
-    if (!collateral || collateral === '.') return null;
-    return estimatedLiquidationPrice;
-  }, [estimatedLiquidationPrice, collateral]);
-};
+    if (!collateral || collateral === '.') return null
+    return estimatedLiquidationPrice
+  }, [estimatedLiquidationPrice, collateral])
+}

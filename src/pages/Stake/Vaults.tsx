@@ -1,14 +1,19 @@
-import styled from "styled-components"
-import { NavLink, useHistory } from "react-router-dom";
-import { PageContainer } from "../../components/Container/Container";
-import { TableContainer, TableHead, TableBody, Paper } from '@material-ui/core';
-import { StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow } from '../../components/Table/Table';
+import {useHistory} from 'react-router-dom'
+import {PageContainer} from '../../components/Container/Container'
+import {TableContainer, TableHead, TableBody, Paper} from '@material-ui/core'
+import {
+  StyledTable,
+  StyledHeaderCell,
+  StyledTableCellThin,
+  StyledTableRow,
+  StyledTableHeaderRow,
+} from '../../components/Table/Table'
 
 export const Vaults = () => {
-  const history = useHistory();
+  const history = useHistory()
 
   function redirectToVault(vaultId: string) {
-    history.push(`/stake/${vaultId}`);
+    history.push(`/stake/${vaultId}`)
   }
 
   return (
@@ -17,26 +22,16 @@ export const Vaults = () => {
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledHeaderCell width={20}>
-                 Pool
-              </StyledHeaderCell>
-              <StyledHeaderCell width={20}>
-                Balance
-              </StyledHeaderCell>
-              <StyledHeaderCell width={20}>
-                TVL
-              </StyledHeaderCell>
-              <StyledHeaderCell width={20}>
-                Share %
-              </StyledHeaderCell>
-              <StyledHeaderCell width={20}>
-                APY
-              </StyledHeaderCell>
+              <StyledHeaderCell width={20}>Pool</StyledHeaderCell>
+              <StyledHeaderCell width={20}>Balance</StyledHeaderCell>
+              <StyledHeaderCell width={20}>TVL</StyledHeaderCell>
+              <StyledHeaderCell width={20}>Share %</StyledHeaderCell>
+              <StyledHeaderCell width={20}>APY</StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
 
           <TableBody>
-            <StyledTableRow onClick={() => redirectToVault("1")}>
+            <StyledTableRow onClick={() => redirectToVault('1')}>
               <StyledTableCellThin component="th" scope="row">
                 OVL/ETH UNI v3 LP
               </StyledTableCellThin>
@@ -58,6 +53,6 @@ export const Vaults = () => {
       </TableContainer>
     </PageContainer>
   )
-};
+}
 
-export default Vaults;
+export default Vaults

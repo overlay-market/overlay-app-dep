@@ -1,35 +1,34 @@
-import styled from 'styled-components/macro';
-import { Label, Slider } from "@rebass/forms";
+import styled from 'styled-components/macro'
+import {Label, Slider} from '@rebass/forms'
 
 const SliderContainer = styled.div<{margin?: string}>`
   display: flex;
   flex-direction: column;
   width: 100%;
   margin: ${({margin}) => (margin ? margin : '0')};
-`;
+`
 
 const Header = styled.div`
   font-size: 16px;
   color: ${({theme}) => theme.text1};
-`;
+`
 
 const Value = styled.div`
   font-size: 16px;
   margin-left: auto;
   color: ${({theme}) => theme.text1};
-`;
+`
 
-const Subheader = styled.div`
-  font-size: 12px;
-  color: ${({theme}) => theme.text1};
-  margin-left: 4px;
-`;
+// const Subheader = styled.div`
+//   font-size: 12px;
+//   color: ${({theme}) => theme.text1};
+//   margin-left: 4px;
+// `;
 
 const StyledLabel = styled(Label)`
   align-items: baseline;
   margin-bottom: 8px !important;
-`;
-
+`
 
 export const LeverageSlider = ({
   value,
@@ -39,8 +38,8 @@ export const LeverageSlider = ({
   min,
   max,
   step,
-  margin
-}:{
+  margin,
+}: {
   value: number
   liquidationPrice?: any
   onChange: React.ChangeEventHandler<HTMLInputElement>
@@ -50,17 +49,13 @@ export const LeverageSlider = ({
   step: number
   margin?: string
 }) => {
-  return (  
+  return (
     <SliderContainer margin={margin}>
       <StyledLabel htmlFor={name}>
-        <Header>
-          Leverage:
-        </Header>
-        <Value>
-          {value}x
-        </Value>
+        <Header>Leverage:</Header>
+        <Value>{value}x</Value>
       </StyledLabel>
-      <Slider 
+      <Slider
         value={value}
         name={name}
         min={min}
@@ -69,7 +64,7 @@ export const LeverageSlider = ({
         onChange={onChange}
         backgroundColor={'#F2F2F2'}
         color={'#12B4FF'}
-        />
+      />
     </SliderContainer>
   )
-};
+}
