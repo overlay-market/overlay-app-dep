@@ -48,7 +48,7 @@ const LoadingContainer = styled.div`
   `}
 `
 
-const ConnectWalletToggleText = styled(Button)`
+const ConnectWalletButton = styled(Button)`
   cursor: pointer;
   font-weight: 700;
   background: none;
@@ -56,7 +56,6 @@ const ConnectWalletToggleText = styled(Button)`
   border-radius: 8px !important;
   padding: 16px 60px !important;
   color: white;
-  margin-top: 16px !important;
 
   :hover {
     color: #12b4ff;
@@ -108,10 +107,21 @@ export const PositionsInner = () => {
   const liquidationPrices = useLiquidationPrices(positionsCallData)
   const ois = usePositionOis(positionsCallData)
 
+  // initial load where we cannot distinguish if no account
+  // connected since web3status is still updating
   if (isLoading && isFetching) {
     return (
       <LoadingContainer>
         <TEXT.BoldStandardBody>fetching positions...</TEXT.BoldStandardBody>
+      </LoadingContainer>
+    )
+  }
+  // web3status has loaded and no account connected
+  // prompt user to connect to a wallet
+  else if (active && !account) {
+    return (
+      <LoadingContainer>
+        <ConnectWalletButton onClick={toggleWalletModal}>Connect to a wallet</ConnectWalletButton>
       </LoadingContainer>
     )
   }
@@ -152,13 +162,7 @@ export const PositionsInner = () => {
             })
           )}
         </>
-      ) : (
-        <LoadingContainer>
-          <ConnectWalletToggleText onClick={toggleWalletModal}>
-            Connect to a wallet
-          </ConnectWalletToggleText>
-        </LoadingContainer>
-      )}
+      ) : null}
     </>
   )
 }
