@@ -130,40 +130,49 @@ export const PositionsInner = () => {
       </LoadingStatusView>
     )
   }
-  return (
-    <>
-      {account ? (
-        <>
-          {positions?.map((index, key) => {
-            let position = index
-            return (
-              <PositionCard
-                key={key.toString()}
-                id={position.id}
-                positionId={position.positionId}
-                marketId={position.market.id}
-                baseToken={`${baseTokens[key]}`}
-                quoteToken={`${quoteTokens[key]}`}
-                isLong={position.isLong}
-                leverage={position.leverage}
-                positionValue={values[key] !== undefined ? values[key] : null}
-                positionCost={costs[key] !== undefined ? costs[key] : null}
-                positionOi={ois[key] !== undefined ? ois[key] : null}
-                collateralToken={'OVL'}
-                quotePrice={'-'}
-                quoteCurrency={'-'}
-                estLiquidationPrice={
-                  liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
-                }
-                navigate={true}
-                hasBorder={true}
-              />
-            )
-          })}
-        </>
-      ) : null}
-    </>
-  )
+  // web3status loaded and account connected
+  // render positions on page
+  else if (active && account && positions) {
+    return (
+      <>
+        {positions?.map((index, key) => {
+          let position = index
+          return (
+            <PositionCard
+              key={key.toString()}
+              id={position.id}
+              positionId={position.positionId}
+              marketId={position.market.id}
+              baseToken={`${baseTokens[key]}`}
+              quoteToken={`${quoteTokens[key]}`}
+              isLong={position.isLong}
+              leverage={position.leverage}
+              positionValue={values[key] !== undefined ? values[key] : null}
+              positionCost={costs[key] !== undefined ? costs[key] : null}
+              positionOi={ois[key] !== undefined ? ois[key] : null}
+              collateralToken={'OVL'}
+              quotePrice={'-'}
+              quoteCurrency={'-'}
+              estLiquidationPrice={
+                liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
+              }
+              navigate={true}
+              hasBorder={true}
+            />
+          )
+        })}
+      </>
+    )
+  }
+  // error occuring when else statement is reached
+  // user to refresh page to reload web3status
+  else {
+    return (
+      <LoadingStatusView>
+        <TEXT.BoldStandardBody>Error - please refresh page.</TEXT.BoldStandardBody>
+      </LoadingStatusView>
+    )
+  }
 }
 
 export default Positions
