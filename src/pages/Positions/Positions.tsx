@@ -80,11 +80,6 @@ export const PositionsInner = () => {
   const {account, active} = useActiveWeb3React()
   const {isLoading, positions, isFetching} = useQuerySubgraphAccountPositions(account)
 
-  console.log('isLoading: ', isLoading)
-  console.log('isFetching: ', isFetching)
-  console.log('account: ', account)
-  console.log('active: ', active)
-
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return []
     return positions.map(position => position.market.feedAddress)
@@ -97,17 +92,16 @@ export const PositionsInner = () => {
     return positions.map(position => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
 
-  const values = usePositionValues(positionsCallData)
-  const costs = usePositionCosts(positionsCallData)
-  const liquidationPrices = useLiquidationPrices(positionsCallData)
   const ois = usePositionOis(positionsCallData)
+  const costs = usePositionCosts(positionsCallData)
+  const values = usePositionValues(positionsCallData)
+  const liquidationPrices = useLiquidationPrices(positionsCallData)
 
   // initial load where we cannot distinguish if no account
   // connected since web3status is still updating
   if (isLoading && isFetching) {
     return (
       <LoadingStatusView>
-        {/* <TEXT.BoldStandardBody>fetching positions...</TEXT.BoldStandardBody> */}
         <Loader type="TailSpin" color="#f2f2f2" height={33} width={33} />
       </LoadingStatusView>
     )
@@ -135,32 +129,29 @@ export const PositionsInner = () => {
   else if (active && account && positions) {
     return (
       <>
-        {positions?.map((index, key) => {
-          let position = index
-          return (
-            <PositionCard
-              key={key.toString()}
-              id={position.id}
-              positionId={position.positionId}
-              marketId={position.market.id}
-              baseToken={`${baseTokens[key]}`}
-              quoteToken={`${quoteTokens[key]}`}
-              isLong={position.isLong}
-              leverage={position.leverage}
-              positionValue={values[key] !== undefined ? values[key] : null}
-              positionCost={costs[key] !== undefined ? costs[key] : null}
-              positionOi={ois[key] !== undefined ? ois[key] : null}
-              collateralToken={'OVL'}
-              quotePrice={'-'}
-              quoteCurrency={'-'}
-              estLiquidationPrice={
-                liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
-              }
-              navigate={true}
-              hasBorder={true}
-            />
-          )
-        })}
+        {positions?.map((position, key) => (
+          <PositionCard
+            key={key.toString()}
+            id={position.id}
+            positionId={position.positionId}
+            marketId={position.market.id}
+            baseToken={`${baseTokens[key]}`}
+            quoteToken={`${quoteTokens[key]}`}
+            isLong={position.isLong}
+            leverage={position.leverage}
+            positionValue={values[key] !== undefined ? values[key] : null}
+            positionCost={costs[key] !== undefined ? costs[key] : null}
+            positionOi={ois[key] !== undefined ? ois[key] : null}
+            collateralToken={'OVL'}
+            quotePrice={'-'}
+            quoteCurrency={'-'}
+            estLiquidationPrice={
+              liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
+            }
+            navigate={true}
+            hasBorder={true}
+          />
+        ))}
       </>
     )
   }
