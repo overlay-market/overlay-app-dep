@@ -39,8 +39,7 @@ export function usePositionValues(calldata: any[]) {
   return useMemo(() => {
     return callResult.map(position => {
       const {loading, error, result} = position
-      if (!chainId || !blockNumber) return 'initializing'
-      if (loading) return 'loading'
+      if (!chainId || !blockNumber || loading) return 'loading'
       if (error) console.error('Error from usePositionValues')
       const value = result && result[0]
       return formatWeiToParsedNumber(value, 18, 4)

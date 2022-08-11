@@ -71,14 +71,13 @@ export const PositionCard = ({
   quoteToken,
   isLong,
   leverage,
-  positionValue,
-  positionCost,
-  positionOi,
+  value,
+  cost,
+  oi,
   collateralToken,
   quotePrice,
   quoteCurrency,
   estLiquidationPrice,
-  // PnL,
   navigate,
   border = true,
 }: {
@@ -89,37 +88,29 @@ export const PositionCard = ({
   quoteToken: string
   isLong: boolean | null
   leverage: number | string
-  positionValue: number | string | null | undefined
-  positionCost: number | null | undefined
-  positionOi: number | null | undefined
+  value: number | string | null | undefined
+  cost: number | string | null | undefined
+  oi: number | null | undefined
   collateralToken: string
   quotePrice: number | string
   quoteCurrency: string
   estLiquidationPrice: number | string | null | undefined
-  // PnL: number | string | undefined;
   navigate?: boolean
   border?: boolean
 }) => {
   const parsedLeverage = Number(leverage).toFixed(1)
 
   const PnL = useMemo(() => {
-    if (
-      positionValue === null ||
-      positionValue === undefined ||
-      positionCost === null ||
-      positionCost === undefined
-    )
-      return null
-    return positionValue - positionCost
-  }, [positionValue, positionCost])
-
-  let fixedPnL = positionValue === 0 ? '0' : PnL ? `${PnL.toFixed(4)}` : null
-
-  const indicatorColor = useMemo(() => {
-    if (!fixedPnL || parseFloat(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2'
-    if (parseFloat(fixedPnL) > 0) return '#10DCB1'
-    else return '#FF648A'
-  }, [fixedPnL])
+    if (value === 'loading') {
+      return {color: 'white', result: <Loader stroke="white" size="12px" />}
+    }
+    if (typeof value === 'number' && typeof cost === 'number') {
+      const difference = value - cost
+      const color = difference > 0 ? '#10DCB1' : difference === 0 ? 'white' : '#FF648A'
+      return {color, result: `${difference.toFixed(4)} ${collateralToken}`}
+    }
+    return {color: 'gray', result: 'error'}
+  }, [value, cost, collateralToken])
 
   return (
     <CardContainer navigate={navigate} border={border} to={`/positions/${id}/${positionId}`}>
@@ -151,13 +142,10 @@ export const PositionCard = ({
           </Detail>
         )}
 
-        <Detail color={'#C0C0C0'}>
-          OI: {positionOi === undefined ? 'loading...' : positionOi}
-        </Detail>
+        <Detail color={'#C0C0C0'}>OI: {oi === undefined ? 'loading...' : oi}</Detail>
 
         <Detail color={'#C0C0C0'}>
-          Value:{' '}
-          {positionValue === undefined ? 'loading...' : `${positionValue} ${collateralToken}`}
+          Value: {value === 'loading' ? 'loading...' : `${value} ${collateralToken}`}
         </Detail>
       </PositionCardColumn>
 
@@ -168,8 +156,8 @@ export const PositionCard = ({
       </PositionCardColumn>
 
       <PositionCardColumn width="30%" align="right">
-        <Detail fontWeight={700} color={indicatorColor}>
-          {fixedPnL ? `${fixedPnL} ${collateralToken}` : <Loader stroke="white" size="12px" />}
+        <Detail fontWeight={700} color={PnL.color}>
+          {PnL.result}
         </Detail>
 
         {navigate ?? (

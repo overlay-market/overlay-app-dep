@@ -91,8 +91,6 @@ export const PositionsInner = () => {
     return positions.map(position => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
 
-  console.log('callData: ', calldata)
-
   const ois = usePositionOis(calldata)
   const costs = usePositionCosts(calldata)
   const values = usePositionValues(calldata)
@@ -140,9 +138,9 @@ export const PositionsInner = () => {
             quoteToken={`${quoteTokens[key]}`}
             isLong={position.isLong}
             leverage={position.leverage}
-            positionValue={values[key]}
-            positionCost={costs[key] !== undefined ? costs[key] : null}
-            positionOi={ois[key] !== undefined ? ois[key] : null}
+            value={values[key]}
+            cost={costs[key] !== undefined ? costs[key] : null}
+            oi={ois[key] !== undefined ? ois[key] : null}
             collateralToken={'OVL'}
             quotePrice={'-'}
             quoteCurrency={'-'}
