@@ -39,13 +39,8 @@ const PageHeader = styled.div`
   `}
 `
 
-const LoadingContainer = styled.div`
-  display: flex;
-  margin: 8px auto auto auto;
-
-  ${({theme}) => theme.mediaWidth.minSmall`
-    margin-top: 44px;
-  `}
+const LoadingStatusView = styled(FlexColumn)`
+  margin: 44px auto auto auto;
 `
 
 const ConnectWalletButton = styled(Button)`
@@ -111,56 +106,60 @@ export const PositionsInner = () => {
   // connected since web3status is still updating
   if (isLoading && isFetching) {
     return (
-      <LoadingContainer>
-        <TEXT.BoldStandardBody>fetching positions...</TEXT.BoldStandardBody>
-      </LoadingContainer>
+      <LoadingStatusView>
+        {/* <TEXT.BoldStandardBody>fetching positions...</TEXT.BoldStandardBody> */}
+        <Loader type="TailSpin" color="#f2f2f2" height={33} width={33} />
+      </LoadingStatusView>
     )
   }
   // web3status has loaded and no account connected
   // prompt user to connect to a wallet
   else if (active && !account) {
     return (
-      <LoadingContainer>
+      <LoadingStatusView>
         <ConnectWalletButton onClick={toggleWalletModal}>Connect to a wallet</ConnectWalletButton>
-      </LoadingContainer>
+      </LoadingStatusView>
+    )
+  }
+  // web3status loaded and account connected
+  // notify user when no positions tied to account
+  else if (active && account && !positions) {
+    return (
+      <LoadingStatusView>
+        <TEXT.BoldStandardBody>Connected account has no positions.</TEXT.BoldStandardBody>
+      </LoadingStatusView>
     )
   }
   return (
     <>
       {account ? (
         <>
-          {isLoading ? (
-            <LoadingContainer>
-              <Loader type="TailSpin" color="#f2f2f2" height={33} width={33} />
-            </LoadingContainer>
-          ) : (
-            positions?.map((index, key) => {
-              let position = index
-              return (
-                <PositionCard
-                  key={key.toString()}
-                  id={position.id}
-                  positionId={position.positionId}
-                  marketId={position.market.id}
-                  baseToken={`${baseTokens[key]}`}
-                  quoteToken={`${quoteTokens[key]}`}
-                  isLong={position.isLong}
-                  leverage={position.leverage}
-                  positionValue={values[key] !== undefined ? values[key] : null}
-                  positionCost={costs[key] !== undefined ? costs[key] : null}
-                  positionOi={ois[key] !== undefined ? ois[key] : null}
-                  collateralToken={'OVL'}
-                  quotePrice={'-'}
-                  quoteCurrency={'-'}
-                  estLiquidationPrice={
-                    liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
-                  }
-                  navigate={true}
-                  hasBorder={true}
-                />
-              )
-            })
-          )}
+          {positions?.map((index, key) => {
+            let position = index
+            return (
+              <PositionCard
+                key={key.toString()}
+                id={position.id}
+                positionId={position.positionId}
+                marketId={position.market.id}
+                baseToken={`${baseTokens[key]}`}
+                quoteToken={`${quoteTokens[key]}`}
+                isLong={position.isLong}
+                leverage={position.leverage}
+                positionValue={values[key] !== undefined ? values[key] : null}
+                positionCost={costs[key] !== undefined ? costs[key] : null}
+                positionOi={ois[key] !== undefined ? ois[key] : null}
+                collateralToken={'OVL'}
+                quotePrice={'-'}
+                quoteCurrency={'-'}
+                estLiquidationPrice={
+                  liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
+                }
+                navigate={true}
+                hasBorder={true}
+              />
+            )
+          })}
         </>
       ) : null}
     </>
