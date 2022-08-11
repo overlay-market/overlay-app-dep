@@ -78,24 +78,25 @@ export const PositionsInner = () => {
   const toggleWalletModal = useWalletModalToggle()
   const blockNumber = useBlockNumber()
   const {account, active} = useActiveWeb3React()
-  const {isLoading, positions, isFetching} = useQuerySubgraphAccountPositions(account)
+  const {isLoading, isFetching, positions} = useQuerySubgraphAccountPositions(account)
 
-  const feedAddresses = useMemo(() => {
-    if (positions === undefined) return []
-    return positions.map(position => position.market.feedAddress)
-  }, [positions])
-
+  const feedAddresses = useMemo(
+    () => (!positions ? [] : positions.map(position => position.market.feedAddress)),
+    [positions],
+  )
   const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
 
-  const positionsCallData = useMemo(() => {
-    if (!positions || positions === undefined || !account || !blockNumber) return []
+  const calldata = useMemo(() => {
+    if (!positions || !account || !blockNumber) return []
     return positions.map(position => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
 
-  const ois = usePositionOis(positionsCallData)
-  const costs = usePositionCosts(positionsCallData)
-  const values = usePositionValues(positionsCallData)
-  const liquidationPrices = useLiquidationPrices(positionsCallData)
+  console.log('callData: ', calldata)
+
+  const ois = usePositionOis(calldata)
+  const costs = usePositionCosts(calldata)
+  const values = usePositionValues(calldata)
+  const liquidationPrices = useLiquidationPrices(calldata)
 
   // initial load where we cannot distinguish if no account
   // connected since web3status is still updating
@@ -139,7 +140,7 @@ export const PositionsInner = () => {
             quoteToken={`${quoteTokens[key]}`}
             isLong={position.isLong}
             leverage={position.leverage}
-            positionValue={values[key] !== undefined ? values[key] : null}
+            positionValue={values[key]}
             positionCost={costs[key] !== undefined ? costs[key] : null}
             positionOi={ois[key] !== undefined ? ois[key] : null}
             collateralToken={'OVL'}
@@ -149,7 +150,6 @@ export const PositionsInner = () => {
               liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
             }
             navigate={true}
-            hasBorder={true}
           />
         ))}
       </>

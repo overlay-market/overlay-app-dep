@@ -1,40 +1,40 @@
-import { useMemo } from "react";
-import styled from "styled-components/macro";
-import { BigNumberish } from "ethers";
-import { Link } from "react-router-dom";
-import { Icon } from "../../components/Icon/Icon";
-import { ChevronRight } from "react-feather";
-import { FlexRow } from "../../components/Container/Container";
-import { formatWeiToParsedNumber, formatWeiToParsedString } from "../../utils/formatWei";
-import { ConsoleView } from "react-device-detect";
-import { BigNumber } from "ethers";
-import Loader from "../../components/Loaders/Loaders";
+import {useMemo} from 'react'
+import styled from 'styled-components/macro'
+import {BigNumberish} from 'ethers'
+import {Link} from 'react-router-dom'
+import {Icon} from '../../components/Icon/Icon'
+import {ChevronRight} from 'react-feather'
+import {FlexRow} from '../../components/Container/Container'
+import {formatWeiToParsedNumber, formatWeiToParsedString} from '../../utils/formatWei'
+import {ConsoleView} from 'react-device-detect'
+import {BigNumber} from 'ethers'
+import Loader from '../../components/Loaders/Loaders'
 
 const CardHeaderContainer = styled(FlexRow)`
   color: white;
   padding-bottom: 8px;
   border-bottom: 1px solid #828282;
-`;
+`
 
-const PositionCardColumn = styled.div<{ align?: string; width?: string; }>`
-  width: ${({ width }) => (width ? width : "auto")};
-  text-align: ${({ align }) => (align ? align : "left")};
+const PositionCardColumn = styled.div<{align?: string; width?: string}>`
+  width: ${({width}) => (width ? width : 'auto')};
+  text-align: ${({align}) => (align ? align : 'left')};
   font-size: 14px;
-`;
-  
+`
+
 const HeaderCell = styled(PositionCardColumn)`
   font-weight: 700;
-`;
+`
 
-const Detail = styled.div<{ fontWeight?: number; color?: string; }>`
-  color: ${({ color }) => (color ? color : "white")};
-  font-weight: ${({ fontWeight }) => (fontWeight ? fontWeight : 400)};
+const Detail = styled.div<{fontWeight?: number; color?: string}>`
+  color: ${({color}) => (color ? color : 'white')};
+  font-weight: ${({fontWeight}) => (fontWeight ? fontWeight : 400)};
   text-align: inherit;
-`;
+`
 
-const CardContainer = styled(Link)<{ navigate?: boolean; hasBorder?: boolean }>`
-  pointer-events: ${({ navigate }) => (navigate ? "auto" : "none")};
-  border-bottom: ${({ hasBorder }) => (hasBorder ? "1px solid #828282" : "none")};
+const CardContainer = styled(Link)<{navigate?: boolean; border?: boolean}>`
+  pointer-events: ${({navigate}) => (navigate ? 'auto' : 'none')};
+  border-bottom: ${({border}) => (border ? '1px solid #828282' : 'none')};
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -45,7 +45,7 @@ const CardContainer = styled(Link)<{ navigate?: boolean; hasBorder?: boolean }>`
   :hover {
     background: #262626 !important;
   }
-`;
+`
 
 export const PositionTableHeader = () => (
   <CardHeaderContainer>
@@ -61,7 +61,7 @@ export const PositionTableHeader = () => (
       PnL
     </HeaderCell>
   </CardHeaderContainer>
-);
+)
 
 export const PositionCard = ({
   id,
@@ -80,88 +80,89 @@ export const PositionCard = ({
   estLiquidationPrice,
   // PnL,
   navigate,
-  hasBorder,
-}:{
-  id: string;
-  positionId: string;
-  marketId: string;
-  baseToken: string;
-  quoteToken: string;
-  isLong: boolean | null;
-  leverage: number | string;
-  positionValue: number | null | undefined;
-  positionCost: number | null | undefined;
-  positionOi: number | null | undefined;
-  collateralToken: string;
-  quotePrice: number | string;
-  quoteCurrency: string;
-  estLiquidationPrice: number | string | null | undefined;
+  border = true,
+}: {
+  id: string
+  positionId: string
+  marketId: string
+  baseToken: string
+  quoteToken: string
+  isLong: boolean | null
+  leverage: number | string
+  positionValue: number | string | null | undefined
+  positionCost: number | null | undefined
+  positionOi: number | null | undefined
+  collateralToken: string
+  quotePrice: number | string
+  quoteCurrency: string
+  estLiquidationPrice: number | string | null | undefined
   // PnL: number | string | undefined;
-  navigate?: boolean;
-  hasBorder?: boolean;
+  navigate?: boolean
+  border?: boolean
 }) => {
-  const parsedLeverage = Number(leverage).toFixed(1);
+  const parsedLeverage = Number(leverage).toFixed(1)
 
   const PnL = useMemo(() => {
-    if (positionValue === null || positionValue === undefined || positionCost === null || positionCost === undefined) return null;
-    return positionValue - positionCost;
+    if (
+      positionValue === null ||
+      positionValue === undefined ||
+      positionCost === null ||
+      positionCost === undefined
+    )
+      return null
+    return positionValue - positionCost
   }, [positionValue, positionCost])
 
-
-  let fixedPnL = positionValue === 0 ? '0' : (PnL ? `${PnL.toFixed(4)}` : null);
+  let fixedPnL = positionValue === 0 ? '0' : PnL ? `${PnL.toFixed(4)}` : null
 
   const indicatorColor = useMemo(() => {
-    if (!fixedPnL || parseFloat(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2';
-    if (parseFloat(fixedPnL) > 0) return '#10DCB1';
-    else return '#FF648A';
+    if (!fixedPnL || parseFloat(fixedPnL) === 0 || fixedPnL === 'Closed') return '#F2F2F2'
+    if (parseFloat(fixedPnL) > 0) return '#10DCB1'
+    else return '#FF648A'
   }, [fixedPnL])
 
   return (
-    <CardContainer
-      navigate={navigate}
-      hasBorder={hasBorder}
-      to={`/positions/${id}/${positionId}`}
-      >
+    <CardContainer navigate={navigate} border={border} to={`/positions/${id}/${positionId}`}>
       <PositionCardColumn width="50%">
-        <Detail fontWeight={700} color={"white"}>
-          {baseToken === 'loading' ? <Loader stroke="white" size="12px" /> : baseToken}
-          /
+        <Detail fontWeight={700} color={'white'}>
+          {baseToken === 'loading' ? <Loader stroke="white" size="12px" /> : baseToken}/
           {quoteToken === 'loading' ? <Loader stroke="white" size="12px" /> : quoteToken}
         </Detail>
 
-        <Detail fontWeight={700} color={"white"}>
-          ID: {(positionId).toString()}
+        <Detail fontWeight={700} color={'white'}>
+          ID: {positionId.toString()}
         </Detail>
 
         {isLong === null && (
-          <Detail fontWeight={700} color={"#C0C0C0"}>
+          <Detail fontWeight={700} color={'#C0C0C0'}>
             loading...
           </Detail>
         )}
 
         {isLong === true && (
-          <Detail fontWeight={700} color={"#10DCB1"}>
+          <Detail fontWeight={700} color={'#10DCB1'}>
             Long {parsedLeverage}x
           </Detail>
         )}
 
         {isLong === false && (
-          <Detail fontWeight={700} color={"#FF648A"}>
+          <Detail fontWeight={700} color={'#FF648A'}>
             Short {parsedLeverage}x
           </Detail>
         )}
 
-        <Detail color={"#C0C0C0"}>
+        <Detail color={'#C0C0C0'}>
           OI: {positionOi === undefined ? 'loading...' : positionOi}
         </Detail>
 
-        <Detail color={"#C0C0C0"}>
-          Value: {positionValue === undefined ? 'loading...' : `${positionValue} ${collateralToken}`}
+        <Detail color={'#C0C0C0'}>
+          Value:{' '}
+          {positionValue === undefined ? 'loading...' : `${positionValue} ${collateralToken}`}
         </Detail>
       </PositionCardColumn>
 
       <PositionCardColumn width="20%">
-        <Detail fontWeight={700} color={"white"}>
+        <Detail fontWeight={700} color={'white'}>
           {estLiquidationPrice}
         </Detail>
       </PositionCardColumn>
@@ -172,11 +173,11 @@ export const PositionCard = ({
         </Detail>
 
         {navigate ?? (
-          <Icon size={12} margin={"24px 0 0 auto"}>
+          <Icon size={12} margin={'24px 0 0 auto'}>
             <ChevronRight />
           </Icon>
         )}
       </PositionCardColumn>
     </CardContainer>
-  );
-};
+  )
+}
