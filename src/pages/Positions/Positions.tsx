@@ -26,7 +26,7 @@ const Container = styled.div`
   z-index: 0;
 `
 
-const PageHeader = styled.div`
+export const RouteHeader = styled.div`
   font-size: 20px;
   text-align: center;
   margin-bottom: 48px;
@@ -39,7 +39,7 @@ const PageHeader = styled.div`
   `}
 `
 
-const LoadingStatusView = styled(FlexColumn)`
+export const LoadingStatusView = styled(FlexColumn)`
   margin: 44px auto auto auto;
 `
 
@@ -64,7 +64,7 @@ export const Positions = () => {
     <MarketCard>
       {onResetUnwindState()}
       <Container>
-        <PageHeader>Positions</PageHeader>
+        <RouteHeader>Positions</RouteHeader>
         <PositionTableHeader />
         <FlexColumn>
           <PositionsInner />

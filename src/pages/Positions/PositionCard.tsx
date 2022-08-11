@@ -1,13 +1,9 @@
 import {useMemo} from 'react'
 import styled from 'styled-components/macro'
-import {BigNumberish} from 'ethers'
 import {Link} from 'react-router-dom'
 import {Icon} from '../../components/Icon/Icon'
 import {ChevronRight} from 'react-feather'
 import {FlexRow} from '../../components/Container/Container'
-import {formatWeiToParsedNumber, formatWeiToParsedString} from '../../utils/formatWei'
-import {ConsoleView} from 'react-device-detect'
-import {BigNumber} from 'ethers'
 import Loader from '../../components/Loaders/Loaders'
 
 const CardHeaderContainer = styled(FlexRow)`

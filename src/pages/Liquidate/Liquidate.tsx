@@ -21,29 +21,8 @@ import {getExplorerLink, ExplorerDataType} from '../../utils/getExplorerLink'
 import {useActiveWeb3React} from '../../hooks/web3'
 import Loader from '../../components/Loaders/Loaders'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
-
-const LoadingContainer = styled.div`
-  display: flex;
-  margin: 8px auto auto auto;
-  justify-content: center;
-
-  ${({theme}) => theme.mediaWidth.minSmall`
-    margin-top: 44px;
-  `}
-`
-
-const PageHeader = styled.div`
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 44px;
-  font-weight: 700;
-  color: white;
-  padding-top: 16px;
-
-  ${({theme}) => theme.mediaWidth.minSmall`
-    padding-top: 16px;
-  `}
-`
+import {MarketCard} from '../../components/Card/MarketCard'
+import {LoadingStatusView} from '../Positions/Positions'
 
 const LiquidateButton = ({
   marketAddress,
@@ -75,15 +54,12 @@ const LiquidateButton = ({
   }, [liquidateCallback, marketAddress, ownerAddress, positionId])
 
   return (
-    <TransparentButton
-      color={'#12B4FF'}
-      border={'none'}
-      onClick={() => handleLiquidate()}
-    >
+    <TransparentButton color={'#12B4FF'} border={'none'} onClick={() => handleLiquidate()}>
       Liquidate
     </TransparentButton>
   )
 }
+
 const Liquidate = () => {
   const {positions} = useAllPositions()
   const {chainId} = useActiveWeb3React()
@@ -127,52 +103,43 @@ const Liquidate = () => {
 
   const liquidatablePositions = useMemo(() => {
     return fetchCheckLiquidatablePositions.map((position, index) => {
-      if (position.loading === true || position === undefined || !blockNumber)
-        return undefined
+      if (position.loading === true || position === undefined || !blockNumber) return undefined
       return position?.result?.liquidatable_
     })
   }, [fetchCheckLiquidatablePositions, blockNumber])
 
   const positionValues = useMemo(() => {
     return fetchPositionValues.map((position, index) => {
-      if (position.loading === true || position === undefined || !blockNumber)
-        return undefined
+      if (position.loading === true || position === undefined || !blockNumber) return undefined
       return position?.result?.value_
     })
   }, [fetchPositionValues, blockNumber])
 
   const liquidationFees = useMemo(() => {
     return fetchLiquidationFees.map((position, index) => {
-      if (position.loading === true || position === undefined || !blockNumber)
-        return undefined
+      if (position.loading === true || position === undefined || !blockNumber) return undefined
       return position?.result?.liquidationFee_
     })
   }, [fetchLiquidationFees, blockNumber])
 
   const maintenanceMargins = useMemo(() => {
     return fetchMaintenanceMargins.map((position, index) => {
-      if (position.loading === true || position === undefined || !blockNumber)
-        return undefined
+      if (position.loading === true || position === undefined || !blockNumber) return undefined
       return position?.result?.maintenanceMargin_
     })
   }, [fetchMaintenanceMargins, blockNumber])
 
   return (
-    <PageContainer maxWidth={'800px'}>
-      <PageHeader>{/* Liquidatable Positions  */}</PageHeader>
+    <MarketCard>
       <TableContainer component={Paper}>
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledHeaderCell width={20}>Market</StyledHeaderCell>
+              <StyledHeaderCell width={30}>Maintenance</StyledHeaderCell>
 
-              <StyledHeaderCell width={10}>Position ID</StyledHeaderCell>
+              <StyledHeaderCell width={30}>Value</StyledHeaderCell>
 
-              <StyledHeaderCell width={20}>Maintenance</StyledHeaderCell>
-
-              <StyledHeaderCell width={20}>Value</StyledHeaderCell>
-
-              <StyledHeaderCell width={20}>Reward (est.)</StyledHeaderCell>
+              <StyledHeaderCell width={30}>Reward (est.)</StyledHeaderCell>
 
               <StyledHeaderCell width={10}></StyledHeaderCell>
             </StyledTableHeaderRow>
@@ -192,28 +159,10 @@ const Liquidate = () => {
                   : null
               const isLiquidated = isLiquidatedPositions[key]
 
-              if (
-                key === 0 &&
-                liquidatablePositions &&
-                liquidatablePositions[0] === undefined
-              ) {
-                return (
-                  <LoadingContainer>
-                    <Loader
-                      type="TailSpin"
-                      color="#f2f2f2"
-                      height={33}
-                      width={33}
-                    />
-                  </LoadingContainer>
-                )
-              }
-              if (
-                position &&
-                maintenanceMargin &&
-                maintenanceMargin !== 0 &&
-                !isLiquidated
-              ) {
+              // if (key === 0 && liquidatablePositions && liquidatablePositions[0] === undefined) {
+              //   return <LoadingStatusView>No liquidatable positions.</LoadingStatusView>
+              // }
+              if (position && maintenanceMargin && maintenanceMargin !== 0 && !isLiquidated) {
                 return (
                   <StyledTableRow hover={false}>
                     <StyledTableCellThin component="th" scope="row">
@@ -238,13 +187,9 @@ const Liquidate = () => {
                       {maintenanceMargin} OVL
                     </StyledTableCellThin>
 
-                    <StyledTableCellThin align="left">
-                      {positionValue} OVL
-                    </StyledTableCellThin>
+                    <StyledTableCellThin align="left">{positionValue} OVL</StyledTableCellThin>
 
-                    <StyledTableCellThin align="left">
-                      {liquidationFee} OVL
-                    </StyledTableCellThin>
+                    <StyledTableCellThin align="left">{liquidationFee} OVL</StyledTableCellThin>
 
                     <StyledTableCellThin align="left">
                       <LiquidateButton
@@ -260,7 +205,9 @@ const Liquidate = () => {
           </TableHead>
         </StyledTable>
       </TableContainer>
-    </PageContainer>
+
+      {!liquidatablePositions && <LoadingStatusView>No liquidatable positions.</LoadingStatusView>}
+    </MarketCard>
   )
 }
 
