@@ -143,7 +143,6 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
     try {
       const chainId = (getState() as AppState).application.chainId
 
-      console.log('chainId within graphqlRequestBaseQuery(): ', chainId)
       // if chainId in state is null, set default query to Kovan
       const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : CHAIN_SUBGRAPH_URL[42]
 

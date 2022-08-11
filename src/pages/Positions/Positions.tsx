@@ -7,6 +7,7 @@ import {MarketCard} from '../../components/Card/MarketCard'
 import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
+import {FlexColumn} from '../../components/Container/Container'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {useBlockNumber} from '../../state/application/hooks'
 import {useMarketNames} from '../../hooks/useMarketName'
@@ -68,11 +69,31 @@ const ConnectWalletToggleText = styled(Button)`
 `
 
 export const Positions = () => {
+  const {onResetUnwindState} = useUnwindActionHandlers()
+  return (
+    <MarketCard>
+      {onResetUnwindState()}
+      <Container>
+        <PageHeader>Positions</PageHeader>
+        <PositionTableHeader />
+        <FlexColumn>
+          <PositionsInner />
+        </FlexColumn>
+      </Container>
+    </MarketCard>
+  )
+}
+
+export const PositionsInner = () => {
   const toggleWalletModal = useWalletModalToggle()
   const blockNumber = useBlockNumber()
-  const {onResetUnwindState} = useUnwindActionHandlers()
   const {account, active} = useActiveWeb3React()
   const {isLoading, positions, isFetching} = useQuerySubgraphAccountPositions(account)
+
+  console.log('isLoading: ', isLoading)
+  console.log('isFetching: ', isFetching)
+  console.log('account: ', account)
+  console.log('active: ', active)
 
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return []
@@ -91,59 +112,54 @@ export const Positions = () => {
   const liquidationPrices = useLiquidationPrices(positionsCallData)
   const ois = usePositionOis(positionsCallData)
 
+  if (isLoading && isFetching) {
+    return <>Loading...</>
+  }
   return (
-    <MarketCard>
-      {onResetUnwindState()}
-      <Container>
-        <PageHeader>Positions</PageHeader>
-
-        {account ? (
-          <>
-            <PositionTableHeader />
-            <PositionsContainer>
-              {isLoading ? (
-                <LoadingContainer>
-                  <Loader type="TailSpin" color="#f2f2f2" height={33} width={33} />
-                </LoadingContainer>
-              ) : (
-                positions?.map((index, key) => {
-                  let position = index
-                  return (
-                    <PositionCard
-                      key={key.toString()}
-                      id={position.id}
-                      positionId={position.positionId}
-                      marketId={position.market.id}
-                      baseToken={`${baseTokens[key]}`}
-                      quoteToken={`${quoteTokens[key]}`}
-                      isLong={position.isLong}
-                      leverage={position.leverage}
-                      positionValue={values[key] !== undefined ? values[key] : null}
-                      positionCost={costs[key] !== undefined ? costs[key] : null}
-                      positionOi={ois[key] !== undefined ? ois[key] : null}
-                      collateralToken={'OVL'}
-                      quotePrice={'-'}
-                      quoteCurrency={'-'}
-                      estLiquidationPrice={
-                        liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
-                      }
-                      navigate={true}
-                      hasBorder={true}
-                    />
-                  )
-                })
-              )}
-            </PositionsContainer>
-          </>
-        ) : (
-          <LoadingContainer>
-            <ConnectWalletToggleText onClick={toggleWalletModal}>
-              Connect to a wallet
-            </ConnectWalletToggleText>
-          </LoadingContainer>
-        )}
-      </Container>
-    </MarketCard>
+    <>
+      {account ? (
+        <>
+          {isLoading ? (
+            <LoadingContainer>
+              <Loader type="TailSpin" color="#f2f2f2" height={33} width={33} />
+            </LoadingContainer>
+          ) : (
+            positions?.map((index, key) => {
+              let position = index
+              return (
+                <PositionCard
+                  key={key.toString()}
+                  id={position.id}
+                  positionId={position.positionId}
+                  marketId={position.market.id}
+                  baseToken={`${baseTokens[key]}`}
+                  quoteToken={`${quoteTokens[key]}`}
+                  isLong={position.isLong}
+                  leverage={position.leverage}
+                  positionValue={values[key] !== undefined ? values[key] : null}
+                  positionCost={costs[key] !== undefined ? costs[key] : null}
+                  positionOi={ois[key] !== undefined ? ois[key] : null}
+                  collateralToken={'OVL'}
+                  quotePrice={'-'}
+                  quoteCurrency={'-'}
+                  estLiquidationPrice={
+                    liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
+                  }
+                  navigate={true}
+                  hasBorder={true}
+                />
+              )
+            })
+          )}
+        </>
+      ) : (
+        <LoadingContainer>
+          <ConnectWalletToggleText onClick={toggleWalletModal}>
+            Connect to a wallet
+          </ConnectWalletToggleText>
+        </LoadingContainer>
+      )}
+    </>
   )
 }
 
