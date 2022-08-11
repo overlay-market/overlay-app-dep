@@ -90,7 +90,7 @@ export const PositionCard = ({
   leverage: number | string
   value: number | string | null | undefined
   cost: number | string | null | undefined
-  oi: number | null | undefined
+  oi: number | string | null | undefined
   collateralToken: string
   quotePrice: number | string
   quoteCurrency: string
@@ -101,7 +101,7 @@ export const PositionCard = ({
   const parsedLeverage = Number(leverage).toFixed(1)
 
   const PnL = useMemo(() => {
-    if (value === 'loading') {
+    if (value === 'loading' || cost === 'loading') {
       return {color: 'white', result: <Loader stroke="white" size="12px" />}
     }
     if (typeof value === 'number' && typeof cost === 'number') {

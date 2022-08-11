@@ -139,8 +139,8 @@ export const PositionsInner = () => {
             isLong={position.isLong}
             leverage={position.leverage}
             value={values[key]}
-            cost={costs[key] !== undefined ? costs[key] : null}
-            oi={ois[key] !== undefined ? ois[key] : null}
+            cost={costs[key]}
+            oi={ois[key]}
             collateralToken={'OVL'}
             quotePrice={'-'}
             quoteCurrency={'-'}

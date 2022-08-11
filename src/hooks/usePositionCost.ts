@@ -1,52 +1,48 @@
-import { useEffect, useState, useMemo } from "react";
-import { useV1PeripheryContract } from "./useContract";
-import { useSingleContractMultipleData } from "../state/multicall/hooks";
-import { BigNumber } from "ethers";
-import { useBlockNumber } from "../state/application/hooks";
-import { useActiveWeb3React } from "./web3";
-import { formatWeiToParsedNumber } from "../utils/formatWei";
+import {useEffect, useState, useMemo} from 'react'
+import {useV1PeripheryContract} from './useContract'
+import {useSingleContractMultipleData} from '../state/multicall/hooks'
+import {BigNumber} from 'ethers'
+import {useBlockNumber} from '../state/application/hooks'
+import {useActiveWeb3React} from './web3'
+import {formatWeiToParsedNumber} from '../utils/formatWei'
 
 export function usePositionCost(
   marketAddress?: string,
-  positionId?: string | number
+  positionId?: string | number,
 ): BigNumber | undefined {
-  const peripheryContract = useV1PeripheryContract();
-  const blockNumber = useBlockNumber();
-  const { account } = useActiveWeb3React();
-  const [cost, setCost] = useState<BigNumber>();
+  const peripheryContract = useV1PeripheryContract()
+  const blockNumber = useBlockNumber()
+  const {account} = useActiveWeb3React()
+  const [cost, setCost] = useState<BigNumber>()
 
   useEffect(() => {
-    if (!peripheryContract || !marketAddress || !account || !blockNumber) return;
-
-    (async () => {
+    if (!peripheryContract || !marketAddress || !account || !blockNumber) return
+    ;(async () => {
       try {
         setCost(await peripheryContract.cost(marketAddress, account, positionId))
+      } catch (error) {
+        console.log('market inside usePositionCost: ', marketAddress)
       }
-      catch (error) {
-        console.log('market inside usePositionCost: ', marketAddress);
-      }
-
-    })();
-  }, [peripheryContract, marketAddress, positionId, blockNumber, account]);
+    })()
+  }, [peripheryContract, marketAddress, positionId, blockNumber, account])
 
   return useMemo(() => {
-    return cost;
-  }, [cost]);
-};
+    return cost
+  }, [cost])
+}
 
-export function usePositionCosts(positionsCallData: any) {
-  const peripheryContract = useV1PeripheryContract();
-  const blockNumber = useBlockNumber();
-  const { chainId } = useActiveWeb3React();
-
-  const callResult = useSingleContractMultipleData(peripheryContract, "cost", positionsCallData);
-
+export function usePositionCosts(calldata: any[]) {
+  const peripheryContract = useV1PeripheryContract()
+  const blockNumber = useBlockNumber()
+  const {chainId} = useActiveWeb3React()
+  const callResult = useSingleContractMultipleData(peripheryContract, 'cost', calldata)
   return useMemo(() => {
-    return callResult.map((position) => {
-      if (!chainId || !blockNumber || !position) return null;
-
-      let cost = position?.result && position.result[0];
-      return formatWeiToParsedNumber(cost, 18, 4);
+    return callResult.map(position => {
+      const {loading, error, result} = position
+      if (!chainId || !blockNumber || loading) return 'loading'
+      if (error) console.error('Error from usePositionCosts')
+      const value = result && result[0]
+      return formatWeiToParsedNumber(value, 18, 4)
     })
   }, [callResult, blockNumber, chainId])
 }
