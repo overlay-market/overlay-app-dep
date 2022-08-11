@@ -15,6 +15,7 @@ import {usePositionValues} from '../../hooks/usePositionValue'
 import {usePositionCosts} from '../../hooks/usePositionCost'
 import {useLiquidationPrices} from '../../hooks/useLiquidationPrice'
 import {usePositionOis} from '../../hooks/usePositionOi'
+import {TEXT} from '../../theme/theme'
 
 const Container = styled.div`
   display: flex;
@@ -36,11 +37,6 @@ const PageHeader = styled.div`
   ${({theme}) => theme.mediaWidth.minSmall`
     padding-top: 0px;
   `}
-`
-
-const PositionsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
 `
 
 const LoadingContainer = styled.div`
@@ -113,7 +109,11 @@ export const PositionsInner = () => {
   const ois = usePositionOis(positionsCallData)
 
   if (isLoading && isFetching) {
-    return <>Loading...</>
+    return (
+      <LoadingContainer>
+        <TEXT.BoldStandardBody>fetching positions...</TEXT.BoldStandardBody>
+      </LoadingContainer>
+    )
   }
   return (
     <>
