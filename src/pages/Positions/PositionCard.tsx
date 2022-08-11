@@ -75,8 +75,6 @@ export const PositionCard = ({
   cost,
   oi,
   collateralToken,
-  quotePrice,
-  quoteCurrency,
   estLiquidationPrice,
   navigate,
   border = true,
@@ -92,8 +90,6 @@ export const PositionCard = ({
   cost: number | string | null | undefined
   oi: number | string | null | undefined
   collateralToken: string
-  quotePrice: number | string
-  quoteCurrency: string
   estLiquidationPrice: number | string | null | undefined
   navigate?: boolean
   border?: boolean

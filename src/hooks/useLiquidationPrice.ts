@@ -28,15 +28,10 @@ export function useLiquidationPrice(
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
-
     ;(async () => {
       try {
         setLiquidationPrice(
-          await peripheryContract.liquidationPrice(
-            marketAddress,
-            account,
-            positionId,
-          ),
+          await peripheryContract.liquidationPrice(marketAddress, account, positionId),
         )
       } catch (error) {
         console.log('market inside useLiquidationPrice: ', marketAddress)
@@ -49,23 +44,19 @@ export function useLiquidationPrice(
   }, [liquidationPrice])
 }
 
-export function useLiquidationPrices(positionsCallData: any) {
+export function useLiquidationPrices(calldata: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
-
-  const callResult = useSingleContractMultipleData(
-    peripheryContract,
-    'liquidationPrice',
-    positionsCallData,
-  )
-
+  const callResult = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', calldata)
   return useMemo(() => {
     return callResult.map(position => {
-      if (!chainId || !blockNumber || !position) return null
-
-      let liquidationPrice = position?.result && position.result[0]
-      return formatWeiToParsedNumber(liquidationPrice, 18, 4)
+      const {loading, error, result} = position
+      if (!chainId || !blockNumber || loading) return 'loading'
+      if (!loading && result === undefined) return 'inactive'
+      if (error) console.error('Error from useLiquidationPrices')
+      const value = result && result[0]
+      return formatWeiToParsedNumber(value, 18, 4)
     })
   }, [callResult, blockNumber, chainId])
 }

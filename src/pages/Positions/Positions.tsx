@@ -142,11 +142,7 @@ export const PositionsInner = () => {
             cost={costs[key]}
             oi={ois[key]}
             collateralToken={'OVL'}
-            quotePrice={'-'}
-            quoteCurrency={'-'}
-            estLiquidationPrice={
-              liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
-            }
+            estLiquidationPrice={liquidationPrices[key]}
             navigate={true}
           />
         ))}
