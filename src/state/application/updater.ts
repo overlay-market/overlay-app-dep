@@ -1,9 +1,9 @@
-import {useCallback, useEffect, useState} from 'react'
-import {useAppDispatch, useAppSelector} from '../hooks'
-import {api, CHAIN_TAG} from '../data/enhanced'
-import {useActiveWeb3React} from '../../hooks/web3'
-import {updateBlockNumber, updateChainId} from './actions'
-import {supportedChainId} from '../../utils/supportedChainId'
+import { useCallback, useEffect, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { api, CHAIN_TAG } from '../data/enhanced'
+import { useActiveWeb3React } from '../../hooks/web3'
+import { updateBlockNumber, updateChainId } from './actions'
+import { supportedChainId } from '../../utils/supportedChainId'
 import useDebounce from '../../hooks/useDebounce'
 import useIsWindowVisible from '../../hooks/useIsWindowVisible'
 
@@ -21,7 +21,10 @@ function useQueryCacheInvalidator() {
 }
 
 export default function Updater(): null {
-  const {library, chainId} = useActiveWeb3React()
+  const { library, chainId } = useActiveWeb3React()
+  console.log('chainId: ', chainId)
+  console.log('library: ', library)
+
   const dispatch = useAppDispatch()
 
   const windowVisible = useIsWindowVisible()
@@ -40,8 +43,7 @@ export default function Updater(): null {
     (blockNumber: number) => {
       setState(state => {
         if (chainId === state.chainId) {
-          if (typeof state.blockNumber !== 'number')
-            return {chainId, blockNumber}
+          if (typeof state.blockNumber !== 'number') return { chainId, blockNumber }
           return {
             chainId,
             blockNumber: Math.max(blockNumber, state.blockNumber),
@@ -57,17 +59,12 @@ export default function Updater(): null {
   useEffect(() => {
     if (!library || !chainId || !windowVisible) return undefined
 
-    setState({chainId, blockNumber: null})
+    setState({ chainId, blockNumber: null })
 
     library
       .getBlockNumber()
       .then(blockNumberCallback)
-      .catch(error =>
-        console.error(
-          `Failed to get block number for chainId: ${chainId}`,
-          error,
-        ),
-      )
+      .catch(error => console.error(`Failed to get block number for chainId: ${chainId}`, error))
 
     library.on('block', blockNumberCallback)
     return () => {
@@ -78,31 +75,19 @@ export default function Updater(): null {
   const debouncedState = useDebounce(state, 100)
 
   useEffect(() => {
-    if (
-      !debouncedState.chainId ||
-      !debouncedState.blockNumber ||
-      !windowVisible
-    )
-      return
+    if (!debouncedState.chainId || !debouncedState.blockNumber || !windowVisible) return
     dispatch(
       updateBlockNumber({
         chainId: debouncedState.chainId,
         blockNumber: debouncedState.blockNumber,
       }),
     )
-  }, [
-    windowVisible,
-    dispatch,
-    debouncedState.blockNumber,
-    debouncedState.chainId,
-  ])
+  }, [windowVisible, dispatch, debouncedState.blockNumber, debouncedState.chainId])
 
   useEffect(() => {
     dispatch(
       updateChainId({
-        chainId: debouncedState.chainId
-          ? supportedChainId(debouncedState.chainId) ?? null
-          : null,
+        chainId: debouncedState.chainId ? supportedChainId(debouncedState.chainId) ?? null : null,
       }),
     )
   }, [dispatch, debouncedState.chainId])

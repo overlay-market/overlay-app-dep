@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useEffect } from "react";
 import { parseUnits } from '@ethersproject/units';
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import JSBI from 'jsbi';
@@ -189,8 +189,14 @@ export function useQuerySubgraphAccountPositions(
     isError,
     error,
     isUninitialized,
-    data
-  } = useAccountQuery({ account: accountAddress }, { pollingInterval: 14000 })
+    data,
+    isFetching,
+    refetch
+  } = useAccountQuery({ account: accountAddress }, { 
+    pollingInterval: 14000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnReconnect: true 
+  })
 
   return useMemo(() => {
     return {
@@ -198,9 +204,11 @@ export function useQuerySubgraphAccountPositions(
       isError,
       error,
       isUninitialized,
-      positions: data?.account?.positions
+      positions: data?.account?.positions,
+      isFetching,
+      refetch
     } 
-  }, [isLoading, isError, error, isUninitialized, data])
+  }, [isLoading, isError, error, isUninitialized, data, refetch, isFetching])
 };
 
 

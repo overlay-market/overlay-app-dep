@@ -1,52 +1,49 @@
-import {
-  BaseQueryApi,
-  BaseQueryFn,
-} from "@reduxjs/toolkit/dist/query/baseQueryTypes";
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { ClientError, gql, GraphQLClient } from "graphql-request";
-import { AppState } from "../state";
-import { DocumentNode } from "graphql";
-import { SupportedChainId } from "../../constants/chains";
+import {BaseQueryApi, BaseQueryFn} from '@reduxjs/toolkit/dist/query/baseQueryTypes'
+import {createApi} from '@reduxjs/toolkit/query/react'
+import {ClientError, gql, GraphQLClient} from 'graphql-request'
+import {AppState} from '../state'
+import {DocumentNode} from 'graphql'
+import {SupportedChainId} from '../../constants/chains'
 
 const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   [SupportedChainId.MAINNET]:
-    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
+    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph',
   [SupportedChainId.KOVAN]:
-    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph",
+    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph',
   [SupportedChainId.RINKEBY]:
-    "https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby"
-};
+    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
+}
 
 export const api = createApi({
-  reducerPath: "dataApi",
+  reducerPath: 'dataApi',
   baseQuery: graphqlRequestBaseQuery(),
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     accountQuery: builder.query({
-      query: ({ account }) => ({
+      query: ({account}) => ({
         document: gql`
           query account($account: ID!) {
             account(id: $account) {
               positions {
-              id
-              positionId
-              market {
                 id
-                feedAddress
+                positionId
+                market {
+                  id
+                  feedAddress
+                }
+                initialOi
+                initialDebt
+                initialCollateral
+                initialNotional
+                leverage
+                isLong
+                entryPrice
+                isLiquidated
+                currentOi
+                currentDebt
+                mint
+                createdAtTimestamp
+                createdAtBlockNumber
               }
-              initialOi
-              initialDebt
-              initialCollateral
-              initialNotional
-              leverage
-              isLong
-              entryPrice
-              isLiquidated
-              currentOi
-              currentDebt
-              mint
-              createdAtTimestamp
-              createdAtBlockNumber
-            }
               builds {
                 id
               }
@@ -65,7 +62,7 @@ export const api = createApi({
       }),
     }),
     marketQuery: builder.query({
-      query: ({ market }) => ({
+      query: ({market}) => ({
         document: gql`
           query market($market: ID!) {
             market(id: $market) {
@@ -110,14 +107,14 @@ export const api = createApi({
               }
             }
           }
-        `
+        `,
       }),
     }),
     positionsQuery: builder.query({
       query: () => ({
         document: gql`
           query positions {
-            positions{
+            positions {
               id
               positionId
               owner {
@@ -128,47 +125,48 @@ export const api = createApi({
               }
               isLiquidated
             }
-        }
-        `
+          }
+        `,
       }),
     }),
   }),
-});
+})
 
 // Graphql query client wrapper that builds a dynamic url based on chain id
 function graphqlRequestBaseQuery(): BaseQueryFn<
-  { document: string | DocumentNode; variables?: any },
+  {document: string | DocumentNode; variables?: any},
   unknown,
-  Pick<ClientError, "name" | "message" | "stack">,
-  Partial<Pick<ClientError, "request" | "response">>
+  Pick<ClientError, 'name' | 'message' | 'stack'>,
+  Partial<Pick<ClientError, 'request' | 'response'>>
 > {
-  return async ({ document, variables }, { getState }: BaseQueryApi) => {
+  return async ({document, variables}, {getState}: BaseQueryApi) => {
     try {
-      const chainId = (getState() as AppState).application.chainId;
+      const chainId = (getState() as AppState).application.chainId
 
-      // if chainId in state is null, set default query to Mainnet
-      const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : undefined;
+      console.log('chainId within graphqlRequestBaseQuery(): ', chainId)
+      // if chainId in state is null, set default query to Kovan
+      const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : CHAIN_SUBGRAPH_URL[42]
 
       if (!subgraphUrl) {
         return {
           error: {
-            name: "UnsupportedChainId",
+            name: 'UnsupportedChainId',
             message: `Subgraph queries against ChainId ${chainId} are not supported.`,
-            stack: "",
+            stack: '',
           },
-        };
+        }
       }
 
       return {
         data: await new GraphQLClient(subgraphUrl).request(document, variables),
         meta: {},
-      };
+      }
     } catch (error) {
       if (error instanceof ClientError) {
-        const { name, message, stack, request, response } = error;
-        return { error: { name, message, stack }, meta: { request, response } };
+        const {name, message, stack, request, response} = error
+        return {error: {name, message, stack}, meta: {request, response}}
       }
-      throw error;
+      throw error
     }
-  };
+  }
 }

@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import {useMemo, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import Loader from 'react-loader-spinner'
 import {Button} from 'rebass'
@@ -71,8 +71,8 @@ export const Positions = () => {
   const toggleWalletModal = useWalletModalToggle()
   const blockNumber = useBlockNumber()
   const {onResetUnwindState} = useUnwindActionHandlers()
-  const {account} = useActiveWeb3React()
-  const {isLoading, positions} = useQuerySubgraphAccountPositions(account)
+  const {account, active} = useActiveWeb3React()
+  const {isLoading, positions, isFetching} = useQuerySubgraphAccountPositions(account)
 
   const feedAddresses = useMemo(() => {
     if (positions === undefined) return []
@@ -82,13 +82,8 @@ export const Positions = () => {
   const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
 
   const positionsCallData = useMemo(() => {
-    if (!positions || positions === undefined || !account || !blockNumber)
-      return []
-    return positions.map(position => [
-      position.market.id,
-      account,
-      position.positionId,
-    ])
+    if (!positions || positions === undefined || !account || !blockNumber) return []
+    return positions.map(position => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
 
   const values = usePositionValues(positionsCallData)
@@ -108,12 +103,7 @@ export const Positions = () => {
             <PositionsContainer>
               {isLoading ? (
                 <LoadingContainer>
-                  <Loader
-                    type="TailSpin"
-                    color="#f2f2f2"
-                    height={33}
-                    width={33}
-                  />
+                  <Loader type="TailSpin" color="#f2f2f2" height={33} width={33} />
                 </LoadingContainer>
               ) : (
                 positions?.map((index, key) => {
@@ -128,20 +118,14 @@ export const Positions = () => {
                       quoteToken={`${quoteTokens[key]}`}
                       isLong={position.isLong}
                       leverage={position.leverage}
-                      positionValue={
-                        values[key] !== undefined ? values[key] : null
-                      }
-                      positionCost={
-                        costs[key] !== undefined ? costs[key] : null
-                      }
+                      positionValue={values[key] !== undefined ? values[key] : null}
+                      positionCost={costs[key] !== undefined ? costs[key] : null}
                       positionOi={ois[key] !== undefined ? ois[key] : null}
                       collateralToken={'OVL'}
                       quotePrice={'-'}
                       quoteCurrency={'-'}
                       estLiquidationPrice={
-                        liquidationPrices[key] !== undefined
-                          ? liquidationPrices[key]
-                          : 'loading...'
+                        liquidationPrices[key] !== undefined ? liquidationPrices[key] : 'loading...'
                       }
                       navigate={true}
                       hasBorder={true}
