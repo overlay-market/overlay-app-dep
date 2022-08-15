@@ -5,10 +5,7 @@ import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {TEXT} from '../../theme/theme'
 import {useAllMarkets} from '../../state/markets/hooks'
-import {
-  formatFundingRateToDaily,
-  formatFundingRateToAnnual,
-} from '../../utils/formatWei'
+import {formatFundingRateToDaily, formatFundingRateToAnnual} from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
@@ -49,21 +46,19 @@ const Markets = () => {
     history.push(`/markets/${marketId}`)
   }
 
-  const marketAddresses = useMemo(() => {
-    if (markets === undefined) return []
-    return markets.markets.map(market => [market.id])
-  }, [markets])
+  const calldata = useMemo(
+    () => ({
+      marketAddresses: !markets ? [] : markets.markets.map(market => [market.id]),
+      feedAddresses: !markets ? [] : markets.markets.map(market => market.feedAddress),
+    }),
+    [markets],
+  )
 
-  const feedAddresses = useMemo(() => {
-    if (markets === undefined) return []
-    return markets.markets.map(market => market.feedAddress)
-  }, [markets])
-
-  const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
-  const prices = useMarketMidPrices(marketAddresses)
-  const fundingRates = useFundingRates(marketAddresses)
-  const ois = useMarketOis(marketAddresses)
-  const capOis = useMarketCapOis(marketAddresses)
+  const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
+  const prices = useMarketMidPrices(calldata.marketAddresses)
+  const fundingRates = useFundingRates(calldata.marketAddresses)
+  const ois = useMarketOis(calldata.marketAddresses)
+  const capOis = useMarketCapOis(calldata.marketAddresses)
 
   return (
     <PageContainer>
@@ -111,11 +106,7 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {prices[index] ? (
-                    prices[index]
-                  ) : (
-                    <Loader stroke="white" size="12px" />
-                  )}
+                  {prices[index] ? prices[index] : <Loader stroke="white" size="12px" />}
                   {/* &nbsp; */}
                   {/* {quoteTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : quoteTokens[index]} per {baseTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : baseTokens[index]} */}
                 </StyledTableCellThin>
@@ -178,11 +169,7 @@ const Markets = () => {
                           fundingRates[index],
                           18,
                           2,
-                        )}% (${formatFundingRateToAnnual(
-                          fundingRates[index],
-                          18,
-                          2,
-                        )}%)`
+                        )}% (${formatFundingRateToAnnual(fundingRates[index], 18, 2)}%)`
                       ) : (
                         <Loader stroke="white" size="12px" />
                       )}
