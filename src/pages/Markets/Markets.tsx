@@ -38,6 +38,9 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
+// @TO-DO: create our Markets sub-view components
+// add: TableHeader component
+// add: MarketRow component, calldata prop to call hooks from MarketRow
 const Markets = () => {
   const history = useHistory()
   const {markets} = useAllMarkets()
