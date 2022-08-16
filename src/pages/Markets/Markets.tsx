@@ -53,7 +53,6 @@ const Markets = () => {
     }),
     [markets],
   )
-
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
   const prices = useMarketMidPrices(calldata.marketAddresses)
   const fundingRates = useFundingRates(calldata.marketAddresses)
@@ -67,7 +66,7 @@ const Markets = () => {
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
-                <Trans>Market</Trans>
+                <Trans> Market </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Price </Trans>
@@ -107,30 +106,31 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   {prices[index] ? prices[index] : <Loader stroke="white" size="12px" />}
-                  {/* &nbsp; */}
-                  {/* {quoteTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : quoteTokens[index]} per {baseTokens[index] === 'loading' ? <Loader stroke="white" size="12px" /> : baseTokens[index]} */}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
                   <FlexColumn align={'left'}>
-                    <TEXT.SmallBody>
-                      {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
-                        ois[index]?.oiLong
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}
-                      &nbsp;/&nbsp;
-                      {capOis[index] || capOis[index] === 0 ? (
-                        capOis[index]
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}
-                    </TEXT.SmallBody>
+                    <FlexRow flexWrap={'wrap'}>
+                      <TEXT.SmallBody>
+                        {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
+                          ois[index]?.oiLong
+                        ) : (
+                          <Loader stroke="white" size="12px" />
+                        )}{' '}
+                        &nbsp;/&nbsp;
+                      </TEXT.SmallBody>
+                      <TEXT.SmallBody>
+                        {capOis[index] || capOis[index] === 0 ? (
+                          capOis[index]
+                        ) : (
+                          <Loader stroke="white" size="12px" />
+                        )}
+                      </TEXT.SmallBody>
+                    </FlexRow>
                     <ProgressBar
                       value={ois[index]?.oiLong}
                       max={capOis[index]}
                       color={'#10DCB1'}
-                      // width={'88px'}
                       margin={'0'}
                     />
                   </FlexColumn>
@@ -138,24 +138,27 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   <FlexColumn align={'left'}>
-                    <TEXT.SmallBody>
-                      {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
-                        ois[index]?.oiShort
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}
-                      &nbsp;/&nbsp;
-                      {capOis[index] || capOis[index] === 0 ? (
-                        capOis[index]
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}
-                    </TEXT.SmallBody>
+                    <FlexRow flexWrap={'wrap'}>
+                      <TEXT.SmallBody>
+                        {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
+                          ois[index]?.oiShort
+                        ) : (
+                          <Loader stroke="white" size="12px" />
+                        )}
+                        &nbsp;/&nbsp;
+                      </TEXT.SmallBody>
+                      <TEXT.SmallBody>
+                        {capOis[index] || capOis[index] === 0 ? (
+                          capOis[index]
+                        ) : (
+                          <Loader stroke="white" size="12px" />
+                        )}
+                      </TEXT.SmallBody>
+                    </FlexRow>
                     <ProgressBar
                       value={ois[index]?.oiShort}
                       max={capOis[index]}
                       color={'#DC1F4E'}
-                      // width={'88px'}
                       margin={'0'}
                     />
                   </FlexColumn>

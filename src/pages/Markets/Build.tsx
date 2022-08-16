@@ -110,6 +110,12 @@ const NumericalInputBottomText = styled(TEXT.Supplemental)`
   margin: 4px 0 24px auto !important;
 `
 
+// @TO-DO: Break down BuildInterface into sub-components
+// separate out data fetching logic from view components
+
+// BuildInterface component to handle user input
+// & callbacks for approve/build, data from periphery contract
+// to be moved to respective sub-components to keep clean
 export const BuildInterface = ({marketId}: {marketId: string}) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const [
