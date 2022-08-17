@@ -14,6 +14,8 @@ import Vaults from './Stake/Vaults'
 import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
 
+import TermsOfServiceModal from '../components/TermsOfServiceModal/TermsOfServiceModal'
+
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
   height: 100%;
@@ -24,11 +26,12 @@ export const AppWrapper = styled.div`
 const TermsOfServiceManager = ({children}: {children: JSX.Element | JSX.Element[]}) => {
   const isConsented = true
 
-  if (isConsented) {
-    return <>{children}</>
-  } else {
-    return <>'Will Not Show'</>
-  }
+  return (
+    <>
+      {children}
+      <TermsOfServiceModal />
+    </>
+  )
 }
 
 const App = () => {
