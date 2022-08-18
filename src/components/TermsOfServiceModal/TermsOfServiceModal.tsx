@@ -6,8 +6,8 @@ import {ApplicationModal} from '../../state/application/actions'
 import {SolidColorButton} from '../Button/Button'
 import {TEXT} from '../../theme/theme'
 import {FlexRow} from '../Container/Container'
-import {useUserTermsOfServiceStatusManager} from '../../state/user/hooks'
-import {UserTermsOfServiceStatus} from '../../state/user/actions'
+import {useTermsOfServiceStatusManager} from '../../state/application/hooks'
+import {UserTermsOfServiceStatus} from '../../state/application/actions'
 import Modal from '../Modal/Modal'
 
 const ModalContent = styled.div`
@@ -49,7 +49,7 @@ const UserDeclineButton = styled(SolidColorButton)`
 `
 
 export default function TermsOfServiceModal() {
-  const [userAgreementStatus, setUserAgreementStatus] = useUserTermsOfServiceStatusManager()
+  const [userAgreementStatus, setUserAgreementStatus] = useTermsOfServiceStatusManager()
 
   // const [userHasAccepted, setUserHasAccepted] = useState<boolean | null>(null)
   const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
@@ -73,13 +73,6 @@ export default function TermsOfServiceModal() {
     termsOfServiceModalOpen,
     toggleTermsOfServiceModal,
   ])
-
-  // useEffect(() => {
-  //   if (userHasAccepted === UserTermsOfServiceStatus.ACCEPTED && termsOfServiceModalOpen) {
-  //     toggleTermsOfServiceModal()
-  //   }
-  // }, [userHasAccepted, termsOfServiceModalOpen, toggleTermsOfServiceModal])
-
   // maxAge in seconds
   // 1 mo = 2628000 seconds
   function acceptTermsOfService() {

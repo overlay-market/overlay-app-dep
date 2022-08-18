@@ -1,29 +1,17 @@
 import {createReducer} from '@reduxjs/toolkit'
 import {updateVersion} from '../global/actions'
 import {SupportedLocale} from '../../constants/locales'
-import {
-  updateUserDarkMode,
-  updateMatchesDarkMode,
-  updateUserLocale,
-  updateUserTermsOfServiceStatus,
-  UserTermsOfServiceStatus,
-} from './actions'
+import {updateUserDarkMode, updateMatchesDarkMode, updateUserLocale} from './actions'
 
 const currentTimestamp = () => new Date().getTime()
 
 export interface UserState {
   // the timestamp of the last updateVersion action
-  lastUpdateVersionTimestamp?: number
-
-  userDarkMode: boolean | null
-
-  userLocale: SupportedLocale | null
-
-  matchesDarkMode: boolean
-
-  timestamp: number
-
-  userTermsOfServiceStatus: UserTermsOfServiceStatus
+  readonly lastUpdateVersionTimestamp?: number
+  readonly userDarkMode: boolean | null
+  readonly userLocale: SupportedLocale | null
+  readonly matchesDarkMode: boolean
+  readonly timestamp: number
 }
 
 export const initialState: UserState = {
@@ -31,7 +19,6 @@ export const initialState: UserState = {
   matchesDarkMode: false,
   userLocale: null,
   timestamp: currentTimestamp(),
-  userTermsOfServiceStatus: UserTermsOfServiceStatus.NEW_USER,
 }
 
 export default createReducer(initialState, builder =>
@@ -49,10 +36,6 @@ export default createReducer(initialState, builder =>
     })
     .addCase(updateUserLocale, (state, action) => {
       state.userLocale = action.payload.userLocale
-      state.timestamp = currentTimestamp()
-    })
-    .addCase(updateUserTermsOfServiceStatus, (state, action) => {
-      state.userTermsOfServiceStatus = action.payload.userTermsOfServiceStatus
       state.timestamp = currentTimestamp()
     }),
 )

@@ -1,11 +1,6 @@
 import {useCallback} from 'react'
 import {shallowEqual} from 'react-redux'
-import {
-  updateUserLocale,
-  updateUserDarkMode,
-  updateUserTermsOfServiceStatus,
-  UserTermsOfServiceStatus,
-} from './actions'
+import {updateUserLocale, updateUserDarkMode} from './actions'
 import {useAppSelector, useAppDispatch} from '../hooks'
 import {SupportedLocale} from '../../constants/locales'
 
@@ -30,27 +25,6 @@ export function useDarkModeManager(): [boolean, () => void] {
   }, [darkMode, dispatch])
 
   return [darkMode, toggleSetDarkMode]
-}
-
-export function useUserTermsOfServiceStatus(): UserTermsOfServiceStatus {
-  return useAppSelector(state => state.user.userTermsOfServiceStatus)
-}
-
-export function useUserTermsOfServiceStatusManager(): [
-  UserTermsOfServiceStatus,
-  (userTermsOfServiceStatus: UserTermsOfServiceStatus) => void,
-] {
-  const dispatch = useAppDispatch()
-  const status = useUserTermsOfServiceStatus()
-
-  const setStatus = useCallback(
-    (userTermsOfServiceStatus: UserTermsOfServiceStatus) => {
-      dispatch(updateUserTermsOfServiceStatus({userTermsOfServiceStatus}))
-    },
-    [dispatch],
-  )
-
-  return [status, setStatus]
 }
 
 export function useUserLocale(): SupportedLocale | null {
