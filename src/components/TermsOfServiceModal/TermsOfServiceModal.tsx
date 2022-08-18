@@ -50,28 +50,10 @@ const UserDeclineButton = styled(SolidColorButton)`
 
 export default function TermsOfServiceModal() {
   const [userAgreementStatus, setUserAgreementStatus] = useTermsOfServiceStatusManager()
-
-  // const [userHasAccepted, setUserHasAccepted] = useState<boolean | null>(null)
   const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
-  // useEffect(() => {
-  //   const {userHasAcceptedServiceAgreement} = cookies
-
-  //   if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
-  //     toggleTermsOfServiceModal()
-  //   }
-  //   if (userHasAcceptedServiceAgreement) {
-  //     setUserAgreementStatus(UserTermsOfServiceStatus.ACCEPTED)
-  //   }
-  // }, [
-  //   cookies,
-  //   userAgreementStatus,
-  //   setUserAgreementStatus,
-  //   termsOfServiceModalOpen,
-  //   toggleTermsOfServiceModal,
-  // ])
   // maxAge in seconds
   // 1 mo = 2628000 seconds
   function acceptTermsOfService() {

@@ -18,6 +18,8 @@ import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
 
 import TermsOfServiceModal from '../components/TermsOfServiceModal/TermsOfServiceModal'
+import {UserTermsOfServiceStatus} from '../state/application/actions'
+import {useTermsOfServiceStatusManager} from '../state/application/hooks'
 import {useModalOpen} from '../state/application/hooks'
 import {ApplicationModal} from '../state/application/actions'
 
@@ -28,7 +30,11 @@ export const AppWrapper = styled.div`
   width: 100vw;
 `
 
+const AccessDenied = () => {
+  return <>AccessDenied</>
+}
 const TermsOfServiceManager = ({children}: {children: JSX.Element | JSX.Element[]}) => {
+  const [userAgreementStatus, setUserAgreementStatus] = useTermsOfServiceStatusManager()
   const [cookies] = useCookies(['userHasAcceptedServiceAgreement'])
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
@@ -44,6 +50,9 @@ const TermsOfServiceManager = ({children}: {children: JSX.Element | JSX.Element[
     }
   }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
 
+  if (userAgreementStatus === UserTermsOfServiceStatus.REJECTED) {
+    return <AccessDenied />
+  }
   return (
     <>
       {children}
