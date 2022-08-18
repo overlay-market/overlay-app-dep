@@ -1,9 +1,7 @@
 import './App.css'
-import {useEffect} from 'react'
-import {useCookies} from 'react-cookie'
-import {useTermsOfServiceModalToggle} from '../state/application/hooks'
 import {Route, Switch, Redirect} from 'react-router-dom'
 import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager'
+import TermsOfServiceManager from '../components/TermsOfServiceModal/TermsOfServiceManager'
 import Header from '../components/Header/Header'
 import CurrentBlock from '../components/CurrentBlock/CurrentBlock'
 import Markets from './Markets/Markets'
@@ -17,49 +15,12 @@ import Vaults from './Stake/Vaults'
 import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
 
-import TermsOfServiceModal from '../components/TermsOfServiceModal/TermsOfServiceModal'
-import {UserTermsOfServiceStatus} from '../state/application/actions'
-import {useTermsOfServiceStatusManager} from '../state/application/hooks'
-import {useModalOpen} from '../state/application/hooks'
-import {ApplicationModal} from '../state/application/actions'
-
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
   height: 100%;
   min-height: 100vh;
   width: 100vw;
 `
-
-const AccessDenied = () => {
-  return <>AccessDenied</>
-}
-const TermsOfServiceManager = ({children}: {children: JSX.Element | JSX.Element[]}) => {
-  const [userAgreementStatus, setUserAgreementStatus] = useTermsOfServiceStatusManager()
-  const [cookies] = useCookies(['userHasAcceptedServiceAgreement'])
-  const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
-  const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
-
-  useEffect(() => {
-    const {userHasAcceptedServiceAgreement} = cookies
-
-    if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
-      toggleTermsOfServiceModal()
-    }
-    if (userHasAcceptedServiceAgreement && termsOfServiceModalOpen) {
-      toggleTermsOfServiceModal()
-    }
-  }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
-
-  if (userAgreementStatus === UserTermsOfServiceStatus.REJECTED) {
-    return <AccessDenied />
-  }
-  return (
-    <>
-      {children}
-      <TermsOfServiceModal />
-    </>
-  )
-}
 
 const App = () => {
   return (
