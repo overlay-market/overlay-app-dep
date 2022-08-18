@@ -1,5 +1,6 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
+import {useCookies} from 'react-cookie'
 import {useModalOpen, useTermsOfServiceModalToggle} from '../../state/application/hooks'
 import {ApplicationModal} from '../../state/application/actions'
 import {SolidColorButton} from '../Button/Button'
@@ -46,37 +47,40 @@ const UserDeclineButton = styled(SolidColorButton)`
 `
 
 export default function TermsOfServiceModal() {
+  const [userHasAccepted, setUserHasAccepted] = useState(false)
+
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
 
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
-  const modalOpen = true
+  const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
+
   //@TO-DO: create helper util function to
   //get, set local browser cookie for if
   //user accepted terms of service
 
   //@TO-DO: check if cookie value exists
   //if value undefined, serve modal
-  //if value exists, update hasAcceptedServiceAgreement
+  //if value exists, update userHasAcceptedServiceAgreement
+  useEffect(() => {})
 
+  function acceptTermsOfService() {
+    setUserHasAccepted(true)
+    setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/'})
+  }
   //@TO-DO: when user accepts terms of service,
   //update store state for hasAcceptedServiceAgreement to true
   //modal to show based on hasAcceptedServiceAgreement value
 
   return (
-    <Modal
-      isOpen={modalOpen}
-      onDismiss={toggleTermsOfServiceModal}
-      minHeight={false}
-      maxHeight={90}
-    >
+    <Modal isOpen={true} onDismiss={toggleTermsOfServiceModal} minHeight={false} maxHeight={90}>
       <ModalContent>
         <TEXT.BoldSmallBody lineHeight={1.5} m={'auto'}>
           Please carefully read through the Terms of Service Agreement. By clicking "Accept", the
           user is acknowledging to abide by the Terms of Service.
         </TEXT.BoldSmallBody>
         <FlexRow m={'16px auto 8px'}>
-          <UserAcceptButton onClick={toggleTermsOfServiceModal}>Accept</UserAcceptButton>
+          <UserAcceptButton onClick={acceptTermsOfService}>Accept</UserAcceptButton>
           <UserDeclineButton>Decline</UserDeclineButton>
         </FlexRow>
       </ModalContent>
