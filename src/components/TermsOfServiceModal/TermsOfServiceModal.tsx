@@ -62,18 +62,35 @@ export default function TermsOfServiceModal() {
   //@TO-DO: check if cookie value exists
   //if value undefined, serve modal
   //if value exists, update userHasAcceptedServiceAgreement
-  useEffect(() => {})
+  useEffect(() => {
+    const {userHasAcceptedServiceAgreement} = cookies
+
+    if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
+      toggleTermsOfServiceModal()
+    }
+
+    if (userHasAcceptedServiceAgreement) {
+      setUserHasAccepted(true)
+    }
+  }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
 
   function acceptTermsOfService() {
     setUserHasAccepted(true)
-    setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/'})
+    // maxAge in seconds
+    // 1 mo = 2628000 seconds
+    setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
   }
   //@TO-DO: when user accepts terms of service,
   //update store state for hasAcceptedServiceAgreement to true
   //modal to show based on hasAcceptedServiceAgreement value
 
   return (
-    <Modal isOpen={true} onDismiss={toggleTermsOfServiceModal} minHeight={false} maxHeight={90}>
+    <Modal
+      isOpen={termsOfServiceModalOpen}
+      onDismiss={toggleTermsOfServiceModal}
+      minHeight={false}
+      maxHeight={90}
+    >
       <ModalContent>
         <TEXT.BoldSmallBody lineHeight={1.5} m={'auto'}>
           Please carefully read through the Terms of Service Agreement. By clicking "Accept", the
