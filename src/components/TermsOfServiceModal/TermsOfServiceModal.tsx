@@ -48,41 +48,32 @@ const UserDeclineButton = styled(SolidColorButton)`
 
 export default function TermsOfServiceModal() {
   const [userHasAccepted, setUserHasAccepted] = useState(false)
-
+  const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
-
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
-  const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
-
-  //@TO-DO: create helper util function to
-  //get, set local browser cookie for if
-  //user accepted terms of service
-
-  //@TO-DO: check if cookie value exists
-  //if value undefined, serve modal
-  //if value exists, update userHasAcceptedServiceAgreement
   useEffect(() => {
     const {userHasAcceptedServiceAgreement} = cookies
-
     if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
       toggleTermsOfServiceModal()
     }
-
     if (userHasAcceptedServiceAgreement) {
       setUserHasAccepted(true)
     }
   }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
 
+  useEffect(() => {
+    if (userHasAccepted && termsOfServiceModalOpen) {
+      toggleTermsOfServiceModal()
+    }
+  }, [userHasAccepted, termsOfServiceModalOpen, toggleTermsOfServiceModal])
+
+  // maxAge in seconds
+  // 1 mo = 2628000 seconds
   function acceptTermsOfService() {
     setUserHasAccepted(true)
-    // maxAge in seconds
-    // 1 mo = 2628000 seconds
     setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
   }
-  //@TO-DO: when user accepts terms of service,
-  //update store state for hasAcceptedServiceAgreement to true
-  //modal to show based on hasAcceptedServiceAgreement value
 
   return (
     <Modal
