@@ -51,6 +51,18 @@ export default function TermsOfServiceModal() {
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
   const modalOpen = true
+  //@TO-DO: create helper util function to
+  //get, set local browser cookie for if
+  //user accepted terms of service
+
+  //@TO-DO: check if cookie value exists
+  //if value undefined, serve modal
+  //if value exists, update hasAcceptedServiceAgreement
+
+  //@TO-DO: when user accepts terms of service,
+  //update store state for hasAcceptedServiceAgreement to true
+  //modal to show based on hasAcceptedServiceAgreement value
+
   return (
     <Modal
       isOpen={modalOpen}
