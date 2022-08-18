@@ -22,8 +22,7 @@ export default function TermsOfServiceManager({children}: {children: JSX.Element
 
     if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
       toggleTermsOfServiceModal()
-    }
-    if (userHasAcceptedServiceAgreement && termsOfServiceModalOpen) {
+    } else if (userHasAcceptedServiceAgreement && termsOfServiceModalOpen) {
       toggleTermsOfServiceModal()
     }
   }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
@@ -31,6 +30,7 @@ export default function TermsOfServiceManager({children}: {children: JSX.Element
   if (userAgreementStatus === UserTermsOfServiceStatus.REJECTED) {
     return <AccessDenied />
   }
+
   return (
     <>
       {children}

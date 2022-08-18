@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useEffect} from 'react'
 import styled from 'styled-components'
 import {useCookies} from 'react-cookie'
 import {useModalOpen, useTermsOfServiceModalToggle} from '../../state/application/hooks'
@@ -54,10 +54,15 @@ export default function TermsOfServiceModal() {
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
-  // maxAge in seconds
-  // 1 mo = 2628000 seconds
+  useEffect(() => {
+    if (userAgreementStatus === UserTermsOfServiceStatus.ACCEPTED) {
+      // maxAge in seconds e.g 1 mo = 2628000 seconds
+      setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
+    }
+  }, [userAgreementStatus, setCookie])
+
   function acceptTermsOfService() {
-    setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
+    setUserAgreementStatus(UserTermsOfServiceStatus.ACCEPTED)
   }
 
   function declineTermsOfService() {
