@@ -1,4 +1,7 @@
 import './App.css'
+import {useEffect} from 'react'
+import {useCookies} from 'react-cookie'
+import {useTermsOfServiceModalToggle} from '../state/application/hooks'
 import {Route, Switch, Redirect} from 'react-router-dom'
 import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager'
 import Header from '../components/Header/Header'
@@ -15,6 +18,8 @@ import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
 
 import TermsOfServiceModal from '../components/TermsOfServiceModal/TermsOfServiceModal'
+import {useModalOpen} from '../state/application/hooks'
+import {ApplicationModal} from '../state/application/actions'
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -24,7 +29,20 @@ export const AppWrapper = styled.div`
 `
 
 const TermsOfServiceManager = ({children}: {children: JSX.Element | JSX.Element[]}) => {
-  const isConsented = true
+  const [cookies] = useCookies(['userHasAcceptedServiceAgreement'])
+  const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
+  const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
+
+  useEffect(() => {
+    const {userHasAcceptedServiceAgreement} = cookies
+
+    if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
+      toggleTermsOfServiceModal()
+    }
+    if (userHasAcceptedServiceAgreement && termsOfServiceModalOpen) {
+      toggleTermsOfServiceModal()
+    }
+  }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
 
   return (
     <>

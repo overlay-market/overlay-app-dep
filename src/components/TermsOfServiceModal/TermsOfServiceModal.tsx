@@ -56,23 +56,22 @@ export default function TermsOfServiceModal() {
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
-  useEffect(() => {
-    const {userHasAcceptedServiceAgreement} = cookies
+  // useEffect(() => {
+  //   const {userHasAcceptedServiceAgreement} = cookies
 
-    console.log(userHasAcceptedServiceAgreement)
-    if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
-      toggleTermsOfServiceModal()
-    }
-    if (userHasAcceptedServiceAgreement) {
-      setUserAgreementStatus(UserTermsOfServiceStatus.ACCEPTED)
-    }
-  }, [
-    cookies,
-    userAgreementStatus,
-    setUserAgreementStatus,
-    termsOfServiceModalOpen,
-    toggleTermsOfServiceModal,
-  ])
+  //   if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
+  //     toggleTermsOfServiceModal()
+  //   }
+  //   if (userHasAcceptedServiceAgreement) {
+  //     setUserAgreementStatus(UserTermsOfServiceStatus.ACCEPTED)
+  //   }
+  // }, [
+  //   cookies,
+  //   userAgreementStatus,
+  //   setUserAgreementStatus,
+  //   termsOfServiceModalOpen,
+  //   toggleTermsOfServiceModal,
+  // ])
   // maxAge in seconds
   // 1 mo = 2628000 seconds
   function acceptTermsOfService() {
