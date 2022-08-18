@@ -23,10 +23,11 @@ const AccessDenied = () => {
 }
 
 export default function TermsOfServiceManager({children}: {children: JSX.Element | JSX.Element[]}) {
+  const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const [userAgreementStatus] = useTermsOfServiceStatusManager()
   const [cookies] = useCookies(['userHasAcceptedServiceAgreement'])
+
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
-  const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
 
   useEffect(() => {
     const {userHasAcceptedServiceAgreement} = cookies

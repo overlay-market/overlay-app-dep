@@ -48,16 +48,21 @@ const UserDeclineButton = styled(SolidColorButton)`
   }
 `
 
+enum ClientCookies {
+  userHasAcceptedServiceAgreement = 'userHasAcceptedServiceAgreement',
+}
+
 export default function TermsOfServiceModal() {
   const [userAgreementStatus, setUserAgreementStatus] = useTermsOfServiceStatusManager()
-  const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
+  const [cookies, setCookie] = useCookies([ClientCookies.userHasAcceptedServiceAgreement])
+
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
   useEffect(() => {
     if (userAgreementStatus === UserTermsOfServiceStatus.ACCEPTED) {
       // maxAge in seconds e.g 1 mo = 2628000 seconds
-      setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
+      setCookie(ClientCookies.userHasAcceptedServiceAgreement, 'true', {path: '/', maxAge: 7884000})
     }
   }, [userAgreementStatus, setCookie])
 
