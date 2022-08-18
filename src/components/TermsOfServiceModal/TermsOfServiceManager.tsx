@@ -10,6 +10,7 @@ import {PlanckCatLoader} from '../Loaders/Loaders'
 import {FlexColumn} from '../Container/Container'
 import {TEXT} from '../../theme/theme'
 import TermsOfServiceModal from './TermsOfServiceModal'
+import {ClientCookies} from './TermsOfServiceModal'
 
 const AccessDenied = () => {
   return (
@@ -25,7 +26,7 @@ const AccessDenied = () => {
 export default function TermsOfServiceManager({children}: {children: JSX.Element | JSX.Element[]}) {
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const [userAgreementStatus] = useTermsOfServiceStatusManager()
-  const [cookies] = useCookies(['userHasAcceptedServiceAgreement'])
+  const [cookies] = useCookies([ClientCookies.userHasAcceptedServiceAgreement])
 
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 

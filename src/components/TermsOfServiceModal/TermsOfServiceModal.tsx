@@ -48,7 +48,7 @@ const UserDeclineButton = styled(SolidColorButton)`
   }
 `
 
-enum ClientCookies {
+export enum ClientCookies {
   userHasAcceptedServiceAgreement = 'userHasAcceptedServiceAgreement',
 }
 
