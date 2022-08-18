@@ -24,6 +24,12 @@ export enum ApplicationModal {
   TERMS_OF_SERVICE,
 }
 
+export enum UserTermsOfServiceStatus {
+  NEW_USER = 'NEW_USER',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
+}
+
 export const updateChainId = createAction<{chainId: number | null}>('application/updateChainId')
 export const updateBlockNumber = createAction<{chainId: number; blockNumber: number}>(
   'application/updateBlockNumber',
@@ -35,3 +41,6 @@ export const addPopup = createAction<{
 }>('application/addPopup')
 export const removePopup = createAction<{key: string}>('application/removePopup')
 export const setOpenModal = createAction<ApplicationModal | null>('application/setOpenModal')
+export const updateTermsOfServiceStatus = createAction<{
+  termsOfServiceStatus: UserTermsOfServiceStatus
+}>('application/updateTermsOfServiceStatus')

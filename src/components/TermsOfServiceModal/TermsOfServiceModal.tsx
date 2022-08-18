@@ -6,6 +6,8 @@ import {ApplicationModal} from '../../state/application/actions'
 import {SolidColorButton} from '../Button/Button'
 import {TEXT} from '../../theme/theme'
 import {FlexRow} from '../Container/Container'
+import {useUserTermsOfServiceStatusManager} from '../../state/user/hooks'
+import {UserTermsOfServiceStatus} from '../../state/user/actions'
 import Modal from '../Modal/Modal'
 
 const ModalContent = styled.div`
@@ -47,37 +49,47 @@ const UserDeclineButton = styled(SolidColorButton)`
 `
 
 export default function TermsOfServiceModal() {
-  const [userHasAccepted, setUserHasAccepted] = useState<boolean | null>(null)
+  const [userAgreementStatus, setUserAgreementStatus] = useUserTermsOfServiceStatusManager()
+
+  // const [userHasAccepted, setUserHasAccepted] = useState<boolean | null>(null)
   const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 
   useEffect(() => {
     const {userHasAcceptedServiceAgreement} = cookies
+
+    console.log(userHasAcceptedServiceAgreement)
     if (!userHasAcceptedServiceAgreement && !termsOfServiceModalOpen) {
       toggleTermsOfServiceModal()
     }
     if (userHasAcceptedServiceAgreement) {
-      setUserHasAccepted(true)
+      setUserAgreementStatus(UserTermsOfServiceStatus.ACCEPTED)
     }
-  }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
+  }, [
+    cookies,
+    userAgreementStatus,
+    setUserAgreementStatus,
+    termsOfServiceModalOpen,
+    toggleTermsOfServiceModal,
+  ])
 
-  useEffect(() => {
-    if (userHasAccepted && termsOfServiceModalOpen) {
-      toggleTermsOfServiceModal()
-    }
-  }, [userHasAccepted, termsOfServiceModalOpen, toggleTermsOfServiceModal])
+  // useEffect(() => {
+  //   if (userHasAccepted === UserTermsOfServiceStatus.ACCEPTED && termsOfServiceModalOpen) {
+  //     toggleTermsOfServiceModal()
+  //   }
+  // }, [userHasAccepted, termsOfServiceModalOpen, toggleTermsOfServiceModal])
 
   // maxAge in seconds
   // 1 mo = 2628000 seconds
   function acceptTermsOfService() {
-    setUserHasAccepted(true)
     setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
   }
 
   function declineTermsOfService() {
-    setUserHasAccepted(false)
+    setUserAgreementStatus(UserTermsOfServiceStatus.REJECTED)
   }
+
   return (
     <Modal
       isOpen={termsOfServiceModalOpen}
@@ -92,7 +104,7 @@ export default function TermsOfServiceModal() {
         </TEXT.BoldSmallBody>
         <FlexRow m={'16px auto 8px'}>
           <UserAcceptButton onClick={acceptTermsOfService}>Accept</UserAcceptButton>
-          <UserDeclineButton>Decline</UserDeclineButton>
+          <UserDeclineButton onClick={declineTermsOfService}>Decline</UserDeclineButton>
         </FlexRow>
       </ModalContent>
     </Modal>

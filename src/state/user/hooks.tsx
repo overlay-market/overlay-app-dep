@@ -36,13 +36,16 @@ export function useUserTermsOfServiceStatus(): UserTermsOfServiceStatus {
   return useAppSelector(state => state.user.userTermsOfServiceStatus)
 }
 
-export function useUserTermsOfServiceStatusManager() {
+export function useUserTermsOfServiceStatusManager(): [
+  UserTermsOfServiceStatus,
+  (userTermsOfServiceStatus: UserTermsOfServiceStatus) => void,
+] {
   const dispatch = useAppDispatch()
   const status = useUserTermsOfServiceStatus()
 
   const setStatus = useCallback(
-    (newStatus: UserTermsOfServiceStatus) => {
-      dispatch(updateUserTermsOfServiceStatus({userTermsOfServiceStatus: newStatus}))
+    (userTermsOfServiceStatus: UserTermsOfServiceStatus) => {
+      dispatch(updateUserTermsOfServiceStatus({userTermsOfServiceStatus}))
     },
     [dispatch],
   )

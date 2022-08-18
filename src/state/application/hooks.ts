@@ -4,7 +4,14 @@ import {AppState} from '../state'
 import {ApplicationModal} from './actions'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useAppSelector, useAppDispatch} from '../hooks'
-import {addPopup, PopupContent, setOpenModal, removePopup} from './actions'
+import {
+  addPopup,
+  PopupContent,
+  setOpenModal,
+  removePopup,
+  updateTermsOfServiceStatus,
+  UserTermsOfServiceStatus,
+} from './actions'
 
 export function useBlockNumber(): number | undefined {
   const {chainId} = useActiveWeb3React()
@@ -58,4 +65,25 @@ export function useWalletModalToggle(): () => void {
 
 export function useTermsOfServiceModalToggle(): () => void {
   return useToggleModal(ApplicationModal.TERMS_OF_SERVICE)
+}
+
+export function useTermsOfServiceStatus(): UserTermsOfServiceStatus {
+  return useAppSelector(state => state.application.termsOfServiceStatus)
+}
+
+export function useTermsOfServiceStatusManager(): [
+  UserTermsOfServiceStatus,
+  (termsOfServiceStatus: UserTermsOfServiceStatus) => void,
+] {
+  const dispatch = useAppDispatch()
+  const status = useTermsOfServiceStatus()
+
+  const setStatus = useCallback(
+    (termsOfServiceStatus: UserTermsOfServiceStatus) => {
+      dispatch(updateTermsOfServiceStatus({termsOfServiceStatus}))
+    },
+    [dispatch],
+  )
+
+  return [status, setStatus]
 }

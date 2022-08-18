@@ -2,9 +2,9 @@ import {createAction} from '@reduxjs/toolkit'
 import {SupportedLocale} from '../../constants/locales'
 
 export enum UserTermsOfServiceStatus {
-  ACCEPTED,
-  REJECTED,
-  NEW_USER,
+  NEW_USER = 'NEW_USER',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
 }
 
 export const updateUserTermsOfServiceStatus = createAction<{
