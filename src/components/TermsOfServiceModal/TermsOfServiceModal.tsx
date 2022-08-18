@@ -47,7 +47,7 @@ const UserDeclineButton = styled(SolidColorButton)`
 `
 
 export default function TermsOfServiceModal() {
-  const [userHasAccepted, setUserHasAccepted] = useState(false)
+  const [userHasAccepted, setUserHasAccepted] = useState<boolean | null>(null)
   const [cookies, setCookie] = useCookies(['userHasAcceptedServiceAgreement'])
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
@@ -75,6 +75,9 @@ export default function TermsOfServiceModal() {
     setCookie('userHasAcceptedServiceAgreement', 'true', {path: '/', maxAge: 7884000})
   }
 
+  function declineTermsOfService() {
+    setUserHasAccepted(false)
+  }
   return (
     <Modal
       isOpen={termsOfServiceModalOpen}
