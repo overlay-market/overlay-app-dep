@@ -50,6 +50,7 @@ const UserDeclineButton = styled(SolidColorButton)`
 
 export enum ClientCookies {
   userHasAcceptedServiceAgreement = 'userHasAcceptedServiceAgreement',
+  userRiskLevel = 'userRiskLevel',
 }
 
 export default function TermsOfServiceModal() {

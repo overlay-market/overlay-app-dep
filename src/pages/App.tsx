@@ -15,9 +15,10 @@ import Vaults from './Stake/Vaults'
 import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
 
-import {useEffect} from 'react'
+import {useEffect, useState} from 'react'
 import {useCookies} from 'react-cookie'
 import {useActiveWeb3React} from '../hooks/web3'
+import {ClientCookies} from '../components/TermsOfServiceModal/TermsOfServiceModal'
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -28,18 +29,22 @@ export const AppWrapper = styled.div`
 
 function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]}) {
   const {account} = useActiveWeb3React()
-  const [cookies] = useCookies()
+  const [cookies] = useCookies([ClientCookies.userRiskLevel])
 
   // @TO-DO: check cookie on app initializing for any prior risk assessments
+  useEffect(() => {
+    const {userRiskLevel} = cookies
+    if (!account) {
+      console.log('Chainalysis Manager: no account currently connected')
+    }
+    if (!userRiskLevel) {
+      console.log('Chainalysis Manager: no userRiskLevel cookie detected')
+    }
+  }, [account, cookies])
 
   // @TO-DO: if cookie undefined, "GET" request chainanalysis API to check if address is registered
   // if response message property value is 'Entity not found. Please be sure to register the Entity',
   // we must register the account using a "POST" request to chainanalysis API.
-  useEffect(() => {
-    if (account) {
-      console.log('account in ChainalysisManager: ', account)
-    }
-  }, [account])
   return <>{children}</>
 }
 
