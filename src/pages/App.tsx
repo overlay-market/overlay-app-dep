@@ -40,14 +40,22 @@ function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]})
 
   const {userRiskLevel} = cookies
 
+  // @TO-DO: use axios-hooks to manually trigger "GET" / "POST" requests to not perform unnecessary API calls
+  // https://www.npmjs.com/package/axios-hooks
+
+  // @TO-DO: useEffect to perform side effects on Chainanalysis "GET" request responses
+  // if address has not been registered, perform "POST" request
+  // if address returns response.risk value, set cookie with returned risk value
+
   // @TO-DO: check cookie on app initializing for any prior risk assessments
   useEffect(() => {
-    if (!account) {
-      console.log('Chainalysis Manager: no account currently connected')
-    }
+    // @TO-DO: remove if statement below; purely testing purposes
     // if (account) {
     //   setCookie(ClientCookies.userRiskLevel, 'SEVERE')
     // }
+    if (!account) {
+      console.log('Chainalysis Manager: no account currently connected')
+    }
     if (!userRiskLevel) {
       // perform "GET" request to check if registered
       console.log('Chainalysis Manager: no userRiskLevel cookie detected')
