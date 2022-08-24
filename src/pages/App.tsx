@@ -50,24 +50,27 @@ function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]})
   // @TO-DO: check cookie on app initializing for any prior risk assessments
   useEffect(() => {
     // @TO-DO: remove if statement below; purely testing purposes
-    // if (account) {
-    //   setCookie(ClientCookies.userRiskLevel, 'SEVERE')
-    // }
+    if (account) {
+      console.log('Chainalysis Manager: setting cookie to SEVERE')
+      setCookie(ClientCookies.userRiskLevel, 'SEVERE')
+    }
     if (!account) {
       console.log('Chainalysis Manager: no account currently connected')
     }
-    if (!userRiskLevel) {
+    if (account && !userRiskLevel) {
       // perform "GET" request to check if registered
       console.log('Chainalysis Manager: no userRiskLevel cookie detected')
     }
     if (userRiskLevel) {
       console.log('Chainanalysis Manager: current userRiskLevel cookie: ', userRiskLevel)
     }
-  }, [account, userRiskLevel])
+  }, [account, setCookie, userRiskLevel])
 
   // @TO-DO: if cookie undefined, "GET" request chainanalysis API to check if address is registered
   // if response message property value is 'Entity not found. Please be sure to register the Entity',
   // we must register the account using a "POST" request to chainanalysis API.
+  if (userRiskLevel === SecurityRiskLevels.SEVERE) return null
+
   return <>{children}</>
 }
 
