@@ -83,8 +83,12 @@ export default function TermsOfServiceModal() {
     >
       <ModalContent>
         <TEXT.BoldSmallBody lineHeight={1.5} m={'auto'}>
-          Please carefully read through the Terms of Service Agreement. By clicking "Accept", the
-          user is acknowledging to abide by the Terms of Service.
+          Perpetuals are not available to people or companies who are residents of, or are located,
+          incorporated, or have a registered agent in, the United States or a restricted territory.
+          <br />
+          <br />
+          By accepting, you accept Overlay’s Terms of Service, which you can find here:
+          https://overlay.market/tos
         </TEXT.BoldSmallBody>
         <FlexRow m={'16px auto 8px'}>
           <UserAcceptButton onClick={acceptTermsOfService}>Accept</UserAcceptButton>
