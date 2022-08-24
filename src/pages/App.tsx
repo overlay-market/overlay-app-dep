@@ -27,20 +27,35 @@ export const AppWrapper = styled.div`
   width: 100vw;
 `
 
+export enum SecurityRiskLevels {
+  SEVERE = 'SEVERE',
+  HIGH = 'HIGH',
+  MEDIUM = 'MEDIUM',
+  LOW = 'LOW',
+}
+
 function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]}) {
   const {account} = useActiveWeb3React()
-  const [cookies] = useCookies([ClientCookies.userRiskLevel])
+  const [cookies, setCookie] = useCookies([ClientCookies.userRiskLevel])
+
+  const {userRiskLevel} = cookies
 
   // @TO-DO: check cookie on app initializing for any prior risk assessments
   useEffect(() => {
-    const {userRiskLevel} = cookies
     if (!account) {
       console.log('Chainalysis Manager: no account currently connected')
     }
+    // if (account) {
+    //   setCookie(ClientCookies.userRiskLevel, 'SEVERE')
+    // }
     if (!userRiskLevel) {
+      // perform "GET" request to check if registered
       console.log('Chainalysis Manager: no userRiskLevel cookie detected')
     }
-  }, [account, cookies])
+    if (userRiskLevel) {
+      console.log('Chainanalysis Manager: current userRiskLevel cookie: ', userRiskLevel)
+    }
+  }, [account, userRiskLevel])
 
   // @TO-DO: if cookie undefined, "GET" request chainanalysis API to check if address is registered
   // if response message property value is 'Entity not found. Please be sure to register the Entity',
