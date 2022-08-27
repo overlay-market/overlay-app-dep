@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import {VercelRequest, VercelResponse} from '@vercel/node'
 
 enum StatusCode {
+  FOUND = 200,
   FORBIDDEN = 403,
   NOT_FOUND = 404,
 }
@@ -24,8 +25,11 @@ export default async function getWalletAddressRiskInfo(req: VercelRequest, res: 
     },
   )
 
-  console.log(await response.text())
-
+  if (response.status === StatusCode.FOUND) {
+    const json = await response.json()
+    const {risk} = json
+    res.status(200).json({risk: risk})
+  }
   if (response.status === StatusCode.NOT_FOUND) {
     res.status(200).json({error: ErrorMessage.NOT_REGISTERED})
   }
@@ -33,9 +37,4 @@ export default async function getWalletAddressRiskInfo(req: VercelRequest, res: 
   if (response.status === StatusCode.FORBIDDEN) {
     res.status(200).json({error: ErrorMessage.FORBIDDEN})
   }
-  // if (response.status !== 200) {
-  //   console.log(`Non-200 response code from Chainalysis: ${response.status}`)
-  //   console.log(process.env.REACT_APP_CHAINALYSIS_KEY_TEST)
-  //   return response
-  // }
 }
