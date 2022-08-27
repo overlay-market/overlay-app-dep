@@ -1,6 +1,15 @@
 import fetch from 'node-fetch'
+import {VercelRequest, VercelResponse} from '@vercel/node'
 
-export default async function getWalletAddressRiskInfo(req: any, res: any) {
+enum Status {
+  NOT_FOUND = 404,
+}
+
+enum ErrorMessage {
+  NOT_REGISTERED = 'Wallet address not registered.',
+}
+
+export default async function getWalletAddressRiskInfo(req: VercelRequest, res: VercelResponse) {
   const {walletAddress} = req.query
 
   const response = await fetch(
@@ -15,6 +24,10 @@ export default async function getWalletAddressRiskInfo(req: any, res: any) {
 
   console.log(await response.text())
 
+  if (response.status === Status.NOT_FOUND) {
+    console.log('not found')
+    return {error: ErrorMessage.NOT_REGISTERED}
+  }
   // if (response.status !== 200) {
   //   console.log(`Non-200 response code from Chainalysis: ${response.status}`)
   //   console.log(process.env.REACT_APP_CHAINALYSIS_KEY_TEST)

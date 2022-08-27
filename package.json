@@ -38,6 +38,7 @@
     "@uniswap/sdk": "^3.0.3",
     "@uniswap/sdk-core": "^3.0.0",
     "@uniswap/token-lists": "^1.0.0-beta.25",
+    "@vercel/node": "^2.5.11",
     "@web3-react/abstract-connector": "^6.0.7",
     "@web3-react/core": "^6.1.9",
     "@web3-react/injected-connector": "^6.0.7",
