@@ -30,6 +30,7 @@ export default async function getWalletAddressRiskInfo(req: VercelRequest, res: 
     const {risk} = json
     res.status(200).json({risk: risk})
   }
+
   if (response.status === StatusCode.NOT_FOUND) {
     res.status(200).json({error: ErrorMessage.NOT_REGISTERED})
   }
