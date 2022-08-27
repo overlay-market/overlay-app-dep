@@ -7,6 +7,7 @@ enum StatusCode {
 }
 
 enum ErrorMessage {
+  FORBIDDEN = 'Invalid Token in Headers',
   NOT_REGISTERED = 'Wallet address not registered.',
 }
 
@@ -27,6 +28,10 @@ export default async function getWalletAddressRiskInfo(req: VercelRequest, res: 
 
   if (response.status === StatusCode.NOT_FOUND) {
     res.status(200).json({error: ErrorMessage.NOT_REGISTERED})
+  }
+
+  if (response.status === StatusCode.FORBIDDEN) {
+    res.status(200).json({error: ErrorMessage.FORBIDDEN})
   }
   // if (response.status !== 200) {
   //   console.log(`Non-200 response code from Chainalysis: ${response.status}`)
