@@ -5,7 +5,7 @@ enum StatusCode {
   CREATED = 201,
 }
 
-enum SuccessMessage {
+enum RegisterResponseMessage {
   CREATED = 'Address register successful',
 }
 
@@ -29,6 +29,6 @@ export default async function registerWalletAddressToChainalysis(
   })
 
   if (response.status === StatusCode.CREATED) {
-    res.status(200).json({success: SuccessMessage.CREATED})
+    res.status(200).json({success: RegisterResponseMessage.CREATED})
   }
 }

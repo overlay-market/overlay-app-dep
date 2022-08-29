@@ -3,18 +3,21 @@ import {useCookies} from 'react-cookie'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {ClientCookies} from '../TermsOfServiceModal/TermsOfServiceModal'
 import useAxios from 'axios-hooks'
-import axios from 'axios'
 
 export enum SecurityRiskLevels {
-  SEVERE = 'SEVERE',
-  HIGH = 'HIGH',
-  MEDIUM = 'MEDIUM',
-  LOW = 'LOW',
+  SEVERE = 'Severe',
+  HIGH = 'High',
+  MEDIUM = 'Medium',
+  LOW = 'Low',
 }
 
 enum LambdaEndpoint {
   REGISTER_ADDRESS = '/api/register/',
   SCREEN_ADDRESS = '/api/user/',
+}
+
+enum RegisterResponseMessage {
+  CREATED = 'Address register successful',
 }
 
 const mockSevereWalletAddress = '0x8576acc5c05d6ce88f4e49bf65bdf0c62f91353c'
@@ -53,17 +56,27 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     if (account) {
       executeRegisterAddress()
         .then(response => {
-          console.log('executeRegisterAddress.then response: ', response)
-          executeGetAddress()
+          const {data} = response
+          if (data.message === RegisterResponseMessage.CREATED) {
+            executeGetAddress().then(response => {
+              const {data} = response
+              const unserializedObj = {risk: data.risk, address: account}
+              setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
+            })
+          } else {
+            console.log('executeRegisterAddress response: ', response)
+          }
         })
-        .catch(error => console.log('executeRegisterAddress.catch error: ', error))
+        .catch(error => {
+          console.log('executeRegisterAddress.catch error: ', error)
+        })
     }
   }, [account])
 
-  useEffect(() => {
-    console.log('getRegisterData: ', getRegisterData)
-    console.log('getAddressData: ', getAddressData)
-  }, [getRegisterData, getAddressData])
+  // useEffect(() => {
+  //   console.log('getRegisterData: ', getRegisterData)
+  //   console.log('getAddressData: ', getAddressData)
+  // }, [getRegisterData, getAddressData])
 
   // @TO-DO: useEffect to perform side effects on Chainanalysis "GET" request responses
   // if address has not been registered, perform "POST" request
@@ -72,12 +85,12 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
   // @TO-DO: check cookie on app initializing for any prior risk assessments
   useEffect(() => {
     // @TO-DO: remove if statement below; purely testing purposes
-    if (account && !userRiskLevel) {
-      const unserializedObj = {risk: SecurityRiskLevels.SEVERE, address: account}
+    // if (account && !userRiskLevel) {
+    //   const unserializedObj = {risk: SecurityRiskLevels.SEVERE, address: account}
 
-      console.log('Chainalysis Manager: setting cookie to unserializedObj')
-      setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
-    }
+    //   console.log('Chainalysis Manager: setting cookie to unserializedObj')
+    //   setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
+    // }
     if (!account) {
       console.log('Chainalysis Manager: no account currently connected')
     }
