@@ -54,16 +54,13 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
 
   useEffect(() => {
     if (account && !userRiskLevel) {
-      console.log('executing register and query')
       executeRegisterAddress()
         .then(response => {
-          console.log('executeRegisterAddress response: ', response)
           const {data} = response
           if (data.message === RegisterResponseMessage.CREATED) {
             executeGetAddress().then(response => {
               const {data} = response
               const unserializedObj = {risk: data.risk, address: account}
-              console.log('setting cookie in executeGetAddress')
               setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
             })
           }
@@ -105,7 +102,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
   // @TO-DO: if cookie undefined, "GET" request chainanalysis API to check if address is registered
   // if response message property value is 'Entity not found. Please be sure to register the Entity',
   // we must register the account using a "POST" request to chainanalysis API.
-  if (userRiskLevel === SecurityRiskLevels.SEVERE) return null
+  if (userRiskLevel && userRiskLevel.risk === SecurityRiskLevels.SEVERE) return null
 
   return <>{children}</>
 }
