@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react'
+import {useEffect, useState, useCallback} from 'react'
 import {useCookies} from 'react-cookie'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {ClientCookies} from '../TermsOfServiceModal/TermsOfServiceModal'
@@ -25,7 +25,6 @@ const mockSevereWalletAddress = '0x8576acc5c05d6ce88f4e49bf65bdf0c62f91353c'
 export default function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]}) {
   const {account} = useActiveWeb3React()
   const [cookies, setCookie] = useCookies([ClientCookies.userRiskLevel])
-  const [connectedAccount, setConnectedAccount] = useState('')
   const {userRiskLevel} = cookies
 
   // @TO-DO: use axios-hooks to manually trigger "GET" / "POST" requests to not perform unnecessary API calls
@@ -52,34 +51,36 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     {manual: true},
   )
 
+  const executeScreenAddressCallback = useCallback(() => {
+    executeGetAddress()
+      .then(response => {
+        const {data} = response
+        const unserializedObj = {risk: data.risk, address: account}
+        setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
+      })
+      .catch(error => {
+        console.error('executeGetAddress error: ', error)
+      })
+  }, [account, executeGetAddress, setCookie])
+
+  const executeRegisterAndScreenCallback = useCallback(() => {
+    executeRegisterAddress()
+      .then(response => {
+        const {data} = response
+        if (data.message === RegisterResponseMessage.CREATED) {
+          executeScreenAddressCallback()
+        }
+      })
+      .catch(error => {
+        console.error('executeRegisterAddress error: ', error)
+      })
+  }, [executeRegisterAddress, executeScreenAddressCallback])
+
   useEffect(() => {
     if (account && !userRiskLevel) {
-      executeRegisterAddress()
-        .then(response => {
-          const {data} = response
-          if (data.message === RegisterResponseMessage.CREATED) {
-            executeGetAddress().then(response => {
-              const {data} = response
-              const unserializedObj = {risk: data.risk, address: account}
-              setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
-            })
-          }
-        })
-        .catch(error => {
-          console.log('executeRegisterAddress.catch error: ', error)
-        })
+      executeRegisterAndScreenCallback()
     }
   }, [account])
-
-  useEffect(() => {
-    console.log('cookies: ', cookies)
-    console.log('userRiskLevel: ', userRiskLevel)
-  }, [cookies, userRiskLevel])
-
-  // useEffect(() => {
-  //   console.log('getRegisterData: ', getRegisterData)
-  //   console.log('getAddressData: ', getAddressData)
-  // }, [getRegisterData, getAddressData])
 
   // @TO-DO: useEffect to perform side effects on Chainanalysis "GET" request responses
   // if address has not been registered, perform "POST" request
@@ -90,10 +91,6 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     if (!account) {
       console.log('Chainalysis Manager: no account currently connected')
     }
-    // if (account && !userRiskLevel) {
-    //   // perform "GET" request to check if registered
-    //   console.log('Chainalysis Manager: no userRiskLevel cookie detected')
-    // }
     if (userRiskLevel) {
       console.log('Chainanalysis Manager: current userRiskLevel cookie: ', userRiskLevel)
     }
