@@ -53,18 +53,19 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
   )
 
   useEffect(() => {
-    if (account) {
+    if (account && !userRiskLevel) {
+      console.log('executing register and query')
       executeRegisterAddress()
         .then(response => {
+          console.log('executeRegisterAddress response: ', response)
           const {data} = response
           if (data.message === RegisterResponseMessage.CREATED) {
             executeGetAddress().then(response => {
               const {data} = response
               const unserializedObj = {risk: data.risk, address: account}
+              console.log('setting cookie in executeGetAddress')
               setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
             })
-          } else {
-            console.log('executeRegisterAddress response: ', response)
           }
         })
         .catch(error => {
@@ -72,6 +73,11 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
         })
     }
   }, [account])
+
+  useEffect(() => {
+    console.log('cookies: ', cookies)
+    console.log('userRiskLevel: ', userRiskLevel)
+  }, [cookies, userRiskLevel])
 
   // useEffect(() => {
   //   console.log('getRegisterData: ', getRegisterData)
@@ -84,13 +90,6 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
 
   // @TO-DO: check cookie on app initializing for any prior risk assessments
   useEffect(() => {
-    // @TO-DO: remove if statement below; purely testing purposes
-    // if (account && !userRiskLevel) {
-    //   const unserializedObj = {risk: SecurityRiskLevels.SEVERE, address: account}
-
-    //   console.log('Chainalysis Manager: setting cookie to unserializedObj')
-    //   setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
-    // }
     if (!account) {
       console.log('Chainalysis Manager: no account currently connected')
     }

@@ -29,6 +29,6 @@ export default async function registerWalletAddressToChainalysis(
   })
 
   if (response.status === StatusCode.CREATED) {
-    res.status(200).json({success: RegisterResponseMessage.CREATED})
+    res.status(200).json({message: RegisterResponseMessage.CREATED})
   }
 }
