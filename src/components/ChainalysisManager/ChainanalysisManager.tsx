@@ -27,8 +27,6 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
   const [cookies, setCookie] = useCookies([ClientCookies.userRiskLevel])
   const {userRiskLevel} = cookies
 
-  // @TO-DO: use axios-hooks to manually trigger "GET" / "POST" requests to not perform unnecessary API calls
-  // https://www.npmjs.com/package/axios-hooks
   const [
     {data: getRegisterData, loading: getRegisterLoading, error: getRegisterError},
     executeRegisterAddress,
@@ -80,26 +78,21 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     if (account && !userRiskLevel) {
       executeRegisterAndScreenCallback()
     }
-  }, [account])
-
-  // @TO-DO: useEffect to perform side effects on Chainanalysis "GET" request responses
-  // if address has not been registered, perform "POST" request
-  // if address returns response.risk value, set cookie with returned risk value
-
-  // @TO-DO: check cookie on app initializing for any prior risk assessments
-  useEffect(() => {
-    if (!account) {
-      console.log('Chainalysis Manager: no account currently connected')
+    if (account && userRiskLevel) {
+      // if connected account updates and is different than screened address, screen again
+      if (account !== undefined && userRiskLevel.address !== account) {
+        executeRegisterAndScreenCallback()
+      }
     }
-    if (userRiskLevel) {
-      console.log('Chainanalysis Manager: current userRiskLevel cookie: ', userRiskLevel)
-    }
-  }, [account, setCookie, userRiskLevel])
+  }, [account, userRiskLevel, executeRegisterAndScreenCallback])
 
-  // @TO-DO: if cookie undefined, "GET" request chainanalysis API to check if address is registered
-  // if response message property value is 'Entity not found. Please be sure to register the Entity',
-  // we must register the account using a "POST" request to chainanalysis API.
-  if (userRiskLevel && userRiskLevel.risk === SecurityRiskLevels.SEVERE) return null
-
+  if (
+    userRiskLevel &&
+    account &&
+    userRiskLevel.account === account &&
+    userRiskLevel.risk === SecurityRiskLevels.LOW
+  ) {
+    return null
+  }
   return <>{children}</>
 }
