@@ -23,7 +23,7 @@ enum RegisterResponseMessage {
 const mockSevereWalletAddress = '0x8576acc5c05d6ce88f4e49bf65bdf0c62f91353c'
 
 export default function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]}) {
-  const {account} = useActiveWeb3React()
+  const {account: connectedAccount} = useActiveWeb3React()
   const [cookies, setCookie] = useCookies([ClientCookies.userRiskLevel])
   const {userRiskLevel} = cookies
 
@@ -32,7 +32,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     executeRegisterAddress,
   ] = useAxios(
     {
-      url: LambdaEndpoint.REGISTER_ADDRESS + account,
+      url: LambdaEndpoint.REGISTER_ADDRESS + connectedAccount,
       method: 'POST',
     },
     {manual: true},
@@ -43,7 +43,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     executeGetAddress,
   ] = useAxios(
     {
-      url: LambdaEndpoint.SCREEN_ADDRESS + account,
+      url: LambdaEndpoint.SCREEN_ADDRESS + connectedAccount,
       method: 'GET',
     },
     {manual: true},
@@ -53,13 +53,13 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     executeGetAddress()
       .then(response => {
         const {data} = response
-        const unserializedObj = {risk: data.risk, address: account}
+        const unserializedObj = {risk: data.risk, address: connectedAccount}
         setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
       })
       .catch(error => {
         console.error('executeGetAddress error: ', error)
       })
-  }, [account, executeGetAddress, setCookie])
+  }, [connectedAccount, executeGetAddress, setCookie])
 
   const executeRegisterAndScreenCallback = useCallback(() => {
     executeRegisterAddress()
@@ -75,22 +75,22 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
   }, [executeRegisterAddress, executeScreenAddressCallback])
 
   useEffect(() => {
-    if (account && !userRiskLevel) {
+    if (connectedAccount && !userRiskLevel) {
       executeRegisterAndScreenCallback()
     }
-    if (account && userRiskLevel) {
+    if (connectedAccount && userRiskLevel) {
       // if connected account updates and is different than screened address, screen again
-      if (account !== undefined && userRiskLevel.address !== account) {
+      if (connectedAccount !== undefined && userRiskLevel.address !== connectedAccount) {
         executeRegisterAndScreenCallback()
       }
     }
-  }, [account, userRiskLevel, executeRegisterAndScreenCallback])
+  }, [connectedAccount, userRiskLevel, executeRegisterAndScreenCallback])
 
   if (
     userRiskLevel &&
-    account &&
-    userRiskLevel.account === account &&
-    userRiskLevel.risk === SecurityRiskLevels.LOW
+    connectedAccount &&
+    userRiskLevel.address === connectedAccount &&
+    userRiskLevel.risk === SecurityRiskLevels.SEVERE
   ) {
     return null
   }
