@@ -20,7 +20,10 @@ enum RegisterResponseMessage {
   CREATED = 'Address register successful',
 }
 
-const mockSevereWalletAddress = '0x8576acc5c05d6ce88f4e49bf65bdf0c62f91353c'
+enum TestWalletAddress {
+  SEVERE = '0x8576acc5c05d6ce88f4e49bf65bdf0c62f91353c',
+  BOB = '0x8e8b3e19717A5DDCfccce9Bf3b225E61efDD7937',
+}
 
 export default function ChainalysisManager({children}: {children: JSX.Element | JSX.Element[]}) {
   const {account: connectedAccount} = useActiveWeb3React()
@@ -54,7 +57,16 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
       .then(response => {
         const {data} = response
         const unserializedObj = {risk: data.risk, address: connectedAccount}
-        setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
+
+        // remove if conditional after testing
+        // force BOB address to SEVERE risk
+        if (connectedAccount === TestWalletAddress.BOB) {
+          const unserializedObj1 = {risk: SecurityRiskLevels.SEVERE, address: connectedAccount}
+          setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj1))
+        } else {
+          // just keep line below
+          setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
+        }
       })
       .catch(error => {
         console.error('executeGetAddress error: ', error)
