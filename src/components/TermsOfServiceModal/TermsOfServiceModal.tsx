@@ -5,10 +5,11 @@ import {useModalOpen, useTermsOfServiceModalToggle} from '../../state/applicatio
 import {ApplicationModal} from '../../state/application/actions'
 import {SolidColorButton} from '../Button/Button'
 import {TEXT} from '../../theme/theme'
-import {FlexRow} from '../Container/Container'
+import {FlexRow, FlexColumn} from '../Container/Container'
 import {useTermsOfServiceStatusManager} from '../../state/application/hooks'
 import {UserTermsOfServiceStatus} from '../../state/application/actions'
 import Modal from '../Modal/Modal'
+import {ExternalLink} from '../ExternalLink/ExternalLink'
 
 const ModalContent = styled.div`
   display: flex;
@@ -83,14 +84,19 @@ export default function TermsOfServiceModal() {
       maxHeight={90}
     >
       <ModalContent>
-        <TEXT.BoldSmallBody lineHeight={1.5} m={'auto'}>
-          Perpetuals are not available to people or companies who are residents of, or are located,
-          incorporated, or have a registered agent in, the United States or a restricted territory.
-          <br />
-          <br />
-          By accepting, you accept Overlay’s Terms of Service, which you can find here:
-          https://overlay.market/tos
-        </TEXT.BoldSmallBody>
+        <FlexColumn>
+          <TEXT.BoldSmallBody lineHeight={1.5} m={'auto'}>
+            Perpetuals are not available to anyone residents of, or are located, incorporated, or
+            having a registered agent in, the United States or a restricted territory (as defined in
+            Overlay's Terms of Service (the "TOS").
+            <br />
+            <br />
+            By accepting, you accept the TOS, which you can find here:
+          </TEXT.BoldSmallBody>
+          <ExternalLink href={'https://overlay.market/tos'}>
+            <TEXT.BoldSmallBody color={'#12b4ff'}>https://overlay.market/tos</TEXT.BoldSmallBody>
+          </ExternalLink>
+        </FlexColumn>
         <FlexRow m={'16px auto 8px'}>
           <UserAcceptButton onClick={acceptTermsOfService}>Accept</UserAcceptButton>
           <UserDeclineButton onClick={declineTermsOfService}>Decline</UserDeclineButton>

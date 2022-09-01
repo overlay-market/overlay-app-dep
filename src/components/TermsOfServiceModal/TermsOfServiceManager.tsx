@@ -12,7 +12,7 @@ import {TEXT} from '../../theme/theme'
 import TermsOfServiceModal from './TermsOfServiceModal'
 import {ClientCookies} from './TermsOfServiceModal'
 
-const AccessDenied = () => {
+export const AccessDenied = () => {
   return (
     <PageContainer>
       <FlexColumn height={'80vh'} width={'200px'} m={'auto'} justify={'center'}>

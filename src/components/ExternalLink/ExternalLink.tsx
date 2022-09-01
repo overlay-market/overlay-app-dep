@@ -1,9 +1,9 @@
-import React, { HTMLProps } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { Link } from 'react-router-dom';
-import { darken } from 'polished';
-import { anonymizeLink } from '../../utils/anonymizeLink';
-import { ArrowLeft, ExternalLink as LinkIconFeather, X } from 'react-feather';
+import React, {HTMLProps} from 'react'
+import styled, {keyframes} from 'styled-components'
+import {Link} from 'react-router-dom'
+import {darken} from 'polished'
+import {anonymizeLink} from '../../utils/anonymizeLink'
+import {ArrowLeft, ExternalLink as LinkIconFeather, X} from 'react-feather'
 
 export const ButtonText = styled.button`
   outline: none;
@@ -23,9 +23,11 @@ export const ButtonText = styled.button`
   }
 `
 
-export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColor: string }>(({ warning, theme }) => ({
-  backgroundColor: warning ? theme.red1 : theme.text1,
-}))`
+export const Button = styled.button.attrs<{warning: boolean}, {backgroundColor: string}>(
+  ({warning, theme}) => ({
+    backgroundColor: warning ? theme.red1 : theme.text1,
+  }),
+)`
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 3rem;
   cursor: pointer;
@@ -33,47 +35,47 @@ export const Button = styled.button.attrs<{ warning: boolean }, { backgroundColo
   font-size: 1rem;
   border: none;
   outline: none;
-  background-color: ${({ backgroundColor }) => backgroundColor};
-  color: ${({ theme }) => theme.white};
+  background-color: ${({backgroundColor}) => backgroundColor};
+  color: ${({theme}) => theme.white};
   width: 100%;
 
   :hover,
   :focus {
-    background-color: ${({ backgroundColor }) => darken(0.05, backgroundColor)};
+    background-color: ${({backgroundColor}) => darken(0.05, backgroundColor)};
   }
 
   :active {
-    background-color: ${({ backgroundColor }) => darken(0.1, backgroundColor)};
+    background-color: ${({backgroundColor}) => darken(0.1, backgroundColor)};
   }
 
   :disabled {
-    background-color: ${({ theme }) => theme.bg1};
-    color: ${({ theme }) => theme.text4};
+    background-color: ${({theme}) => theme.bg1};
+    color: ${({theme}) => theme.text4};
     cursor: auto;
   }
 `
 
-export const CloseIcon = styled(X)<{ onClick: () => void }>`
+export const CloseIcon = styled(X)<{onClick: () => void}>`
   cursor: pointer;
 `
 
 // A button that triggers some onClick result, but looks like a link.
-export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
+export const LinkStyledButton = styled.button<{disabled?: boolean}>`
   border: none;
   text-decoration: none;
   background: none;
 
-  cursor: ${({ disabled }) => (disabled ? 'default' : 'pointer')};
-  color: ${({ theme, disabled }) => (disabled ? theme.text2 : theme.text1)};
+  cursor: ${({disabled}) => (disabled ? 'default' : 'pointer')};
+  color: ${({theme, disabled}) => (disabled ? theme.text2 : theme.text1)};
   font-weight: 500;
 
   :hover {
-    text-decoration: ${({ disabled }) => (disabled ? null : 'underline')};
+    text-decoration: ${({disabled}) => (disabled ? null : 'underline')};
   }
 
   :focus {
     outline: none;
-    text-decoration: ${({ disabled }) => (disabled ? null : 'underline')};
+    text-decoration: ${({disabled}) => (disabled ? null : 'underline')};
   }
 
   :active {
@@ -85,7 +87,7 @@ export const LinkStyledButton = styled.button<{ disabled?: boolean }>`
 export const StyledInternalLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.text1};
+  color: ${({theme}) => theme.text1};
   font-weight: 500;
 
   :hover {
@@ -105,8 +107,11 @@ export const StyledInternalLink = styled(Link)`
 const StyledLink = styled.a`
   text-decoration: none;
   cursor: pointer;
-  color: ${({ theme }) => theme.text1};
+  color: ${({theme}) => theme.text1};
   font-weight: 500;
+  :focus {
+    outline: none;
+  }
 `
 const LinkIconWrapper = styled.a`
   text-decoration: none;
@@ -134,36 +139,34 @@ export const LinkIcon = styled(LinkIconFeather)`
   height: 16px;
   width: 18px;
   margin-left: 10px;
-  stroke: ${({ theme }) => theme.blue1};
+  stroke: ${({theme}) => theme.blue1};
   color: #f2f2f2;
   padding: 8px 8px;
 `
 
-
 function handleClickExternalLink(event: React.MouseEvent<HTMLAnchorElement>) {
-  const { target, href } = event.currentTarget
+  const {target, href} = event.currentTarget
 
   const anonymizedHref = anonymizeLink(href)
 
   // don't prevent default, don't redirect if it's a new tab
   if (target === '_blank' || event.ctrlKey || event.metaKey) {
-      console.debug('Fired outbound link event', anonymizedHref);
+    console.debug('Fired outbound link event', anonymizedHref)
   } else {
-    event.preventDefault();
+    event.preventDefault()
     window.location.href = anonymizedHref
   }
 }
 
-/**
- * Outbound link that handles firing google analytics events
- */
 export function ExternalLink({
   target = '_blank',
   href,
   rel = 'noopener noreferrer',
   ...rest
-}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href: string }) {
-  return <StyledLink target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest} />
+}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & {href: string}) {
+  return (
+    <StyledLink target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest} />
+  )
 }
 
 export function ExternalLinkIcon({
@@ -171,9 +174,15 @@ export function ExternalLinkIcon({
   href,
   rel = 'noopener noreferrer',
   ...rest
-}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & { href: string }) {
+}: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & {href: string}) {
   return (
-    <LinkIconWrapper target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest}>
+    <LinkIconWrapper
+      target={target}
+      rel={rel}
+      href={href}
+      onClick={handleClickExternalLink}
+      {...rest}
+    >
       <LinkIcon />
     </LinkIconWrapper>
   )
@@ -195,9 +204,9 @@ export const Spinner = styled.img`
 `
 
 const BackArrowLink = styled(StyledInternalLink)`
-  color: ${({ theme }) => theme.text1};
+  color: ${({theme}) => theme.text1};
 `
-export function BackArrow({ to }: { to: string }) {
+export function BackArrow({to}: {to: string}) {
   return (
     <BackArrowLink to={to}>
       <ArrowLeft />
@@ -205,7 +214,7 @@ export function BackArrow({ to }: { to: string }) {
   )
 }
 
-export const CustomLightSpinner = styled(Spinner)<{ size: string }>`
-  height: ${({ size }) => size};
-  width: ${({ size }) => size};
+export const CustomLightSpinner = styled(Spinner)<{size: string}>`
+  height: ${({size}) => size};
+  width: ${({size}) => size};
 `

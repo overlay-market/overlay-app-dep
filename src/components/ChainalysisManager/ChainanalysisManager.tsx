@@ -69,7 +69,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
         }
       })
       .catch(error => {
-        console.error('executeGetAddress error: ', error)
+        console.error('executeGetAddress: ', error)
       })
   }, [connectedAccount, executeGetAddress, setCookie])
 
@@ -82,7 +82,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
         }
       })
       .catch(error => {
-        console.error('executeRegisterAddress error: ', error)
+        console.error('executeRegisterAddress: ', error)
       })
   }, [executeRegisterAddress, executeScreenAddressCallback])
 
