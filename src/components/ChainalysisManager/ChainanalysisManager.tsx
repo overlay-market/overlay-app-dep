@@ -61,13 +61,14 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
 
         // remove if conditional after testing
         // force BOB address to SEVERE risk
-        if (connectedAccount === TestWalletAddress.BOB) {
-          const unserializedObj1 = {risk: SecurityRiskLevels.SEVERE, address: connectedAccount}
-          setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj1))
-        } else {
-          // just keep line below
-          setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
-        }
+        // if (connectedAccount === TestWalletAddress.BOB) {
+        //   const unserializedObj1 = {risk: SecurityRiskLevels.SEVERE, address: connectedAccount}
+        //   setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj1))
+        // } else {
+        //   // just keep line below
+        //   setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
+        // }
+        setCookie(ClientCookies.userRiskLevel, JSON.stringify(unserializedObj))
       })
       .catch(error => {
         console.error('executeGetAddress: ', error)
