@@ -45,10 +45,7 @@ export const TransactionSettingsModal = ({
   return (
     <TransactionSettingModal isOpen={isTxnSettingsOpen}>
       <FlexColumn>
-        <TEXT.BoldStandardBody
-          textAlign={'left'}
-          margin={'24px auto 16px 16px'}
-        >
+        <TEXT.BoldStandardBody textAlign={'left'} margin={'24px auto 16px 16px'}>
           Transaction Settings
         </TEXT.BoldStandardBody>
 
@@ -59,11 +56,7 @@ export const TransactionSettingsModal = ({
 
         <FlexRow padding="0px 16px 16px">
           <NumericalInputContainer width={'210px'} height={'40px'}>
-            <NumericalInput
-              value={setSlippageValue}
-              onUserInput={onSetSlippage}
-              align={'right'}
-            />
+            <NumericalInput value={setSlippageValue} onUserInput={onSetSlippage} align={'right'} />
             <NumericalInputDescriptor> % </NumericalInputDescriptor>
           </NumericalInputContainer>
           <TransactionSettingsButton
@@ -78,7 +71,7 @@ export const TransactionSettingsModal = ({
           </TransactionSettingsButton>
         </FlexRow>
 
-        <FlexRow padding="8px 16px">
+        {/* <FlexRow padding="8px 16px">
           <TEXT.Menu>Transaction Deadline</TEXT.Menu>
         </FlexRow>
 
@@ -91,7 +84,7 @@ export const TransactionSettingsModal = ({
             />
             <NumericalInputDescriptor> minutes </NumericalInputDescriptor>
           </NumericalInputContainer>
-        </FlexRow>
+        </FlexRow> */}
 
         <FlexRow margin="auto 0 0 0" padding="16px" borderTop="1px solid white">
           <TransactionSettingsButton
