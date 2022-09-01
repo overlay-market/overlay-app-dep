@@ -21,7 +21,7 @@ const ModalContent = styled.div`
 
 // @TO-DO: Combine UserAcceptButton and UserDeclineButton
 const UserAcceptButton = styled(SolidColorButton)`
-  width: 150px;
+  width: 50%;
   padding: 4px;
   color: #12b4ff;
   font-size: 14px;
@@ -36,7 +36,7 @@ const UserAcceptButton = styled(SolidColorButton)`
 `
 
 const UserDeclineButton = styled(SolidColorButton)`
-  width: 150px;
+  width: 50%;
   padding: 4px;
   color: #d0d0d2;
   font-size: 14px;
