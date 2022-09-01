@@ -12,12 +12,17 @@ import {TEXT} from '../../theme/theme'
 import TermsOfServiceModal from './TermsOfServiceModal'
 import {ClientCookies} from './TermsOfServiceModal'
 
-export const AccessDenied = () => {
+interface AccessDeniedProps {
+  message: string
+}
+
+export const AccessDenied = ({message}: AccessDeniedProps) => {
   return (
     <PageContainer>
       <FlexColumn height={'80vh'} width={'200px'} m={'auto'} justify={'center'}>
         <PlanckCatLoader duration={5} width={25} />
-        <TEXT.StandardBody>Access Denied!</TEXT.StandardBody>
+        <TEXT.StandardBody color={'red'}>Access Denied:</TEXT.StandardBody>
+        <TEXT.StandardBody>{message}</TEXT.StandardBody>
       </FlexColumn>
     </PageContainer>
   )
@@ -40,7 +45,7 @@ export default function TermsOfServiceManager({children}: {children: JSX.Element
   }, [cookies, termsOfServiceModalOpen, toggleTermsOfServiceModal])
 
   if (userAgreementStatus === UserTermsOfServiceStatus.REJECTED) {
-    return <AccessDenied />
+    return <AccessDenied message={'Rejected Terms of Service.'} />
   }
 
   return (
