@@ -2,6 +2,7 @@ import {useEffect, useState, useCallback} from 'react'
 import {useCookies} from 'react-cookie'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {ClientCookies} from '../TermsOfServiceModal/TermsOfServiceModal'
+import {AccessDenied, AccessDeniedType} from '../AccessDenied/AccessDenied'
 import useAxios from 'axios-hooks'
 
 export enum SecurityRiskLevels {
@@ -104,7 +105,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     userRiskLevel.address === connectedAccount &&
     userRiskLevel.risk === SecurityRiskLevels.SEVERE
   ) {
-    return null
+    return <AccessDenied message={AccessDeniedType.EXCEED_RISK_TOLERANCE} />
   }
   return <>{children}</>
 }
