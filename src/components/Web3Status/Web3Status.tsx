@@ -200,7 +200,7 @@ function Web3StatusInner() {
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
           )}
 
-          {chainId && NETWORK_LABELS[chainId] === 'Kovan' && (
+          {chainId && NETWORK_LABELS[chainId] === 'Goerli' && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
