@@ -8,7 +8,7 @@ import {SupportedChainId} from '../../constants/chains'
 const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   [SupportedChainId.MAINNET]:
     'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph',
-  [SupportedChainId.KOVAN]:
+  [SupportedChainId.GÖRLI]:
     'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph',
   [SupportedChainId.RINKEBY]:
     'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
