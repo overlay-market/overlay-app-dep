@@ -1,19 +1,19 @@
-import { Web3Provider } from '@ethersproject/providers';
-import { InjectedConnector } from '@web3-react/injected-connector'
-import { SupportedChainId } from '../constants/chains';
-import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
-import { NetworkConnector } from './NetworkConnector';
-import getLibrary from '../utils/getLibrary';
+import {Web3Provider} from '@ethersproject/providers'
+import {InjectedConnector} from '@web3-react/injected-connector'
+import {SupportedChainId} from '../constants/chains'
+import {WalletConnectConnector} from '@web3-react/walletconnect-connector'
+import {NetworkConnector} from './NetworkConnector'
+import getLibrary from '../utils/getLibrary'
 
 const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
   SupportedChainId.MAINNET,
-  SupportedChainId.KOVAN,
-  SupportedChainId.RINKEBY
-];
+  SupportedChainId.GÖRLI,
+  SupportedChainId.RINKEBY,
+]
 
 export const injected = new InjectedConnector({
   supportedChainIds: SUPPORTED_CHAIN_IDS,
-});
+})
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
 
@@ -21,9 +21,9 @@ if (typeof INFURA_KEY === 'undefined') {
   throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
 }
 
-const NETWORK_URLS: { [key in SupportedChainId]: string } = {
+const NETWORK_URLS: {[key in SupportedChainId]: string} = {
   [SupportedChainId.MAINNET]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
-  [SupportedChainId.KOVAN]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
+  [SupportedChainId.GÖRLI]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.RINKEBY]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
 }
 

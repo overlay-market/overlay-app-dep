@@ -144,7 +144,7 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
 
 const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = {
   [SupportedChainId.MAINNET]: 'Mainnet',
-  [SupportedChainId.KOVAN]: 'Kovan',
+  [SupportedChainId.GÖRLI]: 'Goerli',
   [SupportedChainId.RINKEBY]: 'Rinkeby',
 }
 
@@ -158,9 +158,7 @@ function Web3StatusInner() {
     return txs.filter(isTransactionRecent).sort(newTransactionsFirst)
   }, [allTransactions])
 
-  const pending = sortedRecentTransactions
-    .filter(tx => !tx.receipt)
-    .map(tx => tx.hash)
+  const pending = sortedRecentTransactions.filter(tx => !tx.receipt).map(tx => tx.hash)
 
   const hasPendingTransactions = !!pending.length
 
@@ -181,10 +179,7 @@ function Web3StatusInner() {
         )}
 
         {account && chainId && !ovlBalance && (
-          <TokenBalance
-            balance={'Loading...'}
-            network={NETWORK_LABELS[chainId]}
-          />
+          <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
         )}
 
         {account && chainId && ovlBalance && (
@@ -202,38 +197,23 @@ function Web3StatusInner() {
           {shortenAddress(account)}
 
           {chainId && NETWORK_LABELS[chainId] === 'Mainnet' && (
-            <Dropdown
-              connectedNetwork={NETWORK_LABELS[chainId]}
-              colorStatus={'#10DCB1'}
-            />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'Kovan' && (
-            <Dropdown
-              connectedNetwork={NETWORK_LABELS[chainId]}
-              colorStatus={'yellow'}
-            />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'Rinkeby' && (
-            <Dropdown
-              connectedNetwork={NETWORK_LABELS[chainId]}
-              colorStatus={'yellow'}
-            />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'LocalHost' && (
-            <Dropdown
-              connectedNetwork={NETWORK_LABELS[chainId]}
-              colorStatus={'yellow'}
-            />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'LocalHostDev' && (
-            <Dropdown
-              connectedNetwork={NETWORK_LABELS[chainId]}
-              colorStatus={'yellow'}
-            />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
         </Account>
       </Web3StatusConnected>
@@ -259,9 +239,7 @@ function Web3StatusInner() {
   } else {
     return (
       // not connected
-      <Web3StatusUnconnected onClick={toggleWalletModal}>
-        Connect wallet
-      </Web3StatusUnconnected>
+      <Web3StatusUnconnected onClick={toggleWalletModal}>Connect wallet</Web3StatusUnconnected>
     )
   }
 }

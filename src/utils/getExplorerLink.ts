@@ -1,11 +1,11 @@
-import { SupportedChainId } from '../constants/chains'
+import {SupportedChainId} from '../constants/chains'
 
-const ETHERSCAN_PREFIXES: { [chainId: number]: string } = {
+const ETHERSCAN_PREFIXES: {[chainId: number]: string} = {
   [SupportedChainId.MAINNET]: '',
   // [SupportedChainId.ROPSTEN]: 'ropsten.',
   [SupportedChainId.RINKEBY]: 'rinkeby.',
-  // [SupportedChainId.GOERLI]: 'goerli.',
-  [SupportedChainId.KOVAN]: 'kovan.',
+  [SupportedChainId.GÖRLI]: 'goerli.',
+  // [SupportedChainId.KOVAN]: 'kovan.',
   // [SupportedChainId.OPTIMISM]: 'optimistic.',
   // [SupportedChainId.OPTIMISTIC_KOVAN]: 'kovan-optimistic.',
 }
