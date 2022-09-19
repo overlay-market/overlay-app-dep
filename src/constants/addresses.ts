@@ -1,32 +1,42 @@
-import { ChainId } from '@sushiswap/sdk'
-import { constructSameAddressMap } from '../utils/constructSameAddressMap';
+import {ChainId} from '@sushiswap/sdk'
+import {constructSameAddressMap} from '../utils/constructSameAddressMap'
 
-type AddressMap = { [chainId: number]: string }
+type AddressMap = {[chainId: number]: string}
 
 export enum ContractAddresses {
   ETH_DAI = 1, //at launch
   OVL_DAI = 2, //at launch
   OVL_ETH = 3, //at launch
-};
+}
 
 // archived contract addresses
-export const OVL_ADDRESS: AddressMap = constructSameAddressMap('0x04346e29fDef5dc5A7822793d9f00B5db73D6532');
-export const OVL_COLLATERAL_ADDRESS: AddressMap = constructSameAddressMap('0xc3d73beec840d95b0b70c660a9b8be2996b0cc17')
-export const OVL_MARKET_ADDRESS: AddressMap = constructSameAddressMap('0x6f49162bc17eba2b926f789522269a0e0f2a5884')
-export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap('0xE15Ed9eb485Ec1B95c6F853cB57901629b0f1CF2');
+export const OVL_ADDRESS: AddressMap = constructSameAddressMap(
+  '0x04346e29fDef5dc5A7822793d9f00B5db73D6532',
+)
+export const OVL_COLLATERAL_ADDRESS: AddressMap = constructSameAddressMap(
+  '0xc3d73beec840d95b0b70c660a9b8be2996b0cc17',
+)
+export const OVL_MARKET_ADDRESS: AddressMap = constructSameAddressMap(
+  '0x6f49162bc17eba2b926f789522269a0e0f2a5884',
+)
+export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap(
+  '0xE15Ed9eb485Ec1B95c6F853cB57901629b0f1CF2',
+)
 
 // v1-core contract addresses
 export const V1_PERIPHERY_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5', // TO-DO: Change
   [ChainId.KOVAN]: '0x06C76062730aD18aBdc3C9198b3EB283f7bb3627',
-  [ChainId.RINKEBY]: '0x11495884878A38709959e1102Ba0e559BE826F4e'
-};
+  [ChainId.RINKEBY]: '0x11495884878A38709959e1102Ba0e559BE826F4e',
+  [ChainId.GÖRLI]: '0xD525819133109c13D63A39E36D0b655807CbBc87',
+}
 
 export const OVL_TOKEN_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc', // TO-DO: Change
   [ChainId.KOVAN]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc',
-  [ChainId.RINKEBY]: '0x82913654067F94b72AEFB10dBC69Ff4Db3F16176'
-};
+  [ChainId.RINKEBY]: '0x82913654067F94b72AEFB10dBC69Ff4Db3F16176',
+  [ChainId.GÖRLI]: '0xdBD4a09ac1962F028390C53F4a4d126F5E13baEe',
+}
 
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
@@ -52,4 +62,4 @@ export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.HARMONY_TESTNET]: '',
   [ChainId.OKEX]: '0xF4d73326C13a4Fc5FD7A064217e12780e9Bd62c3',
   [ChainId.OKEX_TESTNET]: '',
-};
+}
