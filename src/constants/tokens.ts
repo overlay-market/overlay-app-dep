@@ -13,7 +13,7 @@ export const OVL: {[chainId: number]: Token} = {
   ),
   [SupportedChainId.GÖRLI]: new Token(
     SupportedChainId.GÖRLI,
-    OVL_TOKEN_ADDRESS[42],
+    OVL_TOKEN_ADDRESS[5],
     18,
     'OVL',
     'Overlay',
