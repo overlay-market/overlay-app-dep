@@ -12,7 +12,11 @@ export function useMarket(marketAddress?: string) {
 
   const {isLoading, isError, error, isUninitialized, data} = useMarketQuery(
     {market: address},
-    {pollingInterval: 14000},
+    {
+      pollingInterval: 1000,
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    },
   )
 
   return useMemo(() => {
@@ -29,7 +33,11 @@ export function useMarket(marketAddress?: string) {
 export function useAllMarkets() {
   const {isLoading, isError, error, isUninitialized, data} = useMarketsQuery(
     {},
-    {pollingInterval: 14000},
+    {
+      pollingInterval: 1000,
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+    },
   )
 
   return useMemo(() => {
