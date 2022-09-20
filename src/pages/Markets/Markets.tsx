@@ -58,6 +58,7 @@ const Markets = () => {
   )
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
   const prices = useMarketMidPrices(calldata.marketAddresses)
+
   const fundingRates = useFundingRates(calldata.marketAddresses)
   const ois = useMarketOis(calldata.marketAddresses)
   const capOis = useMarketCapOis(calldata.marketAddresses)
@@ -108,7 +109,7 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {prices[index] ? prices[index] : <Loader stroke="white" size="12px" />}
+                  {prices[index] !== null ? prices[index] : <Loader stroke="white" size="12px" />}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
