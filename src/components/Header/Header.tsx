@@ -122,9 +122,9 @@ export default function Header() {
         <Trans>Positions</Trans>
       </StyledLink>
 
-      <StyledLink to={'/liquidate'}>
+      {/* <StyledLink to={'/liquidate'}>
         <Trans>Liquidate</Trans>
-      </StyledLink>
+      </StyledLink> */}
 
       <AccountContainer>
         <Web3Status />
