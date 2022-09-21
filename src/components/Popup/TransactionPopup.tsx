@@ -65,7 +65,7 @@ export default function TransactionPopup({
           {info?.code === -32603 && 'Transaction Failed'}
         </TEXT.BoldSmallBody>
 
-        {chainId && info?.message === 'execution reverted: OVLV1:shutdown' && (
+        {chainId && info?.message === 'execution reverted: OVLV1: shutdown' && (
           <ErrorMessage>Market has been shutdown.</ErrorMessage>
         )}
 
