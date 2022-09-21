@@ -86,6 +86,7 @@ export const api = createApi({
               minCollateral
               priceDriftUpperLimit
               averageBlockTime
+              isShutdown
             }
           }
         `,
@@ -98,7 +99,7 @@ export const api = createApi({
       query: () => ({
         document: gql`
           query markets {
-            markets {
+            markets(where: {isShutdown: false}) {
               id
               feedAddress
               capNotional

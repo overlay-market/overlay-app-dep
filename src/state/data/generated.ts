@@ -72,6 +72,10 @@ export type Account_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
+  positions_?: Maybe<Position_Filter>;
+  builds_?: Maybe<Build_Filter>;
+  unwinds_?: Maybe<Unwind_Filter>;
+  liquidates_?: Maybe<Liquidate_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -140,6 +144,7 @@ export type Build_Filter = {
   owner_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  owner_?: Maybe<Account_Filter>;
   positionId?: Maybe<Scalars['String']>;
   positionId_not?: Maybe<Scalars['String']>;
   positionId_gt?: Maybe<Scalars['String']>;
@@ -232,6 +237,7 @@ export type Build_Filter = {
   transaction_ends_with_nocase?: Maybe<Scalars['String']>;
   transaction_not_ends_with?: Maybe<Scalars['String']>;
   transaction_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  transaction_?: Maybe<Transaction_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -338,6 +344,7 @@ export type Factory_Filter = {
   owner_lte?: Maybe<Scalars['ID']>;
   owner_in?: Maybe<Array<Scalars['ID']>>;
   owner_not_in?: Maybe<Array<Scalars['ID']>>;
+  markets_?: Maybe<Market_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -398,6 +405,7 @@ export type Liquidate_Filter = {
   owner_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  owner_?: Maybe<Account_Filter>;
   positionId?: Maybe<Scalars['String']>;
   positionId_not?: Maybe<Scalars['String']>;
   positionId_gt?: Maybe<Scalars['String']>;
@@ -490,6 +498,7 @@ export type Liquidate_Filter = {
   transaction_ends_with_nocase?: Maybe<Scalars['String']>;
   transaction_not_ends_with?: Maybe<Scalars['String']>;
   transaction_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  transaction_?: Maybe<Transaction_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -533,6 +542,7 @@ export type Market = {
   oiLong: Scalars['BigInt'];
   oiShort: Scalars['BigInt'];
   positions: Array<Position>;
+  isShutdown: Scalars['Boolean'];
 };
 
 
@@ -593,6 +603,7 @@ export type Market_Filter = {
   factory_ends_with_nocase?: Maybe<Scalars['String']>;
   factory_not_ends_with?: Maybe<Scalars['String']>;
   factory_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  factory_?: Maybe<Factory_Filter>;
   createdAtTimestamp?: Maybe<Scalars['BigInt']>;
   createdAtTimestamp_not?: Maybe<Scalars['BigInt']>;
   createdAtTimestamp_gt?: Maybe<Scalars['BigInt']>;
@@ -745,6 +756,11 @@ export type Market_Filter = {
   oiShort_lte?: Maybe<Scalars['BigInt']>;
   oiShort_in?: Maybe<Array<Scalars['BigInt']>>;
   oiShort_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  positions_?: Maybe<Position_Filter>;
+  isShutdown?: Maybe<Scalars['Boolean']>;
+  isShutdown_not?: Maybe<Scalars['Boolean']>;
+  isShutdown_in?: Maybe<Array<Scalars['Boolean']>>;
+  isShutdown_not_in?: Maybe<Array<Scalars['Boolean']>>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -772,7 +788,8 @@ export enum Market_OrderBy {
   AverageBlockTime = 'averageBlockTime',
   OiLong = 'oiLong',
   OiShort = 'oiShort',
-  Positions = 'positions'
+  Positions = 'positions',
+  IsShutdown = 'isShutdown'
 }
 
 /** Defines the order direction, either ascending or descending */
@@ -852,6 +869,7 @@ export type Position_Filter = {
   owner_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  owner_?: Maybe<Account_Filter>;
   market?: Maybe<Scalars['String']>;
   market_not?: Maybe<Scalars['String']>;
   market_gt?: Maybe<Scalars['String']>;
@@ -872,6 +890,7 @@ export type Position_Filter = {
   market_ends_with_nocase?: Maybe<Scalars['String']>;
   market_not_ends_with?: Maybe<Scalars['String']>;
   market_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  market_?: Maybe<Market_Filter>;
   initialOi?: Maybe<Scalars['BigInt']>;
   initialOi_not?: Maybe<Scalars['BigInt']>;
   initialOi_gt?: Maybe<Scalars['BigInt']>;
@@ -988,6 +1007,7 @@ export type Position_Filter = {
   transaction_ends_with_nocase?: Maybe<Scalars['String']>;
   transaction_not_ends_with?: Maybe<Scalars['String']>;
   transaction_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  transaction_?: Maybe<Transaction_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -1435,6 +1455,9 @@ export type Transaction_Filter = {
   gasPrice_lte?: Maybe<Scalars['BigInt']>;
   gasPrice_in?: Maybe<Array<Scalars['BigInt']>>;
   gasPrice_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  builds_?: Maybe<Build_Filter>;
+  unwinds_?: Maybe<Unwind_Filter>;
+  liquidates_?: Maybe<Liquidate_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -1494,6 +1517,7 @@ export type Unwind_Filter = {
   owner_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  owner_?: Maybe<Account_Filter>;
   positionId?: Maybe<Scalars['String']>;
   positionId_not?: Maybe<Scalars['String']>;
   positionId_gt?: Maybe<Scalars['String']>;
@@ -1586,6 +1610,7 @@ export type Unwind_Filter = {
   transaction_ends_with_nocase?: Maybe<Scalars['String']>;
   transaction_not_ends_with?: Maybe<Scalars['String']>;
   transaction_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  transaction_?: Maybe<Transaction_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
 };
@@ -1610,6 +1635,8 @@ export type _Block_ = {
   hash?: Maybe<Scalars['Bytes']>;
   /** The block number */
   number: Scalars['Int'];
+  /** Integer representation of the timestamp stored in blocks for the chain */
+  timestamp?: Maybe<Scalars['Int']>;
 };
 
 /** The type for the top-level _meta field */
@@ -1673,7 +1700,7 @@ export type MarketQuery = (
   { __typename?: 'Query' }
   & { market?: Maybe<(
     { __typename?: 'Market' }
-    & Pick<Market, 'id' | 'feedAddress' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime'>
+    & Pick<Market, 'id' | 'feedAddress' | 'k' | 'lmbda' | 'delta' | 'capPayoff' | 'capNotional' | 'capLeverage' | 'circuitBreakerWindow' | 'circuitBreakerMintTarget' | 'maintenanceMarginFraction' | 'maintenanceMarginBurnRate' | 'liquidationFeeRate' | 'tradingFeeRate' | 'minCollateral' | 'priceDriftUpperLimit' | 'averageBlockTime' | 'isShutdown'>
     & { factory: (
       { __typename?: 'Factory' }
       & Pick<Factory, 'id'>
@@ -1774,12 +1801,13 @@ export const MarketDocument = `
     minCollateral
     priceDriftUpperLimit
     averageBlockTime
+    isShutdown
   }
 }
     `;
 export const MarketsDocument = `
     query markets {
-  markets {
+  markets(where: {isShutdown: false}) {
     id
     feedAddress
     capNotional
