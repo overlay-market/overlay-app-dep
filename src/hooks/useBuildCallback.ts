@@ -49,8 +49,7 @@ function useBuildCallArguments(
   const {account, chainId} = useActiveWeb3React()
   const marketContract = useMarketContract(marketAddress)
 
-  if (!buildData || inputError || !marketContract || !price || !minCollateral)
-    calldata = undefined
+  if (!buildData || inputError || !marketContract || !price || !minCollateral) calldata = undefined
   else if (minCollateral > Number(buildData.typedValue)) calldata = undefined
   else {
     let increasePercentage = Number(buildData.setSlippageValue) + 100
@@ -70,14 +69,7 @@ function useBuildCallArguments(
   }
 
   return useMemo(() => {
-    if (
-      !buildData ||
-      !marketAddress ||
-      !chainId ||
-      !account ||
-      !marketContract ||
-      !calldata
-    )
+    if (!buildData || !marketAddress || !chainId || !account || !marketContract || !calldata)
       return []
 
     const txn: {address: string; calldata: string; value: string} = {
@@ -121,14 +113,7 @@ export function useBuildCallback(
   )
 
   return useMemo(() => {
-    if (
-      !buildData ||
-      !library ||
-      !account ||
-      !chainId ||
-      !marketAddress ||
-      inputError
-    ) {
+    if (!buildData || !library || !account || !chainId || !marketAddress || inputError) {
       // console.log('inputError: ', inputError);
       return {
         state: BuildCallbackState.INVALID,
@@ -158,10 +143,7 @@ export function useBuildCallback(
                 return {call, gasEstimate}
               })
               .catch(gasError => {
-                console.debug(
-                  'Gas estimate failed, trying eth_call to extract error',
-                  call,
-                )
+                console.debug('Gas estimate failed, trying eth_call to extract error', call)
 
                 console.log('gasError: ', gasError)
 
@@ -175,10 +157,9 @@ export function useBuildCallback(
                       result,
                     )
 
-                    const error =
-                      'Unexpected issue with estimating the gas. ' +
-                      'Please try again.'
+                    const error = 'Unexpected issue with estimating the gas. ' + 'Please try again.'
 
+                    console.log('gasError from call: ', gasError)
                     return {
                       error: new Error(error),
                       call,
@@ -207,28 +188,21 @@ export function useBuildCallback(
         )
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        let bestCallOption: SuccessfulCall | BuildCallEstimate | undefined =
-          estimatedCalls.find(
-            (el, ix, list): el is SuccessfulCall =>
-              'gasEstimate' in el &&
-              (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
-          )
+        let bestCallOption: SuccessfulCall | BuildCallEstimate | undefined = estimatedCalls.find(
+          (el, ix, list): el is SuccessfulCall =>
+            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+        )
 
         // check if any calls errored with a recognizable error
         if (!bestCallOption) {
-          const errorCalls = estimatedCalls.filter(
-            (call): call is FailedCall => 'error' in call,
-          )
+          const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
-          if (errorCalls.length > 0)
-            throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
+          if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
           const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>(
             (call): call is BuildCallEstimate => !('error' in call),
           )
           if (!firstNoErrorCall)
-            throw new Error(
-              'Unexpected error. Could not estimate gas for the build.',
-            )
+            throw new Error('Unexpected error. Could not estimate gas for the build.')
           bestCallOption = firstNoErrorCall
         }
 

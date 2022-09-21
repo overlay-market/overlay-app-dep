@@ -60,7 +60,6 @@ export default function ConfirmTxnModal({
       : formatWeiToParsedNumber(estimatedBid, 18, 10)
   }, [isLong, estimatedBid, estimatedAsk])
 
-  console.log('price: ', price)
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
       <ModalContent>
