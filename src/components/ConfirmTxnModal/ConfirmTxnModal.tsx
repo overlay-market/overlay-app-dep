@@ -8,11 +8,7 @@ import {
 } from '../Button/Button'
 import {AdditionalDetailRow} from '../../pages/Positions/Unwind'
 import {FlexColumn} from '../Container/Container'
-import {
-  ModalContent,
-  WalletHeader,
-  CloseIcon,
-} from '../ConnectWalletModal/ConnectWalletModal'
+import {ModalContent, WalletHeader, CloseIcon} from '../ConnectWalletModal/ConnectWalletModal'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {BigNumberish} from 'ethers'
 import Loader from '../Loaders/Loaders'
@@ -60,10 +56,11 @@ export default function ConfirmTxnModal({
     if (isLong === undefined) return null
     if (estimatedBid === undefined || estimatedAsk === undefined) return null
     return isLong
-      ? formatWeiToParsedNumber(estimatedAsk, 18, 2)
-      : formatWeiToParsedNumber(estimatedBid, 18, 2)
+      ? formatWeiToParsedNumber(estimatedAsk, 18, 10)
+      : formatWeiToParsedNumber(estimatedBid, 18, 10)
   }, [isLong, estimatedBid, estimatedAsk])
 
+  console.log('price: ', price)
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
       <ModalContent>
@@ -76,9 +73,7 @@ export default function ConfirmTxnModal({
           </CloseIcon>
         </WalletHeader>
         {transactionHash ? (
-          <TriggerConfirmBuildButton>
-            Transaction Sent!
-          </TriggerConfirmBuildButton>
+          <TriggerConfirmBuildButton>Transaction Sent!</TriggerConfirmBuildButton>
         ) : (
           <>
             <FlexColumn mt={'24px'} mr={'auto'} width={'auto'} align={'start'}>
@@ -88,11 +83,7 @@ export default function ConfirmTxnModal({
 
               <TEXT.BoldHeader1 color={'white'}>
                 {baseToken ? baseToken : <Loader stroke="white" size="12px" />}/
-                {quoteToken ? (
-                  quoteToken
-                ) : (
-                  <Loader stroke="white" size="12px" />
-                )}
+                {quoteToken ? quoteToken : <Loader stroke="white" size="12px" />}
               </TEXT.BoldHeader1>
             </FlexColumn>
 
@@ -118,11 +109,7 @@ export default function ConfirmTxnModal({
             </FlexColumn>
 
             <FlexColumn mt={'48px'} color={'white'}>
-              <AdditionalDetailRow
-                detail={'Fee'}
-                detailColor={'#B9BABD'}
-                value={`${buildFee}%`}
-              />
+              <AdditionalDetailRow detail={'Fee'} detailColor={'#B9BABD'} value={`${buildFee}%`} />
 
               <AdditionalDetailRow
                 detail={'Slippage Tolerance'}
@@ -154,14 +141,11 @@ export default function ConfirmTxnModal({
             </FlexColumn>
 
             <TEXT.Supplemental color={'#B9BABD'} mt={'24px'} mb={'24px'}>
-              The received price will be at least - or the transaction will
-              revert.
+              The received price will be at least - or the transaction will revert.
             </TEXT.Supplemental>
 
             {attemptingTransaction ? (
-              <PendingConfirmationButton>
-                Pending confirmation...
-              </PendingConfirmationButton>
+              <PendingConfirmationButton>Pending confirmation...</PendingConfirmationButton>
             ) : (
               <TriggerConfirmBuildButton onClick={onConfirm} active={true}>
                 Confirm Build
