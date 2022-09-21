@@ -43,7 +43,7 @@ export function useMarketMidPrices(marketAddresses?: any) {
     return pricesResult.map(market => {
       if (!chainId || !blockNumber || !market) return null
       const marketPrice = market?.result && market.result[0]
-      return formatWeiToParsedNumber(marketPrice, 18, 2)
+      return formatWeiToParsedNumber(marketPrice, 18, 10)
     })
   }, [pricesResult, blockNumber, chainId])
 }
