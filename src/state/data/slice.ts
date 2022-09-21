@@ -95,7 +95,7 @@ export const api = createApi({
         },
       }),
     }),
-    marketsQuery: builder.query({
+    activeMarketsQuery: builder.query({
       query: () => ({
         document: gql`
           query markets {

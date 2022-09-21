@@ -1,6 +1,6 @@
-import { api as generatedApi } from "./generated";
+import {api as generatedApi} from './generated'
 
-export const CHAIN_TAG = 'Chain';
+export const CHAIN_TAG = 'Chain'
 
 export const api = generatedApi.enhanceEndpoints({
   addTagTypes: [CHAIN_TAG],
@@ -11,13 +11,13 @@ export const api = generatedApi.enhanceEndpoints({
     marketQuery: {
       providesTags: [CHAIN_TAG],
     },
-    marketsQuery: {
+    activeMarketsQuery: {
       providesTags: [CHAIN_TAG],
     },
     positionsQuery: {
       providesTags: [CHAIN_TAG],
-    }
+    },
   },
-});
+})
 
-export const { useMarketQuery, useMarketsQuery, useAccountQuery, usePositionsQuery } = api;
+export const {useMarketQuery, useActiveMarketsQuery, useAccountQuery, usePositionsQuery} = api
