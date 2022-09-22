@@ -113,7 +113,7 @@ export const PositionCard = ({
         </Detail>
 
         <Detail fontWeight={700} color={'white'}>
-          ID: {positionId.toString()}
+          ID: {Number(positionId)}
         </Detail>
 
         {isLong === null && (
