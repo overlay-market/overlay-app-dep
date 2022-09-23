@@ -183,10 +183,10 @@ export function Unwind({
     position && formatWeiToParsedNumber(position.entryPrice, 18, 2)
 
   const showUnderwaterFlow =
-    liquidationPrice && bidPrice && askPrice
+    liquidationPriceResult && prices._bid && prices._ask
       ? isLong
-        ? liquidationPrice > bidPrice
-        : liquidationPrice < askPrice
+        ? liquidationPriceResult > prices._bid
+        : liquidationPriceResult < prices._ask
       : false
 
   const {unwindData, parsedAmount, inputError} = useDerivedUnwindInfo()
