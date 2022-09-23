@@ -72,6 +72,7 @@ export const PositionCard = ({
   oi,
   collateralToken,
   estLiquidationPrice,
+  isLiquidated,
   navigate,
   border = true,
 }: {
@@ -87,6 +88,7 @@ export const PositionCard = ({
   oi: number | string | null | undefined
   collateralToken: string
   estLiquidationPrice: number | string | null | undefined
+  isLiquidated?: boolean
   navigate?: boolean
   border?: boolean
 }) => {
@@ -143,7 +145,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="20%">
         <Detail fontWeight={700} color={'white'}>
-          {estLiquidationPrice}
+          {isLiquidated ? 'Liquidated' : estLiquidationPrice}
         </Detail>
       </PositionCardColumn>
 

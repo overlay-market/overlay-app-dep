@@ -53,7 +53,7 @@ export function useLiquidationPrices(calldata: any) {
     return callResult.map(position => {
       const {loading, error, result} = position
       if (!chainId || !blockNumber || loading) return 'loading'
-      if (!loading && result === undefined) return 'inactive'
+      if (!loading && result === undefined) return 'Unwound'
       if (error) console.error('Error from useLiquidationPrices')
       const value = result && result[0]
       return formatWeiToParsedNumber(value, 18, 4)

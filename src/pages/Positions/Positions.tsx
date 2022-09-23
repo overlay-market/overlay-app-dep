@@ -143,6 +143,7 @@ export const PositionsInner = () => {
             oi={ois[key]}
             collateralToken={'OVL'}
             estLiquidationPrice={liquidationPrices[key]}
+            isLiquidated={position.isLiquidated}
             navigate={true}
           />
         ))}
