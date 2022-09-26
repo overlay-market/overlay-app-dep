@@ -2,11 +2,7 @@ import {useMemo} from 'react'
 import {useActiveWeb3React} from './web3'
 import {Contract} from '@ethersproject/contracts'
 import {getContract} from '../utils/contract'
-import {
-  MULTICALL2_ADDRESS,
-  V1_PERIPHERY_ADDRESS,
-  OVL_TOKEN_ADDRESS,
-} from '../constants/addresses'
+import {MULTICALL2_ADDRESS, V1_PERIPHERY_ADDRESS, OVL_TOKEN_ADDRESS} from '../constants/addresses'
 import MULTICALL2_ABI from '../constants/multicall/multicall2.json'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import ERC20_BYTES32_ABI from '../constants/abis/erc20_bytes32.json'
@@ -41,40 +37,26 @@ export function useContract<T extends Contract = Contract>(
 
 export function useMulticall2Contract(): Contract | null {
   const {chainId} = useActiveWeb3React()
-  return useContract(
-    chainId && MULTICALL2_ADDRESS[chainId],
-    MULTICALL2_ABI,
-    false,
-  )
+  return useContract(chainId && MULTICALL2_ADDRESS[chainId], MULTICALL2_ABI, false)
 }
 
 export function useV1PeripheryContract(): Contract | null {
   const {chainId} = useActiveWeb3React()
-  return useContract(
-    chainId && V1_PERIPHERY_ADDRESS[chainId],
-    V1_PERIPHERY_ABI,
-    false,
-  )
+  return useContract(chainId && V1_PERIPHERY_ADDRESS[chainId], V1_PERIPHERY_ABI, false)
 }
 
-export function useUniswapV3Feed(address: string | undefined): Contract | null {
+export function useUniswapV3FeedContract(address: string | undefined): Contract | null {
   const {chainId} = useActiveWeb3React()
   return useContract(chainId && address, UNISWAP_V3_FEED_ABI, false)
 }
 
-export function useMarketContract(
-  address: string | undefined,
-): Contract | null {
+export function useMarketContract(address: string | undefined): Contract | null {
   return useContract(address, V1_MARKET_ABI, false)
 }
 
 export function useOvlTokenContract(): Contract | null {
   const {chainId} = useActiveWeb3React()
-  return useContract(
-    chainId && OVL_TOKEN_ADDRESS[chainId],
-    OVL_TOKEN_ABI,
-    false,
-  )
+  return useContract(chainId && OVL_TOKEN_ADDRESS[chainId], OVL_TOKEN_ABI, false)
 }
 
 export function useTokenContract(

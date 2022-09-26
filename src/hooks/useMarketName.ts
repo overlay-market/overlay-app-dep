@@ -1,24 +1,15 @@
 import {useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
-import {
-  useSingleCallResult,
-  useMultipleContractSingleData,
-} from '../state/multicall/hooks'
-import {useUniswapV3Feed, useTokenContract} from './useContract'
+import {useSingleCallResult, useMultipleContractSingleData} from '../state/multicall/hooks'
+import {useUniswapV3FeedContract, useTokenContract} from './useContract'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
 
 export function useMarketName(feedAddress?: string) {
-  const uniswapV3FeedContract = useUniswapV3Feed(feedAddress)
+  const uniswapV3FeedContract = useUniswapV3FeedContract(feedAddress)
 
-  const baseTokenAddressResult = useSingleCallResult(
-    uniswapV3FeedContract,
-    'marketBaseToken',
-  )
-  const quoteTokenAddressResult = useSingleCallResult(
-    uniswapV3FeedContract,
-    'marketQuoteToken',
-  )
+  const baseTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketBaseToken')
+  const quoteTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketQuoteToken')
 
   const baseTokenAddress = baseTokenAddressResult.result?.[0]
   const quoteTokenAddress = quoteTokenAddressResult.result?.[0]
@@ -27,10 +18,7 @@ export function useMarketName(feedAddress?: string) {
   const quoteTokenContract = useTokenContract(quoteTokenAddress)
 
   const baseTokenSymbolResult = useSingleCallResult(baseTokenContract, 'symbol')
-  const quoteTokenSymbolResult = useSingleCallResult(
-    quoteTokenContract,
-    'symbol',
-  )
+  const quoteTokenSymbolResult = useSingleCallResult(quoteTokenContract, 'symbol')
 
   return {
     baseToken: baseTokenSymbolResult.result?.[0] ?? 'loading',
