@@ -28,14 +28,17 @@ export function formatWeiToParsedNumber(
 
 export function formatBigNumberUsingDecimals(
   bignumber: BigNumberish | string | undefined,
-  decimals: number,
+  decimals: number | undefined,
   sigFigs?: number,
+  returnNumber?: boolean,
 ) {
   let parsedBigNumber
 
-  if (bignumber) {
+  if (bignumber && decimals) {
     parsedBigNumber = utils.formatUnits(bignumber, decimals)
-    return Number(parsedBigNumber).toFixed(sigFigs)
+    return returnNumber
+      ? Number(Number(parsedBigNumber).toFixed(sigFigs))
+      : Number(parsedBigNumber).toFixed(sigFigs)
   } else {
     return undefined
   }

@@ -27,6 +27,7 @@ import {
   formatWeiToParsedString,
   formatWeiToParsedNumber,
   formatFundingRateToDaily,
+  formatBigNumberUsingDecimals,
 } from '../../utils/formatWei'
 import {ApprovalState, useApproveCallback} from '../../hooks/useApproveCallback'
 import {LeverageSlider} from '../../components/LeverageSlider/LeverageSlider'
@@ -56,6 +57,7 @@ import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
 import Loader from '../../components/Loaders/Loaders'
+import {GraphQLInputObjectType} from 'graphql'
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -144,11 +146,20 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   // @TO-DO: pull market name from feed
   const {baseToken, quoteToken, quoteTokenAddress} = useMarketName(market?.feedAddress)
 
+  console.log('quoteTokenAddress: ', quoteTokenAddress)
+
   const quoteTokenInfo = useToken(quoteTokenAddress)
+
+  console.log('quoteTokenInfo: ', quoteTokenInfo)
   const quoteTokenDecimals = useMemo(() => {
-    if (quoteTokenInfo === undefined || !quoteTokenInfo) return null
+    if (quoteTokenInfo === undefined || !quoteTokenInfo) return undefined
     return quoteTokenInfo.decimals
   }, [quoteTokenInfo])
+
+  const sigFigConstant = useMemo(() => {
+    const constantValue = 4
+    return quoteTokenDecimals ? quoteTokenDecimals + constantValue : undefined
+  }, [quoteTokenDecimals])
 
   const isInverseMarket =
     chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null
@@ -179,17 +190,29 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     _ask?: BigNumberish
     _mid?: BigNumberish
   } = useMemo(() => {
-    if (fetchPrices.loading === true || !fetchPrices.result)
+    if (fetchPrices.loading === true || !fetchPrices.result || quoteTokenDecimals === undefined)
       return {bid: 'loading', ask: 'loading', mid: 'loading'}
     return {
-      bid: formatWeiToParsedNumber(fetchPrices.result?.bid_, 18, 2)?.toString(),
-      ask: formatWeiToParsedNumber(fetchPrices.result?.ask_, 18, 2)?.toString(),
-      mid: formatWeiToParsedNumber(fetchPrices.result?.mid_, 18, 2)?.toString(),
+      bid: formatBigNumberUsingDecimals(
+        fetchPrices.result?.bid_,
+        quoteTokenDecimals,
+        2,
+      )?.toString(),
+      ask: formatBigNumberUsingDecimals(
+        fetchPrices.result?.ask_,
+        quoteTokenDecimals,
+        2,
+      )?.toString(),
+      mid: formatBigNumberUsingDecimals(
+        fetchPrices.result?.mid_,
+        quoteTokenDecimals,
+        2,
+      )?.toString(),
       _bid: fetchPrices.result?.bid_,
       _ask: fetchPrices.result?.ask_,
       _mid: fetchPrices.result?.mid_,
     }
-  }, [fetchPrices])
+  }, [fetchPrices, quoteTokenDecimals])
 
   const fundingRate = useMemo(() => {
     if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading'
