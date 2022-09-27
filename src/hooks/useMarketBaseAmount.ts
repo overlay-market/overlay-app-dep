@@ -1,5 +1,6 @@
 import {useEffect, useState, useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
+import {BigNumber} from 'ethers'
 import {
   useSingleCallResult,
   useMultipleContractSingleData,
@@ -11,7 +12,9 @@ import ERC20_INTERFACE from '../constants/abis/erc20'
 
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
 
-export function useMarketBaseAmounts(feedAddresses: (string | undefined)[]): CallState[] {
+export function useMarketBaseAmounts(
+  feedAddresses: (string | undefined)[],
+): (BigNumber | undefined)[] {
   const callResult = useMultipleContractSingleData(
     feedAddresses,
     UNI_V3_FEED_INTERFACE,
@@ -21,6 +24,11 @@ export function useMarketBaseAmounts(feedAddresses: (string | undefined)[]): Cal
   return useMemo(() => {
     if (callResult.length === 0) return []
 
-    return callResult
+    return callResult.map(market => {
+      const baseAmount = market.result?.[0]
+      // convert baseAmount into decimal places of token
+      if (BigNumber.isBigNumber(baseAmount)) return baseAmount.toString().length - 1
+      else return market.result?.[0]
+    })
   }, [callResult])
 }
