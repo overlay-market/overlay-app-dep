@@ -43,6 +43,7 @@ import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal'
 import {useMarket} from '../../state/markets/hooks'
 import {useSingleCallResult} from '../../state/multicall/hooks'
+import {useToken} from '../../hooks/useToken'
 import {useV1PeripheryContract} from '../../hooks/useContract'
 import {useOvlBalance} from '../../state/wallet/hooks'
 import {useMarketOi} from '../../hooks/useMarketOis'
@@ -142,6 +143,12 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   // @TO-DO: pull market name from feed
   const {baseToken, quoteToken, quoteTokenAddress} = useMarketName(market?.feedAddress)
+
+  const quoteTokenInfo = useToken(quoteTokenAddress)
+  const quoteTokenDecimals = useMemo(() => {
+    if (quoteTokenInfo === undefined || !quoteTokenInfo) return null
+    return quoteTokenInfo.decimals
+  }, [quoteTokenInfo])
 
   const isInverseMarket =
     chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null
