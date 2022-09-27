@@ -42,7 +42,7 @@ export function useMarketNames(feedAddresses: any) {
   )
 
   const baseTokenAddresses = useMemo(() => {
-    if (baseTokens === []) return []
+    if (baseTokens.length === 0) return []
     return baseTokens.map(token => {
       const address = token?.result && token.result[0]
       return address
@@ -50,7 +50,7 @@ export function useMarketNames(feedAddresses: any) {
   }, [baseTokens])
 
   const quoteTokenAddresses = useMemo(() => {
-    if (quoteTokens === []) return []
+    if (quoteTokens.length === 0) return []
 
     return quoteTokens.map(token => {
       const address = token?.result && token.result[0]
