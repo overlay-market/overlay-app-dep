@@ -2,7 +2,7 @@ import {useMemo} from 'react'
 import styled from 'styled-components'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
-import {formatWeiToParsedNumber} from '../../utils/formatWei'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimals} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
 
 const ContentContainer = styled(FlexColumn)`
@@ -43,6 +43,7 @@ export const AdditionalDetails = ({
   isLong,
   baseToken,
   quoteToken,
+  quoteTokenDecimals,
   typedValue,
   estimatedBid,
   estimatedAsk,
@@ -63,6 +64,7 @@ export const AdditionalDetails = ({
   isLong?: boolean
   baseToken?: string
   quoteToken?: string
+  quoteTokenDecimals?: number
   typedValue?: string
   estimatedBid?: any
   estimatedAsk?: any
@@ -74,18 +76,20 @@ export const AdditionalDetails = ({
   capPayoff?: number
   oiLong?: number
   oiShort?: number
+  priceImpact?: string
   slippageTolerance?: string | number
   expectedOi?: string | number | null
   fundingRate?: string | number
   estLiquidationPrice?: string | number
 }) => {
-  const estimatedReceivedPrice = useMemo(() => {
+  const estimatedReceivedPrice: any = useMemo(() => {
     if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
       return null
+    // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatWeiToParsedNumber(estimatedAsk, 18, 2)
-      : formatWeiToParsedNumber(estimatedBid, 18, 2)
-  }, [isLong, estimatedBid, estimatedAsk])
+      ? formatBigNumberUsingDecimals(estimatedAsk, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimals(estimatedBid, quoteTokenDecimals, 2)
+  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
@@ -104,6 +108,7 @@ export const AdditionalDetails = ({
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
 
+  console.log('priceImpact: ', priceImpact)
   return (
     <ContentContainer>
       <AdditionalDetailRow>

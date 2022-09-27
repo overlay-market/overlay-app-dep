@@ -146,20 +146,14 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   // @TO-DO: pull market name from feed
   const {baseToken, quoteToken, quoteTokenAddress} = useMarketName(market?.feedAddress)
 
-  console.log('quoteTokenAddress: ', quoteTokenAddress)
-
   const quoteTokenInfo = useToken(quoteTokenAddress)
 
-  console.log('quoteTokenInfo: ', quoteTokenInfo)
   const quoteTokenDecimals = useMemo(() => {
     if (quoteTokenInfo === undefined || !quoteTokenInfo) return undefined
     return quoteTokenInfo.decimals
   }, [quoteTokenInfo])
 
-  const sigFigConstant = useMemo(() => {
-    const constantValue = 4
-    return quoteTokenDecimals ? quoteTokenDecimals + constantValue : undefined
-  }, [quoteTokenDecimals])
+  const sigFigConstant = 4
 
   const isInverseMarket =
     chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null
@@ -193,21 +187,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (fetchPrices.loading === true || !fetchPrices.result || quoteTokenDecimals === undefined)
       return {bid: 'loading', ask: 'loading', mid: 'loading'}
     return {
-      bid: formatBigNumberUsingDecimals(
-        fetchPrices.result?.bid_,
-        quoteTokenDecimals,
-        2,
-      )?.toString(),
-      ask: formatBigNumberUsingDecimals(
-        fetchPrices.result?.ask_,
-        quoteTokenDecimals,
-        2,
-      )?.toString(),
-      mid: formatBigNumberUsingDecimals(
-        fetchPrices.result?.mid_,
-        quoteTokenDecimals,
-        2,
-      )?.toString(),
+      bid: formatBigNumberUsingDecimals(fetchPrices.result?.bid_, quoteTokenDecimals, 2),
+      ask: formatBigNumberUsingDecimals(fetchPrices.result?.ask_, quoteTokenDecimals, 2),
+      mid: formatBigNumberUsingDecimals(fetchPrices.result?.mid_, quoteTokenDecimals, 2),
       _bid: fetchPrices.result?.bid_,
       _ask: fetchPrices.result?.ask_,
       _mid: fetchPrices.result?.mid_,
@@ -384,17 +366,21 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     isLong,
   )
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult
-    ? formatWeiToParsedNumber(estimatedLiquidationPriceResult, 18, 5)
+    ? formatBigNumberUsingDecimals(
+        estimatedLiquidationPriceResult,
+        quoteTokenDecimals,
+        sigFigConstant,
+      )
     : null
 
-  const estimatedReceivedPrice = useMemo(() => {
+  const estimatedReceivedPrice: any = useMemo(() => {
     if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
       return null
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatWeiToParsedNumber(estimatedAsk, 18, 2)
-      : formatWeiToParsedNumber(estimatedBid, 18, 2)
-  }, [isLong, estimatedBid, estimatedAsk])
+      ? formatBigNumberUsingDecimals(estimatedAsk, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimals(estimatedBid, quoteTokenDecimals, 2)
+  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
@@ -568,6 +554,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         isInverseMarket={isInverseMarket}
         baseToken={baseToken === 'loading' ? null : baseToken}
         quoteToken={quoteToken === 'loading' ? null : quoteToken}
+        quoteTokenDecimals={quoteTokenDecimals}
         typedValue={typedValue}
         isLong={isLong}
         estimatedBid={estimatedBid}
