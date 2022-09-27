@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import {AppState} from '../state'
 import {useAppSelector} from '../hooks'
-import {useActiveMarketsQuery, useMarketQuery} from '../data/enhanced'
+import {useMarketsQuery, useMarketQuery} from '../data/enhanced'
 
 export function useMarketsState(): AppState['markets'] {
   return useAppSelector(state => state.markets)
@@ -31,7 +31,7 @@ export function useMarket(marketAddress?: string) {
 }
 
 export function useAllMarkets() {
-  const {isLoading, isError, error, isUninitialized, data} = useActiveMarketsQuery(
+  const {isLoading, isError, error, isUninitialized, data} = useMarketsQuery(
     {},
     {
       pollingInterval: 1000,

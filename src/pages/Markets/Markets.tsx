@@ -57,13 +57,14 @@ const Markets = () => {
 
   const calldata = useMemo(
     () => ({
-      marketAddresses: !markets ? [] : markets.markets.map(market => [market.id]),
-      feedAddresses: !markets ? [] : markets.markets.map(market => market.feedAddress),
+      marketAddresses: !markets ? [] : markets.markets.map((market: any) => [market.id]),
+      feedAddresses: !markets ? [] : markets.markets.map((market: any) => market.feedAddress),
     }),
     [markets],
   )
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
   const prices = useMarketMidPrices(calldata.marketAddresses)
+  console.log('prices: ', prices)
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(calldata.feedAddresses)
   const fundingRates = useFundingRates(calldata.marketAddresses)
@@ -95,7 +96,7 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            {markets?.markets.map((market, index) => (
+            {markets?.markets.map((market: any, index: any) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
                 hover={true}

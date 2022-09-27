@@ -20,4 +20,4 @@ export const api = generatedApi.enhanceEndpoints({
   },
 })
 
-export const {useMarketQuery, useActiveMarketsQuery, useAccountQuery, usePositionsQuery} = api
+export const {useMarketQuery, useMarketsQuery, useAccountQuery, usePositionsQuery} = api
