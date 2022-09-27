@@ -9,7 +9,7 @@ import {
 import {AdditionalDetailRow} from '../../pages/Positions/Unwind'
 import {FlexColumn} from '../Container/Container'
 import {ModalContent, WalletHeader, CloseIcon} from '../ConnectWalletModal/ConnectWalletModal'
-import {formatWeiToParsedNumber} from '../../utils/formatWei'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimals} from '../../utils/formatWei'
 import {BigNumberish} from 'ethers'
 import Loader from '../Loaders/Loaders'
 
@@ -26,6 +26,7 @@ export default function ConfirmTxnModal({
   estimatedBid,
   estimatedAsk,
   marketPrice,
+  quoteTokenDecimals,
   setSlippageValue,
   selectedLeverage,
   adjustedCollateral,
@@ -45,6 +46,7 @@ export default function ConfirmTxnModal({
   estimatedBid?: BigNumberish
   estimatedAsk?: BigNumberish
   marketPrice: string | undefined
+  quoteTokenDecimals: number | undefined
   setSlippageValue: string
   selectedLeverage: string
   adjustedCollateral: number | string | undefined
@@ -54,11 +56,12 @@ export default function ConfirmTxnModal({
 }) {
   const price = useMemo(() => {
     if (isLong === undefined) return null
+    if (quoteTokenDecimals === undefined) return null
     if (estimatedBid === undefined || estimatedAsk === undefined) return null
     return isLong
-      ? formatWeiToParsedNumber(estimatedAsk, 18, 10)
-      : formatWeiToParsedNumber(estimatedBid, 18, 10)
-  }, [isLong, estimatedBid, estimatedAsk])
+      ? formatBigNumberUsingDecimals(estimatedAsk, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimals(estimatedBid, quoteTokenDecimals, 2)
+  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>

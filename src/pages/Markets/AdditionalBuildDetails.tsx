@@ -108,7 +108,6 @@ export const AdditionalDetails = ({
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
 
-  console.log('priceImpact: ', priceImpact)
   return (
     <ContentContainer>
       <AdditionalDetailRow>

@@ -589,6 +589,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         estimatedBid={estimatedBid}
         estimatedAsk={estimatedAsk}
         marketPrice={!isLong ? prices.bid : prices.ask}
+        quoteTokenDecimals={quoteTokenDecimals}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
