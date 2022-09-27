@@ -5,7 +5,11 @@ import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {TEXT} from '../../theme/theme'
 import {useAllMarkets} from '../../state/markets/hooks'
-import {formatFundingRateToDaily, formatFundingRateToAnnual} from '../../utils/formatWei'
+import {
+  formatFundingRateToDaily,
+  formatFundingRateToAnnual,
+  formatWeiToParsedNumber,
+} from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
@@ -23,6 +27,7 @@ import {useFundingRates} from '../../hooks/useFundingRates'
 import {useMarketOis} from '../../hooks/useMarketOis'
 import {useMarketCapOis} from '../../hooks/useMarketCapOi'
 import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
+import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 
 const activeClassName = 'INACTIVE'
 
@@ -60,8 +65,7 @@ const Markets = () => {
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
   const prices = useMarketMidPrices(calldata.marketAddresses)
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
-  console.log('baseAmounts: ', baseAmounts)
-
+  const quoteAmounts = useMarketQuoteAmounts(calldata.feedAddresses)
   const fundingRates = useFundingRates(calldata.marketAddresses)
   const ois = useMarketOis(calldata.marketAddresses)
   const capOis = useMarketCapOis(calldata.marketAddresses)
@@ -112,7 +116,15 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {prices[index] !== null ? prices[index] : <Loader stroke="white" size="12px" />}
+                  {prices[index] !== null && baseAmounts[index] !== undefined ? (
+                    formatWeiToParsedNumber(
+                      prices[index],
+                      baseAmounts[index],
+                      baseAmounts[index] + 4,
+                    )
+                  ) : (
+                    <Loader stroke="white" size="12px" />
+                  )}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
