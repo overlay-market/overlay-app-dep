@@ -9,6 +9,7 @@ import {
   formatFundingRateToDaily,
   formatFundingRateToAnnual,
   formatWeiToParsedNumber,
+  formatBigNumberUsingDecimals,
 } from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
@@ -64,7 +65,6 @@ const Markets = () => {
   )
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
   const prices = useMarketMidPrices(calldata.marketAddresses)
-  console.log('prices: ', prices)
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(calldata.feedAddresses)
   const fundingRates = useFundingRates(calldata.marketAddresses)
@@ -117,11 +117,11 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  {prices[index] !== null && baseAmounts[index] !== undefined ? (
-                    formatWeiToParsedNumber(
+                  {prices[index] !== null && quoteAmounts[index] !== undefined ? (
+                    formatBigNumberUsingDecimals(
                       prices[index],
-                      baseAmounts[index],
-                      baseAmounts[index] + 4,
+                      quoteAmounts[index],
+                      quoteAmounts[index] + 4,
                     )
                   ) : (
                     <Loader stroke="white" size="12px" />

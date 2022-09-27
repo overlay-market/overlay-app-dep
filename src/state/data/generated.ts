@@ -1807,7 +1807,7 @@ export const MarketDocument = `
     `;
 export const MarketsDocument = `
     query markets {
-  markets(where: {isShutdown: true}) {
+  markets(where: {isShutdown: false}) {
     id
     feedAddress
     capNotional

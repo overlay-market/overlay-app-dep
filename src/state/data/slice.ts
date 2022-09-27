@@ -99,7 +99,7 @@ export const api = createApi({
       query: () => ({
         document: gql`
           query markets {
-            markets(where: {isShutdown: true}) {
+            markets(where: {isShutdown: false}) {
               id
               feedAddress
               capNotional
