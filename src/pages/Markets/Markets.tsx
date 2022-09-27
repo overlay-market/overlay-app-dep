@@ -22,6 +22,7 @@ import {useMarketMidPrices} from '../../hooks/useMarketPrices'
 import {useFundingRates} from '../../hooks/useFundingRates'
 import {useMarketOis} from '../../hooks/useMarketOis'
 import {useMarketCapOis} from '../../hooks/useMarketCapOi'
+import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 
 const activeClassName = 'INACTIVE'
 
@@ -58,6 +59,8 @@ const Markets = () => {
   )
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
   const prices = useMarketMidPrices(calldata.marketAddresses)
+  const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
+  console.log('baseAmounts: ', baseAmounts)
 
   const fundingRates = useFundingRates(calldata.marketAddresses)
   const ois = useMarketOis(calldata.marketAddresses)
