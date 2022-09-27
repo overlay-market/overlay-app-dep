@@ -1,12 +1,6 @@
-import {useEffect, useState, useMemo} from 'react'
+import {useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
-import {BigNumber} from 'ethers'
-import {
-  useSingleCallResult,
-  useMultipleContractSingleData,
-  CallState,
-} from '../state/multicall/hooks'
-import {useUniswapV3FeedContract, useTokenContract} from './useContract'
+import {useMultipleContractSingleData} from '../state/multicall/hooks'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
 
