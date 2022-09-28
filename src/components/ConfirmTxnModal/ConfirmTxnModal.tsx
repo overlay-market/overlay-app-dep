@@ -9,7 +9,7 @@ import {
 import {AdditionalDetailRow} from '../../pages/Positions/Unwind'
 import {FlexColumn} from '../Container/Container'
 import {ModalContent, WalletHeader, CloseIcon} from '../ConnectWalletModal/ConnectWalletModal'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimals} from '../../utils/formatWei'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import {BigNumberish} from 'ethers'
 import Loader from '../Loaders/Loaders'
 
@@ -59,8 +59,8 @@ export default function ConfirmTxnModal({
     if (quoteTokenDecimals === undefined) return null
     if (estimatedBid === undefined || estimatedAsk === undefined) return null
     return isLong
-      ? formatBigNumberUsingDecimals(estimatedAsk, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimals(estimatedBid, quoteTokenDecimals, 2)
+      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   return (

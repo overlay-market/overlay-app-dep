@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {Icon} from '../../components/Icon/Icon'
 import {ChevronRight} from 'react-feather'
 import {FlexRow} from '../../components/Container/Container'
-import {formatBigNumberUsingDecimals} from '../../utils/formatWei'
+import {formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
 
 const CardHeaderContainer = styled(FlexRow)`
@@ -113,7 +113,7 @@ export const PositionCard = ({
     if (!estLiquidationPrice || estLiquidationPrice === undefined || !quoteTokenDecimals)
       return <Loader stroke="white" size="12px" />
     if (typeof estLiquidationPrice === 'string') return estLiquidationPrice
-    return formatBigNumberUsingDecimals(estLiquidationPrice, quoteTokenDecimals, 2)
+    return formatBigNumberUsingDecimalsToString(estLiquidationPrice, quoteTokenDecimals, 2)
   }, [estLiquidationPrice, quoteTokenDecimals])
 
   return (

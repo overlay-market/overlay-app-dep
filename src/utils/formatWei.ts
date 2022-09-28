@@ -26,19 +26,31 @@ export function formatWeiToParsedNumber(
   }
 }
 
-export function formatBigNumberUsingDecimals(
+export function formatBigNumberUsingDecimalsToString(
   bignumber: BigNumberish | string | undefined,
   decimals: number | undefined,
   sigFigs?: number,
-  returnNumber?: boolean,
 ) {
   let parsedBigNumber
 
   if (bignumber && decimals) {
     parsedBigNumber = utils.formatUnits(bignumber, decimals)
-    return returnNumber
-      ? Number(Number(parsedBigNumber).toFixed(sigFigs))
-      : Number(parsedBigNumber).toFixed(sigFigs)
+    return Number(parsedBigNumber).toFixed(sigFigs)
+  } else {
+    return undefined
+  }
+}
+
+export function formatBigNumberUsingDecimalsToNumber(
+  bignumber: BigNumberish | string | undefined,
+  decimals: number | undefined,
+  sigFigs?: number,
+) {
+  let parsedBigNumber
+
+  if (bignumber && decimals) {
+    parsedBigNumber = utils.formatUnits(bignumber, decimals)
+    return Number(Number(parsedBigNumber).toFixed(sigFigs))
   } else {
     return undefined
   }

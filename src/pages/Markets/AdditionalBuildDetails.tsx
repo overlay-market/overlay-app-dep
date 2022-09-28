@@ -2,7 +2,7 @@ import {useMemo} from 'react'
 import styled from 'styled-components'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimals} from '../../utils/formatWei'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
 
 const ContentContainer = styled(FlexColumn)`
@@ -87,8 +87,8 @@ export const AdditionalDetails = ({
       return null
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatBigNumberUsingDecimals(estimatedAsk, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimals(estimatedBid, quoteTokenDecimals, 2)
+      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   const priceImpact = useMemo(() => {

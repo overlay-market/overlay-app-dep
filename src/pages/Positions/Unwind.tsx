@@ -20,9 +20,15 @@ import {
   useUnwindActionHandlers,
   useDerivedUnwindInfo,
 } from '../../state/unwind/hooks'
-import {formatWeiToParsedString, formatWeiToParsedNumber} from '../../utils/formatWei'
+import {
+  formatWeiToParsedString,
+  formatWeiToParsedNumber,
+  formatBigNumberUsingDecimalsToString,
+  formatBigNumberUsingDecimalsToNumber,
+} from '../../utils/formatWei'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {TransparentUnderlineButton, TriggerActionButton} from '../../components/Button/Button'
+import {useToken} from '../../hooks/useToken'
 import {usePositionValue} from '../../hooks/usePositionValue'
 import {usePositionOi} from '../../hooks/usePositionOi'
 import {usePositionDebt} from '../../hooks/usePositionDebt'
@@ -99,7 +105,13 @@ export function Unwind({
 
   const position = filtered ? filtered[0] : null
 
-  const {baseToken, quoteToken} = useMarketName(position?.market.feedAddress)
+  const {baseToken, quoteToken, quoteTokenAddress} = useMarketName(position?.market.feedAddress)
+  const quoteTokenInfo = useToken(quoteTokenAddress)
+  const quoteTokenDecimals = useMemo(() => {
+    if (quoteTokenInfo === undefined || !quoteTokenInfo) return undefined
+    return quoteTokenInfo.decimals
+  }, [quoteTokenInfo])
+
   const positionIdConverted = BigNumber.from(positionId).toString()
 
   const positionInfo = usePositionInfo(position?.market.id, positionId)
@@ -113,20 +125,21 @@ export function Unwind({
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId)
   const liquidationPriceResult = useLiquidationPrice(position?.market.id, positionId)
   const liquidationPrice =
-    liquidationPriceResult && formatWeiToParsedNumber(liquidationPriceResult, 18, 2)
+    liquidationPriceResult &&
+    formatBigNumberUsingDecimalsToNumber(liquidationPriceResult, quoteTokenDecimals, 2)
 
   const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi)
   const estimatedBid = useBid(position?.market.id, fractionOfCapOi)
   const estimatedAsk = useAsk(position?.market.id, fractionOfCapOi)
 
   const estimatedReceivedPrice = useMemo(() => {
-    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
-      return null
+    if (isLong === undefined || !quoteTokenDecimals) return null
+    if (estimatedBid === undefined || estimatedAsk === undefined) return null
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatWeiToParsedNumber(estimatedBid, 18, 2)
-      : formatWeiToParsedNumber(estimatedAsk, 18, 2)
-  }, [isLong, estimatedBid, estimatedAsk])
+      ? formatBigNumberUsingDecimalsToNumber(estimatedBid, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimalsToNumber(estimatedAsk, quoteTokenDecimals, 2)
+  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   const fetchPrices = useMarketPrice(position?.market.id)
 
@@ -160,8 +173,12 @@ export function Unwind({
     }
   }, [fetchPrices])
 
-  const bidPrice = fetchPrices ? formatWeiToParsedNumber(fetchPrices.bid_, 18, 2) : null
-  const askPrice = fetchPrices ? formatWeiToParsedNumber(fetchPrices.ask_, 18, 2) : null
+  const bidPrice = fetchPrices
+    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.bid_, quoteTokenDecimals, 2)
+    : null
+  const askPrice = fetchPrices
+    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.ask_, quoteTokenDecimals, 2)
+    : null
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
@@ -170,6 +187,7 @@ export function Unwind({
     const priceImpactValue = isLong
       ? bidPrice - estimatedReceivedPrice
       : estimatedReceivedPrice - askPrice
+
     const priceImpactPercentage = isLong
       ? (priceImpactValue / bidPrice) * 100
       : (priceImpactValue / askPrice) * 100

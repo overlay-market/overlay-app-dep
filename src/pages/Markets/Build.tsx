@@ -27,7 +27,8 @@ import {
   formatWeiToParsedString,
   formatWeiToParsedNumber,
   formatFundingRateToDaily,
-  formatBigNumberUsingDecimals,
+  formatBigNumberUsingDecimalsToString,
+  formatBigNumberUsingDecimalsToNumber,
 } from '../../utils/formatWei'
 import {ApprovalState, useApproveCallback} from '../../hooks/useApproveCallback'
 import {LeverageSlider} from '../../components/LeverageSlider/LeverageSlider'
@@ -187,9 +188,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (fetchPrices.loading === true || !fetchPrices.result || quoteTokenDecimals === undefined)
       return {bid: 'loading', ask: 'loading', mid: 'loading'}
     return {
-      bid: formatBigNumberUsingDecimals(fetchPrices.result?.bid_, quoteTokenDecimals, 2),
-      ask: formatBigNumberUsingDecimals(fetchPrices.result?.ask_, quoteTokenDecimals, 2),
-      mid: formatBigNumberUsingDecimals(fetchPrices.result?.mid_, quoteTokenDecimals, 2),
+      bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, quoteTokenDecimals, 2),
+      ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, quoteTokenDecimals, 2),
+      mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, quoteTokenDecimals, 2),
       _bid: fetchPrices.result?.bid_,
       _ask: fetchPrices.result?.ask_,
       _mid: fetchPrices.result?.mid_,
@@ -366,7 +367,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     isLong,
   )
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult
-    ? formatBigNumberUsingDecimals(
+    ? formatBigNumberUsingDecimalsToNumber(
         estimatedLiquidationPriceResult,
         quoteTokenDecimals,
         sigFigConstant,
@@ -378,8 +379,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       return null
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatBigNumberUsingDecimals(estimatedAsk, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimals(estimatedBid, quoteTokenDecimals, 2)
+      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   const priceImpact = useMemo(() => {

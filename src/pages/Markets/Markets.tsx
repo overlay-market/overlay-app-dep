@@ -9,7 +9,7 @@ import {
   formatFundingRateToDaily,
   formatFundingRateToAnnual,
   formatWeiToParsedNumber,
-  formatBigNumberUsingDecimals,
+  formatBigNumberUsingDecimalsToString,
 } from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
@@ -118,7 +118,7 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   {prices[index] !== null && quoteAmounts[index] !== undefined ? (
-                    formatBigNumberUsingDecimals(
+                    formatBigNumberUsingDecimalsToString(
                       prices[index],
                       quoteAmounts[index],
                       quoteAmounts[index] + 4,
