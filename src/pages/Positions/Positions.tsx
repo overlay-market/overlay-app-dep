@@ -15,6 +15,8 @@ import {usePositionValues} from '../../hooks/usePositionValue'
 import {usePositionCosts} from '../../hooks/usePositionCost'
 import {useLiquidationPrices} from '../../hooks/useLiquidationPrice'
 import {usePositionOis} from '../../hooks/usePositionOi'
+import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
+import {useToken} from '../../hooks/useToken'
 import {TEXT} from '../../theme/theme'
 
 const Container = styled.div`
@@ -85,6 +87,7 @@ export const PositionsInner = () => {
     [positions],
   )
   const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
+  const quoteAmounts = useMarketQuoteAmounts(feedAddresses)
 
   const calldata = useMemo(() => {
     if (!positions || !account || !blockNumber) return []
@@ -136,6 +139,7 @@ export const PositionsInner = () => {
             marketId={position.market.id}
             baseToken={`${baseTokens[key]}`}
             quoteToken={`${quoteTokens[key]}`}
+            quoteTokenDecimals={quoteAmounts[key]}
             isLong={position.isLong}
             leverage={position.leverage}
             value={values[key]}

@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom'
 import {Icon} from '../../components/Icon/Icon'
 import {ChevronRight} from 'react-feather'
 import {FlexRow} from '../../components/Container/Container'
+import {formatBigNumberUsingDecimals} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
 
 const CardHeaderContainer = styled(FlexRow)`
@@ -65,6 +66,7 @@ export const PositionCard = ({
   marketId,
   baseToken,
   quoteToken,
+  quoteTokenDecimals,
   isLong,
   leverage,
   value,
@@ -81,6 +83,7 @@ export const PositionCard = ({
   marketId: string
   baseToken: string
   quoteToken: string
+  quoteTokenDecimals: number
   isLong: boolean | null
   leverage: number | string
   value: number | string | null | undefined
@@ -105,6 +108,13 @@ export const PositionCard = ({
     }
     return {color: 'gray', result: 'error'}
   }, [value, cost, collateralToken])
+
+  const formattedEstLiquidationPrice = useMemo(() => {
+    if (!estLiquidationPrice || estLiquidationPrice === undefined || !quoteTokenDecimals)
+      return <Loader stroke="white" size="12px" />
+    if (typeof estLiquidationPrice === 'string') return estLiquidationPrice
+    return formatBigNumberUsingDecimals(estLiquidationPrice, quoteTokenDecimals, 2)
+  }, [estLiquidationPrice, quoteTokenDecimals])
 
   return (
     <CardContainer navigate={navigate} border={border} to={`/positions/${id}/${positionId}`}>
@@ -145,7 +155,7 @@ export const PositionCard = ({
 
       <PositionCardColumn width="20%">
         <Detail fontWeight={700} color={'white'}>
-          {isLiquidated ? 'Liquidated' : estLiquidationPrice}
+          {isLiquidated ? 'Liquidated' : formattedEstLiquidationPrice}
         </Detail>
       </PositionCardColumn>
 

@@ -56,7 +56,8 @@ export function useLiquidationPrices(calldata: any) {
       if (!loading && result === undefined) return 'Unwound'
       if (error) console.error('Error from useLiquidationPrices')
       const value = result && result[0]
-      return formatWeiToParsedNumber(value, 18, 4)
+      // return formatWeiToParsedNumber(value, 18, 4)
+      return value
     })
   }, [callResult, blockNumber, chainId])
 }
