@@ -84,8 +84,11 @@ const Markets = () => {
     tokenPairDecimals.baseTokens,
     tokenPairDecimals.quoteTokens,
   )
-  console.log('ois: ', ois)
-  const capOis = useMarketCapOis(calldata.marketAddresses)
+  const capOis = useMarketCapOis(
+    calldata.marketAddresses,
+    tokenPairDecimals.baseTokens,
+    tokenPairDecimals.quoteTokens,
+  )
 
   return (
     <PageContainer>
