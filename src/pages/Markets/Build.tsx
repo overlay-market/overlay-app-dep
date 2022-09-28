@@ -355,7 +355,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
   const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 18) : null
-
   const estimatedFractionOfCapOi = useFractionOfCapOi(market?.id, estimatedOiResult)
   const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi)
   const estimatedAsk = useAsk(market?.id, estimatedFractionOfCapOi)

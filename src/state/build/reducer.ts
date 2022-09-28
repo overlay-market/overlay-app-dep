@@ -24,7 +24,7 @@ export const initialState: BuildState = {
   selectedLeverage: "1",
   isLong: undefined,
   inputCurrency: OVL[1].address,
-  setSlippageValue: "10",
+  setSlippageValue: "1",
   txnDeadline: "30",
 };
 
