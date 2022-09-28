@@ -51,6 +51,7 @@ export function useMarketOis(calldata?: any, baseTokensAmounts?: any, quoteToken
       if (!chainId || !blockNumber || !market) return null
       if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
 
+      const sigFigs = 2
       let baseTokenQuoteTokenDecimalDifference = 0
 
       if (baseTokensAmounts[index] > quoteTokensAmounts[index]) {
@@ -59,20 +60,44 @@ export function useMarketOis(calldata?: any, baseTokensAmounts?: any, quoteToken
 
       const marketOi = market?.result && market.result
 
-      // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
-      const _oiLong = marketOi?.oiLong_ ? marketOi.oiLong_.div(ethers.constants.WeiPerEther) : null
+      // if base token / quote token decimal difference is 0
+      // then parse big number from ether to wei
+      // else format value using decimal difference
+      if (baseTokenQuoteTokenDecimalDifference === 0) {
+        return {
+          oiLong: marketOi?.oiLong_
+            ? formatWeiToParsedNumber(marketOi.oiLong_, 18, sigFigs)
+            : undefined,
+          oiShort: marketOi?.oiShort_
+            ? formatWeiToParsedNumber(marketOi.oiShort_, 18, sigFigs)
+            : undefined,
+        }
+      } else {
+        // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
+        const _oiLong = marketOi?.oiLong_
+          ? marketOi.oiLong_.div(ethers.constants.WeiPerEther)
+          : null
 
-      const _oiShort = marketOi?.oiShort_
-        ? marketOi.oiShort_.div(ethers.constants.WeiPerEther)
-        : null
+        const _oiShort = marketOi?.oiShort_
+          ? marketOi.oiShort_.div(ethers.constants.WeiPerEther)
+          : null
 
-      return {
-        oiLong: _oiLong
-          ? formatBigNumberUsingDecimalsToNumber(_oiLong, baseTokenQuoteTokenDecimalDifference, 4)
-          : undefined,
-        oiShort: _oiShort
-          ? formatBigNumberUsingDecimalsToNumber(_oiShort, baseTokenQuoteTokenDecimalDifference, 4)
-          : undefined,
+        return {
+          oiLong: _oiLong
+            ? formatBigNumberUsingDecimalsToNumber(
+                _oiLong,
+                baseTokenQuoteTokenDecimalDifference,
+                sigFigs,
+              )
+            : undefined,
+          oiShort: _oiShort
+            ? formatBigNumberUsingDecimalsToNumber(
+                _oiShort,
+                baseTokenQuoteTokenDecimalDifference,
+                sigFigs,
+              )
+            : undefined,
+        }
       }
     })
   }, [oisResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts])
