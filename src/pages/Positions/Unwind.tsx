@@ -198,7 +198,7 @@ export function Unwind({
   const PnL = cost && value ? value.sub(cost) : null
   const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0
   const entryPrice: number | string | null | undefined =
-    position && formatWeiToParsedNumber(position.entryPrice, 18, 2)
+    position && formatBigNumberUsingDecimalsToString(position.entryPrice, quoteTokenDecimals, 2)
 
   const showUnderwaterFlow =
     liquidationPriceResult && prices._mid
