@@ -137,11 +137,7 @@ const Markets = () => {
 
                 <StyledTableCellThin align="left">
                   {prices[index] !== null && quoteAmounts[index] !== undefined ? (
-                    formatBigNumberUsingDecimalsToString(
-                      prices[index],
-                      quoteAmounts[index],
-                      quoteAmounts[index] + 4,
-                    )
+                    formatBigNumberUsingDecimalsToString(prices[index], quoteAmounts[index], 4)
                   ) : (
                     <Loader stroke="white" size="12px" />
                   )}
