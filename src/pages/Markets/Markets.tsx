@@ -67,8 +67,24 @@ const Markets = () => {
   const prices = useMarketMidPrices(calldata.marketAddresses)
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(calldata.feedAddresses)
+
+  const tokenPairDecimals = useMemo(
+    () => ({
+      baseTokens:
+        baseAmounts.length === 0 ? null : baseAmounts.map((tokenDecimals: any) => tokenDecimals),
+      quoteTokens:
+        quoteAmounts.length === 0 ? null : quoteAmounts.map((tokenDecimals: any) => tokenDecimals),
+    }),
+    [baseAmounts, quoteAmounts],
+  )
+
   const fundingRates = useFundingRates(calldata.marketAddresses)
-  const ois = useMarketOis(calldata.marketAddresses)
+  const ois = useMarketOis(
+    calldata.marketAddresses,
+    tokenPairDecimals.baseTokens,
+    tokenPairDecimals.quoteTokens,
+  )
+  console.log('ois: ', ois)
   const capOis = useMarketCapOis(calldata.marketAddresses)
 
   return (

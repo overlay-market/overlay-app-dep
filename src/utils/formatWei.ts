@@ -33,7 +33,9 @@ export function formatBigNumberUsingDecimalsToString(
 ) {
   let parsedBigNumber
 
-  if (bignumber && decimals) {
+  if (!decimals && decimals !== 0) return undefined
+
+  if (bignumber) {
     parsedBigNumber = utils.formatUnits(bignumber, decimals)
     return Number(parsedBigNumber).toFixed(sigFigs)
   } else {
@@ -48,7 +50,9 @@ export function formatBigNumberUsingDecimalsToNumber(
 ) {
   let parsedBigNumber
 
-  if (bignumber && decimals) {
+  if (!decimals && decimals !== 0) return undefined
+
+  if (bignumber) {
     parsedBigNumber = utils.formatUnits(bignumber, decimals)
     return Number(Number(parsedBigNumber).toFixed(sigFigs))
   } else {
