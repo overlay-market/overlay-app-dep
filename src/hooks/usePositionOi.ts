@@ -62,14 +62,18 @@ export function usePositionOi(
       formattedOi: formatBigNumberUsingDecimalsToNumber(
         parsedOi,
         marketTokensDecimalsDifference,
-        2,
+        4,
       ),
       rawOi: oi,
     }
   }, [parsedOi, marketTokensDecimalsDifference, oi])
 }
 
-export function usePositionOis(positionsCallData?: any) {
+export function usePositionOis(
+  positionsCallData?: any,
+  baseTokensAmounts?: any,
+  quoteTokensAmounts?: any,
+) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
@@ -77,12 +81,32 @@ export function usePositionOis(positionsCallData?: any) {
   const callResult = useSingleContractMultipleData(peripheryContract, 'oi', positionsCallData)
 
   return useMemo(() => {
-    return callResult.map(position => {
+    return callResult.map((position, index) => {
       const {loading, error, result} = position
-      if (!chainId || !blockNumber || loading) return 'loading'
+      if (!chainId || !blockNumber || loading) return null
+      if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
       if (error) console.error('Error from usePositionOis')
-      const value = result && result[0]
-      return formatWeiToParsedNumber(value, 18, 4)
+
+      const sigFigs = 2
+      const oi = result?.oi_ ? result.oi_ : undefined
+      // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
+      const parsedOi = oi ? oi.div(ethers.constants.WeiPerEther) : undefined
+
+      let baseTokenQuoteTokenDecimalDifference = 0
+
+      if (baseTokensAmounts[index] > quoteTokensAmounts[index]) {
+        baseTokenQuoteTokenDecimalDifference = baseTokensAmounts[index] - quoteTokensAmounts[index]
+      }
+
+      // if base token and quote token have same decimals,
+      // no need to format again using decimal differences
+      if (baseTokenQuoteTokenDecimalDifference === 0) {
+        return formatWeiToParsedNumber(oi, 18, 4)
+      } else {
+        return parsedOi
+          ? formatBigNumberUsingDecimalsToNumber(parsedOi, baseTokenQuoteTokenDecimalDifference, 4)
+          : undefined
+      }
     })
-  }, [callResult, blockNumber, chainId])
+  }, [callResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts])
 }

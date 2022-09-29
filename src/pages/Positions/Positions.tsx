@@ -16,6 +16,7 @@ import {usePositionCosts} from '../../hooks/usePositionCost'
 import {useLiquidationPrices} from '../../hooks/useLiquidationPrice'
 import {usePositionOis} from '../../hooks/usePositionOi'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
+import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 import {useToken} from '../../hooks/useToken'
 import {TEXT} from '../../theme/theme'
 
@@ -87,14 +88,25 @@ export const PositionsInner = () => {
     [positions],
   )
   const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
+  const baseAmounts = useMarketBaseAmounts(feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(feedAddresses)
+
+  const tokenPairDecimals = useMemo(
+    () => ({
+      baseTokens:
+        baseAmounts.length === 0 ? null : baseAmounts.map((tokenDecimals: any) => tokenDecimals),
+      quoteTokens:
+        quoteAmounts.length === 0 ? null : quoteAmounts.map((tokenDecimals: any) => tokenDecimals),
+    }),
+    [baseAmounts, quoteAmounts],
+  )
 
   const calldata = useMemo(() => {
     if (!positions || !account || !blockNumber) return []
     return positions.map(position => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
 
-  const ois = usePositionOis(calldata)
+  const ois = usePositionOis(calldata, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens)
   const costs = usePositionCosts(calldata)
   const values = usePositionValues(calldata)
   const liquidationPrices = useLiquidationPrices(calldata)

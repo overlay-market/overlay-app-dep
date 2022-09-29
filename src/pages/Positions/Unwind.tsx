@@ -417,7 +417,10 @@ export function Unwind({
           detail={'Value'}
           value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : 'loading'}
         />
-        <AdditionalDetailRow detail={'Open Interest'} value={oi ? oi : 'loading'} />
+        <AdditionalDetailRow
+          detail={'Open Interest'}
+          value={oi.formattedOi ? oi.formattedOi : 'loading'}
+        />
         <AdditionalDetailRow
           detail={'Leverage'}
           value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : 'loading'}
