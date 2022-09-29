@@ -180,8 +180,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined
 
   const ois = useMarketOi(marketId, baseTokenDecimals, quoteTokenDecimals)
-  const rawOiLong = ois && ois[0] ? ois[0] : null
-  const rawOiShort = ois && ois[1] ? ois[1] : null
+  const rawOiLong = ois && ois[0] ? ois[0] : undefined
+  const rawOiShort = ois && ois[1] ? ois[1] : undefined
 
   const formattedOiLong = useMemo(() => {
     if (!rawOiLong) return undefined
@@ -189,10 +189,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
       return undefined
     if (marketTokensDecimalsDifference === 0) {
-      console.log('hello')
       return formatBigNumberUsingDecimalsToNumber(rawOiLong, baseTokenDecimals, sigFigConstant)
     } else {
-      console.log('hi')
       // divide by ONE or 1e18 based on fixed point calc for OI in solidity
       const divBy1e18 = rawOiLong.div(ethers.constants.WeiPerEther)
       return formatBigNumberUsingDecimalsToNumber(
@@ -222,7 +220,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [rawOiShort, baseTokenDecimals, marketTokensDecimalsDifference])
 
   const capOiResult = useMarketCapOi(marketId)
-  const rawCapOi = capOiResult ? capOiResult : null
+  const rawCapOi = capOiResult ? capOiResult : undefined
   const formattedCapOi = useMemo(() => {
     if (!rawCapOi) return undefined
     if (!baseTokenDecimals) return undefined
@@ -495,9 +493,14 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const exceedOiCap = useMemo(() => {
     if (!rawOiLong || !rawOiShort || !rawCapOi || !rawExpectedOi || isLong === undefined)
       return false
-    return isLong ? rawExpectedOi + rawOiLong > rawCapOi : rawExpectedOi + rawOiShort > rawCapOi
+    console.log('add: ', rawExpectedOi.add(rawOiLong))
+    console.log('rawCapOi: ', rawCapOi)
+    return isLong
+      ? rawExpectedOi.add(rawOiLong).gt(rawCapOi)
+      : rawExpectedOi.add(rawOiShort).gt(rawCapOi)
   }, [isLong, rawOiLong, rawOiShort, rawCapOi, rawExpectedOi])
 
+  console.log('exceedOiCap: ', exceedOiCap)
   const {preAdjustedOi, calculatedBuildFee, adjustedCollateral, adjustedOi, adjustedDebt} =
     useEstimatedBuild(
       selectedLeverage,
