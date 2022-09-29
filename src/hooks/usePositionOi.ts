@@ -87,7 +87,7 @@ export function usePositionOis(
       if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
       if (error) console.error('Error from usePositionOis')
 
-      const sigFigs = 2
+      const sigFigs = 4
       const oi = result?.oi_ ? result.oi_ : undefined
       // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
       const parsedOi = oi ? oi.div(ethers.constants.WeiPerEther) : undefined
@@ -101,10 +101,14 @@ export function usePositionOis(
       // if base token and quote token have same decimals,
       // no need to format again using decimal differences
       if (baseTokenQuoteTokenDecimalDifference === 0) {
-        return formatWeiToParsedNumber(oi, 18, 4)
+        return formatWeiToParsedNumber(oi, 18, sigFigs)
       } else {
         return parsedOi
-          ? formatBigNumberUsingDecimalsToNumber(parsedOi, baseTokenQuoteTokenDecimalDifference, 4)
+          ? formatBigNumberUsingDecimalsToNumber(
+              parsedOi,
+              baseTokenQuoteTokenDecimalDifference,
+              sigFigs,
+            )
           : undefined
       }
     })

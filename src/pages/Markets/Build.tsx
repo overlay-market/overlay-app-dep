@@ -145,9 +145,17 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const ovl = chainId ? OVL[chainId] : undefined
 
   // @TO-DO: pull market name from feed
-  const {baseToken, quoteToken, quoteTokenAddress} = useMarketName(market?.feedAddress)
+  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
+    market?.feedAddress,
+  )
 
+  const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
+
+  const baseTokenDecimals = useMemo(() => {
+    if (!baseTokenInfo) return undefined
+    return baseTokenInfo.decimals
+  }, [baseTokenInfo])
 
   const quoteTokenDecimals = useMemo(() => {
     if (quoteTokenInfo === undefined || !quoteTokenInfo) return undefined
@@ -353,9 +361,20 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       })
   }, [approveCallback, typedValue])
 
-  const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong)
-  const estimatedOi = estimatedOiResult ? formatWeiToParsedNumber(estimatedOiResult, 18, 18) : null
-  const estimatedFractionOfCapOi = useFractionOfCapOi(market?.id, estimatedOiResult)
+  const estimatedOiResult = useEstimatedBuildOi(
+    market?.id,
+    typedValue,
+    selectedLeverage,
+    isLong,
+    baseTokenDecimals,
+    quoteTokenDecimals,
+  )
+
+  const estimatedOi = estimatedOiResult.rawOi
+    ? formatWeiToParsedNumber(estimatedOiResult.rawOi, 18, 18)
+    : null
+  const expectedOi = estimatedOiResult?.formattedOi ? estimatedOiResult?.formattedOi : null
+  const estimatedFractionOfCapOi = useFractionOfCapOi(market?.id, estimatedOiResult?.rawOi)
   const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi)
   const estimatedAsk = useAsk(market?.id, estimatedFractionOfCapOi)
 
@@ -571,7 +590,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         oiShort={ois && formatWeiToParsedNumber(ois.oiShort_, 18, 5)}
         slippageTolerance={setSlippageValue}
         fundingRate={fundingRate}
-        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : null}
+        expectedOi={expectedOi && typedValue !== '' ? expectedOi : null}
         estLiquidationPrice={
           estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'
         }
