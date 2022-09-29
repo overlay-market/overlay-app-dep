@@ -121,13 +121,6 @@ export function Unwind({
     return quoteTokenInfo.decimals
   }, [quoteTokenInfo])
 
-  const marketTokensDecimalsDifference = useMemo(() => {
-    if (!baseTokenDecimals && typeof baseTokenDecimals !== 'number') return undefined
-    if (!quoteTokenDecimals && typeof quoteTokenDecimals !== 'number') return undefined
-    const difference = baseTokenDecimals - quoteTokenDecimals
-    return difference
-  }, [baseTokenDecimals, quoteTokenDecimals])
-
   const positionIdConverted = BigNumber.from(positionId).toString()
 
   const positionInfo = usePositionInfo(position?.market.id, positionId)
@@ -158,8 +151,6 @@ export function Unwind({
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
 
   const fetchPrices = useMarketPrice(position?.market.id)
-
-  // console.log('fetchPrices: ', fetchPrices);
 
   const prices: {
     bid?: string | number | any

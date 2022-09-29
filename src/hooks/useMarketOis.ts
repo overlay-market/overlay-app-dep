@@ -41,7 +41,7 @@ export function useMarketOi(
  * Returns open interests for input market addresses
  * @param calldata marketAddresses to query for
  */
-export function useMarketOis(calldata?: any, baseTokensAmounts?: any, quoteTokensAmounts?: any) {
+export function useMarketOis(calldata?: any, baseTokenDecimals?: any, quoteTokenDecimals?: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
@@ -50,13 +50,13 @@ export function useMarketOis(calldata?: any, baseTokensAmounts?: any, quoteToken
   return useMemo(() => {
     return oisResult.map((market, index) => {
       if (!chainId || !blockNumber || !market) return null
-      if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
+      if (!baseTokenDecimals[index] || !quoteTokenDecimals[index]) return null
 
       const sigFigs = 2
       let baseTokenQuoteTokenDecimalDifference = 0
 
-      if (baseTokensAmounts[index] > quoteTokensAmounts[index]) {
-        baseTokenQuoteTokenDecimalDifference = baseTokensAmounts[index] - quoteTokensAmounts[index]
+      if (baseTokenDecimals[index] > quoteTokenDecimals[index]) {
+        baseTokenQuoteTokenDecimalDifference = baseTokenDecimals[index] - quoteTokenDecimals[index]
       }
 
       const marketOi = market?.result && market.result
@@ -101,5 +101,5 @@ export function useMarketOis(calldata?: any, baseTokensAmounts?: any, quoteToken
         }
       }
     })
-  }, [oisResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts])
+  }, [oisResult, blockNumber, chainId, baseTokenDecimals, quoteTokenDecimals])
 }

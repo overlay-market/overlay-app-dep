@@ -58,7 +58,6 @@ import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
 import Loader from '../../components/Loaders/Loaders'
-import {GraphQLInputObjectType} from 'graphql'
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -493,14 +492,11 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const exceedOiCap = useMemo(() => {
     if (!rawOiLong || !rawOiShort || !rawCapOi || !rawExpectedOi || isLong === undefined)
       return false
-    console.log('add: ', rawExpectedOi.add(rawOiLong))
-    console.log('rawCapOi: ', rawCapOi)
     return isLong
       ? rawExpectedOi.add(rawOiLong).gt(rawCapOi)
       : rawExpectedOi.add(rawOiShort).gt(rawCapOi)
   }, [isLong, rawOiLong, rawOiShort, rawCapOi, rawExpectedOi])
 
-  console.log('exceedOiCap: ', exceedOiCap)
   const {preAdjustedOi, calculatedBuildFee, adjustedCollateral, adjustedOi, adjustedDebt} =
     useEstimatedBuild(
       selectedLeverage,
