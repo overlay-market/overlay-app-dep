@@ -9,30 +9,16 @@ export enum ContractAddresses {
   OVL_ETH = 3, //at launch
 }
 
-// archived contract addresses
-export const OVL_ADDRESS: AddressMap = constructSameAddressMap(
-  '0x04346e29fDef5dc5A7822793d9f00B5db73D6532',
-)
-export const OVL_COLLATERAL_ADDRESS: AddressMap = constructSameAddressMap(
-  '0xc3d73beec840d95b0b70c660a9b8be2996b0cc17',
-)
-export const OVL_MARKET_ADDRESS: AddressMap = constructSameAddressMap(
-  '0x6f49162bc17eba2b926f789522269a0e0f2a5884',
-)
-export const OVL_MOTHERSHIP_ADDRESS: AddressMap = constructSameAddressMap(
-  '0xE15Ed9eb485Ec1B95c6F853cB57901629b0f1CF2',
-)
-
 // v1-core contract addresses
 export const V1_PERIPHERY_ADDRESS: AddressMap = {
-  [ChainId.MAINNET]: '0x074a05BE87Df3A9ae72CfC863A06cae7E4BbceD5', // TO-DO: Change
+  [ChainId.MAINNET]: '0x477122219aa1F76E190f480a85af97DE0A643320',
   [ChainId.KOVAN]: '0x06C76062730aD18aBdc3C9198b3EB283f7bb3627',
   [ChainId.RINKEBY]: '0x11495884878A38709959e1102Ba0e559BE826F4e',
   [ChainId.GÖRLI]: '0xC1a0426Ed3a68EfAdb702b28115b491f8a4f958d',
 }
 
 export const OVL_TOKEN_ADDRESS: AddressMap = {
-  [ChainId.MAINNET]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc', // TO-DO: Change
+  [ChainId.MAINNET]: '0xdc77acc82cce1cc095cba197474cc06824ade6f7',
   [ChainId.KOVAN]: '0x04020e4ff78b629d79ccbd163fc6044af73588dc',
   [ChainId.RINKEBY]: '0x82913654067F94b72AEFB10dBC69Ff4Db3F16176',
   [ChainId.GÖRLI]: '0xdBD4a09ac1962F028390C53F4a4d126F5E13baEe',
