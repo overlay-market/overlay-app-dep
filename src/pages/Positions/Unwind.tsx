@@ -105,12 +105,28 @@ export function Unwind({
 
   const position = filtered ? filtered[0] : null
 
-  const {baseToken, quoteToken, quoteTokenAddress} = useMarketName(position?.market.feedAddress)
+  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
+    position?.market.feedAddress,
+  )
+  const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
+
+  const baseTokenDecimals = useMemo(() => {
+    if (!baseTokenInfo) return undefined
+    return baseTokenInfo.decimals
+  }, [baseTokenInfo])
+
   const quoteTokenDecimals = useMemo(() => {
-    if (quoteTokenInfo === undefined || !quoteTokenInfo) return undefined
+    if (!quoteTokenInfo) return undefined
     return quoteTokenInfo.decimals
   }, [quoteTokenInfo])
+
+  const marketTokensDecimalsDifference = useMemo(() => {
+    if (!baseTokenDecimals && typeof baseTokenDecimals !== 'number') return undefined
+    if (!quoteTokenDecimals && typeof quoteTokenDecimals !== 'number') return undefined
+    const difference = baseTokenDecimals - quoteTokenDecimals
+    return difference
+  }, [baseTokenDecimals, quoteTokenDecimals])
 
   const positionIdConverted = BigNumber.from(positionId).toString()
 
@@ -119,7 +135,8 @@ export function Unwind({
   const collateral = usePositionCollateral(position?.market.id, positionId)
   const cost = usePositionCost(position?.market.id, positionId)
   const value = usePositionValue(position?.market.id, positionId)
-  const oi = usePositionOi(position?.market.id, positionId)
+  const oi = usePositionOi(position?.market.id, positionId, baseTokenDecimals, quoteTokenDecimals)
+  console.log('oi: ', oi)
   const debt = usePositionDebt(position?.market.id, positionId)
   const notional = usePositionNotional(position?.market.id, positionId)
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId)
@@ -401,10 +418,7 @@ export function Unwind({
           detail={'Value'}
           value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : 'loading'}
         />
-        <AdditionalDetailRow
-          detail={'Open Interest'}
-          value={oi ? `${formatWeiToParsedNumber(oi, 18, 18)}` : 'loading'}
-        />
+        <AdditionalDetailRow detail={'Open Interest'} value={oi ? oi : 'loading'} />
         <AdditionalDetailRow
           detail={'Leverage'}
           value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : 'loading'}

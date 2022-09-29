@@ -1,15 +1,17 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
-import {formatWeiToParsedNumber} from '../utils/formatWei'
-import {BigNumber} from 'ethers'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber} from '../utils/formatWei'
+import {BigNumber, ethers} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 
 export function usePositionOi(
   marketAddress?: string,
   positionId?: string | number,
-): BigNumber | undefined {
+  baseTokenDecimals?: number | undefined,
+  quoteTokenDecimals?: number | undefined,
+): number | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()
@@ -17,7 +19,6 @@ export function usePositionOi(
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
-
     ;(async () => {
       try {
         setOi(await peripheryContract.oi(marketAddress, account, positionId))
@@ -27,9 +28,27 @@ export function usePositionOi(
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])
 
-  return useMemo(() => {
-    return oi
+  const marketTokensDecimalsDifference = useMemo(() => {
+    if (!baseTokenDecimals && typeof baseTokenDecimals !== 'number') return undefined
+    if (!quoteTokenDecimals && typeof quoteTokenDecimals !== 'number') return undefined
+    const difference = baseTokenDecimals - quoteTokenDecimals
+    return difference
+  }, [baseTokenDecimals, quoteTokenDecimals])
+
+  const parsedOi = useMemo(() => {
+    if (!oi && !ethers.BigNumber.isBigNumber(oi)) return null
+    return oi.div(ethers.constants.WeiPerEther)
   }, [oi])
+
+  return useMemo(() => {
+    console.log('parsedOi: ', parsedOi)
+    if (!parsedOi) return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number') {
+      return undefined
+    } else {
+      return formatBigNumberUsingDecimalsToNumber(parsedOi, marketTokensDecimalsDifference, 2)
+    }
+  }, [parsedOi, marketTokensDecimalsDifference])
 }
 
 export function usePositionOis(positionsCallData?: any) {
