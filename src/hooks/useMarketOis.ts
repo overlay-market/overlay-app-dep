@@ -3,12 +3,8 @@ import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
-import {
-  formatBigNumberUsingDecimalsToNumber,
-  formatWeiToParsedNumber,
-  formatWeiToParsedString,
-} from '../utils/formatWei'
-import {BigNumber, ethers} from 'ethers'
+import {formatBigNumberUsingDecimalsToNumber, formatWeiToParsedNumber} from '../utils/formatWei'
+import {ethers} from 'ethers'
 
 /**
  * Returns open interest for input market address
@@ -34,13 +30,6 @@ export function useMarketOi(
       }
     })()
   }, [peripheryContract, marketAddress, blockNumber, account])
-
-  const marketTokensDecimalsDifference = useMemo(() => {
-    if (!baseTokenDecimals && typeof baseTokenDecimals !== 'number') return undefined
-    if (!quoteTokenDecimals && typeof quoteTokenDecimals !== 'number') return undefined
-    const difference = baseTokenDecimals - quoteTokenDecimals
-    return difference
-  }, [baseTokenDecimals, quoteTokenDecimals])
 
   return useMemo(() => {
     console.log('ois: ', ois)
