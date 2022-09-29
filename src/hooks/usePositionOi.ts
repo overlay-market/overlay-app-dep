@@ -58,6 +58,12 @@ export function usePositionOi(
         rawOi: undefined,
       }
     }
+    if (marketTokensDecimalsDifference === 0) {
+      return {
+        formattedOi: formatBigNumberUsingDecimalsToNumber(oi, baseTokenDecimals, 4),
+        rawOi: oi,
+      }
+    }
     return {
       formattedOi: formatBigNumberUsingDecimalsToNumber(
         parsedOi,
@@ -66,7 +72,7 @@ export function usePositionOi(
       ),
       rawOi: oi,
     }
-  }, [parsedOi, marketTokensDecimalsDifference, oi])
+  }, [parsedOi, marketTokensDecimalsDifference, oi, baseTokenDecimals])
 }
 
 export function usePositionOis(
@@ -101,7 +107,7 @@ export function usePositionOis(
       // if base token and quote token have same decimals,
       // no need to format again using decimal differences
       if (baseTokenQuoteTokenDecimalDifference === 0) {
-        return formatWeiToParsedNumber(oi, 18, sigFigs)
+        return formatWeiToParsedNumber(oi, baseTokensAmounts[index], sigFigs)
       } else {
         return parsedOi
           ? formatBigNumberUsingDecimalsToNumber(

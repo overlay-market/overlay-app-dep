@@ -210,9 +210,11 @@ export function Unwind({
   const showUnderwaterFlow =
     liquidationPriceResult && prices._mid
       ? isLong
-        ? liquidationPriceResult > prices._mid
-        : liquidationPriceResult < prices._mid
+        ? liquidationPriceResult.gt(prices._mid)
+        : liquidationPriceResult.lt(prices._mid)
       : false
+
+  console.log('showUnderwaterFlow: ', showUnderwaterFlow)
 
   const {unwindData, parsedAmount, inputError} = useDerivedUnwindInfo()
   const {callback: unwindCallback, error: unwindCallbackError} = useUnwindCallback(
