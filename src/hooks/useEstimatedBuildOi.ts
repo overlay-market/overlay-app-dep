@@ -79,6 +79,12 @@ export function useEstimatedBuildOi(
         rawOi: undefined,
       }
     }
+    if (marketTokensDecimalsDifference === 0) {
+      return {
+        formattedOi: formatBigNumberUsingDecimalsToNumber(estimatedOi, baseTokenDecimals, 4),
+        rawOi: estimatedOi,
+      }
+    }
     return {
       formattedOi: formatBigNumberUsingDecimalsToNumber(
         parsedOi,
@@ -87,5 +93,5 @@ export function useEstimatedBuildOi(
       ),
       rawOi: estimatedOi,
     }
-  }, [estimatedOi, collateral, parsedOi, marketTokensDecimalsDifference])
+  }, [estimatedOi, collateral, parsedOi, marketTokensDecimalsDifference, baseTokenDecimals])
 }

@@ -26,13 +26,12 @@ export function useMarketOi(
       try {
         setOis(await peripheryContract.ois(marketAddress))
       } catch (error) {
-        console.log('market inside useMarketOis: ', marketAddress)
+        console.error('error from useMarketOi hook: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, blockNumber, account])
 
   return useMemo(() => {
-    console.log('ois: ', ois)
     return ois
   }, [ois])
 }
