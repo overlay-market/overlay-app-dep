@@ -8,7 +8,6 @@ import {InterfaceWrapper} from '../../components/Container/Container'
 import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
-import {formatDecimalPlaces} from '../../utils/formatDecimal'
 import {Accordion} from '../../components/Accordion/Accordion'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
 import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
@@ -21,7 +20,6 @@ import {
   useDerivedUnwindInfo,
 } from '../../state/unwind/hooks'
 import {
-  formatWeiToParsedString,
   formatWeiToParsedNumber,
   formatBigNumberUsingDecimalsToString,
   formatBigNumberUsingDecimalsToNumber,
@@ -40,8 +38,6 @@ import {useMarketPrice} from '../../hooks/useMarketPrices'
 import {Icon} from '../../components/Icon/Icon'
 import {Sliders, X} from 'react-feather'
 import {TransactionSettingsModal} from '../Markets/TransactionSettingsModal'
-import {useBuildState} from '../../state/build/hooks'
-import {useBuildActionHandlers} from '../../state/build/hooks'
 import {DefaultTxnSettings} from '../../state/build/actions'
 import {useIsTxnSettingsAuto} from '../../state/build/hooks'
 import {PercentageSlider} from '../../components/PercentageSlider/PercentageSlider'
@@ -213,8 +209,6 @@ export function Unwind({
         ? liquidationPriceResult.gt(prices._mid)
         : liquidationPriceResult.lt(prices._mid)
       : false
-
-  console.log('showUnderwaterFlow: ', showUnderwaterFlow)
 
   const {unwindData, parsedAmount, inputError} = useDerivedUnwindInfo()
   const {callback: unwindCallback, error: unwindCallbackError} = useUnwindCallback(
