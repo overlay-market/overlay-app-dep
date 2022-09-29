@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import {useMemo, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import {NavLink, useHistory} from 'react-router-dom'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
@@ -50,7 +50,12 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 // add: MarketRow component, calldata prop to call hooks from MarketRow
 const Markets = () => {
   const history = useHistory()
-  const {markets} = useAllMarkets()
+  const {markets, isLoading, refetch} = useAllMarkets()
+
+  // force refetch when page refreshes
+  useEffect(() => {
+    refetch()
+  }, [isLoading, refetch])
 
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`)

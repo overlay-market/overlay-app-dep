@@ -91,7 +91,12 @@ export function Unwind({
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const {account} = useActiveWeb3React()
-  const {error, isLoading, positions} = useQuerySubgraphAccountPositions(account)
+  const {error, isLoading, positions, refetch} = useQuerySubgraphAccountPositions(account)
+
+  useEffect(() => {
+    refetch()
+  }, [account, refetch, isLoading])
+
   const {typedValue, selectedPositionId, setSlippageValue, txnDeadline} = useUnwindState()
   const {onAmountInput, onSelectPositionId, onSetSlippage, onSetTxnDeadline, onResetUnwindState} =
     useUnwindActionHandlers()

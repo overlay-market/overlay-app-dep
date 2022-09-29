@@ -10,10 +10,10 @@ export function useMarketsState(): AppState['markets'] {
 export function useMarket(marketAddress?: string) {
   let address = marketAddress ? marketAddress : ''
 
-  const {isLoading, isError, error, isUninitialized, data} = useMarketQuery(
+  const {isLoading, isError, error, isUninitialized, data, refetch} = useMarketQuery(
     {market: address},
     {
-      pollingInterval: 1000,
+      pollingInterval: 12000,
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
     },
@@ -26,17 +26,19 @@ export function useMarket(marketAddress?: string) {
       error,
       isUninitialized,
       marketData: data,
+      refetch,
     }
-  }, [isLoading, isError, error, isUninitialized, data])
+  }, [isLoading, isError, error, isUninitialized, data, refetch])
 }
 
 export function useAllMarkets() {
-  const {isLoading, isError, error, isUninitialized, data} = useMarketsQuery(
+  const {isLoading, isError, error, isUninitialized, data, refetch} = useMarketsQuery(
     {},
     {
-      pollingInterval: 1000,
+      pollingInterval: 12000,
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
+      skip: false,
     },
   )
 
@@ -47,6 +49,7 @@ export function useAllMarkets() {
       error,
       isUninitialized,
       markets: data,
+      refetch,
     }
-  }, [isLoading, isError, error, isUninitialized, data])
+  }, [isLoading, isError, error, isUninitialized, data, refetch])
 }

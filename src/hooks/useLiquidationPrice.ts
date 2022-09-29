@@ -34,7 +34,7 @@ export function useLiquidationPrice(
           await peripheryContract.liquidationPrice(marketAddress, account, positionId),
         )
       } catch (error) {
-        console.log('market inside useLiquidationPrice: ', marketAddress)
+        console.log('error from useLiquidationPrice: ', error)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])

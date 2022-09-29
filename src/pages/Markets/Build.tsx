@@ -1,4 +1,4 @@
-import {useState, useCallback, useMemo} from 'react'
+import {useState, useCallback, useMemo, useEffect} from 'react'
 import styled from 'styled-components'
 import {utils, BigNumberish, ethers} from 'ethers'
 import {Label, Input} from '@rebass/forms'
@@ -136,7 +136,13 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     transactionHash: undefined,
   })
 
-  const {marketData} = useMarket(marketId)
+  const {marketData, isLoading, refetch} = useMarket(marketId)
+
+  // force refetch when refreshing page
+  useEffect(() => {
+    refetch()
+  }, [marketId, isLoading, refetch])
+
   const market = marketData?.market
   const {account, chainId} = useActiveWeb3React()
   const ovlBalance = useOvlBalance()

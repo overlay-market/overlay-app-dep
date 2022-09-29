@@ -193,9 +193,11 @@ export function useQuerySubgraphAccountPositions(
     isFetching,
     refetch
   } = useAccountQuery({ account: accountAddress }, { 
-    pollingInterval: 14000, 
+    pollingInterval: 12000, 
     refetchOnMountOrArgChange: true, 
-    refetchOnReconnect: true 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
   })
 
   return useMemo(() => {
@@ -219,7 +221,7 @@ export function useAllPositions() {
     error,
     isUninitialized,
     data
-  } = usePositionsQuery({}, { pollingInterval: 14000 })
+  } = usePositionsQuery({}, { pollingInterval: 12000 })
 
   return useMemo(() => {
     return {
