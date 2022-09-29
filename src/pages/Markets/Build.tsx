@@ -172,7 +172,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const capPayoff = market ? formatWeiToParsedNumber(market.capPayoff, 18, 2) : undefined
   const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined
 
-  const ois = useMarketOi(marketId)
+  const ois = useMarketOi(marketId, baseTokenDecimals, quoteTokenDecimals)
   const oiLong = ois && ois[0] ? formatWeiToParsedNumber(ois[0], 18, 4) : null
   const oiShort = ois && ois[1] ? formatWeiToParsedNumber(ois[1], 18, 4) : null
 
@@ -612,7 +612,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
-        expectedOi={estimatedOi && typedValue !== '' ? estimatedOi : null}
+        expectedOi={expectedOi && typedValue !== '' ? expectedOi : null}
         estimatedLiquidationPrice={
           estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'
         }

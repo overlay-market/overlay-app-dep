@@ -14,7 +14,11 @@ import {BigNumber, ethers} from 'ethers'
  * Returns open interest for input market address
  * @param marketAddress address of market to query for
  */
-export function useMarketOi(marketAddress?: string): any | undefined {
+export function useMarketOi(
+  marketAddress?: string,
+  baseTokenDecimals?: any,
+  quoteTokenDecimals?: any,
+): any | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()
@@ -31,7 +35,15 @@ export function useMarketOi(marketAddress?: string): any | undefined {
     })()
   }, [peripheryContract, marketAddress, blockNumber, account])
 
+  const marketTokensDecimalsDifference = useMemo(() => {
+    if (!baseTokenDecimals && typeof baseTokenDecimals !== 'number') return undefined
+    if (!quoteTokenDecimals && typeof quoteTokenDecimals !== 'number') return undefined
+    const difference = baseTokenDecimals - quoteTokenDecimals
+    return difference
+  }, [baseTokenDecimals, quoteTokenDecimals])
+
   return useMemo(() => {
+    console.log('ois: ', ois)
     return ois
   }, [ois])
 }
