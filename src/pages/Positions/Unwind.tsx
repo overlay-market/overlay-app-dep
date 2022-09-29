@@ -406,7 +406,7 @@ export function Unwind({
         />
         <AdditionalDetailRow
           detail={'Open Interest'}
-          value={oi.formattedOi ? oi.formattedOi : 'loading'}
+          value={oi.formattedOi || oi.formattedOi === 0 ? oi.formattedOi : 'loading'}
         />
         <AdditionalDetailRow
           detail={'Leverage'}
