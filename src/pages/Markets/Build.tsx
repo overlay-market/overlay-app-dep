@@ -186,10 +186,13 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const formattedOiLong = useMemo(() => {
     if (!rawOiLong) return undefined
     if (!baseTokenDecimals) return undefined
-    if (!marketTokensDecimalsDifference) return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
+      return undefined
     if (marketTokensDecimalsDifference === 0) {
+      console.log('hello')
       return formatBigNumberUsingDecimalsToNumber(rawOiLong, baseTokenDecimals, sigFigConstant)
     } else {
+      console.log('hi')
       // divide by ONE or 1e18 based on fixed point calc for OI in solidity
       const divBy1e18 = rawOiLong.div(ethers.constants.WeiPerEther)
       return formatBigNumberUsingDecimalsToNumber(
@@ -203,7 +206,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const formattedOiShort = useMemo(() => {
     if (!rawOiShort) return undefined
     if (!baseTokenDecimals) return undefined
-    if (!marketTokensDecimalsDifference) return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
+      return undefined
     if (marketTokensDecimalsDifference === 0) {
       return formatBigNumberUsingDecimalsToNumber(rawOiShort, baseTokenDecimals, sigFigConstant)
     } else {
@@ -218,7 +222,24 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [rawOiShort, baseTokenDecimals, marketTokensDecimalsDifference])
 
   const capOiResult = useMarketCapOi(marketId)
-  const capOi = capOiResult ? formatWeiToParsedNumber(capOiResult, 18, 4) : null
+  const rawCapOi = capOiResult ? capOiResult : null
+  const formattedCapOi = useMemo(() => {
+    if (!rawCapOi) return undefined
+    if (!baseTokenDecimals) return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
+      return undefined
+    if (marketTokensDecimalsDifference === 0) {
+      return formatBigNumberUsingDecimalsToNumber(rawCapOi, baseTokenDecimals, sigFigConstant)
+    } else {
+      // divide by ONE or 1e18 based on fixed point calc for OI in solidity
+      const divBy1e18 = rawCapOi.div(ethers.constants.WeiPerEther)
+      return formatBigNumberUsingDecimalsToNumber(
+        divBy1e18,
+        marketTokensDecimalsDifference,
+        sigFigConstant,
+      )
+    }
+  }, [rawCapOi, baseTokenDecimals, marketTokensDecimalsDifference])
 
   const peripheryContract = useV1PeripheryContract()
 
@@ -411,9 +432,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     quoteTokenDecimals,
   )
 
-  const estimatedOi = estimatedOiResult.rawOi
-    ? formatWeiToParsedNumber(estimatedOiResult.rawOi, 18, 18)
-    : null
+  const rawExpectedOi = estimatedOiResult.rawOi ? estimatedOiResult.rawOi : null
   const expectedOi = estimatedOiResult?.formattedOi ? estimatedOiResult?.formattedOi : null
   const estimatedFractionOfCapOi = useFractionOfCapOi(market?.id, estimatedOiResult?.rawOi)
   const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi)
@@ -474,9 +493,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [prices, isLong, estimatedLiquidationPrice])
 
   const exceedOiCap = useMemo(() => {
-    if (!rawOiLong || !rawOiShort || !capOi || !estimatedOi || isLong === undefined) return false
-    return isLong ? estimatedOi + rawOiLong > capOi : estimatedOi + rawOiShort > capOi
-  }, [isLong, rawOiLong, rawOiShort, capOi, estimatedOi])
+    if (!rawOiLong || !rawOiShort || !rawCapOi || !rawExpectedOi || isLong === undefined)
+      return false
+    return isLong ? rawExpectedOi + rawOiLong > rawCapOi : rawExpectedOi + rawOiShort > rawCapOi
+  }, [isLong, rawOiLong, rawOiShort, rawCapOi, rawExpectedOi])
 
   const {preAdjustedOi, calculatedBuildFee, adjustedCollateral, adjustedOi, adjustedDebt} =
     useEstimatedBuild(
@@ -625,7 +645,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         fee={
           buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : 'loading'
         }
-        oiCap={capOi}
+        oiCap={formattedCapOi}
         capPayoff={capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={formattedOiLong}
         oiShort={formattedOiShort}
