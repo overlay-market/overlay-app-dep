@@ -6,12 +6,17 @@ import {BigNumber, ethers} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 
+interface oiResult {
+  formattedOi: number | undefined
+  rawOi: BigNumber | undefined
+}
+
 export function usePositionOi(
   marketAddress?: string,
   positionId?: string | number,
   baseTokenDecimals?: number | undefined,
   quoteTokenDecimals?: number | undefined,
-): number | undefined {
+): oiResult {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()
@@ -41,14 +46,27 @@ export function usePositionOi(
   }, [oi])
 
   return useMemo(() => {
-    console.log('parsedOi: ', parsedOi)
-    if (!parsedOi) return undefined
-    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number') {
-      return undefined
-    } else {
-      return formatBigNumberUsingDecimalsToNumber(parsedOi, marketTokensDecimalsDifference, 2)
+    if (!parsedOi) {
+      return {
+        formattedOi: undefined,
+        rawOi: undefined,
+      }
     }
-  }, [parsedOi, marketTokensDecimalsDifference])
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number') {
+      return {
+        formattedOi: undefined,
+        rawOi: undefined,
+      }
+    }
+    return {
+      formattedOi: formatBigNumberUsingDecimalsToNumber(
+        parsedOi,
+        marketTokensDecimalsDifference,
+        2,
+      ),
+      rawOi: oi,
+    }
+  }, [parsedOi, marketTokensDecimalsDifference, oi])
 }
 
 export function usePositionOis(positionsCallData?: any) {

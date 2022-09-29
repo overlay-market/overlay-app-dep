@@ -136,7 +136,6 @@ export function Unwind({
   const cost = usePositionCost(position?.market.id, positionId)
   const value = usePositionValue(position?.market.id, positionId)
   const oi = usePositionOi(position?.market.id, positionId, baseTokenDecimals, quoteTokenDecimals)
-  console.log('oi: ', oi)
   const debt = usePositionDebt(position?.market.id, positionId)
   const notional = usePositionNotional(position?.market.id, positionId)
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId)
@@ -145,7 +144,7 @@ export function Unwind({
     liquidationPriceResult &&
     formatBigNumberUsingDecimalsToNumber(liquidationPriceResult, quoteTokenDecimals, 2)
 
-  const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi)
+  const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi?.rawOi)
   const estimatedBid = useBid(position?.market.id, fractionOfCapOi)
   const estimatedAsk = useAsk(position?.market.id, fractionOfCapOi)
 
