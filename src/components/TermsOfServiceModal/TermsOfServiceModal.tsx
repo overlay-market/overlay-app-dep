@@ -93,8 +93,8 @@ export default function TermsOfServiceModal() {
             <br />
             By accepting, you accept the TOS, which you can find here:
           </TEXT.BoldSmallBody>
-          <ExternalLink href={'https://overlay.market/tos'}>
-            <TEXT.BoldSmallBody color={'#12b4ff'}>https://overlay.market/tos</TEXT.BoldSmallBody>
+          <ExternalLink href={'https://overlay.market/#/tos'}>
+            <TEXT.BoldSmallBody color={'#12b4ff'}>https://overlay.market/#/tos</TEXT.BoldSmallBody>
           </ExternalLink>
         </FlexColumn>
         <FlexRow m={'16px auto 8px'}>
