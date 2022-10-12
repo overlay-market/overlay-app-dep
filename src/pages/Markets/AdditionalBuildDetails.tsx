@@ -4,6 +4,13 @@ import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
+import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
+import {TEXT} from '../../theme/theme'
+import {getExplorerLink} from '../../utils/getExplorerLink'
+import {shortenAddress} from '../../utils/web3'
+import {ExternalLinkIcon} from '../../components/ExternalLink/ExternalLink'
+import {Icon} from '../../components/Icon/Icon'
+import {ExternalLink as LinkIconFeather} from 'react-feather'
 
 const ContentContainer = styled(FlexColumn)`
   padding: 0 16px;
@@ -38,6 +45,12 @@ export const OpenInterestValue = styled.div`
   margin-bottom: 3px;
 `
 
+const StyledLinkIcon = styled(LinkIconFeather)`
+  margin: auto;
+  height: 16px;
+  width: 16px;
+  margin-left: 4px;
+`
 export const AdditionalDetails = ({
   isInverseMarket,
   isLong,
@@ -194,6 +207,25 @@ export const AdditionalDetails = ({
         <PositionDetailType>Funding Rate</PositionDetailType>
         <DetailValue color={'#10DCB1'}>
           {fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}
+        </DetailValue>
+      </AdditionalDetailRow>
+
+      <AdditionalDetailRow>
+        <PositionDetailType>Market Contract</PositionDetailType>
+        <DetailValue>
+          {shortenAddress('0x7f72986e190bbd1d02dac52b8dda82eea363d313')}
+          <Icon size={16} margin={'auto'}>
+            <StyledLinkIcon href={''} />
+          </Icon>
+        </DetailValue>
+      </AdditionalDetailRow>
+      <AdditionalDetailRow>
+        <PositionDetailType>Feed Contract</PositionDetailType>
+        <DetailValue>
+          {shortenAddress('0xffdd8e8d16aed8cadf4b46dcaf4ba620dc269de1')}
+          <Icon size={16} margin={'auto'}>
+            <StyledLinkIcon href={''} />
+          </Icon>
         </DetailValue>
       </AdditionalDetailRow>
     </ContentContainer>
