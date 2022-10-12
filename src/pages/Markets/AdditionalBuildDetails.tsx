@@ -72,6 +72,8 @@ export const AdditionalDetails = ({
   expectedOi,
   fundingRate,
   estLiquidationPrice,
+  marketAddress,
+  feedAddress,
 }: {
   isInverseMarket?: boolean | null
   isLong?: boolean
@@ -94,6 +96,8 @@ export const AdditionalDetails = ({
   expectedOi?: string | number | null
   fundingRate?: string | number
   estLiquidationPrice?: string | number
+  marketAddress?: string
+  feedAddress?: string
 }) => {
   const estimatedReceivedPrice: any = useMemo(() => {
     if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
@@ -120,6 +124,18 @@ export const AdditionalDetails = ({
 
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
+
+  const ShortenedAddresses = useMemo(() => {
+    if (!marketAddress || !feedAddress)
+      return {
+        marketContract: '',
+        feedContract: '',
+      }
+    return {
+      marketContract: shortenAddress(marketAddress),
+      feedContract: shortenAddress(feedAddress),
+    }
+  }, [marketAddress, feedAddress])
 
   return (
     <ContentContainer>
@@ -213,7 +229,7 @@ export const AdditionalDetails = ({
       <AdditionalDetailRow>
         <PositionDetailType>Market Contract</PositionDetailType>
         <DetailValue>
-          {shortenAddress('0x7f72986e190bbd1d02dac52b8dda82eea363d313')}
+          {ShortenedAddresses.marketContract}
           <Icon size={16} margin={'auto'}>
             <StyledLinkIcon href={''} />
           </Icon>
@@ -222,7 +238,7 @@ export const AdditionalDetails = ({
       <AdditionalDetailRow>
         <PositionDetailType>Feed Contract</PositionDetailType>
         <DetailValue>
-          {shortenAddress('0xffdd8e8d16aed8cadf4b46dcaf4ba620dc269de1')}
+          {ShortenedAddresses.feedContract}
           <Icon size={16} margin={'auto'}>
             <StyledLinkIcon href={''} />
           </Icon>

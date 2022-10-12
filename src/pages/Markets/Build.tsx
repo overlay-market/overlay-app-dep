@@ -660,6 +660,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         estLiquidationPrice={
           estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'
         }
+        marketAddress={market?.id}
+        feedAddress={market?.feedAddress}
       />
 
       <ConfirmTxnModal
