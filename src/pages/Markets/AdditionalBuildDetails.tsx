@@ -37,6 +37,13 @@ export const DetailValue = styled.div<{color?: string}>`
   flex-direction: row;
 `
 
+export const HoverableDetailValue = styled(DetailValue)`
+  cursor: pointer;
+
+  :hover {
+    text-decoration: underline;
+  }
+`
 export const OpenInterestValue = styled.div`
   color: #b9babd;
   font-size: 14px;
@@ -228,21 +235,21 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType>Market Contract</PositionDetailType>
-        <DetailValue>
+        <HoverableDetailValue>
           {ShortenedAddresses.marketContract}
           <Icon size={16} margin={'auto'}>
             <StyledLinkIcon href={''} />
           </Icon>
-        </DetailValue>
+        </HoverableDetailValue>
       </AdditionalDetailRow>
       <AdditionalDetailRow>
         <PositionDetailType>Feed Contract</PositionDetailType>
-        <DetailValue>
+        <HoverableDetailValue>
           {ShortenedAddresses.feedContract}
           <Icon size={16} margin={'auto'}>
             <StyledLinkIcon href={''} />
           </Icon>
-        </DetailValue>
+        </HoverableDetailValue>
       </AdditionalDetailRow>
     </ContentContainer>
   )
