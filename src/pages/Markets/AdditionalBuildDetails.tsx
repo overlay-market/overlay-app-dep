@@ -6,11 +6,12 @@ import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString} from '../
 import Loader from '../../components/Loaders/Loaders'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TEXT} from '../../theme/theme'
-import {getExplorerLink} from '../../utils/getExplorerLink'
+import {getExplorerLink, ExplorerDataType} from '../../utils/getExplorerLink'
 import {shortenAddress} from '../../utils/web3'
 import {ExternalLinkIcon} from '../../components/ExternalLink/ExternalLink'
 import {Icon} from '../../components/Icon/Icon'
 import {ExternalLink as LinkIconFeather} from 'react-feather'
+import {useActiveWeb3React} from '../../hooks/web3'
 
 const ContentContainer = styled(FlexColumn)`
   padding: 0 16px;
@@ -106,6 +107,8 @@ export const AdditionalDetails = ({
   marketAddress?: string
   feedAddress?: string
 }) => {
+  const {chainId} = useActiveWeb3React()
+
   const estimatedReceivedPrice: any = useMemo(() => {
     if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
       return null
@@ -235,21 +238,29 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType>Market Contract</PositionDetailType>
-        <HoverableDetailValue>
-          {ShortenedAddresses.marketContract}
-          <Icon size={16} margin={'auto'}>
-            <StyledLinkIcon href={''} />
-          </Icon>
-        </HoverableDetailValue>
+        {chainId && marketAddress && (
+          <HoverableDetailValue>
+            <ExternalLink href={getExplorerLink(chainId, marketAddress, ExplorerDataType.ADDRESS)}>
+              {ShortenedAddresses.marketContract}
+            </ExternalLink>
+            <Icon size={16} margin={'auto'}>
+              <StyledLinkIcon href={''} />
+            </Icon>
+          </HoverableDetailValue>
+        )}
       </AdditionalDetailRow>
       <AdditionalDetailRow>
         <PositionDetailType>Feed Contract</PositionDetailType>
-        <HoverableDetailValue>
-          {ShortenedAddresses.feedContract}
-          <Icon size={16} margin={'auto'}>
-            <StyledLinkIcon href={''} />
-          </Icon>
-        </HoverableDetailValue>
+        {chainId && feedAddress && (
+          <HoverableDetailValue>
+            <ExternalLink href={getExplorerLink(chainId, feedAddress, ExplorerDataType.ADDRESS)}>
+              {ShortenedAddresses.feedContract}
+            </ExternalLink>
+            <Icon size={16} margin={'auto'}>
+              <StyledLinkIcon href={''} />
+            </Icon>
+          </HoverableDetailValue>
+        )}
       </AdditionalDetailRow>
     </ContentContainer>
   )
