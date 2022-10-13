@@ -124,9 +124,9 @@ export const PositionCard = ({
           {quoteToken === 'loading' ? <Loader stroke="white" size="12px" /> : quoteToken}
         </Detail>
 
-        <Detail fontWeight={700} color={'white'}>
+        {/* <Detail fontWeight={700} color={'white'}>
           ID: {Number(positionId)}
-        </Detail>
+        </Detail> */}
 
         {isLong === null && (
           <Detail fontWeight={700} color={'#C0C0C0'}>

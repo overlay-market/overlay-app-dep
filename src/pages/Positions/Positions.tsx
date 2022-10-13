@@ -63,6 +63,9 @@ const ConnectWalletButton = styled(Button)`
   }
 `
 
+const ShowClosedPositionsToggleContainer = styled(FlexRow)`
+  margin-bottom: 16px;
+`
 export const Positions = () => {
   const {onResetUnwindState} = useUnwindActionHandlers()
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
@@ -72,13 +75,13 @@ export const Positions = () => {
       {onResetUnwindState()}
       <Container>
         <RouteHeader>Positions</RouteHeader>
-        <FlexRow>
-          <TEXT.BoldStandardBody ml="auto">Show closed positions</TEXT.BoldStandardBody>
+        <ShowClosedPositionsToggleContainer>
+          <TEXT.BoldSmallBody ml="auto">Show closed positions</TEXT.BoldSmallBody>
           <SwitchToggle
             checked={userHideClosedPositions}
             onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
           />
-        </FlexRow>
+        </ShowClosedPositionsToggleContainer>
         <PositionTableHeader />
         <FlexColumn>
           <PositionsInner />
