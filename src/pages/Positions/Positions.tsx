@@ -2,13 +2,15 @@ import {useMemo, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import Loader from 'react-loader-spinner'
 import {Button} from 'rebass'
+import {Switch as SwitchToggle} from '@rebass/forms'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {MarketCard} from '../../components/Card/MarketCard'
 import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
-import {FlexColumn} from '../../components/Container/Container'
+import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {useWalletModalToggle} from '../../state/application/hooks'
+import {useUserHideClosedPositions} from '../../state/user/hooks'
 import {useBlockNumber} from '../../state/application/hooks'
 import {useMarketNames} from '../../hooks/useMarketName'
 import {usePositionValues} from '../../hooks/usePositionValue'
@@ -63,11 +65,20 @@ const ConnectWalletButton = styled(Button)`
 
 export const Positions = () => {
   const {onResetUnwindState} = useUnwindActionHandlers()
+  const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
+
   return (
     <MarketCard>
       {onResetUnwindState()}
       <Container>
         <RouteHeader>Positions</RouteHeader>
+        <FlexRow>
+          <TEXT.BoldStandardBody ml="auto">Show closed positions</TEXT.BoldStandardBody>
+          <SwitchToggle
+            checked={userHideClosedPositions}
+            onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
+          />
+        </FlexRow>
         <PositionTableHeader />
         <FlexColumn>
           <PositionsInner />
