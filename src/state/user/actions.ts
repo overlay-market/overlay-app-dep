@@ -6,3 +6,6 @@ export const updateMatchesDarkMode = createAction<{matchesDarkMode: boolean}>(
   'user/updateMatchesDarkMode',
 )
 export const updateUserLocale = createAction<{userLocale: SupportedLocale}>('user/updateUserLocale')
+export const updateHideClosedPositions = createAction<{userHideClosedPositions: boolean}>(
+  'user/hideClosedPositions',
+)
