@@ -1,34 +1,34 @@
-import React, { useMemo } from 'react';
-import { Text, TextProps as TextPropsOriginal } from 'rebass';
-import styled, { 
+import React, {useMemo} from 'react'
+import {Text, TextProps as TextPropsOriginal} from 'rebass'
+import styled, {
   css,
   DefaultTheme,
-  ThemeProvider as StyledComponentsThemeProvider
-} from 'styled-components';
-import { useIsDarkMode } from "../state/user/hooks";
-import { Colors } from "./styled";
+  ThemeProvider as StyledComponentsThemeProvider,
+} from 'styled-components'
+import {useIsDarkMode} from '../state/user/hooks'
+import {Colors} from './styled'
 
 export const MEDIA_WIDTHS = {
   minExtraSmall: 576,
   minSmall: 768,
   minMedium: 992,
-  minLarge: 1400
-};
+  minLarge: 1400,
+}
 
-const mediaWidthTemplates: { [width in keyof typeof MEDIA_WIDTHS]: typeof css } = Object.keys(MEDIA_WIDTHS).reduce(
-  (accumulator, size) => {
-    ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
-      @media (min-width: ${(MEDIA_WIDTHS as any)[size]}px) {
-        ${css(a, b, c)}
-      }
-    `
-    return accumulator
-  },
-  {}
-) as any;
+const mediaWidthTemplates: {[width in keyof typeof MEDIA_WIDTHS]: typeof css} = Object.keys(
+  MEDIA_WIDTHS,
+).reduce((accumulator, size) => {
+  ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
+    @media (min-width: ${(MEDIA_WIDTHS as any)[size]}px) {
+      ${css(a, b, c)}
+    }
+  `
+  return accumulator
+}, {}) as any
 
 export function colors(darkMode: boolean): Colors {
   return {
+    primary: '#12B4FF',
     // base
     white: '#FFFFFF',
     black: '#000000',
@@ -50,7 +50,7 @@ export function colors(darkMode: boolean): Colors {
     blue2: '#56CCF2',
     blue3: '#12B4FF',
     red1: darkMode ? '#FF4343' : '#DA2D2B',
-    green1: darkMode ? '#27AE60' : '#007D35',  
+    green1: darkMode ? '#27AE60' : '#007D35',
   }
 }
 
@@ -60,18 +60,20 @@ export function theme(darkMode: boolean): DefaultTheme {
 
     mediaWidth: mediaWidthTemplates,
   }
-};
+}
 
-export default function ThemeProvider({ children } : { children: React.ReactNode }) {
-  const darkMode = useIsDarkMode();
+export default function ThemeProvider({children}: {children: React.ReactNode}) {
+  const darkMode = useIsDarkMode()
 
-  const themeObject = useMemo(() => theme(darkMode), [darkMode]);
+  const themeObject = useMemo(() => theme(darkMode), [darkMode])
 
-  return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>;
-};
+  return (
+    <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
+  )
+}
 
-const TextWrapper = styled(Text)<{ color: keyof Colors }>`
-  color: ${({ color, theme }) => (theme as any)[color]};
+const TextWrapper = styled(Text)<{color: keyof Colors}>`
+  color: ${({color, theme}) => (theme as any)[color]};
 `
 
 type TextProps = Omit<TextPropsOriginal, 'css'>
@@ -102,9 +104,9 @@ export const TEXT = {
     return <TextWrapper fontSize={14} fontWeight={700} color={'white1'} {...props} />
   },
   Supplemental(props: TextProps) {
-    return <TextWrapper fontSize={12} fontWeight={400} color={'white1'} {...props} />    
+    return <TextWrapper fontSize={12} fontWeight={400} color={'white1'} {...props} />
   },
   BoldSupplemental(props: TextProps) {
-    return <TextWrapper fontSize={12} fontWeight={700} color={'white1'} {...props} />    
-  }
+    return <TextWrapper fontSize={12} fontWeight={700} color={'white1'} {...props} />
+  },
 }

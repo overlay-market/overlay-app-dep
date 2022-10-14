@@ -1,8 +1,9 @@
-import { ThemedCssFunction } from 'styled-components';
+import {ThemedCssFunction} from 'styled-components'
 
-export type Color = string;
+export type Color = string
 
 export interface Colors {
+  primary: Color
   // base
   white: Color
   black: Color
@@ -25,11 +26,10 @@ export interface Colors {
   blue3: Color
   red1: Color
   green1: Color
-};
+}
 
 declare module 'styled-components' {
-
-  export interface DefaultTheme extends Colors { 
+  export interface DefaultTheme extends Colors {
     // media queries
     mediaWidth: {
       minExtraSmall: ThemedCssFunction<DefaultTheme>
@@ -37,5 +37,5 @@ declare module 'styled-components' {
       minMedium: ThemedCssFunction<DefaultTheme>
       minLarge: ThemedCssFunction<DefaultTheme>
     }
-  };
-};
+  }
+}
