@@ -2,13 +2,15 @@ import {useMemo, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import Loader from 'react-loader-spinner'
 import {Button} from 'rebass'
+import {Switch as SwitchToggle} from '@rebass/forms'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {MarketCard} from '../../components/Card/MarketCard'
 import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
-import {FlexColumn} from '../../components/Container/Container'
+import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {useWalletModalToggle} from '../../state/application/hooks'
+import {useUserHideClosedPositions} from '../../state/user/hooks'
 import {useBlockNumber} from '../../state/application/hooks'
 import {useMarketNames} from '../../hooks/useMarketName'
 import {usePositionValues} from '../../hooks/usePositionValue'
@@ -61,13 +63,43 @@ const ConnectWalletButton = styled(Button)`
   }
 `
 
+const ShowClosedPositionsToggleContainer = styled(FlexRow)`
+  border: 1px solid #828282;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  padding: 8px;
+`
+
+const StyledSwitchToggle = styled(SwitchToggle)`
+  background-color: white;
+
+  &[aria-checked='true'] {
+    background-color: ${({theme}) => theme.blue3};
+  }
+
+  &[aria-checked='false'] {
+    background-color: grey;
+  }
+`
+
 export const Positions = () => {
   const {onResetUnwindState} = useUnwindActionHandlers()
+  const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
+
   return (
     <MarketCard>
       {onResetUnwindState()}
       <Container>
         <RouteHeader>Positions</RouteHeader>
+        <ShowClosedPositionsToggleContainer>
+          <TEXT.BoldSmallBody ml="auto" mr="8px">
+            Show closed positions
+          </TEXT.BoldSmallBody>
+          <StyledSwitchToggle
+            checked={userHideClosedPositions}
+            onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
+          />
+        </ShowClosedPositionsToggleContainer>
         <PositionTableHeader />
         <FlexColumn>
           <PositionsInner />
@@ -82,6 +114,7 @@ export const PositionsInner = () => {
   const blockNumber = useBlockNumber()
   const {account, active} = useActiveWeb3React()
   const {isLoading, isFetching, positions} = useQuerySubgraphAccountPositions(account)
+  const [userHideClosedPositions] = useUserHideClosedPositions()
 
   const feedAddresses = useMemo(
     () => (!positions ? [] : positions.map(position => position.market.feedAddress)),
@@ -161,6 +194,7 @@ export const PositionsInner = () => {
             estLiquidationPrice={liquidationPrices[key]}
             isLiquidated={position.isLiquidated}
             navigate={true}
+            userHideClosedPositions={userHideClosedPositions}
           />
         ))}
       </>

@@ -1,6 +1,6 @@
 import {useCallback} from 'react'
 import {shallowEqual} from 'react-redux'
-import {updateUserLocale, updateUserDarkMode} from './actions'
+import {updateUserLocale, updateUserDarkMode, updateHideClosedPositions} from './actions'
 import {useAppSelector, useAppDispatch} from '../hooks'
 import {SupportedLocale} from '../../constants/locales'
 
@@ -46,4 +46,19 @@ export function useUserLocaleManager(): [
   )
 
   return [locale, setLocale]
+}
+
+export function useUserHideClosedPositions(): [boolean, (newHideClosedPositions: boolean) => void] {
+  const dispatch = useAppDispatch()
+
+  const hideClosedPositions = useAppSelector(state => state.user.userHideClosedPositions)
+
+  const setHideClosedPositions = useCallback(
+    (newHideClosedPositions: boolean) => {
+      dispatch(updateHideClosedPositions({userHideClosedPositions: newHideClosedPositions}))
+    },
+    [dispatch],
+  )
+
+  return [hideClosedPositions, setHideClosedPositions]
 }

@@ -29,10 +29,10 @@ const Detail = styled.div<{fontWeight?: number; color?: string}>`
   text-align: inherit;
 `
 
-const CardContainer = styled(Link)<{navigate?: boolean; border?: boolean}>`
+const CardContainer = styled(Link)<{navigate?: boolean; border?: boolean; hide: boolean}>`
   pointer-events: ${({navigate}) => (navigate ? 'auto' : 'none')};
   border-bottom: ${({border}) => (border ? '1px solid #828282' : 'none')};
-  display: flex;
+  display: ${({hide}) => (hide ? 'none' : 'flex')};
   flex-direction: row;
   width: 100%;
   padding: 16px 0;
@@ -77,6 +77,7 @@ export const PositionCard = ({
   isLiquidated,
   navigate,
   border = true,
+  userHideClosedPositions,
 }: {
   id: string
   positionId: string
@@ -94,6 +95,7 @@ export const PositionCard = ({
   isLiquidated?: boolean
   navigate?: boolean
   border?: boolean
+  userHideClosedPositions: boolean
 }) => {
   const parsedLeverage = Number(leverage).toFixed(1)
 
@@ -116,17 +118,28 @@ export const PositionCard = ({
     return formatBigNumberUsingDecimalsToString(estLiquidationPrice, quoteTokenDecimals, 2)
   }, [estLiquidationPrice, quoteTokenDecimals])
 
+  const shouldHidePosition = useMemo(() => {
+    if (!userHideClosedPositions) return false
+    if (!oi && oi !== 0) return false
+    return oi == 0 ? true : false
+  }, [oi, userHideClosedPositions])
+
   return (
-    <CardContainer navigate={navigate} border={border} to={`/positions/${id}/${positionId}`}>
+    <CardContainer
+      navigate={navigate}
+      border={border}
+      to={`/positions/${id}/${positionId}`}
+      hide={shouldHidePosition}
+    >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={'white'}>
           {baseToken === 'loading' ? <Loader stroke="white" size="12px" /> : baseToken}/
           {quoteToken === 'loading' ? <Loader stroke="white" size="12px" /> : quoteToken}
         </Detail>
 
-        <Detail fontWeight={700} color={'white'}>
+        {/* <Detail fontWeight={700} color={'white'}>
           ID: {Number(positionId)}
-        </Detail>
+        </Detail> */}
 
         {isLong === null && (
           <Detail fontWeight={700} color={'#C0C0C0'}>

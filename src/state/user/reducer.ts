@@ -1,7 +1,12 @@
 import {createReducer} from '@reduxjs/toolkit'
 import {updateVersion} from '../global/actions'
 import {SupportedLocale} from '../../constants/locales'
-import {updateUserDarkMode, updateMatchesDarkMode, updateUserLocale} from './actions'
+import {
+  updateUserDarkMode,
+  updateMatchesDarkMode,
+  updateUserLocale,
+  updateHideClosedPositions,
+} from './actions'
 
 const currentTimestamp = () => new Date().getTime()
 
@@ -12,6 +17,7 @@ export interface UserState {
   readonly userLocale: SupportedLocale | null
   readonly matchesDarkMode: boolean
   readonly timestamp: number
+  readonly userHideClosedPositions: boolean
 }
 
 export const initialState: UserState = {
@@ -19,6 +25,7 @@ export const initialState: UserState = {
   matchesDarkMode: false,
   userLocale: null,
   timestamp: currentTimestamp(),
+  userHideClosedPositions: false,
 }
 
 export default createReducer(initialState, builder =>
@@ -37,5 +44,8 @@ export default createReducer(initialState, builder =>
     .addCase(updateUserLocale, (state, action) => {
       state.userLocale = action.payload.userLocale
       state.timestamp = currentTimestamp()
+    })
+    .addCase(updateHideClosedPositions, (state, action) => {
+      state.userHideClosedPositions = action.payload.userHideClosedPositions
     }),
 )
