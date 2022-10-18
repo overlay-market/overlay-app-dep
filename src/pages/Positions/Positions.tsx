@@ -114,6 +114,7 @@ export const PositionsInner = () => {
   const blockNumber = useBlockNumber()
   const {account, active} = useActiveWeb3React()
   const {isLoading, isFetching, positions} = useQuerySubgraphAccountPositions(account)
+  const [userHideClosedPositions] = useUserHideClosedPositions()
 
   const feedAddresses = useMemo(
     () => (!positions ? [] : positions.map(position => position.market.feedAddress)),
@@ -193,6 +194,7 @@ export const PositionsInner = () => {
             estLiquidationPrice={liquidationPrices[key]}
             isLiquidated={position.isLiquidated}
             navigate={true}
+            userHideClosedPositions={userHideClosedPositions}
           />
         ))}
       </>
