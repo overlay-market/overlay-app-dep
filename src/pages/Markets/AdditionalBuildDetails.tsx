@@ -4,6 +4,14 @@ import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
+import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
+import {TEXT} from '../../theme/theme'
+import {getExplorerLink, ExplorerDataType} from '../../utils/getExplorerLink'
+import {shortenAddress} from '../../utils/web3'
+import {ExternalLinkIcon} from '../../components/ExternalLink/ExternalLink'
+import {Icon} from '../../components/Icon/Icon'
+import {ExternalLink as LinkIconFeather} from 'react-feather'
+import {useActiveWeb3React} from '../../hooks/web3'
 
 const ContentContainer = styled(FlexColumn)`
   padding: 0 16px;
@@ -30,6 +38,13 @@ export const DetailValue = styled.div<{color?: string}>`
   flex-direction: row;
 `
 
+export const HoverableDetailValue = styled(DetailValue)`
+  cursor: pointer;
+
+  :hover {
+    text-decoration: underline;
+  }
+`
 export const OpenInterestValue = styled.div`
   color: #b9babd;
   font-size: 14px;
@@ -38,6 +53,12 @@ export const OpenInterestValue = styled.div`
   margin-bottom: 3px;
 `
 
+const StyledLinkIcon = styled(LinkIconFeather)`
+  margin: auto;
+  height: 16px;
+  width: 16px;
+  margin-left: 4px;
+`
 export const AdditionalDetails = ({
   isInverseMarket,
   isLong,
@@ -59,6 +80,8 @@ export const AdditionalDetails = ({
   expectedOi,
   fundingRate,
   estLiquidationPrice,
+  marketAddress,
+  feedAddress,
 }: {
   isInverseMarket?: boolean | null
   isLong?: boolean
@@ -81,7 +104,11 @@ export const AdditionalDetails = ({
   expectedOi?: string | number | null
   fundingRate?: string | number
   estLiquidationPrice?: string | number
+  marketAddress?: string
+  feedAddress?: string
 }) => {
+  const {chainId} = useActiveWeb3React()
+
   const estimatedReceivedPrice: any = useMemo(() => {
     if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
       return null
@@ -107,6 +134,18 @@ export const AdditionalDetails = ({
 
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
+
+  const ShortenedAddresses = useMemo(() => {
+    if (!marketAddress || !feedAddress)
+      return {
+        marketContract: '',
+        feedContract: '',
+      }
+    return {
+      marketContract: shortenAddress(marketAddress),
+      feedContract: shortenAddress(feedAddress),
+    }
+  }, [marketAddress, feedAddress])
 
   return (
     <ContentContainer>
@@ -195,6 +234,33 @@ export const AdditionalDetails = ({
         <DetailValue color={'#10DCB1'}>
           {fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}
         </DetailValue>
+      </AdditionalDetailRow>
+
+      <AdditionalDetailRow>
+        <PositionDetailType>Market Contract</PositionDetailType>
+        {chainId && marketAddress && (
+          <HoverableDetailValue>
+            <ExternalLink href={getExplorerLink(chainId, marketAddress, ExplorerDataType.ADDRESS)}>
+              {ShortenedAddresses.marketContract}
+            </ExternalLink>
+            <Icon size={16} margin={'auto'}>
+              <StyledLinkIcon href={''} />
+            </Icon>
+          </HoverableDetailValue>
+        )}
+      </AdditionalDetailRow>
+      <AdditionalDetailRow>
+        <PositionDetailType>Feed Contract</PositionDetailType>
+        {chainId && feedAddress && (
+          <HoverableDetailValue>
+            <ExternalLink href={getExplorerLink(chainId, feedAddress, ExplorerDataType.ADDRESS)}>
+              {ShortenedAddresses.feedContract}
+            </ExternalLink>
+            <Icon size={16} margin={'auto'}>
+              <StyledLinkIcon href={''} />
+            </Icon>
+          </HoverableDetailValue>
+        )}
       </AdditionalDetailRow>
     </ContentContainer>
   )
