@@ -118,9 +118,9 @@ export const PositionCard = ({
     return formatBigNumberUsingDecimalsToString(estLiquidationPrice, quoteTokenDecimals, 2)
   }, [estLiquidationPrice, quoteTokenDecimals])
 
-  const shouldHideCard = useMemo(() => {
-    if (!oi && oi !== 0) return false
+  const shouldHidePosition = useMemo(() => {
     if (!userHideClosedPositions) return false
+    if (!oi && oi !== 0) return false
     return oi == 0 ? true : false
   }, [oi, userHideClosedPositions])
 
@@ -129,7 +129,7 @@ export const PositionCard = ({
       navigate={navigate}
       border={border}
       to={`/positions/${id}/${positionId}`}
-      hide={shouldHideCard}
+      hide={shouldHidePosition}
     >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={'white'}>
