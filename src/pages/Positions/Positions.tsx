@@ -5,7 +5,11 @@ import {Button} from 'rebass'
 import {Switch as SwitchToggle} from '@rebass/forms'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {MarketCard} from '../../components/Card/MarketCard'
-import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
+import {
+  useQuerySubgraphAccountPositions,
+  useWalletPositionsFromSubgraph,
+  useCurrentWalletPositions,
+} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
@@ -113,7 +117,8 @@ export const PositionsInner = () => {
   const toggleWalletModal = useWalletModalToggle()
   const blockNumber = useBlockNumber()
   const {account, active} = useActiveWeb3React()
-  const {isLoading, isFetching, positions} = useQuerySubgraphAccountPositions(account)
+  // const {isLoading, isFetching, positions} = useQuerySubgraphAccountPositions(account)
+  const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
   const [userHideClosedPositions] = useUserHideClosedPositions()
 
   const feedAddresses = useMemo(

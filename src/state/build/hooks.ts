@@ -2,6 +2,7 @@ import { useCallback, useMemo, useEffect } from "react";
 import { parseUnits } from '@ethersproject/units';
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import JSBI from 'jsbi';
+import { BigNumberish } from "ethers";
 import { 
   DefaultTxnSettings,
   typeInput, 
@@ -14,6 +15,7 @@ import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { useAccountQuery, usePositionsQuery } from "../data/generated";
+import { skipToken } from "@reduxjs/toolkit/dist/query";
 
 export function useBuildState(): AppState['build'] {
   return useAppSelector((state) => state.build);
@@ -175,6 +177,54 @@ export function useTxnSettingsManager(): [boolean, (default_slippage: DefaultTxn
 
   return [isAuto, toggleSetTxnSettingsAuto];
 };
+
+export function useWalletPositionsFromSubgraph(address: string | undefined | null) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+
+  return useAccountQuery(accountAddress ? { account: accountAddress } : skipToken, {
+    pollingInterval: 12000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+interface PositionMarketData {
+  id: string
+  feedAddress: string
+}
+interface PositionData {
+  id: string
+  positionId: string
+  market: PositionMarketData
+  isLong: boolean
+  leverage: string
+  isLiquidated: boolean
+  
+}
+
+export function useCurrentWalletPositions(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  positions: PositionData[] | undefined
+} {
+  const walletPositionsData = useWalletPositionsFromSubgraph(address ? address : undefined)
+
+  return {
+    isLoading: walletPositionsData.isLoading,
+    isFetching: walletPositionsData.isFetching,
+    isUninitialized: walletPositionsData.isUninitialized,
+    isError: walletPositionsData.isError,
+    error: walletPositionsData.error,
+    positions: walletPositionsData.data?.account?.positions
+  }
+}
 
 export function useQuerySubgraphAccountPositions(
   address: string | null | undefined,
