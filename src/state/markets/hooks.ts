@@ -2,9 +2,22 @@ import {useMemo} from 'react'
 import {AppState} from '../state'
 import {useAppSelector} from '../hooks'
 import {useMarketsQuery, useMarketQuery} from '../data/enhanced'
+import {skipToken} from '@reduxjs/toolkit/dist/query'
 
 export function useMarketsState(): AppState['markets'] {
   return useAppSelector(state => state.markets)
+}
+
+export function useMarketDataFromSubgraph(marketAddress: string | undefined | null) {
+  const marketId: string = marketAddress ? marketAddress : ''
+
+  return useMarketQuery(marketId ? {market: marketId} : skipToken, {
+    pollingInterval: 12000,
+    refetchOnMountOrArgChange: true,
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false,
+  })
 }
 
 export function useMarket(marketAddress?: string) {
