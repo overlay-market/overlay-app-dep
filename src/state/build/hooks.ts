@@ -201,7 +201,9 @@ interface PositionData {
   isLong: boolean
   leverage: string
   isLiquidated: boolean
-  
+  entryPrice: string
+  initialCollateral: string
+  initialNotional: string
 }
 
 export function useCurrentWalletPositions(
@@ -213,6 +215,7 @@ export function useCurrentWalletPositions(
   isError: boolean
   error: unknown
   positions: PositionData[] | undefined
+  refetch: () => void
 } {
   const walletPositionsData = useWalletPositionsFromSubgraph(address ? address : undefined)
 
@@ -222,47 +225,10 @@ export function useCurrentWalletPositions(
     isUninitialized: walletPositionsData.isUninitialized,
     isError: walletPositionsData.isError,
     error: walletPositionsData.error,
-    positions: walletPositionsData.data?.account?.positions
+    positions: walletPositionsData.data?.account?.positions,
+    refetch: walletPositionsData.refetch
   }
 }
-
-export function useQuerySubgraphAccountPositions(
-  address: string | null | undefined,
-  blockNumber?: number | undefined
-) {
-  const accountAddress = address ? address.toLowerCase() : "";
-
-  // polling interval in ms
-  // 1 s = 1000ms
-  const {
-    isLoading,
-    isError,
-    error,
-    isUninitialized,
-    data,
-    isFetching,
-    refetch
-  } = useAccountQuery({ account: accountAddress }, { 
-    pollingInterval: 12000, 
-    refetchOnMountOrArgChange: true, 
-    refetchOnFocus: true,
-    refetchOnReconnect: true,
-    skip: false
-  })
-
-  return useMemo(() => {
-    return {
-      isLoading,
-      isError,
-      error,
-      isUninitialized,
-      positions: data?.account?.positions,
-      isFetching,
-      refetch
-    } 
-  }, [isLoading, isError, error, isUninitialized, data, refetch, isFetching])
-};
-
 
 export function useAllPositions() {
   const {
