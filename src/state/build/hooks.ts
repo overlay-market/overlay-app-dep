@@ -194,7 +194,7 @@ interface PositionMarketData {
   id: string
   feedAddress: string
 }
-interface PositionData {
+export interface PositionData { 
   id: string
   positionId: string
   market: PositionMarketData
@@ -223,7 +223,7 @@ export function useCurrentWalletPositions(
     isLoading: walletPositionsData.isLoading,
     isFetching: walletPositionsData.isFetching,
     isUninitialized: walletPositionsData.isUninitialized,
-    isError: walletPositionsData.isError,
+    isError: walletPositionsData.isError, 
     error: walletPositionsData.error,
     positions: walletPositionsData.data?.account?.positions,
     refetch: walletPositionsData.refetch
