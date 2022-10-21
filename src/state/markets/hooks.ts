@@ -67,30 +67,6 @@ export function useMarketData(marketAddress: string | undefined | null): {
   }
 }
 
-export function useMarket(marketAddress?: string) {
-  let address = marketAddress ? marketAddress : ''
-
-  const {isLoading, isError, error, isUninitialized, data, refetch} = useMarketQuery(
-    {market: address},
-    {
-      pollingInterval: 12000,
-      refetchOnMountOrArgChange: true,
-      refetchOnReconnect: true,
-    },
-  )
-
-  return useMemo(() => {
-    return {
-      isLoading,
-      isError,
-      error,
-      isUninitialized,
-      marketData: data,
-      refetch,
-    }
-  }, [isLoading, isError, error, isUninitialized, data, refetch])
-}
-
 export function useAllMarkets() {
   const {isLoading, isError, error, isUninitialized, data, refetch} = useMarketsQuery(
     {},
