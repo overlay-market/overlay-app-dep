@@ -20,6 +20,20 @@ export function useMarketDataFromSubgraph(marketAddress: string | undefined | nu
   })
 }
 
+export function useMarketData(marketAddress: string | undefined | null) {
+  const marketData = useMarketDataFromSubgraph(marketAddress ? marketAddress : undefined)
+
+  return {
+    isLoading: marketData.isLoading,
+    isFetching: marketData.isFetching,
+    isUninitialized: marketData.isUninitialized,
+    isError: marketData.isError,
+    error: marketData.error,
+    market: marketData.data?.market,
+    refetch: marketData.refetch,
+  }
+}
+
 export function useMarket(marketAddress?: string) {
   let address = marketAddress ? marketAddress : ''
 
