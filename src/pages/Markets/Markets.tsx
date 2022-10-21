@@ -119,7 +119,7 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            <StyledTableRow hover={true}>
+            {/* <StyledTableRow hover={true}>
               <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
@@ -143,7 +143,7 @@ const Markets = () => {
               <StyledTableCellThin align="left"></StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
-            </StyledTableRow>
+            </StyledTableRow> */}
 
             {markets?.map((market: any, index: any) => (
               <StyledTableRow
