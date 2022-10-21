@@ -40,7 +40,7 @@ export interface MarketData {
   maintenanceMarginFraction: string
   liquidationFeeRate: string
   tradingFeeRate: string
-  minCollateral: BigNumberish
+  minCollateral: string
   priceDriftUpperLimit: string
   isShutdown: boolean
 }

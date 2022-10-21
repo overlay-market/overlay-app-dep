@@ -39,7 +39,7 @@ export default function ConfirmTxnModal({
   isOpen: boolean
   attemptingTransaction: boolean
   isLong: boolean | undefined
-  buildFee: number | undefined | null
+  buildFee: number | string | undefined | null
   onConfirm?: () => void
   onDismiss?: () => void
   expectedOi?: number | string | null
