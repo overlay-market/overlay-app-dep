@@ -4,7 +4,7 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {TEXT} from '../../theme/theme'
-import {useAllMarkets} from '../../state/markets/hooks'
+import {useAllMarkets, useTotalMarketsData} from '../../state/markets/hooks'
 import {
   formatFundingRateToDaily,
   formatFundingRateToAnnual,
@@ -50,7 +50,7 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 // add: MarketRow component, calldata prop to call hooks from MarketRow
 const Markets = () => {
   const history = useHistory()
-  const {markets, isLoading, refetch} = useAllMarkets()
+  const {markets, isLoading, refetch} = useTotalMarketsData()
 
   // force refetch when page refreshes
   useEffect(() => {
@@ -63,8 +63,8 @@ const Markets = () => {
 
   const calldata = useMemo(
     () => ({
-      marketAddresses: !markets ? [] : markets.markets.map((market: any) => [market.id]),
-      feedAddresses: !markets ? [] : markets.markets.map((market: any) => market.feedAddress),
+      marketAddresses: !markets ? [] : markets.map((market: any) => [market.id]),
+      feedAddresses: !markets ? [] : markets.map((market: any) => market.feedAddress),
     }),
     [markets],
   )
@@ -120,7 +120,7 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            {markets?.markets.map((market: any, index: any) => (
+            {markets?.map((market: any, index: any) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
                 hover={true}
