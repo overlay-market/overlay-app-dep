@@ -8,7 +8,7 @@ const Container = styled.div<{width: string; margin?: string}>`
 `
 
 const ProgressBackground = styled.div<{reverse: boolean}>`
-  border-radius: 0 30px 30px 0;
+  border-radius: 30px;
   border: 1px solid #f2f2f2;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.25);

@@ -16,6 +16,8 @@ import Vaults from './Stake/Vaults'
 import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
 
+import {Banner} from '../components/Banner/Banner'
+
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
   height: 100%;
@@ -26,6 +28,7 @@ export const AppWrapper = styled.div`
 const App = () => {
   return (
     <AppWrapper>
+      <Banner />
       <Popups />
       <ChainalysisManager>
         <TermsOfServiceManager>
