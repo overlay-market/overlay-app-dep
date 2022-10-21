@@ -4,11 +4,10 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {TEXT} from '../../theme/theme'
-import {useAllMarkets, useTotalMarketsData} from '../../state/markets/hooks'
+import {useTotalMarketsData} from '../../state/markets/hooks'
 import {
   formatFundingRateToDaily,
   formatFundingRateToAnnual,
-  formatWeiToParsedNumber,
   formatBigNumberUsingDecimalsToString,
 } from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
@@ -120,6 +119,32 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
+            <StyledTableRow hover={true}>
+              <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
+
+              <StyledTableCellThin align="left"></StyledTableCellThin>
+
+              <StyledTableCellThin align="left">
+                <FlexColumn align={'left'}>
+                  <FlexRow flexWrap={'wrap'}>
+                    <ProgressBar
+                      reverse={true}
+                      width={'50%'}
+                      value={50}
+                      max={100}
+                      color={'#10DCB1'}
+                      margin={'0'}
+                    />
+                    <ProgressBar width={'50%'} value={50} max={100} color={'red'} margin={'0'} />
+                  </FlexRow>
+                </FlexColumn>
+              </StyledTableCellThin>
+
+              <StyledTableCellThin align="left"></StyledTableCellThin>
+
+              <StyledTableCellThin align="left"></StyledTableCellThin>
+            </StyledTableRow>
+
             {markets?.map((market: any, index: any) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}

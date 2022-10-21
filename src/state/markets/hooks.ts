@@ -100,26 +100,3 @@ export function useTotalMarketsData(): {
     refetch: totalMarketsData.refetch,
   }
 }
-
-export function useAllMarkets() {
-  const {isLoading, isError, error, isUninitialized, data, refetch} = useMarketsQuery(
-    {},
-    {
-      pollingInterval: 12000,
-      refetchOnMountOrArgChange: true,
-      refetchOnReconnect: true,
-      skip: false,
-    },
-  )
-
-  return useMemo(() => {
-    return {
-      isLoading,
-      isError,
-      error,
-      isUninitialized,
-      markets: data,
-      refetch,
-    }
-  }, [isLoading, isError, error, isUninitialized, data, refetch])
-}

@@ -7,23 +7,19 @@ const Container = styled.div<{width: string; margin?: string}>`
   text-align: center;
 `
 
-const ProgressBackground = styled.div`
-  border-radius: 30px;
+const ProgressBackground = styled.div<{reverse: boolean}>`
+  border-radius: 0 30px 30px 0;
   border: 1px solid #f2f2f2;
   overflow: hidden;
   background: rgba(0, 0, 0, 0.25);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25),
-    0 1px rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+  transform: ${({reverse}) => (reverse ? 'rotate(-180deg)' : '')};
 `
 
 const Bar = styled.div<{width?: number; color: string}>`
   height: 6px;
-  border-radius: 30px;
-  background-image: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.3),
-    rgba(255, 255, 255, 0.05)
-  );
+  border-radius: 0 30px 30px 0;
+  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
   transition: 1s ease-out;
   transition-property: width, background-color;
   width: ${({width}) => `${width}%`};
@@ -37,12 +33,14 @@ export const ProgressBar = ({
   color,
   width = 'auto',
   margin,
+  reverse = false,
 }: {
   value: number | undefined
   max: number | undefined | null
   color: string
   width?: string
   margin?: string | undefined
+  reverse?: boolean
 }) => {
   const [progressValue, setProgressValue] = useState(0)
   const currentPercentage = max && value ? (value / max) * 100 : 0
@@ -55,7 +53,7 @@ export const ProgressBar = ({
 
   return (
     <Container width={width} margin={margin}>
-      <ProgressBackground>
+      <ProgressBackground reverse={reverse}>
         <Bar width={progressValue} color={color} />
       </ProgressBackground>
     </Container>
