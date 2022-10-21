@@ -1,3 +1,4 @@
+import {BigNumberish} from 'ethers'
 import {useMemo} from 'react'
 import {AppState} from '../state'
 import {useAppSelector} from '../hooks'
@@ -20,7 +21,39 @@ export function useMarketDataFromSubgraph(marketAddress: string | undefined | nu
   })
 }
 
-export function useMarketData(marketAddress: string | undefined | null) {
+interface MarketFactoryData {
+  id: string
+}
+
+export interface MarketData {
+  id: string
+  feedAddress: string
+  factory: MarketFactoryData
+  k: string
+  lmbda: string
+  delta: string
+  capPayoff: string
+  capNotional: string
+  capLeverage: string
+  circuitBreakerWindow: string
+  maintenanceMarginBurnRate: string
+  maintenanceMarginFraction: string
+  liquidationFeeRate: string
+  tradingFeeRate: string
+  minCollateral: BigNumberish
+  priceDriftUpperLimit: string
+  isShutdown: boolean
+}
+
+export function useMarketData(marketAddress: string | undefined | null): {
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  market: MarketData | null | undefined
+  refetch: () => void
+} {
   const marketData = useMarketDataFromSubgraph(marketAddress ? marketAddress : undefined)
 
   return {

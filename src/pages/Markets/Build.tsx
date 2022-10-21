@@ -43,7 +43,7 @@ import {shortenAddress} from '../../utils/web3'
 import {AdditionalDetails} from './AdditionalBuildDetails'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal'
-import {useMarket} from '../../state/markets/hooks'
+import {useMarket, useMarketData} from '../../state/markets/hooks'
 import {useSingleCallResult} from '../../state/multicall/hooks'
 import {useToken} from '../../hooks/useToken'
 import {useV1PeripheryContract} from '../../hooks/useContract'
@@ -137,6 +137,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   })
 
   const {marketData, isLoading, refetch} = useMarket(marketId)
+  const {market: newMarket} = useMarketData(marketId)
+
+  console.log('newMarket: ', newMarket)
 
   // force refetch when refreshing page
   useEffect(() => {
