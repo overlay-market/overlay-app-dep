@@ -67,6 +67,40 @@ export function useMarketData(marketAddress: string | undefined | null): {
   }
 }
 
+export function useTotalMarketsDataFromSubgraph() {
+  return useMarketsQuery(
+    {},
+    {
+      pollingInterval: 12000,
+      refetchOnMountOrArgChange: true,
+      refetchOnReconnect: true,
+      skip: false,
+    },
+  )
+}
+
+export function useTotalMarketsData(): {
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  markets: MarketData[] | null | undefined
+  refetch: () => void
+} {
+  const totalMarketsData = useTotalMarketsDataFromSubgraph()
+
+  return {
+    isLoading: totalMarketsData.isLoading,
+    isFetching: totalMarketsData.isFetching,
+    isUninitialized: totalMarketsData.isUninitialized,
+    isError: totalMarketsData.isError,
+    error: totalMarketsData.error,
+    markets: totalMarketsData.data?.markets,
+    refetch: totalMarketsData.refetch,
+  }
+}
+
 export function useAllMarkets() {
   const {isLoading, isError, error, isUninitialized, data, refetch} = useMarketsQuery(
     {},
