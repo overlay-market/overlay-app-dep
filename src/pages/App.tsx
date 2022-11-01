@@ -28,7 +28,7 @@ export const AppWrapper = styled.div`
 const App = () => {
   return (
     <AppWrapper>
-      <Banner />
+      <Banner animated={false} />
       <Popups />
       <ChainalysisManager>
         <TermsOfServiceManager>

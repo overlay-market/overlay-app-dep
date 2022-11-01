@@ -8,15 +8,17 @@ const BannerContainer = styled.div`
 `
 
 const Carousel = styled.div`
+  display: flex;
   position: absolute;
   top: 0;
   height: auto;
   justify-content: center;
   text-align: center;
+  width: 100%;
 `
 
-const CarouselText = styled.div`
-  animation: moveText 25s linear infinite;
+const AnimatedCarouselText = styled.div<{duration: number}>`
+  animation: moveText ${({duration}) => duration}s linear infinite;
 
   @keyframes moveText {
     0% {
@@ -27,15 +29,28 @@ const CarouselText = styled.div`
     }
   }
 `
-export const Banner = () => {
+
+const StaticCarouselText = styled.div`
+  margin: auto;
+`
+
+export const Banner = ({animated, duration = 0}: {animated: boolean; duration?: number}) => {
   return (
     <BannerContainer>
       <Carousel>
-        <CarouselText>
-          <TEXT.BoldSmallBody>
-            please make sure you are on https://app.overlay.market
-          </TEXT.BoldSmallBody>
-        </CarouselText>
+        {animated ? (
+          <AnimatedCarouselText duration={duration}>
+            <TEXT.BoldSmallBody>
+              please make sure you are on https://app.overlay.market
+            </TEXT.BoldSmallBody>
+          </AnimatedCarouselText>
+        ) : (
+          <StaticCarouselText>
+            <TEXT.BoldSmallBody>
+              please make sure you are on https://app.overlay.market
+            </TEXT.BoldSmallBody>
+          </StaticCarouselText>
+        )}
       </Carousel>
     </BannerContainer>
   )
