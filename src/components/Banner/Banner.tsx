@@ -34,7 +34,13 @@ const StaticCarouselText = styled.div`
   margin: auto;
 `
 
-export const Banner = ({animated, duration = 0}: {animated: boolean; duration?: number}) => {
+type BannerProps = {
+  content: string
+  animated: boolean
+  duration?: number | undefined
+}
+
+export const Banner = ({content, animated, duration = 0}: BannerProps) => {
   return (
     <BannerContainer>
       <Carousel>

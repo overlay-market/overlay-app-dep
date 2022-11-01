@@ -15,7 +15,6 @@ import Magic from './Magic/Magic'
 import Vaults from './Stake/Vaults'
 import {Stake} from './Stake/Stake'
 import Popups from '../components/Popup/Popups'
-
 import {Banner} from '../components/Banner/Banner'
 
 export const AppWrapper = styled.div`
@@ -25,10 +24,12 @@ export const AppWrapper = styled.div`
   width: 100vw;
 `
 
+const BannerText = 'please make sure you are on https://app.overlay.market'
+
 const App = () => {
   return (
     <AppWrapper>
-      <Banner animated={false} />
+      <Banner content={BannerText} animated={false} />
       <Popups />
       <ChainalysisManager>
         <TermsOfServiceManager>
