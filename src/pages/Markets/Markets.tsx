@@ -11,7 +11,7 @@ import {
   formatBigNumberUsingDecimalsToString,
 } from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
-import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
+import {ProgressBar, DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {
   StyledTable,
@@ -119,13 +119,13 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            {/* <StyledTableRow hover={true}>
+            <StyledTableRow hover={true}>
               <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
 
               <StyledTableCellThin align="left">
-                <FlexColumn align={'left'}>
+                {/* <FlexColumn align={'left'}>
                   <FlexRow flexWrap={'wrap'}>
                     <ProgressBar
                       reverse={true}
@@ -137,13 +137,14 @@ const Markets = () => {
                     />
                     <ProgressBar width={'50%'} value={50} max={100} color={'red'} margin={'0'} />
                   </FlexRow>
-                </FlexColumn>
+                </FlexColumn> */}
+                <DoubleProgressBar />
               </StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
-            </StyledTableRow> */}
+            </StyledTableRow>
 
             {markets?.map((market: any, index: any) => (
               <StyledTableRow

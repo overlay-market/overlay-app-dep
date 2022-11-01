@@ -1,4 +1,5 @@
 import {useState, useEffect} from 'react'
+import {FlexRow, FlexColumn} from '../Container/Container'
 import styled from 'styled-components'
 
 const Container = styled.div<{width: string; margin?: string}>`
@@ -57,5 +58,30 @@ export const ProgressBar = ({
         <Bar width={progressValue} color={color} />
       </ProgressBackground>
     </Container>
+  )
+}
+
+export const DoubleProgressBar = () => {
+  return (
+    <FlexColumn>
+      <FlexRow flexWrap={'wrap'}>
+        <ProgressBar
+          reverse={true}
+          width={'50%'}
+          value={50}
+          max={100}
+          color={'#10DCB1'}
+          margin={'0'}
+        />
+        <ProgressBar
+          reverse={false}
+          width={'50%'}
+          value={50}
+          max={100}
+          color={'red'}
+          margin={'0'}
+        />
+      </FlexRow>
+    </FlexColumn>
   )
 }
