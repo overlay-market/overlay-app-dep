@@ -16,11 +16,11 @@ const Carousel = styled.div`
 `
 
 const CarouselText = styled.div`
-  animation: moveText 20s linear infinite;
+  animation: moveText 25s linear infinite;
 
   @keyframes moveText {
     0% {
-      transform: translateX(250%);
+      transform: translateX(500%);
     }
     100% {
       transform: translateX(-250%);
