@@ -138,7 +138,7 @@ const Markets = () => {
                     <ProgressBar width={'50%'} value={50} max={100} color={'red'} margin={'0'} />
                   </FlexRow>
                 </FlexColumn> */}
-                <DoubleProgressBar />
+                <DoubleProgressBar leftBarValue={50} rightBarValue={50} maxValue={100} />
               </StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
