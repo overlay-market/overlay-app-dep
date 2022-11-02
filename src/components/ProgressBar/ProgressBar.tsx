@@ -76,26 +76,32 @@ export const DoubleProgressBar = ({
   rightBarValue,
   maxValue,
 }: DoubleProgressBarProps) => {
+  const ProgressBarInput = {
+    width: '50%',
+    margin: '0',
+    redColor: '#DC1F4E',
+    greenColor: '#10DCB1',
+  }
   return (
     <FlexColumn>
       <FlexRow flexWrap={'wrap'}>
         <ProgressBar
           reverse={true}
-          width={'50%'}
-          value={leftBarValue}
-          max={maxValue}
-          color={'red'}
-          margin={'0'}
           split={true}
+          max={maxValue}
+          value={leftBarValue}
+          width={ProgressBarInput.width}
+          margin={ProgressBarInput.margin}
+          color={ProgressBarInput.redColor}
         />
         <ProgressBar
           reverse={false}
-          width={'50%'}
-          value={rightBarValue}
-          max={maxValue}
-          color={'#10DCB1'}
-          margin={'0'}
           split={true}
+          max={maxValue}
+          value={rightBarValue}
+          width={ProgressBarInput.width}
+          margin={ProgressBarInput.margin}
+          color={ProgressBarInput.greenColor}
         />
       </FlexRow>
     </FlexColumn>
