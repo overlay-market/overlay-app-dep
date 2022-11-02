@@ -62,9 +62,9 @@ export const ProgressBar = ({
 }
 
 type DoubleProgressBarProps = {
-  leftBarValue: number
-  rightBarValue: number
-  maxValue: number
+  leftBarValue: number | undefined
+  rightBarValue: number | undefined
+  maxValue: number | undefined | null
 }
 
 export const DoubleProgressBar = ({
@@ -79,16 +79,16 @@ export const DoubleProgressBar = ({
           reverse={true}
           width={'50%'}
           value={leftBarValue}
-          max={100}
-          color={'#10DCB1'}
+          max={maxValue}
+          color={'red'}
           margin={'0'}
         />
         <ProgressBar
           reverse={false}
           width={'50%'}
           value={rightBarValue}
-          max={100}
-          color={'red'}
+          max={maxValue}
+          color={'#10DCB1'}
           margin={'0'}
         />
       </FlexRow>

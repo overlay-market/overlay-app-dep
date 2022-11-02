@@ -101,6 +101,9 @@ const Markets = () => {
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
+                <Trans> OI: Short | Long </Trans>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans> Market </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
@@ -119,32 +122,19 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            <StyledTableRow hover={true}>
+            {/* <StyledTableRow hover={true}>
               <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
 
               <StyledTableCellThin align="left">
-                {/* <FlexColumn align={'left'}>
-                  <FlexRow flexWrap={'wrap'}>
-                    <ProgressBar
-                      reverse={true}
-                      width={'50%'}
-                      value={50}
-                      max={100}
-                      color={'#10DCB1'}
-                      margin={'0'}
-                    />
-                    <ProgressBar width={'50%'} value={50} max={100} color={'red'} margin={'0'} />
-                  </FlexRow>
-                </FlexColumn> */}
                 <DoubleProgressBar leftBarValue={50} rightBarValue={50} maxValue={100} />
               </StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
 
               <StyledTableCellThin align="left"></StyledTableCellThin>
-            </StyledTableRow>
+            </StyledTableRow> */}
 
             {markets?.map((market: any, index: any) => (
               <StyledTableRow
@@ -152,6 +142,14 @@ const Markets = () => {
                 hover={true}
                 key={index.toString()}
               >
+                <StyledTableCellThin align="left">
+                  <DoubleProgressBar
+                    leftBarValue={ois[index]?.oiShort}
+                    rightBarValue={ois[index]?.oiLong}
+                    maxValue={capOis[index]}
+                  />
+                </StyledTableCellThin>
+
                 <StyledTableCellThin component="th" scope="row">
                   {baseTokens[index] === 'loading' ? (
                     <Loader stroke="white" size="12px" />
