@@ -30,15 +30,7 @@ const Bar = styled.div<{width?: number; color: string; split: boolean}>`
   animation: progressAnimation 1s;
 `
 
-export const ProgressBar = ({
-  value,
-  max,
-  color,
-  width = 'auto',
-  margin,
-  reverse = false,
-  split = false,
-}: {
+type ProgressBarProps = {
   value: number | undefined
   max: number | undefined | null
   color: string
@@ -46,7 +38,17 @@ export const ProgressBar = ({
   margin?: string | undefined
   reverse?: boolean
   split?: boolean
-}) => {
+}
+
+export const ProgressBar = ({
+  value,
+  max,
+  color,
+  margin,
+  width = 'auto',
+  reverse = false,
+  split = false,
+}: ProgressBarProps) => {
   const [progressValue, setProgressValue] = useState(0)
   const currentPercentage = max && value ? (value / max) * 100 : 0
 
