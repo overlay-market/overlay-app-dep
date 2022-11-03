@@ -104,6 +104,9 @@ const Markets = () => {
                 <Trans> OI: Short | Long </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
+                <Trans> OI Cap </Trans>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans> Market </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
@@ -164,6 +167,14 @@ const Markets = () => {
                     rightBarValue={ois[index]?.oiLong}
                     maxValue={capOis[index]}
                   />
+                </StyledTableCellThin>
+
+                <StyledTableCellThin component="th" scope="row">
+                  {capOis[index] || capOis[index] === 0 ? (
+                    capOis[index]
+                  ) : (
+                    <Loader stroke="white" size="12px" />
+                  )}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin component="th" scope="row">
