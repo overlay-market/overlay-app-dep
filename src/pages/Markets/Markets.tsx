@@ -143,6 +143,22 @@ const Markets = () => {
                 key={index.toString()}
               >
                 <StyledTableCellThin align="left">
+                  <FlexRow>
+                    <TEXT.SmallBody mr="auto">
+                      {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
+                        ois[index]?.oiShort
+                      ) : (
+                        <Loader stroke="white" size="12px" />
+                      )}
+                    </TEXT.SmallBody>
+                    <TEXT.SmallBody>
+                      {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
+                        ois[index]?.oiLong
+                      ) : (
+                        <Loader stroke="white" size="12px" />
+                      )}{' '}
+                    </TEXT.SmallBody>
+                  </FlexRow>
                   <DoubleProgressBar
                     leftBarValue={ois[index]?.oiShort}
                     rightBarValue={ois[index]?.oiLong}

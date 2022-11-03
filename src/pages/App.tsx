@@ -29,10 +29,10 @@ const BannerText = 'please make sure you are on https://app.overlay.market'
 const App = () => {
   return (
     <AppWrapper>
-      <Banner content={BannerText} animated={false} />
       <Popups />
       <ChainalysisManager>
         <TermsOfServiceManager>
+          <Banner content={BannerText} animated={false} />
           <Header />
           <Web3ReactManager>
             <Switch>
