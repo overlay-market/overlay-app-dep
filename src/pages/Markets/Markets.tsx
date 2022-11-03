@@ -101,22 +101,16 @@ const Markets = () => {
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
-                <Trans> OI: Short | Long </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
-                <Trans> OI Cap </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
                 <Trans> Market </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Price </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI Long </Trans>
+                <Trans> OI: Short | Long </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI Short </Trans>
+                <Trans> OI Cap </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Funding Rate </Trans>
@@ -125,26 +119,34 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            {/* <StyledTableRow hover={true}>
-              <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
-
-              <StyledTableCellThin align="left"></StyledTableCellThin>
-
-              <StyledTableCellThin align="left">
-                <DoubleProgressBar leftBarValue={50} rightBarValue={50} maxValue={100} />
-              </StyledTableCellThin>
-
-              <StyledTableCellThin align="left"></StyledTableCellThin>
-
-              <StyledTableCellThin align="left"></StyledTableCellThin>
-            </StyledTableRow> */}
-
             {markets?.map((market: any, index: any) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
                 hover={true}
                 key={index.toString()}
               >
+                <StyledTableCellThin component="th" scope="row">
+                  {baseTokens[index] === 'loading' ? (
+                    <Loader stroke="white" size="12px" />
+                  ) : (
+                    baseTokens[index]
+                  )}
+                  /
+                  {quoteTokens[index] === 'loading' ? (
+                    <Loader stroke="white" size="12px" />
+                  ) : (
+                    quoteTokens[index]
+                  )}
+                </StyledTableCellThin>
+
+                <StyledTableCellThin align="left">
+                  {prices[index] !== null && quoteAmounts[index] !== undefined ? (
+                    formatBigNumberUsingDecimalsToString(prices[index], quoteAmounts[index], 4)
+                  ) : (
+                    <Loader stroke="white" size="12px" />
+                  )}
+                </StyledTableCellThin>
+
                 <StyledTableCellThin align="left">
                   <FlexRow>
                     <TEXT.SmallBody mr="auto">
@@ -175,84 +177,6 @@ const Markets = () => {
                   ) : (
                     <Loader stroke="white" size="12px" />
                   )}
-                </StyledTableCellThin>
-
-                <StyledTableCellThin component="th" scope="row">
-                  {baseTokens[index] === 'loading' ? (
-                    <Loader stroke="white" size="12px" />
-                  ) : (
-                    baseTokens[index]
-                  )}
-                  /
-                  {quoteTokens[index] === 'loading' ? (
-                    <Loader stroke="white" size="12px" />
-                  ) : (
-                    quoteTokens[index]
-                  )}
-                </StyledTableCellThin>
-
-                <StyledTableCellThin align="left">
-                  {prices[index] !== null && quoteAmounts[index] !== undefined ? (
-                    formatBigNumberUsingDecimalsToString(prices[index], quoteAmounts[index], 4)
-                  ) : (
-                    <Loader stroke="white" size="12px" />
-                  )}
-                </StyledTableCellThin>
-
-                <StyledTableCellThin align="left">
-                  <FlexColumn align={'left'}>
-                    <FlexRow flexWrap={'wrap'}>
-                      <TEXT.SmallBody>
-                        {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
-                          ois[index]?.oiLong
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}{' '}
-                        &nbsp;/&nbsp;
-                      </TEXT.SmallBody>
-                      <TEXT.SmallBody>
-                        {capOis[index] || capOis[index] === 0 ? (
-                          capOis[index]
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}
-                      </TEXT.SmallBody>
-                    </FlexRow>
-                    <ProgressBar
-                      value={ois[index]?.oiLong}
-                      max={capOis[index]}
-                      color={'#10DCB1'}
-                      margin={'0'}
-                    />
-                  </FlexColumn>
-                </StyledTableCellThin>
-
-                <StyledTableCellThin align="left">
-                  <FlexColumn align={'left'}>
-                    <FlexRow flexWrap={'wrap'}>
-                      <TEXT.SmallBody>
-                        {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
-                          ois[index]?.oiShort
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}
-                        &nbsp;/&nbsp;
-                      </TEXT.SmallBody>
-                      <TEXT.SmallBody>
-                        {capOis[index] || capOis[index] === 0 ? (
-                          capOis[index]
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}
-                      </TEXT.SmallBody>
-                    </FlexRow>
-                    <ProgressBar
-                      value={ois[index]?.oiShort}
-                      max={capOis[index]}
-                      color={'#DC1F4E'}
-                      margin={'0'}
-                    />
-                  </FlexColumn>
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
