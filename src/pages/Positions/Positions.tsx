@@ -85,21 +85,27 @@ const StyledSwitchToggle = styled(SwitchToggle)`
 export const Positions = () => {
   const {onResetUnwindState} = useUnwindActionHandlers()
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
+  const {account, active} = useActiveWeb3React()
+
+  console.log('account: ', account)
+  console.log('active: ', active)
 
   return (
     <MarketCard>
       {onResetUnwindState()}
       <Container>
         <RouteHeader>Positions</RouteHeader>
-        <ShowClosedPositionsToggleContainer>
-          <TEXT.BoldSmallBody ml="auto" mr="8px">
-            Show closed positions
-          </TEXT.BoldSmallBody>
-          <StyledSwitchToggle
-            checked={userHideClosedPositions}
-            onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
-          />
-        </ShowClosedPositionsToggleContainer>
+        {active && account && (
+          <ShowClosedPositionsToggleContainer>
+            <TEXT.BoldSmallBody ml="auto" mr="8px">
+              Show closed positions
+            </TEXT.BoldSmallBody>
+            <StyledSwitchToggle
+              checked={userHideClosedPositions}
+              onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
+            />
+          </ShowClosedPositionsToggleContainer>
+        )}
         <PositionTableHeader />
         <FlexColumn>
           <PositionsInner />
