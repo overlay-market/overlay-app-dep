@@ -13,22 +13,22 @@ const Header = styled.div`
   color: ${({theme}) => theme.text1};
 `
 
-// const Value = styled.div`
-//   font-size: 16px;
-//   margin-left: auto;
-//   color: ${({theme}) => theme.text1};
-// `;
-
-// const Subheader = styled.div`
-//   font-size: 12px;
-//   color: ${({theme}) => theme.text1};
-//   margin-left: 4px;
-// `;
-
 const StyledLabel = styled(Label)`
   align-items: baseline;
   margin-bottom: 8px !important;
 `
+
+type PercentageSliderProps = {
+  value: number
+  liquidationPrice?: any
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  name: string
+  min: number
+  max: number
+  step: number
+  margin?: string
+  children?: React.ReactNode
+}
 
 export const PercentageSlider = ({
   value,
@@ -40,22 +40,15 @@ export const PercentageSlider = ({
   step,
   margin,
   children,
-}: {
-  value: number
-  liquidationPrice?: any
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  name: string
-  min: number
-  max: number
-  step: number
-  margin?: string
-  children?: React.ReactNode
-}) => {
+}: PercentageSliderProps) => {
+  const SLIDER_INPUT = {
+    backgroundColor: '#F2F2F2',
+    sliderDotColor: '#12B4FF',
+  }
   return (
     <SliderContainer margin={margin}>
       <StyledLabel htmlFor={name}>
         <Header>{value}%</Header>
-
         {children}
       </StyledLabel>
       <Slider
@@ -65,8 +58,8 @@ export const PercentageSlider = ({
         max={max}
         step={step}
         onChange={onChange}
-        backgroundColor={'#F2F2F2'}
-        color={'#12B4FF'}
+        backgroundColor={SLIDER_INPUT.backgroundColor}
+        color={SLIDER_INPUT.sliderDotColor}
       />
     </SliderContainer>
   )
