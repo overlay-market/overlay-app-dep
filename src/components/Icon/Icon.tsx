@@ -1,9 +1,9 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
-const IconWrapper = styled.div<{ 
-  size?: number, 
-  margin?: string, 
-  color?: string,
+const IconWrapper = styled.div<{
+  size?: number
+  margin?: string
+  color?: string
   transform?: string
   clickable?: boolean
   position?: string
@@ -13,20 +13,35 @@ const IconWrapper = styled.div<{
   bottom?: string
 }>`
   display: flex;
-  height: ${({ size }) => ( size )}px;
-  width: ${({ size }) => ( size )}px;
-  margin: ${({ margin }) => ( margin ?? margin )};
-  color: ${({ color }) => ( color ? color : '#fff' )};
-  transform: ${({ transform }) => ( transform ? transform : 'rotate(0deg)' )};
+  height: ${({size}) => size}px;
+  width: ${({size}) => size}px;
+  margin: ${({margin}) => margin ?? margin};
+  color: ${({color}) => (color ? color : '#fff')};
+  transform: ${({transform}) => (transform ? transform : 'rotate(0deg)')};
   transition: transform 0.2s ease-out;
-  cursor: ${({ clickable }) => ( clickable ? 'pointer' : 'default')};
+  cursor: ${({clickable}) => (clickable ? 'pointer' : 'default')};
   z-index: 10;
-  top: ${({ top }) => top ?? top};
-  right: ${({ right }) => right ?? right};
-  left: ${({ left }) => left ?? left};
-  bottom: ${({ bottom }) => bottom ?? bottom};
-  position: ${({ position }) => ( position ? position : 'auto' )};
-`;
+  top: ${({top}) => top ?? top};
+  right: ${({right}) => right ?? right};
+  left: ${({left}) => left ?? left};
+  bottom: ${({bottom}) => bottom ?? bottom};
+  position: ${({position}) => (position ? position : 'auto')};
+`
+
+type IconProps = {
+  size?: number
+  margin?: string
+  children: React.ReactNode
+  color?: string
+  transform?: string
+  clickable?: boolean
+  onClick?: (event: any) => any
+  top?: string
+  right?: string
+  left?: string
+  bottom?: string
+  position?: string
+}
 
 export const Icon = ({
   size,
@@ -40,25 +55,12 @@ export const Icon = ({
   right,
   left,
   bottom,
-  position
-}:{
-  size?: number
-  margin?: string
-  children: React.ReactNode
-  color?: string
-  transform?: string
-  clickable?: boolean
-  onClick?: (event: any) => any
-  top?: string
-  right?: string
-  left?: string
-  bottom?: string
-  position?: string
-}) => {
+  position,
+}: IconProps) => {
   return (
-    <IconWrapper 
-      size={size} 
-      margin={margin} 
+    <IconWrapper
+      size={size}
+      margin={margin}
       color={color}
       transform={transform}
       clickable={clickable}
@@ -68,8 +70,8 @@ export const Icon = ({
       left={left}
       bottom={bottom}
       position={position}
-      >
-        { children }
+    >
+      {children}
     </IconWrapper>
   )
-};
+}
