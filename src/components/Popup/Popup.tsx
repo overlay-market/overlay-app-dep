@@ -33,24 +33,16 @@ const Fader = styled.div`
 
 const AnimatedFader = animated(Fader)
 
-export default function Popup({
-  removeAfterMs,
-  content,
-  popKey,
-  title,
-  children,
-}: {
+type PopupProps = {
   removeAfterMs: number | null
   content: PopupContent
   popKey: string
   title?: string
   children?: React.ReactNode
-}) {
+}
+export default function Popup({removeAfterMs, content, popKey, title, children}: PopupProps) {
   const removePopup = useRemovePopup()
-  const removeThisPopup = useCallback(
-    () => removePopup(popKey),
-    [popKey, removePopup],
-  )
+  const removeThisPopup = useCallback(() => removePopup(popKey), [popKey, removePopup])
   useEffect(() => {
     if (removeAfterMs === null) return undefined
 
@@ -65,34 +57,18 @@ export default function Popup({
 
   let popupContent
 
-  console.log('content: ', content)
-
   if ('txn' in content) {
     const {
       txn: {hash, success, summary, info},
     } = content
-    popupContent = (
-      <TransactionPopup
-        hash={hash}
-        info={info}
-        success={success}
-        summary={summary}
-      />
-    )
+    popupContent = <TransactionPopup hash={hash} info={info} success={success} summary={summary} />
   }
 
   if ('info' in content) {
     const {
       txn: {hash, failed, summary, info},
     } = content
-    popupContent = (
-      <TransactionPopup
-        hash={hash}
-        info={info}
-        success={failed}
-        summary={summary}
-      />
-    )
+    popupContent = <TransactionPopup hash={hash} info={info} success={failed} summary={summary} />
   }
 
   const faderStyle = useSpring({
@@ -101,12 +77,21 @@ export default function Popup({
     config: {duration: removeAfterMs ?? undefined},
   })
 
+  const POPUP_CONSTANTS = {
+    iconColor: '#0B0F1C',
+    iconSize: 16,
+  }
+
   return (
     <PopupContainer>
       <FlexRow>
         {popupContent}
-        <Icon clickable={true} color={'#0B0F1C'}>
-          <XIcon width={16} height={16} onClick={removeThisPopup} />
+        <Icon clickable={true} color={POPUP_CONSTANTS.iconColor}>
+          <XIcon
+            width={POPUP_CONSTANTS.iconSize}
+            height={POPUP_CONSTANTS.iconSize}
+            onClick={removeThisPopup}
+          />
         </Icon>
       </FlexRow>
       {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}

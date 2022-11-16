@@ -4,15 +4,14 @@ import {NavLink, useHistory} from 'react-router-dom'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {TEXT} from '../../theme/theme'
-import {useAllMarkets} from '../../state/markets/hooks'
+import {useTotalMarketsData} from '../../state/markets/hooks'
 import {
   formatFundingRateToDaily,
   formatFundingRateToAnnual,
-  formatWeiToParsedNumber,
   formatBigNumberUsingDecimalsToString,
 } from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
-import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
+import {ProgressBar, DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {
   StyledTable,
@@ -50,7 +49,7 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 // add: MarketRow component, calldata prop to call hooks from MarketRow
 const Markets = () => {
   const history = useHistory()
-  const {markets, isLoading, refetch} = useAllMarkets()
+  const {markets, isLoading, refetch} = useTotalMarketsData()
 
   // force refetch when page refreshes
   useEffect(() => {
@@ -63,8 +62,8 @@ const Markets = () => {
 
   const calldata = useMemo(
     () => ({
-      marketAddresses: !markets ? [] : markets.markets.map((market: any) => [market.id]),
-      feedAddresses: !markets ? [] : markets.markets.map((market: any) => market.feedAddress),
+      marketAddresses: !markets ? [] : markets.map((market: any) => [market.id]),
+      feedAddresses: !markets ? [] : markets.map((market: any) => market.feedAddress),
     }),
     [markets],
   )
@@ -108,10 +107,10 @@ const Markets = () => {
                 <Trans> Price </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI Long </Trans>
+                <Trans> OI: Short | Long </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI Short </Trans>
+                <Trans> OI Cap </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Funding Rate </Trans>
@@ -120,7 +119,7 @@ const Markets = () => {
           </TableHead>
 
           <TableBody>
-            {markets?.markets.map((market: any, index: any) => (
+            {markets?.map((market: any, index: any) => (
               <StyledTableRow
                 onClick={() => redirectToMarket(market.id)}
                 hover={true}
@@ -149,59 +148,35 @@ const Markets = () => {
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">
-                  <FlexColumn align={'left'}>
-                    <FlexRow flexWrap={'wrap'}>
-                      <TEXT.SmallBody>
-                        {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
-                          ois[index]?.oiLong
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}{' '}
-                        &nbsp;/&nbsp;
-                      </TEXT.SmallBody>
-                      <TEXT.SmallBody>
-                        {capOis[index] || capOis[index] === 0 ? (
-                          capOis[index]
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}
-                      </TEXT.SmallBody>
-                    </FlexRow>
-                    <ProgressBar
-                      value={ois[index]?.oiLong}
-                      max={capOis[index]}
-                      color={'#10DCB1'}
-                      margin={'0'}
-                    />
-                  </FlexColumn>
+                  <FlexRow>
+                    <TEXT.SmallBody mr="auto">
+                      {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
+                        ois[index]?.oiShort
+                      ) : (
+                        <Loader stroke="white" size="12px" />
+                      )}
+                    </TEXT.SmallBody>
+                    <TEXT.SmallBody>
+                      {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
+                        ois[index]?.oiLong
+                      ) : (
+                        <Loader stroke="white" size="12px" />
+                      )}{' '}
+                    </TEXT.SmallBody>
+                  </FlexRow>
+                  <DoubleProgressBar
+                    leftBarValue={ois[index]?.oiShort}
+                    rightBarValue={ois[index]?.oiLong}
+                    maxValue={capOis[index]}
+                  />
                 </StyledTableCellThin>
 
-                <StyledTableCellThin align="left">
-                  <FlexColumn align={'left'}>
-                    <FlexRow flexWrap={'wrap'}>
-                      <TEXT.SmallBody>
-                        {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
-                          ois[index]?.oiShort
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}
-                        &nbsp;/&nbsp;
-                      </TEXT.SmallBody>
-                      <TEXT.SmallBody>
-                        {capOis[index] || capOis[index] === 0 ? (
-                          capOis[index]
-                        ) : (
-                          <Loader stroke="white" size="12px" />
-                        )}
-                      </TEXT.SmallBody>
-                    </FlexRow>
-                    <ProgressBar
-                      value={ois[index]?.oiShort}
-                      max={capOis[index]}
-                      color={'#DC1F4E'}
-                      margin={'0'}
-                    />
-                  </FlexColumn>
+                <StyledTableCellThin component="th" scope="row">
+                  {capOis[index] || capOis[index] === 0 ? (
+                    capOis[index]
+                  ) : (
+                    <Loader stroke="white" size="12px" />
+                  )}
                 </StyledTableCellThin>
 
                 <StyledTableCellThin align="left">

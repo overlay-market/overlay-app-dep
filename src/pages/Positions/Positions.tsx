@@ -5,7 +5,7 @@ import {Button} from 'rebass'
 import {Switch as SwitchToggle} from '@rebass/forms'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {MarketCard} from '../../components/Card/MarketCard'
-import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
+import {useCurrentWalletPositions, PositionData} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
@@ -85,21 +85,24 @@ const StyledSwitchToggle = styled(SwitchToggle)`
 export const Positions = () => {
   const {onResetUnwindState} = useUnwindActionHandlers()
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
+  const {account, active} = useActiveWeb3React()
 
   return (
     <MarketCard>
       {onResetUnwindState()}
       <Container>
         <RouteHeader>Positions</RouteHeader>
-        <ShowClosedPositionsToggleContainer>
-          <TEXT.BoldSmallBody ml="auto" mr="8px">
-            Show closed positions
-          </TEXT.BoldSmallBody>
-          <StyledSwitchToggle
-            checked={userHideClosedPositions}
-            onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
-          />
-        </ShowClosedPositionsToggleContainer>
+        {active && account && (
+          <ShowClosedPositionsToggleContainer>
+            <TEXT.BoldSmallBody ml="auto" mr="8px">
+              Show closed positions
+            </TEXT.BoldSmallBody>
+            <StyledSwitchToggle
+              checked={userHideClosedPositions}
+              onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
+            />
+          </ShowClosedPositionsToggleContainer>
+        )}
         <PositionTableHeader />
         <FlexColumn>
           <PositionsInner />
@@ -113,11 +116,12 @@ export const PositionsInner = () => {
   const toggleWalletModal = useWalletModalToggle()
   const blockNumber = useBlockNumber()
   const {account, active} = useActiveWeb3React()
-  const {isLoading, isFetching, positions} = useQuerySubgraphAccountPositions(account)
+  const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
   const [userHideClosedPositions] = useUserHideClosedPositions()
 
   const feedAddresses = useMemo(
-    () => (!positions ? [] : positions.map(position => position.market.feedAddress)),
+    () =>
+      !positions ? [] : positions.map((position: PositionData) => position.market.feedAddress),
     [positions],
   )
   const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
@@ -136,7 +140,11 @@ export const PositionsInner = () => {
 
   const calldata = useMemo(() => {
     if (!positions || !account || !blockNumber) return []
-    return positions.map(position => [position.market.id, account, position.positionId])
+    return positions.map((position: PositionData) => [
+      position.market.id,
+      account,
+      position.positionId,
+    ])
   }, [positions, account, blockNumber])
 
   const ois = usePositionOis(calldata, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens)

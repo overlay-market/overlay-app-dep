@@ -38,12 +38,11 @@ import {formatDecimalToPercentage} from '../../utils/formatDecimal'
 import {useIsTxnSettingsAuto} from '../../state/build/hooks'
 import {useEstimatedBuild} from '../../hooks/useEstimatedBuild'
 import {useBuildCallback} from '../../hooks/useBuildCallback'
-import {useAllMarkets} from '../../state/markets/hooks'
 import {shortenAddress} from '../../utils/web3'
 import {AdditionalDetails} from './AdditionalBuildDetails'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal'
-import {useMarket} from '../../state/markets/hooks'
+import {useMarketData} from '../../state/markets/hooks'
 import {useSingleCallResult} from '../../state/multicall/hooks'
 import {useToken} from '../../hooks/useToken'
 import {useV1PeripheryContract} from '../../hooks/useContract'
@@ -136,14 +135,14 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     transactionHash: undefined,
   })
 
-  const {marketData, isLoading, refetch} = useMarket(marketId)
+  const {market, isLoading, refetch} = useMarketData(marketId)
 
   // force refetch when refreshing page
   useEffect(() => {
     refetch()
   }, [marketId, isLoading, refetch])
 
-  const market = marketData?.market
+  // const market = marketData?.market
   const {account, chainId} = useActiveWeb3React()
   const ovlBalance = useOvlBalance()
   const isTxnSettingsAuto = useIsTxnSettingsAuto()

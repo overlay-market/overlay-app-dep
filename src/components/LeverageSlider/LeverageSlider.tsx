@@ -19,16 +19,21 @@ const Value = styled.div`
   color: ${({theme}) => theme.text1};
 `
 
-// const Subheader = styled.div`
-//   font-size: 12px;
-//   color: ${({theme}) => theme.text1};
-//   margin-left: 4px;
-// `;
-
 const StyledLabel = styled(Label)`
   align-items: baseline;
   margin-bottom: 8px !important;
 `
+
+type LeverageSliderProps = {
+  value: number
+  liquidationPrice?: any
+  onChange: React.ChangeEventHandler<HTMLInputElement>
+  name: string
+  min: number
+  max: number
+  step: number
+  margin?: string
+}
 
 export const LeverageSlider = ({
   value,
@@ -39,16 +44,11 @@ export const LeverageSlider = ({
   max,
   step,
   margin,
-}: {
-  value: number
-  liquidationPrice?: any
-  onChange: React.ChangeEventHandler<HTMLInputElement>
-  name: string
-  min: number
-  max: number
-  step: number
-  margin?: string
-}) => {
+}: LeverageSliderProps) => {
+  const SLIDER_CONSTANTS = {
+    backgroundColor: '#F2F2F2',
+    sliderColor: '#12B4FF',
+  }
   return (
     <SliderContainer margin={margin}>
       <StyledLabel htmlFor={name}>
@@ -62,8 +62,8 @@ export const LeverageSlider = ({
         max={max}
         step={step}
         onChange={onChange}
-        backgroundColor={'#F2F2F2'}
-        color={'#12B4FF'}
+        backgroundColor={SLIDER_CONSTANTS.backgroundColor}
+        color={SLIDER_CONSTANTS.sliderColor}
       />
     </SliderContainer>
   )

@@ -102,7 +102,25 @@ export const api = createApi({
             markets(where: {isShutdown: false}) {
               id
               feedAddress
+              factory {
+                id
+              }
+              k
+              lmbda
+              delta
+              capPayoff
               capNotional
+              capLeverage
+              circuitBreakerWindow
+              circuitBreakerMintTarget
+              maintenanceMarginFraction
+              maintenanceMarginBurnRate
+              liquidationFeeRate
+              tradingFeeRate
+              minCollateral
+              priceDriftUpperLimit
+              averageBlockTime
+              isShutdown
               positions {
                 id
               }

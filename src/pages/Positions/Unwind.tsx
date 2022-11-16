@@ -10,7 +10,7 @@ import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
 import {Accordion} from '../../components/Accordion/Accordion'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
-import {useQuerySubgraphAccountPositions} from '../../state/build/hooks'
+import {useCurrentWalletPositions} from '../../state/build/hooks'
 import {NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
@@ -91,7 +91,7 @@ export function Unwind({
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const {account} = useActiveWeb3React()
-  const {error, isLoading, positions, refetch} = useQuerySubgraphAccountPositions(account)
+  const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
 
   useEffect(() => {
     refetch()

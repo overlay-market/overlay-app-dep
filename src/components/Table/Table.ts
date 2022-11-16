@@ -4,11 +4,11 @@ import {Table, TableCell, TableRow} from '@material-ui/core'
 export const StyledTable = styled(Table)`
   white-space: nowrap !important;
   table-layout: fixed !important;
-  width: 800px !important;
+  min-width: 1200px !important;
+  width: 100%;
 
   ${({theme}) => theme.mediaWidth.minSmall`
     table-layout: fixed !important;
-    width: 100% !important;
   `}
 `
 
@@ -25,6 +25,7 @@ export const StyledHeaderCell = styled(StyledTableCell)`
 
 export const StyledTableCellThin = styled(StyledTableCell)`
   font-weight: 400;
+  min-width: 250px;
 `
 
 export const StyledTableRow = styled(TableRow)`
