@@ -20,10 +20,11 @@ interface MarketStateDetails {
 
 interface UseMarketStateResults {
   loading: boolean
+  error: boolean
   markets: MarketStateDetails[] | undefined
 }
 
-function useMarketStateFromAddresses(marketAddresses: string[] | undefined) {
+function useMarketStateFromAddresses(marketAddresses: string[] | undefined): UseMarketStateResults {
   const peripheryContract = useV1PeripheryContract()
   const inputs = useMemo(
     () => (marketAddresses ? marketAddresses.map(marketAddress => [marketAddress]) : []),
@@ -46,7 +47,7 @@ function useMarketStateFromAddresses(marketAddresses: string[] | undefined) {
           ask: result.ask,
           mid: result.mid,
           volumeBid: result.volumeBid,
-          voluemAsk: result.volumeAsk,
+          volumeAsk: result.volumeAsk,
           oiLong: result.oiLong,
           oiShort: result.oiShort,
           capOi: result.capOi,
