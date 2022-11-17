@@ -51,6 +51,7 @@ type MarketRowProps = {
   marketId: string
   baseToken: string
   quoteToken: string
+  quoteAmount: number
   midPrice: BigNumber
   oiLong: BigNumber
   oiShort: BigNumber
@@ -62,15 +63,48 @@ const MarketRow = ({
   marketId,
   baseToken,
   quoteToken,
+  quoteAmount,
   midPrice,
   oiLong,
   oiShort,
   capOi,
   fundingRate,
 }: MarketRowProps) => {
+  const LOADING_STATE = 'loading'
+
+  const marketAttributes = useMemo(
+    () => ({
+      marketId,
+      baseToken: baseToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : baseToken,
+      quoteToken: quoteToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : quoteToken,
+      midPrice:
+        midPrice && quoteAmount ? (
+          formatBigNumberUsingDecimalsToString(midPrice, quoteAmount, 4)
+        ) : (
+          <Loader stroke="white" size="12px" />
+        ),
+      oiLong,
+      oiShort,
+      capOi,
+      dailyFundingRate: fundingRate ? (
+        formatFundingRateToDaily(fundingRate, 18, 2)
+      ) : (
+        <Loader stroke="white" size="12px" />
+      ),
+      annualFundingRate: fundingRate ? (
+        formatFundingRateToAnnual(fundingRate, 18, 2)
+      ) : (
+        <Loader stroke="white" size="12px" />
+      ),
+    }),
+    [marketId, baseToken, quoteToken, quoteAmount, midPrice, oiLong, oiShort, capOi, fundingRate],
+  )
   return (
     <StyledTableRow>
-      <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
+      <StyledTableCellThin component="th" scope="row">
+        {marketAttributes.baseToken} / {marketAttributes.quoteToken}
+      </StyledTableCellThin>
+      <StyledTableCellThin align="left">{marketAttributes.midPrice}</StyledTableCellThin>
     </StyledTableRow>
   )
 }
