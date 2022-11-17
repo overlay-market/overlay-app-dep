@@ -30,6 +30,7 @@ import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
 import {isAddress} from '../../utils/web3'
+import {BigNumberish, BigNumber} from 'ethers'
 
 const activeClassName = 'INACTIVE'
 
@@ -46,6 +47,33 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
+type MarketRowProps = {
+  marketId: string
+  baseToken: string
+  quoteToken: string
+  midPrice: BigNumber
+  oiLong: BigNumber
+  oiShort: BigNumber
+  capOi: BigNumber
+  fundingRate: BigNumber
+}
+
+const MarketRow = ({
+  marketId,
+  baseToken,
+  quoteToken,
+  midPrice,
+  oiLong,
+  oiShort,
+  capOi,
+  fundingRate,
+}: MarketRowProps) => {
+  return (
+    <StyledTableRow>
+      <StyledTableCellThin component="th" scope="row"></StyledTableCellThin>
+    </StyledTableRow>
+  )
+}
 // @TO-DO: create our Markets sub-view components
 // add: TableHeader component
 // add: MarketRow component, calldata prop to call hooks from MarketRow
@@ -99,7 +127,6 @@ const Markets = () => {
 
   const marketStates = useMarketStateFromAddresses(calldata.marketIds)
 
-  console.log('marketStates: ', marketStates)
   return (
     <PageContainer>
       <TableContainer component={Paper}>
