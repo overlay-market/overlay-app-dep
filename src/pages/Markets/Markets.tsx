@@ -53,9 +53,9 @@ type MarketRowProps = {
   quoteToken: string
   quoteAmount: number
   midPrice: BigNumber
-  oiLong: BigNumber
-  oiShort: BigNumber
-  capOi: BigNumber
+  oiLong: number
+  oiShort: number
+  capOi: number
   fundingRate: BigNumber
 }
 
@@ -105,9 +105,17 @@ const MarketRow = ({
         {marketAttributes.baseToken} / {marketAttributes.quoteToken}
       </StyledTableCellThin>
       <StyledTableCellThin align="left">{marketAttributes.midPrice}</StyledTableCellThin>
+      <StyledTableCellThin align="left">
+        <FlexRow>
+          <TEXT.SmallBody mr="auto">{oiShort}</TEXT.SmallBody>
+          <TEXT.SmallBody>{oiLong}</TEXT.SmallBody>
+        </FlexRow>
+        <DoubleProgressBar leftBarValue={oiShort} rightBarValue={oiLong} maxValue={capOi} />
+      </StyledTableCellThin>
     </StyledTableRow>
   )
 }
+
 // @TO-DO: create our Markets sub-view components
 // add: TableHeader component
 // add: MarketRow component, calldata prop to call hooks from MarketRow
