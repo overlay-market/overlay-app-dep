@@ -15,6 +15,7 @@ const Carousel = styled.div`
   justify-content: center;
   text-align: center;
   width: 100%;
+  margin-top: 8px;
 `
 
 const AnimatedCarouselText = styled.div<{duration: number}>`
