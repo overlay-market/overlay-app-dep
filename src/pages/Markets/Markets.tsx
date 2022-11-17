@@ -28,6 +28,8 @@ import {useMarketOis} from '../../hooks/useMarketOis'
 import {useMarketCapOis} from '../../hooks/useMarketCapOi'
 import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
+import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
+import {isAddress} from '../../utils/web3'
 
 const activeClassName = 'INACTIVE'
 
@@ -64,6 +66,7 @@ const Markets = () => {
     () => ({
       marketAddresses: !markets ? [] : markets.map((market: any) => [market.id]),
       feedAddresses: !markets ? [] : markets.map((market: any) => market.feedAddress),
+      marketIds: !markets ? [] : markets.map((market: any) => market.id),
     }),
     [markets],
   )
@@ -94,6 +97,9 @@ const Markets = () => {
     tokenPairDecimals.quoteTokens,
   )
 
+  const marketStates = useMarketStateFromAddresses(calldata.marketIds)
+
+  console.log('marketStates: ', marketStates)
   return (
     <PageContainer>
       <TableContainer component={Paper}>
