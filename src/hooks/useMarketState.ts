@@ -16,4 +16,9 @@ interface MarketStateDetails {
   fundingRate: BigNumber
 }
 
+interface UseMarketStateResults {
+  loading: boolean
+  markets: MarketStateDetails[] | undefined
+}
+
 function useMarketStateFromAddresses() {}
