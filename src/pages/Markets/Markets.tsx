@@ -113,6 +113,9 @@ const MarketRow = ({
         </FlexRow>
         <DoubleProgressBar leftBarValue={oiShort} rightBarValue={oiLong} maxValue={capOi} />
       </StyledTableCellThin>
+      <StyledTableCellThin align="left">
+        {marketAttributes.dailyFundingRate}% ({marketAttributes.annualFundingRate}%)
+      </StyledTableCellThin>
     </StyledTableRow>
   )
 }
@@ -157,6 +160,7 @@ const Markets = () => {
   )
 
   const fundingRates = useFundingRates(calldata.marketAddresses)
+
   const ois = useMarketOis(
     calldata.marketAddresses,
     tokenPairDecimals.baseTokens,
@@ -170,8 +174,6 @@ const Markets = () => {
 
   const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
 
-  console.log('calldata.marketIds: ', calldata.marketIds)
-  console.log('marketStates: ', marketStates)
   return (
     <PageContainer>
       <TableContainer component={Paper}>
