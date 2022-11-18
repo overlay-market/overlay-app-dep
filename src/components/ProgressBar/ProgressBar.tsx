@@ -31,7 +31,7 @@ const Bar = styled.div<{width?: number; color: string; split: boolean}>`
 `
 
 type ProgressBarProps = {
-  value: number | undefined
+  value: number | undefined | null
   max: number | undefined | null
   color: string
   width?: string
@@ -68,8 +68,8 @@ export const ProgressBar = ({
 }
 
 type DoubleProgressBarProps = {
-  leftBarValue: number | undefined
-  rightBarValue: number | undefined
+  leftBarValue: number | undefined | null
+  rightBarValue: number | undefined | null
   maxValue: number | undefined | null
 }
 

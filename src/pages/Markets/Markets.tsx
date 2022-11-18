@@ -31,6 +31,7 @@ import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
+import {Result} from '../../state/multicall/hooks'
 
 const activeClassName = 'INACTIVE'
 
@@ -48,15 +49,15 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 `
 
 type MarketRowProps = {
-  marketId: string
-  baseToken: string
-  quoteToken: string
+  marketId: string | Result
+  baseToken: string | Result
+  quoteToken: string | Result
   quoteAmount: number
-  midPrice: BigNumber
-  oiLong: number
-  oiShort: number
-  capOi: number
-  fundingRate: BigNumber
+  midPrice: BigNumber | undefined
+  oiLong: number | null | undefined
+  oiShort: number | null | undefined
+  capOi: number | null | undefined
+  fundingRate: BigNumber | undefined
 }
 
 const MarketRow = ({
@@ -75,6 +76,9 @@ const MarketRow = ({
   const marketAttributes = useMemo(
     () => ({
       marketId,
+      oiLong,
+      oiShort,
+      capOi,
       baseToken: baseToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : baseToken,
       quoteToken: quoteToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : quoteToken,
       midPrice:
@@ -83,9 +87,6 @@ const MarketRow = ({
         ) : (
           <Loader stroke="white" size="12px" />
         ),
-      oiLong,
-      oiShort,
-      capOi,
       dailyFundingRate: fundingRate ? (
         formatFundingRateToDaily(fundingRate, 18, 2)
       ) : (
@@ -167,8 +168,10 @@ const Markets = () => {
     tokenPairDecimals.quoteTokens,
   )
 
-  const marketStates = useMarketStateFromAddresses(calldata.marketIds)
+  const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
 
+  console.log('calldata.marketIds: ', calldata.marketIds)
+  console.log('marketStates: ', marketStates)
   return (
     <PageContainer>
       <TableContainer component={Paper}>
@@ -195,81 +198,17 @@ const Markets = () => {
 
           <TableBody>
             {markets?.map((market: any, index: any) => (
-              <StyledTableRow
-                onClick={() => redirectToMarket(market.id)}
-                hover={true}
-                key={index.toString()}
-              >
-                <StyledTableCellThin component="th" scope="row">
-                  {baseTokens[index] === 'loading' ? (
-                    <Loader stroke="white" size="12px" />
-                  ) : (
-                    baseTokens[index]
-                  )}
-                  /
-                  {quoteTokens[index] === 'loading' ? (
-                    <Loader stroke="white" size="12px" />
-                  ) : (
-                    quoteTokens[index]
-                  )}
-                </StyledTableCellThin>
-
-                <StyledTableCellThin align="left">
-                  {prices[index] !== null && quoteAmounts[index] !== undefined ? (
-                    formatBigNumberUsingDecimalsToString(prices[index], quoteAmounts[index], 4)
-                  ) : (
-                    <Loader stroke="white" size="12px" />
-                  )}
-                </StyledTableCellThin>
-
-                <StyledTableCellThin align="left">
-                  <FlexRow>
-                    <TEXT.SmallBody mr="auto">
-                      {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
-                        ois[index]?.oiShort
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}
-                    </TEXT.SmallBody>
-                    <TEXT.SmallBody>
-                      {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
-                        ois[index]?.oiLong
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}{' '}
-                    </TEXT.SmallBody>
-                  </FlexRow>
-                  <DoubleProgressBar
-                    leftBarValue={ois[index]?.oiShort}
-                    rightBarValue={ois[index]?.oiLong}
-                    maxValue={capOis[index]}
-                  />
-                </StyledTableCellThin>
-
-                <StyledTableCellThin component="th" scope="row">
-                  {capOis[index] || capOis[index] === 0 ? (
-                    capOis[index]
-                  ) : (
-                    <Loader stroke="white" size="12px" />
-                  )}
-                </StyledTableCellThin>
-
-                <StyledTableCellThin align="left">
-                  <FlexRow>
-                    <TEXT.AdjustableSize color={'#f2f2f2'} mr={'3px'}>
-                      {fundingRates[index] ? (
-                        `${formatFundingRateToDaily(
-                          fundingRates[index],
-                          18,
-                          2,
-                        )}% (${formatFundingRateToAnnual(fundingRates[index], 18, 2)}%)`
-                      ) : (
-                        <Loader stroke="white" size="12px" />
-                      )}
-                    </TEXT.AdjustableSize>
-                  </FlexRow>
-                </StyledTableCellThin>
-              </StyledTableRow>
+              <MarketRow
+                marketId={market.id}
+                baseToken={baseTokens[index]}
+                quoteToken={quoteTokens[index]}
+                quoteAmount={quoteAmounts[index]}
+                midPrice={marketStates?.[index]?.mid}
+                oiLong={ois[index]?.oiLong}
+                oiShort={ois[index]?.oiShort}
+                capOi={capOis[index]}
+                fundingRate={marketStates?.[index]?.fundingRate}
+              />
             ))}
           </TableBody>
         </StyledTable>
@@ -279,3 +218,79 @@ const Markets = () => {
 }
 
 export default Markets
+
+// <StyledTableRow
+//   onClick={() => redirectToMarket(market.id)}
+//   hover={true}
+//   key={index.toString()}
+// >
+//   <StyledTableCellThin component="th" scope="row">
+//     {baseTokens[index] === 'loading' ? (
+//       <Loader stroke="white" size="12px" />
+//     ) : (
+//       baseTokens[index]
+//     )}
+//     /
+//     {quoteTokens[index] === 'loading' ? (
+//       <Loader stroke="white" size="12px" />
+//     ) : (
+//       quoteTokens[index]
+//     )}
+//   </StyledTableCellThin>
+
+//   <StyledTableCellThin align="left">
+//     {prices[index] !== null && quoteAmounts[index] !== undefined ? (
+//       formatBigNumberUsingDecimalsToString(prices[index], quoteAmounts[index], 4)
+//     ) : (
+//       <Loader stroke="white" size="12px" />
+//     )}
+//   </StyledTableCellThin>
+
+//   <StyledTableCellThin align="left">
+//     <FlexRow>
+//       <TEXT.SmallBody mr="auto">
+//         {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
+//           ois[index]?.oiShort
+//         ) : (
+//           <Loader stroke="white" size="12px" />
+//         )}
+//       </TEXT.SmallBody>
+//       <TEXT.SmallBody>
+//         {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
+//           ois[index]?.oiLong
+//         ) : (
+//           <Loader stroke="white" size="12px" />
+//         )}{' '}
+//       </TEXT.SmallBody>
+//     </FlexRow>
+//     <DoubleProgressBar
+//       leftBarValue={ois[index]?.oiShort}
+//       rightBarValue={ois[index]?.oiLong}
+//       maxValue={capOis[index]}
+//     />
+//   </StyledTableCellThin>
+
+//   <StyledTableCellThin component="th" scope="row">
+//     {capOis[index] || capOis[index] === 0 ? (
+//       capOis[index]
+//     ) : (
+//       <Loader stroke="white" size="12px" />
+//     )}
+//   </StyledTableCellThin>
+
+//   <StyledTableCellThin align="left">
+//     <FlexRow>
+//       <TEXT.AdjustableSize color={'#f2f2f2'} mr={'3px'}>
+//         {fundingRates[index] ? (
+//           `${formatFundingRateToDaily(
+//             fundingRates[index],
+//             18,
+//             2,
+//           )}% (${formatFundingRateToAnnual(fundingRates[index], 18, 2)}%)`
+//         ) : (
+//           <Loader stroke="white" size="12px" />
+//         )}
+//       </TEXT.AdjustableSize>
+//     </FlexRow>
+//   </StyledTableCellThin>
+// </StyledTableRow>
