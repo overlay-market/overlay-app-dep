@@ -6,6 +6,7 @@ import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 
 interface MarketStateDetails {
+  marketAddress: string
   bid: BigNumber
   ask: BigNumber
   mid: BigNumber

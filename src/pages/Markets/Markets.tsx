@@ -49,7 +49,7 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 `
 
 type MarketRowProps = {
-  marketId: string | Result
+  marketId: string | undefined
   baseToken: string | Result
   quoteToken: string | Result
   quoteAmount: number
@@ -58,6 +58,7 @@ type MarketRowProps = {
   oiShort: number | null | undefined
   capOi: number | null | undefined
   fundingRate: BigNumber | undefined
+  index: any
 }
 
 const MarketRow = ({
@@ -70,7 +71,14 @@ const MarketRow = ({
   oiShort,
   capOi,
   fundingRate,
+  index,
 }: MarketRowProps) => {
+  const history = useHistory()
+
+  function redirectToMarket(marketId: string) {
+    history.push(`/markets/${marketId}`)
+  }
+
   const LOADING_STATE = 'loading'
 
   const marketAttributes = useMemo(
@@ -101,7 +109,11 @@ const MarketRow = ({
     [marketId, baseToken, quoteToken, quoteAmount, midPrice, oiLong, oiShort, capOi, fundingRate],
   )
   return (
-    <StyledTableRow>
+    <StyledTableRow
+      onClick={() => redirectToMarket(marketId ?? '')}
+      hover={true}
+      key={index.toString()}
+    >
       <StyledTableCellThin component="th" scope="row">
         {marketAttributes.baseToken} / {marketAttributes.quoteToken}
       </StyledTableCellThin>
@@ -124,17 +136,12 @@ const MarketRow = ({
 // add: TableHeader component
 // add: MarketRow component, calldata prop to call hooks from MarketRow
 const Markets = () => {
-  const history = useHistory()
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
   }, [isLoading, refetch])
-
-  function redirectToMarket(marketId: string) {
-    history.push(`/markets/${marketId}`)
-  }
 
   const calldata = useMemo(
     () => ({
@@ -190,9 +197,6 @@ const Markets = () => {
                 <Trans> OI: Short | Long </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI Cap </Trans>
-              </StyledHeaderCell>
-              <StyledHeaderCell>
                 <Trans> Funding Rate </Trans>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
@@ -201,7 +205,7 @@ const Markets = () => {
           <TableBody>
             {markets?.map((market: any, index: any) => (
               <MarketRow
-                marketId={market.id}
+                marketId={marketStates?.[index]?.marketAddress}
                 baseToken={baseTokens[index]}
                 quoteToken={quoteTokens[index]}
                 quoteAmount={quoteAmounts[index]}
@@ -210,6 +214,7 @@ const Markets = () => {
                 oiShort={ois[index]?.oiShort}
                 capOi={capOis[index]}
                 fundingRate={marketStates?.[index]?.fundingRate}
+                index={index}
               />
             ))}
           </TableBody>
