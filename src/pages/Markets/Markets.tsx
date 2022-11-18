@@ -54,13 +54,14 @@ type MarketRowProps = {
   quoteToken: string | Result
   quoteAmount: number
   midPrice: BigNumber | undefined
-  oiLong: number | null | undefined
-  oiShort: number | null | undefined
-  capOi: number | null | undefined
+  oiLong: number | undefined
+  oiShort: number | undefined
+  capOi: number | undefined | null
   fundingRate: BigNumber | undefined
   index: any
 }
 
+type ReturnedValue = {}
 const MarketRow = ({
   marketId,
   baseToken,
@@ -81,12 +82,26 @@ const MarketRow = ({
 
   const LOADING_STATE = 'loading'
 
+  const oiPercentageOfTotal = useMemo(() => {
+    if (oiLong === undefined || oiShort === undefined || capOi === undefined || capOi === null) {
+      return {
+        long: undefined,
+        short: undefined,
+      }
+    }
+
+    const longPercentage = (oiLong / capOi) * 100
+    const shortPercentage = (oiShort / capOi) * 100
+
+    return {
+      long: longPercentage.toFixed(2),
+      short: shortPercentage.toFixed(2),
+    }
+  }, [oiLong, oiShort, capOi])
+
   const marketAttributes = useMemo(
     () => ({
       marketId,
-      oiLong,
-      oiShort,
-      capOi,
       baseToken: baseToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : baseToken,
       quoteToken: quoteToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : quoteToken,
       midPrice:
@@ -106,7 +121,7 @@ const MarketRow = ({
         <Loader stroke="white" size="12px" />
       ),
     }),
-    [marketId, baseToken, quoteToken, quoteAmount, midPrice, oiLong, oiShort, capOi, fundingRate],
+    [marketId, baseToken, quoteToken, quoteAmount, midPrice, fundingRate],
   )
   return (
     <StyledTableRow
@@ -120,8 +135,8 @@ const MarketRow = ({
       <StyledTableCellThin align="left">{marketAttributes.midPrice}</StyledTableCellThin>
       <StyledTableCellThin align="left">
         <FlexRow>
-          <TEXT.SmallBody mr="auto">{oiShort}</TEXT.SmallBody>
-          <TEXT.SmallBody>{oiLong}</TEXT.SmallBody>
+          <TEXT.SmallBody mr="auto">{oiPercentageOfTotal.short}%</TEXT.SmallBody>
+          <TEXT.SmallBody>{oiPercentageOfTotal.long}%</TEXT.SmallBody>
         </FlexRow>
         <DoubleProgressBar leftBarValue={oiShort} rightBarValue={oiLong} maxValue={capOi} />
       </StyledTableCellThin>
@@ -132,9 +147,6 @@ const MarketRow = ({
   )
 }
 
-// @TO-DO: create our Markets sub-view components
-// add: TableHeader component
-// add: MarketRow component, calldata prop to call hooks from MarketRow
 const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
@@ -152,7 +164,6 @@ const Markets = () => {
     [markets],
   )
   const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
-  const prices = useMarketMidPrices(calldata.marketAddresses)
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(calldata.feedAddresses)
 
@@ -165,8 +176,6 @@ const Markets = () => {
     }),
     [baseAmounts, quoteAmounts],
   )
-
-  const fundingRates = useFundingRates(calldata.marketAddresses)
 
   const ois = useMarketOis(
     calldata.marketAddresses,
@@ -201,7 +210,6 @@ const Markets = () => {
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
-
           <TableBody>
             {markets?.map((market: any, index: any) => (
               <MarketRow
@@ -225,79 +233,3 @@ const Markets = () => {
 }
 
 export default Markets
-
-// <StyledTableRow
-//   onClick={() => redirectToMarket(market.id)}
-//   hover={true}
-//   key={index.toString()}
-// >
-//   <StyledTableCellThin component="th" scope="row">
-//     {baseTokens[index] === 'loading' ? (
-//       <Loader stroke="white" size="12px" />
-//     ) : (
-//       baseTokens[index]
-//     )}
-//     /
-//     {quoteTokens[index] === 'loading' ? (
-//       <Loader stroke="white" size="12px" />
-//     ) : (
-//       quoteTokens[index]
-//     )}
-//   </StyledTableCellThin>
-
-//   <StyledTableCellThin align="left">
-//     {prices[index] !== null && quoteAmounts[index] !== undefined ? (
-//       formatBigNumberUsingDecimalsToString(prices[index], quoteAmounts[index], 4)
-//     ) : (
-//       <Loader stroke="white" size="12px" />
-//     )}
-//   </StyledTableCellThin>
-
-//   <StyledTableCellThin align="left">
-//     <FlexRow>
-//       <TEXT.SmallBody mr="auto">
-//         {ois[index]?.oiShort || ois[index]?.oiShort === 0 ? (
-//           ois[index]?.oiShort
-//         ) : (
-//           <Loader stroke="white" size="12px" />
-//         )}
-//       </TEXT.SmallBody>
-//       <TEXT.SmallBody>
-//         {ois[index]?.oiLong || ois[index]?.oiLong === 0 ? (
-//           ois[index]?.oiLong
-//         ) : (
-//           <Loader stroke="white" size="12px" />
-//         )}{' '}
-//       </TEXT.SmallBody>
-//     </FlexRow>
-//     <DoubleProgressBar
-//       leftBarValue={ois[index]?.oiShort}
-//       rightBarValue={ois[index]?.oiLong}
-//       maxValue={capOis[index]}
-//     />
-//   </StyledTableCellThin>
-
-//   <StyledTableCellThin component="th" scope="row">
-//     {capOis[index] || capOis[index] === 0 ? (
-//       capOis[index]
-//     ) : (
-//       <Loader stroke="white" size="12px" />
-//     )}
-//   </StyledTableCellThin>
-
-//   <StyledTableCellThin align="left">
-//     <FlexRow>
-//       <TEXT.AdjustableSize color={'#f2f2f2'} mr={'3px'}>
-//         {fundingRates[index] ? (
-//           `${formatFundingRateToDaily(
-//             fundingRates[index],
-//             18,
-//             2,
-//           )}% (${formatFundingRateToAnnual(fundingRates[index], 18, 2)}%)`
-//         ) : (
-//           <Loader stroke="white" size="12px" />
-//         )}
-//       </TEXT.AdjustableSize>
-//     </FlexRow>
-//   </StyledTableCellThin>
-// </StyledTableRow>
