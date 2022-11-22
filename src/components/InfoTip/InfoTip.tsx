@@ -9,6 +9,9 @@ const IconWrapper = styled.a<{margin?: string}>`
   vertical-align: middle;
 `
 
+const TipContainer = styled.div`
+  text-align: left;
+`
 type InfoTipProps = {
   children: React.ReactNode
   tipFor: string
@@ -36,7 +39,7 @@ export const InfoTip = ({children, margin, color, tipFor}: InfoTipProps) => {
             id={mobileDataTip}
             globalEventOff="click"
           >
-            {children}
+            <TipContainer>{children}</TipContainer>
           </ReactTooltip>
         </>
       ) : (
@@ -52,7 +55,7 @@ export const InfoTip = ({children, margin, color, tipFor}: InfoTipProps) => {
             textColor={color}
             id={desktopDataTip}
           >
-            {children}
+            <TipContainer>{children}</TipContainer>
           </ReactTooltip>
         </>
       )}
