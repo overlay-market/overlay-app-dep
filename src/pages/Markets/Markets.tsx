@@ -140,7 +140,7 @@ const MarketRow = ({
         </FlexRow>
         <DoubleProgressBar leftBarValue={oiShort} rightBarValue={oiLong} maxValue={capOi} />
       </StyledTableCellThin>
-      <StyledTableCellThin align="left">
+      <StyledTableCellThin align="right">
         {marketAttributes.dailyFundingRate}% ({marketAttributes.annualFundingRate}%)
       </StyledTableCellThin>
     </StyledTableRow>
@@ -205,7 +205,7 @@ const Markets = () => {
               <StyledHeaderCell>
                 <Trans> OI: Short | Long </Trans>
               </StyledHeaderCell>
-              <StyledHeaderCell>
+              <StyledHeaderCell align="right">
                 <Trans> Funding Rate </Trans>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
