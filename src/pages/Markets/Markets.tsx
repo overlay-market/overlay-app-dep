@@ -32,6 +32,7 @@ import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
 import {Result} from '../../state/multicall/hooks'
+import {InfoTip} from '../../components/InfoTip/InfoTip'
 
 const activeClassName = 'INACTIVE'
 
@@ -204,9 +205,11 @@ const Markets = () => {
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> OI: Short | Long </Trans>
+                <InfoTip children="Open Interest" tipFor="Market Open Interest" />
               </StyledHeaderCell>
               <StyledHeaderCell align="right">
                 <Trans> Funding Rate </Trans>
+                <InfoTip children="Funding Rate" tipFor="Market Funding Rate" />
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
