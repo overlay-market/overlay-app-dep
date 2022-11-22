@@ -191,6 +191,19 @@ const Markets = () => {
 
   const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
 
+  const INFO_TIP_DESCRIPTIONS = {
+    openInterest: `This column denotes the open 
+    interest currently present on the short side 
+    (left) and long side (right). These percentages 
+    reflect (current open interest/cap oi).`,
+    fundingRate: `This column denotes the current 
+    funding rate per market. The left shows funding 
+    rate every 24 hours, and the value in the paranthesis 
+    shows funding rate annualized. 
+    The funding rate is positive when longs > shorts,
+    and is negative when shorts > longs.
+    `,
+  }
   return (
     <PageContainer>
       <TableContainer component={Paper}>
@@ -205,11 +218,17 @@ const Markets = () => {
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> OI: Short | Long </Trans>
-                <InfoTip children="Open Interest" tipFor="Market Open Interest" />
+                <InfoTip
+                  children={INFO_TIP_DESCRIPTIONS.openInterest}
+                  tipFor="Market Open Interest"
+                />
               </StyledHeaderCell>
               <StyledHeaderCell align="right">
                 <Trans> Funding Rate </Trans>
-                <InfoTip children="Funding Rate" tipFor="Market Funding Rate" />
+                <InfoTip
+                  children={INFO_TIP_DESCRIPTIONS.fundingRate}
+                  tipFor="Market Funding Rate"
+                />
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
