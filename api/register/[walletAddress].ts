@@ -24,7 +24,7 @@ export default async function registerWalletAddressToChainalysis(
     body: JSON.stringify(bodyObject),
     headers: {
       Accept: 'application/json',
-      Token: `${process.env.REACT_APP_CHAINALYSIS_KEY_TEST}`,
+      Token: `${process.env.REACT_APP_CHAINALYSIS_KEY}`,
     },
   })
 
