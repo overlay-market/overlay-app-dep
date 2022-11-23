@@ -204,17 +204,18 @@ const Markets = () => {
     ),
     fundingRate: (
       <>
-        <div>This column denotes the current</div>
-        <div>funding rate per market. The left</div>
-        <div>shows funding rate every 24 hours,</div>
-        <div>and the value in the paranthesis</div>
-        <div>shows funding rate annualized.</div>
+        <div>Funding Rate per Market</div>
         <br />
-        <div>The funding rate is positive when</div>
-        <div>Long OI {'>'} Short OI,</div>
+        <div>Left value shows funding</div>
+        <div>rate every 24 hours. Value</div>
+        <div>in paranthesis shows funding</div>
+        <div> rate annualized.</div>
         <br />
-        <div>and is negative when </div>
-        <div>Short OI {'>'} Long OI</div>
+        <div>Funding rate + when:</div>
+        <div>Long OI {'>'} Short OI</div>
+        <br />
+        <div>Funding rate - when:</div>
+        <div>Long OI {'<'} Short OI</div>
       </>
     ),
   }
