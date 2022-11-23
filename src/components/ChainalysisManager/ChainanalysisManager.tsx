@@ -13,8 +13,8 @@ export enum SecurityRiskLevels {
 }
 
 enum LambdaEndpoint {
-  REGISTER_ADDRESS = 'https://app.overlay.market/api/register/',
-  SCREEN_ADDRESS = 'https://app.overlay.market/api/user/',
+  REGISTER_ADDRESS = '/api/register/',
+  SCREEN_ADDRESS = '/api/user/',
 }
 
 enum RegisterResponseMessage {
