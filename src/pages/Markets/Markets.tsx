@@ -194,12 +194,13 @@ const Markets = () => {
   const INFO_TIP_DESCRIPTIONS = {
     openInterest: (
       <>
-        <div>This column denotes the open interest</div>
-        <div>currently present on the short side (left)</div>
-        <div>and long side (right).</div>
+        <div>Open Interest (OI) refers to </div>
+        <div>the total available outstanding</div>
+        <div>positions that have not been settled,</div>
+        <div>per market, denoted in OVL.</div>
         <br />
-        <div>These percentages reflect (current</div>
-        <div>open interest/cap oi).</div>
+        <div>% = current total percent filled of</div>
+        <div>Open Interest Cap.</div>
       </>
     ),
     fundingRate: (
@@ -209,7 +210,7 @@ const Markets = () => {
         <div>Left value shows funding</div>
         <div>rate every 24 hours. Value</div>
         <div>in paranthesis shows funding</div>
-        <div> rate annualized.</div>
+        <div>rate annualized.</div>
         <br />
         <div>Funding rate + when:</div>
         <div>Long OI {'>'} Short OI</div>
