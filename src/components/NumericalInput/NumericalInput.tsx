@@ -1,9 +1,14 @@
-import React from 'react';
-import styled from 'styled-components/macro';
-import { escapeRegExp } from '../../utils/escapeRegExp';
+import React from 'react'
+import styled from 'styled-components/macro'
+import {escapeRegExp} from '../../utils/escapeRegExp'
 
-const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: string; height?: string }>`
-  color: ${({ error, theme }) => (error ? theme.red1 : theme.text1)};
+const StyledInput = styled.input<{
+  error?: boolean
+  fontSize?: string
+  align?: string
+  height?: string
+}>`
+  color: ${({error, theme}) => (error ? theme.red1 : theme.text1)};
   width: 100%;
   position: relative;
   font-weight: 500;
@@ -11,9 +16,9 @@ const StyledInput = styled.input<{ error?: boolean; fontSize?: string; align?: s
   border: none;
   flex: 1 1 auto;
   background-color: transparent;
-  font-size: ${({ fontSize }) => fontSize ?? '16px'};
-  text-align: ${({ align }) => align && align};
-  height: ${({ height }) => (height ? height : 'auto')};
+  font-size: ${({fontSize}) => fontSize ?? '16px'};
+  text-align: ${({align}) => align && align};
+  height: ${({height}) => (height ? height : 'auto')};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -66,7 +71,7 @@ export const NumericalInput = React.memo(function InnerInput({
     <StyledInput
       {...rest}
       value={prependSymbol && value ? prependSymbol + value : value}
-      onChange={(event) => {
+      onChange={event => {
         if (prependSymbol) {
           const value = event.target.value
           // cut off prepended symbol
@@ -94,5 +99,4 @@ export const NumericalInput = React.memo(function InnerInput({
       height={height}
     />
   )
-});
-
+})

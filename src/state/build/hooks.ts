@@ -54,7 +54,12 @@ export function useBuildActionHandlers(): {
 
   const onSetSlippage = useCallback(
     (setSlippageValue: DefaultTxnSettings | string) => {
-      dispatch(setSlippage({ setSlippageValue }))
+      if (Number(setSlippageValue) < 1 && setSlippageValue.length > 1) {
+        dispatch(setSlippage({setSlippageValue: DefaultTxnSettings.DEFAULT_SLIPPAGE}))
+      }
+      else {
+        dispatch(setSlippage({ setSlippageValue }))
+      }
     },
     [dispatch]
   )
