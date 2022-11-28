@@ -25,7 +25,7 @@ export const initialState: UserState = {
   matchesDarkMode: false,
   userLocale: null,
   timestamp: currentTimestamp(),
-  userHideClosedPositions: false,
+  userHideClosedPositions: true,
 }
 
 export default createReducer(initialState, builder =>
