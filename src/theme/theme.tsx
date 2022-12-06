@@ -83,7 +83,7 @@ export const TEXT = {
     return <TextWrapper fontWeight={500} color={'text2'} {...props} />
   },
   Menu(props: TextProps) {
-    return <TextWrapper fontWeight={400} fontSize={14} {...props} />
+    return <TextWrapper fontWeight={700} fontSize={14} {...props} />
   },
   StandardHeader1(props: TextProps) {
     return <TextWrapper fontSize={20} fontWeight={400} color={'white1'} {...props} />

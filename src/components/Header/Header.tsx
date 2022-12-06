@@ -132,7 +132,7 @@ export default function Header() {
         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
       </AccountContainer>
 
-      <SlideMenu open={open} />
+      <SlideMenu open={open} setOpen={setOpen} />
     </HeaderContainer>
   )
 }
