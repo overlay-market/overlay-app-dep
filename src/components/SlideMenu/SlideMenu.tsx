@@ -65,18 +65,16 @@ const Content = styled.div`
   padding: 2rem;
 `
 
-const StyledMenuLink = ({
-  currentLocation,
-  linkDestination,
-  text,
-}: {
-  currentLocation: string
+interface StyledMenuLinkProps {
+  displayText: string
   linkDestination: string
-  text: string
-}) => {
-  const active = currentLocation == linkDestination
+  currentLocation: string
+}
+
+const StyledMenuLink = ({displayText, linkDestination, currentLocation}: StyledMenuLinkProps) => {
+  const active = currentLocation === linkDestination
   const color = active ? '#12B4FF' : '#FFF'
-  return <TEXT.Menu color={color}>{text}</TEXT.Menu>
+  return <TEXT.Menu color={color}>{displayText}</TEXT.Menu>
 }
 
 const SlideMenu = ({open, setOpen, ...props}: {open: boolean; setOpen: Function; props?: any}) => {
@@ -92,16 +90,16 @@ const SlideMenu = ({open, setOpen, ...props}: {open: boolean; setOpen: Function;
       <Content>
         <StyledInternalLink tabIndex={tabIndex} to={'/markets'}>
           <StyledMenuLink
-            text={'Markets'}
-            currentLocation={location}
+            displayText={'Markets'}
             linkDestination={'/markets'}
+            currentLocation={location}
           />
         </StyledInternalLink>
         <StyledInternalLink tabIndex={tabIndex} to={'/positions'}>
           <StyledMenuLink
-            text={'Positions'}
-            currentLocation={location}
+            displayText={'Positions'}
             linkDestination={'/positions'}
+            currentLocation={location}
           />
         </StyledInternalLink>
         <Separator />
