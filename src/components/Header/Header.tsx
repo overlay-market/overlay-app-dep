@@ -75,7 +75,7 @@ export default function Header() {
     if (open) {
       setOpen(open => false)
     }
-  }, [location, open])
+  }, [location])
 
   // disable scroll when mobile menu open
   useEffect(() => {
