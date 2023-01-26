@@ -14,6 +14,7 @@ import styled from 'styled-components/macro'
 import Magic from './Magic/Magic'
 import Vaults from './Stake/Vaults'
 import {Stake} from './Stake/Stake'
+import Bridge from './Bridge/Bridge'
 import Popups from '../components/Popup/Popups'
 import {Banner} from '../components/Banner/Banner'
 
@@ -50,6 +51,7 @@ const App = () => {
               <Route exact strict path="/liquidate" component={Liquidate} />
               <Route exact strict path="/stake" component={Vaults} />
               <Route exact strict path="/stake/:vaultId" component={Stake} />
+              <Route exact strict path="/bridge" component={Bridge} />
             </Switch>
           </Web3ReactManager>
         </TermsOfServiceManager>
