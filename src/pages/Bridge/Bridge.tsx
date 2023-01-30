@@ -40,9 +40,12 @@ const ChainSelection = styled.div`
   border-radius: 32px;
 `
 
-const InputContainer = styled.div`
-  display: flex;
-  flex-direction: column;
+const SwitchButton = styled.button`
+  margin: auto;
+  width: 200px;
+  outline: none;
+  text-decoration: none;
+  color: white;
 `
 
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
@@ -116,14 +119,26 @@ const Bridge = () => {
   const mainnetOvlBalance = useChainOvlBalance(SupportedChainId.MAINNET)
   const arbitrumOvlBalance = useChainOvlBalance(SupportedChainId.GÖRLI)
 
-  console.log('mainnetOvlBalance', mainnetOvlBalance?.toFixed(4))
-  console.log('arbitrumOvlBalance', arbitrumOvlBalance?.toFixed(4))
+  const handleSwitch = () => {
+    if (bridgeFromChain === SupportedChainId.MAINNET) {
+      setBridgeState({
+        bridgeFromChain: SupportedChainId.GÖRLI,
+        bridgeToChain: SupportedChainId.MAINNET,
+      })
+    } else {
+      setBridgeState({
+        bridgeFromChain: SupportedChainId.MAINNET,
+        bridgeToChain: SupportedChainId.GÖRLI,
+      })
+    }
+  }
 
   return (
     <BridgeContainer>
       <Title>Bridge</Title>
       <InterfaceContainer>
         <BridgeFromNetwork chainId={bridgeFromChain} />
+        <SwitchButton onClick={handleSwitch}>Switch</SwitchButton>
         <BridgeToNetwork chainId={bridgeToChain} />
       </InterfaceContainer>
     </BridgeContainer>
