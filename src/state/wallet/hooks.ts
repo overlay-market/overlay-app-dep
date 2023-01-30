@@ -147,3 +147,15 @@ export function useArbitrumOvlBalance(): CurrencyAmount<Token> | undefined {
 
   return CurrencyAmount.fromRawAmount(arbitrumOvl, arbitrumOvlBalance?.quotient ?? JSBI.BigInt(0))
 }
+
+export function useChainOvlBalance(chainId: SupportedChainId): CurrencyAmount<Token> | undefined {
+  const {account} = useActiveWeb3React()
+
+  const ovl = account ? OVL[chainId] : undefined
+
+  const ovlBalance: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, ovl)
+
+  if (!ovl) return undefined
+
+  return CurrencyAmount.fromRawAmount(ovl, ovlBalance?.quotient ?? JSBI.BigInt(0))
+}
