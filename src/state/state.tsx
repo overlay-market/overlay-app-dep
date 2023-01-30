@@ -4,6 +4,7 @@ import user from './user/reducer'
 import application from './application/reducer'
 import multicall from './multicall/reducer'
 import build from './build/reducer'
+import bridge from './bridge/reducer'
 import unwind from './unwind/reducer'
 import transactions from './transactions/reducer'
 import markets from './markets/reducer'
@@ -19,6 +20,7 @@ const store = configureStore({
     user,
     multicall,
     build,
+    bridge,
     unwind,
     transactions,
     markets,

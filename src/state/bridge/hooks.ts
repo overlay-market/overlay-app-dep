@@ -4,6 +4,10 @@ import {AppState} from '../state'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useAppDispatch, useAppSelector} from '../hooks'
 
+export function useBridgeState(): AppState['bridge'] {
+  return useAppSelector(state => state.bridge)
+}
+
 export function useBridgeActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void
 } {
