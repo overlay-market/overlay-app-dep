@@ -48,7 +48,6 @@ const InputContainer = styled.div`
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
-
   const {typedValue} = useBridgeState()
   const {onAmountInput} = useBridgeActionHandlers()
 
@@ -83,12 +82,24 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 }
 
 const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
+  const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
+  const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
+  const {typedValue} = useBridgeState()
   return (
     <BridgeSelectorContainer>
       <FlexRow>
         <TEXT.StandardBody>To</TEXT.StandardBody>
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
       </FlexRow>
+      <FlexColumn>
+        <FlexRow justify="space-between">
+          <TEXT.Supplemental>Receive</TEXT.Supplemental>
+          <TEXT.Supplemental>Balance: {parsedBalance} OVL</TEXT.Supplemental>
+        </FlexRow>
+        <FlexRow justify="space-between">
+          <NumericalInput align="left" onUserInput={() => null} value={typedValue?.toString()} />
+        </FlexRow>
+      </FlexColumn>
     </BridgeSelectorContainer>
   )
 }
