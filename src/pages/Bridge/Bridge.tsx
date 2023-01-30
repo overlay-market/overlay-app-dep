@@ -4,6 +4,7 @@ import {useArbitrumOvlBalance, useChainOvlBalance} from '../../state/wallet/hook
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
 import {TEXT} from '../../theme/theme'
+import {FlexColumn, FlexRow} from '../../components/Container/Container'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -11,6 +12,7 @@ const BridgeContainer = styled.div`
   margin: auto;
   max-width: 400px;
   margin-top: 64px;
+  color: white;
 `
 
 const Title = styled.div`
@@ -26,13 +28,9 @@ const InterfaceContainer = styled.div`
   border-radius: 8px;
 `
 
-const ChainSelectionContainer = styled.div`
-  display: flex;
-`
-
 const BridgeSelectorContainer = styled.div`
   display: flex;
-  flex-container: column;
+  flex-direction: column;
 `
 
 const ChainSelection = styled.div`
@@ -40,24 +38,38 @@ const ChainSelection = styled.div`
   border-radius: 32px;
 `
 
-const BridgeFromNetwork = ({chainId}: {chainId: any}) => {
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+
+const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
+  const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
+  const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
+
   return (
     <BridgeSelectorContainer>
-      <ChainSelectionContainer>
+      <FlexRow>
         <TEXT.StandardBody>From</TEXT.StandardBody>
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
-      </ChainSelectionContainer>
+      </FlexRow>
+      <FlexColumn>
+        <FlexRow justify="space-between">
+          <TEXT.Supplemental>Send</TEXT.Supplemental>
+          <TEXT.Supplemental>Max: {parsedBalance} OVL</TEXT.Supplemental>
+        </FlexRow>
+      </FlexColumn>
     </BridgeSelectorContainer>
   )
 }
 
-const BridgeToNetwork = ({chainId}: {chainId: any}) => {
+const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   return (
     <BridgeSelectorContainer>
-      <ChainSelectionContainer>
+      <FlexRow>
         <TEXT.StandardBody>To</TEXT.StandardBody>
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
-      </ChainSelectionContainer>
+      </FlexRow>
     </BridgeSelectorContainer>
   )
 }
