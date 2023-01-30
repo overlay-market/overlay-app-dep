@@ -114,7 +114,6 @@ export function useBuildCallback(
 
   return useMemo(() => {
     if (!buildData || !library || !account || !chainId || !marketAddress || inputError) {
-      // console.log('inputError: ', inputError);
       return {
         state: BuildCallbackState.INVALID,
         callback: null,
