@@ -1,6 +1,6 @@
 import {useState, useEffect, useCallback} from 'react'
 import styled from 'styled-components'
-import {useArbitrumOvlBalance, useChainOvlBalance} from '../../state/wallet/hooks'
+import {useChainOvlBalance} from '../../state/wallet/hooks'
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
 import {TEXT} from '../../theme/theme'
