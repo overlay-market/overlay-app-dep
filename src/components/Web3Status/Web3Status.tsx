@@ -142,8 +142,8 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
   }
 }
 
-const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = {
-  [SupportedChainId.MAINNET]: 'Mainnet',
+export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = {
+  [SupportedChainId.MAINNET]: 'Ethereum Mainnet',
   [SupportedChainId.GÖRLI]: 'Goerli',
   [SupportedChainId.RINKEBY]: 'Rinkeby',
 }

@@ -1,6 +1,9 @@
 import {useState, useEffect} from 'react'
 import styled from 'styled-components'
-import {useArbitrumOvlBalance} from '../../state/wallet/hooks'
+import {useArbitrumOvlBalance, useChainOvlBalance} from '../../state/wallet/hooks'
+import {SupportedChainId} from '../../constants/chains'
+import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
+import {TEXT} from '../../theme/theme'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -23,23 +26,52 @@ const InterfaceContainer = styled.div`
   border-radius: 8px;
 `
 
+const ChainSelectionContainer = styled.div`
+  display: flex;
+`
+
+const BridgeSelectorContainer = styled.div`
+  display: flex;
+  flex-container: column;
+`
+
+const ChainSelection = styled.div`
+  background: #10131d;
+  border-radius: 32px;
+`
+
+const BridgeFromNetwork = ({chainId}: {chainId: any}) => {
+  return (
+    <BridgeSelectorContainer>
+      <ChainSelectionContainer>
+        <TEXT.StandardBody>From</TEXT.StandardBody>
+        <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
+      </ChainSelectionContainer>
+    </BridgeSelectorContainer>
+  )
+}
+
 const Bridge = () => {
   const [{bridgeFromChain, bridgeToChain}, setBridgeState] = useState<{
     bridgeFromChain: string
     bridgeToChain: string
   }>({
-    bridgeFromChain: 'Ethereum',
+    bridgeFromChain: 'Ethereum ',
     bridgeToChain: 'Arbitrum',
   })
 
-  const arbitrumOvlBalance = useArbitrumOvlBalance()
+  const mainnetOvlBalance = useChainOvlBalance(SupportedChainId.MAINNET)
+  const arbitrumOvlBalance = useChainOvlBalance(SupportedChainId.GÖRLI)
 
+  console.log('mainnetOvlBalance', mainnetOvlBalance?.toFixed(4))
   console.log('arbitrumOvlBalance', arbitrumOvlBalance?.toFixed(4))
 
   return (
     <BridgeContainer>
       <Title>Bridge</Title>
-      <InterfaceContainer></InterfaceContainer>
+      <InterfaceContainer>
+        <BridgeFromNetwork chainId={SupportedChainId.MAINNET} />
+      </InterfaceContainer>
     </BridgeContainer>
   )
 }
