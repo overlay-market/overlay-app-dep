@@ -1,10 +1,12 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useCallback} from 'react'
 import styled from 'styled-components'
 import {useArbitrumOvlBalance, useChainOvlBalance} from '../../state/wallet/hooks'
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
 import {TEXT} from '../../theme/theme'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
+import {useBridgeActionHandlers, useBridgeState} from '../../state/bridge/hooks'
+import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -47,6 +49,16 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
 
+  const {typedValue} = useBridgeState()
+  const {onAmountInput} = useBridgeActionHandlers()
+
+  const handleUserInput = useCallback(
+    (input: string) => {
+      onAmountInput(input)
+    },
+    [onAmountInput],
+  )
+
   return (
     <BridgeSelectorContainer>
       <FlexRow>
@@ -57,6 +69,13 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
         <FlexRow justify="space-between">
           <TEXT.Supplemental>Send</TEXT.Supplemental>
           <TEXT.Supplemental>Max: {parsedBalance} OVL</TEXT.Supplemental>
+        </FlexRow>
+        <FlexRow justify="space-between">
+          <NumericalInput
+            align="left"
+            onUserInput={handleUserInput}
+            value={typedValue?.toString()}
+          />
         </FlexRow>
       </FlexColumn>
     </BridgeSelectorContainer>
