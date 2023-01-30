@@ -1,0 +1,22 @@
+import {useCallback} from 'react'
+import {typeInput} from './actions'
+import {AppState} from '../state'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {useAppDispatch, useAppSelector} from '../hooks'
+
+export function useBridgeActionHandlers(): {
+  onAmountInput: (typedValue: string | undefined) => void
+} {
+  const dispatch = useAppDispatch()
+
+  const onAmountInput = useCallback(
+    (typedValue: string | undefined) => {
+      dispatch(typeInput({typedValue}))
+    },
+    [dispatch],
+  )
+
+  return {
+    onAmountInput,
+  }
+}
