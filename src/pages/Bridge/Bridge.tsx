@@ -51,13 +51,24 @@ const BridgeFromNetwork = ({chainId}: {chainId: any}) => {
   )
 }
 
+const BridgeToNetwork = ({chainId}: {chainId: any}) => {
+  return (
+    <BridgeSelectorContainer>
+      <ChainSelectionContainer>
+        <TEXT.StandardBody>To</TEXT.StandardBody>
+        <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
+      </ChainSelectionContainer>
+    </BridgeSelectorContainer>
+  )
+}
+
 const Bridge = () => {
   const [{bridgeFromChain, bridgeToChain}, setBridgeState] = useState<{
-    bridgeFromChain: string
-    bridgeToChain: string
+    bridgeFromChain: SupportedChainId
+    bridgeToChain: SupportedChainId
   }>({
-    bridgeFromChain: 'Ethereum ',
-    bridgeToChain: 'Arbitrum',
+    bridgeFromChain: SupportedChainId.MAINNET,
+    bridgeToChain: SupportedChainId.GÖRLI,
   })
 
   const mainnetOvlBalance = useChainOvlBalance(SupportedChainId.MAINNET)
@@ -70,7 +81,8 @@ const Bridge = () => {
     <BridgeContainer>
       <Title>Bridge</Title>
       <InterfaceContainer>
-        <BridgeFromNetwork chainId={SupportedChainId.MAINNET} />
+        <BridgeFromNetwork chainId={bridgeFromChain} />
+        <BridgeToNetwork chainId={bridgeToChain} />
       </InterfaceContainer>
     </BridgeContainer>
   )
