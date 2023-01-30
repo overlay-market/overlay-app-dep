@@ -7,6 +7,8 @@ import {TEXT} from '../../theme/theme'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {useBridgeActionHandlers, useBridgeState} from '../../state/bridge/hooks'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
+import {TriggerActionButton} from '../../components/Button/Button'
+import {useActiveWeb3React} from '../../hooks/web3'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -48,6 +50,8 @@ const SwitchButton = styled.button`
   color: white;
 `
 
+const InputCurrency = styled.div``
+
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
@@ -78,6 +82,7 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
             onUserInput={handleUserInput}
             value={typedValue?.toString()}
           />
+          <InputCurrency>OVL</InputCurrency>
         </FlexRow>
       </FlexColumn>
     </BridgeSelectorContainer>
@@ -101,6 +106,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
         </FlexRow>
         <FlexRow justify="space-between">
           <NumericalInput align="left" onUserInput={() => null} value={typedValue?.toString()} />
+          <InputCurrency>OVL</InputCurrency>
         </FlexRow>
       </FlexColumn>
     </BridgeSelectorContainer>
@@ -108,6 +114,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 }
 
 const Bridge = () => {
+  const {account} = useActiveWeb3React()
   const [{bridgeFromChain, bridgeToChain}, setBridgeState] = useState<{
     bridgeFromChain: SupportedChainId
     bridgeToChain: SupportedChainId
@@ -115,9 +122,6 @@ const Bridge = () => {
     bridgeFromChain: SupportedChainId.MAINNET,
     bridgeToChain: SupportedChainId.GÖRLI,
   })
-
-  const mainnetOvlBalance = useChainOvlBalance(SupportedChainId.MAINNET)
-  const arbitrumOvlBalance = useChainOvlBalance(SupportedChainId.GÖRLI)
 
   const handleSwitch = () => {
     if (bridgeFromChain === SupportedChainId.MAINNET) {
@@ -141,6 +145,11 @@ const Bridge = () => {
         <SwitchButton onClick={handleSwitch}>Switch</SwitchButton>
         <BridgeToNetwork chainId={bridgeToChain} />
       </InterfaceContainer>
+      {account ? (
+        <TriggerActionButton>Bridge</TriggerActionButton>
+      ) : (
+        <TriggerActionButton>Connect Wallet</TriggerActionButton>
+      )}
     </BridgeContainer>
   )
 }
