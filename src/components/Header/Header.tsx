@@ -122,7 +122,7 @@ export default function Header() {
         <Trans>Positions</Trans>
       </StyledLink>
 
-      <StyledLink to={'/positions'}>
+      <StyledLink to={'/bridge'}>
         <Trans>Bridge</Trans>
       </StyledLink>
 
