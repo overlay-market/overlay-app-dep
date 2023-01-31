@@ -30,12 +30,14 @@ interface FailedCall extends BridgeTokenCallEstimate {
   call: BridgeTokenCall
   error: Error
 }
+
 enum BridgeTokenCallbackState {
   INVALID,
   LOADING,
   VALID,
 }
 interface useBridgeTokenCallbackProps {
+  layerZeroContractAddress: string
   destinationChainId: number
   amount: any
 }
@@ -86,12 +88,20 @@ function useBridgeTokenArguments(
  * Returns callback function that will execute bridging tokens from one chain to another
  * @param
  */
-export function useBridgeTokenCallback({destinationChainId, amount}: useBridgeTokenCallbackProps) {
-  const layerZeroContract = useLayerZeroBridgeContract()
+export function useBridgeTokenCallback({
+  layerZeroContractAddress,
+  destinationChainId,
+  amount,
+}: useBridgeTokenCallbackProps) {
   const addTransaction = useTransactionAdder()
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
   const {account, chainId, library} = useActiveWeb3React()
+  const bridgeTokenCalls = useBridgeTokenArguments(
+    layerZeroContractAddress,
+    destinationChainId,
+    amount,
+  )
 
   return useMemo(() => {
     if (!account || !library || !chainId) {
@@ -207,11 +217,8 @@ export function useBridgeTokenCallback({destinationChainId, amount}: useBridgeTo
           })
           .then((response: TransactionResponse) => {
             addTransaction(response, {
-              type: TransactionType.BUILD_OVL_POSITION,
-              market: marketAddress,
-              collateral: buildData.typedValue,
-              isLong: buildData.isLong,
-              leverage: buildData.selectedLeverage,
+              type: TransactionType.BRIDGE_OVL,
+              amount: amount,
             })
 
             return response.hash
