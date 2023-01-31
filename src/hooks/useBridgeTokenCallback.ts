@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import {useMemo, useEffect} from 'react'
 import {useLayerZeroBridgeContract, useLayerZeroEndpointContract} from './useContract'
 import {useSingleCallResult} from '../state/multicall/hooks'
 import {useActiveWeb3React} from './web3'
@@ -8,9 +8,13 @@ import {useTransactionAdder} from '../state/transactions/hooks'
 import {useAddPopup} from '../state/application/hooks'
 import {currentTimeParsed} from '../utils/currentTime'
 import {calculateGasMargin} from '../utils/calculateGasMargin'
-import {BigNumber, utils, BigNumberish} from 'ethers'
+import {BigNumber, utils, BigNumberish, ethers} from 'ethers'
 import isZero from '../utils/isZero'
-import {LAYER_ZERO_ADDRESS, LAYER_ZERO_DESTINATION_ID} from '../constants/bridge'
+import {
+  LAYER_ZERO_ADDRESS,
+  LAYER_ZERO_DESTINATION_ID,
+  LAYER_ZERO_ENDPOINT_ADDRESS,
+} from '../constants/bridge'
 
 interface BridgeTokenCall {
   address: string
@@ -54,33 +58,40 @@ function useBridgeTokenArguments(
   const layerZeroContract = useLayerZeroBridgeContract()
   const layerZeroEndpointContract = useLayerZeroEndpointContract()
 
-  if (!destinationChainId || !amount || !layerZeroContract) calldata = undefined
-  else {
-    calldata = layerZeroContract.interface.encodeFunctionData('bridgeToken', [
-      destinationChainId,
-      utils.parseUnits(amount),
-    ])
-  }
+  calldata = useMemo(() => {
+    if (!destinationChainId || !amount || !layerZeroContract) {
+      return ''
+    } else {
+      return layerZeroContract.interface.encodeFunctionData('bridgeToken', [
+        LAYER_ZERO_DESTINATION_ID[destinationChainId],
+        utils.parseUnits(amount),
+      ])
+    }
+  }, [destinationChainId, amount, layerZeroContract])
 
-  console.log('destinationChainId', destinationChainId)
-
-  console.log(
-    'LAYER_ZERO_DESTINATION_ID[destinationChainId]: ',
-    LAYER_ZERO_DESTINATION_ID[destinationChainId],
-  )
   const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [
     LAYER_ZERO_DESTINATION_ID[destinationChainId],
   ])
 
-  console.log('adapterParams: ', adapterParams)
+  console.log('adapterParams: ', adapterParams?.result?.[0])
 
   // const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
-  //   destinationChainId,
+  //   LAYER_ZERO_DESTINATION_ID[destinationChainId],
   //   LAYER_ZERO_ADDRESS[destinationChainId],
   //   calldata,
   //   false,
-
+  //   adapterParams?.result?.[0],
   // ])
+
+  const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
+    110,
+    '0x66A71Dcef29A0fFBDBE3c6a460a3B5BC225Cd675',
+    '0xc1b7aff2000000000000000000000000000000000000000000000000000000000000006e000000000000000000000000000000000000000000000001314fb37062980000',
+    'false',
+    '0x00020000000000000000000000000000000000000000000000000000000000055730',
+  ])
+
+  console.log('estimatedFees: ', estimatedFees)
 
   return useMemo(() => {
     if (

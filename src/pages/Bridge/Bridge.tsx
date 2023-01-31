@@ -125,12 +125,7 @@ const Bridge = () => {
     bridgeToChain: SupportedChainId.ARBITRUM,
   })
 
-  console.log('bridgeFromChain', bridgeFromChain)
-
   const {typedValue} = useBridgeState()
-
-  const originLayerZeroId = LAYER_ZERO_DESTINATION_ID[bridgeFromChain]
-  const destinationLayerZeroId = LAYER_ZERO_DESTINATION_ID[bridgeToChain]
 
   const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChain],
