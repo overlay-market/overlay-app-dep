@@ -1,4 +1,4 @@
-import {useMemo, useEffect} from 'react'
+import {useMemo} from 'react'
 import {useLayerZeroBridgeContract, useLayerZeroEndpointContract} from './useContract'
 import {useSingleCallResult} from '../state/multicall/hooks'
 import {useActiveWeb3React} from './web3'
@@ -8,13 +8,9 @@ import {useTransactionAdder} from '../state/transactions/hooks'
 import {useAddPopup} from '../state/application/hooks'
 import {currentTimeParsed} from '../utils/currentTime'
 import {calculateGasMargin} from '../utils/calculateGasMargin'
-import {BigNumber, utils, BigNumberish, ethers} from 'ethers'
+import {BigNumber, utils} from 'ethers'
 import isZero from '../utils/isZero'
-import {
-  LAYER_ZERO_ADDRESS,
-  LAYER_ZERO_DESTINATION_ID,
-  LAYER_ZERO_ENDPOINT_ADDRESS,
-} from '../constants/bridge'
+import {LAYER_ZERO_ADDRESS, LAYER_ZERO_DESTINATION_ID} from '../constants/bridge'
 
 interface BridgeTokenCall {
   address: string
@@ -83,8 +79,6 @@ function useBridgeTokenArguments(
 
   const estimatedGasFee = estimatedFees.result?.[0]
 
-  console.log('estimatedGasFee: ', estimatedGasFee)
-
   return useMemo(() => {
     if (
       !originLayerZeroContractAddress ||
@@ -96,7 +90,7 @@ function useBridgeTokenArguments(
       !calldata ||
       !estimatedGasFee
     ) {
-      console.log('Missing Params')
+      console.log('Missing useBridgeTokenArguments() Params')
       return []
     }
 
@@ -127,7 +121,11 @@ function useBridgeTokenArguments(
 
 /**
  * Returns callback function that will execute bridging tokens from one chain to another
- * @param
+ * @param originLayerZeroContractAddress LayerZeroEndpoint contract on origin network
+ * @param destinationLayerZeroContractAddress LayerZeroEndpoint contract on destination network
+ * @param originChainId chainId of origin network
+ * @param destinationChainId chainId of destination network
+ * @param amount number of tokens user wants to bridge from origin to destination network
  */
 export function useBridgeTokenCallback(
   originLayerZeroContractAddress: string,
@@ -238,7 +236,7 @@ export function useBridgeTokenCallback(
             (call): call is BridgeTokenCallEstimate => !('error' in call),
           )
           if (!firstNoErrorCall)
-            throw new Error('Unexpected error. Could not estimate gas for the build.')
+            throw new Error('Unexpected error. Could not estimate gas for the bridge.')
           bestCallOption = firstNoErrorCall
         }
 

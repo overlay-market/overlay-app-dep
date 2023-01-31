@@ -121,13 +121,20 @@ const Bridge = () => {
     bridgeFromChainId: SupportedChainId | number
     bridgeToChainId: SupportedChainId | number
   }>({
-    bridgeFromChainId: chainId ? chainId : SupportedChainId.MAINNET,
-    bridgeToChainId: chainId
-      ? chainId === 1
-        ? SupportedChainId.ARBITRUM
-        : SupportedChainId.MAINNET
-      : SupportedChainId.ARBITRUM,
+    bridgeFromChainId: SupportedChainId.MAINNET,
+    bridgeToChainId: SupportedChainId.ARBITRUM,
   })
+
+  useEffect(() => {
+    setBridgeState({
+      bridgeFromChainId: chainId ? chainId : SupportedChainId.MAINNET,
+      bridgeToChainId: chainId
+        ? chainId === 1
+          ? SupportedChainId.ARBITRUM
+          : SupportedChainId.MAINNET
+        : SupportedChainId.ARBITRUM,
+    })
+  }, [chainId])
 
   const {typedValue} = useBridgeState()
 
