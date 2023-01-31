@@ -127,16 +127,16 @@ const Bridge = () => {
 
   const {typedValue} = useBridgeState()
 
-  // console.log('LAYER_ZERO_ADDRESS[bridgeFromChain]: ', LAYER_ZERO_ADDRESS[bridgeFromChain])
+  console.log(
+    'LAYER_ZERO_DESTINATION_ID[bridgeFromChain]: ',
+    LAYER_ZERO_DESTINATION_ID[bridgeFromChain],
+  )
 
   const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChain],
-    LAYER_ZERO_DESTINATION_ID[bridgeToChain],
+    110,
     typedValue ?? '0',
   )
-
-  console.log('bridgeTokenCallback: ', bridgeTokenCallback)
-  console.log('bridgeTokenState: ', bridgeTokenState)
 
   const handleBridge = useCallback(() => {
     if (!typedValue) throw new Error('missing bridge token input size')

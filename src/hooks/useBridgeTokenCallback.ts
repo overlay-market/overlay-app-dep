@@ -47,9 +47,6 @@ function useBridgeTokenArguments(
   destinationChainId: number,
   amount: string | undefined,
 ) {
-  console.log('layerZeroContractAddress: ', layerZeroContractAddress)
-  console.log('destinationChainId: ', destinationChainId)
-  console.log('amount: ', amount)
   let calldata: any
   const layerZeroContract = useLayerZeroBridgeContract()
   if (!destinationChainId || !amount || !layerZeroContract) calldata = undefined
@@ -67,13 +64,16 @@ function useBridgeTokenArguments(
       !amount ||
       !layerZeroContract ||
       !calldata
-    )
+    ) {
+      console.log('right here')
       return []
+    }
 
     const txn: {address: string; calldata: string; value: string} = {
       address: layerZeroContractAddress,
       calldata: calldata,
-      value: '0x0',
+      // value: '0x0',
+      value: '0x2d30e0a3b2ef8',
     }
 
     return [
@@ -96,6 +96,7 @@ export function useBridgeTokenCallback(
   destinationChainId: number,
   amount: string,
 ) {
+  console.log('destinationChainId:', destinationChainId)
   const addTransaction = useTransactionAdder()
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
@@ -105,9 +106,6 @@ export function useBridgeTokenCallback(
     destinationChainId,
     amount,
   )
-
-  console.log('layerZeroContractAddress', layerZeroContractAddress)
-  console.log('bridgeTokenCalls: ', bridgeTokenCalls)
 
   return useMemo(() => {
     if (!account || !library || !chainId || !bridgeTokenCalls) {
