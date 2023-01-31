@@ -2,11 +2,14 @@ import {useMemo} from 'react'
 import {useLayerZeroBridgeContract} from './useContract'
 import {useSingleCallResult} from '../state/multicall/hooks'
 import {useActiveWeb3React} from './web3'
+import {TransactionType} from './../state/transactions/actions'
+import {TransactionResponse} from '@ethersproject/providers'
 import {useTransactionAdder} from '../state/transactions/hooks'
 import {useAddPopup} from '../state/application/hooks'
 import {currentTimeParsed} from '../utils/currentTime'
 import {calculateGasMargin} from '../utils/calculateGasMargin'
-import {BigNumber} from 'ethers'
+import {BigNumber, utils} from 'ethers'
+import isZero from '../utils/isZero'
 
 interface BridgeTokenCall {
   address: string
@@ -35,6 +38,48 @@ enum BridgeTokenCallbackState {
 interface useBridgeTokenCallbackProps {
   destinationChainId: number
   amount: any
+}
+
+function useBridgeTokenArguments(
+  layerZeroContractAddress: string | undefined,
+  destinationChainId: number,
+  amount: string,
+) {
+  let calldata: any
+  const layerZeroContract = useLayerZeroBridgeContract()
+  if (!destinationChainId || !amount || !layerZeroContract) calldata = undefined
+  else {
+    calldata = layerZeroContract.interface.encodeFunctionData('bridgeToken', [
+      destinationChainId,
+      utils.parseUnits(amount),
+    ])
+  }
+
+  return useMemo(() => {
+    if (
+      !layerZeroContractAddress ||
+      !destinationChainId ||
+      !amount ||
+      !layerZeroContract ||
+      !calldata
+    )
+      return []
+
+    const txn: {address: string; calldata: string; value: string} = {
+      address: layerZeroContractAddress,
+      calldata: calldata,
+      value: '0x0',
+    }
+
+    return [
+      {
+        // address: txn.address,
+        address: txn.address,
+        calldata: calldata,
+        value: txn.value,
+      },
+    ]
+  }, [destinationChainId, amount, calldata, layerZeroContractAddress, layerZeroContract])
 }
 
 /**
