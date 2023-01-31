@@ -9,6 +9,7 @@ const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
   SupportedChainId.MAINNET,
   SupportedChainId.GÖRLI,
   SupportedChainId.RINKEBY,
+  SupportedChainId.ARBITRUM,
 ]
 
 export const injected = new InjectedConnector({

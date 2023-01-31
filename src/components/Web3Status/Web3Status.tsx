@@ -146,6 +146,7 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.MAINNET]: 'Ethereum Mainnet',
   [SupportedChainId.GÖRLI]: 'Goerli',
   [SupportedChainId.RINKEBY]: 'Rinkeby',
+  [SupportedChainId.ARBITRUM]: 'Arbitrum',
 }
 
 function Web3StatusInner() {
@@ -205,6 +206,10 @@ function Web3StatusInner() {
           )}
 
           {chainId && NETWORK_LABELS[chainId] === 'Rinkeby' && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
+
+          {chainId && NETWORK_LABELS[chainId] === 'Arbitrum' && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 

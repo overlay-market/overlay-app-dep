@@ -144,13 +144,13 @@ const Bridge = () => {
   const handleSwitch = () => {
     if (bridgeFromChain === SupportedChainId.MAINNET) {
       setBridgeState({
-        bridgeFromChain: SupportedChainId.GÖRLI,
+        bridgeFromChain: SupportedChainId.ARBITRUM,
         bridgeToChain: SupportedChainId.MAINNET,
       })
     } else {
       setBridgeState({
         bridgeFromChain: SupportedChainId.MAINNET,
-        bridgeToChain: SupportedChainId.GÖRLI,
+        bridgeToChain: SupportedChainId.ARBITRUM,
       })
     }
   }
