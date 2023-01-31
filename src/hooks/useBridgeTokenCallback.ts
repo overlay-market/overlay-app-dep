@@ -57,6 +57,8 @@ function useBridgeTokenArguments(
     ])
   }
 
+  const estimatedFees = useSingleCallResult(layerZeroContract)
+
   return useMemo(() => {
     if (
       !layerZeroContractAddress ||
