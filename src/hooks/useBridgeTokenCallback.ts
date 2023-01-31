@@ -37,11 +37,6 @@ enum BridgeTokenCallbackState {
   LOADING,
   VALID,
 }
-// interface useBridgeTokenCallbackProps {
-//   layerZeroContractAddress: string
-//   destinationChainId: number
-//   amount: any
-// }
 
 function useBridgeTokenArguments(
   originLayerZeroContractAddress: string,

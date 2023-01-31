@@ -10,7 +10,7 @@ import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useBridgeTokenCallback} from '../../hooks/useBridgeTokenCallback'
-import {LAYER_ZERO_ADDRESS, LAYER_ZERO_DESTINATION_ID} from '../../constants/bridge'
+import {LAYER_ZERO_ADDRESS} from '../../constants/bridge'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -57,6 +57,7 @@ const InputCurrency = styled.div``
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
+  console.log('parsedBalance: ', parsedBalance)
   const {typedValue} = useBridgeState()
   const {onAmountInput} = useBridgeActionHandlers()
 

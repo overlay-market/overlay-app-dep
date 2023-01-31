@@ -25,6 +25,13 @@ export const OVL: {[chainId: number]: Token} = {
     'OVL',
     'Overlay',
   ),
+  [SupportedChainId.ARBITRUM]: new Token(
+    SupportedChainId.ARBITRUM,
+    OVL_TOKEN_ADDRESS[4],
+    18,
+    'OVL',
+    'Overlay',
+  ),
 }
 
 export const TOKEN_LABELS: {[tokenId in ContractAddresses | number]: string} = {
