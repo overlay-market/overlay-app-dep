@@ -8,7 +8,7 @@ import {useTransactionAdder} from '../state/transactions/hooks'
 import {useAddPopup} from '../state/application/hooks'
 import {currentTimeParsed} from '../utils/currentTime'
 import {calculateGasMargin} from '../utils/calculateGasMargin'
-import {BigNumber, utils} from 'ethers'
+import {BigNumber, utils, BigNumberish} from 'ethers'
 import isZero from '../utils/isZero'
 
 interface BridgeTokenCall {
@@ -36,17 +36,20 @@ enum BridgeTokenCallbackState {
   LOADING,
   VALID,
 }
-interface useBridgeTokenCallbackProps {
-  layerZeroContractAddress: string
-  destinationChainId: number
-  amount: any
-}
+// interface useBridgeTokenCallbackProps {
+//   layerZeroContractAddress: string
+//   destinationChainId: number
+//   amount: any
+// }
 
 function useBridgeTokenArguments(
   layerZeroContractAddress: string | undefined,
   destinationChainId: number,
-  amount: string,
+  amount: string | undefined,
 ) {
+  console.log('layerZeroContractAddress: ', layerZeroContractAddress)
+  console.log('destinationChainId: ', destinationChainId)
+  console.log('amount: ', amount)
   let calldata: any
   const layerZeroContract = useLayerZeroBridgeContract()
   if (!destinationChainId || !amount || !layerZeroContract) calldata = undefined
@@ -88,11 +91,11 @@ function useBridgeTokenArguments(
  * Returns callback function that will execute bridging tokens from one chain to another
  * @param
  */
-export function useBridgeTokenCallback({
-  layerZeroContractAddress,
-  destinationChainId,
-  amount,
-}: useBridgeTokenCallbackProps) {
+export function useBridgeTokenCallback(
+  layerZeroContractAddress: string,
+  destinationChainId: number,
+  amount: string,
+) {
   const addTransaction = useTransactionAdder()
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
@@ -103,8 +106,11 @@ export function useBridgeTokenCallback({
     amount,
   )
 
+  console.log('layerZeroContractAddress', layerZeroContractAddress)
+  console.log('bridgeTokenCalls: ', bridgeTokenCalls)
+
   return useMemo(() => {
-    if (!account || !library || !chainId) {
+    if (!account || !library || !chainId || !bridgeTokenCalls) {
       return {
         state: BridgeTokenCallbackState.INVALID,
         callback: null,
@@ -247,5 +253,14 @@ export function useBridgeTokenCallback({
       },
       error: null,
     }
-  }, [])
+  }, [
+    account,
+    addPopup,
+    addTransaction,
+    amount,
+    bridgeTokenCalls,
+    chainId,
+    currentTimeForId,
+    library,
+  ])
 }

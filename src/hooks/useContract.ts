@@ -2,12 +2,8 @@ import {useMemo} from 'react'
 import {useActiveWeb3React} from './web3'
 import {Contract} from '@ethersproject/contracts'
 import {getContract} from '../utils/contract'
-import {
-  MULTICALL2_ADDRESS,
-  V1_PERIPHERY_ADDRESS,
-  OVL_TOKEN_ADDRESS,
-  LAYER_ZERO_ADDRESS,
-} from '../constants/addresses'
+import {MULTICALL2_ADDRESS, V1_PERIPHERY_ADDRESS, OVL_TOKEN_ADDRESS} from '../constants/addresses'
+import {LAYER_ZERO_ADDRESS} from '../constants/bridge'
 import MULTICALL2_ABI from '../constants/multicall/multicall2.json'
 import ERC20_ABI from '../constants/abis/erc20.json'
 import ERC20_BYTES32_ABI from '../constants/abis/erc20_bytes32.json'

@@ -10,7 +10,7 @@ import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useBridgeTokenCallback} from '../../hooks/useBridgeTokenCallback'
-import {LAYER_ZERO_ADDRESS} from '../../constants/addresses'
+import {LAYER_ZERO_ADDRESS, LAYER_ZERO_DESTINATION_ID} from '../../constants/bridge'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -125,9 +125,24 @@ const Bridge = () => {
     bridgeToChain: SupportedChainId.GÖRLI,
   })
 
-  const {callback: bridgeTokenCallback} = useBridgeTokenCallback(
-    LAYER_ZERO_ADDRESS[SupportedChainId.GÖRLI],
+  const {typedValue} = useBridgeState()
+
+  // console.log('LAYER_ZERO_ADDRESS[bridgeFromChain]: ', LAYER_ZERO_ADDRESS[bridgeFromChain])
+
+  const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
+    LAYER_ZERO_ADDRESS[bridgeFromChain],
+    LAYER_ZERO_DESTINATION_ID[bridgeToChain],
+    typedValue ?? '0',
   )
+
+  console.log('bridgeTokenCallback: ', bridgeTokenCallback)
+  console.log('bridgeTokenState: ', bridgeTokenState)
+
+  const handleBridge = useCallback(() => {
+    if (!typedValue) throw new Error('missing bridge token input size')
+    if (!bridgeTokenCallback) return
+    bridgeTokenCallback()
+  }, [bridgeTokenCallback, typedValue])
 
   const handleSwitch = () => {
     if (bridgeFromChain === SupportedChainId.MAINNET) {
@@ -152,7 +167,7 @@ const Bridge = () => {
         <BridgeToNetwork chainId={bridgeToChain} />
       </InterfaceContainer>
       {account ? (
-        <TriggerActionButton>Bridge</TriggerActionButton>
+        <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
       ) : (
         <TriggerActionButton>Connect Wallet</TriggerActionButton>
       )}
