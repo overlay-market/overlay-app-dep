@@ -134,7 +134,9 @@ const Bridge = () => {
 
   const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChain],
-    110,
+    LAYER_ZERO_ADDRESS[bridgeToChain],
+    LAYER_ZERO_DESTINATION_ID[bridgeFromChain],
+    LAYER_ZERO_DESTINATION_ID[bridgeToChain],
     typedValue ?? '0',
   )
 

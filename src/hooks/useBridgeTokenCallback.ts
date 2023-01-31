@@ -1,5 +1,5 @@
 import {useMemo} from 'react'
-import {useLayerZeroBridgeContract} from './useContract'
+import {useLayerZeroBridgeContract, useLayerZeroEndpointContract} from './useContract'
 import {useSingleCallResult} from '../state/multicall/hooks'
 import {useActiveWeb3React} from './web3'
 import {TransactionType} from './../state/transactions/actions'
@@ -43,12 +43,16 @@ enum BridgeTokenCallbackState {
 // }
 
 function useBridgeTokenArguments(
-  layerZeroContractAddress: string | undefined,
+  originLayerZeroContractAddress: string,
+  destinationLayerZeroContractAddress: string,
+  originChainId: number,
   destinationChainId: number,
-  amount: string | undefined,
+  amount: string,
 ) {
   let calldata: any
   const layerZeroContract = useLayerZeroBridgeContract()
+  const layerZeroEndpointContract = useLayerZeroEndpointContract()
+
   if (!destinationChainId || !amount || !layerZeroContract) calldata = undefined
   else {
     calldata = layerZeroContract.interface.encodeFunctionData('bridgeToken', [
@@ -57,22 +61,28 @@ function useBridgeTokenArguments(
     ])
   }
 
-  // const estimatedFees = useSingleCallResult(layerZeroContract)
+  // const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
+  //   destinationChainId,
+  //   calldata,
+
+  // ])
 
   return useMemo(() => {
     if (
-      !layerZeroContractAddress ||
+      !originLayerZeroContractAddress ||
+      !destinationLayerZeroContractAddress ||
+      !originChainId ||
       !destinationChainId ||
       !amount ||
       !layerZeroContract ||
       !calldata
     ) {
-      console.log('right here')
+      console.log('Missing Params')
       return []
     }
 
     const txn: {address: string; calldata: string; value: string} = {
-      address: layerZeroContractAddress,
+      address: originLayerZeroContractAddress,
       calldata: calldata,
       // value: '0x0',
       value: '0x2d30e0a3b2ef8',
@@ -86,7 +96,15 @@ function useBridgeTokenArguments(
         value: txn.value,
       },
     ]
-  }, [destinationChainId, amount, calldata, layerZeroContractAddress, layerZeroContract])
+  }, [
+    destinationChainId,
+    originChainId,
+    amount,
+    calldata,
+    originLayerZeroContractAddress,
+    destinationLayerZeroContractAddress,
+    layerZeroContract,
+  ])
 }
 
 /**
@@ -94,17 +112,20 @@ function useBridgeTokenArguments(
  * @param
  */
 export function useBridgeTokenCallback(
-  layerZeroContractAddress: string,
+  originLayerZeroContractAddress: string,
+  destinationLayerZeroContractAddress: string,
+  originChainId: number,
   destinationChainId: number,
   amount: string,
 ) {
-  console.log('destinationChainId:', destinationChainId)
   const addTransaction = useTransactionAdder()
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
   const {account, chainId, library} = useActiveWeb3React()
   const bridgeTokenCalls = useBridgeTokenArguments(
-    layerZeroContractAddress,
+    originLayerZeroContractAddress,
+    destinationLayerZeroContractAddress,
+    originChainId,
     destinationChainId,
     amount,
   )
