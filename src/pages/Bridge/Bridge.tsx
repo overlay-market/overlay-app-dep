@@ -9,6 +9,8 @@ import {useBridgeActionHandlers, useBridgeState} from '../../state/bridge/hooks'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useActiveWeb3React} from '../../hooks/web3'
+import {useBridgeTokenCallback} from '../../hooks/useBridgeTokenCallback'
+import {LAYER_ZERO_ADDRESS} from '../../constants/addresses'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -122,6 +124,10 @@ const Bridge = () => {
     bridgeFromChain: SupportedChainId.MAINNET,
     bridgeToChain: SupportedChainId.GÖRLI,
   })
+
+  const {callback: bridgeTokenCallback} = useBridgeTokenCallback(
+    LAYER_ZERO_ADDRESS[SupportedChainId.GÖRLI],
+  )
 
   const handleSwitch = () => {
     if (bridgeFromChain === SupportedChainId.MAINNET) {

@@ -1,7 +1,7 @@
 import {ChainId} from '@sushiswap/sdk'
 import {constructSameAddressMap} from '../utils/constructSameAddressMap'
 
-type AddressMap = {[chainId: number]: string}
+export type AddressMap = {[chainId: number]: string}
 
 export enum ContractAddresses {
   ETH_DAI = 1, //at launch
