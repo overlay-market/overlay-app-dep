@@ -25,6 +25,7 @@ const NETWORK_URLS: {[key in SupportedChainId]: string} = {
   [SupportedChainId.MAINNET]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.GÖRLI]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.RINKEBY]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
+  [SupportedChainId.ARBITRUM]: `https://arbitrum.infura.io/v3/${INFURA_KEY}`,
 }
 
 export const network = new NetworkConnector({

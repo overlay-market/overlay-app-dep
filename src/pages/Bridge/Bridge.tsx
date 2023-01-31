@@ -122,21 +122,21 @@ const Bridge = () => {
     bridgeToChain: SupportedChainId
   }>({
     bridgeFromChain: SupportedChainId.MAINNET,
-    bridgeToChain: SupportedChainId.GÖRLI,
+    bridgeToChain: SupportedChainId.ARBITRUM,
   })
+
+  console.log('bridgeFromChain', bridgeFromChain)
 
   const {typedValue} = useBridgeState()
 
-  console.log(
-    'LAYER_ZERO_DESTINATION_ID[bridgeFromChain]: ',
-    LAYER_ZERO_DESTINATION_ID[bridgeFromChain],
-  )
+  const originLayerZeroId = LAYER_ZERO_DESTINATION_ID[bridgeFromChain]
+  const destinationLayerZeroId = LAYER_ZERO_DESTINATION_ID[bridgeToChain]
 
   const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChain],
     LAYER_ZERO_ADDRESS[bridgeToChain],
-    LAYER_ZERO_DESTINATION_ID[bridgeFromChain],
-    LAYER_ZERO_DESTINATION_ID[bridgeToChain],
+    bridgeFromChain,
+    bridgeToChain,
     typedValue ?? '0',
   )
 

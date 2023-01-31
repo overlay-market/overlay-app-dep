@@ -10,6 +10,7 @@ import {currentTimeParsed} from '../utils/currentTime'
 import {calculateGasMargin} from '../utils/calculateGasMargin'
 import {BigNumber, utils, BigNumberish} from 'ethers'
 import isZero from '../utils/isZero'
+import {LAYER_ZERO_ADDRESS, LAYER_ZERO_DESTINATION_ID} from '../constants/bridge'
 
 interface BridgeTokenCall {
   address: string
@@ -61,9 +62,23 @@ function useBridgeTokenArguments(
     ])
   }
 
+  console.log('destinationChainId', destinationChainId)
+
+  console.log(
+    'LAYER_ZERO_DESTINATION_ID[destinationChainId]: ',
+    LAYER_ZERO_DESTINATION_ID[destinationChainId],
+  )
+  const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [
+    LAYER_ZERO_DESTINATION_ID[destinationChainId],
+  ])
+
+  console.log('adapterParams: ', adapterParams)
+
   // const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
   //   destinationChainId,
+  //   LAYER_ZERO_ADDRESS[destinationChainId],
   //   calldata,
+  //   false,
 
   // ])
 
