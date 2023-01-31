@@ -83,6 +83,8 @@ function useBridgeTokenArguments(
 
   const estimatedGasFee = estimatedFees.result?.[0]
 
+  console.log('estimatedGasFee: ', estimatedGasFee)
+
   return useMemo(() => {
     if (
       !originLayerZeroContractAddress ||

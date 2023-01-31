@@ -116,13 +116,17 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 }
 
 const Bridge = () => {
-  const {account} = useActiveWeb3React()
+  const {account, chainId} = useActiveWeb3React()
   const [{bridgeFromChain, bridgeToChain}, setBridgeState] = useState<{
-    bridgeFromChain: SupportedChainId
-    bridgeToChain: SupportedChainId
+    bridgeFromChain: SupportedChainId | number
+    bridgeToChain: SupportedChainId | number
   }>({
-    bridgeFromChain: SupportedChainId.MAINNET,
-    bridgeToChain: SupportedChainId.ARBITRUM,
+    bridgeFromChain: chainId ? chainId : SupportedChainId.MAINNET,
+    bridgeToChain: chainId
+      ? chainId === 1
+        ? SupportedChainId.ARBITRUM
+        : SupportedChainId.MAINNET
+      : SupportedChainId.ARBITRUM,
   })
 
   const {typedValue} = useBridgeState()
