@@ -117,12 +117,12 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 
 const Bridge = () => {
   const {account, chainId} = useActiveWeb3React()
-  const [{bridgeFromChain, bridgeToChain}, setBridgeState] = useState<{
-    bridgeFromChain: SupportedChainId | number
-    bridgeToChain: SupportedChainId | number
+  const [{bridgeFromChainId, bridgeToChainId}, setBridgeState] = useState<{
+    bridgeFromChainId: SupportedChainId | number
+    bridgeToChainId: SupportedChainId | number
   }>({
-    bridgeFromChain: chainId ? chainId : SupportedChainId.MAINNET,
-    bridgeToChain: chainId
+    bridgeFromChainId: chainId ? chainId : SupportedChainId.MAINNET,
+    bridgeToChainId: chainId
       ? chainId === 1
         ? SupportedChainId.ARBITRUM
         : SupportedChainId.MAINNET
@@ -132,10 +132,10 @@ const Bridge = () => {
   const {typedValue} = useBridgeState()
 
   const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
-    LAYER_ZERO_ADDRESS[bridgeFromChain],
-    LAYER_ZERO_ADDRESS[bridgeToChain],
-    bridgeFromChain,
-    bridgeToChain,
+    LAYER_ZERO_ADDRESS[bridgeFromChainId],
+    LAYER_ZERO_ADDRESS[bridgeToChainId],
+    bridgeFromChainId,
+    bridgeToChainId,
     typedValue ?? '0',
   )
 
@@ -146,15 +146,15 @@ const Bridge = () => {
   }, [bridgeTokenCallback, typedValue])
 
   const handleSwitch = () => {
-    if (bridgeFromChain === SupportedChainId.MAINNET) {
+    if (bridgeFromChainId === SupportedChainId.MAINNET) {
       setBridgeState({
-        bridgeFromChain: SupportedChainId.ARBITRUM,
-        bridgeToChain: SupportedChainId.MAINNET,
+        bridgeFromChainId: SupportedChainId.ARBITRUM,
+        bridgeToChainId: SupportedChainId.MAINNET,
       })
     } else {
       setBridgeState({
-        bridgeFromChain: SupportedChainId.MAINNET,
-        bridgeToChain: SupportedChainId.ARBITRUM,
+        bridgeFromChainId: SupportedChainId.MAINNET,
+        bridgeToChainId: SupportedChainId.ARBITRUM,
       })
     }
   }
@@ -163,9 +163,9 @@ const Bridge = () => {
     <BridgeContainer>
       <Title>Bridge</Title>
       <InterfaceContainer>
-        <BridgeFromNetwork chainId={bridgeFromChain} />
+        <BridgeFromNetwork chainId={bridgeFromChainId} />
         <SwitchButton onClick={handleSwitch}>Switch</SwitchButton>
-        <BridgeToNetwork chainId={bridgeToChain} />
+        <BridgeToNetwork chainId={bridgeToChainId} />
       </InterfaceContainer>
       {account ? (
         <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
