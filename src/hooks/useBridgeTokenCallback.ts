@@ -60,7 +60,7 @@ function useBridgeTokenArguments(
 
   calldata = useMemo(() => {
     if (!destinationChainId || !amount || !layerZeroContract) {
-      return ''
+      return undefined
     } else {
       return layerZeroContract.interface.encodeFunctionData('bridgeToken', [
         LAYER_ZERO_DESTINATION_ID[destinationChainId],
@@ -73,25 +73,15 @@ function useBridgeTokenArguments(
     LAYER_ZERO_DESTINATION_ID[destinationChainId],
   ])
 
-  console.log('adapterParams: ', adapterParams?.result?.[0])
-
-  // const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
-  //   LAYER_ZERO_DESTINATION_ID[destinationChainId],
-  //   LAYER_ZERO_ADDRESS[destinationChainId],
-  //   calldata,
-  //   false,
-  //   adapterParams?.result?.[0],
-  // ])
-
   const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
-    110,
-    '0x66A71Dcef29A0fFBDBE3c6a460a3B5BC225Cd675',
-    '0xc1b7aff2000000000000000000000000000000000000000000000000000000000000006e000000000000000000000000000000000000000000000001314fb37062980000',
+    LAYER_ZERO_DESTINATION_ID[destinationChainId],
+    LAYER_ZERO_ADDRESS[destinationChainId],
+    calldata,
     'false',
-    '0x00020000000000000000000000000000000000000000000000000000000000055730',
+    adapterParams?.result?.[0],
   ])
 
-  console.log('estimatedFees: ', estimatedFees)
+  const estimatedGasFee = estimatedFees.result?.[0]
 
   return useMemo(() => {
     if (
@@ -101,7 +91,8 @@ function useBridgeTokenArguments(
       !destinationChainId ||
       !amount ||
       !layerZeroContract ||
-      !calldata
+      !calldata ||
+      !estimatedGasFee
     ) {
       console.log('Missing Params')
       return []
@@ -110,13 +101,11 @@ function useBridgeTokenArguments(
     const txn: {address: string; calldata: string; value: string} = {
       address: originLayerZeroContractAddress,
       calldata: calldata,
-      // value: '0x0',
-      value: '0x2d30e0a3b2ef8',
+      value: estimatedGasFee,
     }
 
     return [
       {
-        // address: txn.address,
         address: txn.address,
         calldata: calldata,
         value: txn.value,
@@ -130,6 +119,7 @@ function useBridgeTokenArguments(
     originLayerZeroContractAddress,
     destinationLayerZeroContractAddress,
     layerZeroContract,
+    estimatedGasFee,
   ])
 }
 
