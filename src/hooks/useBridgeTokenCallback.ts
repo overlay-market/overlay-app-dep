@@ -57,7 +57,7 @@ function useBridgeTokenArguments(
     ])
   }
 
-  const estimatedFees = useSingleCallResult(layerZeroContract)
+  // const estimatedFees = useSingleCallResult(layerZeroContract)
 
   return useMemo(() => {
     if (
