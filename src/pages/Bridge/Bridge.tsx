@@ -28,6 +28,7 @@ const BridgeContainer = styled.div`
 
 const Title = styled.div`
   text-align: center;
+  font-weight: 700;
   font-size: 24px;
   color: #f0f0f0;
 `
@@ -56,6 +57,7 @@ const InputContainer = styled(FlexColumn)`
 `
 
 const ChainSelection = styled.div`
+  font-weight: 700;
   background: #10131d;
   border-radius: 32px;
   padding: 8px 10px;
@@ -74,7 +76,12 @@ const Placeholder = styled.div<{width?: number}>`
   width: ${({width}) => (width ? `${width}px` : '50px')};
 `
 
-const InputCurrency = styled.div``
+const InputCurrency = styled.div`
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-color: #c4c4c4;
+  font-weight: 700;
+`
 
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
@@ -105,6 +112,7 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
           <NumericalInput
             align="left"
             padding="0px"
+            fontWeight="700"
             onUserInput={handleUserInput}
             value={typedValue?.toString()}
           />
@@ -135,6 +143,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
           <NumericalInput
             align="left"
             padding="0px"
+            fontWeight="700"
             onUserInput={() => null}
             value={typedValue?.toString()}
           />

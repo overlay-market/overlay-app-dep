@@ -5,6 +5,7 @@ import {escapeRegExp} from '../../utils/escapeRegExp'
 const StyledInput = styled.input<{
   error?: boolean
   fontSize?: string
+  fontWeight?: string
   align?: string
   height?: string
   padding?: string
@@ -17,7 +18,9 @@ const StyledInput = styled.input<{
   border: none;
   flex: 1 1 auto;
   background-color: transparent;
+  font-family: 'Inter', sans-serif;
   font-size: ${({fontSize}) => fontSize ?? '16px'};
+  font-weight: ${({fontWeight}) => fontWeight ?? '400'};
   text-align: ${({align}) => align && align};
   height: ${({height}) => (height ? height : 'auto')};
   white-space: nowrap;
@@ -59,6 +62,7 @@ export const NumericalInput = React.memo(function InnerInput({
   onUserInput: (input: string) => void
   error?: boolean
   fontSize?: string
+  fontWeight?: string
   align?: 'right' | 'left'
   height?: string
   padding?: string
