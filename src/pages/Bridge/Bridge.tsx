@@ -11,6 +11,13 @@ import {TriggerActionButton} from '../../components/Button/Button'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useBridgeTokenCallback} from '../../hooks/useBridgeTokenCallback'
 import {LAYER_ZERO_ADDRESS} from '../../constants/bridge'
+import {
+  formatWeiToParsedString,
+  formatWeiToParsedNumber,
+  formatFundingRateToDaily,
+  formatBigNumberUsingDecimalsToString,
+  formatBigNumberUsingDecimalsToNumber,
+} from '../../utils/formatWei'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -180,6 +187,12 @@ const Bridge = () => {
       ) : (
         <TriggerActionButton>Connect Wallet</TriggerActionButton>
       )}
+      <FlexRow justify="space-between">
+        <TEXT.Supplemental>Estimated Fee</TEXT.Supplemental>
+        <TEXT.Supplemental>
+          {estimatedFees ? formatWeiToParsedNumber(estimatedFees, 18, 5) + ` ETH` : `-`}
+        </TEXT.Supplemental>
+      </FlexRow>
     </BridgeContainer>
   )
 }
