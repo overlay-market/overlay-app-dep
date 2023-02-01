@@ -37,6 +37,9 @@ const InterfaceContainer = styled.div`
   flex-direction: column;
   border: 1px solid #71ceff;
   border-radius: 8px;
+  box-shadow: 0 0 12px #5b60a4;
+  padding: 16px 16px 24px;
+  margin-bottom: 24px;
 `
 
 const BridgeSelectorContainer = styled.div`
@@ -244,7 +247,7 @@ const Bridge = () => {
       ) : (
         <TriggerActionButton onClick={toggleWalletModal}>Connect Wallet</TriggerActionButton>
       )}
-      <FlexRow justify="space-between">
+      <FlexRow justify="space-between" mt="24px">
         <TEXT.Supplemental>Estimated Fee</TEXT.Supplemental>
         <TEXT.Supplemental>
           {estimatedFees ? formatWeiToParsedNumber(estimatedFees, 18, 5) + ` ETH` : `-`}
