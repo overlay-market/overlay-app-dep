@@ -57,7 +57,6 @@ const InputCurrency = styled.div``
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
-  console.log('parsedBalance: ', parsedBalance)
   const {typedValue} = useBridgeState()
   const {onAmountInput} = useBridgeActionHandlers()
 
@@ -122,9 +121,12 @@ const Bridge = () => {
     bridgeFromChainId: SupportedChainId | number
     bridgeToChainId: SupportedChainId | number
   }>({
-    bridgeFromChainId: SupportedChainId.MAINNET,
-    bridgeToChainId: SupportedChainId.ARBITRUM,
+    bridgeFromChainId: SupportedChainId.ARBITRUM,
+    bridgeToChainId: SupportedChainId.MAINNET,
   })
+
+  // bridgeFromChainId: SupportedChainId.MAINNET,
+  // bridgeToChainId: SupportedChainId.ARBITRUM,
 
   useEffect(() => {
     setBridgeState({
@@ -139,7 +141,7 @@ const Bridge = () => {
 
   const {typedValue} = useBridgeState()
 
-  const {state: bridgeTokenState, callback: bridgeTokenCallback} = useBridgeTokenCallback(
+  const {callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
     LAYER_ZERO_ADDRESS[bridgeToChainId],
     bridgeFromChainId,

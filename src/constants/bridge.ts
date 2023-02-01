@@ -13,6 +13,7 @@ export const LAYER_ZERO_ENDPOINT_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x66A71Dcef29A0fFBDBE3c6a460a3B5BC225Cd675', //testing
   [ChainId.ARBITRUM]: '0x3c2269811836af69497e5f486a85d7316753cf62', //testing
 }
+
 export const LAYER_ZERO_DESTINATION_ID: IdMap = {
   [ChainId.MAINNET]: 101,
   [ChainId.ARBITRUM]: 110,

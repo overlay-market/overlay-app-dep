@@ -64,6 +64,10 @@ function useBridgeTokenArguments(
     LAYER_ZERO_DESTINATION_ID[destinationChainId],
   ])
 
+  // const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [101])
+
+  console.log('adapterParams: ', adapterParams)
+
   const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
     LAYER_ZERO_DESTINATION_ID[destinationChainId],
     LAYER_ZERO_ADDRESS[destinationChainId],
