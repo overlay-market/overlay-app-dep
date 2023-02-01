@@ -100,6 +100,7 @@ function useBridgeTokenArguments(
         address: txn.address,
         calldata: calldata,
         value: txn.value,
+        estimatedFees: estimatedGasFee,
       },
     ]
   }, [
@@ -147,6 +148,7 @@ export function useBridgeTokenCallback(
         state: BridgeTokenCallbackState.INVALID,
         callback: null,
         error: 'Missing Dependencies',
+        estimatedFees: null,
       }
     }
 
@@ -284,6 +286,7 @@ export function useBridgeTokenCallback(
           })
       },
       error: null,
+      estimatedFees: bridgeTokenCalls?.[0]?.estimatedFees,
     }
   }, [
     account,

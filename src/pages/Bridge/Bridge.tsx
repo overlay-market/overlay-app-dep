@@ -121,12 +121,9 @@ const Bridge = () => {
     bridgeFromChainId: SupportedChainId | number
     bridgeToChainId: SupportedChainId | number
   }>({
-    bridgeFromChainId: SupportedChainId.ARBITRUM,
-    bridgeToChainId: SupportedChainId.MAINNET,
+    bridgeFromChainId: SupportedChainId.MAINNET,
+    bridgeToChainId: SupportedChainId.ARBITRUM,
   })
-
-  // bridgeFromChainId: SupportedChainId.MAINNET,
-  // bridgeToChainId: SupportedChainId.ARBITRUM,
 
   useEffect(() => {
     setBridgeState({
@@ -141,7 +138,7 @@ const Bridge = () => {
 
   const {typedValue} = useBridgeState()
 
-  const {callback: bridgeTokenCallback} = useBridgeTokenCallback(
+  const {estimatedFees, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
     LAYER_ZERO_ADDRESS[bridgeToChainId],
     bridgeFromChainId,
@@ -149,6 +146,7 @@ const Bridge = () => {
     typedValue ?? '0',
   )
 
+  console.log('estimatedFees:', estimatedFees)
   const handleBridge = useCallback(() => {
     if (!typedValue) throw new Error('missing bridge token input size')
     if (!bridgeTokenCallback) return
