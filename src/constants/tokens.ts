@@ -1,5 +1,5 @@
 import {Token, Ether, WETH9} from '@uniswap/sdk-core'
-import {OVL_TOKEN_ADDRESS} from './addresses'
+import {OVL_TOKEN_ADDRESS, LL_TOKEN_ADDRESS} from './addresses'
 import {SupportedChainId} from './chains'
 import {ContractAddresses} from './addresses'
 
@@ -27,10 +27,28 @@ export const OVL: {[chainId: number]: Token} = {
   ),
   [SupportedChainId.ARBITRUM]: new Token(
     SupportedChainId.ARBITRUM,
-    OVL_TOKEN_ADDRESS[4],
+    OVL_TOKEN_ADDRESS[42161],
     18,
     'OVL',
     'Overlay',
+  ),
+}
+
+//@dev: remove LL Token addresses after bridge testing
+export const LL: {[chainId: number]: Token} = {
+  [SupportedChainId.MAINNET]: new Token(
+    SupportedChainId.MAINNET,
+    LL_TOKEN_ADDRESS[1],
+    18,
+    'LL',
+    'lay',
+  ),
+  [SupportedChainId.ARBITRUM]: new Token(
+    SupportedChainId.ARBITRUM,
+    LL_TOKEN_ADDRESS[42161],
+    18,
+    'LL',
+    'lay',
   ),
 }
 

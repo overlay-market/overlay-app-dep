@@ -149,6 +149,8 @@ const Bridge = () => {
     ovl,
   )
 
+  console.log('approval: ', approval)
+
   const {estimatedFees, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
     LAYER_ZERO_ADDRESS[bridgeToChainId],

@@ -25,6 +25,12 @@ export const OVL_TOKEN_ADDRESS: AddressMap = {
   [ChainId.ARBITRUM]: '0x4305C4Bc521B052F17d389c2Fe9d37caBeB70d54',
 }
 
+//@dev: remove LL Token addresses after bridge testing
+export const LL_TOKEN_ADDRESS: AddressMap = {
+  [ChainId.MAINNET]: '0xc3fA4890C42066F12d0A1cc44093C1Bf7E5aBB64',
+  [ChainId.ARBITRUM]: '0x4D95e223e9C8bD4b06D50fB9A1586e1f227f9765',
+}
+
 export const MULTICALL2_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
   [ChainId.ROPSTEN]: '0x5BA1e12693Dc8F9c48aAD8770482f4739bEeD696',
