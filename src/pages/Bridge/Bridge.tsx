@@ -39,7 +39,8 @@ const InterfaceContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 12px #5b60a4;
   padding: 16px 16px 24px;
-  margin-bottom: 24px;
+  margin: 16px 0 24px;
+  background: #1b2131;
 `
 
 const BridgeSelectorContainer = styled.div`
@@ -50,13 +51,20 @@ const BridgeSelectorContainer = styled.div`
 const ChainSelection = styled.div`
   background: #10131d;
   border-radius: 32px;
+  padding: 8px 10px;
+  min-width: 200px;
+  text-align: center;
 `
 
 const SwitchButton = styled.button`
-  margin: auto;
+  margin: 25px auto;
   width: 100px;
   outline: none;
   text-decoration: none;
+`
+
+const Placeholder = styled.div<{width?: number}>`
+  width: ${({width}) => (width ? `${width}px` : '50px')};
 `
 
 const InputCurrency = styled.div``
@@ -76,9 +84,10 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 
   return (
     <BridgeSelectorContainer>
-      <FlexRow>
-        <TEXT.StandardBody>From</TEXT.StandardBody>
+      <FlexRow justify="space-between">
+        <TEXT.StandardBody width="50px">From</TEXT.StandardBody>
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
+        <Placeholder width={50} />
       </FlexRow>
       <FlexColumn>
         <FlexRow justify="space-between">
@@ -104,9 +113,10 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const {typedValue} = useBridgeState()
   return (
     <BridgeSelectorContainer>
-      <FlexRow>
-        <TEXT.StandardBody>To</TEXT.StandardBody>
+      <FlexRow justify="space-between">
+        <TEXT.StandardBody width="50px">To</TEXT.StandardBody>
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
+        <Placeholder width={50} />
       </FlexRow>
       <FlexColumn>
         <FlexRow justify="space-between">
