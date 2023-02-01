@@ -14,7 +14,7 @@ import {LAYER_ZERO_ADDRESS} from '../../constants/bridge'
 import {utils} from 'ethers'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {useApproveCallback} from '../../hooks/useApproveCallback'
-import {OVL} from '../../constants/tokens'
+import {OVL, LL} from '../../constants/tokens'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -121,8 +121,23 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 
 const Bridge = () => {
   const {account, chainId} = useActiveWeb3React()
-  const ovl = chainId ? OVL[chainId] : undefined
-  const [{bridgeFromChainId, bridgeToChainId}, setBridgeState] = useState<{
+  const ll = chainId ? LL[chainId] : undefined
+  const [
+    {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
+    setBridgeState,
+  ] = useState<{
+    showConfirm: boolean
+    attemptingTransaction: boolean
+    transactionErrorMessage: string | undefined
+    transactionHash: string | undefined
+  }>({
+    showConfirm: false,
+    attemptingTransaction: false,
+    transactionErrorMessage: undefined,
+    transactionHash: undefined,
+  })
+
+  const [{bridgeFromChainId, bridgeToChainId}, setBridgeIdState] = useState<{
     bridgeFromChainId: SupportedChainId | number
     bridgeToChainId: SupportedChainId | number
   }>({
@@ -131,7 +146,7 @@ const Bridge = () => {
   })
 
   useEffect(() => {
-    setBridgeState({
+    setBridgeIdState({
       bridgeFromChainId: chainId ? chainId : SupportedChainId.MAINNET,
       bridgeToChainId: chainId
         ? chainId === 1
@@ -146,10 +161,40 @@ const Bridge = () => {
   const [approval, approveCallback] = useApproveCallback(
     typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : '0') : undefined,
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
-    ovl,
+    ll,
   )
 
   console.log('approval: ', approval)
+
+  const handleApprove = useCallback(async () => {
+    if (!typedValue) {
+      // throw new Error("missing position input size");
+      return
+    }
+    setBridgeState({
+      showConfirm: false,
+      attemptingTransaction: true,
+      transactionErrorMessage: undefined,
+      transactionHash: undefined,
+    })
+    approveCallback()
+      .then(hash => {
+        setBridgeState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: undefined,
+          transactionHash: undefined,
+        })
+      })
+      .catch(error => {
+        setBridgeState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: error,
+          transactionHash: undefined,
+        })
+      })
+  }, [approveCallback, typedValue])
 
   const {estimatedFees, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
@@ -159,7 +204,6 @@ const Bridge = () => {
     typedValue ?? '0',
   )
 
-  console.log('estimatedFees:', estimatedFees)
   const handleBridge = useCallback(() => {
     if (!typedValue) throw new Error('missing bridge token input size')
     if (!bridgeTokenCallback) return
@@ -168,12 +212,12 @@ const Bridge = () => {
 
   const handleSwitch = () => {
     if (bridgeFromChainId === SupportedChainId.MAINNET) {
-      setBridgeState({
+      setBridgeIdState({
         bridgeFromChainId: SupportedChainId.ARBITRUM,
         bridgeToChainId: SupportedChainId.MAINNET,
       })
     } else {
-      setBridgeState({
+      setBridgeIdState({
         bridgeFromChainId: SupportedChainId.MAINNET,
         bridgeToChainId: SupportedChainId.ARBITRUM,
       })
