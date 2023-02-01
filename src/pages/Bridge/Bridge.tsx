@@ -15,6 +15,7 @@ import {utils} from 'ethers'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {useApproveCallback, ApprovalState} from '../../hooks/useApproveCallback'
 import {OVL, LL} from '../../constants/tokens'
+import {useWalletModalToggle} from '../../state/application/hooks'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -50,10 +51,9 @@ const ChainSelection = styled.div`
 
 const SwitchButton = styled.button`
   margin: auto;
-  width: 200px;
+  width: 100px;
   outline: none;
   text-decoration: none;
-  color: white;
 `
 
 const InputCurrency = styled.div``
@@ -121,6 +121,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 
 const Bridge = () => {
   const {account, chainId} = useActiveWeb3React()
+  const toggleWalletModal = useWalletModalToggle()
   const ll = chainId ? LL[chainId] : undefined
   const [
     {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
@@ -163,8 +164,6 @@ const Bridge = () => {
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
     ll,
   )
-
-  console.log('approval: ', approval)
 
   const showApprovalFlow = useMemo(() => {
     return approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
@@ -236,10 +235,14 @@ const Bridge = () => {
         <SwitchButton onClick={handleSwitch}>Switch</SwitchButton>
         <BridgeToNetwork chainId={bridgeToChainId} />
       </InterfaceContainer>
-      {showApprovalFlow ? (
-        <TriggerActionButton onClick={handleApprove}>Approve LL</TriggerActionButton>
+      {account ? (
+        showApprovalFlow ? (
+          <TriggerActionButton onClick={handleApprove}>Approve LL</TriggerActionButton>
+        ) : (
+          <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
+        )
       ) : (
-        <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
+        <TriggerActionButton onClick={toggleWalletModal}>Connect Wallet</TriggerActionButton>
       )}
       <FlexRow justify="space-between">
         <TEXT.Supplemental>Estimated Fee</TEXT.Supplemental>
