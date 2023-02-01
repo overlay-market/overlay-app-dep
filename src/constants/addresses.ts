@@ -3,12 +3,6 @@ import {constructSameAddressMap} from '../utils/constructSameAddressMap'
 
 export type AddressMap = {[chainId: number]: string}
 
-export enum ContractAddresses {
-  ETH_DAI = 1, //at launch
-  OVL_DAI = 2, //at launch
-  OVL_ETH = 3, //at launch
-}
-
 // v1-core contract addresses
 export const V1_PERIPHERY_ADDRESS: AddressMap = {
   [ChainId.MAINNET]: '0x477122219aa1F76E190f480a85af97DE0A643320',

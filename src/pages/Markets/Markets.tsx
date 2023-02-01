@@ -191,6 +191,7 @@ const Markets = () => {
 
   const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
 
+  console.log('marketStates: ', marketStates)
   const INFO_TIP_DESCRIPTIONS = {
     openInterest: (
       <>
