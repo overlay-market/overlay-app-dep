@@ -18,6 +18,7 @@ import {OVL, LL} from '../../constants/tokens'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {Icon} from '../../components/Icon/Icon'
 import {RefreshCw} from 'react-feather'
+import {NETWORK_LOGO} from '../../constants/tokens'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -59,6 +60,9 @@ const InputContainer = styled(FlexColumn)`
 `
 
 const ChainSelection = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 700;
   background: #10131d;
   border-radius: 32px;
@@ -85,6 +89,12 @@ const InputCurrency = styled.div`
   font-weight: 700;
 `
 
+const CurrencyLogo = styled.img`
+  margin-right: 4px;
+  height: 24px;
+  width: 24px;
+`
+
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
@@ -102,7 +112,12 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
     <BridgeSelectorContainer>
       <FlexRow justify="space-between">
         <TEXT.StandardBody width="50px">From</TEXT.StandardBody>
-        <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
+        <ChainSelection>
+          <FlexRow width="auto">
+            <CurrencyLogo src={NETWORK_LOGO[chainId]} />
+            {NETWORK_LABELS[chainId]}
+          </FlexRow>
+        </ChainSelection>
         <Placeholder width={50} />
       </FlexRow>
       <InputContainer>
@@ -133,7 +148,12 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
     <BridgeSelectorContainer>
       <FlexRow justify="space-between">
         <TEXT.StandardBody width="50px">To</TEXT.StandardBody>
-        <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
+        <ChainSelection>
+          <FlexRow width="auto">
+            <CurrencyLogo src={NETWORK_LOGO[chainId]} />
+            {NETWORK_LABELS[chainId]}
+          </FlexRow>
+        </ChainSelection>
         <Placeholder width={50} />
       </FlexRow>
       <InputContainer>

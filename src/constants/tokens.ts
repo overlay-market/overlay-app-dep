@@ -1,6 +1,8 @@
 import {Token, Ether, WETH9} from '@uniswap/sdk-core'
 import {OVL_TOKEN_ADDRESS, LL_TOKEN_ADDRESS} from './addresses'
 import {SupportedChainId} from './chains'
+import ETHEREUM_LOGO from '../assets/images/ethereum-logo.png'
+import ARBITRUM_LOGO from '../assets/images/arbitrum-logo.png'
 
 export const OVL: {[chainId: number]: Token} = {
   [SupportedChainId.MAINNET]: new Token(
@@ -31,6 +33,11 @@ export const OVL: {[chainId: number]: Token} = {
     'OVL',
     'Overlay',
   ),
+}
+
+export const NETWORK_LOGO: {[chainId: number]: string} = {
+  [SupportedChainId.MAINNET]: ETHEREUM_LOGO,
+  [SupportedChainId.ARBITRUM]: ARBITRUM_LOGO,
 }
 
 //@dev: remove LL Token addresses after bridge testing

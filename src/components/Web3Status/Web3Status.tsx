@@ -146,7 +146,7 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.MAINNET]: 'Ethereum Mainnet',
   [SupportedChainId.GÖRLI]: 'Goerli',
   [SupportedChainId.RINKEBY]: 'Rinkeby',
-  [SupportedChainId.ARBITRUM]: 'Arbitrum',
+  [SupportedChainId.ARBITRUM]: 'Arbitrum One',
 }
 
 function Web3StatusInner() {
