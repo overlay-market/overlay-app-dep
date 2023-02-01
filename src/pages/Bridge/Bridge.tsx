@@ -16,6 +16,8 @@ import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {useApproveCallback, ApprovalState} from '../../hooks/useApproveCallback'
 import {OVL, LL} from '../../constants/tokens'
 import {useWalletModalToggle} from '../../state/application/hooks'
+import {Icon} from '../../components/Icon/Icon'
+import {RefreshCw} from 'react-feather'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -267,7 +269,9 @@ const Bridge = () => {
       <Title>Bridge</Title>
       <InterfaceContainer>
         <BridgeFromNetwork chainId={bridgeFromChainId} />
-        <SwitchButton onClick={handleSwitch}>Switch</SwitchButton>
+        <Icon margin="25px auto" clickable={true} onClick={handleSwitch}>
+          <RefreshCw color="#71CEFF" />
+        </Icon>
         <BridgeToNetwork chainId={bridgeToChainId} />
       </InterfaceContainer>
       {account ? (
