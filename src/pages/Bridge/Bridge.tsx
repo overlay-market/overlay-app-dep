@@ -69,13 +69,7 @@ const ChainSelection = styled.div`
   padding: 8px 10px;
   min-width: 200px;
   text-align: center;
-`
-
-const SwitchButton = styled.button`
-  margin: 25px auto;
-  width: 100px;
-  outline: none;
-  text-decoration: none;
+  margin-right: 6px;
 `
 
 const Placeholder = styled.div<{width?: number}>`
@@ -123,7 +117,7 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
       <InputContainer>
         <FlexRow justify="space-between" mb="25px">
           <TEXT.Supplemental>Send</TEXT.Supplemental>
-          <TEXT.Supplemental>Max: {parsedBalance} OVL</TEXT.Supplemental>
+          <TEXT.Supplemental>Max: {parsedBalance ? parsedBalance : '-'} OVL</TEXT.Supplemental>
         </FlexRow>
         <FlexRow justify="space-between">
           <NumericalInput
@@ -159,7 +153,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
       <InputContainer>
         <FlexRow justify="space-between" mb="25px">
           <TEXT.Supplemental>Receive</TEXT.Supplemental>
-          <TEXT.Supplemental>Balance: {parsedBalance} OVL</TEXT.Supplemental>
+          <TEXT.Supplemental>Balance: {parsedBalance ? parsedBalance : '-'} OVL</TEXT.Supplemental>
         </FlexRow>
         <FlexRow justify="space-between">
           <NumericalInput
@@ -296,12 +290,22 @@ const Bridge = () => {
       </InterfaceContainer>
       {account ? (
         showApprovalFlow ? (
-          <TriggerActionButton onClick={handleApprove}>Approve LL</TriggerActionButton>
+          <TriggerActionButton active={true} onClick={handleApprove}>
+            Approve LL
+          </TriggerActionButton>
         ) : (
-          <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
+          <TriggerActionButton
+            active={typedValue ? true : false}
+            isDisabled={typedValue ? false : true}
+            onClick={typedValue ? handleBridge : () => null}
+          >
+            Bridge
+          </TriggerActionButton>
         )
       ) : (
-        <TriggerActionButton onClick={toggleWalletModal}>Connect Wallet</TriggerActionButton>
+        <TriggerActionButton active={true} onClick={toggleWalletModal}>
+          Connect Wallet
+        </TriggerActionButton>
       )}
       <FlexRow justify="space-between" mt="24px">
         <TEXT.Supplemental>Estimated Fee</TEXT.Supplemental>
