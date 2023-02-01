@@ -3,11 +3,6 @@ import Positions from '../pages/Positions/Positions'
 import Liquidate from '../pages/Liquidate/Liquidate'
 import {Market} from '../pages/Markets/Market'
 import {Unwind} from '../pages/Positions/Unwind'
-import {TOKEN_LABELS} from '../constants/tokens'
-
-const DynamicMarketBreadcrumbs = ({match}: any) => (
-  <span>{TOKEN_LABELS[match.params.marketId]}</span>
-)
 
 const routesConfig = [
   {
@@ -24,7 +19,6 @@ const routesConfig = [
     path: '/markets/:marketId',
     component: () => Market,
     exact: true,
-    breadcrumb: DynamicMarketBreadcrumbs,
   },
   {
     path: '/positions',
