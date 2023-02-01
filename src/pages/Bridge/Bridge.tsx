@@ -11,13 +11,10 @@ import {TriggerActionButton} from '../../components/Button/Button'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useBridgeTokenCallback} from '../../hooks/useBridgeTokenCallback'
 import {LAYER_ZERO_ADDRESS} from '../../constants/bridge'
-import {
-  formatWeiToParsedString,
-  formatWeiToParsedNumber,
-  formatFundingRateToDaily,
-  formatBigNumberUsingDecimalsToString,
-  formatBigNumberUsingDecimalsToNumber,
-} from '../../utils/formatWei'
+import {utils} from 'ethers'
+import {formatWeiToParsedNumber} from '../../utils/formatWei'
+import {useApproveCallback} from '../../hooks/useApproveCallback'
+import {OVL} from '../../constants/tokens'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -124,6 +121,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 
 const Bridge = () => {
   const {account, chainId} = useActiveWeb3React()
+  const ovl = chainId ? OVL[chainId] : undefined
   const [{bridgeFromChainId, bridgeToChainId}, setBridgeState] = useState<{
     bridgeFromChainId: SupportedChainId | number
     bridgeToChainId: SupportedChainId | number
@@ -144,6 +142,12 @@ const Bridge = () => {
   }, [chainId])
 
   const {typedValue} = useBridgeState()
+
+  const [approval, approveCallback] = useApproveCallback(
+    typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : '0') : undefined,
+    LAYER_ZERO_ADDRESS[bridgeFromChainId],
+    ovl,
+  )
 
   const {estimatedFees, callback: bridgeTokenCallback} = useBridgeTokenCallback(
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
