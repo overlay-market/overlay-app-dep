@@ -245,6 +245,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const peripheryContract = useV1PeripheryContract()
 
+  console.log('marketId: ', marketId)
   const buildFee = market?.tradingFeeRate
   const fetchPrices = useSingleCallResult(peripheryContract, 'prices', [marketId])
   const fetchFundingRate = useSingleCallResult(peripheryContract, 'fundingRate', [marketId])
@@ -257,8 +258,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     _ask?: BigNumberish
     _mid?: BigNumberish
   } = useMemo(() => {
-    if (fetchPrices.loading === true || !fetchPrices.result || quoteTokenDecimals === undefined)
+    if (fetchPrices.loading === true || !fetchPrices.result || quoteTokenDecimals === undefined) {
       return {bid: 'loading', ask: 'loading', mid: 'loading'}
+    }
+
     return {
       bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, quoteTokenDecimals, 2),
       ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, quoteTokenDecimals, 2),
