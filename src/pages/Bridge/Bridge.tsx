@@ -263,6 +263,10 @@ const Bridge = () => {
           {estimatedFees ? formatWeiToParsedNumber(estimatedFees, 18, 5) + ` ETH` : `-`}
         </TEXT.Supplemental>
       </FlexRow>
+      <FlexRow justify="space-between" mt="24px">
+        <TEXT.Supplemental>Time to transfer</TEXT.Supplemental>
+        <TEXT.Supplemental>~15 min</TEXT.Supplemental>
+      </FlexRow>
     </BridgeContainer>
   )
 }
