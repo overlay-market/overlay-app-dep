@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback} from 'react'
+import {useState, useEffect, useCallback, useMemo} from 'react'
 import styled from 'styled-components'
 import {useChainOvlBalance} from '../../state/wallet/hooks'
 import {SupportedChainId} from '../../constants/chains'
@@ -13,7 +13,7 @@ import {useBridgeTokenCallback} from '../../hooks/useBridgeTokenCallback'
 import {LAYER_ZERO_ADDRESS} from '../../constants/bridge'
 import {utils} from 'ethers'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
-import {useApproveCallback} from '../../hooks/useApproveCallback'
+import {useApproveCallback, ApprovalState} from '../../hooks/useApproveCallback'
 import {OVL, LL} from '../../constants/tokens'
 
 const BridgeContainer = styled.div`
@@ -166,6 +166,10 @@ const Bridge = () => {
 
   console.log('approval: ', approval)
 
+  const showApprovalFlow = useMemo(() => {
+    return approval !== ApprovalState.APPROVED && approval !== ApprovalState.UNKNOWN
+  }, [approval])
+
   const handleApprove = useCallback(async () => {
     if (!typedValue) {
       // throw new Error("missing position input size");
@@ -232,10 +236,10 @@ const Bridge = () => {
         <SwitchButton onClick={handleSwitch}>Switch</SwitchButton>
         <BridgeToNetwork chainId={bridgeToChainId} />
       </InterfaceContainer>
-      {account ? (
-        <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
+      {showApprovalFlow ? (
+        <TriggerActionButton onClick={handleApprove}>Approve LL</TriggerActionButton>
       ) : (
-        <TriggerActionButton>Connect Wallet</TriggerActionButton>
+        <TriggerActionButton onClick={handleBridge}>Bridge</TriggerActionButton>
       )}
       <FlexRow justify="space-between">
         <TEXT.Supplemental>Estimated Fee</TEXT.Supplemental>
