@@ -7,6 +7,7 @@ const StyledInput = styled.input<{
   fontSize?: string
   align?: string
   height?: string
+  padding?: string
 }>`
   color: ${({error, theme}) => (error ? theme.red1 : theme.text1)};
   width: 100%;
@@ -22,7 +23,7 @@ const StyledInput = styled.input<{
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  padding: 0px 8px;
+  padding: ${({padding}) => padding ?? '0px 8px'};
   -webkit-appearance: textfield;
 
   ::-webkit-search-decoration {
@@ -51,6 +52,7 @@ export const NumericalInput = React.memo(function InnerInput({
   placeholder,
   prependSymbol,
   height,
+  padding,
   ...rest
 }: {
   value: string | number | undefined
@@ -59,6 +61,7 @@ export const NumericalInput = React.memo(function InnerInput({
   fontSize?: string
   align?: 'right' | 'left'
   height?: string
+  padding?: string
   prependSymbol?: string | undefined
 } & Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'as'>) {
   const enforcer = (nextUserInput: string) => {
@@ -97,6 +100,7 @@ export const NumericalInput = React.memo(function InnerInput({
       maxLength={79}
       spellCheck="false"
       height={height}
+      padding={padding}
     />
   )
 })

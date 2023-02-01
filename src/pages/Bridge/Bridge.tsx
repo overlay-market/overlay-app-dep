@@ -48,6 +48,13 @@ const BridgeSelectorContainer = styled.div`
   flex-direction: column;
 `
 
+const InputContainer = styled(FlexColumn)`
+  background: #10131d;
+  padding: 8px 8px 12px;
+  border-radius: 8px;
+  margin-top: 25px;
+`
+
 const ChainSelection = styled.div`
   background: #10131d;
   border-radius: 32px;
@@ -89,20 +96,21 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
         <Placeholder width={50} />
       </FlexRow>
-      <FlexColumn>
-        <FlexRow justify="space-between">
+      <InputContainer>
+        <FlexRow justify="space-between" mb="25px">
           <TEXT.Supplemental>Send</TEXT.Supplemental>
           <TEXT.Supplemental>Max: {parsedBalance} OVL</TEXT.Supplemental>
         </FlexRow>
         <FlexRow justify="space-between">
           <NumericalInput
             align="left"
+            padding="0px"
             onUserInput={handleUserInput}
             value={typedValue?.toString()}
           />
           <InputCurrency>OVL</InputCurrency>
         </FlexRow>
-      </FlexColumn>
+      </InputContainer>
     </BridgeSelectorContainer>
   )
 }
@@ -118,16 +126,21 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
         <ChainSelection>{NETWORK_LABELS[chainId]}</ChainSelection>
         <Placeholder width={50} />
       </FlexRow>
-      <FlexColumn>
-        <FlexRow justify="space-between">
+      <InputContainer>
+        <FlexRow justify="space-between" mb="25px">
           <TEXT.Supplemental>Receive</TEXT.Supplemental>
           <TEXT.Supplemental>Balance: {parsedBalance} OVL</TEXT.Supplemental>
         </FlexRow>
         <FlexRow justify="space-between">
-          <NumericalInput align="left" onUserInput={() => null} value={typedValue?.toString()} />
+          <NumericalInput
+            align="left"
+            padding="0px"
+            onUserInput={() => null}
+            value={typedValue?.toString()}
+          />
           <InputCurrency>OVL</InputCurrency>
         </FlexRow>
-      </FlexColumn>
+      </InputContainer>
     </BridgeSelectorContainer>
   )
 }

@@ -80,33 +80,99 @@ type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
   AdjustableSize(props: TextProps) {
-    return <TextWrapper fontWeight={500} color={'text2'} {...props} />
+    return (
+      <TextWrapper fontFamily="Inter, sans-serif" fontWeight={500} color={'text2'} {...props} />
+    )
   },
   Menu(props: TextProps) {
-    return <TextWrapper fontWeight={700} fontSize={14} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontWeight={700} fontSize={14} {...props} />
   },
   StandardHeader1(props: TextProps) {
-    return <TextWrapper fontSize={20} fontWeight={400} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={20}
+        fontWeight={400}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   BoldHeader1(props: TextProps) {
-    return <TextWrapper fontSize={20} fontWeight={700} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={20}
+        fontWeight={700}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   StandardBody(props: TextProps) {
-    return <TextWrapper fontSize={16} fontWeight={400} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={16}
+        fontWeight={400}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   BoldStandardBody(props: TextProps) {
-    return <TextWrapper fontSize={16} fontWeight={700} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={16}
+        fontWeight={700}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   SmallBody(props: TextProps) {
-    return <TextWrapper fontSize={14} fontWeight={400} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={14}
+        fontWeight={400}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   BoldSmallBody(props: TextProps) {
-    return <TextWrapper fontSize={14} fontWeight={700} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={14}
+        fontWeight={700}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   Supplemental(props: TextProps) {
-    return <TextWrapper fontSize={12} fontWeight={400} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={12}
+        fontWeight={400}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
   BoldSupplemental(props: TextProps) {
-    return <TextWrapper fontSize={12} fontWeight={700} color={'white1'} {...props} />
+    return (
+      <TextWrapper
+        fontFamily="Inter, sans-serif"
+        fontSize={12}
+        fontWeight={700}
+        color={'white1'}
+        {...props}
+      />
+    )
   },
 }
