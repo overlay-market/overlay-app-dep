@@ -3,6 +3,7 @@ import {Interface} from '@ethersproject/abi'
 import {useSingleCallResult, useMultipleContractSingleData} from '../state/multicall/hooks'
 import {useUniswapV3FeedContract, useTokenContract} from './useContract'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
+import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
 
 //@dev: need to add in displaying market name based on Chainlink feeds

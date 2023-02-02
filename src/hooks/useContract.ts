@@ -16,6 +16,7 @@ import V1_MARKET_ABI from '../constants/abis/OverlayV1Market.json'
 import V1_PERIPHERY_ABI from '../constants/abis/OverlayV1State.json'
 import OVL_TOKEN_ABI from '../constants/abis/OverlayV1Token.json'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
+import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import LAYER_ZERO_ABI from '../constants/abis/LzApp.json'
 import LAYER_ZERO_ENDPOINT_ABI from '../constants/abis/LayerZeroEndpoint.json'
 
@@ -56,6 +57,11 @@ export function useV1PeripheryContract(): Contract | null {
 export function useUniswapV3FeedContract(address: string | undefined): Contract | null {
   const {chainId} = useActiveWeb3React()
   return useContract(chainId && address, UNISWAP_V3_FEED_ABI, false)
+}
+
+export function useChainlinkFeedContract(address: string | undefined): Contract | null {
+  const {chainId} = useActiveWeb3React()
+  return useContract(chainId && address, CHAINLINK_FEED_ABI, false)
 }
 
 export function useLayerZeroBridgeContract(): Contract | null {
