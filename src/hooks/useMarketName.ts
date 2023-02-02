@@ -7,6 +7,9 @@ import ERC20_INTERFACE from '../constants/abis/erc20'
 
 //@dev: need to add in displaying market name based on Chainlink feeds
 export function useMarketName(feedAddress?: string) {
+  //keep constant here until we abstract function to determine feed type
+  const GOERLI_CHAINLINK_FEED = '0x5c8AECf465e49C157725E7CAba047504bC90801C'
+
   const uniswapV3FeedContract = useUniswapV3FeedContract(feedAddress)
 
   const baseTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketBaseToken')
