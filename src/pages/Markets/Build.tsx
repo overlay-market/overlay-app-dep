@@ -149,9 +149,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const ovl = chainId ? OVL[chainId] : undefined
 
   // @TO-DO: pull market name from feed
-  const {decimals, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
-    market?.feedAddress,
-  )
+  const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} =
+    useMarketName(market?.feedAddress)
+
+  console.log('description: ', description)
 
   const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)

@@ -15,11 +15,13 @@ export function useMarketName(feedAddress?: string) {
   const chainlinkFeedContract = useChainlinkFeedContract(feedAddress)
 
   const decimalsResult = useSingleCallResult(chainlinkFeedContract, 'decimals')
+  const descriptionResult = useSingleCallResult(chainlinkFeedContract, 'description')
 
   const baseTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketBaseToken')
   const quoteTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketQuoteToken')
 
   const decimals = decimalsResult.result?.[0]
+  const description = descriptionResult.result?.[0]
   const baseTokenAddress = baseTokenAddressResult.result?.[0]
   const quoteTokenAddress = quoteTokenAddressResult.result?.[0]
 
@@ -31,6 +33,7 @@ export function useMarketName(feedAddress?: string) {
 
   return {
     decimals: decimals ?? undefined,
+    description: description ?? undefined,
     baseToken: baseTokenSymbolResult.result?.[0] ?? 'loading',
     quoteToken: quoteTokenSymbolResult.result?.[0] ?? 'loading',
     baseTokenAddress: baseTokenAddress && baseTokenAddress.toLowerCase(),
