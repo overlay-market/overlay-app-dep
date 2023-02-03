@@ -67,7 +67,7 @@ export const AdditionalDetailRow = ({
   valueColor,
 }: {
   detail: string
-  value: string | number
+  value?: string | number
   detailColor?: string
   valueColor?: string | number
 }) => {

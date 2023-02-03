@@ -14,8 +14,7 @@ import {BigNumberish} from 'ethers'
 import Loader from '../Loaders/Loaders'
 
 export default function ConfirmTxnModal({
-  baseToken,
-  quoteToken,
+  marketName,
   isOpen,
   attemptingTransaction,
   isLong,
@@ -23,10 +22,7 @@ export default function ConfirmTxnModal({
   onConfirm,
   onDismiss,
   expectedOi,
-  estimatedBid,
-  estimatedAsk,
   marketPrice,
-  quoteTokenDecimals,
   setSlippageValue,
   selectedLeverage,
   adjustedCollateral,
@@ -34,8 +30,7 @@ export default function ConfirmTxnModal({
   transactionHash,
   transactionErrorMessage,
 }: {
-  baseToken?: string
-  quoteToken?: string
+  marketName: any
   isOpen: boolean
   attemptingTransaction: boolean
   isLong: boolean | undefined
@@ -46,7 +41,6 @@ export default function ConfirmTxnModal({
   estimatedBid?: BigNumberish
   estimatedAsk?: BigNumberish
   marketPrice: string | undefined
-  quoteTokenDecimals: number | undefined
   setSlippageValue: string
   selectedLeverage: string
   adjustedCollateral: number | string | undefined
@@ -54,15 +48,6 @@ export default function ConfirmTxnModal({
   transactionHash?: any
   transactionErrorMessage?: any
 }) {
-  const price = useMemo(() => {
-    if (isLong === undefined) return null
-    if (quoteTokenDecimals === undefined) return null
-    if (estimatedBid === undefined || estimatedAsk === undefined) return null
-    return isLong
-      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
-  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
-
   return (
     <Modal isOpen={isOpen} onDismiss={() => null} width={'350px'}>
       <ModalContent>
@@ -83,18 +68,11 @@ export default function ConfirmTxnModal({
                 Market
               </TEXT.StandardBody>
 
-              <TEXT.BoldHeader1 color={'white'}>
-                {baseToken ? baseToken : <Loader stroke="white" size="12px" />}/
-                {quoteToken ? quoteToken : <Loader stroke="white" size="12px" />}
-              </TEXT.BoldHeader1>
+              <TEXT.BoldHeader1 color={'white'}>{marketName}</TEXT.BoldHeader1>
             </FlexColumn>
 
             <FlexColumn mt={'16px'} color={'white'}>
-              <AdditionalDetailRow
-                detail={'Price'}
-                detailColor={'#B9BABD'}
-                value={price ? price : 'loading...'}
-              />
+              <AdditionalDetailRow detail={'Price'} detailColor={'#B9BABD'} value={marketPrice} />
 
               <AdditionalDetailRow
                 detail={'Side'}
@@ -131,14 +109,12 @@ export default function ConfirmTxnModal({
                 detail={'Estimated Collateral'}
                 detailColor={'#B9BABD'}
                 value={`${adjustedCollateral} OVL`}
-                // value={'-'}
               />
 
               <AdditionalDetailRow
                 detail={'Estimated OI'}
                 detailColor={'#B9BABD'}
                 value={`${expectedOi}`}
-                // value={'-'}
               />
             </FlexColumn>
 

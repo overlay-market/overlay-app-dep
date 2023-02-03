@@ -711,18 +711,14 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       />
 
       <ConfirmTxnModal
-        baseToken={baseToken === 'loading' ? null : baseToken}
-        quoteToken={quoteToken === 'loading' ? null : quoteToken}
+        marketName={marketName}
         isOpen={showConfirm}
         attemptingTransaction={attemptingTransaction}
         isLong={isLong}
         buildFee={buildFee && formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5))}
         onConfirm={() => handleBuild()}
         onDismiss={handleDismiss}
-        estimatedBid={estimatedBid}
-        estimatedAsk={estimatedAsk}
         marketPrice={!isLong ? prices.bid : prices.ask}
-        quoteTokenDecimals={quoteTokenDecimals}
         setSlippageValue={setSlippageValue}
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}

@@ -40,9 +40,17 @@ export function useMarketName(feedAddress?: string) {
     quoteTokenAddress: quoteTokenAddress && quoteTokenAddress.toLowerCase(),
   }
 }
+
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
+const CHAINLINK_FEED_INTERFACE = new Interface(CHAINLINK_FEED_ABI)
 
 export function useMarketNames(feedAddresses: any) {
+  const decimals = useMultipleContractSingleData(
+    feedAddresses,
+    CHAINLINK_FEED_INTERFACE,
+    'decimals',
+  )
+
   const baseTokens = useMultipleContractSingleData(
     feedAddresses,
     UNI_V3_FEED_INTERFACE,
@@ -53,6 +61,8 @@ export function useMarketNames(feedAddresses: any) {
     UNI_V3_FEED_INTERFACE,
     'marketQuoteToken',
   )
+
+  console.log('decimals: ', decimals)
 
   const baseTokenAddresses = useMemo(() => {
     if (baseTokens.length === 0) return []
