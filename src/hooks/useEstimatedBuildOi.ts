@@ -15,7 +15,7 @@ export function useEstimatedBuildOi(
   collateral?: any,
   leverage?: any,
   isLong?: any,
-  chainlinkDecimals?: number | undefined,
+  decimals?: number | undefined,
   baseTokenDecimals?: number | undefined,
   quoteTokenDecimals?: number | undefined,
 ): oiResult {
@@ -74,16 +74,20 @@ export function useEstimatedBuildOi(
         rawOi: undefined,
       }
     }
-    if (chainlinkDecimals) {
-      return {
-        formattedOi: formatBigNumberUsingDecimalsToNumber(parsedOi, chainlinkDecimals, 4),
-        rawOi: estimatedOi,
-      }
-    }
-    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number') {
+    if (
+      !marketTokensDecimalsDifference &&
+      typeof marketTokensDecimalsDifference !== 'number' &&
+      !decimals
+    ) {
       return {
         formattedOi: undefined,
         rawOi: undefined,
+      }
+    }
+    if (decimals) {
+      return {
+        formattedOi: formatBigNumberUsingDecimalsToNumber(estimatedOi, decimals, 4),
+        rawOi: estimatedOi,
       }
     }
     if (marketTokensDecimalsDifference === 0) {
@@ -95,7 +99,7 @@ export function useEstimatedBuildOi(
     return {
       formattedOi: formatBigNumberUsingDecimalsToNumber(
         parsedOi,
-        marketTokensDecimalsDifference,
+        decimals ?? marketTokensDecimalsDifference,
         4,
       ),
       rawOi: estimatedOi,
@@ -106,6 +110,6 @@ export function useEstimatedBuildOi(
     parsedOi,
     marketTokensDecimalsDifference,
     baseTokenDecimals,
-    chainlinkDecimals,
+    decimals,
   ])
 }
