@@ -189,9 +189,16 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const formattedOiLong = useMemo(() => {
     if (!rawOiLong) return undefined
-    if (!baseTokenDecimals) return undefined
-    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
+    if (!baseTokenDecimals && !decimals) return undefined
+    if (
+      !marketTokensDecimalsDifference &&
+      typeof marketTokensDecimalsDifference !== 'number' &&
+      !decimals
+    )
       return undefined
+    if (decimals) {
+      return formatBigNumberUsingDecimalsToNumber(rawOiLong, decimals, sigFigConstant)
+    }
     if (marketTokensDecimalsDifference === 0) {
       return formatBigNumberUsingDecimalsToNumber(rawOiLong, baseTokenDecimals, sigFigConstant)
     } else {
@@ -203,13 +210,20 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         sigFigConstant,
       )
     }
-  }, [rawOiLong, baseTokenDecimals, marketTokensDecimalsDifference])
+  }, [rawOiLong, baseTokenDecimals, decimals, marketTokensDecimalsDifference])
 
   const formattedOiShort = useMemo(() => {
     if (!rawOiShort) return undefined
-    if (!baseTokenDecimals) return undefined
-    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
+    if (!baseTokenDecimals && !decimals) return undefined
+    if (
+      !marketTokensDecimalsDifference &&
+      typeof marketTokensDecimalsDifference !== 'number' &&
+      !decimals
+    )
       return undefined
+    if (decimals) {
+      return formatBigNumberUsingDecimalsToNumber(rawOiShort, decimals, sigFigConstant)
+    }
     if (marketTokensDecimalsDifference === 0) {
       return formatBigNumberUsingDecimalsToNumber(rawOiShort, baseTokenDecimals, sigFigConstant)
     } else {
@@ -221,7 +235,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         sigFigConstant,
       )
     }
-  }, [rawOiShort, baseTokenDecimals, marketTokensDecimalsDifference])
+  }, [rawOiShort, baseTokenDecimals, decimals, marketTokensDecimalsDifference])
 
   const capOiResult = useMarketCapOi(marketId)
   const rawCapOi = capOiResult ? capOiResult : undefined
@@ -445,6 +459,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     typedValue,
     selectedLeverage,
     isLong,
+    decimals,
     baseTokenDecimals,
     quoteTokenDecimals,
   )
