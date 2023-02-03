@@ -160,7 +160,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
 
-  console.log('marketName: ', marketName)
   const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
 
@@ -294,6 +293,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     // @dev TO-DO: update variable names to differentiate between chainlink and uni v3 feeds
     if (decimals && quoteTokenDecimals === undefined) {
       return {
+        // bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, decimals, 2),
+        // ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, decimals, 2),
+        // mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, decimals, 2),
         bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, decimals, 2),
         ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, decimals, 2),
         mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, decimals, 2),
