@@ -483,10 +483,11 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     selectedLeverage,
     isLong,
   )
+
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult
     ? formatBigNumberUsingDecimalsToNumber(
         estimatedLiquidationPriceResult,
-        quoteTokenDecimals,
+        decimals ?? quoteTokenDecimals,
         sigFigConstant,
       )
     : null
