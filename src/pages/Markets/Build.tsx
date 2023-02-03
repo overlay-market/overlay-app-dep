@@ -683,6 +683,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         baseToken={baseToken === 'loading' ? null : baseToken}
         quoteToken={quoteToken === 'loading' ? null : quoteToken}
         quoteTokenDecimals={quoteTokenDecimals}
+        decimals={decimals}
         typedValue={typedValue}
         isLong={isLong}
         estimatedBid={estimatedBid}

@@ -65,6 +65,7 @@ export const AdditionalDetails = ({
   baseToken,
   quoteToken,
   quoteTokenDecimals,
+  decimals,
   typedValue,
   estimatedBid,
   estimatedAsk,
@@ -88,6 +89,7 @@ export const AdditionalDetails = ({
   baseToken?: string
   quoteToken?: string
   quoteTokenDecimals?: number
+  decimals?: number
   typedValue?: string
   estimatedBid?: any
   estimatedAsk?: any
@@ -110,13 +112,19 @@ export const AdditionalDetails = ({
   const {chainId} = useActiveWeb3React()
 
   const estimatedReceivedPrice: any = useMemo(() => {
-    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined)
+    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) {
       return null
+    }
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
+    if (decimals) {
+      return isLong
+        ? formatBigNumberUsingDecimalsToString(estimatedAsk, decimals, 2)
+        : formatBigNumberUsingDecimalsToString(estimatedBid, decimals, 2)
+    }
     return isLong
       ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
       : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
-  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
+  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals, decimals])
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
