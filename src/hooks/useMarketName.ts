@@ -1,7 +1,7 @@
 import {useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
 import {useSingleCallResult, useMultipleContractSingleData} from '../state/multicall/hooks'
-import {useUniswapV3FeedContract, useTokenContract} from './useContract'
+import {useUniswapV3FeedContract, useChainlinkFeedContract, useTokenContract} from './useContract'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
@@ -12,10 +12,14 @@ export function useMarketName(feedAddress?: string) {
   const GOERLI_CHAINLINK_FEED = '0x5c8AECf465e49C157725E7CAba047504bC90801C'
 
   const uniswapV3FeedContract = useUniswapV3FeedContract(feedAddress)
+  const chainlinkFeedContract = useChainlinkFeedContract(feedAddress)
+
+  const decimalsResult = useSingleCallResult(chainlinkFeedContract, 'decimals')
 
   const baseTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketBaseToken')
   const quoteTokenAddressResult = useSingleCallResult(uniswapV3FeedContract, 'marketQuoteToken')
 
+  const decimals = decimalsResult.result?.[0]
   const baseTokenAddress = baseTokenAddressResult.result?.[0]
   const quoteTokenAddress = quoteTokenAddressResult.result?.[0]
 
@@ -26,6 +30,7 @@ export function useMarketName(feedAddress?: string) {
   const quoteTokenSymbolResult = useSingleCallResult(quoteTokenContract, 'symbol')
 
   return {
+    decimals: decimals ?? undefined,
     baseToken: baseTokenSymbolResult.result?.[0] ?? 'loading',
     quoteToken: quoteTokenSymbolResult.result?.[0] ?? 'loading',
     baseTokenAddress: baseTokenAddress && baseTokenAddress.toLowerCase(),

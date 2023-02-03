@@ -149,7 +149,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const ovl = chainId ? OVL[chainId] : undefined
 
   // @TO-DO: pull market name from feed
-  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
+  const {decimals, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
     market?.feedAddress,
   )
 
@@ -257,8 +257,21 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     _ask?: BigNumberish
     _mid?: BigNumberish
   } = useMemo(() => {
-    if (fetchPrices.loading === true || !fetchPrices.result || quoteTokenDecimals === undefined) {
+    if (fetchPrices.loading === true || !fetchPrices.result) {
       return {bid: 'loading', ask: 'loading', mid: 'loading'}
+    }
+
+    // when using chainlink feed, but not uniswap v3
+    // @dev TO-DO: update variable names to differentiate between chainlink and uni v3 feeds
+    if (decimals && quoteTokenDecimals === undefined) {
+      return {
+        bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, decimals, 2),
+        ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, decimals, 2),
+        mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, decimals, 2),
+        _bid: fetchPrices.result?.bid_,
+        _ask: fetchPrices.result?.ask_,
+        _mid: fetchPrices.result?.mid_,
+      }
     }
 
     return {
@@ -269,9 +282,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       _ask: fetchPrices.result?.ask_,
       _mid: fetchPrices.result?.mid_,
     }
-  }, [fetchPrices, quoteTokenDecimals])
-
-  console.log('prices: ', prices)
+  }, [fetchPrices, decimals, quoteTokenDecimals])
 
   const fundingRate = useMemo(() => {
     if (fetchFundingRate.loading === true || !fetchFundingRate.result) return 'loading'
