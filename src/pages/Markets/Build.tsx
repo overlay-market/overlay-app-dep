@@ -241,9 +241,16 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const rawCapOi = capOiResult ? capOiResult : undefined
   const formattedCapOi = useMemo(() => {
     if (!rawCapOi) return undefined
-    if (!baseTokenDecimals) return undefined
-    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number')
+    if (!baseTokenDecimals && !decimals) return undefined
+    if (
+      !marketTokensDecimalsDifference &&
+      typeof marketTokensDecimalsDifference !== 'number' &&
+      !decimals
+    )
       return undefined
+    if (decimals) {
+      return formatBigNumberUsingDecimalsToNumber(rawCapOi, decimals, sigFigConstant)
+    }
     if (marketTokensDecimalsDifference === 0) {
       return formatBigNumberUsingDecimalsToNumber(rawCapOi, baseTokenDecimals, sigFigConstant)
     } else {
@@ -255,7 +262,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         sigFigConstant,
       )
     }
-  }, [rawCapOi, baseTokenDecimals, marketTokensDecimalsDifference])
+  }, [rawCapOi, decimals, baseTokenDecimals, marketTokensDecimalsDifference])
 
   const peripheryContract = useV1PeripheryContract()
 
