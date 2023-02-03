@@ -56,6 +56,7 @@ import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
+import {MARKET_NAME} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 
 const SelectPositionSideButton = styled(SelectActionButton)`
@@ -152,8 +153,14 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} =
     useMarketName(market?.feedAddress)
 
-  console.log('description: ', description)
+  const marketName = useMemo(() => {
+    if (description) return MARKET_NAME[description]
+    if (baseToken === 'loading' && quoteToken === 'loading')
+      return <Loader stroke="white" size="12px" />
+    return `${baseToken}/${quoteToken}`
+  }, [description, baseToken, quoteToken])
 
+  console.log('marketName: ', marketName)
   const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
 
@@ -558,13 +565,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     <MarketCard align={'left'} padding={'0px'}>
       <ControlInterfaceContainer onSubmit={(e: any) => e.preventDefault()} as={'form'}>
         <ControlInterfaceHeadContainer>
-          <TEXT.BoldHeader1>
-            {baseToken === 'loading' && quoteToken === 'loading' ? (
-              <Loader stroke="white" size="12px" />
-            ) : (
-              `${baseToken}/${quoteToken}`
-            )}
-          </TEXT.BoldHeader1>
+          <TEXT.BoldHeader1>{marketName}</TEXT.BoldHeader1>
           <TEXT.StandardHeader1>{estimatedReceivedPrice ?? prices.mid}</TEXT.StandardHeader1>
           <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
