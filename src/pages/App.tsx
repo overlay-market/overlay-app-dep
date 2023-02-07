@@ -12,6 +12,7 @@ import Positions from './Positions/Positions'
 import Liquidate from './Liquidate/Liquidate'
 import styled from 'styled-components/macro'
 import Bridge from './Bridge/Bridge'
+import Claim from './Claim/Claim'
 import Popups from '../components/Popup/Popups'
 import {Banner} from '../components/Banner/Banner'
 
@@ -44,6 +45,7 @@ const App = () => {
                 path="/positions/:marketPositionId/:positionId"
                 component={Unwind}
               />
+              <Route exact strict path="/claim" component={Claim} />
               <Route exact strict path="/liquidate" component={Liquidate} />
               <Route exact strict path="/bridge" component={Bridge} />
             </Switch>
