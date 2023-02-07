@@ -126,9 +126,9 @@ export default function Header() {
         <Trans>Bridge</Trans>
       </StyledLink>
 
-      {/* <StyledLink to={'/liquidate'}>
-        <Trans>Liquidate</Trans>
-      </StyledLink> */}
+      <StyledLink to={'/claim'}>
+        <Trans>Claim</Trans>
+      </StyledLink>
 
       <AccountContainer>
         <Web3Status />
