@@ -34,11 +34,10 @@ const ClaimModal = () => {
     .then((addresses: any) => {
       console.log('addresses: ', addresses)
     })
-    .then(error => {
-      console.error(error)
+    .then((error: any) => {
+      console.error('Failed to fetch addresses', error)
     })
 
-  console.log('fetchClaim: ', fetchClaim)
   return (
     <ClaimModalContainer>
       <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">

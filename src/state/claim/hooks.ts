@@ -12,6 +12,7 @@ import {useTransactionAdder} from '../transactions/hooks'
 import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish} from 'ethers'
+import MOCK_CLAIM_DATA from './data.json'
 
 function useMerkleDistributorContract() {
   return useContract(MERKLE_DISTRIBUTOR_ADDRESS, MERKLE_DISTRIBUTOR_ABI, true)
@@ -25,15 +26,13 @@ interface UserClaimData {
 }
 
 let FETCH_CLAIM_FILE_PROMISE: any
-
 export function fetchClaimFile() {
   return (
     FETCH_CLAIM_FILE_PROMISE ??
-    (FETCH_CLAIM_FILE_PROMISE = fetch(
-      'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/testMerkleInfo.ts',
-    )
+    (FETCH_CLAIM_FILE_PROMISE = fetch('data.json')
       .then(response => {
-        console.log('response: ', response.body)
+        console.log(response)
+        return response.json()
       })
       .catch(error => {
         console.error('Failed to get claim file', error)
