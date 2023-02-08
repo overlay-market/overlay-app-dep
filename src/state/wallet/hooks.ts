@@ -7,7 +7,7 @@ import {isAddress} from '../../utils/web3'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useMulticall2Contract} from '../../hooks/useContract'
 import {useMultipleContractSingleData, useSingleContractMultipleData} from '../multicall/hooks'
-import {OVL} from '../../constants/tokens'
+import {OVL, LL} from '../../constants/tokens'
 import ERC20_ABI from '../../constants/abis/erc20.json'
 import {SupportedChainId} from '../../constants/chains'
 
@@ -143,4 +143,16 @@ export function useChainOvlBalance(chainId: SupportedChainId): CurrencyAmount<To
   if (!ovl) return undefined
 
   return CurrencyAmount.fromRawAmount(ovl, ovlBalance?.quotient ?? JSBI.BigInt(0))
+}
+
+export function useChainLLBalance(chainId: SupportedChainId): CurrencyAmount<Token> | undefined {
+  const {account} = useActiveWeb3React()
+
+  const ll = account ? LL[chainId] : undefined
+
+  const llBalance: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, ll)
+
+  if (!ll) return undefined
+
+  return CurrencyAmount.fromRawAmount(ll, llBalance?.quotient ?? JSBI.BigInt(0))
 }

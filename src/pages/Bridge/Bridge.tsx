@@ -1,6 +1,6 @@
 import {useState, useEffect, useCallback, useMemo} from 'react'
 import styled from 'styled-components'
-import {useChainOvlBalance} from '../../state/wallet/hooks'
+import {useChainOvlBalance, useChainLLBalance} from '../../state/wallet/hooks'
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
 import {TEXT} from '../../theme/theme'
@@ -90,7 +90,7 @@ const CurrencyLogo = styled.img`
 `
 
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
-  const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
+  const bridgeFromNetworkBalance = useChainLLBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
   const {typedValue} = useBridgeState()
   const {onAmountInput} = useBridgeActionHandlers()
