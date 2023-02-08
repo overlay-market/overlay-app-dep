@@ -1,5 +1,8 @@
 import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {FlexRow, FlexColumn} from '../../components/Container/Container'
+import {shortenAddress} from '../../utils/web3'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -10,7 +13,7 @@ const BridgeContainer = styled.div`
   color: white;
 `
 
-const ClaimModal = styled.div`
+const ClaimModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   background: #1b2131;
@@ -20,12 +23,22 @@ const ClaimModal = styled.div`
   border-radius: 8px;
 `
 
+const ClaimModal = () => {
+  const {account, chainId, error} = useActiveWeb3React()
+  return (
+    <ClaimModalContainer>
+      <FlexRow>
+        <TEXT.SmallBody>Claim OVL</TEXT.SmallBody>
+        <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
+      </FlexRow>
+    </ClaimModalContainer>
+  )
+}
 const Claim = () => {
+  const {account, chainId, error} = useActiveWeb3React()
   return (
     <BridgeContainer>
-      <ClaimModal>
-        <TEXT.SmallBody>Claim OVL</TEXT.SmallBody>
-      </ClaimModal>
+      <ClaimModal></ClaimModal>
     </BridgeContainer>
   )
 }

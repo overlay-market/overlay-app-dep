@@ -10,4 +10,6 @@ import {useContract} from '../../hooks/useContract'
 import {calculateGasMargin} from '../../utils/calculateGasMargin'
 import {useTransactionAdder} from '../transactions/hooks'
 
+function useMerkleDistributorContract() {}
+
 export function useClaimCallback() {}
