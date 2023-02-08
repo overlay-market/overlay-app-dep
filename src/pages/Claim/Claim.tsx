@@ -27,10 +27,12 @@ const ClaimModal = () => {
   const {account, chainId, error} = useActiveWeb3React()
   return (
     <ClaimModalContainer>
-      <FlexRow>
-        <TEXT.SmallBody>Claim OVL</TEXT.SmallBody>
-        <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
-      </FlexRow>
+      <FlexColumn padding="16px" border="">
+        <FlexRow>
+          <TEXT.SmallBody>Claim OVL</TEXT.SmallBody>
+          <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
+        </FlexRow>
+      </FlexColumn>
     </ClaimModalContainer>
   )
 }

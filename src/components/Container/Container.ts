@@ -41,6 +41,7 @@ const FlexContainer = styled(Box)<{
   border?: string
   borderRadius?: string
   borderTop?: string
+  borderBottom?: string
 }>`
   display: flex;
   position: relative;
@@ -51,6 +52,7 @@ const FlexContainer = styled(Box)<{
   border: ${({border}) => border};
   border-radius: ${({borderRadius}) => borderRadius};
   border-top: ${({borderTop}) => borderTop ?? borderTop};
+  border-bottom: ${({borderBottom}) => borderBottom ?? borderBottom};
 `
 
 export const FlexColumn = styled(FlexContainer)`
