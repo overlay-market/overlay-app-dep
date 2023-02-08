@@ -60,7 +60,7 @@
   "npm.runSilent": true,
   "explorer.confirmDragAndDrop": false,
   "editor.formatOnPaste": false,
-  "editor.cursorSmoothCaretAnimation": true,
+  "editor.cursorSmoothCaretAnimation": "on",
   "editor.smoothScrolling": true,
   "php.suggest.basic": false
 }
