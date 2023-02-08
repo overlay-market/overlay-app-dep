@@ -22,14 +22,18 @@ import LAYER_ZERO_ENDPOINT_ABI from '../constants/abis/LayerZeroEndpoint.json'
 
 // returns null on errors
 export function useContract<T extends Contract = Contract>(
-  address: string | undefined,
+  addressOrAddressMap: string | {[chainId: number]: string} | undefined,
   ABI: any,
   withSignerIfPossible = true,
 ): T | null {
-  const {library, account} = useActiveWeb3React()
+  const {library, account, chainId} = useActiveWeb3React()
 
   return useMemo(() => {
-    if (!address || !ABI || !library) return null
+    if (!addressOrAddressMap || !ABI || !library || !chainId) return null
+    let address: string | undefined
+    if (typeof addressOrAddressMap === 'string') address = addressOrAddressMap
+    else address = addressOrAddressMap[chainId]
+    if (!address) return null
     try {
       return getContract(
         address,
@@ -41,7 +45,7 @@ export function useContract<T extends Contract = Contract>(
       console.error('Failed to get contract', error)
       return null
     }
-  }, [address, ABI, library, withSignerIfPossible, account]) as T
+  }, [addressOrAddressMap, ABI, library, chainId, withSignerIfPossible, account]) as T
 }
 
 export function useMulticall2Contract(): Contract | null {

@@ -9,7 +9,11 @@ import {isAddress} from '../../utils/web3'
 import {useContract} from '../../hooks/useContract'
 import {calculateGasMargin} from '../../utils/calculateGasMargin'
 import {useTransactionAdder} from '../transactions/hooks'
+import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
+import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 
-function useMerkleDistributorContract() {}
+function useMerkleDistributorContract() {
+  return useContract(MERKLE_DISTRIBUTOR_ADDRESS, MERKLE_DISTRIBUTOR_ABI, true)
+}
 
 export function useClaimCallback() {}
