@@ -5,6 +5,7 @@ import {FlexRow, FlexColumn} from '../../components/Container/Container'
 import {shortenAddress} from '../../utils/web3'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TriggerActionButton} from '../../components/Button/Button'
+import {useWalletModalToggle} from '../../state/application/hooks'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -26,21 +27,42 @@ const ClaimModalContainer = styled.div`
 
 const ClaimModal = () => {
   const {account, chainId, error} = useActiveWeb3React()
+  const toggleWalletModal = useWalletModalToggle()
+
   return (
     <ClaimModalContainer>
-      <FlexColumn borderBottom="1px solid #71CEFF">
-        <FlexRow padding="16px">
-          <TEXT.SmallBody>Claim OVL</TEXT.SmallBody>
+      <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+        <FlexRow marginBottom="8px">
+          <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
           <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
         </FlexRow>
+        <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+          {account ? '10 OVL' : '0 OVL'}
+        </TEXT.AdjustableSize>
       </FlexColumn>
-      <FlexColumn>
+      <FlexColumn padding="16px">
         <TEXT.SmallBody>
           As a member of the Overlay community, you may claim OVL to be used for voting and
           governance, and to interact with the Overlay protocol.
         </TEXT.SmallBody>
-        <ExternalLink href="">Read more about OVL</ExternalLink>
-        <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
+        <ExternalLink
+          href=""
+          style={{
+            color: '#71CEFF',
+            textDecoration: 'underline',
+            fontSize: '14px',
+            margin: '16px auto 16px 0',
+          }}
+        >
+          Read more about OVL
+        </ExternalLink>
+        {account ? (
+          <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
+        ) : (
+          <TriggerActionButton onClick={toggleWalletModal} active={true}>
+            Connect Wallet
+          </TriggerActionButton>
+        )}
       </FlexColumn>
     </ClaimModalContainer>
   )
