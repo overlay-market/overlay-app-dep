@@ -92,6 +92,7 @@ const CurrencyLogo = styled.img`
 const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   const bridgeFromNetworkBalance = useChainLLBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
+  // console.log('parsed bridgeFromNetworkBalance: ', parsedBalance)
   const {typedValue} = useBridgeState()
   const {onAmountInput} = useBridgeActionHandlers()
 
@@ -135,8 +136,9 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 }
 
 const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
-  const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
-  const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
+  const bridgeToNetworkBalance = useChainLLBalance(chainId)
+  const parsedBalance = bridgeToNetworkBalance?.toFixed(4)
+  // console.log('bridgeToNetworkBalance parsedBalance:', parsedBalance)
   const {typedValue} = useBridgeState()
   return (
     <BridgeSelectorContainer>
@@ -171,6 +173,7 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 }
 
 const Bridge = () => {
+  console.log('arbitrum bal: ', useChainLLBalance(1))
   const {account, chainId} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
   const ll = chainId ? LL[chainId] : undefined
