@@ -42,20 +42,57 @@ export function fetchClaimFile() {
 }
 
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
-export function fetchClaim(account: string) {
+export function fetchClaim(account: string): any {
   const formattedAddress = isAddress(account)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
     FETCH_CLAIM_PROMISES[account] ??
-    (FETCH_CLAIM_PROMISES[account] = fetchClaimFile().then((claimData: any) => {
-      const keys = Object.keys(claimData)
-      const filtered = keys.filter(address => address === formattedAddress)
+    (FETCH_CLAIM_PROMISES[account] = fetchClaimFile()
+      .then((claimData: any) => {
+        const keys = Object.keys(claimData)
+        const filtered = keys.filter(address => address === formattedAddress)
 
-      if (filtered.length > 0) {
-        return claimData[formattedAddress]
-      }
-    }))
+        if (filtered.length > 0) {
+          return claimData[formattedAddress]
+        }
+        throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
+      })
+      .catch((error: any) => {
+        console.debug('Claim fetch failed', error)
+        throw error
+      }))
   )
 }
+
+export function useUserClaimData(account: string | null | undefined): UserClaimData | null {
+  const {chainId} = useActiveWeb3React()
+
+  const [claimInfo, setClaimInfo] = useState<{[account: string]: UserClaimData | null}>({})
+
+  useEffect(() => {
+    if (!account || chainId !== 1) return
+
+    fetchClaim(account)
+      .then((accountClaimInfo: any) => {
+        setClaimInfo(claimInfo => {
+          return {
+            ...claimInfo,
+            [account]: accountClaimInfo,
+          }
+        })
+      })
+      .catch(() => {
+        setClaimInfo(claimInfo => {
+          return {
+            ...claimInfo,
+            [account]: null,
+          }
+        })
+      })
+  }, [account, chainId])
+
+  return account ? claimInfo[account] : null
+}
+
 export function useClaimCallback() {}

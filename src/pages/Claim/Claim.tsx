@@ -6,7 +6,7 @@ import {shortenAddress} from '../../utils/web3'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useWalletModalToggle} from '../../state/application/hooks'
-import {fetchClaimFile, fetchClaim} from '../../state/claim/hooks'
+import {fetchClaimFile, fetchClaim, useUserClaimData} from '../../state/claim/hooks'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -30,9 +30,9 @@ const ClaimModal = () => {
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const claim = fetchClaim(account ?? '')
-  console.log('claim: ', claim)
+  const userClaim = useUserClaimData(account)
 
+  console.log('userClaim: ', userClaim)
   return (
     <ClaimModalContainer>
       <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
