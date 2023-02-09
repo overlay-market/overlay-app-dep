@@ -30,7 +30,8 @@ export function fetchClaimFile() {
   return (
     FETCH_CLAIM_FILE_PROMISE ??
     (FETCH_CLAIM_FILE_PROMISE = fetch(
-      'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/testMerkleInfo.json',
+      // 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/testMerkleInfo.json',
+      'data.json',
     )
       .then(response => {
         console.log(response)
@@ -122,7 +123,7 @@ export function useClaimCallback(account: string | null | undefined): {
   const claimCallback = async function () {
     if (!claimData || !account || !library || !chainId || !distributorContract) return
 
-    // console.log('claimData.amount: ', formatBigNumberUsingDecimalsToNumber(claimData.amount, 18))
+    console.log('claimData.amount: ', formatBigNumberUsingDecimalsToNumber(claimData.amount, 18))
 
     const args = [claimData.index, account, claimData.amount, claimData.proof]
 
