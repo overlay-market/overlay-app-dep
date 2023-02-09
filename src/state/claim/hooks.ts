@@ -95,4 +95,14 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
   return account ? claimInfo[account] : null
 }
 
+export function useUserHasAvailableClaim(account: string | null | undefined): boolean {
+  const userClaimData = useUserClaimData(account)
+  const distributorContract = useMerkleDistributorContract()
+  const isClaimedResult = useSingleCallResult(distributorContract, 'isClaimed', [
+    userClaimData?.index,
+  ])
+  // user is in blob and contract marks as unclaimed
+  return Boolean(userClaimData && !isClaimedResult.loading && isClaimedResult.result?.[0] === false)
+}
+
 export function useClaimCallback() {}
