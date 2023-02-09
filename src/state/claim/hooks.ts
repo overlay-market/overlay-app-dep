@@ -71,7 +71,7 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
   const [claimInfo, setClaimInfo] = useState<{[account: string]: UserClaimData | null}>({})
 
   useEffect(() => {
-    if (!account || chainId !== 1) return
+    if (!account) return
 
     fetchClaim(account)
       .then((accountClaimInfo: any) => {
