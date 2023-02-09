@@ -194,29 +194,26 @@ function Web3StatusInner() {
         <Account>
           {shortenAddress(account)}
 
-          {chainId && NETWORK_LABELS[chainId] === 'Mainnet' && (
+          {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.MAINNET] && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
           )}
 
-          {chainId && NETWORK_LABELS[chainId] === 'Goerli' && (
+          {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.ARBITRUM] && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
-          {chainId && NETWORK_LABELS[chainId] === 'Rinkeby' && (
+          {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.GÖRLI] && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
-          {chainId && NETWORK_LABELS[chainId] === 'Arbitrum' && (
+          {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.RINKEBY] && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
-          {chainId && NETWORK_LABELS[chainId] === 'LocalHost' && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
-          )}
-
-          {chainId && NETWORK_LABELS[chainId] === 'LocalHostDev' && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
-          )}
+          {chainId &&
+            NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.ARBITRUM_GÖRLI] && (
+              <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+            )}
         </Account>
       </Web3StatusConnected>
     )
