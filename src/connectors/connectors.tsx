@@ -10,6 +10,7 @@ const SUPPORTED_CHAIN_IDS: SupportedChainId[] = [
   SupportedChainId.GÖRLI,
   SupportedChainId.RINKEBY,
   SupportedChainId.ARBITRUM,
+  SupportedChainId.ARBITRUM_GÖRLI,
 ]
 
 export const injected = new InjectedConnector({
@@ -27,6 +28,7 @@ const NETWORK_URLS: {[key in SupportedChainId]: string} = {
   [SupportedChainId.GÖRLI]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.RINKEBY]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.ARBITRUM]: `https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`,
+  [SupportedChainId.ARBITRUM_GÖRLI]: `https://arbitrum-goerli.infura.io/v3/${INFURA_KEY}`,
 }
 
 export const network = new NetworkConnector({

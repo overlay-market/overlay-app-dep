@@ -147,6 +147,7 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.GÖRLI]: 'Goerli',
   [SupportedChainId.RINKEBY]: 'Rinkeby',
   [SupportedChainId.ARBITRUM]: 'Arbitrum One',
+  [SupportedChainId.ARBITRUM_GÖRLI]: 'Arbitrum Goerli',
 }
 
 function Web3StatusInner() {
