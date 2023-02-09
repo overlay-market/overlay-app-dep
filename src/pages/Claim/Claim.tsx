@@ -7,7 +7,7 @@ import {shortenAddress} from '../../utils/web3'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useWalletModalToggle} from '../../state/application/hooks'
-import {useUserClaimData, useClaimCallback} from '../../state/claim/hooks'
+import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 
@@ -33,6 +33,7 @@ const Claim = () => {
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
+  const userHasAvailableClaim = useUserHasAvailableClaim(account)
   const userClaimData = useUserClaimData(account)
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
@@ -90,7 +91,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && userClaimAmount && (
+      {account && userClaimAmount && userHasAvailableClaim && (
         <ClaimModalContainer>
           <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
             <FlexRow marginBottom="8px">
@@ -118,6 +119,40 @@ const Claim = () => {
               Read more about OVL
             </ExternalLink>
             <TriggerActionButton active={true} onClick={onClaim}>
+              Claim OVL
+            </TriggerActionButton>
+          </FlexColumn>
+        </ClaimModalContainer>
+      )}
+
+      {account && userClaimAmount && !userHasAvailableClaim && (
+        <ClaimModalContainer>
+          <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+            <FlexRow marginBottom="8px">
+              <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+              <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
+            </FlexRow>
+            <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+              Already Claimed
+            </TEXT.AdjustableSize>
+          </FlexColumn>
+          <FlexColumn padding="16px">
+            <TEXT.SmallBody>
+              As a member of the Overlay community, you may claim OVL to be used for voting and
+              governance, and to interact with the Overlay protocol.
+            </TEXT.SmallBody>
+            <ExternalLink
+              href=""
+              style={{
+                color: '#71CEFF',
+                textDecoration: 'underline',
+                fontSize: '14px',
+                margin: '16px auto 16px 0',
+              }}
+            >
+              Read more about OVL
+            </ExternalLink>
+            <TriggerActionButton isDisabled={true} onClick={onClaim}>
               Claim OVL
             </TriggerActionButton>
           </FlexColumn>
