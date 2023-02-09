@@ -1,3 +1,4 @@
+import {useState} from 'react'
 import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import {useActiveWeb3React} from '../../hooks/web3'
@@ -6,7 +7,8 @@ import {shortenAddress} from '../../utils/web3'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useWalletModalToggle} from '../../state/application/hooks'
-import {fetchClaimFile, fetchClaim, useUserClaimData} from '../../state/claim/hooks'
+import {useUserClaimData, useClaimCallback} from '../../state/claim/hooks'
+import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -29,10 +31,6 @@ const ClaimModalContainer = styled.div`
 const ClaimModal = () => {
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
-
-  const userClaim = useUserClaimData(account)
-
-  console.log('userClaim: ', userClaim)
   return (
     <ClaimModalContainer>
       <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
@@ -73,6 +71,28 @@ const ClaimModal = () => {
 }
 const Claim = () => {
   const {account, chainId, error} = useActiveWeb3React()
+  const userClaimData = useUserClaimData(account)
+
+  // monitor the status of the claim from contracts and txns
+  const {claimCallback} = useClaimCallback(account)
+
+  // used for UI loading states
+  const [attempting, setAttempting] = useState<boolean>(false)
+
+  const {claimSubmitted, claimTxn} = useUserHasSubmittedClaim(account ?? undefined)
+  const claimConfirmed = Boolean(claimTxn?.receipt)
+
+  function onClaim() {
+    setAttempting(true)
+    claimCallback()
+      // reset modal and log error
+      .catch(error => {
+        setAttempting(false)
+        console.log(error)
+      })
+  }
+
+  console.log('userClaimData: ', userClaimData)
   return (
     <BridgeContainer>
       <ClaimModal></ClaimModal>
