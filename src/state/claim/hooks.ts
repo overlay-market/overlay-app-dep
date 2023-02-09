@@ -29,7 +29,9 @@ let FETCH_CLAIM_FILE_PROMISE: any
 export function fetchClaimFile() {
   return (
     FETCH_CLAIM_FILE_PROMISE ??
-    (FETCH_CLAIM_FILE_PROMISE = fetch('data.json')
+    (FETCH_CLAIM_FILE_PROMISE = fetch(
+      'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/testMerkleInfo.json',
+    )
       .then(response => {
         console.log(response)
         return response.json()
