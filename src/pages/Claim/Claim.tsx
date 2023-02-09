@@ -9,7 +9,7 @@ import {TriggerActionButton} from '../../components/Button/Button'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback} from '../../state/claim/hooks'
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
-import {formatWeiToParsedString} from '../../utils/formatWei'
+import {formatWeiToParsedNumber} from '../../utils/formatWei'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -32,7 +32,10 @@ const ClaimModalContainer = styled.div`
 const Claim = () => {
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
+
   const userClaimData = useUserClaimData(account)
+  const userClaimAmount =
+    userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
 
   // monitor the status of the claim from contracts and txns
   const {claimCallback} = useClaimCallback(account)
@@ -52,8 +55,6 @@ const Claim = () => {
         console.log(error)
       })
   }
-
-  console.log('userClaimData: ', userClaimData)
 
   return (
     <BridgeContainer>
@@ -89,7 +90,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && userClaimData && (
+      {account && userClaimAmount && (
         <ClaimModalContainer>
           <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
             <FlexRow marginBottom="8px">
@@ -97,7 +98,7 @@ const Claim = () => {
               <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
             </FlexRow>
             <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
-              {userClaimData.amount} OVL
+              {userClaimAmount} OVL
             </TEXT.AdjustableSize>
           </FlexColumn>
           <FlexColumn padding="16px">
