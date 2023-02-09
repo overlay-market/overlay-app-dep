@@ -5,6 +5,7 @@ const BannerContainer = styled.div`
   display: block;
   overflow-x: hidden !important;
   width: 100%;
+  margin-bottom: 24px;
 `
 
 const Carousel = styled.div`
@@ -15,7 +16,9 @@ const Carousel = styled.div`
   justify-content: center;
   text-align: center;
   width: 100%;
-  margin-top: 8px;
+  background: #1b2131;
+  padding: 8px 0;
+  box-shadow: 0 0 7px #5b60a4;
 `
 
 const AnimatedCarouselText = styled.div<{duration: number}>`
