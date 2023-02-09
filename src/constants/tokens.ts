@@ -38,6 +38,8 @@ export const OVL: {[chainId: number]: Token} = {
 export const NETWORK_LOGO: {[chainId: number]: string} = {
   [SupportedChainId.MAINNET]: ETHEREUM_LOGO,
   [SupportedChainId.ARBITRUM]: ARBITRUM_LOGO,
+  [SupportedChainId.GÖRLI]: ETHEREUM_LOGO,
+  [SupportedChainId.ARBITRUM_GÖRLI]: ARBITRUM_LOGO,
 }
 
 //@dev: remove LL Token addresses after bridge testing
