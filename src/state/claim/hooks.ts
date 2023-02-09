@@ -41,4 +41,21 @@ export function fetchClaimFile() {
   )
 }
 
+const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
+export function fetchClaim(account: string) {
+  const formattedAddress = isAddress(account)
+  if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
+
+  return (
+    FETCH_CLAIM_PROMISES[account] ??
+    (FETCH_CLAIM_PROMISES[account] = fetchClaimFile().then((claimData: any) => {
+      const keys = Object.keys(claimData)
+      const filtered = keys.filter(address => address === formattedAddress)
+
+      if (filtered.length > 0) {
+        return claimData[formattedAddress]
+      }
+    }))
+  )
+}
 export function useClaimCallback() {}
