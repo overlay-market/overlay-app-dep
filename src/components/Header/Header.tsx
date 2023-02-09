@@ -13,6 +13,7 @@ import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogo from '../../assets/images/overlay-logo.png'
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png'
 import UpdatedOverlayLogo from '../../assets/images/updated-overlay-icon.png'
+import OverlayLogoDark from '../../assets/images/overlay-logo-dark.png'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
@@ -32,8 +33,8 @@ export const HeaderContainer = styled.div`
 `
 
 export const LogoContainer = styled.div`
-  height: 32px;
-  width: 32px;
+  height: 20px;
+  width: 142px;
   margin: auto 16px auto 0px;
 `
 
@@ -96,20 +97,20 @@ export default function Header() {
       <LogoContainer onClick={returnHome}>
         {darkMode ? (
           <Image
-            src={UpdatedOverlayLogo}
+            src={OverlayLogoDark}
             alt={'Overlay Logo Light'}
             height={'100%'}
             width={'100%'}
-            minHeight={'32px'}
+            // minHeight={'32px'}
             minWidth={'32px'}
           />
         ) : (
           <Image
-            src={UpdatedOverlayLogo}
+            src={OverlayLogoDark}
             alt={'Overlay Logo'}
             height={'100%'}
             width={'100%'}
-            minHeight={'32px'}
+            // minHeight={'32px'}
             minWidth={'32px'}
           />
         )}
