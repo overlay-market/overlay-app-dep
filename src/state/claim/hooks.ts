@@ -12,7 +12,7 @@ import {useTransactionAdder} from '../transactions/hooks'
 import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish} from 'ethers'
-import MOCK_CLAIM_DATA from './data.json'
+import {formatBigNumberUsingDecimalsToNumber} from '../../utils/formatWei'
 
 function useMerkleDistributorContract() {
   return useContract(MERKLE_DISTRIBUTOR_ADDRESS, MERKLE_DISTRIBUTOR_ABI, true)
@@ -119,6 +119,8 @@ export function useClaimCallback(account: string | null | undefined): {
 
   const claimCallback = async function () {
     if (!claimData || !account || !library || !chainId || !distributorContract) return
+
+    // console.log('claimData.amount: ', formatBigNumberUsingDecimalsToNumber(claimData.amount, 18))
 
     const args = [claimData.index, account, claimData.amount, claimData.proof]
 
