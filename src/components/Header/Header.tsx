@@ -101,8 +101,8 @@ export default function Header() {
             alt={'Overlay Logo Light'}
             height={'100%'}
             width={'100%'}
-            // minHeight={'32px'}
-            minWidth={'32px'}
+            minHeight={'20px'}
+            minWidth={'142px'}
           />
         ) : (
           <Image
@@ -110,8 +110,8 @@ export default function Header() {
             alt={'Overlay Logo'}
             height={'100%'}
             width={'100%'}
-            // minHeight={'32px'}
-            minWidth={'32px'}
+            minHeight={'20px'}
+            minWidth={'142px'}
           />
         )}
       </LogoContainer>

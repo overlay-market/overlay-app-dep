@@ -180,9 +180,9 @@ function Web3StatusInner() {
           </PendingTransactions>
         )}
 
-        {account && chainId && !ovlBalance && (
+        {/* {account && chainId && !ovlBalance && (
           <TokenBalance balance={'Loading...'} network={NETWORK_LABELS[chainId]} />
-        )}
+        )} */}
 
         {account && chainId && ovlBalance && (
           <TokenBalance
