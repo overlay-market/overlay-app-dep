@@ -1,3 +1,4 @@
+import {BigNumberish} from 'ethers'
 import {ChainId} from '@sushiswap/sdk'
 import {createAction} from '@reduxjs/toolkit'
 
@@ -59,7 +60,8 @@ export interface BridgeOVLTransactionInfo extends BaseTransactionInfo {
 
 export interface ClaimOVLTransactionInfo extends BaseTransactionInfo {
   type: TransactionType.CLAIM_OVL
-  amount: string
+  recipient: string
+  amount: BigNumberish
 }
 
 export type TransactionInfo =
@@ -68,6 +70,7 @@ export type TransactionInfo =
   | UnwindOVLTransactionInfo
   | LiquidateOVLTransactionInfo
   | BridgeOVLTransactionInfo
+  | ClaimOVLTransactionInfo
 
 export const addTransaction = createAction<{
   chainId: ChainId

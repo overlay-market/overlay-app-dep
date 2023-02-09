@@ -105,4 +105,36 @@ export function useUserHasAvailableClaim(account: string | null | undefined): bo
   return Boolean(userClaimData && !isClaimedResult.loading && isClaimedResult.result?.[0] === false)
 }
 
-export function useClaimCallback() {}
+export function useClaimCallback(account: string | null | undefined): {
+  claimCallback: () => Promise<string>
+} {
+  // get claim data for this account
+  const {library, chainId} = useActiveWeb3React()
+  const claimData = useUserClaimData(account)
+
+  // used for popup summary
+  // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
+  const addTransaction = useTransactionAdder()
+  const distributorContract = useMerkleDistributorContract()
+
+  const claimCallback = async function () {
+    if (!claimData || !account || !library || !chainId || !distributorContract) return
+
+    const args = [claimData.index, account, claimData.amount, claimData.proof]
+
+    return distributorContract.estimateGas['claim'](...args, {}).then(estimatedGasLimit => {
+      return distributorContract
+        .claim(...args, {value: null, gasLimit: calculateGasMargin(estimatedGasLimit)})
+        .then((response: TransactionResponse) => {
+          addTransaction(response, {
+            type: TransactionType.CLAIM_OVL,
+            recipient: account,
+            amount: claimData.amount,
+          })
+          return response.hash
+        })
+    })
+  }
+
+  return {claimCallback}
+}
