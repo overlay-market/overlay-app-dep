@@ -3,4 +3,5 @@ export enum SupportedChainId {
   RINKEBY = 4, //pre-launch only
   GÖRLI = 5, //pre-launch only
   ARBITRUM = 42161,
+  ARBITRUM_GÖRLI = 421613,
 }

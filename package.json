@@ -23,7 +23,7 @@
     "@reach/dialog": "^0.10.3",
     "@rebass/forms": "^4.0.6",
     "@reduxjs/toolkit": "^1.6.1",
-    "@sushiswap/sdk": "^5.0.0-canary.23",
+    "@sushiswap/sdk": "^5.0.0-canary.116",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
