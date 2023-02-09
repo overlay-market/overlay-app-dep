@@ -18,6 +18,7 @@ export enum TransactionType {
   UNWIND_OVL_POSITION = 2,
   LIQUIDATE_OVL_POSITION = 3,
   BRIDGE_OVL = 4,
+  CLAIM_OVL = 5,
 }
 
 export interface BaseTransactionInfo {
@@ -53,6 +54,11 @@ export interface BridgeOVLTransactionInfo extends BaseTransactionInfo {
   type: TransactionType.BRIDGE_OVL
   // fromChainId: string | number
   // toChainId: string | number
+  amount: string
+}
+
+export interface ClaimOVLTransactionInfo extends BaseTransactionInfo {
+  type: TransactionType.CLAIM_OVL
   amount: string
 }
 
