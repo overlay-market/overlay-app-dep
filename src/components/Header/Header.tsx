@@ -12,6 +12,7 @@ import SlideMenu from '../SlideMenu/SlideMenu'
 import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogo from '../../assets/images/overlay-logo.png'
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png'
+import UpdatedOverlayLogo from '../../assets/images/updated-overlay-icon.png'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
