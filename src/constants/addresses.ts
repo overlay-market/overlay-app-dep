@@ -27,7 +27,7 @@ export const LL_TOKEN_ADDRESS: AddressMap = {
 }
 
 export const MERKLE_DISTRIBUTOR_ADDRESS: AddressMap = {
-  [SupportedChainId.ARBITRUM_GÖRLI]: '0x58954C03A9d70C54be5E63478A565CD099D0939c',
+  [SupportedChainId.ARBITRUM_GÖRLI]: '0xAEA8CA6e3854E39373C67879aE654bC117c9931D',
 }
 
 export const MULTICALL2_ADDRESS: AddressMap = {

@@ -96,7 +96,7 @@ export default function Header() {
       <LogoContainer onClick={returnHome}>
         {darkMode ? (
           <Image
-            src={LightOverlayLogo}
+            src={UpdatedOverlayLogo}
             alt={'Overlay Logo Light'}
             height={'100%'}
             width={'100%'}
@@ -105,7 +105,7 @@ export default function Header() {
           />
         ) : (
           <Image
-            src={OverlayLogo}
+            src={UpdatedOverlayLogo}
             alt={'Overlay Logo'}
             height={'100%'}
             width={'100%'}
