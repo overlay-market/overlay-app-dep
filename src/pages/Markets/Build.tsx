@@ -146,6 +146,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   // const market = marketData?.market
   const {account, chainId} = useActiveWeb3React()
   const ovlBalance = useOvlBalance()
+  const parsedOvlBalance = ovlBalance && ovlBalance.toFixed(2)
+
   const isTxnSettingsAuto = useIsTxnSettingsAuto()
   const ovl = chainId ? OVL[chainId] : undefined
 
@@ -390,10 +392,11 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [attemptingTransaction, transactionErrorMessage, transactionHash])
 
   const disableBuildButton: boolean = useMemo(() => {
-    if (!typedValue || !minCollateral || isLong === undefined) return true
+    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) return true
+    if (typedValue > parsedOvlBalance) return true
     if (minCollateral > Number(typedValue)) return true
     return false
-  }, [typedValue, isLong, minCollateral])
+  }, [typedValue, isLong, minCollateral, parsedOvlBalance])
 
   const handleBuild = useCallback(() => {
     if (!typedValue) throw new Error('missing position input size')
