@@ -92,7 +92,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && userClaimAmount && (
+      {account && userClaimAmount && userHasAvailableClaim && (
         <ClaimModalContainer>
           <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
             <FlexRow marginBottom="8px">
@@ -126,7 +126,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {/* {account && userClaimAmount && !userHasAvailableClaim && (
+      {account && userClaimAmount && !userHasAvailableClaim && (
         <ClaimModalContainer>
           <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
             <FlexRow marginBottom="8px">
@@ -156,7 +156,7 @@ const Claim = () => {
             <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
           </FlexColumn>
         </ClaimModalContainer>
-      )} */}
+      )}
     </BridgeContainer>
   )
 }
