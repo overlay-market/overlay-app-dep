@@ -74,9 +74,11 @@ const BalanceContainer = styled(FlexRow)`
   margin-right: 12px;
   font-size: 12px;
   font-weight: 400;
+  display: none;
 
   ${({theme}) => theme.mediaWidth.minSmall`
     margin-right: 16px;
+    display: flex;
   `}
 `
 
