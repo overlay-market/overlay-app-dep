@@ -76,7 +76,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && !userClaimData && (
+      {((account && !userClaimData) || userHasAvailableClaim === undefined) && (
         <ClaimModalContainer>
           <FlexColumn padding="16px">
             <TEXT.SmallBody marginRight="auto" marginBottom="18px">
@@ -92,71 +92,81 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && userClaimAmount && userHasAvailableClaim && (
-        <ClaimModalContainer>
-          <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
-            <FlexRow marginBottom="8px">
-              <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
-              <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
-            </FlexRow>
-            <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
-              {userClaimAmount} OVL
-            </TEXT.AdjustableSize>
-          </FlexColumn>
-          <FlexColumn padding="16px">
-            <TEXT.SmallBody>
-              As a member of the Overlay community, you may claim OVL to be used for voting and
-              governance, and to interact with the Overlay protocol.
-            </TEXT.SmallBody>
-            <ExternalLink
-              href=""
-              style={{
-                color: '#71CEFF',
-                textDecoration: 'underline',
-                fontSize: '14px',
-                margin: '16px auto 16px 0',
-              }}
-            >
-              Read more about OVL
-            </ExternalLink>
-            <TriggerActionButton active={true} onClick={onClaim}>
-              Claim OVL
-            </TriggerActionButton>
-          </FlexColumn>
-        </ClaimModalContainer>
-      )}
+      {account &&
+        userClaimAmount &&
+        userHasAvailableClaim &&
+        userHasAvailableClaim !== undefined && (
+          <ClaimModalContainer>
+            <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+              <FlexRow marginBottom="8px">
+                <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+                <TEXT.SmallBody>
+                  {account ? shortenAddress(account) : 'Not connected'}
+                </TEXT.SmallBody>
+              </FlexRow>
+              <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+                {userClaimAmount} OVL
+              </TEXT.AdjustableSize>
+            </FlexColumn>
+            <FlexColumn padding="16px">
+              <TEXT.SmallBody>
+                As a member of the Overlay community, you may claim OVL to be used for voting and
+                governance, and to interact with the Overlay protocol.
+              </TEXT.SmallBody>
+              <ExternalLink
+                href=""
+                style={{
+                  color: '#71CEFF',
+                  textDecoration: 'underline',
+                  fontSize: '14px',
+                  margin: '16px auto 16px 0',
+                }}
+              >
+                Read more about OVL
+              </ExternalLink>
+              <TriggerActionButton active={true} onClick={onClaim}>
+                Claim OVL
+              </TriggerActionButton>
+            </FlexColumn>
+          </ClaimModalContainer>
+        )}
 
-      {account && userClaimAmount && !userHasAvailableClaim && (
-        <ClaimModalContainer>
-          <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
-            <FlexRow marginBottom="8px">
-              <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
-              <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
-            </FlexRow>
-            <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
-              Already Claimed
-            </TEXT.AdjustableSize>
-          </FlexColumn>
-          <FlexColumn padding="16px">
-            <TEXT.SmallBody>
-              As a member of the Overlay community, you may claim OVL to be used for voting and
-              governance, and to interact with the Overlay protocol.
-            </TEXT.SmallBody>
-            <ExternalLink
-              href=""
-              style={{
-                color: '#71CEFF',
-                textDecoration: 'underline',
-                fontSize: '14px',
-                margin: '16px auto 16px 0',
-              }}
-            >
-              Read more about OVL
-            </ExternalLink>
-            <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
-          </FlexColumn>
-        </ClaimModalContainer>
-      )}
+      {account &&
+        userClaimAmount &&
+        !userHasAvailableClaim &&
+        userHasAvailableClaim !== undefined && (
+          <ClaimModalContainer>
+            <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+              <FlexRow marginBottom="8px">
+                <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+                <TEXT.SmallBody>
+                  {account ? shortenAddress(account) : 'Not connected'}
+                </TEXT.SmallBody>
+              </FlexRow>
+              <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+                Already Claimed
+              </TEXT.AdjustableSize>
+            </FlexColumn>
+            <FlexColumn padding="16px">
+              <TEXT.SmallBody>
+                As a member of the Overlay community, you may claim OVL to be used for voting and
+                governance, and to interact with the Overlay protocol.
+              </TEXT.SmallBody>
+              <ExternalLink
+                href=""
+                style={{
+                  color: '#71CEFF',
+                  textDecoration: 'underline',
+                  fontSize: '14px',
+                  margin: '16px auto 16px 0',
+                }}
+              >
+                Read more about OVL
+              </ExternalLink>
+              <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
+            </FlexColumn>
+          </ClaimModalContainer>
+        )}
     </BridgeContainer>
   )
 }

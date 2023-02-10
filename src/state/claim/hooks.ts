@@ -98,12 +98,11 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
   return account ? claimInfo[account] : null
 }
 
-export function useUserHasAvailableClaim(account: string | null | undefined): boolean {
+export function useUserHasAvailableClaim(account: string | null | undefined): boolean | undefined {
   const userClaimData = useUserClaimData(account)
   const distributorContract = useMerkleDistributorContract()
 
   const userClaimIndex = userClaimData?.index && BigNumber.from(userClaimData.index)
-  console.log('userClaimIndex: ', userClaimIndex)
   const [claim, setClaim] = useState()
 
   useEffect(() => {
@@ -118,6 +117,7 @@ export function useUserHasAvailableClaim(account: string | null | undefined): bo
   }, [distributorContract, account, userClaimIndex])
 
   return useMemo(() => {
+    if (claim === undefined) return undefined
     return Boolean(userClaimData && claim === false)
   }, [userClaimData, claim])
 }
