@@ -76,7 +76,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {((account && !userClaimData) || userHasAvailableClaim === undefined) && (
+      {((account && !userClaimData) || (account && userHasAvailableClaim === undefined)) && (
         <ClaimModalContainer>
           <FlexColumn padding="16px">
             <TEXT.SmallBody marginRight="auto" marginBottom="18px">
