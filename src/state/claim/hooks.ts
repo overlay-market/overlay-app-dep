@@ -1,5 +1,5 @@
 import {TransactionType} from './../transactions/actions'
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useMemo} from 'react'
 import {TransactionResponse} from '@ethersproject/providers'
 import {CurrencyAmount, Token} from '@uniswap/sdk-core'
 import {useActiveWeb3React} from '../../hooks/web3'
@@ -11,7 +11,7 @@ import {calculateGasMargin} from '../../utils/calculateGasMargin'
 import {useTransactionAdder} from '../transactions/hooks'
 import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
-import {BigNumberish} from 'ethers'
+import {BigNumberish, BigNumber} from 'ethers'
 import {formatBigNumberUsingDecimalsToNumber} from '../../utils/formatWei'
 
 function useMerkleDistributorContract() {
@@ -19,10 +19,10 @@ function useMerkleDistributorContract() {
 }
 
 interface UserClaimData {
+  index: number
   address: string
   proof: string[]
   amount: BigNumberish
-  index: number
 }
 
 let FETCH_CLAIM_FILE_PROMISE: any
@@ -101,11 +101,25 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
 export function useUserHasAvailableClaim(account: string | null | undefined): boolean {
   const userClaimData = useUserClaimData(account)
   const distributorContract = useMerkleDistributorContract()
-  const isClaimedResult = useSingleCallResult(distributorContract, 'isClaimed', [
-    userClaimData?.index,
-  ])
-  // user is in blob and contract marks as unclaimed
-  return Boolean(userClaimData && !isClaimedResult.loading && isClaimedResult.result?.[0] === false)
+
+  const userClaimIndex = userClaimData?.index && BigNumber.from(userClaimData.index)
+  console.log('userClaimIndex: ', userClaimIndex)
+  const [claim, setClaim] = useState()
+
+  useEffect(() => {
+    if (!distributorContract || !account || !userClaimIndex) return
+    ;(async () => {
+      try {
+        setClaim(await distributorContract.isClaimed(userClaimIndex))
+      } catch (error) {
+        console.log('claim error inside useUserHasAvailableClaim: ', error)
+      }
+    })()
+  }, [distributorContract, account, userClaimIndex])
+
+  return useMemo(() => {
+    return Boolean(userClaimData && claim === false)
+  }, [userClaimData, claim])
 }
 
 export function useClaimCallback(account: string | null | undefined): {

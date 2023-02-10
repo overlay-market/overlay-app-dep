@@ -24,33 +24,33 @@ export enum ExplorerDataType {
  * @param type the type of the data
  */
 export function getExplorerLink(chainId: number, data: string, type: ExplorerDataType): string {
-  // if (chainId === SupportedChainId.ARBITRUM_ONE) {
-  //   switch (type) {
-  //     case ExplorerDataType.TRANSACTION:
-  //       return `https://arbiscan.io/tx/${data}`
-  //     case ExplorerDataType.ADDRESS:
-  //     case ExplorerDataType.TOKEN:
-  //       return `https://arbiscan.io/address/${data}`
-  //     case ExplorerDataType.BLOCK:
-  //       return `https://arbiscan.io/block/${data}`
-  //     default:
-  //       return `https://arbiscan.io/`
-  //   }
-  // }
+  if (chainId === SupportedChainId.ARBITRUM) {
+    switch (type) {
+      case ExplorerDataType.TRANSACTION:
+        return `https://arbiscan.io/tx/${data}`
+      case ExplorerDataType.ADDRESS:
+      case ExplorerDataType.TOKEN:
+        return `https://arbiscan.io/address/${data}`
+      case ExplorerDataType.BLOCK:
+        return `https://arbiscan.io/block/${data}`
+      default:
+        return `https://arbiscan.io/`
+    }
+  }
 
-  // if (chainId === SupportedChainId.ARBITRUM_RINKEBY) {
-  //   switch (type) {
-  //     case ExplorerDataType.TRANSACTION:
-  //       return `https://rinkeby-explorer.arbitrum.io/tx/${data}`
-  //     case ExplorerDataType.ADDRESS:
-  //     case ExplorerDataType.TOKEN:
-  //       return `https://rinkeby-explorer.arbitrum.io/address/${data}`
-  //     case ExplorerDataType.BLOCK:
-  //       return `https://rinkeby-explorer.arbitrum.io/block/${data}`
-  //     default:
-  //       return `https://rinkeby-explorer.arbitrum.io/`
-  //   }
-  // }
+  if (chainId === SupportedChainId.ARBITRUM_GÖRLI) {
+    switch (type) {
+      case ExplorerDataType.TRANSACTION:
+        return `https://goerli.arbiscan.io/tx/${data}`
+      case ExplorerDataType.ADDRESS:
+      case ExplorerDataType.TOKEN:
+        return `https://goerli.arbiscan.io/address/${data}`
+      case ExplorerDataType.BLOCK:
+        return `https://goerli.arbiscan.io/block/${data}`
+      default:
+        return `https://goerli.arbiscan.io/`
+    }
+  }
 
   const prefix = `https://${ETHERSCAN_PREFIXES[chainId] ?? ''}etherscan.io`
 

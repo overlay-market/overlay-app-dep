@@ -34,6 +34,7 @@ const Claim = () => {
   const toggleWalletModal = useWalletModalToggle()
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account)
+  console.log('userHasAvailableClaim: ', userHasAvailableClaim)
   const userClaimData = useUserClaimData(account)
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
@@ -78,10 +79,10 @@ const Claim = () => {
       {account && !userClaimData && (
         <ClaimModalContainer>
           <FlexColumn padding="16px">
-            <TEXT.SmallBody marginRight="16px" marginBottom="16px">
+            <TEXT.SmallBody marginRight="auto" marginBottom="18px">
               Claim OVL
             </TEXT.SmallBody>
-            <TEXT.StandardBody marginBottom="16px" color="#FF648A">
+            <TEXT.StandardBody marginRight="auto" marginBottom="16px" color="#FF648A">
               This wallet does not have any OVL to claim.
             </TEXT.StandardBody>
             <TEXT.StandardBody marginBottom="32px" color="#FF648A">
@@ -91,7 +92,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && userClaimAmount && userHasAvailableClaim && (
+      {account && userClaimAmount && (
         <ClaimModalContainer>
           <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
             <FlexRow marginBottom="8px">
@@ -125,7 +126,7 @@ const Claim = () => {
         </ClaimModalContainer>
       )}
 
-      {account && userClaimAmount && !userHasAvailableClaim && (
+      {/* {account && userClaimAmount && !userHasAvailableClaim && (
         <ClaimModalContainer>
           <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
             <FlexRow marginBottom="8px">
@@ -152,12 +153,10 @@ const Claim = () => {
             >
               Read more about OVL
             </ExternalLink>
-            <TriggerActionButton isDisabled={true} onClick={onClaim}>
-              Claim OVL
-            </TriggerActionButton>
+            <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
           </FlexColumn>
         </ClaimModalContainer>
-      )}
+      )} */}
     </BridgeContainer>
   )
 }
