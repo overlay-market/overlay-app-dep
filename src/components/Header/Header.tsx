@@ -14,6 +14,7 @@ import OverlayLogo from '../../assets/images/overlay-logo.png'
 import LightOverlayLogo from '../../assets/images/overlay-logo-light.png'
 import UpdatedOverlayLogo from '../../assets/images/updated-overlay-icon.png'
 import OverlayLogoDark from '../../assets/images/overlay-logo-dark.png'
+import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.text1};
@@ -33,8 +34,8 @@ export const HeaderContainer = styled.div`
 `
 
 export const LogoContainer = styled.div`
-  height: 20px;
-  width: 142px;
+  height: 30px;
+  width: 30px;
   margin: auto 16px auto 0px;
 `
 
@@ -97,21 +98,21 @@ export default function Header() {
       <LogoContainer onClick={returnHome}>
         {darkMode ? (
           <Image
-            src={OverlayLogoDark}
+            src={OverlayLogoOnlyDark}
             alt={'Overlay Logo Light'}
             height={'100%'}
             width={'100%'}
-            minHeight={'20px'}
-            minWidth={'142px'}
+            minHeight={'30px'}
+            minWidth={'30px'}
           />
         ) : (
           <Image
-            src={OverlayLogoDark}
+            src={OverlayLogoOnlyDark}
             alt={'Overlay Logo'}
             height={'100%'}
             width={'100%'}
-            minHeight={'20px'}
-            minWidth={'142px'}
+            minHeight={'30px'}
+            minWidth={'30px'}
           />
         )}
       </LogoContainer>
