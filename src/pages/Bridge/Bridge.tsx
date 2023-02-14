@@ -177,8 +177,8 @@ const Bridge = () => {
 
   const ll = chainId ? LL[chainId] : undefined
   const userLLBalance = useChainLLBalance(chainId)
+  const parsedLLBalance = userLLBalance && userLLBalance.toFixed(2)
 
-  console.log('userLLBalance', userLLBalance)
   const [
     {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
     setBridgeState,
@@ -214,6 +214,12 @@ const Bridge = () => {
   }, [chainId])
 
   const {typedValue} = useBridgeState()
+
+  const showNotEnoughBalanceFlow = useMemo(() => {
+    if (!typedValue) return false
+    if (!parsedLLBalance) return false
+    return typedValue > parsedLLBalance ? true : false
+  }, [parsedLLBalance, typedValue])
 
   const [approval, approveCallback] = useApproveCallback(
     typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : '0') : undefined,
