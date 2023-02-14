@@ -300,7 +300,11 @@ const Bridge = () => {
         <BridgeToNetwork chainId={bridgeToChainId} />
       </InterfaceContainer>
       {account ? (
-        showApprovalFlow ? (
+        showNotEnoughBalanceFlow ? (
+          <TriggerActionButton isDisabled={true} onClick={() => null}>
+            Not Enough Balance
+          </TriggerActionButton>
+        ) : showApprovalFlow ? (
           <TriggerActionButton active={true} onClick={handleApprove}>
             Approve LL
           </TriggerActionButton>
