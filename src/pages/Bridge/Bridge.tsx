@@ -4,6 +4,7 @@ import {useChainOvlBalance, useChainLLBalance} from '../../state/wallet/hooks'
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
 import {TEXT} from '../../theme/theme'
+import {ChainId} from '@sushiswap/sdk'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {useBridgeActionHandlers, useBridgeState} from '../../state/bridge/hooks'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
@@ -89,7 +90,7 @@ const CurrencyLogo = styled.img`
   width: 24px;
 `
 
-const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
+const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
   const bridgeFromNetworkBalance = useChainLLBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
   const {typedValue} = useBridgeState()
@@ -134,7 +135,7 @@ const BridgeFromNetwork = ({chainId}: {chainId: SupportedChainId}) => {
   )
 }
 
-const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
+const BridgeToNetwork = ({chainId}: {chainId: ChainId}) => {
   const bridgeToNetworkBalance = useChainLLBalance(chainId)
   const parsedBalance = bridgeToNetworkBalance?.toFixed(4)
   const {typedValue} = useBridgeState()
@@ -173,7 +174,11 @@ const BridgeToNetwork = ({chainId}: {chainId: SupportedChainId}) => {
 const Bridge = () => {
   const {account, chainId} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
+
   const ll = chainId ? LL[chainId] : undefined
+  const userLLBalance = useChainLLBalance(chainId)
+
+  console.log('userLLBalance', userLLBalance)
   const [
     {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
     setBridgeState,

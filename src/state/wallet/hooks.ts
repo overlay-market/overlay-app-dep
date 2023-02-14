@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
 import {Currency, CurrencyAmount, Ether, Token} from '@uniswap/sdk-core'
+import {ChainId} from '@sushiswap/sdk'
 import JSBI from 'jsbi'
 import {isAddress} from '../../utils/web3'
 // import { useAccountQuery } from '../data/enhanced';
@@ -133,10 +134,12 @@ export function useOvlBalance(): CurrencyAmount<Token> | undefined {
   return CurrencyAmount.fromRawAmount(ovl, ovlBalance?.quotient ?? JSBI.BigInt(0))
 }
 
-export function useChainOvlBalance(chainId: SupportedChainId): CurrencyAmount<Token> | undefined {
+export function useChainOvlBalance(
+  chainId: ChainId | undefined,
+): CurrencyAmount<Token> | undefined {
   const {account} = useActiveWeb3React()
 
-  const ovl = account ? OVL[chainId] : undefined
+  const ovl = chainId ? OVL[chainId] : undefined
 
   const ovlBalance: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, ovl)
 
@@ -145,10 +148,10 @@ export function useChainOvlBalance(chainId: SupportedChainId): CurrencyAmount<To
   return CurrencyAmount.fromRawAmount(ovl, ovlBalance?.quotient ?? JSBI.BigInt(0))
 }
 
-export function useChainLLBalance(chainId: SupportedChainId): CurrencyAmount<Token> | undefined {
+export function useChainLLBalance(chainId: ChainId | undefined): CurrencyAmount<Token> | undefined {
   const {account} = useActiveWeb3React()
 
-  const ll = account ? LL[chainId] : undefined
+  const ll = chainId ? LL[chainId] : undefined
 
   const llBalance: CurrencyAmount<Token> | undefined = useTokenBalance(account ?? undefined, ll)
 
