@@ -32,6 +32,7 @@ import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
 import {Result} from '../../state/multicall/hooks'
+import {MARKET_NAME} from '../../constants/markets'
 import {InfoTip} from '../../components/InfoTip/InfoTip'
 
 const activeClassName = 'INACTIVE'
@@ -51,6 +52,8 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
 
 type MarketRowProps = {
   marketId: string | undefined
+  description: string | Result
+  decimals: number | Result
   baseToken: string | Result
   quoteToken: string | Result
   quoteAmount: number
@@ -65,6 +68,8 @@ type MarketRowProps = {
 type ReturnedValue = {}
 const MarketRow = ({
   marketId,
+  description,
+  decimals,
   baseToken,
   quoteToken,
   quoteAmount,
@@ -80,6 +85,13 @@ const MarketRow = ({
   function redirectToMarket(marketId: string) {
     history.push(`/markets/${marketId}`)
   }
+
+  // const marketName = useMemo(() => {
+  //   if (description) return MARKET_NAME[description]
+  //   if (baseToken === 'loading' && quoteToken === 'loading')
+  //     return <Loader stroke="white" size="12px" />
+  //   return `${baseToken}/${quoteToken}`
+  // }, [description, baseToken, quoteToken])
 
   const LOADING_STATE = 'loading'
 
@@ -164,7 +176,7 @@ const Markets = () => {
     }),
     [markets],
   )
-  const {baseTokens, quoteTokens} = useMarketNames(calldata.feedAddresses)
+  const {baseTokens, quoteTokens, decimals, descriptions} = useMarketNames(calldata.feedAddresses)
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(calldata.feedAddresses)
 
@@ -191,7 +203,6 @@ const Markets = () => {
 
   const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
 
-  console.log('marketStates: ', marketStates)
   const INFO_TIP_DESCRIPTIONS = {
     openInterest: (
       <>
@@ -254,6 +265,8 @@ const Markets = () => {
             {markets?.map((market: any, index: any) => (
               <MarketRow
                 marketId={marketStates?.[index]?.marketAddress}
+                decimals={decimals[index]}
+                description={descriptions[index]}
                 baseToken={baseTokens[index]}
                 quoteToken={quoteTokens[index]}
                 quoteAmount={quoteAmounts[index]}
