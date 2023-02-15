@@ -86,12 +86,15 @@ const MarketRow = ({
     history.push(`/markets/${marketId}`)
   }
 
-  // const marketName = useMemo(() => {
-  //   if (description) return MARKET_NAME[description]
-  //   if (baseToken === 'loading' && quoteToken === 'loading')
-  //     return <Loader stroke="white" size="12px" />
-  //   return `${baseToken}/${quoteToken}`
-  // }, [description, baseToken, quoteToken])
+  const marketName = useMemo(() => {
+    if (description) {
+      let string = String(description)
+      return MARKET_NAME[string]
+    }
+    if (baseToken === 'loading' && quoteToken === 'loading')
+      return <Loader stroke="white" size="12px" />
+    return `${baseToken}/${quoteToken}`
+  }, [description, baseToken, quoteToken])
 
   const LOADING_STATE = 'loading'
 
@@ -143,7 +146,7 @@ const MarketRow = ({
       key={index.toString()}
     >
       <StyledTableCellThin component="th" scope="row">
-        {marketAttributes.baseToken} / {marketAttributes.quoteToken}
+        {marketName}
       </StyledTableCellThin>
       <StyledTableCellThin align="left">{marketAttributes.midPrice}</StyledTableCellThin>
       <StyledTableCellThin align="left">
