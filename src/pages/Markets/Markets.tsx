@@ -123,8 +123,8 @@ const MarketRow = ({
         baseToken,
         quoteToken: <Loader stroke="white" size="12px" />,
         midPrice: formatBigNumberUsingDecimalsToString(midPrice, parsedDecimal, 2),
-        dailyFundingRate: formatFundingRateToDaily(fundingRate, parsedDecimal, 2),
-        annualFundingRate: formatFundingRateToAnnual(fundingRate, parsedDecimal, 2),
+        dailyFundingRate: formatFundingRateToDaily(fundingRate, 18, 2),
+        annualFundingRate: formatFundingRateToAnnual(fundingRate, 18, 2),
       }
     } else if (baseToken === LOADING_STATE || quoteToken === LOADING_STATE || !quoteAmount) {
       return {
@@ -235,6 +235,7 @@ const Markets = () => {
     calldata.marketAddresses,
     tokenPairDecimals.baseTokens,
     tokenPairDecimals.quoteTokens,
+    decimals,
   )
 
   const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)

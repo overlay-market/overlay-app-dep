@@ -40,6 +40,7 @@ export function useMarketCapOis(
   marketAddresses?: any,
   baseTokensAmounts?: any,
   quoteTokensAmounts?: any,
+  decimals?: any,
 ) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
@@ -49,17 +50,23 @@ export function useMarketCapOis(
 
   return useMemo(() => {
     return capOisResult.map((market, index) => {
-      if (!chainId || !blockNumber || !market) return null
-      if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
-
       const sigFigs = 2
+      const marketCapOi = market?.result && market.result[0]
       let baseTokenQuoteTokenDecimalDifference = 0
+
+      if (!chainId || !blockNumber || !market) return null
+
+      if (decimals[index]) {
+        return formatWeiToParsedNumber(marketCapOi, decimals, sigFigs)
+      }
+
+      if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
 
       if (baseTokensAmounts[index] > quoteTokensAmounts[index]) {
         baseTokenQuoteTokenDecimalDifference = baseTokensAmounts[index] - quoteTokensAmounts[index]
       }
 
-      const marketCapOi = market?.result && market.result[0]
+      // const marketCapOi = market?.result && market.result[0]
 
       // if base token / quote token decimal difference is 0
       // then parse big number from ether to wei
@@ -78,5 +85,5 @@ export function useMarketCapOis(
           : undefined
       }
     })
-  }, [capOisResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts])
+  }, [capOisResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts, decimals])
 }
