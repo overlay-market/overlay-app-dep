@@ -40,7 +40,12 @@ export function useMarketOi(
  * Returns open interests for input market addresses
  * @param calldata marketAddresses to query for
  */
-export function useMarketOis(calldata?: any, baseTokenDecimals?: any, quoteTokenDecimals?: any) {
+export function useMarketOis(
+  calldata?: any,
+  baseTokenDecimals?: any,
+  quoteTokenDecimals?: any,
+  decimals?: any,
+) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
@@ -48,17 +53,29 @@ export function useMarketOis(calldata?: any, baseTokenDecimals?: any, quoteToken
 
   return useMemo(() => {
     return oisResult.map((market, index) => {
-      if (!chainId || !blockNumber || !market) return null
-      if (!baseTokenDecimals[index] || !quoteTokenDecimals[index]) return null
-
       const sigFigs = 2
+      const marketOi = market?.result && market.result
       let baseTokenQuoteTokenDecimalDifference = 0
+
+      if (!chainId || !blockNumber || !market) return null
+      if (!marketOi?.oiLong_ || !marketOi?.oiShort_) return null
+
+      if (decimals[index]) {
+        return {
+          oiLong: marketOi?.oiLong_
+            ? formatWeiToParsedNumber(marketOi.oiLong_, decimals[index], sigFigs)
+            : undefined,
+          oiShort: marketOi?.oiShort_
+            ? formatWeiToParsedNumber(marketOi.oiShort_, decimals[index], sigFigs)
+            : undefined,
+        }
+      }
+
+      if (!baseTokenDecimals[index] || !quoteTokenDecimals[index]) return null
 
       if (baseTokenDecimals[index] > quoteTokenDecimals[index]) {
         baseTokenQuoteTokenDecimalDifference = baseTokenDecimals[index] - quoteTokenDecimals[index]
       }
-
-      const marketOi = market?.result && market.result
 
       // if base token / quote token decimal difference is 0
       // then parse big number from ether to wei

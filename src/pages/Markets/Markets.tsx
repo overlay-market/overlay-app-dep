@@ -230,6 +230,7 @@ const Markets = () => {
     calldata.marketAddresses,
     tokenPairDecimals.baseTokens,
     tokenPairDecimals.quoteTokens,
+    decimals,
   )
   const capOis = useMarketCapOis(
     calldata.marketAddresses,

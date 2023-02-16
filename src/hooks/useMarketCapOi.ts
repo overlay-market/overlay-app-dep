@@ -57,7 +57,7 @@ export function useMarketCapOis(
       if (!chainId || !blockNumber || !market) return null
 
       if (decimals[index]) {
-        return formatWeiToParsedNumber(marketCapOi, decimals, sigFigs)
+        return formatWeiToParsedNumber(marketCapOi, decimals[index], sigFigs)
       }
 
       if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
