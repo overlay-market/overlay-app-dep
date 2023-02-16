@@ -12,6 +12,8 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
     'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-goerli',
   [SupportedChainId.RINKEBY]:
     'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
+  [SupportedChainId.ARBITRUM_GÖRLI]:
+    'https://thegraph.com/hosted-service/subgraph/bigboydiamonds/overlay-v1-subgraph-arb-goerli',
 }
 
 export const api = createApi({
