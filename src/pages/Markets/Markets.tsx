@@ -115,30 +115,63 @@ const MarketRow = ({
     }
   }, [oiLong, oiShort, capOi])
 
-  const marketAttributes = useMemo(
-    () => ({
-      marketId,
-      baseToken: baseToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : baseToken,
-      quoteToken: quoteToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : quoteToken,
-      midPrice:
-        midPrice && quoteAmount ? (
-          formatBigNumberUsingDecimalsToString(midPrice, quoteAmount, 4)
-        ) : (
-          <Loader stroke="white" size="12px" />
-        ),
-      dailyFundingRate: fundingRate ? (
-        formatFundingRateToDaily(fundingRate, 18, 2)
-      ) : (
-        <Loader stroke="white" size="12px" />
-      ),
-      annualFundingRate: fundingRate ? (
-        formatFundingRateToAnnual(fundingRate, 18, 2)
-      ) : (
-        <Loader stroke="white" size="12px" />
-      ),
-    }),
-    [marketId, baseToken, quoteToken, quoteAmount, midPrice, fundingRate],
-  )
+  const marketAttributes = useMemo(() => {
+    if (decimals && fundingRate) {
+      let parsedDecimal = Number(decimals)
+      return {
+        marketId,
+        baseToken,
+        quoteToken: <Loader stroke="white" size="12px" />,
+        midPrice: formatBigNumberUsingDecimalsToString(midPrice, parsedDecimal, 2),
+        dailyFundingRate: formatFundingRateToDaily(fundingRate, parsedDecimal, 2),
+        annualFundingRate: formatFundingRateToAnnual(fundingRate, parsedDecimal, 2),
+      }
+    } else if (baseToken === LOADING_STATE || quoteToken === LOADING_STATE || !quoteAmount) {
+      return {
+        marketId,
+        baseToken: <Loader stroke="white" size="12px" />,
+        quoteToken: <Loader stroke="white" size="12px" />,
+        midPrice: <Loader stroke="white" size="12px" />,
+        dailyFundingRate: <Loader stroke="white" size="12px" />,
+        annualFundingRate: <Loader stroke="white" size="12px" />,
+      }
+    } else {
+      return {
+        marketId,
+        baseToken,
+        quoteToken,
+        midPrice: formatBigNumberUsingDecimalsToString(midPrice, quoteAmount, 4),
+        dailyFundingRate: formatFundingRateToDaily(fundingRate, 18, 2),
+        annualFundingRate: formatFundingRateToAnnual(fundingRate, 18, 2),
+      }
+    }
+  }, [marketId, baseToken, quoteToken, midPrice, decimals, quoteAmount, fundingRate])
+
+  // const marketAttributes = useMemo(
+  //   () => ({
+  //     marketId,
+  //     baseToken: baseToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : baseToken,
+  //     quoteToken: quoteToken === LOADING_STATE ? <Loader stroke="white" size="12px" /> : quoteToken,
+  //     midPrice:
+  //       midPrice && quoteAmount ? (
+  //         formatBigNumberUsingDecimalsToString(midPrice, quoteAmount, 4)
+  //       ) : (
+  //         <Loader stroke="white" size="12px" />
+  //       ),
+  //     dailyFundingRate: fundingRate ? (
+  //       formatFundingRateToDaily(fundingRate, 18, 2)
+  //     ) : (
+  //       <Loader stroke="white" size="12px" />
+  //     ),
+  //     annualFundingRate: fundingRate ? (
+  //       formatFundingRateToAnnual(fundingRate, 18, 2)
+  //     ) : (
+  //       <Loader stroke="white" size="12px" />
+  //     ),
+  //   }),
+  //   [marketId, baseToken, quoteToken, quoteAmount, midPrice, fundingRate],
+  // )
+
   return (
     <StyledTableRow
       onClick={() => redirectToMarket(marketId ?? '')}
