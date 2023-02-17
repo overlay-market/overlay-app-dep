@@ -125,13 +125,13 @@ export default function Header() {
         <Trans>Positions</Trans>
       </StyledLink>
 
-      <StyledLink to={'/bridge'}>
+      {/* <StyledLink to={'/bridge'}>
         <Trans>Bridge</Trans>
       </StyledLink>
 
       <StyledLink to={'/claim'}>
         <Trans>Claim</Trans>
-      </StyledLink>
+      </StyledLink> */}
 
       <AccountContainer>
         <Web3Status />
