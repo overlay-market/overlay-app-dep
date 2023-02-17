@@ -91,7 +91,7 @@ const CurrencyLogo = styled.img`
 `
 
 const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
-  const bridgeFromNetworkBalance = useChainLLBalance(chainId)
+  const bridgeFromNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeFromNetworkBalance?.toFixed(4)
   const {typedValue} = useBridgeState()
   const {onAmountInput} = useBridgeActionHandlers()
@@ -136,7 +136,7 @@ const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
 }
 
 const BridgeToNetwork = ({chainId}: {chainId: ChainId}) => {
-  const bridgeToNetworkBalance = useChainLLBalance(chainId)
+  const bridgeToNetworkBalance = useChainOvlBalance(chainId)
   const parsedBalance = bridgeToNetworkBalance?.toFixed(4)
   const {typedValue} = useBridgeState()
   return (
@@ -175,9 +175,9 @@ const Bridge = () => {
   const {account, chainId} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const ll = chainId ? LL[chainId] : undefined
-  const userLLBalance = useChainLLBalance(chainId)
-  const parsedLLBalance = userLLBalance && userLLBalance.toFixed(2)
+  const ovl = chainId ? OVL[chainId] : undefined
+  const userOvlBalance = useChainOvlBalance(chainId)
+  const parsedOvlBalance = userOvlBalance && userOvlBalance.toFixed(2)
 
   const [
     {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
@@ -217,14 +217,14 @@ const Bridge = () => {
 
   const showNotEnoughBalanceFlow = useMemo(() => {
     if (!typedValue) return false
-    if (!parsedLLBalance) return false
-    return typedValue > parsedLLBalance ? true : false
-  }, [parsedLLBalance, typedValue])
+    if (!parsedOvlBalance) return false
+    return typedValue > parsedOvlBalance ? true : false
+  }, [parsedOvlBalance, typedValue])
 
   const [approval, approveCallback] = useApproveCallback(
     typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : '0') : undefined,
     LAYER_ZERO_ADDRESS[bridgeFromChainId],
-    ll,
+    ovl,
   )
 
   const showApprovalFlow = useMemo(() => {
@@ -306,7 +306,7 @@ const Bridge = () => {
           </TriggerActionButton>
         ) : showApprovalFlow ? (
           <TriggerActionButton active={true} onClick={handleApprove}>
-            Approve LL
+            Approve OVL
           </TriggerActionButton>
         ) : (
           <TriggerActionButton

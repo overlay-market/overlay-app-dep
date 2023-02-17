@@ -48,6 +48,7 @@ export function useMarketNames(feedAddresses: any) {
     'decimals',
   )
 
+  console.log('decimals: ', decimals)
   const descriptions = useMultipleContractSingleData(
     feedAddresses,
     CHAINLINK_FEED_INTERFACE,
