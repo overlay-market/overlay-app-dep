@@ -98,7 +98,8 @@ const Container = styled.div`
   flex-wrap: wrap;
   max-width: 1200px;
   justify-content: center;
-  gap: 15px;
+  margin-top: 64px;
+  gap: 30px;
 `
 
 const InterfaceContainer = styled.a`
@@ -108,7 +109,6 @@ const InterfaceContainer = styled.a`
   border-radius: 8px;
   box-shadow: 0 0 12px #5b60a4;
   padding: 12px;
-  margin: 16px 0 24px;
   background: #1b2131;
   width: 300px;
   text-decoration: none;
