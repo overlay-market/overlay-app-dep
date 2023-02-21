@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import {FlexRow, FlexColumn} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import BeaconLogo from '../../assets/images/beacon-logo.png'
+import OverlayLogo from '../../assets/images/overlay-logo-only-no-background.png'
 import GearboxLogo from '../../assets/images/gearbox-logo.png'
 import SenseFinanceLogo from '../../assets/images/sensefinance-logo.png'
 import NFTPerpLogo from '../../assets/images/nftperp-logo.jpg'
@@ -32,7 +33,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Overlay users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: `${BeaconLogo}`,
+    logoSrc: `${OverlayLogo}`,
     startDate: '3/2',
     endDate: '3/5',
   },
@@ -123,6 +124,15 @@ const InterfaceContainer = styled.a`
   text-decoration: none;
 `
 
+const PlatformLogo = styled.div<{src: string}>`
+  background: no-repeat center/contain url(${({src}) => src});
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 70px;
+  width: 100%;
+  margin: 16px 0;
+`
+
 const ClaimPage = () => {
   return (
     <Container>
@@ -130,6 +140,7 @@ const ClaimPage = () => {
         <InterfaceContainer href={claim.claimLink} target="_blank" rel="noopener noreferrer">
           <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
           <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
+          <PlatformLogo src={claim.logoSrc} />
           <TEXT.BoldSupplemental textAlign="center">
             Open {claim.startDate} - {claim.endDate}
           </TEXT.BoldSupplemental>
