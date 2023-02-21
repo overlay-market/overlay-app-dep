@@ -91,6 +91,7 @@ const ClaimData: Array<ClaimDataProps> = [
     endDate: '3/17',
   },
 ]
+
 const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -110,7 +111,13 @@ const InterfaceContainer = styled.div`
 `
 
 const ClaimPage = () => {
-  return <Container>Claim Page</Container>
+  return (
+    <Container>
+      {ClaimData.map((platform, index) => (
+        <InterfaceContainer>{platform.platform}</InterfaceContainer>
+      ))}
+    </Container>
+  )
 }
 
 export default ClaimPage
