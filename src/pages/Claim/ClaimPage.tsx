@@ -1,6 +1,15 @@
 import styled from 'styled-components'
 import {FlexRow, FlexColumn} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
+import BeaconLogo from '../../assets/images/beacon-logo.png'
+import GearboxLogo from '../../assets/images/gearbox-logo.png'
+import SenseFinanceLogo from '../../assets/images/sensefinance-logo.png'
+import NFTPerpLogo from '../../assets/images/nftperp-logo.jpg'
+import AmbireLogo from '../../assets/images/ambire-logo.png'
+import ElementFinanceLogo from '../../assets/images/elementfinance-logo.png'
+import GMXLogo from '../../assets/images/gmx-logo.png'
+import CowSwapLogo from '../../assets/images/coWswap-logo.png'
+
 interface ClaimDataProps {
   platform: string
   seatsAvailable: number
@@ -15,7 +24,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Beacon holders',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/4',
   },
@@ -23,7 +32,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Overlay users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${BeaconLogo}`,
     startDate: '3/2',
     endDate: '3/5',
   },
@@ -31,7 +40,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Gearbox users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${GearboxLogo}`,
     startDate: '3/6',
     endDate: '3/7',
   },
@@ -39,7 +48,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Sense Finance users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${SenseFinanceLogo}`,
     startDate: '3/7',
     endDate: '3/8',
   },
@@ -47,7 +56,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'NFTPerp users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${NFTPerpLogo}`,
     startDate: '3/8',
     endDate: '3/9',
   },
@@ -55,7 +64,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Ambire Wallet users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${AmbireLogo}`,
     startDate: '3/9',
     endDate: '3/10',
   },
@@ -63,7 +72,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Element Finance users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${ElementFinanceLogo}`,
     startDate: '3/13',
     endDate: '3/14',
   },
@@ -71,7 +80,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'GMX users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${GMXLogo}`,
     startDate: '3/14',
     endDate: '3/15',
   },
@@ -79,7 +88,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'coW Swap users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${CowSwapLogo}`,
     startDate: '3/15',
     endDate: '3/16',
   },
@@ -87,7 +96,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Arbitrum users',
     seatsAvailable: 222,
     claimLink: '',
-    logoSrc: '',
+    logoSrc: `${GMXLogo}`,
     startDate: '3/16',
     endDate: '3/17',
   },
@@ -98,7 +107,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   max-width: 1200px;
   justify-content: center;
-  margin-top: 64px;
+  margin: 64px auto;
   gap: 30px;
 `
 
