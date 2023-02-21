@@ -13,6 +13,7 @@ import Liquidate from './Liquidate/Liquidate'
 import styled from 'styled-components/macro'
 import Bridge from './Bridge/Bridge'
 import Claim from './Claim/Claim'
+import ClaimPage from './Claim/ClaimPage'
 import Popups from '../components/Popup/Popups'
 
 export const AppWrapper = styled.div`
@@ -42,6 +43,7 @@ const App = () => {
                 component={Unwind}
               />
               <Route exact strict path="/claim" component={Claim} />
+              <Route exact strict path="/claimpage" component={ClaimPage} />
               <Route exact strict path="/liquidate" component={Liquidate} />
               <Route exact strict path="/bridge" component={Bridge} />
             </Switch>
