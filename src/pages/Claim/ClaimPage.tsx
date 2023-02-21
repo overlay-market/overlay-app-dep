@@ -1,5 +1,6 @@
 import styled from 'styled-components'
 import {FlexRow, FlexColumn} from '../../components/Container/Container'
+import {TEXT} from '../../theme/theme'
 interface ClaimDataProps {
   platform: string
   seatsAvailable: number
@@ -97,6 +98,7 @@ const Container = styled.div`
   flex-wrap: wrap;
   max-width: 1200px;
   justify-content: center;
+  gap: 15px;
 `
 
 const InterfaceContainer = styled.div`
@@ -108,13 +110,20 @@ const InterfaceContainer = styled.div`
   padding: 16px 16px 24px;
   margin: 16px 0 24px;
   background: #1b2131;
+  width: 300px;
 `
 
 const ClaimPage = () => {
   return (
     <Container>
-      {ClaimData.map((platform, index) => (
-        <InterfaceContainer>{platform.platform}</InterfaceContainer>
+      {ClaimData.map((claim, index) => (
+        <InterfaceContainer>
+          <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
+          <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
+          <TEXT.BoldSupplemental textAlign="center">
+            Open {claim.startDate} - {claim.endDate}
+          </TEXT.BoldSupplemental>
+        </InterfaceContainer>
       ))}
     </Container>
   )
