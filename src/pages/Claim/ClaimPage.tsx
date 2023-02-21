@@ -101,23 +101,24 @@ const Container = styled.div`
   gap: 15px;
 `
 
-const InterfaceContainer = styled.div`
+const InterfaceContainer = styled.a`
   display: flex;
   flex-direction: column;
   border: 1px solid #71ceff;
   border-radius: 8px;
   box-shadow: 0 0 12px #5b60a4;
-  padding: 16px 16px 24px;
+  padding: 12px;
   margin: 16px 0 24px;
   background: #1b2131;
   width: 300px;
+  text-decoration: none;
 `
 
 const ClaimPage = () => {
   return (
     <Container>
       {ClaimData.map((claim, index) => (
-        <InterfaceContainer>
+        <InterfaceContainer href={claim.claimLink} target="_blank" rel="noopener noreferrer">
           <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
           <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
           <TEXT.BoldSupplemental textAlign="center">
