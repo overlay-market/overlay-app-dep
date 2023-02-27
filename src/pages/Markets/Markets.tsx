@@ -199,6 +199,7 @@ const MarketRow = ({
 const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
+  console.log('markets: ', markets)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
