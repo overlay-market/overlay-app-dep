@@ -29,7 +29,7 @@ export function useMarketName(feedAddress?: string) {
   const quoteTokenSymbolResult = useSingleCallResult(quoteTokenContract, 'symbol')
 
   return {
-    decimals: decimals ?? undefined,
+    decimals: decimals ? 18 : undefined,
     description: description ?? undefined,
     baseToken: baseTokenSymbolResult.result?.[0] ?? 'loading',
     quoteToken: quoteTokenSymbolResult.result?.[0] ?? 'loading',
@@ -48,7 +48,6 @@ export function useMarketNames(feedAddresses: any) {
     'decimals',
   )
 
-  console.log('decimals: ', decimals)
   const descriptions = useMultipleContractSingleData(
     feedAddresses,
     CHAINLINK_FEED_INTERFACE,
@@ -77,7 +76,7 @@ export function useMarketNames(feedAddresses: any) {
   const decimalsResult = useMemo(() => {
     if (decimals.length === 0) return []
     return decimals.map(market => {
-      const marketDecimal = market?.result && market.result[0]
+      const marketDecimal = 18
       return marketDecimal
     })
   }, [decimals])
