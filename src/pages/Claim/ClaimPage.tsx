@@ -163,7 +163,7 @@ const ClaimPage = () => {
             <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
             <PlatformLogo src={claim.logoSrc} />
             <TEXT.BoldSupplemental textAlign="center">
-              Open {claim.startDate} - {claim.endDate}
+              {claim.disabled ? 'Closed' : 'Open'} {claim.startDate} - {claim.endDate}
             </TEXT.BoldSupplemental>
           </StyledLink>
         </InterfaceContainer>

@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useMemo} from 'react'
 import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import {useActiveWeb3React} from '../../hooks/web3'
@@ -11,6 +11,8 @@ import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../.
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {RouteComponentProps, Link} from 'react-router-dom'
+import {SupportedChainId} from '../../constants/chains'
+import {supportedChainId} from '../../utils/supportedChainId'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -62,6 +64,11 @@ const Claim = ({
       })
   }
 
+  const isWrongNetwork = useMemo(() => {
+    if (!chainId) return true
+    return chainId === Number(SupportedChainId.ARBITRUM) ? false : true
+  }, [chainId])
+
   return (
     <BridgeContainer>
       {!account && (
@@ -99,7 +106,31 @@ const Claim = ({
       {account &&
         userClaimAmount &&
         userHasAvailableClaim &&
-        userHasAvailableClaim !== undefined && (
+        userHasAvailableClaim !== undefined &&
+        isWrongNetwork && (
+          <ClaimModalContainer>
+            <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+              <FlexRow marginBottom="8px">
+                <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+                <TEXT.SmallBody>
+                  {account ? shortenAddress(account) : 'Not connected'}
+                </TEXT.SmallBody>
+              </FlexRow>
+              <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+                {userClaimAmount} OVL
+              </TEXT.AdjustableSize>
+            </FlexColumn>
+            <FlexColumn padding="16px">
+              <TEXT.SmallBody>Wrong network, switch to Arbitrum-One</TEXT.SmallBody>
+            </FlexColumn>
+          </ClaimModalContainer>
+        )}
+
+      {account &&
+        userClaimAmount &&
+        userHasAvailableClaim &&
+        userHasAvailableClaim !== undefined &&
+        !isWrongNetwork && (
           <ClaimModalContainer>
             <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
               <FlexRow marginBottom="8px">
