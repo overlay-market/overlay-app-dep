@@ -20,6 +20,7 @@ export function usePositionOi(
   positionId?: string | number,
   baseTokenDecimals?: number | undefined,
   quoteTokenDecimals?: number | undefined,
+  decimals?: any,
 ): oiResult {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
@@ -54,6 +55,12 @@ export function usePositionOi(
       return {
         formattedOi: undefined,
         rawOi: undefined,
+      }
+    }
+    if (decimals) {
+      return {
+        formattedOi: formatBigNumberUsingDecimalsToNumber(oi, 18, 4),
+        rawOi: oi,
       }
     }
     if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number') {

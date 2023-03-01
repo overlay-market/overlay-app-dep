@@ -137,7 +137,14 @@ export function Unwind({
   const collateral = usePositionCollateral(position?.market.id, positionId)
   const cost = usePositionCost(position?.market.id, positionId)
   const value = usePositionValue(position?.market.id, positionId)
-  const oi = usePositionOi(position?.market.id, positionId, baseTokenDecimals, quoteTokenDecimals)
+  const oi = usePositionOi(
+    position?.market.id,
+    positionId,
+    baseTokenDecimals,
+    quoteTokenDecimals,
+    decimals,
+  )
+  // console.log('oi: ', oi)
   const debt = usePositionDebt(position?.market.id, positionId)
   const notional = usePositionNotional(position?.market.id, positionId)
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId)
