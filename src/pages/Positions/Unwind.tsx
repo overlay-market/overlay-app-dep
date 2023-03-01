@@ -144,27 +144,31 @@ export function Unwind({
     quoteTokenDecimals,
     decimals,
   )
-  // console.log('oi: ', oi)
   const debt = usePositionDebt(position?.market.id, positionId)
   const notional = usePositionNotional(position?.market.id, positionId)
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId)
   const liquidationPriceResult = useLiquidationPrice(position?.market.id, positionId)
   const liquidationPrice =
     liquidationPriceResult &&
-    formatBigNumberUsingDecimalsToNumber(liquidationPriceResult, quoteTokenDecimals, 2)
+    formatBigNumberUsingDecimalsToNumber(
+      liquidationPriceResult,
+      decimals ? 18 : quoteTokenDecimals,
+      2,
+    )
 
   const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi?.rawOi)
   const estimatedBid = useBid(position?.market.id, fractionOfCapOi)
   const estimatedAsk = useAsk(position?.market.id, fractionOfCapOi)
 
   const estimatedReceivedPrice = useMemo(() => {
-    if (isLong === undefined || !quoteTokenDecimals) return null
+    if (isLong === undefined) return null
+    if (!decimals && !quoteTokenDecimals) return null
     if (estimatedBid === undefined || estimatedAsk === undefined) return null
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatBigNumberUsingDecimalsToNumber(estimatedBid, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimalsToNumber(estimatedAsk, quoteTokenDecimals, 2)
-  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals])
+      ? formatBigNumberUsingDecimalsToNumber(estimatedBid, decimals ? 18 : quoteTokenDecimals, 2)
+      : formatBigNumberUsingDecimalsToNumber(estimatedAsk, decimals ? 18 : quoteTokenDecimals, 2)
+  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals, decimals])
 
   const fetchPrices = useMarketPrice(position?.market.id)
 
@@ -197,10 +201,10 @@ export function Unwind({
   }, [fetchPrices])
 
   const bidPrice = fetchPrices
-    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.bid_, quoteTokenDecimals, 2)
+    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.bid_, decimals ? 18 : quoteTokenDecimals, 2)
     : null
   const askPrice = fetchPrices
-    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.ask_, quoteTokenDecimals, 2)
+    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.ask_, decimals ? 18 : quoteTokenDecimals, 2)
     : null
 
   const priceImpact = useMemo(() => {
@@ -221,7 +225,8 @@ export function Unwind({
   const PnL = cost && value ? value.sub(cost) : null
   const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0
   const entryPrice: number | string | null | undefined =
-    position && formatBigNumberUsingDecimalsToString(position.entryPrice, quoteTokenDecimals, 2)
+    position &&
+    formatBigNumberUsingDecimalsToString(position.entryPrice, decimals ? 18 : quoteTokenDecimals, 2)
 
   const showUnderwaterFlow =
     liquidationPriceResult && prices._mid
