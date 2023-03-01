@@ -13,4 +13,28 @@ export declare enum ClaimId {
 
 export type ClaimMap = {[claimId: number]: string}
 
-export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {}
+export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
+  [ClaimId.BEACON_HOLDERS]: '',
+  [ClaimId.OVERLAY_USERS]: '',
+  [ClaimId.GEARBOX_USERS]: '',
+  [ClaimId.SENSE_FINANCE_USERS]: '',
+  [ClaimId.NFT_PERP_USERS]: '',
+  [ClaimId.AMBIRE_WALLET_USERS]: '',
+  [ClaimId.ELEMENT_FINANCE_USERS]: '',
+  [ClaimId.GMX_USERS]: '',
+  [ClaimId.COW_SWAP_USERS]: '',
+  [ClaimId.ARBITRUM_USERS]: '',
+}
+
+export const MERKLE_PROOFS: ClaimMap = {
+  [ClaimId.BEACON_HOLDERS]: '',
+  [ClaimId.OVERLAY_USERS]: '',
+  [ClaimId.GEARBOX_USERS]: '',
+  [ClaimId.SENSE_FINANCE_USERS]: '',
+  [ClaimId.NFT_PERP_USERS]: '',
+  [ClaimId.AMBIRE_WALLET_USERS]: '',
+  [ClaimId.ELEMENT_FINANCE_USERS]: '',
+  [ClaimId.GMX_USERS]: '',
+  [ClaimId.COW_SWAP_USERS]: '',
+  [ClaimId.ARBITRUM_USERS]: '',
+}
