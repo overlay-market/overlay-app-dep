@@ -164,7 +164,6 @@ export function Unwind({
     if (isLong === undefined) return null
     if (!decimals && !quoteTokenDecimals) return null
     if (estimatedBid === undefined || estimatedAsk === undefined) return null
-    // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
       ? formatBigNumberUsingDecimalsToNumber(estimatedBid, decimals ? 18 : quoteTokenDecimals, 2)
       : formatBigNumberUsingDecimalsToNumber(estimatedAsk, decimals ? 18 : quoteTokenDecimals, 2)
