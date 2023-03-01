@@ -31,11 +31,11 @@ export function fetchClaimFile(claimId: string) {
   return (
     FETCH_CLAIM_FILE_PROMISE ??
     (FETCH_CLAIM_FILE_PROMISE = fetch(
-      MERKLE_PROOFS[claimId],
-      // 'data.json',
+      // MERKLE_PROOFS[claimId],
+      'data.json',
     )
       .then(response => {
-        console.log(response)
+        console.log('response: ', response)
         return response.json()
       })
       .catch(error => {
@@ -55,6 +55,7 @@ export function fetchClaim(account: string, claimId: string): any {
     (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
+        console.log('keys:', keys)
         const filtered = keys.filter(address => address === formattedAddress)
 
         if (filtered.length > 0) {
