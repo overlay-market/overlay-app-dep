@@ -117,7 +117,7 @@ const MarketRow = ({
 
   const marketAttributes = useMemo(() => {
     if (decimals && fundingRate) {
-      let parsedDecimal = Number(decimals)
+      let parsedDecimal = 18 //set decimal to 18 for all Chainlink feed
       return {
         marketId,
         baseToken,

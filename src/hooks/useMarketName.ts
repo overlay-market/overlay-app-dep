@@ -76,7 +76,7 @@ export function useMarketNames(feedAddresses: any) {
   const decimalsResult = useMemo(() => {
     if (decimals.length === 0) return []
     return decimals.map(market => {
-      const marketDecimal = 18
+      const marketDecimal = market?.result && market.result[0]
       return marketDecimal
     })
   }, [decimals])
