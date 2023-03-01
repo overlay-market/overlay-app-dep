@@ -13,9 +13,10 @@ import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish, BigNumber} from 'ethers'
 import {formatBigNumberUsingDecimalsToNumber} from '../../utils/formatWei'
+import {ClaimId, MERKLE_DISTIBUTOR_ADDRESSES} from '../../constants/claims'
 
-function useMerkleDistributorContract() {
-  return useContract(MERKLE_DISTRIBUTOR_ADDRESS, MERKLE_DISTRIBUTOR_ABI, true)
+function useMerkleDistributorContract(claimId: string) {
+  return useContract(MERKLE_DISTIBUTOR_ADDRESSES[claimId], MERKLE_DISTRIBUTOR_ABI, true)
 }
 
 interface UserClaimData {
@@ -98,9 +99,14 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
   return account ? claimInfo[account] : null
 }
 
-export function useUserHasAvailableClaim(account: string | null | undefined): boolean | undefined {
+export function useUserHasAvailableClaim(
+  account: string | null | undefined,
+  claimId: string,
+): boolean | undefined {
   const userClaimData = useUserClaimData(account)
-  const distributorContract = useMerkleDistributorContract()
+  const distributorContract = useMerkleDistributorContract(claimId)
+
+  console.log('distributorContract: ', distributorContract)
 
   const userClaimIndex = userClaimData?.index && BigNumber.from(userClaimData.index)
   const [claim, setClaim] = useState()
@@ -122,7 +128,10 @@ export function useUserHasAvailableClaim(account: string | null | undefined): bo
   }, [userClaimData, claim])
 }
 
-export function useClaimCallback(account: string | null | undefined): {
+export function useClaimCallback(
+  account: string | null | undefined,
+  claimId: string,
+): {
   claimCallback: () => Promise<string>
 } {
   // get claim data for this account
@@ -132,7 +141,7 @@ export function useClaimCallback(account: string | null | undefined): {
   // used for popup summary
   // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
   const addTransaction = useTransactionAdder()
-  const distributorContract = useMerkleDistributorContract()
+  const distributorContract = useMerkleDistributorContract(claimId)
 
   const claimCallback = async function () {
     if (!claimData || !account || !library || !chainId || !distributorContract) return

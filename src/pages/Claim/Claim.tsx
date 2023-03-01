@@ -38,13 +38,13 @@ const Claim = ({
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const userHasAvailableClaim = useUserHasAvailableClaim(account)
+  const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
   const userClaimData = useUserClaimData(account)
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
 
   // monitor the status of the claim from contracts and txns
-  const {claimCallback} = useClaimCallback(account)
+  const {claimCallback} = useClaimCallback(account, claimId)
 
   // used for UI loading states
   const [attempting, setAttempting] = useState<boolean>(false)
