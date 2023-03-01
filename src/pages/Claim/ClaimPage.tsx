@@ -17,6 +17,7 @@ interface ClaimDataProps {
   platform: string
   seatsAvailable: number
   claimLink: string
+  claimText: string
   logoSrc: string
   startDate: string
   endDate: string
@@ -28,6 +29,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Beacon holders',
     seatsAvailable: 222,
     claimLink: `/claim/${ClaimId.BEACON_HOLDERS}`,
+    claimText: 'Closed',
     logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/3',
@@ -37,6 +39,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Overlay users',
     seatsAvailable: 200,
     claimLink: `/claim/${ClaimId.OVERLAY}`,
+    claimText: 'Opens 3/2',
     logoSrc: `${OverlayLogo}`,
     startDate: '3/2',
     endDate: '3/4',
@@ -46,6 +49,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Gearbox users',
     seatsAvailable: 100,
     claimLink: `/claim/${ClaimId.GEARBOX}`,
+    claimText: 'Coming soon',
     logoSrc: `${GearboxLogo}`,
     startDate: '3/6',
     endDate: '3/7',
@@ -55,6 +59,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Sense Finance users',
     seatsAvailable: 100,
     claimLink: `/claim/${ClaimId.SENSE_FINANCE}`,
+    claimText: 'Coming soon',
     logoSrc: `${SenseFinanceLogo}`,
     startDate: '3/7',
     endDate: '3/8',
@@ -64,6 +69,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'NFTPerp users',
     seatsAvailable: 100,
     claimLink: `/claim/${ClaimId.NFT_PERP}`,
+    claimText: 'Coming soon',
     logoSrc: `${NFTPerpLogo}`,
     startDate: '3/8',
     endDate: '3/9',
@@ -73,6 +79,7 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Ambire Wallet users',
     seatsAvailable: 100,
     claimLink: `/claim/${ClaimId.AMBIRE_WALLET}`,
+    claimText: 'Coming soon',
     logoSrc: `${AmbireLogo}`,
     startDate: '3/9',
     endDate: '3/10',
@@ -162,9 +169,7 @@ const ClaimPage = () => {
             <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
             <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
             <PlatformLogo src={claim.logoSrc} />
-            <TEXT.BoldSupplemental textAlign="center">
-              {claim.disabled ? 'Closed' : 'Open'} {claim.startDate} - {claim.endDate}
-            </TEXT.BoldSupplemental>
+            <TEXT.BoldSupplemental textAlign="center">{claim.claimText}</TEXT.BoldSupplemental>
           </StyledLink>
         </InterfaceContainer>
       ))}
