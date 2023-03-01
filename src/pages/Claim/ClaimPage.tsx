@@ -20,6 +20,7 @@ interface ClaimDataProps {
   logoSrc: string
   startDate: string
   endDate: string
+  disabled: boolean
 }
 
 const ClaimData: Array<ClaimDataProps> = [
@@ -30,6 +31,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/4',
+    disabled: false,
   },
   {
     platform: 'Overlay users',
@@ -38,6 +40,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${OverlayLogo}`,
     startDate: '3/2',
     endDate: '3/5',
+    disabled: true,
   },
   {
     platform: 'Gearbox users',
@@ -46,6 +49,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${GearboxLogo}`,
     startDate: '3/6',
     endDate: '3/7',
+    disabled: true,
   },
   {
     platform: 'Sense Finance users',
@@ -54,6 +58,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${SenseFinanceLogo}`,
     startDate: '3/7',
     endDate: '3/8',
+    disabled: true,
   },
   {
     platform: 'NFTPerp users',
@@ -62,6 +67,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${NFTPerpLogo}`,
     startDate: '3/8',
     endDate: '3/9',
+    disabled: true,
   },
   {
     platform: 'Ambire Wallet users',
@@ -70,6 +76,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${AmbireLogo}`,
     startDate: '3/9',
     endDate: '3/10',
+    disabled: true,
   },
   {
     platform: 'Element Finance users',
@@ -78,6 +85,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${ElementFinanceLogo}`,
     startDate: '3/13',
     endDate: '3/14',
+    disabled: true,
   },
   {
     platform: 'GMX users',
@@ -86,6 +94,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${GMXLogo}`,
     startDate: '3/14',
     endDate: '3/15',
+    disabled: true,
   },
   {
     platform: 'coW Swap users',
@@ -94,6 +103,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${CowSwapLogo}`,
     startDate: '3/15',
     endDate: '3/16',
+    disabled: true,
   },
   {
     platform: 'Arbitrum users',
@@ -102,6 +112,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${GMXLogo}`,
     startDate: '3/16',
     endDate: '3/17',
+    disabled: true,
   },
 ]
 
@@ -135,10 +146,11 @@ const PlatformLogo = styled.div<{src: string}>`
   margin: 16px 0;
 `
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link)<{disabled?: boolean}>`
   display: flex;
   flex-direction: column;
   text-decoration: none;
+  pointer-events: ${({disabled}) => (disabled ? 'none' : 'auto')};
 `
 
 const ClaimPage = () => {
@@ -146,7 +158,7 @@ const ClaimPage = () => {
     <Container>
       {ClaimData.map((claim, index) => (
         <InterfaceContainer>
-          <StyledLink to={claim.claimLink}>
+          <StyledLink to={claim.claimLink} disabled={claim.disabled}>
             <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
             <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
             <PlatformLogo src={claim.logoSrc} />
