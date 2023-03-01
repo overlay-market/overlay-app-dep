@@ -5,6 +5,7 @@ import {Icon} from '../../components/Icon/Icon'
 import {ChevronRight} from 'react-feather'
 import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
+import {MARKET_NAME} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 
 const CardHeaderContainer = styled(FlexRow)`
@@ -78,6 +79,8 @@ export const PositionCard = ({
   navigate,
   border = true,
   userHideClosedPositions,
+  decimals,
+  description,
 }: {
   id: string
   positionId: string
@@ -96,8 +99,20 @@ export const PositionCard = ({
   navigate?: boolean
   border?: boolean
   userHideClosedPositions: boolean
+  decimals?: any
+  description?: any
 }) => {
   const parsedLeverage = Number(leverage).toFixed(1)
+
+  const marketName = useMemo(() => {
+    if (description) {
+      let string = String(description)
+      return MARKET_NAME[string]
+    }
+    if (baseToken === 'loading' && quoteToken === 'loading')
+      return <Loader stroke="white" size="12px" />
+    return `${baseToken}/${quoteToken}`
+  }, [description, baseToken, quoteToken])
 
   const PnL = useMemo(() => {
     if (value === 'loading' || cost === 'loading') {
@@ -133,8 +148,7 @@ export const PositionCard = ({
     >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={'white'}>
-          {baseToken === 'loading' ? <Loader stroke="white" size="12px" /> : baseToken}/
-          {quoteToken === 'loading' ? <Loader stroke="white" size="12px" /> : quoteToken}
+          {marketName}
         </Detail>
 
         {/* <Detail fontWeight={700} color={'white'}>

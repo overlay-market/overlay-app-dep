@@ -79,6 +79,7 @@ export function usePositionOis(
   positionsCallData?: any,
   baseTokensAmounts?: any,
   quoteTokensAmounts?: any,
+  decimals?: any,
 ) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()

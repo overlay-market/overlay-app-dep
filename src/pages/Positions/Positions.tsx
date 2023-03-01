@@ -119,12 +119,14 @@ export const PositionsInner = () => {
   const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
   const [userHideClosedPositions] = useUserHideClosedPositions()
 
+  console.log('positions: ', positions)
+
   const feedAddresses = useMemo(
     () =>
       !positions ? [] : positions.map((position: PositionData) => position.market.feedAddress),
     [positions],
   )
-  const {baseTokens, quoteTokens} = useMarketNames(feedAddresses)
+  const {baseTokens, quoteTokens, decimals, descriptions} = useMarketNames(feedAddresses)
   const baseAmounts = useMarketBaseAmounts(feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(feedAddresses)
 
@@ -192,6 +194,8 @@ export const PositionsInner = () => {
             marketId={position.market.id}
             baseToken={`${baseTokens[key]}`}
             quoteToken={`${quoteTokens[key]}`}
+            decimals={decimals[key]}
+            description={descriptions[key]}
             quoteTokenDecimals={quoteAmounts[key]}
             isLong={position.isLong}
             leverage={position.leverage}
