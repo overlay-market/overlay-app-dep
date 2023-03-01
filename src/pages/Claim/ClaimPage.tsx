@@ -10,6 +10,7 @@ import AmbireLogo from '../../assets/images/ambire-logo.png'
 import ElementFinanceLogo from '../../assets/images/elementfinance-logo.png'
 import GMXLogo from '../../assets/images/gmx-logo.png'
 import CowSwapLogo from '../../assets/images/coWswap-logo.png'
+import {Link} from 'react-router-dom'
 
 interface ClaimDataProps {
   platform: string
@@ -24,7 +25,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Beacon holders',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: '/claim/beacon-holders',
     logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/4',
@@ -112,7 +113,7 @@ const Container = styled.div`
   gap: 30px;
 `
 
-const InterfaceContainer = styled.a`
+const InterfaceContainer = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid #71ceff;
@@ -133,17 +134,25 @@ const PlatformLogo = styled.div<{src: string}>`
   margin: 16px 0;
 `
 
+const StyledLink = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+`
+
 const ClaimPage = () => {
   return (
     <Container>
       {ClaimData.map((claim, index) => (
-        <InterfaceContainer href={claim.claimLink} target="_blank" rel="noopener noreferrer">
-          <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
-          <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
-          <PlatformLogo src={claim.logoSrc} />
-          <TEXT.BoldSupplemental textAlign="center">
-            Open {claim.startDate} - {claim.endDate}
-          </TEXT.BoldSupplemental>
+        <InterfaceContainer>
+          <StyledLink to={claim.claimLink}>
+            <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
+            <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
+            <PlatformLogo src={claim.logoSrc} />
+            <TEXT.BoldSupplemental textAlign="center">
+              Open {claim.startDate} - {claim.endDate}
+            </TEXT.BoldSupplemental>
+          </StyledLink>
         </InterfaceContainer>
       ))}
     </Container>

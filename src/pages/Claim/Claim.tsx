@@ -10,7 +10,7 @@ import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
-import {RouteComponentProps} from 'react-router-dom'
+import {RouteComponentProps, Link} from 'react-router-dom'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -39,7 +39,6 @@ const Claim = ({
   const toggleWalletModal = useWalletModalToggle()
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account)
-  console.log('userHasAvailableClaim: ', userHasAvailableClaim)
   const userClaimData = useUserClaimData(account)
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)

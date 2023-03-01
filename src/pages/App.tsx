@@ -42,7 +42,7 @@ const App = () => {
                 path="/positions/:marketPositionId/:positionId"
                 component={Unwind}
               />
-              <Route exact strict path="/claim" component={Claim} />
+              <Route exact strict path="/claim/:claimId" component={Claim} />
               <Route exact strict path="/claimpage" component={ClaimPage} />
               <Route exact strict path="/liquidate" component={Liquidate} />
               <Route exact strict path="/bridge" component={Bridge} />
