@@ -31,7 +31,6 @@ export function fetchClaimFile(claimId: string) {
   return (
     FETCH_CLAIM_FILE_PROMISE ??
     (FETCH_CLAIM_FILE_PROMISE = fetch(
-      // 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/testMerkleInfo.json',
       MERKLE_PROOFS[claimId],
       // 'data.json',
     )
@@ -110,8 +109,6 @@ export function useUserHasAvailableClaim(
   const userClaimData = useUserClaimData(account, claimId)
   const distributorContract = useMerkleDistributorContract(claimId)
 
-  console.log('distributorContract: ', distributorContract)
-
   const userClaimIndex = userClaimData?.index && BigNumber.from(userClaimData.index)
   const [claim, setClaim] = useState()
 
@@ -149,8 +146,6 @@ export function useClaimCallback(
 
   const claimCallback = async function () {
     if (!claimData || !account || !library || !chainId || !distributorContract) return
-
-    console.log('claimData.amount: ', formatBigNumberUsingDecimalsToNumber(claimData.amount, 18))
 
     const args = [claimData.index, account, claimData.amount, claimData.proof]
 
