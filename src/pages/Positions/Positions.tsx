@@ -155,6 +155,8 @@ export const PositionsInner = () => {
     tokenPairDecimals.quoteTokens,
     decimals,
   )
+
+  console.log('ois: ', ois)
   const costs = usePositionCosts(calldata)
   const values = usePositionValues(calldata)
   const liquidationPrices = useLiquidationPrices(calldata)

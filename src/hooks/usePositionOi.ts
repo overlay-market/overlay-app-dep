@@ -1,7 +1,11 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber} from '../utils/formatWei'
+import {
+  formatWeiToParsedNumber,
+  formatBigNumberUsingDecimalsToNumber,
+  formatBigNumberUsingDecimalsToString,
+} from '../utils/formatWei'
 import {BigNumber, ethers} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
@@ -100,7 +104,8 @@ export function usePositionOis(
       const parsedOi = oi ? oi.div(ethers.constants.WeiPerEther) : undefined
 
       if (decimals[index]) {
-        formatWeiToParsedNumber(oi, 18, sigFigs)
+        // hardcode 18 decimals for Chainlink feeds
+        return formatBigNumberUsingDecimalsToString(oi, 18, sigFigs)
       }
 
       if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
@@ -125,5 +130,5 @@ export function usePositionOis(
           : undefined
       }
     })
-  }, [callResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts])
+  }, [callResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts, decimals])
 }
