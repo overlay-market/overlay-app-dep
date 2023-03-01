@@ -42,6 +42,7 @@ import {DefaultTxnSettings} from '../../state/build/actions'
 import {useIsTxnSettingsAuto} from '../../state/build/hooks'
 import {PercentageSlider} from '../../components/PercentageSlider/PercentageSlider'
 import {useMarketName} from '../../hooks/useMarketName'
+import {MARKET_NAME} from '../../constants/markets'
 import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
@@ -106,9 +107,16 @@ export function Unwind({
 
   const position = filtered ? filtered[0] : null
 
-  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
-    position?.market.feedAddress,
-  )
+  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} =
+    useMarketName(position?.market.feedAddress)
+
+  const marketName = useMemo(() => {
+    if (description) return MARKET_NAME[description]
+    if (baseToken === 'loading' && quoteToken === 'loading')
+      return <Loader stroke="white" size="12px" />
+    return `${baseToken}/${quoteToken}`
+  }, [description, baseToken, quoteToken])
+
   const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
 
@@ -167,7 +175,7 @@ export function Unwind({
         ask: 'loading',
         mid: 'loading',
         _bid: undefined,
-        _asK: undefined,
+        _ask: undefined,
         _mid: undefined,
       }
 
@@ -285,11 +293,7 @@ export function Unwind({
             ID: {positionIdConverted}
           </TEXT.StandardHeader1>
           <TEXT.StandardHeader1 fontWeight={500} m={'0 4px 4px 4px'}>
-            {baseToken === 'loading' && quoteToken === 'loading' ? (
-              <Loader stroke="white" size="12px" />
-            ) : (
-              `${baseToken}/${quoteToken}`
-            )}
+            {marketName}
           </TEXT.StandardHeader1>
           <TEXT.StandardHeader1 minHeight={'30px'}>
             {isLong !== undefined ? (
