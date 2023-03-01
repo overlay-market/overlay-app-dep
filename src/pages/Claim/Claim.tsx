@@ -39,8 +39,6 @@ const Claim = ({
   const toggleWalletModal = useWalletModalToggle()
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
-  const testClaimData = useUserClaimData('0xf9107317b0ff77ed5b7adea15e50514a3564002b', claimId)
-  console.log('testClaimData: ', testClaimData)
   const userClaimData = useUserClaimData(account, claimId)
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
