@@ -55,7 +55,6 @@ export function fetchClaim(account: string, claimId: string): any {
     (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
-        console.log('keys:', keys)
         const filtered = keys.filter(address => address === formattedAddress)
 
         if (filtered.length > 0) {
