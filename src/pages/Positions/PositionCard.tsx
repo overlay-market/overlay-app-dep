@@ -127,11 +127,17 @@ export const PositionCard = ({
   }, [value, cost, collateralToken])
 
   const formattedEstLiquidationPrice = useMemo(() => {
-    if (!estLiquidationPrice || estLiquidationPrice === undefined || !quoteTokenDecimals)
+    if (estLiquidationPrice && decimals) {
+      return formatBigNumberUsingDecimalsToString(estLiquidationPrice, 18, 2)
+    }
+    if (!estLiquidationPrice || estLiquidationPrice === undefined || !quoteTokenDecimals) {
       return <Loader stroke="white" size="12px" />
-    if (typeof estLiquidationPrice === 'string') return estLiquidationPrice
+    }
+    if (typeof estLiquidationPrice === 'string') {
+      return estLiquidationPrice
+    }
     return formatBigNumberUsingDecimalsToString(estLiquidationPrice, quoteTokenDecimals, 2)
-  }, [estLiquidationPrice, quoteTokenDecimals])
+  }, [estLiquidationPrice, quoteTokenDecimals, decimals])
 
   const shouldHidePosition = useMemo(() => {
     if (!userHideClosedPositions) return false
