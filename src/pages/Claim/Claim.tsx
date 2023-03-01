@@ -10,6 +10,7 @@ import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
+import {RouteComponentProps} from 'react-router-dom'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -29,7 +30,11 @@ const ClaimModalContainer = styled.div`
   border-radius: 8px;
 `
 
-const Claim = () => {
+const Claim = ({
+  match: {
+    params: {claimId},
+  },
+}: RouteComponentProps<{claimId: string}>) => {
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
