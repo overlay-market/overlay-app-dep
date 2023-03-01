@@ -11,6 +11,7 @@ import ElementFinanceLogo from '../../assets/images/elementfinance-logo.png'
 import GMXLogo from '../../assets/images/gmx-logo.png'
 import CowSwapLogo from '../../assets/images/coWswap-logo.png'
 import {Link} from 'react-router-dom'
+import {ClaimId} from '../../constants/claims'
 
 interface ClaimDataProps {
   platform: string
@@ -25,7 +26,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Beacon holders',
     seatsAvailable: 222,
-    claimLink: '/claim/beacon-holders',
+    claimLink: `/claim/${ClaimId.BEACON_HOLDERS}`,
     logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/4',
@@ -33,7 +34,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Overlay users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.OVERLAY}`,
     logoSrc: `${OverlayLogo}`,
     startDate: '3/2',
     endDate: '3/5',
@@ -41,7 +42,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Gearbox users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.GEARBOX}`,
     logoSrc: `${GearboxLogo}`,
     startDate: '3/6',
     endDate: '3/7',
@@ -49,7 +50,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Sense Finance users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.SENSE_FINANCE}`,
     logoSrc: `${SenseFinanceLogo}`,
     startDate: '3/7',
     endDate: '3/8',
@@ -57,7 +58,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'NFTPerp users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.NFT_PERP}`,
     logoSrc: `${NFTPerpLogo}`,
     startDate: '3/8',
     endDate: '3/9',
@@ -65,7 +66,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Ambire Wallet users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.AMBIRE_WALLET}`,
     logoSrc: `${AmbireLogo}`,
     startDate: '3/9',
     endDate: '3/10',
@@ -73,7 +74,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Element Finance users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.ELEMENT_FINANCE}`,
     logoSrc: `${ElementFinanceLogo}`,
     startDate: '3/13',
     endDate: '3/14',
@@ -81,7 +82,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'GMX users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.GMX}`,
     logoSrc: `${GMXLogo}`,
     startDate: '3/14',
     endDate: '3/15',
@@ -89,7 +90,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'coW Swap users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.COW_SWAP}`,
     logoSrc: `${CowSwapLogo}`,
     startDate: '3/15',
     endDate: '3/16',
@@ -97,7 +98,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Arbitrum users',
     seatsAvailable: 222,
-    claimLink: '',
+    claimLink: `/claim/${ClaimId.ARBITRUM}`,
     logoSrc: `${GMXLogo}`,
     startDate: '3/16',
     endDate: '3/17',
