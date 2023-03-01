@@ -149,7 +149,12 @@ export const PositionsInner = () => {
     ])
   }, [positions, account, blockNumber])
 
-  const ois = usePositionOis(calldata, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens)
+  const ois = usePositionOis(
+    calldata,
+    tokenPairDecimals.baseTokens,
+    tokenPairDecimals.quoteTokens,
+    decimals,
+  )
   const costs = usePositionCosts(calldata)
   const values = usePositionValues(calldata)
   const liquidationPrices = useLiquidationPrices(calldata)

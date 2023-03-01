@@ -127,14 +127,14 @@ export const PositionCard = ({
   }, [value, cost, collateralToken])
 
   const formattedEstLiquidationPrice = useMemo(() => {
+    if (typeof estLiquidationPrice === 'string') {
+      return estLiquidationPrice
+    }
     if (estLiquidationPrice && decimals) {
       return formatBigNumberUsingDecimalsToString(estLiquidationPrice, 18, 2)
     }
     if (!estLiquidationPrice || estLiquidationPrice === undefined || !quoteTokenDecimals) {
       return <Loader stroke="white" size="12px" />
-    }
-    if (typeof estLiquidationPrice === 'string') {
-      return estLiquidationPrice
     }
     return formatBigNumberUsingDecimalsToString(estLiquidationPrice, quoteTokenDecimals, 2)
   }, [estLiquidationPrice, quoteTokenDecimals, decimals])

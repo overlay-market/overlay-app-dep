@@ -89,17 +89,23 @@ export function usePositionOis(
 
   return useMemo(() => {
     return callResult.map((position, index) => {
+      const sigFigs = 4
+      let baseTokenQuoteTokenDecimalDifference = 0
+
       const {loading, error, result} = position
       if (!chainId || !blockNumber || loading) return null
-      if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
       if (error) console.error('Error from usePositionOis')
 
-      const sigFigs = 4
       const oi = result?.oi_ ? result.oi_ : undefined
-      // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
       const parsedOi = oi ? oi.div(ethers.constants.WeiPerEther) : undefined
 
-      let baseTokenQuoteTokenDecimalDifference = 0
+      if (decimals[index]) {
+        formatWeiToParsedNumber(oi, 18, sigFigs)
+      }
+
+      if (!baseTokensAmounts[index] || !quoteTokensAmounts[index]) return null
+
+      // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
 
       if (baseTokensAmounts[index] > quoteTokensAmounts[index]) {
         baseTokenQuoteTokenDecimalDifference = baseTokensAmounts[index] - quoteTokensAmounts[index]
