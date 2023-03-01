@@ -13,7 +13,7 @@ import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish, BigNumber} from 'ethers'
 import {formatBigNumberUsingDecimalsToNumber} from '../../utils/formatWei'
-import {ClaimId, MERKLE_DISTIBUTOR_ADDRESSES} from '../../constants/claims'
+import {ClaimId, MERKLE_DISTIBUTOR_ADDRESSES, MERKLE_PROOFS} from '../../constants/claims'
 
 function useMerkleDistributorContract(claimId: string) {
   return useContract(MERKLE_DISTIBUTOR_ADDRESSES[claimId], MERKLE_DISTRIBUTOR_ABI, true)
@@ -27,12 +27,13 @@ interface UserClaimData {
 }
 
 let FETCH_CLAIM_FILE_PROMISE: any
-export function fetchClaimFile() {
+export function fetchClaimFile(claimId: string) {
   return (
     FETCH_CLAIM_FILE_PROMISE ??
     (FETCH_CLAIM_FILE_PROMISE = fetch(
       // 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/testMerkleInfo.json',
-      'data.json',
+      MERKLE_PROOFS[claimId],
+      // 'data.json',
     )
       .then(response => {
         console.log(response)
@@ -46,13 +47,13 @@ export function fetchClaimFile() {
 }
 
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
-export function fetchClaim(account: string): any {
+export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
     FETCH_CLAIM_PROMISES[account] ??
-    (FETCH_CLAIM_PROMISES[account] = fetchClaimFile()
+    (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
         const filtered = keys.filter(address => address === formattedAddress)
@@ -69,7 +70,10 @@ export function fetchClaim(account: string): any {
   )
 }
 
-export function useUserClaimData(account: string | null | undefined): UserClaimData | null {
+export function useUserClaimData(
+  account: string | null | undefined,
+  claimId: string,
+): UserClaimData | null {
   const {chainId} = useActiveWeb3React()
 
   const [claimInfo, setClaimInfo] = useState<{[account: string]: UserClaimData | null}>({})
@@ -77,7 +81,7 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
   useEffect(() => {
     if (!account) return
 
-    fetchClaim(account)
+    fetchClaim(account, claimId)
       .then((accountClaimInfo: any) => {
         setClaimInfo(claimInfo => {
           return {
@@ -94,7 +98,7 @@ export function useUserClaimData(account: string | null | undefined): UserClaimD
           }
         })
       })
-  }, [account, chainId])
+  }, [account, chainId, claimId])
 
   return account ? claimInfo[account] : null
 }
@@ -103,7 +107,7 @@ export function useUserHasAvailableClaim(
   account: string | null | undefined,
   claimId: string,
 ): boolean | undefined {
-  const userClaimData = useUserClaimData(account)
+  const userClaimData = useUserClaimData(account, claimId)
   const distributorContract = useMerkleDistributorContract(claimId)
 
   console.log('distributorContract: ', distributorContract)
@@ -136,7 +140,7 @@ export function useClaimCallback(
 } {
   // get claim data for this account
   const {library, chainId} = useActiveWeb3React()
-  const claimData = useUserClaimData(account)
+  const claimData = useUserClaimData(account, claimId)
 
   // used for popup summary
   // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
