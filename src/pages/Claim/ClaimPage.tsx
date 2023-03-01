@@ -31,7 +31,7 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/3',
-    disabled: false,
+    disabled: true,
   },
   {
     platform: 'Overlay users',
