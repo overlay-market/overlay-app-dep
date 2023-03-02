@@ -87,6 +87,7 @@ export const Positions = () => {
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
   const {account, active} = useActiveWeb3React()
 
+  console.log('userHideClosedPositions: ', userHideClosedPositions)
   return (
     <MarketCard>
       {onResetUnwindState()}
@@ -156,7 +157,6 @@ export const PositionsInner = () => {
     decimals,
   )
 
-  console.log('ois: ', ois)
   const costs = usePositionCosts(calldata)
   const values = usePositionValues(calldata)
   const liquidationPrices = useLiquidationPrices(calldata)

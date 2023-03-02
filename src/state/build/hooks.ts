@@ -187,7 +187,7 @@ export function useWalletPositionsFromSubgraph(address: string | undefined | nul
   const accountAddress = address ? address.toLowerCase() : undefined;
 
   return useAccountQuery(accountAddress ? { account: accountAddress } : skipToken, {
-    pollingInterval: 12000, 
+    pollingInterval: 1000, 
     refetchOnMountOrArgChange: true, 
     refetchOnFocus: true,
     refetchOnReconnect: true,
@@ -242,7 +242,7 @@ export function useAllPositions() {
     error,
     isUninitialized,
     data
-  } = usePositionsQuery({}, { pollingInterval: 12000 })
+  } = usePositionsQuery({}, { pollingInterval: 1000 })
 
   return useMemo(() => {
     return {
