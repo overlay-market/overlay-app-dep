@@ -21,7 +21,8 @@ interface ClaimDataProps {
   logoSrc: string
   startDate: string
   endDate: string
-  disabled: boolean
+  isDisabled: boolean
+  isClosed: boolean
 }
 
 const ClaimData: Array<ClaimDataProps> = [
@@ -33,7 +34,8 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${BeaconLogo}`,
     startDate: '3/1',
     endDate: '3/3',
-    disabled: true,
+    isDisabled: true,
+    isClosed: true,
   },
   {
     platform: 'Overlay users',
@@ -43,7 +45,8 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${OverlayLogo}`,
     startDate: '3/2',
     endDate: '3/4',
-    disabled: true,
+    isDisabled: true,
+    isClosed: false,
   },
   {
     platform: 'Gearbox users',
@@ -53,7 +56,8 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${GearboxLogo}`,
     startDate: '3/6',
     endDate: '3/7',
-    disabled: true,
+    isDisabled: true,
+    isClosed: false,
   },
   {
     platform: 'Sense Finance users',
@@ -63,7 +67,8 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${SenseFinanceLogo}`,
     startDate: '3/7',
     endDate: '3/8',
-    disabled: true,
+    isDisabled: true,
+    isClosed: false,
   },
   {
     platform: 'NFTPerp users',
@@ -73,7 +78,8 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${NFTPerpLogo}`,
     startDate: '3/8',
     endDate: '3/9',
-    disabled: true,
+    isDisabled: true,
+    isClosed: false,
   },
   {
     platform: 'Ambire Wallet users',
@@ -83,7 +89,8 @@ const ClaimData: Array<ClaimDataProps> = [
     logoSrc: `${AmbireLogo}`,
     startDate: '3/9',
     endDate: '3/10',
-    disabled: true,
+    isDisabled: true,
+    isClosed: false,
   },
   // {
   //   platform: 'Element Finance users',
@@ -92,7 +99,8 @@ const ClaimData: Array<ClaimDataProps> = [
   //   logoSrc: `${ElementFinanceLogo}`,
   //   startDate: '3/13',
   //   endDate: '3/14',
-  //   disabled: true,
+  //   isDisabled: true,
+  //   isClosed: false,
   // },
   // {
   //   platform: 'GMX users',
@@ -101,7 +109,7 @@ const ClaimData: Array<ClaimDataProps> = [
   //   logoSrc: `${GMXLogo}`,
   //   startDate: '3/14',
   //   endDate: '3/15',
-  //   disabled: true,
+  //   isDisabled: true,
   // },
   // {
   //   platform: 'coW Swap users',
@@ -110,7 +118,7 @@ const ClaimData: Array<ClaimDataProps> = [
   //   logoSrc: `${CowSwapLogo}`,
   //   startDate: '3/15',
   //   endDate: '3/16',
-  //   disabled: true,
+  //   isDisabled: true,
   // },
   // {
   //   platform: 'Arbitrum users',
@@ -119,7 +127,7 @@ const ClaimData: Array<ClaimDataProps> = [
   //   logoSrc: `${GMXLogo}`,
   //   startDate: '3/16',
   //   endDate: '3/17',
-  //   disabled: true,
+  //   isDisabled: true,
   // },
 ]
 
@@ -132,7 +140,7 @@ const Container = styled.div`
   gap: 30px;
 `
 
-const InterfaceContainer = styled.div`
+const InterfaceContainer = styled.div<{isClosed?: boolean}>`
   display: flex;
   flex-direction: column;
   border: 1px solid #71ceff;
@@ -142,6 +150,7 @@ const InterfaceContainer = styled.div`
   background: #1b2131;
   width: 300px;
   text-decoration: none;
+  filter: ${({isClosed}) => (isClosed ? 'grayscale(100%)' : '')};
 `
 
 const PlatformLogo = styled.div<{src: string}>`
@@ -153,19 +162,19 @@ const PlatformLogo = styled.div<{src: string}>`
   margin: 16px 0;
 `
 
-const StyledLink = styled(Link)<{disabled?: boolean}>`
+const StyledLink = styled(Link)<{isDisabled?: boolean}>`
   display: flex;
   flex-direction: column;
   text-decoration: none;
-  pointer-events: ${({disabled}) => (disabled ? 'none' : 'auto')};
+  pointer-events: ${({isDisabled}) => (isDisabled ? 'none' : 'auto')};
 `
 
 const ClaimPage = () => {
   return (
     <Container>
       {ClaimData.map((claim, index) => (
-        <InterfaceContainer>
-          <StyledLink to={claim.claimLink} disabled={claim.disabled}>
+        <InterfaceContainer isClosed={claim.isClosed}>
+          <StyledLink to={claim.claimLink} isDisabled={claim.isDisabled}>
             <TEXT.Supplemental>Claim OVL for {claim.platform}</TEXT.Supplemental>
             <TEXT.Supplemental>{claim.seatsAvailable} seats available</TEXT.Supplemental>
             <PlatformLogo src={claim.logoSrc} />
