@@ -147,6 +147,9 @@ const MarketRow = ({
     }
   }, [marketId, baseToken, quoteToken, midPrice, decimals, quoteAmount, fundingRate])
 
+  // @dev: remove after verifying BAYC market data
+  if (marketId === '0x909d893d5e7f250659fa56c2ca2920760eebb17f') return null
+
   return (
     <StyledTableRow
       onClick={() => redirectToMarket(marketId ?? '')}
