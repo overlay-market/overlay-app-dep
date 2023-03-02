@@ -19,8 +19,6 @@ interface ClaimDataProps {
   claimLink: string
   claimText: string
   logoSrc: string
-  startDate: string
-  endDate: string
   isDisabled: boolean
   isClosed: boolean
 }
@@ -32,8 +30,6 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.BEACON_HOLDERS}`,
     claimText: 'Closed',
     logoSrc: `${BeaconLogo}`,
-    startDate: '3/1',
-    endDate: '3/3',
     isDisabled: true,
     isClosed: true,
   },
@@ -41,10 +37,8 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Overlay users',
     seatsAvailable: 200,
     claimLink: `/claim/${ClaimId.OVERLAY}`,
-    claimText: 'Opens 3/2',
+    claimText: 'Opens 3/3',
     logoSrc: `${OverlayLogo}`,
-    startDate: '3/2',
-    endDate: '3/4',
     isDisabled: true,
     isClosed: false,
   },
@@ -54,8 +48,6 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.GEARBOX}`,
     claimText: 'Coming soon',
     logoSrc: `${GearboxLogo}`,
-    startDate: '3/6',
-    endDate: '3/7',
     isDisabled: true,
     isClosed: false,
   },
@@ -65,8 +57,6 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.SENSE_FINANCE}`,
     claimText: 'Coming soon',
     logoSrc: `${SenseFinanceLogo}`,
-    startDate: '3/7',
-    endDate: '3/8',
     isDisabled: true,
     isClosed: false,
   },
@@ -76,8 +66,6 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.NFT_PERP}`,
     claimText: 'Coming soon',
     logoSrc: `${NFTPerpLogo}`,
-    startDate: '3/8',
-    endDate: '3/9',
     isDisabled: true,
     isClosed: false,
   },
@@ -87,8 +75,6 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.AMBIRE_WALLET}`,
     claimText: 'Coming soon',
     logoSrc: `${AmbireLogo}`,
-    startDate: '3/9',
-    endDate: '3/10',
     isDisabled: true,
     isClosed: false,
   },
@@ -97,8 +83,6 @@ const ClaimData: Array<ClaimDataProps> = [
   //   seatsAvailable: 100,
   //   claimLink: `/claim/${ClaimId.ELEMENT_FINANCE}`,
   //   logoSrc: `${ElementFinanceLogo}`,
-  //   startDate: '3/13',
-  //   endDate: '3/14',
   //   isDisabled: true,
   //   isClosed: false,
   // },
@@ -107,8 +91,6 @@ const ClaimData: Array<ClaimDataProps> = [
   //   seatsAvailable: 100,
   //   claimLink: `/claim/${ClaimId.GMX}`,
   //   logoSrc: `${GMXLogo}`,
-  //   startDate: '3/14',
-  //   endDate: '3/15',
   //   isDisabled: true,
   // },
   // {
@@ -116,8 +98,6 @@ const ClaimData: Array<ClaimDataProps> = [
   //   seatsAvailable: 100,
   //   claimLink: `/claim/${ClaimId.COW_SWAP}`,
   //   logoSrc: `${CowSwapLogo}`,
-  //   startDate: '3/15',
-  //   endDate: '3/16',
   //   isDisabled: true,
   // },
   // {
@@ -125,8 +105,6 @@ const ClaimData: Array<ClaimDataProps> = [
   //   seatsAvailable: 100,
   //   claimLink: `/claim/${ClaimId.ARBITRUM}`,
   //   logoSrc: `${GMXLogo}`,
-  //   startDate: '3/16',
-  //   endDate: '3/17',
   //   isDisabled: true,
   // },
 ]
