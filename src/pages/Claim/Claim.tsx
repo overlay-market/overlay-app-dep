@@ -42,7 +42,6 @@ const Claim = ({
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
   const userClaimData = useUserClaimData(account, claimId)
-  console.log('userClaimData: ', userClaimData)
 
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
@@ -68,7 +67,7 @@ const Claim = ({
 
   const isWrongNetwork = useMemo(() => {
     if (!chainId) return true
-    return chainId === Number(SupportedChainId.GÖRLI) ? false : true
+    return chainId === Number(SupportedChainId.ARBITRUM) ? false : true
   }, [chainId])
 
   return (
@@ -111,19 +110,18 @@ const Claim = ({
         userHasAvailableClaim !== undefined &&
         isWrongNetwork && (
           <ClaimModalContainer>
-            <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+            <FlexColumn padding="16px">
               <FlexRow marginBottom="8px">
                 <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
                 <TEXT.SmallBody>
                   {account ? shortenAddress(account) : 'Not connected'}
                 </TEXT.SmallBody>
               </FlexRow>
-              <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
-                {userClaimAmount} OVL
-              </TEXT.AdjustableSize>
             </FlexColumn>
-            <FlexColumn padding="16px">
-              <TEXT.SmallBody>Wrong network, switch to Arbitrum-One</TEXT.SmallBody>
+            <FlexColumn padding="16px 16px 32px">
+              <TEXT.SmallBody marginRight="auto">
+                Wrong network, switch to Arbitrum-One
+              </TEXT.SmallBody>
             </FlexColumn>
           </ClaimModalContainer>
         )}
