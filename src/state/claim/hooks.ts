@@ -28,14 +28,15 @@ interface UserClaimData {
 
 let FETCH_CLAIM_FILE_PROMISE: any
 export function fetchClaimFile(claimId: string) {
+  const fetchUrl = MERKLE_PROOFS[claimId]
   return (
     FETCH_CLAIM_FILE_PROMISE ??
     (FETCH_CLAIM_FILE_PROMISE = fetch(
-      // MERKLE_PROOFS[claimId],
-      'data.json',
+      fetchUrl,
+      // 'https://raw.githubusercontent.com/Uniswap/mrkl-drop-data-chunks/final/chunks/mapping.json',
+      // 'data.json',
     )
       .then(response => {
-        console.log('response: ', response)
         return response.json()
       })
       .catch(error => {
@@ -55,7 +56,9 @@ export function fetchClaim(account: string, claimId: string): any {
     (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
-        const filtered = keys.filter(address => address === formattedAddress)
+        const filtered = keys.filter(address => {
+          return address.toLowerCase() === formattedAddress
+        })
 
         if (filtered.length > 0) {
           return claimData[formattedAddress]
