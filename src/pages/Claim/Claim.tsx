@@ -67,7 +67,7 @@ const Claim = ({
 
   const isWrongNetwork = useMemo(() => {
     if (!chainId) return true
-    return chainId === Number(SupportedChainId.ARBITRUM) ? false : true
+    return chainId !== Number(SupportedChainId.ARBITRUM)
   }, [chainId])
 
   return (
