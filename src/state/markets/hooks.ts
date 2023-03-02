@@ -13,7 +13,7 @@ export function useMarketDataFromSubgraph(marketAddress: string | undefined | nu
   const marketId: string = marketAddress ? marketAddress : ''
 
   return useMarketQuery(marketId ? {market: marketId} : skipToken, {
-    pollingInterval: 12000,
+    pollingInterval: 1000,
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
     refetchOnReconnect: true,
@@ -71,7 +71,7 @@ export function useTotalMarketsDataFromSubgraph() {
   return useMarketsQuery(
     {},
     {
-      pollingInterval: 12000,
+      pollingInterval: 1000,
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
       skip: false,

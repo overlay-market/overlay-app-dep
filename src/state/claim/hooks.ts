@@ -52,19 +52,17 @@ export function fetchClaim(account: string, claimId: string): any {
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
-    FETCH_CLAIM_PROMISES[account] ??
+    // FETCH_CLAIM_PROMISES[account] ??
     (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
 
-        let originalAddress
         const filtered = keys.filter(address => {
-          originalAddress = address
           return address.toLowerCase() === formattedAddress
         })
-
-        if (filtered.length > 0 && originalAddress) {
-          return claimData[originalAddress]
+        console.log('filtered: ', filtered)
+        if (filtered.length > 0) {
+          return claimData[account]
         }
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
       })
@@ -79,20 +77,19 @@ export function useUserClaimData(
   account: string | null | undefined,
   claimId: string,
 ): UserClaimData | null {
-  const {chainId} = useActiveWeb3React()
+  const {account: accountId, chainId} = useActiveWeb3React()
 
   const [claimInfo, setClaimInfo] = useState<{[account: string]: UserClaimData | null}>({})
 
   useEffect(() => {
-    if (!account) return
+    if (!accountId) return
 
-    fetchClaim(account, claimId)
+    fetchClaim(accountId, claimId)
       .then((accountClaimInfo: any) => {
         setClaimInfo(claimInfo => {
-          console.log('accountClaimInfo: ', accountClaimInfo)
           return {
             ...claimInfo,
-            [account]: accountClaimInfo,
+            [accountId]: accountClaimInfo,
           }
         })
       })
@@ -100,11 +97,11 @@ export function useUserClaimData(
         setClaimInfo(claimInfo => {
           return {
             ...claimInfo,
-            [account]: null,
+            [accountId]: null,
           }
         })
       })
-  }, [account, chainId, claimId])
+  }, [account, chainId, claimId, accountId])
 
   return account ? claimInfo[account] : null
 }
