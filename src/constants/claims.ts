@@ -9,6 +9,7 @@ export enum ClaimId {
   GMX = 'gmx',
   COW_SWAP = 'cow-swap',
   ARBITRUM = 'arbitrum',
+  TESTING = 'testing',
 }
 
 export type ClaimMap = {[claimId: string]: string}
@@ -24,6 +25,7 @@ export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
   [ClaimId.GMX]: '',
   [ClaimId.COW_SWAP]: '',
   [ClaimId.ARBITRUM]: '',
+  [ClaimId.TESTING]: '0x97571f500d3c2d9b2F8d0616E2B2c13396DAa088',
 }
 
 export const MERKLE_PROOFS: ClaimMap = {
@@ -38,4 +40,6 @@ export const MERKLE_PROOFS: ClaimMap = {
   [ClaimId.GMX]: '',
   [ClaimId.COW_SWAP]: '',
   [ClaimId.ARBITRUM]: '',
+  [ClaimId.TESTING]:
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/treeInfo.json',
 }
