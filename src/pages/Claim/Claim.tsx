@@ -42,6 +42,8 @@ const Claim = ({
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
   const userClaimData = useUserClaimData(account, claimId)
+  console.log('userClaimData: ', userClaimData)
+
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
 
@@ -66,7 +68,7 @@ const Claim = ({
 
   const isWrongNetwork = useMemo(() => {
     if (!chainId) return true
-    return chainId === Number(SupportedChainId.ARBITRUM) ? false : true
+    return chainId === Number(SupportedChainId.GÖRLI) ? false : true
   }, [chainId])
 
   return (
