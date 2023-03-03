@@ -25,7 +25,7 @@ export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
   [ClaimId.GMX]: '',
   [ClaimId.COW_SWAP]: '',
   [ClaimId.ARBITRUM]: '',
-  [ClaimId.TESTING]: '0x97571f500d3c2d9b2F8d0616E2B2c13396DAa088',
+  [ClaimId.TESTING]: '0xDC2789821b329B599941F6804CA0b4240e7CA0B1',
 }
 
 export const MERKLE_PROOFS: ClaimMap = {
@@ -42,5 +42,5 @@ export const MERKLE_PROOFS: ClaimMap = {
   [ClaimId.COW_SWAP]: '',
   [ClaimId.ARBITRUM]: '',
   [ClaimId.TESTING]:
-    'https://raw.githubusercontent.com/overlay-market/overlay-interface/staging/src/state/claim/data.json',
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/ovl-test/src/treeInfo.json',
 }
