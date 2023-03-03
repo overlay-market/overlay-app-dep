@@ -53,11 +53,12 @@ export function fetchClaim(account: string, claimId: string): any {
         const keys = Object.keys(claimData)
 
         const filtered = keys.filter(address => {
+          console.log('address from within filtered: ', address)
           return isAddress(address) === formattedAddress
         })
 
         if (filtered.length > 0) {
-          return claimData[account]
+          return claimData[formattedAddress]
         }
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
       })
