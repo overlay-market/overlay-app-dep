@@ -42,6 +42,7 @@ export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
   console.log('claimId from fetchClaim: ', claimId)
   console.log('account from fetchClaim: ', account)
+  console.log('formattedAddress from fetchClaim: ', formattedAddress)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
   console.log('after formattedAddress check')
 
