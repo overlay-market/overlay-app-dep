@@ -40,7 +40,8 @@ export function fetchClaimFile(claimId: string) {
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
 export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
-  console.log('claimId: ', claimId)
+  console.log('claimId from fetchClaim: ', claimId)
+  console.log('account from fetchClaim: ', account)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
@@ -56,8 +57,8 @@ export function fetchClaim(account: string, claimId: string): any {
         console.log('filtered: ', filtered)
 
         if (filtered.length > 0) {
-          console.log('claimData[account]:', claimData[account])
-          return claimData[account]
+          console.log('claimData[account]:', claimData[filtered[0]])
+          return claimData[filtered[0].toLowerCase()]
         }
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
       })
@@ -81,8 +82,6 @@ export function useUserClaimData(
 
     fetchClaim(accountId, claimId)
       .then((accountClaimInfo: any) => {
-        console.log('accountId: ', accountId)
-        console.log('accountClaimInfo :', accountClaimInfo)
         setClaimInfo(claimInfo => {
           return {
             ...claimInfo,
@@ -100,18 +99,18 @@ export function useUserClaimData(
       })
   }, [account, chainId, claimId, accountId])
 
-  return accountId ? claimInfo[accountId] : null
+  return accountId ? claimInfo[accountId.toLowerCase()] : null
 }
 
 export function useUserHasAvailableClaim(
   account: string | null | undefined,
   claimId: string,
 ): boolean | undefined {
+  const {chainId} = useActiveWeb3React()
   const userClaimData = useUserClaimData(account, claimId)
   const distributorContract = useMerkleDistributorContract(claimId)
 
   const userClaimIndex = userClaimData?.index && BigNumber.from(userClaimData.index)
-  console.log('userClaimIndex: ', userClaimIndex)
   const [claim, setClaim] = useState()
 
   useEffect(() => {
@@ -124,7 +123,7 @@ export function useUserHasAvailableClaim(
         console.log('claim error inside useUserHasAvailableClaim: ', error)
       }
     })()
-  }, [distributorContract, account, userClaimIndex])
+  }, [distributorContract, account, userClaimIndex, chainId])
 
   return useMemo(() => {
     if (claim === undefined) return undefined
