@@ -110,20 +110,19 @@ export function useUserHasAvailableClaim(
   useEffect(() => {
     if (!distributorContract || !account || userClaimIndex === undefined) return
     ;(async () => {
-      // console.log('this got hit')
-      console.log('userClaimIndex: ', userClaimIndex)
-      console.log('distributorContract: ', distributorContract)
+      // console.log('userClaimIndex: ', userClaimIndex)
+      // console.log('distributorContract: ', distributorContract)
       try {
         setClaim(await distributorContract.isClaimed(userClaimIndex))
       } catch (error) {
         console.error('claim error inside useUserHasAvailableClaim: ', error)
+        window.location.reload()
       }
     })()
   }, [distributorContract, account, userClaimIndex, chainId])
 
   return useMemo(() => {
     if (claim === undefined) return undefined
-    console.log('claim from useMemo: ', Boolean(userClaimData && claim === false))
     return Boolean(userClaimData && claim === false)
   }, [userClaimData, claim])
 }

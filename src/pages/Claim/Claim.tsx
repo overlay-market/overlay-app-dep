@@ -42,12 +42,8 @@ const Claim = ({
 
   const [currentClaimId, setCurrentClaimId] = useState<string>('')
 
-  console.log('currentClaimId: ', currentClaimId)
-  console.log('claimId: ', claimId)
-
   useEffect(() => {
     setCurrentClaimId(claimId)
-    // window.location.reload()
   }, [claimId])
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account, currentClaimId)
