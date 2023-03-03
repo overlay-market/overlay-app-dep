@@ -40,6 +40,7 @@ export function fetchClaimFile(claimId: string) {
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
 export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
+  console.log('claimId: ', claimId)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
