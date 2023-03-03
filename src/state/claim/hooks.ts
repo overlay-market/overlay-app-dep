@@ -40,9 +40,7 @@ export function fetchClaimFile(claimId: string) {
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
 export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
-  console.log('claimId from fetchClaim: ', claimId)
-  console.log('account from fetchClaim: ', account)
-  console.log('formattedAddress from fetchClaim: ', formattedAddress)
+  console.log('claimId: ', claimId)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
@@ -50,16 +48,17 @@ export function fetchClaim(account: string, claimId: string): any {
     (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
+
         const filtered = keys.filter(address => {
           return isAddress(address) === formattedAddress
         })
 
-        console.log('filtered:')
+        console.log('filtered: ', filtered)
 
         if (filtered.length > 0) {
-          return claimData[formattedAddress]
+          console.log('claimData[account]:', claimData[account])
+          return claimData[account]
         }
-
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
       })
       .catch((error: any) => {
@@ -82,6 +81,8 @@ export function useUserClaimData(
 
     fetchClaim(accountId, claimId)
       .then((accountClaimInfo: any) => {
+        console.log('accountId: ', accountId)
+        console.log('accountClaimInfo :', accountClaimInfo)
         setClaimInfo(claimInfo => {
           return {
             ...claimInfo,
@@ -99,7 +100,7 @@ export function useUserClaimData(
       })
   }, [account, chainId, claimId, accountId])
 
-  return account ? claimInfo[account] : null
+  return accountId ? claimInfo[accountId] : null
 }
 
 export function useUserHasAvailableClaim(
@@ -113,7 +114,7 @@ export function useUserHasAvailableClaim(
   const [claim, setClaim] = useState()
 
   useEffect(() => {
-    if (!distributorContract || !account || !userClaimIndex) return
+    if (!distributorContract || !account || typeof userClaimIndex !== 'number') return
     ;(async () => {
       try {
         setClaim(await distributorContract.isClaimed(userClaimIndex))
@@ -137,7 +138,7 @@ export function useClaimCallback(
 } {
   // get claim data for this account
   const {library, chainId} = useActiveWeb3React()
-  const claimData = useUserClaimData(account?.toLowerCase(), claimId)
+  const claimData = useUserClaimData(account, claimId)
 
   // used for popup summary
   // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)

@@ -40,8 +40,8 @@ const Claim = ({
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const userHasAvailableClaim = useUserHasAvailableClaim(account?.toLowerCase(), claimId)
-  const userClaimData = useUserClaimData(account?.toLowerCase(), claimId)
+  const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
+  const userClaimData = useUserClaimData(account, claimId)
 
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
@@ -67,7 +67,7 @@ const Claim = ({
 
   const isWrongNetwork = useMemo(() => {
     if (!chainId) return true
-    return chainId !== Number(SupportedChainId.ARBITRUM)
+    return chainId !== Number(SupportedChainId.GÖRLI)
   }, [chainId])
 
   return (
