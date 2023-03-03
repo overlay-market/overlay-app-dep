@@ -39,7 +39,7 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.OVERLAY}`,
     claimText: 'Opens 3/3',
     logoSrc: `${OverlayLogo}`,
-    isDisabled: true,
+    isDisabled: false,
     isClosed: false,
   },
   {
