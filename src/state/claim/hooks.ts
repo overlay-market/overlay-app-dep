@@ -40,9 +40,9 @@ export function fetchClaimFile(claimId: string) {
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
 export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
-  console.log('claimId from fetchClaim: ', claimId)
-  console.log('account from fetchClaim: ', account)
-  console.log('formattedAddress from fetchClaim: ', formattedAddress)
+  // console.log('claimId from fetchClaim: ', claimId)
+  // console.log('account from fetchClaim: ', account)
+  // console.log('formattedAddress from fetchClaim: ', formattedAddress)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
@@ -116,7 +116,7 @@ export function useUserHasAvailableClaim(
   useEffect(() => {
     if (!distributorContract || !account || userClaimIndex === undefined) return
     ;(async () => {
-      console.log('this got hit')
+      // console.log('this got hit')
       try {
         setClaim(await distributorContract.isClaimed(userClaimIndex))
       } catch (error) {

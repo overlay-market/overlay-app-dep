@@ -73,6 +73,25 @@ const Claim = ({
     return chainId !== Number(SupportedChainId.GÖRLI)
   }, [chainId])
 
+  if (account && isWrongNetwork) {
+    return (
+      <BridgeContainer>
+        <ClaimModalContainer>
+          <FlexColumn padding="16px">
+            <FlexRow marginBottom="8px">
+              <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+              <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
+            </FlexRow>
+          </FlexColumn>
+          <FlexColumn padding="16px 16px 32px">
+            <TEXT.SmallBody marginRight="auto">
+              Wrong network, switch to Arbitrum-One
+            </TEXT.SmallBody>
+          </FlexColumn>
+        </ClaimModalContainer>
+      </BridgeContainer>
+    )
+  }
   return (
     <BridgeContainer>
       {!account && (
@@ -91,7 +110,7 @@ const Claim = ({
         </ClaimModalContainer>
       )}
 
-      {((account && !userClaimData) || (account && userHasAvailableClaim === undefined)) && (
+      {account && !userClaimData && account && userHasAvailableClaim === undefined && (
         <ClaimModalContainer>
           <FlexColumn padding="16px">
             <TEXT.SmallBody marginRight="auto" marginBottom="18px">
@@ -106,28 +125,6 @@ const Claim = ({
           </FlexColumn>
         </ClaimModalContainer>
       )}
-
-      {account &&
-        userClaimAmount &&
-        userHasAvailableClaim &&
-        userHasAvailableClaim !== undefined &&
-        isWrongNetwork && (
-          <ClaimModalContainer>
-            <FlexColumn padding="16px">
-              <FlexRow marginBottom="8px">
-                <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
-                <TEXT.SmallBody>
-                  {account ? shortenAddress(account) : 'Not connected'}
-                </TEXT.SmallBody>
-              </FlexRow>
-            </FlexColumn>
-            <FlexColumn padding="16px 16px 32px">
-              <TEXT.SmallBody marginRight="auto">
-                Wrong network, switch to Arbitrum-One
-              </TEXT.SmallBody>
-            </FlexColumn>
-          </ClaimModalContainer>
-        )}
 
       {account &&
         userClaimAmount &&
