@@ -12,6 +12,7 @@ import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {RouteComponentProps, Link} from 'react-router-dom'
 import {SupportedChainId} from '../../constants/chains'
+import {isAddress} from '../../utils/web3'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -39,8 +40,8 @@ const Claim = ({
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
-  const userClaimData = useUserClaimData(account, claimId)
+  const userHasAvailableClaim = useUserHasAvailableClaim(account?.toLowerCase(), claimId)
+  const userClaimData = useUserClaimData(account?.toLowerCase(), claimId)
 
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)

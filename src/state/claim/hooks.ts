@@ -44,22 +44,22 @@ export function fetchClaim(account: string, claimId: string): any {
   console.log('account from fetchClaim: ', account)
   console.log('formattedAddress from fetchClaim: ', formattedAddress)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
-  console.log('after formattedAddress check')
 
   return (
     // FETCH_CLAIM_PROMISES[account] ??
     (FETCH_CLAIM_PROMISES[account] = fetchClaimFile(claimId)
       .then((claimData: any) => {
         const keys = Object.keys(claimData)
-
         const filtered = keys.filter(address => {
-          console.log('address from within filtered: ', address)
           return isAddress(address) === formattedAddress
         })
+
+        console.log('filtered:')
 
         if (filtered.length > 0) {
           return claimData[formattedAddress]
         }
+
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
       })
       .catch((error: any) => {
@@ -137,7 +137,7 @@ export function useClaimCallback(
 } {
   // get claim data for this account
   const {library, chainId} = useActiveWeb3React()
-  const claimData = useUserClaimData(account, claimId)
+  const claimData = useUserClaimData(account?.toLowerCase(), claimId)
 
   // used for popup summary
   // const unclaimedAmount: CurrencyAmount<Token> | undefined = useUserUnclaimedAmount(account)
