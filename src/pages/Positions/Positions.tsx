@@ -87,7 +87,6 @@ export const Positions = () => {
   const [userHideClosedPositions, setUserHideClosedPositions] = useUserHideClosedPositions()
   const {account, active} = useActiveWeb3React()
 
-  console.log('userHideClosedPositions: ', userHideClosedPositions)
   return (
     <MarketCard>
       {onResetUnwindState()}

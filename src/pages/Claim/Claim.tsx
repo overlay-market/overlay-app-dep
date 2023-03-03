@@ -12,7 +12,6 @@ import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {RouteComponentProps, Link} from 'react-router-dom'
 import {SupportedChainId} from '../../constants/chains'
-import {supportedChainId} from '../../utils/supportedChainId'
 
 const BridgeContainer = styled.div`
   display: flex;
