@@ -40,8 +40,10 @@ export function fetchClaimFile(claimId: string) {
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
 export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
-  console.log('claimId: ', claimId)
+  console.log('claimId from fetchClaim: ', claimId)
+  console.log('account from fetchClaim: ', account)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
+  console.log('after formattedAddress check')
 
   return (
     // FETCH_CLAIM_PROMISES[account] ??
@@ -50,7 +52,7 @@ export function fetchClaim(account: string, claimId: string): any {
         const keys = Object.keys(claimData)
 
         const filtered = keys.filter(address => {
-          return address.toLowerCase() === formattedAddress
+          return isAddress(address) === formattedAddress
         })
 
         if (filtered.length > 0) {
