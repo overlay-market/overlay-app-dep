@@ -392,9 +392,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [attemptingTransaction, transactionErrorMessage, transactionHash])
 
   const disableBuildButton: boolean = useMemo(() => {
-    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) return true
+    console.log('minCollateral: ', minCollateral)
     console.log('typedValue: ', typedValue)
     console.log('parsedOvlBalance: ', parsedOvlBalance)
+    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) return true
     if (typedValue > parsedOvlBalance) return true
     if (minCollateral > Number(typedValue)) return true
     return false
