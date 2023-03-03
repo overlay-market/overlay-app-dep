@@ -16,7 +16,7 @@ export type ClaimMap = {[claimId: string]: string}
 
 export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
   [ClaimId.BEACON_HOLDERS]: '0xe00a6444686988C809bEa59bC8a18EA298a6A0a1',
-  [ClaimId.OVERLAY]: '',
+  [ClaimId.OVERLAY]: '0x6eD5CCC86F24AA307dee58d4630d97F2f660C38A',
   [ClaimId.GEARBOX]: '',
   [ClaimId.SENSE_FINANCE]: '',
   [ClaimId.NFT_PERP]: '',
@@ -31,7 +31,8 @@ export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
 export const MERKLE_PROOFS: ClaimMap = {
   [ClaimId.BEACON_HOLDERS]:
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/DegenScore/src/treeInfo.json',
-  [ClaimId.OVERLAY]: '',
+  [ClaimId.OVERLAY]:
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/OVL/src/treeInfo.json',
   [ClaimId.GEARBOX]: '',
   [ClaimId.SENSE_FINANCE]: '',
   [ClaimId.NFT_PERP]: '',
