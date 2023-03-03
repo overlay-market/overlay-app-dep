@@ -120,8 +120,6 @@ export const PositionsInner = () => {
   const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
   const [userHideClosedPositions] = useUserHideClosedPositions()
 
-  console.log('positions: ', positions)
-
   const feedAddresses = useMemo(
     () =>
       !positions ? [] : positions.map((position: PositionData) => position.market.feedAddress),

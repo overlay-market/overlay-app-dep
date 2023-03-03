@@ -393,6 +393,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const disableBuildButton: boolean = useMemo(() => {
     if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) return true
+    console.log('typedValue: ', typedValue)
+    console.log('parsedOvlBalance: ', parsedOvlBalance)
     if (typedValue > parsedOvlBalance) return true
     if (minCollateral > Number(typedValue)) return true
     return false
