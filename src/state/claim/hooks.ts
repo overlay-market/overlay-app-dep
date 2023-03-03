@@ -42,6 +42,7 @@ export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
   console.log('claimId from fetchClaim: ', claimId)
   console.log('account from fetchClaim: ', account)
+  console.log('formattedAddress from fetchClaim: ', formattedAddress)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
@@ -54,11 +55,11 @@ export function fetchClaim(account: string, claimId: string): any {
           return isAddress(address) === formattedAddress
         })
 
-        console.log('filtered: ', filtered)
+        // console.log('filtered: ', filtered)
 
         if (filtered.length > 0) {
-          console.log('claimData[account]:', claimData[filtered[0]])
-          return claimData[filtered[0].toLowerCase()]
+          // console.log('claimData[account]:', claimData[filtered[0]])
+          return claimData[filtered[0]]
         }
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
       })
@@ -73,19 +74,18 @@ export function useUserClaimData(
   account: string | null | undefined,
   claimId: string,
 ): UserClaimData | null {
-  const {account: accountId, chainId} = useActiveWeb3React()
-
+  const {chainId} = useActiveWeb3React()
   const [claimInfo, setClaimInfo] = useState<{[account: string]: UserClaimData | null}>({})
 
   useEffect(() => {
-    if (!accountId) return
+    if (!account) return
 
-    fetchClaim(accountId, claimId)
+    fetchClaim(account, claimId)
       .then((accountClaimInfo: any) => {
         setClaimInfo(claimInfo => {
           return {
             ...claimInfo,
-            [accountId]: accountClaimInfo,
+            [account]: accountClaimInfo,
           }
         })
       })
@@ -93,13 +93,13 @@ export function useUserClaimData(
         setClaimInfo(claimInfo => {
           return {
             ...claimInfo,
-            [accountId]: null,
+            [account]: null,
           }
         })
       })
-  }, [account, chainId, claimId, accountId])
+  }, [account, chainId, claimId])
 
-  return accountId ? claimInfo[accountId.toLowerCase()] : null
+  return account ? claimInfo[account] : null
 }
 
 export function useUserHasAvailableClaim(
@@ -149,7 +149,7 @@ export function useClaimCallback(
   const claimCallback = async function () {
     if (!claimData || !account || !library || !chainId || !distributorContract) return
 
-    const args = [claimData.index, account, claimData.amount, claimData.proof]
+    const args = [claimData.index, claimData.address, claimData.amount, claimData.proof]
 
     return distributorContract.estimateGas['claim'](...args, {}).then(estimatedGasLimit => {
       return distributorContract
