@@ -1,18 +1,13 @@
 import {TransactionType} from './../transactions/actions'
 import {useState, useEffect, useMemo} from 'react'
 import {TransactionResponse} from '@ethersproject/providers'
-import {CurrencyAmount, Token} from '@uniswap/sdk-core'
 import {useActiveWeb3React} from '../../hooks/web3'
-import JSBI from 'jsbi'
-import {useSingleCallResult} from '../multicall/hooks'
 import {isAddress} from '../../utils/web3'
 import {useContract} from '../../hooks/useContract'
 import {calculateGasMargin} from '../../utils/calculateGasMargin'
 import {useTransactionAdder} from '../transactions/hooks'
-import {MERKLE_DISTRIBUTOR_ADDRESS} from './../../constants/addresses'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish, BigNumber} from 'ethers'
-import {formatBigNumberUsingDecimalsToNumber} from '../../utils/formatWei'
 import {ClaimId, MERKLE_DISTIBUTOR_ADDRESSES, MERKLE_PROOFS} from '../../constants/claims'
 
 function useMerkleDistributorContract(claimId: string) {
@@ -31,11 +26,7 @@ export function fetchClaimFile(claimId: string) {
   const fetchUrl = MERKLE_PROOFS[claimId]
   return (
     FETCH_CLAIM_FILE_PROMISE ??
-    (FETCH_CLAIM_FILE_PROMISE = fetch(
-      fetchUrl,
-      // 'https://raw.githubusercontent.com/Uniswap/mrkl-drop-data-chunks/final/chunks/mapping.json',
-      // 'data.json',
-    )
+    (FETCH_CLAIM_FILE_PROMISE = fetch(fetchUrl)
       .then(response => {
         return response.json()
       })
@@ -60,7 +51,7 @@ export function fetchClaim(account: string, claimId: string): any {
         const filtered = keys.filter(address => {
           return address.toLowerCase() === formattedAddress
         })
-        console.log('filtered: ', filtered)
+
         if (filtered.length > 0) {
           return claimData[account]
         }
