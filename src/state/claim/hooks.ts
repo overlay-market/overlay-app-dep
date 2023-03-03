@@ -40,9 +40,6 @@ export function fetchClaimFile(claimId: string) {
 const FETCH_CLAIM_PROMISES: {[key: string]: UserClaimData} = {}
 export function fetchClaim(account: string, claimId: string): any {
   const formattedAddress = isAddress(account)
-  // console.log('claimId from fetchClaim: ', claimId)
-  // console.log('account from fetchClaim: ', account)
-  // console.log('formattedAddress from fetchClaim: ', formattedAddress)
   if (!formattedAddress) return Promise.reject(new Error('Invalid address'))
 
   return (
@@ -55,10 +52,7 @@ export function fetchClaim(account: string, claimId: string): any {
           return isAddress(address) === formattedAddress
         })
 
-        // console.log('filtered: ', filtered)
-
         if (filtered.length > 0) {
-          // console.log('claimData[account]:', claimData[filtered[0]])
           return claimData[filtered[0]]
         }
         throw new Error(`Claim for ${formattedAddress} was not found after searching all mappings`)
@@ -117,16 +111,19 @@ export function useUserHasAvailableClaim(
     if (!distributorContract || !account || userClaimIndex === undefined) return
     ;(async () => {
       // console.log('this got hit')
+      console.log('userClaimIndex: ', userClaimIndex)
+      console.log('distributorContract: ', distributorContract)
       try {
         setClaim(await distributorContract.isClaimed(userClaimIndex))
       } catch (error) {
-        console.log('claim error inside useUserHasAvailableClaim: ', error)
+        console.error('claim error inside useUserHasAvailableClaim: ', error)
       }
     })()
   }, [distributorContract, account, userClaimIndex, chainId])
 
   return useMemo(() => {
     if (claim === undefined) return undefined
+    console.log('claim from useMemo: ', Boolean(userClaimData && claim === false))
     return Boolean(userClaimData && claim === false)
   }, [userClaimData, claim])
 }
