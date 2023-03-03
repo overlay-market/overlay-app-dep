@@ -43,6 +43,9 @@ const Claim = ({
   const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
   const userClaimData = useUserClaimData(account, claimId)
 
+  console.log('userHasAvailableClaim: ', userHasAvailableClaim)
+  console.log('userClaimData: ', userClaimData)
+
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
 

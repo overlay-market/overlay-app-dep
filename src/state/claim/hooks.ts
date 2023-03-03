@@ -111,11 +111,13 @@ export function useUserHasAvailableClaim(
   const distributorContract = useMerkleDistributorContract(claimId)
 
   const userClaimIndex = userClaimData?.index && BigNumber.from(userClaimData.index)
+  console.log('userClaimIndex: ', userClaimIndex)
   const [claim, setClaim] = useState()
 
   useEffect(() => {
-    if (!distributorContract || !account || typeof userClaimIndex !== 'number') return
+    if (!distributorContract || !account || userClaimIndex === undefined) return
     ;(async () => {
+      console.log('this got hit')
       try {
         setClaim(await distributorContract.isClaimed(userClaimIndex))
       } catch (error) {
