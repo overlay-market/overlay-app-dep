@@ -42,5 +42,5 @@ export const MERKLE_PROOFS: ClaimMap = {
   [ClaimId.COW_SWAP]: '',
   [ClaimId.ARBITRUM]: '',
   [ClaimId.TESTING]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/main/src/treeInfo.json',
+    'https://raw.githubusercontent.com/overlay-market/overlay-interface/staging/src/state/claim/data.json',
 }
