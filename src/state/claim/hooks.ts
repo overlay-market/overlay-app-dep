@@ -9,6 +9,7 @@ import {useTransactionAdder} from '../transactions/hooks'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish, BigNumber} from 'ethers'
 import {ClaimId, MERKLE_DISTIBUTOR_ADDRESSES, MERKLE_PROOFS} from '../../constants/claims'
+import {SupportedChainId} from '../../constants/chains'
 
 function useMerkleDistributorContract(claimId: string) {
   return useContract(MERKLE_DISTIBUTOR_ADDRESSES[claimId], MERKLE_DISTRIBUTOR_ABI, true)
@@ -110,8 +111,6 @@ export function useUserHasAvailableClaim(
   useEffect(() => {
     if (!distributorContract || !account || userClaimIndex === undefined) return
     ;(async () => {
-      // console.log('userClaimIndex: ', userClaimIndex)
-      // console.log('distributorContract: ', distributorContract)
       try {
         setClaim(await distributorContract.isClaimed(userClaimIndex))
       } catch (error) {

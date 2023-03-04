@@ -10,7 +10,7 @@ import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
-import {RouteComponentProps, Link} from 'react-router-dom'
+import {RouteComponentProps, Link, useHistory} from 'react-router-dom'
 import {SupportedChainId} from '../../constants/chains'
 import {isAddress} from '../../utils/web3'
 
@@ -40,17 +40,16 @@ const Claim = ({
   const {account, chainId, error} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
-  const [currentClaimId, setCurrentClaimId] = useState<string>('')
+  // const [currentClaimId, setCurrentClaimId] = useState<string>('')
+
+  const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
+  const userClaimData = useUserClaimData(account, claimId)
+
+  const [isFullyClaimed, setIsFullyClaimed] = useState<boolean>(false)
 
   useEffect(() => {
-    setCurrentClaimId(claimId)
+    setIsFullyClaimed(false)
   }, [claimId])
-
-  const userHasAvailableClaim = useUserHasAvailableClaim(account, currentClaimId)
-  const userClaimData = useUserClaimData(account, currentClaimId)
-
-  // console.log('userHasAvailableClaim: ', userHasAvailableClaim)
-  // console.log('userClaimData: ', userClaimData)
 
   const userClaimAmount =
     userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
@@ -70,8 +69,25 @@ const Claim = ({
       // reset modal and log error
       .catch(error => {
         setAttempting(false)
-        console.log(error)
+        console.error(error)
+
+        let errorMessage = error.error.message
+        if (errorMessage === 'execution reverted: ERC20: transfer amount exceeds balance') {
+          setIsFullyClaimed(true)
+        }
       })
+  }
+
+  const ClaimButton = () => {
+    return isFullyClaimed ? (
+      <TriggerActionButton isDisabled={true} onClick={() => null}>
+        Tokens fully claimed
+      </TriggerActionButton>
+    ) : (
+      <TriggerActionButton active={true} onClick={onClaim}>
+        Claim OVL
+      </TriggerActionButton>
+    )
   }
 
   const isWrongNetwork = useMemo(() => {
@@ -168,9 +184,7 @@ const Claim = ({
                 >
                   Read more about OVL
                 </ExternalLink>
-                <TriggerActionButton active={true} onClick={onClaim}>
-                  Claim OVL
-                </TriggerActionButton>
+                <ClaimButton />
               </FlexColumn>
             </ClaimModalContainer>
           )}
@@ -221,6 +235,7 @@ const Claim = ({
     userClaimData,
     userHasAvailableClaim,
     onClaim,
+    isFullyClaimed,
   ])
 }
 
