@@ -37,10 +37,10 @@ const ClaimData: Array<ClaimDataProps> = [
     platform: 'Overlay users',
     seatsAvailable: 200,
     claimLink: `/claim/${ClaimId.OVERLAY}`,
-    claimText: 'Opens 3/4',
+    claimText: 'Closed',
     logoSrc: `${OverlayLogo}`,
-    isDisabled: false,
-    isClosed: false,
+    isDisabled: true,
+    isClosed: true,
   },
   {
     platform: 'Gearbox users',
