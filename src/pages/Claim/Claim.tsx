@@ -172,7 +172,7 @@ const Claim = ({
                   governance, and to interact with the Overlay protocol.
                 </TEXT.SmallBody>
                 <ExternalLink
-                  href=""
+                  href="https://docs.overlay.market/"
                   style={{
                     color: '#71CEFF',
                     textDecoration: 'underline',
@@ -209,7 +209,7 @@ const Claim = ({
                   governance, and to interact with the Overlay protocol.
                 </TEXT.SmallBody>
                 <ExternalLink
-                  href=""
+                  href="https://docs.overlay.market/"
                   style={{
                     color: '#71CEFF',
                     textDecoration: 'underline',
