@@ -94,7 +94,7 @@ const Claim = ({
   }, [chainId])
 
   return useMemo(() => {
-    if (account && isWrongNetwork) {
+    if (isWrongNetwork) {
       return (
         <BridgeContainer>
           <ClaimModalContainer>
