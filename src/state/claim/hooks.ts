@@ -115,7 +115,7 @@ export function useUserHasAvailableClaim(
         setClaim(await distributorContract.isClaimed(userClaimIndex))
       } catch (error) {
         console.error('claim error inside useUserHasAvailableClaim: ', error)
-        window.location.reload()
+        // window.location.reload()
       }
     })()
   }, [distributorContract, account, userClaimIndex, chainId])
