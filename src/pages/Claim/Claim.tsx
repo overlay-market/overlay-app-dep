@@ -1,4 +1,4 @@
-import {useState, useMemo, useEffect} from 'react'
+import {useState, useMemo, useEffect, useCallback} from 'react'
 import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import {useActiveWeb3React} from '../../hooks/web3'
@@ -62,7 +62,8 @@ const Claim = ({
   const claimConfirmed = Boolean(claimTxn?.receipt)
 
   // wrap in useMemo hook to account for changes in claimId
-  function onClaim() {
+  const handleClaim = useCallback(() => {
+    if (!claimId) return
     setAttempting(true)
     claimCallback()
       // reset modal and log error
@@ -75,7 +76,7 @@ const Claim = ({
           setIsFullyClaimed(true)
         }
       })
-  }
+  }, [claimCallback, claimId])
 
   const ClaimButton = () => {
     return isFullyClaimed ? (
@@ -83,7 +84,7 @@ const Claim = ({
         Tokens fully claimed
       </TriggerActionButton>
     ) : (
-      <TriggerActionButton active={true} onClick={onClaim}>
+      <TriggerActionButton active={true} onClick={handleClaim}>
         Claim OVL
       </TriggerActionButton>
     )
@@ -233,7 +234,7 @@ const Claim = ({
     userClaimAmount,
     userClaimData,
     userHasAvailableClaim,
-    onClaim,
+    handleClaim,
     isFullyClaimed,
     ClaimButton,
     toggleWalletModal,
