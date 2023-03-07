@@ -234,6 +234,8 @@ const Claim = ({
     userHasAvailableClaim,
     onClaim,
     isFullyClaimed,
+    ClaimButton,
+    toggleWalletModal,
   ])
 }
 
