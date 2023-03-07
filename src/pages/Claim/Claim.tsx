@@ -61,6 +61,7 @@ const Claim = ({
   const {claimSubmitted, claimTxn} = useUserHasSubmittedClaim(account ?? undefined)
   const claimConfirmed = Boolean(claimTxn?.receipt)
 
+  // wrap in useMemo hook to account for changes in claimId
   function onClaim() {
     setAttempting(true)
     claimCallback()
