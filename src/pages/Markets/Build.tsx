@@ -569,6 +569,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
     )
 
+  console.log('prices in build: ', prices)
+  console.log('typedValue in build: ', typedValue)
+  console.log('isLong in build: ', isLong)
+
   return (
     <MarketCard align={'left'} padding={'0px'}>
       <ControlInterfaceContainer onSubmit={(e: any) => e.preventDefault()} as={'form'}>
