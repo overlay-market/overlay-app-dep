@@ -395,11 +395,24 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     console.log('minCollateral: ', minCollateral)
     console.log('typedValue: ', typedValue)
     console.log('parsedOvlBalance: ', parsedOvlBalance)
-    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) return true
-    if (typedValue > parsedOvlBalance) return true
-    if (minCollateral > Number(typedValue)) return true
+    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) {
+      console.log('hit in section 1')
+      return true
+    }
+    if (typedValue > parsedOvlBalance) {
+      console.log('hit in section 2')
+      console.log('parsedOvlBalance in section 2: ', parsedOvlBalance)
+      return true
+    }
+    if (minCollateral > Number(typedValue)) {
+      console.log('hit in section 3')
+      return true
+    }
+    console.log('hit in section 4')
     return false
   }, [typedValue, isLong, minCollateral, parsedOvlBalance])
+
+  console.log('disableBuildButton: ', disableBuildButton)
 
   const handleBuild = useCallback(() => {
     if (!typedValue) throw new Error('missing position input size')
@@ -569,9 +582,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
     )
 
-  console.log('prices in build: ', prices)
-  console.log('typedValue in build: ', typedValue)
-  console.log('isLong in build: ', isLong)
+  // console.log('prices in build: ', prices)
+  // console.log('typedValue in build: ', typedValue)
+  // console.log('isLong in build: ', isLong)
 
   return (
     <MarketCard align={'left'} padding={'0px'}>
