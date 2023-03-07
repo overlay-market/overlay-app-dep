@@ -18,9 +18,9 @@ export type ClaimMap = {[claimId: string]: string}
 export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
   [ClaimId.BEACON_HOLDERS]: '0xe00a6444686988C809bEa59bC8a18EA298a6A0a1',
   [ClaimId.OVERLAY]: '0x36D6136b9e0372Fe9dE42BD21311890bFb523246',
-  [ClaimId.GEARBOX]: '',
-  [ClaimId.SENSE_FINANCE]: '',
-  [ClaimId.NFT_PERP]: '',
+  [ClaimId.GEARBOX]: '0xD2e5B1b0887ADeC2Df2b1Fb69ff3F469E9Fe71f7',
+  [ClaimId.SENSE_FINANCE]: '0x5a0B95E113B6713eD3dE69E47af4a946F9538b8a',
+  [ClaimId.NFT_PERP]: '0x5e65a55ded8177b4207dF49ea0AB5961E8461013',
   [ClaimId.AMBIRE_WALLET]: '',
   [ClaimId.ELEMENT_FINANCE]: '',
   [ClaimId.GMX]: '',
@@ -35,8 +35,10 @@ export const MERKLE_PROOFS: ClaimMap = {
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/DegenScore/src/treeInfo.json',
   [ClaimId.OVERLAY]:
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/OVL/src/treeInfo.json',
-  [ClaimId.GEARBOX]: '',
-  [ClaimId.SENSE_FINANCE]: '',
+  [ClaimId.GEARBOX]:
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/GearBox/src/treeInfo.json',
+  [ClaimId.SENSE_FINANCE]:
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Sense/src/treeInfo.json',
   [ClaimId.NFT_PERP]: '',
   [ClaimId.AMBIRE_WALLET]: '',
   [ClaimId.ELEMENT_FINANCE]: '',
