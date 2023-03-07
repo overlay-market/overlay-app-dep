@@ -399,8 +399,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       console.log('hit in section 1')
       return true
     }
-    if (typedValue > parsedOvlBalance) {
+    if (Number(typedValue) > Number(parsedOvlBalance)) {
       console.log('hit in section 2')
+      console.log('typedValue in section 2:', typedValue)
       console.log('parsedOvlBalance in section 2: ', parsedOvlBalance)
       return true
     }
