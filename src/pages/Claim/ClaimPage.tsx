@@ -62,7 +62,7 @@ const ClaimData: Array<ClaimDataProps> = [
   },
   {
     platform: 'NFTPerp users',
-    seatsAvailable: 100,
+    seatsAvailable: 200,
     claimLink: `/claim/${ClaimId.NFT_PERP}`,
     claimText: 'Open 3/9',
     logoSrc: `${NFTPerpLogo}`,
