@@ -39,7 +39,8 @@ export const MERKLE_PROOFS: ClaimMap = {
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/GearBox/src/treeInfo.json',
   [ClaimId.SENSE_FINANCE]:
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Sense/src/treeInfo.json',
-  [ClaimId.NFT_PERP]: '',
+  [ClaimId.NFT_PERP]:
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/NFTPerp/src/treeInfo.json',
   [ClaimId.AMBIRE_WALLET]: '',
   [ClaimId.ELEMENT_FINANCE]: '',
   [ClaimId.GMX]: '',
