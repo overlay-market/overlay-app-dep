@@ -66,7 +66,7 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.NFT_PERP}`,
     claimText: 'Open 3/9',
     logoSrc: `${NFTPerpLogo}`,
-    isDisabled: true,
+    isDisabled: false,
     isClosed: false,
   },
   // {
