@@ -21,7 +21,7 @@ export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
   [ClaimId.GEARBOX]: '0xD2e5B1b0887ADeC2Df2b1Fb69ff3F469E9Fe71f7',
   [ClaimId.SENSE_FINANCE]: '0x5a0B95E113B6713eD3dE69E47af4a946F9538b8a',
   [ClaimId.NFT_PERP]: '0x5e65a55ded8177b4207dF49ea0AB5961E8461013',
-  [ClaimId.AMBIRE_WALLET]: '',
+  [ClaimId.AMBIRE_WALLET]: '0x1034de1A508C4Bafe74a3A94f325224fFf94DEa1',
   [ClaimId.ELEMENT_FINANCE]: '',
   [ClaimId.GMX]: '',
   [ClaimId.COW_SWAP]: '',
@@ -41,7 +41,8 @@ export const MERKLE_PROOFS: ClaimMap = {
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Sense/src/treeInfo.json',
   [ClaimId.NFT_PERP]:
     'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/NFTPerp/src/treeInfo.json',
-  [ClaimId.AMBIRE_WALLET]: '',
+  [ClaimId.AMBIRE_WALLET]:
+    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Ambire/src/treeInfo.json',
   [ClaimId.ELEMENT_FINANCE]: '',
   [ClaimId.GMX]: '',
   [ClaimId.COW_SWAP]: '',
