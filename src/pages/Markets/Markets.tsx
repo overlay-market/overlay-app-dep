@@ -98,6 +98,14 @@ const MarketRow = ({
 
   const LOADING_STATE = 'loading'
 
+  const totalOi = useMemo(() => {
+    if (oiLong === undefined || oiShort === undefined) {
+      return undefined
+    } else {
+      return oiLong + oiShort
+    }
+  }, [oiLong, oiShort])
+
   const oiPercentageOfTotal = useMemo(() => {
     if (oiLong === undefined || oiShort === undefined || capOi === undefined || capOi === null) {
       return {
@@ -106,8 +114,13 @@ const MarketRow = ({
       }
     }
 
-    const longPercentage = (oiLong / capOi) * 100
-    const shortPercentage = (oiShort / capOi) * 100
+    // display OI percentage as a total of current total (short and long combined)
+    const totalOi = oiLong + oiShort
+    const longPercentage = (oiLong / totalOi) * 100
+    const shortPercentage = (oiShort / totalOi) * 100
+
+    // const longPercentage = (oiLong / capOi) * 100
+    // const shortPercentage = (oiShort / capOi) * 100
 
     return {
       long: longPercentage.toFixed(2),
@@ -166,7 +179,7 @@ const MarketRow = ({
           <TEXT.SmallBody mr="auto">{oiPercentageOfTotal.short}%</TEXT.SmallBody>
           <TEXT.SmallBody>{oiPercentageOfTotal.long}%</TEXT.SmallBody>
         </FlexRow>
-        <DoubleProgressBar leftBarValue={oiShort} rightBarValue={oiLong} maxValue={capOi} />
+        <DoubleProgressBar leftBarValue={oiShort} rightBarValue={oiLong} maxValue={totalOi} />
       </StyledTableCellThin>
       <StyledTableCellThin align="right">
         {marketAttributes.dailyFundingRate}% ({marketAttributes.annualFundingRate}%)
