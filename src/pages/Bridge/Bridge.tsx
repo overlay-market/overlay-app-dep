@@ -218,7 +218,7 @@ const Bridge = () => {
   const showNotEnoughBalanceFlow = useMemo(() => {
     if (!typedValue) return false
     if (!parsedOvlBalance) return false
-    return typedValue > parsedOvlBalance ? true : false
+    return Number(typedValue) > Number(parsedOvlBalance)
   }, [parsedOvlBalance, typedValue])
 
   const [approval, approveCallback] = useApproveCallback(
