@@ -149,6 +149,7 @@ const MarketRow = ({
 
   // @dev: remove after verifying BAYC market data
   if (marketId === '0x909d893d5e7f250659fa56c2ca2920760eebb17f') return null
+  if (marketId === '0xb31d222c23104cbc2c04df77941f1f2c478133dd') return null
 
   return (
     <StyledTableRow
