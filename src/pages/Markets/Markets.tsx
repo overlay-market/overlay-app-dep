@@ -86,6 +86,8 @@ const MarketRow = ({
     history.push(`/markets/${marketId}`)
   }
 
+  const decimalPrecision: number = 4
+
   const marketName = useMemo(() => {
     if (description) {
       let string = String(description)
@@ -135,7 +137,7 @@ const MarketRow = ({
         marketId,
         baseToken,
         quoteToken: <Loader stroke="white" size="12px" />,
-        midPrice: formatBigNumberUsingDecimalsToString(midPrice, parsedDecimal, 2),
+        midPrice: formatBigNumberUsingDecimalsToString(midPrice, parsedDecimal, decimalPrecision),
         dailyFundingRate: formatFundingRateToDaily(fundingRate, 18, 2),
         annualFundingRate: formatFundingRateToAnnual(fundingRate, 18, 2),
       }

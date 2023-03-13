@@ -295,12 +295,21 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     // @dev TO-DO: update variable names to differentiate between chainlink and uni v3 feeds
     if (decimals && quoteTokenDecimals === undefined) {
       return {
-        // bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, decimals, 2),
-        // ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, decimals, 2),
-        // mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, decimals, 2),
-        bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, decimals, 2),
-        ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, decimals, 2),
-        mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, decimals, 2),
+        bid: formatBigNumberUsingDecimalsToString(
+          fetchPrices.result?.bid_,
+          decimals,
+          sigFigConstant,
+        ),
+        ask: formatBigNumberUsingDecimalsToString(
+          fetchPrices.result?.ask_,
+          decimals,
+          sigFigConstant,
+        ),
+        mid: formatBigNumberUsingDecimalsToString(
+          fetchPrices.result?.mid_,
+          decimals,
+          sigFigConstant,
+        ),
         _bid: fetchPrices.result?.bid_,
         _ask: fetchPrices.result?.ask_,
         _mid: fetchPrices.result?.mid_,
@@ -308,9 +317,21 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     }
 
     return {
-      bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, quoteTokenDecimals, 2),
-      ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, quoteTokenDecimals, 2),
-      mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, quoteTokenDecimals, 2),
+      bid: formatBigNumberUsingDecimalsToString(
+        fetchPrices.result?.bid_,
+        quoteTokenDecimals,
+        sigFigConstant,
+      ),
+      ask: formatBigNumberUsingDecimalsToString(
+        fetchPrices.result?.ask_,
+        quoteTokenDecimals,
+        sigFigConstant,
+      ),
+      mid: formatBigNumberUsingDecimalsToString(
+        fetchPrices.result?.mid_,
+        quoteTokenDecimals,
+        sigFigConstant,
+      ),
       _bid: fetchPrices.result?.bid_,
       _ask: fetchPrices.result?.ask_,
       _mid: fetchPrices.result?.mid_,
@@ -517,13 +538,13 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     }
     if (decimals) {
       return isLong
-        ? formatBigNumberUsingDecimalsToString(estimatedAsk, decimals, 2)
-        : formatBigNumberUsingDecimalsToString(estimatedBid, decimals, 2)
+        ? formatBigNumberUsingDecimalsToString(estimatedAsk, decimals, sigFigConstant)
+        : formatBigNumberUsingDecimalsToString(estimatedBid, decimals, sigFigConstant)
     }
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     return isLong
-      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
+      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, sigFigConstant)
+      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, sigFigConstant)
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals, decimals])
 
   const priceImpact = useMemo(() => {
