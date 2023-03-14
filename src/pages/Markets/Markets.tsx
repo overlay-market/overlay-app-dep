@@ -244,8 +244,9 @@ const Markets = () => {
         <div>positions that have not been settled,</div>
         <div>per market, denoted in OVL.</div>
         <br />
-        <div>% = current total percent filled of</div>
-        <div>Open Interest Cap.</div>
+        <div>% = current total percent filled on</div>
+        <div>each side (long or short) of the</div>
+        <div>total current open interest.</div>
       </>
     ),
     fundingRate: (

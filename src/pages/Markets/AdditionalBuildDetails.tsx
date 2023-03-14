@@ -118,12 +118,12 @@ export const AdditionalDetails = ({
     // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
     if (decimals) {
       return isLong
-        ? formatBigNumberUsingDecimalsToString(estimatedAsk, decimals, 2)
-        : formatBigNumberUsingDecimalsToString(estimatedBid, decimals, 2)
+        ? formatBigNumberUsingDecimalsToString(estimatedAsk, decimals, 4)
+        : formatBigNumberUsingDecimalsToString(estimatedBid, decimals, 4)
     }
     return isLong
-      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 2)
-      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 2)
+      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 4)
+      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 4)
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals, decimals])
 
   const priceImpact = useMemo(() => {
