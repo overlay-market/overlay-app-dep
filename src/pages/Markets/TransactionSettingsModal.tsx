@@ -51,7 +51,6 @@ export const TransactionSettingsModal = ({
 
         <FlexRow padding="8px 16px">
           <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
-          <InfoTip tipFor={'Slippage Tolerance'}>Lorem Ipsum</InfoTip>
         </FlexRow>
 
         <FlexRow padding="0px 16px 16px">
