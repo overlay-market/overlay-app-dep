@@ -391,6 +391,17 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     [onAmountInput],
   )
 
+  const maxInputIncludingFees: string | undefined = useMemo(() => {
+    const parsedBuildFee = formatWeiToParsedNumber(buildFee, 18, 6)
+    let buildFeeValueFromMaxInput
+
+    if (!parsedOvlBalance || !buildFee) return parsedOvlBalance
+    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee)
+
+    let returnValue = Number(parsedOvlBalance) - buildFeeValueFromMaxInput
+    return returnValue.toString()
+  }, [buildFee, parsedOvlBalance])
+
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
     if (totalSupply == '0' || totalSupply === null) return
 
@@ -593,10 +604,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
     )
 
-  // console.log('prices in build: ', prices)
-  // console.log('typedValue in build: ', typedValue)
-  // console.log('isLong in build: ', isLong)
-
   return (
     <MarketCard align={'left'} padding={'0px'}>
       <ControlInterfaceContainer onSubmit={(e: any) => e.preventDefault()} as={'form'}>
@@ -662,7 +669,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
               75%
             </TransparentUnderlineButton>
             <TransparentUnderlineButton
-              onClick={() => handleQuickInput(100, ovlBalance?.toFixed(2) ?? null)}
+              onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}
             >
               Max
             </TransparentUnderlineButton>
