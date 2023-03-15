@@ -5,6 +5,7 @@ import {Icon} from '../../components/Icon/Icon'
 import {ChevronRight} from 'react-feather'
 import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
+import {useUserHideClosedPositions} from '../../state/user/hooks'
 import {MARKET_NAME} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 
@@ -78,7 +79,7 @@ export const PositionCard = ({
   isLiquidated,
   navigate,
   border = true,
-  userHideClosedPositions,
+  // userHideClosedPositions,
   decimals,
   description,
 }: {
@@ -98,10 +99,11 @@ export const PositionCard = ({
   isLiquidated?: boolean
   navigate?: boolean
   border?: boolean
-  userHideClosedPositions: boolean
+  // userHideClosedPositions: boolean
   decimals?: any
   description?: any
 }) => {
+  const [userHideClosedPositions] = useUserHideClosedPositions()
   const parsedLeverage = Number(leverage).toFixed(1)
 
   const marketName = useMemo(() => {
@@ -139,27 +141,24 @@ export const PositionCard = ({
     return formatBigNumberUsingDecimalsToString(estLiquidationPrice, quoteTokenDecimals, 2)
   }, [estLiquidationPrice, quoteTokenDecimals, decimals])
 
-  const shouldHidePosition = useMemo(() => {
-    if (!userHideClosedPositions) return false
-    if (!oi && oi !== 0) return false
-    return oi == 0 ? true : false
+  const hidePosition: boolean = useMemo(() => {
+    const isClosed = Number(oi) == 0
+    return userHideClosedPositions && isClosed ? true : false
   }, [oi, userHideClosedPositions])
+
+  console.log('hidePosition: ', hidePosition)
 
   return (
     <CardContainer
       navigate={navigate}
       border={border}
       to={`/positions/${id}/${positionId}`}
-      hide={shouldHidePosition}
+      hide={hidePosition}
     >
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={'white'}>
           {marketName}
         </Detail>
-
-        {/* <Detail fontWeight={700} color={'white'}>
-          ID: {Number(positionId)}
-        </Detail> */}
 
         {isLong === null && (
           <Detail fontWeight={700} color={'#C0C0C0'}>

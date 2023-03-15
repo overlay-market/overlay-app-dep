@@ -98,7 +98,7 @@ export const Positions = () => {
               Show closed positions
             </TEXT.BoldSmallBody>
             <StyledSwitchToggle
-              checked={userHideClosedPositions}
+              checked={!userHideClosedPositions}
               onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
             />
           </ShowClosedPositionsToggleContainer>
@@ -210,7 +210,7 @@ export const PositionsInner = () => {
             estLiquidationPrice={liquidationPrices[key]}
             isLiquidated={position.isLiquidated}
             navigate={true}
-            userHideClosedPositions={userHideClosedPositions}
+            // userHideClosedPositions={userHideClosedPositions}
           />
         ))}
       </>
