@@ -244,25 +244,23 @@ const Markets = () => {
         <div>positions that have not been settled,</div>
         <div>per market, denoted in OVL.</div>
         <br />
-        <div>% = current total percent filled on</div>
-        <div>each side (long or short) of the</div>
-        <div>total current open interest.</div>
+        <div>Shows the current percent (%)</div>
+        <div>balance between shorts (red)</div>
+        <div>and longs (green).</div>
       </>
     ),
     fundingRate: (
       <>
         <div>Funding Rate per Market</div>
         <br />
-        <div>Left value shows funding</div>
-        <div>rate every 24 hours. Value</div>
-        <div>in paranthesis shows funding</div>
-        <div>rate annualized.</div>
+        <div>24 hour funding rate.</div>
+        <div>Positive funding rates suggests</div>
+        <div>users are bullish and long positions</div>
+        <div>pay funding to short positions. </div>
         <br />
-        <div>Funding rate + when:</div>
-        <div>Long OI {'>'} Short OI</div>
-        <br />
-        <div>Funding rate - when:</div>
-        <div>Long OI {'<'} Short OI</div>
+        <div>Negative funding rates suggest</div>
+        <div>users are bearish and short positions</div>
+        <div>pay funding to long positions.</div>
       </>
     ),
   }
