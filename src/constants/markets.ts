@@ -9,4 +9,5 @@ export const MARKET_NAME: MarketNameMap = {
   'SOL / USD': 'SOL / USD',
   'AVAX / USD': 'AVAX / USD',
   'MATIC / USD': 'MATIC / USD',
+  price: 'BAYC / WETH',
 }
