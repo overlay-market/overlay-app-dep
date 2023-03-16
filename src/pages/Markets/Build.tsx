@@ -396,7 +396,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     let buildFeeValueFromMaxInput
 
     if (!parsedOvlBalance || !buildFee) return parsedOvlBalance
-    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee)
+    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee) * 0.99
 
     let returnValue = Number(parsedOvlBalance) - buildFeeValueFromMaxInput
     return returnValue.toString()
