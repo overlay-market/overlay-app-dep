@@ -278,7 +278,7 @@ const Markets = () => {
                 <Trans> Price </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI: Short | Long </Trans>
+                <Trans> Balance </Trans>
                 <InfoTip
                   children={INFO_TIP_DESCRIPTIONS.openInterest}
                   tipFor="Market Open Interest"
