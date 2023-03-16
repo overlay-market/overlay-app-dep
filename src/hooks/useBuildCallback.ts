@@ -165,14 +165,16 @@ export function useBuildCallback(
                     }
                   })
                   .catch(callError => {
-                    console.log('callError: ', callError.error)
+                    console.log('callError: ', callError)
+
+                    const errorDetails = callError.error || callError.data
 
                     addPopup(
                       {
                         txn: {
                           hash: currentTimeForId,
                           success: false,
-                          info: callError.error,
+                          info: errorDetails,
                         },
                       },
                       currentTimeForId,

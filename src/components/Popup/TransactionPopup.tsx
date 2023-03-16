@@ -43,6 +43,10 @@ export default function TransactionPopup({
 }) {
   const {chainId} = useActiveWeb3React()
 
+  console.log('info from txn popup: ', info)
+  console.log('summary from txn popup: ', summary)
+  console.log('hash: ', hash)
+  console.log('success: ', success)
   return (
     <PopupContentsContainer>
       <Icon>
@@ -125,6 +129,10 @@ export default function TransactionPopup({
           <ErrorMessage>Position is currently not liquidatable.</ErrorMessage>
         )}
 
+        {chainId &&
+          info?.message === 'execution reverted: ERC20: transfer amount exceeds balance' && (
+            <ErrorMessage>Not enough balance.</ErrorMessage>
+          )}
         {/* {chainId && info?.message && (
           <ErrorMessage>
             { info?.message }
