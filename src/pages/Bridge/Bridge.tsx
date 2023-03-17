@@ -103,6 +103,18 @@ const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
     [onAmountInput],
   )
 
+  const handleQuickInput = (percentage: number, totalSupply: string | undefined | null) => {
+    if (totalSupply == '0' || totalSupply === null || totalSupply === undefined) return
+
+    let calculatedAmountByPercentage
+    if (percentage < 100) {
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(0)
+    } else {
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(10)
+    }
+    return handleUserInput(calculatedAmountByPercentage)
+  }
+
   return (
     <BridgeSelectorContainer>
       <FlexRow justify="space-between">
@@ -119,6 +131,9 @@ const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
         <FlexRow justify="space-between" mb="25px">
           <TEXT.Supplemental>Send</TEXT.Supplemental>
           <TEXT.Supplemental>Max: {parsedBalance ? parsedBalance : '-'} OVL</TEXT.Supplemental>
+          {/* <button onClick={() => handleQuickInput(100, parsedBalance)}>
+            Max: {parsedBalance ? parsedBalance : '-'} OVL{' '}
+          </button> */}
         </FlexRow>
         <FlexRow justify="space-between">
           <NumericalInput
@@ -177,7 +192,7 @@ const Bridge = () => {
 
   const ovl = chainId ? OVL[chainId] : undefined
   const userOvlBalance = useChainOvlBalance(chainId)
-  const parsedOvlBalance = userOvlBalance && userOvlBalance.toFixed(2)
+  const parsedOvlBalance = userOvlBalance && userOvlBalance.toFixed(4)
 
   const [
     {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
@@ -218,6 +233,8 @@ const Bridge = () => {
   const showNotEnoughBalanceFlow = useMemo(() => {
     if (!typedValue) return false
     if (!parsedOvlBalance) return false
+    console.log('typedValue: ', typedValue)
+    console.log('parsedOvlBalance: ', parsedOvlBalance)
     return Number(typedValue) > Number(parsedOvlBalance)
   }, [parsedOvlBalance, typedValue])
 
