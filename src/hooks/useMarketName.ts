@@ -2,6 +2,7 @@ import {useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
 import {useSingleCallResult, useMultipleContractSingleData} from '../state/multicall/hooks'
 import {useUniswapV3FeedContract, useChainlinkFeedContract, useTokenContract} from './useContract'
+import {MarketData} from '../state/markets/hooks'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
@@ -36,6 +37,13 @@ export function useMarketName(feedAddress?: string) {
     baseTokenAddress: baseTokenAddress && baseTokenAddress.toLowerCase(),
     quoteTokenAddress: quoteTokenAddress && quoteTokenAddress.toLowerCase(),
   }
+}
+
+/**
+ * @dev TO-DO: Create useMarketDetails hook to return Market Name
+ */
+export function useMarketDetails(markets: MarketData[] | null | undefined) {
+  console.log('markets from useMarketDetails: ', markets)
 }
 
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)

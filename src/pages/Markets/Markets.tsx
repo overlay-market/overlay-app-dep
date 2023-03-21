@@ -21,7 +21,7 @@ import {
   StyledTableHeaderRow,
 } from '../../components/Table/Table'
 import Loader from '../../components/Loaders/Loaders'
-import {useMarketNames} from '../../hooks/useMarketName'
+import {useMarketNames, useMarketDetails} from '../../hooks/useMarketName'
 import {useMarketMidPrices} from '../../hooks/useMarketPrices'
 import {useFundingRates} from '../../hooks/useFundingRates'
 import {useMarketOis} from '../../hooks/useMarketOis'
@@ -193,6 +193,9 @@ const MarketRow = ({
 const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
+  // console.log('markets: ', markets)
+  const marketDetails = useMarketDetails(markets)
+
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
@@ -206,6 +209,7 @@ const Markets = () => {
     }),
     [markets],
   )
+
   const {baseTokens, quoteTokens, decimals, descriptions} = useMarketNames(calldata.feedAddresses)
 
   const baseAmounts = useMarketBaseAmounts(calldata.feedAddresses)
