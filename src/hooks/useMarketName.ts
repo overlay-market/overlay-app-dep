@@ -51,13 +51,19 @@ enum FeedType {
   NFTPERP = 'NFTPerp',
 }
 
+interface AdditionalMarketData extends MarketData {
+  decimals: number | undefined
+  description: Result | string | undefined
+  type: FeedType | undefined
+}
+
 /**
  * Returns Decimal property of market (agnostic to Chainlink or Uniswap)
  * Returns Description property of market (name)
  * Returns what feed type market is using (Chainlink, Uniswap, NFTPerp, etc)
  * @param markets: array of MarketData type pulled from subgraph
  */
-export function useMarketDetails(markets: MarketData[] | null | undefined) {
+export function useMarketDetails(markets: MarketData[] | null | undefined): AdditionalMarketData[] {
   const inputs = useMemo(() => {
     let marketAddresses: any = []
     let feedAddresses: any = []
