@@ -212,7 +212,7 @@ const Markets = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const marketsData = useCurrentMarketState(marketDetails)
 
-  console.log('marketsData: ', marketsData)
+  // console.log('marketsData: ', marketsData)
   // console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {

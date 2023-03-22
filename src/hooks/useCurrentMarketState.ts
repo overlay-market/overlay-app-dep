@@ -5,6 +5,7 @@ import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {AdditionalMarketData} from './useMarketDetails'
+import {formatBigNumber} from '../utils/formatBigNumber'
 
 interface MarketStateDetails {
   marketAddress: string
@@ -39,6 +40,8 @@ export function useCurrentMarketState(marketsInput: AdditionalMarketData[] | und
       return results.map((call, index) => {
         const marketAddress = marketsInput[index]
         const result = call.result as Result
+
+        console.log('test: ', formatBigNumber(result.state_.oiLong))
 
         return {
           marketAddress,
