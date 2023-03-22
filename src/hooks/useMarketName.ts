@@ -46,7 +46,9 @@ export function useMarketName(feedAddress?: string) {
 }
 
 /**
- * @dev TO-DO: Create useMarketDetails hook to return Market Name
+ * Returns Decimal property of market (agnostic to Chainlink or Uniswap)
+ * Returns Description property of market (name)
+ * @param markets: array of MarketData type pulled from subgraph
  */
 export function useMarketDetails(markets: MarketData[] | null | undefined) {
   const inputs = useMemo(() => {
@@ -63,27 +65,10 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
     }
   }, [markets])
 
-  const chainlinkDecimals = useMultipleContractSingleData(
-    inputs.feedAddresses,
-    CHAINLINK_FEED_INTERFACE,
-    'decimals',
-  )
-  const chainlinkDescriptions = useMultipleContractSingleData(
-    inputs.feedAddresses,
-    CHAINLINK_FEED_INTERFACE,
-    'description',
-  )
-
-  const uniswapBaseTokenAddresses = useMultipleContractSingleData(
-    inputs.feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketBaseToken',
-  )
-  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(
-    inputs.feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketQuoteToken',
-  )
+  const chainlinkDecimals = useMultipleContractSingleData(inputs.feedAddresses, CHAINLINK_FEED_INTERFACE, 'decimals')
+  const chainlinkDescriptions = useMultipleContractSingleData(inputs.feedAddresses, CHAINLINK_FEED_INTERFACE, 'description')
+  const uniswapBaseTokenAddresses = useMultipleContractSingleData(inputs.feedAddresses, UNI_V3_FEED_INTERFACE, 'marketBaseToken')
+  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(inputs.feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken')
 
   const uniswapTokenAddresses = useMemo(() => {
     let baseTokens: any = []
@@ -107,33 +92,17 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
     }
   }, [uniswapBaseTokenAddresses, uniswapQuoteTokenAddresses])
 
-  const uniswapBaseTokenSymbols = useMultipleContractSingleData(
-    uniswapTokenAddresses.baseTokens,
-    ERC20_INTERFACE,
-    'symbol',
-  )
-
-  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(
-    uniswapTokenAddresses.quoteTokens,
-    ERC20_INTERFACE,
-    'symbol',
-  )
-
+  const uniswapBaseTokenSymbols = useMultipleContractSingleData(uniswapTokenAddresses.baseTokens, ERC20_INTERFACE, 'symbol')
+  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(uniswapTokenAddresses.quoteTokens, ERC20_INTERFACE, 'symbol')
   const uniswapBaseTokenDecimalAmounts = useMarketBaseAmounts(inputs.feedAddresses)
   const uniswapQuoteTokenDecimalAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
 
   return useMemo(() => {
     return markets
       ? markets.map((market, index) => {
-          const isChainlink: boolean = Boolean(
-            Array.isArray(chainlinkDecimals) &&
-              chainlinkDecimals.length > 0 &&
-              chainlinkDecimals[index].result,
-          )
+          const isChainlink: boolean = Boolean(Array.isArray(chainlinkDecimals) && chainlinkDecimals.length > 0 && chainlinkDecimals[index].result)
           const isUniswap: boolean = Boolean(
-            Array.isArray(uniswapBaseTokenAddresses) &&
-              uniswapBaseTokenAddresses.length > 0 &&
-              uniswapBaseTokenAddresses[index].result,
+            Array.isArray(uniswapBaseTokenAddresses) && uniswapBaseTokenAddresses.length > 0 && uniswapBaseTokenAddresses[index].result,
           )
 
           if (isChainlink) {
@@ -168,28 +137,12 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
 }
 
 export function useMarketNames(feedAddresses: any) {
-  const decimals = useMultipleContractSingleData(
-    feedAddresses,
-    CHAINLINK_FEED_INTERFACE,
-    'decimals',
-  )
+  const decimals = useMultipleContractSingleData(feedAddresses, CHAINLINK_FEED_INTERFACE, 'decimals')
 
-  const descriptions = useMultipleContractSingleData(
-    feedAddresses,
-    CHAINLINK_FEED_INTERFACE,
-    'description',
-  )
+  const descriptions = useMultipleContractSingleData(feedAddresses, CHAINLINK_FEED_INTERFACE, 'description')
 
-  const baseTokens = useMultipleContractSingleData(
-    feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketBaseToken',
-  )
-  const quoteTokens = useMultipleContractSingleData(
-    feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketQuoteToken',
-  )
+  const baseTokens = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketBaseToken')
+  const quoteTokens = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken')
 
   const descriptionsResult = useMemo(() => {
     if (descriptions.length === 0) return []
@@ -224,16 +177,8 @@ export function useMarketNames(feedAddresses: any) {
     })
   }, [quoteTokens])
 
-  const baseTokenSymbols = useMultipleContractSingleData(
-    baseTokenAddresses,
-    ERC20_INTERFACE,
-    'symbol',
-  )
-  const quoteTokenSymbols = useMultipleContractSingleData(
-    quoteTokenAddresses,
-    ERC20_INTERFACE,
-    'symbol',
-  )
+  const baseTokenSymbols = useMultipleContractSingleData(baseTokenAddresses, ERC20_INTERFACE, 'symbol')
+  const quoteTokenSymbols = useMultipleContractSingleData(quoteTokenAddresses, ERC20_INTERFACE, 'symbol')
 
   const marketBaseTokenSymbols = useMemo(() => {
     return baseTokenSymbols.map((token, index) => {

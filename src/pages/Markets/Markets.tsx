@@ -5,21 +5,11 @@ import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {TEXT} from '../../theme/theme'
 import {useTotalMarketsData} from '../../state/markets/hooks'
-import {
-  formatFundingRateToDaily,
-  formatFundingRateToAnnual,
-  formatBigNumberUsingDecimalsToString,
-} from '../../utils/formatWei'
+import {formatFundingRateToDaily, formatFundingRateToAnnual, formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import {PageContainer} from '../../components/Container/Container'
 import {ProgressBar, DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
-import {
-  StyledTable,
-  StyledHeaderCell,
-  StyledTableCellThin,
-  StyledTableRow,
-  StyledTableHeaderRow,
-} from '../../components/Table/Table'
+import {StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow} from '../../components/Table/Table'
 import Loader from '../../components/Loaders/Loaders'
 import {useMarketNames, useMarketDetails} from '../../hooks/useMarketName'
 import {useMarketMidPrices} from '../../hooks/useMarketPrices'
@@ -49,6 +39,35 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
     font-weight: 700;
   }
 `
+
+const INFO_TIP_DESCRIPTIONS = {
+  openInterest: (
+    <>
+      <div>Open Interest (OI) refers to </div>
+      <div>the total available outstanding</div>
+      <div>positions that have not been settled,</div>
+      <div>per market, denoted in OVL.</div>
+      <br />
+      <div>Shows the current percent (%)</div>
+      <div>balance between shorts (red)</div>
+      <div>and longs (green).</div>
+    </>
+  ),
+  fundingRate: (
+    <>
+      <div>Funding Rate per Market</div>
+      <br />
+      <div>24 hour funding rate.</div>
+      <div>Positive funding rates suggests</div>
+      <div>users are bullish and long positions</div>
+      <div>pay funding to short positions. </div>
+      <br />
+      <div>Negative funding rates suggest</div>
+      <div>users are bearish and short positions</div>
+      <div>pay funding to long positions.</div>
+    </>
+  ),
+}
 
 type MarketRowProps = {
   marketId: string | undefined
@@ -93,8 +112,7 @@ const MarketRow = ({
       let string = String(description)
       return MARKET_NAME[string]
     }
-    if (baseToken === 'loading' && quoteToken === 'loading')
-      return <Loader stroke="white" size="12px" />
+    if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
 
@@ -167,11 +185,7 @@ const MarketRow = ({
   // if (marketId === '0xb31d222c23104cbc2c04df77941f1f2c478133dd') return null
 
   return (
-    <StyledTableRow
-      onClick={() => redirectToMarket(marketId ?? '')}
-      hover={true}
-      key={index.toString()}
-    >
+    <StyledTableRow onClick={() => redirectToMarket(marketId ?? '')} hover={true} key={index.toString()}>
       <StyledTableCellThin component="th" scope="row">
         {marketName}
       </StyledTableCellThin>
@@ -193,10 +207,7 @@ const MarketRow = ({
 const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
-  // console.log('markets: ', markets)
   const marketDetails = useMarketDetails(markets)
-
-  console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
@@ -218,57 +229,16 @@ const Markets = () => {
 
   const tokenPairDecimals = useMemo(
     () => ({
-      baseTokens:
-        baseAmounts.length === 0 ? null : baseAmounts.map((tokenDecimals: any) => tokenDecimals),
-      quoteTokens:
-        quoteAmounts.length === 0 ? null : quoteAmounts.map((tokenDecimals: any) => tokenDecimals),
+      baseTokens: baseAmounts.length === 0 ? null : baseAmounts.map((tokenDecimals: any) => tokenDecimals),
+      quoteTokens: quoteAmounts.length === 0 ? null : quoteAmounts.map((tokenDecimals: any) => tokenDecimals),
     }),
     [baseAmounts, quoteAmounts],
   )
 
-  const ois = useMarketOis(
-    calldata.marketAddresses,
-    tokenPairDecimals.baseTokens,
-    tokenPairDecimals.quoteTokens,
-    decimals,
-  )
-  const capOis = useMarketCapOis(
-    calldata.marketAddresses,
-    tokenPairDecimals.baseTokens,
-    tokenPairDecimals.quoteTokens,
-    decimals,
-  )
+  const ois = useMarketOis(calldata.marketAddresses, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens, decimals)
+  const capOis = useMarketCapOis(calldata.marketAddresses, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens, decimals)
 
   const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
-
-  const INFO_TIP_DESCRIPTIONS = {
-    openInterest: (
-      <>
-        <div>Open Interest (OI) refers to </div>
-        <div>the total available outstanding</div>
-        <div>positions that have not been settled,</div>
-        <div>per market, denoted in OVL.</div>
-        <br />
-        <div>Shows the current percent (%)</div>
-        <div>balance between shorts (red)</div>
-        <div>and longs (green).</div>
-      </>
-    ),
-    fundingRate: (
-      <>
-        <div>Funding Rate per Market</div>
-        <br />
-        <div>24 hour funding rate.</div>
-        <div>Positive funding rates suggests</div>
-        <div>users are bullish and long positions</div>
-        <div>pay funding to short positions. </div>
-        <br />
-        <div>Negative funding rates suggest</div>
-        <div>users are bearish and short positions</div>
-        <div>pay funding to long positions.</div>
-      </>
-    ),
-  }
 
   return (
     <PageContainer>
@@ -284,17 +254,11 @@ const Markets = () => {
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Balance </Trans>
-                <InfoTip
-                  children={INFO_TIP_DESCRIPTIONS.openInterest}
-                  tipFor="Market Open Interest"
-                />
+                <InfoTip children={INFO_TIP_DESCRIPTIONS.openInterest} tipFor="Market Open Interest" />
               </StyledHeaderCell>
               <StyledHeaderCell align="right">
                 <Trans> Funding Rate </Trans>
-                <InfoTip
-                  children={INFO_TIP_DESCRIPTIONS.fundingRate}
-                  tipFor="Market Funding Rate"
-                />
+                <InfoTip children={INFO_TIP_DESCRIPTIONS.fundingRate} tipFor="Market Funding Rate" />
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
