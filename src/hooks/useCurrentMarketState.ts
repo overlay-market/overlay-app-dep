@@ -1,5 +1,5 @@
-import {CallState, Result} from './../state/multicall/hooks'
-import {useMemo, useEffect} from 'react'
+import {Result} from './../state/multicall/hooks'
+import {useMemo} from 'react'
 import {BigNumber} from 'ethers'
 import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'

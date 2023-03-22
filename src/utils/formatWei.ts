@@ -11,7 +11,7 @@ export function formatWeiToParsedString(wei: BigNumberish | string | undefined, 
   }
 }
 
-export function formatWeiToParsedNumber(wei: BigNumberish | string | undefined, decimals: number, round?: number) {
+export function formatWeiToParsedNumber(wei: BigNumberish | string | undefined, decimals: number | undefined, round?: number) {
   let parsedWei
 
   if (wei) {
