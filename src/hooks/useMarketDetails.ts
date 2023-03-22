@@ -20,6 +20,7 @@ export enum FeedType {
 
 export interface AdditionalMarketData extends MarketData {
   decimals: number | undefined
+  decimalsDifference: number | undefined
   description: Result | string | undefined
   type: FeedType | undefined
 }
@@ -90,6 +91,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
             return {
               ...market,
               // decimals: chainlinkDecimals[index].result,
+              decimalsDifference: undefined,
               decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
               description: chainlinkDescriptions[index].result,
               type: FeedType.CHAINLINK,
@@ -99,10 +101,11 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
             const quoteToken = uniswapQuoteTokenSymbols[index].result
             const baseTokenDecimalAmount: number = uniswapBaseTokenDecimalAmounts[index]
             const quoteTokenDecimalAmount: number = uniswapQuoteTokenDecimalAmounts[index]
-            const uniswapDecimals = baseTokenDecimalAmount - quoteTokenDecimalAmount
+            const uniswapDecimalsDifference = baseTokenDecimalAmount - quoteTokenDecimalAmount
             return {
               ...market,
-              decimals: uniswapDecimals,
+              decimals: quoteTokenDecimalAmount,
+              decimalsDifference: uniswapDecimalsDifference,
               description: `${baseToken} / ${quoteToken}`,
               type: FeedType.UNISWAP,
             }
@@ -110,6 +113,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
             return {
               ...market,
               decimals: undefined,
+              decimalsDifference: undefined,
               description: undefined,
               type: undefined,
             }

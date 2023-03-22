@@ -4,7 +4,7 @@ import {BigNumber} from 'ethers'
 import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
-import {AdditionalMarketData} from './useMarketDetails'
+import {AdditionalMarketData, FeedType} from './useMarketDetails'
 import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
 
@@ -52,16 +52,37 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
       return results.map((call, index) => {
         const market: AdditionalMarketData = marketsData[index]
         const decimals = market.decimals
+        const uniswapDecimalsDifference = market.decimalsDifference
         const result = call.result as Result
 
-        const parsedBid = formatBigNumber(result.state_.bid, decimals, sigFigs)
-        const parsedAsk = formatBigNumber(result.state_.ask, decimals, sigFigs)
-        const parsedMid = formatBigNumber(result.state_.mid, decimals, sigFigs)
-        const parsedOiLong = formatBigNumber(result.state_.oiLong, decimals, sigFigs)
-        const parsedOiShort = formatBigNumber(result.state_.oiShort, decimals, sigFigs)
-        const parsedCapOi = formatBigNumber(result.state_.capOi, decimals, sigFigs)
-        const parsedDailyFundingRate = formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
-        const parsedAnnualFundingRate = formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
+        let parsedBid = undefined
+        let parsedAsk = undefined
+        let parsedMid = undefined
+        let parsedOiLong = undefined
+        let parsedOiShort = undefined
+        let parsedCapOi = undefined
+        let parsedDailyFundingRate = undefined
+        let parsedAnnualFundingRate = undefined
+
+        if (decimals && market.type === FeedType.CHAINLINK) {
+          parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
+          parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
+          parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)
+          parsedOiLong = decimals && formatBigNumber(result.state_.oiLong, decimals, sigFigs)
+          parsedOiShort = decimals && formatBigNumber(result.state_.oiShort, decimals, sigFigs)
+          parsedCapOi = decimals && formatBigNumber(result.state_.capOi, decimals, sigFigs)
+          parsedDailyFundingRate = decimals && formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
+          parsedAnnualFundingRate = decimals && formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
+        } else if (decimals && uniswapDecimalsDifference && market.type === FeedType.UNISWAP) {
+          parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
+          parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
+          parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)
+          parsedOiLong = decimals && formatBigNumber(result.state_.oiLong, uniswapDecimalsDifference + 18, sigFigs)
+          parsedOiShort = decimals && formatBigNumber(result.state_.oiShort, uniswapDecimalsDifference + 18, sigFigs)
+          parsedCapOi = decimals && formatBigNumber(result.state_.capOi, uniswapDecimalsDifference + 18, sigFigs)
+          parsedDailyFundingRate = decimals && formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
+          parsedAnnualFundingRate = decimals && formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
+        }
 
         return {
           ...market,
