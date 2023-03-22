@@ -196,6 +196,7 @@ const Markets = () => {
   // console.log('markets: ', markets)
   const marketDetails = useMarketDetails(markets)
 
+  console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()

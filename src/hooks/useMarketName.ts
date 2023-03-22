@@ -119,26 +119,52 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
     'symbol',
   )
 
-  const uniswapBaseTokenAmounts = useMarketBaseAmounts(inputs.feedAddresses)
-  const uniswapQuoteTokenAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
+  const uniswapBaseTokenDecimalAmounts = useMarketBaseAmounts(inputs.feedAddresses)
+  const uniswapQuoteTokenDecimalAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
 
-  // return useMemo(() => {
-  //   return markets
-  //     ? markets.map((market, index) => {
-  //         const isChainlink: boolean = Boolean(
-  //           Array.isArray(chainlinkDecimals) &&
-  //             chainlinkDecimals.length > 0 &&
-  //             chainlinkDecimals[index].result,
-  //         )
-  //         const isUniswap: boolean = Boolean(
-  //           Array.isArray(uniswapBaseTokenAddresses) &&
-  //             uniswapBaseTokenAddresses.length > 0 &&
-  //             uniswapBaseTokenAddresses[index].result,
-  //         )
+  return useMemo(() => {
+    return markets
+      ? markets.map((market, index) => {
+          const isChainlink: boolean = Boolean(
+            Array.isArray(chainlinkDecimals) &&
+              chainlinkDecimals.length > 0 &&
+              chainlinkDecimals[index].result,
+          )
+          const isUniswap: boolean = Boolean(
+            Array.isArray(uniswapBaseTokenAddresses) &&
+              uniswapBaseTokenAddresses.length > 0 &&
+              uniswapBaseTokenAddresses[index].result,
+          )
 
-  //         // if (isChainlink)
-  //       }) : []
-  // }, [markets, chainlinkDecimals, uniswapBaseTokenAddresses])
+          if (isChainlink) {
+            return {
+              // decimals: chainlinkDecimals[index].result,
+              decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
+              description: chainlinkDescriptions[index].result,
+            }
+          } else if (isUniswap) {
+            const baseToken = uniswapBaseTokenSymbols[index].result
+            const quoteToken = uniswapQuoteTokenSymbols[index].result
+            const baseTokenDecimalAmount: number = uniswapBaseTokenDecimalAmounts[index]
+            const quoteTokenDecimalAmount: number = uniswapQuoteTokenDecimalAmounts[index]
+            const uniswapDecimals = baseTokenDecimalAmount - quoteTokenDecimalAmount
+            return {
+              decimals: uniswapDecimals,
+              description: `${baseToken} / ${quoteToken}`,
+            }
+          }
+        })
+      : []
+  }, [
+    markets,
+    chainlinkDecimals,
+    chainlinkDescriptions,
+    uniswapBaseTokenDecimalAmounts,
+    uniswapBaseTokenSymbols,
+    uniswapQuoteTokenDecimalAmounts,
+    uniswapBaseTokenAddresses,
+    uniswapQuoteTokenSymbols,
+  ])
 }
 
 export function useMarketNames(feedAddresses: any) {
