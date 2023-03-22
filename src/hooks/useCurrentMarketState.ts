@@ -6,6 +6,7 @@ import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {AdditionalMarketData} from './useMarketDetails'
 import {formatBigNumber} from '../utils/formatBigNumber'
+import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
 
 interface MarketStateDetails {
   marketAddress: string
@@ -29,6 +30,8 @@ interface ParsedMarketStateDetails extends MarketStateDetails {
   parsedOiShort: number
   parsedCapOi: number
   parsedFundingRate: number
+  parsedAnnualFundingRate: number | string
+  parsedDailyFundingRate: number | string
 }
 
 interface UseMarketStateResults {
@@ -57,6 +60,8 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         const parsedOiLong = formatBigNumber(result.state_.oiLong, decimals, sigFigs)
         const parsedOiShort = formatBigNumber(result.state_.oiShort, decimals, sigFigs)
         const parsedCapOi = formatBigNumber(result.state_.capOi, decimals, sigFigs)
+        const parsedDailyFundingRate = formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
+        const parsedAnnualFundingRate = formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
 
         return {
           ...market,
@@ -76,6 +81,8 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedOiLong,
           parsedOiShort,
           parsedCapOi,
+          parsedDailyFundingRate,
+          parsedAnnualFundingRate,
         }
       })
     }
