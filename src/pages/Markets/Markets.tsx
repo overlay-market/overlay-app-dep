@@ -208,6 +208,7 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
   const marketDetails = useMarketDetails(markets)
+  console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()

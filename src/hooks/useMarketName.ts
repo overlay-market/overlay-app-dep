@@ -115,6 +115,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
 
           if (isChainlink) {
             return {
+              ...market,
               // decimals: chainlinkDecimals[index].result,
               decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
               description: chainlinkDescriptions[index].result,
@@ -127,9 +128,17 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
             const quoteTokenDecimalAmount: number = uniswapQuoteTokenDecimalAmounts[index]
             const uniswapDecimals = baseTokenDecimalAmount - quoteTokenDecimalAmount
             return {
+              ...market,
               decimals: uniswapDecimals,
               description: `${baseToken} / ${quoteToken}`,
               type: FeedType.UNISWAP,
+            }
+          } else {
+            return {
+              ...market,
+              decimals: undefined,
+              description: undefined,
+              type: undefined,
             }
           }
         })

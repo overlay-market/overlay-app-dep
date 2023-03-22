@@ -214,8 +214,6 @@ const Bridge = () => {
   const showNotEnoughBalanceFlow = useMemo(() => {
     if (!typedValue) return false
     if (!parsedOvlBalance) return false
-    console.log('typedValue: ', typedValue)
-    console.log('parsedOvlBalance: ', parsedOvlBalance)
     return Number(typedValue) > Number(parsedOvlBalance)
   }, [parsedOvlBalance, typedValue])
 

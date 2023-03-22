@@ -32,11 +32,6 @@ const ErrorMessage = styled(TEXT.Supplemental)`
 
 export default function TransactionPopup({hash, success, summary, info}: {hash: string; success?: boolean; summary?: string; info?: any}) {
   const {chainId} = useActiveWeb3React()
-
-  console.log('info from txn popup: ', info)
-  console.log('summary from txn popup: ', summary)
-  console.log('hash: ', hash)
-  console.log('success: ', success)
   return (
     <PopupContentsContainer>
       <Icon>{success ? <CheckCircle width={22} height={22} color={'#10DCB1'} /> : <AlertTriangle width={22} height={22} color={'#FF648A'} />}</Icon>

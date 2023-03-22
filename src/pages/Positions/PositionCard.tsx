@@ -145,8 +145,6 @@ export const PositionCard = ({
     return userHideClosedPositions && isClosed ? true : false
   }, [oi, userHideClosedPositions])
 
-  console.log('hidePosition: ', hidePosition)
-
   return (
     <CardContainer navigate={navigate} border={border} to={`/positions/${id}/${positionId}`} hide={hidePosition}>
       <PositionCardColumn width="50%">
