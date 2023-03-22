@@ -84,6 +84,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
       (Array.isArray(uniswapBaseTokenAddresses) && uniswapBaseTokenAddresses.length === 0) ||
       (Array.isArray(uniswapQuoteTokenAddresses) && uniswapQuoteTokenAddresses.length === 0)
     ) {
+      console.log('Contract call returned invalid data format')
       return {
         baseTokens,
         quoteTokens,
