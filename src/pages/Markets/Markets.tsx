@@ -1,4 +1,4 @@
-import {useMemo, useEffect} from 'react'
+import React, {useMemo, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import {NavLink, useHistory} from 'react-router-dom'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
@@ -42,9 +42,9 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
-const INFO_TIP_DESCRIPTIONS = {
+const infoTipDescriptions = {
   openInterest: (
-    <>
+    <React.Fragment>
       <div>Open Interest (OI) refers to </div>
       <div>the total available outstanding</div>
       <div>positions that have not been settled,</div>
@@ -53,10 +53,10 @@ const INFO_TIP_DESCRIPTIONS = {
       <div>Shows the current percent (%)</div>
       <div>balance between shorts (red)</div>
       <div>and longs (green).</div>
-    </>
+    </React.Fragment>
   ),
   fundingRate: (
-    <>
+    <React.Fragment>
       <div>Funding Rate per Market</div>
       <br />
       <div>24 hour funding rate.</div>
@@ -67,7 +67,7 @@ const INFO_TIP_DESCRIPTIONS = {
       <div>Negative funding rates suggest</div>
       <div>users are bearish and short positions</div>
       <div>pay funding to long positions.</div>
-    </>
+    </React.Fragment>
   ),
 }
 
@@ -86,7 +86,6 @@ type MarketRowProps = {
   index: any
 }
 
-type ReturnedValue = {}
 const MarketRow = ({
   marketId,
   description,
@@ -141,9 +140,6 @@ const MarketRow = ({
     const longPercentage = (oiLong / totalOi) * 100
     const shortPercentage = (oiShort / totalOi) * 100
 
-    // const longPercentage = (oiLong / capOi) * 100
-    // const shortPercentage = (oiShort / capOi) * 100
-
     return {
       long: longPercentage.toFixed(2),
       short: shortPercentage.toFixed(2),
@@ -184,7 +180,6 @@ const MarketRow = ({
 
   // @dev: remove after verifying BAYC market data
   if (marketId === '0x909d893d5e7f250659fa56c2ca2920760eebb17f') return null
-  // if (marketId === '0xb31d222c23104cbc2c04df77941f1f2c478133dd') return null
 
   return (
     <StyledTableRow onClick={() => redirectToMarket(marketId ?? '')} hover={true} key={index.toString()}>
@@ -212,8 +207,6 @@ const Markets = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const marketsData = useCurrentMarketState(marketDetails)
 
-  console.log('marketsData: ', marketsData)
-  // console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
@@ -260,11 +253,11 @@ const Markets = () => {
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Balance </Trans>
-                <InfoTip children={INFO_TIP_DESCRIPTIONS.openInterest} tipFor="Market Open Interest" />
+                <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" />
               </StyledHeaderCell>
               <StyledHeaderCell align="right">
                 <Trans> Funding Rate </Trans>
-                <InfoTip children={INFO_TIP_DESCRIPTIONS.fundingRate} tipFor="Market Funding Rate" />
+                <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" />
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
