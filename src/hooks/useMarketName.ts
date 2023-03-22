@@ -5,6 +5,7 @@ import {useUniswapV3FeedContract, useChainlinkFeedContract, useTokenContract} fr
 import {useMarketBaseAmounts} from './useMarketBaseAmount'
 import {useMarketQuoteAmounts} from './useMarketQuoteAmounts'
 import {MarketData} from '../state/markets/hooks'
+import {Result} from '../state/multicall/hooks'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
@@ -84,25 +85,60 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
     'marketQuoteToken',
   )
 
+  const uniswapTokenAddresses = useMemo(() => {
+    let baseTokens: any = []
+    let quoteTokens: any = []
+    if (
+      (Array.isArray(uniswapBaseTokenAddresses) && uniswapBaseTokenAddresses.length === 0) ||
+      (Array.isArray(uniswapQuoteTokenAddresses) && uniswapQuoteTokenAddresses.length === 0)
+    ) {
+      return {
+        baseTokens,
+        quoteTokens,
+      }
+    }
+    uniswapBaseTokenAddresses.forEach((token, index) => {
+      baseTokens[index] = uniswapBaseTokenAddresses[index].result
+      quoteTokens[index] = uniswapQuoteTokenAddresses[index].result
+    })
+    return {
+      baseTokens,
+      quoteTokens,
+    }
+  }, [uniswapBaseTokenAddresses, uniswapQuoteTokenAddresses])
+
+  const uniswapBaseTokenSymbols = useMultipleContractSingleData(
+    uniswapTokenAddresses.baseTokens,
+    ERC20_INTERFACE,
+    'symbol',
+  )
+
+  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(
+    uniswapTokenAddresses.quoteTokens,
+    ERC20_INTERFACE,
+    'symbol',
+  )
+
   const uniswapBaseTokenAmounts = useMarketBaseAmounts(inputs.feedAddresses)
   const uniswapQuoteTokenAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
 
-  console.log('uniswapBaseTokenAmounts: ', uniswapBaseTokenAmounts)
+  // return useMemo(() => {
+  //   return markets
+  //     ? markets.map((market, index) => {
+  //         const isChainlink: boolean = Boolean(
+  //           Array.isArray(chainlinkDecimals) &&
+  //             chainlinkDecimals.length > 0 &&
+  //             chainlinkDecimals[index].result,
+  //         )
+  //         const isUniswap: boolean = Boolean(
+  //           Array.isArray(uniswapBaseTokenAddresses) &&
+  //             uniswapBaseTokenAddresses.length > 0 &&
+  //             uniswapBaseTokenAddresses[index].result,
+  //         )
 
-  const details = useMemo(() => {
-    // const isChainlink: boolean = Boolean(
-    //   Array.isArray(chainlinkDecimals) &&
-    //     chainlinkDecimals.length > 0 &&
-    //     chainlinkDecimals[0].result,
-    // )
-    // const isUniswap: boolean = Boolean(
-    //   Array.isArray(uniswapBaseTokens) &&
-    //     uniswapBaseTokens.length > 0 &&
-    //     uniswapBaseTokens[0].result,
-    // )
-    // console.log('isChainlink: ', isChainlink)
-    // console.log('isUniswap: ', isUniswap)
-  }, [chainlinkDecimals, uniswapBaseTokenAddresses])
+  //         // if (isChainlink)
+  //       }) : []
+  // }, [markets, chainlinkDecimals, uniswapBaseTokenAddresses])
 }
 
 export function useMarketNames(feedAddresses: any) {
