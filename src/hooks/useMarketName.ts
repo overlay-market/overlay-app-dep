@@ -45,9 +45,16 @@ export function useMarketName(feedAddress?: string) {
   }
 }
 
+enum FeedType {
+  CHAINLINK = 'Chainlink',
+  UNISWAP = 'Uniswap',
+  NFTPERP = 'NFTPerp',
+}
+
 /**
  * Returns Decimal property of market (agnostic to Chainlink or Uniswap)
  * Returns Description property of market (name)
+ * Returns what feed type market is using (Chainlink, Uniswap, NFTPerp, etc)
  * @param markets: array of MarketData type pulled from subgraph
  */
 export function useMarketDetails(markets: MarketData[] | null | undefined) {
@@ -110,6 +117,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
               // decimals: chainlinkDecimals[index].result,
               decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
               description: chainlinkDescriptions[index].result,
+              type: FeedType.CHAINLINK,
             }
           } else if (isUniswap) {
             const baseToken = uniswapBaseTokenSymbols[index].result
@@ -120,6 +128,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
             return {
               decimals: uniswapDecimals,
               description: `${baseToken} / ${quoteToken}`,
+              type: FeedType.UNISWAP,
             }
           }
         })
