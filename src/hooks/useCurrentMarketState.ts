@@ -23,6 +23,7 @@ interface MarketStateDetails {
 }
 
 interface ParsedMarketStateDetails extends MarketStateDetails {
+  marketName: string
   parsedBid: number
   parsedAsk: number
   parsedMid: number
@@ -55,6 +56,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         const uniswapDecimalsDifference = market.decimalsDifference
         const result = call.result as Result
 
+        // const marketName =
         let parsedBid = undefined
         let parsedAsk = undefined
         let parsedMid = undefined

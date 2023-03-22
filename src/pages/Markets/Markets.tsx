@@ -24,7 +24,7 @@ import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
 import {Result} from '../../state/multicall/hooks'
-import {MARKET_NAME} from '../../constants/markets'
+import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
 import {InfoTip} from '../../components/InfoTip/InfoTip'
 
 const activeClassName = 'INACTIVE'
@@ -112,7 +112,7 @@ const MarketRow = ({
   const marketName = useMemo(() => {
     if (description) {
       let string = String(description)
-      return MARKET_NAME[string]
+      return MARKET_NAME_FROM_DESCRIPTION[string]
     }
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`

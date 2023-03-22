@@ -6,7 +6,7 @@ import {ChevronRight} from 'react-feather'
 import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import {useUserHideClosedPositions} from '../../state/user/hooks'
-import {MARKET_NAME} from '../../constants/markets'
+import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 
 const CardHeaderContainer = styled(FlexRow)`
@@ -109,7 +109,7 @@ export const PositionCard = ({
   const marketName = useMemo(() => {
     if (description) {
       let string = String(description)
-      return MARKET_NAME[string]
+      return MARKET_NAME_FROM_DESCRIPTION[string]
     }
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`

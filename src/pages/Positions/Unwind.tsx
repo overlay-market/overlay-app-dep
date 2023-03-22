@@ -34,7 +34,7 @@ import {DefaultTxnSettings} from '../../state/build/actions'
 import {useIsTxnSettingsAuto} from '../../state/build/hooks'
 import {PercentageSlider} from '../../components/PercentageSlider/PercentageSlider'
 import {useMarketName} from '../../hooks/useMarketName'
-import {MARKET_NAME} from '../../constants/markets'
+import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
 import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
@@ -101,7 +101,7 @@ export function Unwind({
   const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} = useMarketName(position?.market.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return MARKET_NAME[description]
+    if (description) return MARKET_NAME_FROM_DESCRIPTION[description]
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])

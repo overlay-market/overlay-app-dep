@@ -56,7 +56,7 @@ import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
-import {MARKET_NAME} from '../../constants/markets'
+import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 
 const SelectPositionSideButton = styled(SelectActionButton)`
@@ -152,7 +152,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(market?.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return MARKET_NAME[description]
+    if (description) return MARKET_NAME_FROM_DESCRIPTION[description]
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])

@@ -90,7 +90,6 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
           if (isChainlink) {
             return {
               ...market,
-              // decimals: chainlinkDecimals[index].result,
               decimalsDifference: undefined,
               decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
               description: chainlinkDescriptions[index].result,
