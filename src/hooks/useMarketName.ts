@@ -43,7 +43,19 @@ export function useMarketName(feedAddress?: string) {
  * @dev TO-DO: Create useMarketDetails hook to return Market Name
  */
 export function useMarketDetails(markets: MarketData[] | null | undefined) {
-  console.log('markets from useMarketDetails: ', markets)
+  const inputs = useMemo(() => {
+    let marketAddresses: any = []
+    let feedAddresses: any = []
+    markets &&
+      markets.forEach((market, index) => {
+        marketAddresses[index] = market.id
+        feedAddresses[index] = market.feedAddress
+      })
+    return {
+      marketAddresses,
+      feedAddresses,
+    }
+  }, [markets])
 }
 
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
