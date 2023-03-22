@@ -21,7 +21,7 @@ export enum FeedType {
 export interface AdditionalMarketData extends MarketData {
   decimals: number | undefined
   decimalsDifference: number | undefined
-  description: Result | string | undefined
+  description: string | undefined
   type: FeedType | undefined
 }
 
@@ -92,12 +92,12 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
               ...market,
               decimalsDifference: undefined,
               decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
-              description: chainlinkDescriptions[index].result,
+              description: String(chainlinkDescriptions[index].result),
               type: FeedType.CHAINLINK,
             }
           } else if (isUniswap) {
-            const baseToken = uniswapBaseTokenSymbols[index].result
-            const quoteToken = uniswapQuoteTokenSymbols[index].result
+            const baseToken = String(uniswapBaseTokenSymbols[index].result)
+            const quoteToken = String(uniswapQuoteTokenSymbols[index].result)
             const baseTokenDecimalAmount: number = uniswapBaseTokenDecimalAmounts[index]
             const quoteTokenDecimalAmount: number = uniswapQuoteTokenDecimalAmounts[index]
             const uniswapDecimalsDifference = baseTokenDecimalAmount - quoteTokenDecimalAmount

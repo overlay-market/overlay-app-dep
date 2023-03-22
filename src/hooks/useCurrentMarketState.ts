@@ -7,6 +7,7 @@ import {useBlockNumber} from '../state/application/hooks'
 import {AdditionalMarketData, FeedType} from './useMarketDetails'
 import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
+import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS} from '../constants/markets'
 
 interface MarketStateDetails {
   marketAddress: string
@@ -55,8 +56,10 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         const decimals = market.decimals
         const uniswapDecimalsDifference = market.decimalsDifference
         const result = call.result as Result
+        const marketId = market.id
+        const description = market.description
 
-        // const marketName =
+        let marketName = undefined
         let parsedBid = undefined
         let parsedAsk = undefined
         let parsedMid = undefined
@@ -67,6 +70,8 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         let parsedAnnualFundingRate = undefined
 
         if (decimals && market.type === FeedType.CHAINLINK) {
+          marketName =
+            description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
           parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
           parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)
@@ -76,6 +81,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedDailyFundingRate = decimals && formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
           parsedAnnualFundingRate = decimals && formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
         } else if (decimals && uniswapDecimalsDifference && market.type === FeedType.UNISWAP) {
+          marketName = description
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
           parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
           parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)
@@ -88,6 +94,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
 
         return {
           ...market,
+          marketName,
           bid: result.state_.bid,
           ask: result.state_.ask,
           mid: result.state_.mid,
