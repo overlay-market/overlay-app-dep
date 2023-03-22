@@ -21,6 +21,16 @@ interface MarketStateDetails {
   fundingRate: BigNumber
 }
 
+interface ParsedMarketStateDetails extends MarketStateDetails {
+  parsedBid: number
+  parsedAsk: number
+  parsedMid: number
+  parsedOiLong: number
+  parsedOiShort: number
+  parsedCapOi: number
+  parsedFundingRate: number
+}
+
 interface UseMarketStateResults {
   loading: boolean
   error: boolean
