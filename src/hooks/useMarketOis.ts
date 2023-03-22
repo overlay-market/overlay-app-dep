@@ -10,11 +10,7 @@ import {ethers} from 'ethers'
  * Returns open interest for input market address
  * @param marketAddress address of market to query for
  */
-export function useMarketOi(
-  marketAddress?: string,
-  baseTokenDecimals?: any,
-  quoteTokenDecimals?: any,
-): any | undefined {
+export function useMarketOi(marketAddress?: string, baseTokenDecimals?: any, quoteTokenDecimals?: any): any | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()
@@ -40,12 +36,7 @@ export function useMarketOi(
  * Returns open interests for input market addresses
  * @param calldata marketAddresses to query for
  */
-export function useMarketOis(
-  calldata?: any,
-  baseTokenDecimals?: any,
-  quoteTokenDecimals?: any,
-  decimals?: any,
-) {
+export function useMarketOis(calldata?: any, baseTokenDecimals?: any, quoteTokenDecimals?: any, decimals?: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
@@ -62,12 +53,8 @@ export function useMarketOis(
 
       if (decimals[index]) {
         return {
-          oiLong: marketOi?.oiLong_
-            ? formatWeiToParsedNumber(marketOi.oiLong_, decimals[index], sigFigs)
-            : undefined,
-          oiShort: marketOi?.oiShort_
-            ? formatWeiToParsedNumber(marketOi.oiShort_, decimals[index], sigFigs)
-            : undefined,
+          oiLong: marketOi?.oiLong_ ? formatWeiToParsedNumber(marketOi.oiLong_, decimals[index], sigFigs) : undefined,
+          oiShort: marketOi?.oiShort_ ? formatWeiToParsedNumber(marketOi.oiShort_, decimals[index], sigFigs) : undefined,
         }
       }
 
@@ -82,38 +69,18 @@ export function useMarketOis(
       // else format value using decimal difference
       if (baseTokenQuoteTokenDecimalDifference === 0) {
         return {
-          oiLong: marketOi?.oiLong_
-            ? formatWeiToParsedNumber(marketOi.oiLong_, 18, sigFigs)
-            : undefined,
-          oiShort: marketOi?.oiShort_
-            ? formatWeiToParsedNumber(marketOi.oiShort_, 18, sigFigs)
-            : undefined,
+          oiLong: marketOi?.oiLong_ ? formatWeiToParsedNumber(marketOi.oiLong_, 18, sigFigs) : undefined,
+          oiShort: marketOi?.oiShort_ ? formatWeiToParsedNumber(marketOi.oiShort_, 18, sigFigs) : undefined,
         }
       } else {
         // temporarily divide all oi by 1e18 to account for fixed point library calculations in solidity
-        const _oiLong = marketOi?.oiLong_
-          ? marketOi.oiLong_.div(ethers.constants.WeiPerEther)
-          : null
+        const _oiLong = marketOi?.oiLong_ ? marketOi.oiLong_.div(ethers.constants.WeiPerEther) : null
 
-        const _oiShort = marketOi?.oiShort_
-          ? marketOi.oiShort_.div(ethers.constants.WeiPerEther)
-          : null
+        const _oiShort = marketOi?.oiShort_ ? marketOi.oiShort_.div(ethers.constants.WeiPerEther) : null
 
         return {
-          oiLong: _oiLong
-            ? formatBigNumberUsingDecimalsToNumber(
-                _oiLong,
-                baseTokenQuoteTokenDecimalDifference,
-                sigFigs,
-              )
-            : undefined,
-          oiShort: _oiShort
-            ? formatBigNumberUsingDecimalsToNumber(
-                _oiShort,
-                baseTokenQuoteTokenDecimalDifference,
-                sigFigs,
-              )
-            : undefined,
+          oiLong: _oiLong ? formatBigNumberUsingDecimalsToNumber(_oiLong, baseTokenQuoteTokenDecimalDifference, sigFigs) : undefined,
+          oiShort: _oiShort ? formatBigNumberUsingDecimalsToNumber(_oiShort, baseTokenQuoteTokenDecimalDifference, sigFigs) : undefined,
         }
       }
     })

@@ -1,10 +1,6 @@
 import React, {useMemo} from 'react'
 import {Text, TextProps as TextPropsOriginal} from 'rebass'
-import styled, {
-  css,
-  DefaultTheme,
-  ThemeProvider as StyledComponentsThemeProvider,
-} from 'styled-components'
+import styled, {css, DefaultTheme, ThemeProvider as StyledComponentsThemeProvider} from 'styled-components'
 import {useIsDarkMode} from '../state/user/hooks'
 import {Colors} from './styled'
 
@@ -15,9 +11,7 @@ export const MEDIA_WIDTHS = {
   minLarge: 1400,
 }
 
-const mediaWidthTemplates: {[width in keyof typeof MEDIA_WIDTHS]: typeof css} = Object.keys(
-  MEDIA_WIDTHS,
-).reduce((accumulator, size) => {
+const mediaWidthTemplates: {[width in keyof typeof MEDIA_WIDTHS]: typeof css} = Object.keys(MEDIA_WIDTHS).reduce((accumulator, size) => {
   ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
     @media (min-width: ${(MEDIA_WIDTHS as any)[size]}px) {
       ${css(a, b, c)}
@@ -67,9 +61,7 @@ export default function ThemeProvider({children}: {children: React.ReactNode}) {
 
   const themeObject = useMemo(() => theme(darkMode), [darkMode])
 
-  return (
-    <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
-  )
+  return <StyledComponentsThemeProvider theme={themeObject}>{children}</StyledComponentsThemeProvider>
 }
 
 const TextWrapper = styled(Text)<{color: keyof Colors}>`
@@ -80,99 +72,33 @@ type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
   AdjustableSize(props: TextProps) {
-    return (
-      <TextWrapper fontFamily="Inter, sans-serif" fontWeight={500} color={'text2'} {...props} />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontWeight={500} color={'text2'} {...props} />
   },
   Menu(props: TextProps) {
     return <TextWrapper fontFamily="Inter, sans-serif" fontWeight={700} fontSize={14} {...props} />
   },
   StandardHeader1(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={20}
-        fontWeight={400}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={400} color={'white1'} {...props} />
   },
   BoldHeader1(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={20}
-        fontWeight={700}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={700} color={'white1'} {...props} />
   },
   StandardBody(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={16}
-        fontWeight={400}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={400} color={'white1'} {...props} />
   },
   BoldStandardBody(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={16}
-        fontWeight={700}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={700} color={'white1'} {...props} />
   },
   SmallBody(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={14}
-        fontWeight={400}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={400} color={'white1'} {...props} />
   },
   BoldSmallBody(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={14}
-        fontWeight={700}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={700} color={'white1'} {...props} />
   },
   Supplemental(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={12}
-        fontWeight={400}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={'white1'} {...props} />
   },
   BoldSupplemental(props: TextProps) {
-    return (
-      <TextWrapper
-        fontFamily="Inter, sans-serif"
-        fontSize={12}
-        fontWeight={700}
-        color={'white1'}
-        {...props}
-      />
-    )
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={700} color={'white1'} {...props} />
   },
 }

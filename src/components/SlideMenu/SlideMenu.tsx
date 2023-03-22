@@ -89,18 +89,10 @@ const SlideMenu = ({open, setOpen, ...props}: {open: boolean; setOpen: Function;
     <StyledMenu open={open} aria-hidden={!isHidden} height={height} width={width} {...props}>
       <Content>
         <StyledInternalLink tabIndex={tabIndex} to={'/markets'}>
-          <StyledMenuLink
-            displayText={'Markets'}
-            linkDestination={'/markets'}
-            currentLocation={location}
-          />
+          <StyledMenuLink displayText={'Markets'} linkDestination={'/markets'} currentLocation={location} />
         </StyledInternalLink>
         <StyledInternalLink tabIndex={tabIndex} to={'/positions'}>
-          <StyledMenuLink
-            displayText={'Positions'}
-            linkDestination={'/positions'}
-            currentLocation={location}
-          />
+          <StyledMenuLink displayText={'Positions'} linkDestination={'/positions'} currentLocation={location} />
         </StyledInternalLink>
         <Separator />
 
@@ -108,11 +100,7 @@ const SlideMenu = ({open, setOpen, ...props}: {open: boolean; setOpen: Function;
         <Accordion activeAccordionText={'Language'} inactiveAccordionText={'Language'}>
           {SUPPORTED_LOCALES.map((locale, key) => (
             <AccordionSelection key={key.toString()}>
-              <LanguageMenuItem
-                locale={locale}
-                active={activeLocale === locale}
-                componentKey={key.toString()}
-              />
+              <LanguageMenuItem locale={locale} active={activeLocale === locale} componentKey={key.toString()} />
             </AccordionSelection>
           ))}
         </Accordion>

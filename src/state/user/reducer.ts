@@ -1,12 +1,7 @@
 import {createReducer} from '@reduxjs/toolkit'
 import {updateVersion} from '../global/actions'
 import {SupportedLocale} from '../../constants/locales'
-import {
-  updateUserDarkMode,
-  updateMatchesDarkMode,
-  updateUserLocale,
-  updateHideClosedPositions,
-} from './actions'
+import {updateUserDarkMode, updateMatchesDarkMode, updateUserLocale, updateHideClosedPositions} from './actions'
 
 const currentTimestamp = () => new Date().getTime()
 

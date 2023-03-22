@@ -2,12 +2,7 @@ import {useMemo} from 'react'
 import {useActiveWeb3React} from './web3'
 import {Contract} from '@ethersproject/contracts'
 import {getContract} from '../utils/contract'
-import {
-  MULTICALL2_ADDRESS,
-  V1_PERIPHERY_ADDRESS,
-  OVL_TOKEN_ADDRESS,
-  LL_TOKEN_ADDRESS,
-} from '../constants/addresses'
+import {MULTICALL2_ADDRESS, V1_PERIPHERY_ADDRESS, OVL_TOKEN_ADDRESS, LL_TOKEN_ADDRESS} from '../constants/addresses'
 import {LAYER_ZERO_ADDRESS, LAYER_ZERO_ENDPOINT_ADDRESS} from '../constants/bridge'
 import MULTICALL2_ABI from '../constants/multicall/multicall2.json'
 import ERC20_ABI from '../constants/abis/erc20.json'
@@ -35,12 +30,7 @@ export function useContract<T extends Contract = Contract>(
     else address = addressOrAddressMap[chainId]
     if (!address) return null
     try {
-      return getContract(
-        address,
-        ABI,
-        library,
-        withSignerIfPossible && account ? account : undefined,
-      )
+      return getContract(address, ABI, library, withSignerIfPossible && account ? account : undefined)
     } catch (error) {
       console.error('Failed to get contract', error)
       return null
@@ -75,11 +65,7 @@ export function useLayerZeroBridgeContract(): Contract | null {
 
 export function useLayerZeroEndpointContract(): Contract | null {
   const {chainId} = useActiveWeb3React()
-  return useContract(
-    chainId && LAYER_ZERO_ENDPOINT_ADDRESS[chainId],
-    LAYER_ZERO_ENDPOINT_ABI,
-    false,
-  )
+  return useContract(chainId && LAYER_ZERO_ENDPOINT_ADDRESS[chainId], LAYER_ZERO_ENDPOINT_ABI, false)
 }
 
 export function useMarketContract(address: string | undefined): Contract | null {
@@ -97,16 +83,10 @@ export function useLLTokenContract(): Contract | null {
   return useContract(chainId && LL_TOKEN_ADDRESS[chainId], OVL_TOKEN_ABI, false)
 }
 
-export function useTokenContract(
-  tokenAddress?: string,
-  withSignerIfPossible?: boolean,
-): Contract | null {
+export function useTokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ERC20_ABI, withSignerIfPossible)
 }
 
-export function useBytes32TokenContract(
-  tokenAddress?: string,
-  withSignerIfPossible?: boolean,
-): Contract | null {
+export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }

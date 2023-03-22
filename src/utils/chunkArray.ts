@@ -12,7 +12,7 @@ export function chunkArray<T>(items: T[], gasLimit = CONSERVATIVE_BLOCK_GAS_LIMI
     const item = items[i]
 
     // calculate the gas required by the current item
-    const gasRequired = (item as { gasRequired?: number })?.gasRequired ?? DEFAULT_GAS_REQUIRED
+    const gasRequired = (item as {gasRequired?: number})?.gasRequired ?? DEFAULT_GAS_REQUIRED
 
     // if the current chunk is empty, or the current item wouldn't push it over the gas limit,
     // append the current item and increment the cumulative gas

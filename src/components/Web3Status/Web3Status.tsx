@@ -180,16 +180,9 @@ function Web3StatusInner() {
           </PendingTransactions>
         )}
 
-        {account && chainId && ovlBalance && (
-          <TokenBalance
-            balance={Number(ovlBalance?.toFixed(4))}
-            network={NETWORK_LABELS[chainId]}
-          />
-        )}
+        {account && chainId && ovlBalance && <TokenBalance balance={Number(ovlBalance?.toFixed(4))} network={NETWORK_LABELS[chainId]} />}
 
-        {account && chainId && !ovlBalance && (
-          <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />
-        )}
+        {account && chainId && !ovlBalance && <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />}
 
         <Account>
           {shortenAddress(account)}
@@ -210,10 +203,9 @@ function Web3StatusInner() {
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
           )}
 
-          {chainId &&
-            NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.ARBITRUM_GÖRLI] && (
-              <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
-            )}
+          {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.ARBITRUM_GÖRLI] && (
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+          )}
         </Account>
       </Web3StatusConnected>
     )

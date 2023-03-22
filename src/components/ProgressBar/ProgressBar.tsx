@@ -40,15 +40,7 @@ type ProgressBarProps = {
   split?: boolean
 }
 
-export const ProgressBar = ({
-  value,
-  max,
-  color,
-  margin,
-  width = 'auto',
-  reverse = false,
-  split = false,
-}: ProgressBarProps) => {
+export const ProgressBar = ({value, max, color, margin, width = 'auto', reverse = false, split = false}: ProgressBarProps) => {
   const [progressValue, setProgressValue] = useState(0)
   const currentPercentage = max && value ? (value / max) * 100 : 0
 
@@ -73,11 +65,7 @@ type DoubleProgressBarProps = {
   maxValue: number | undefined | null
 }
 
-export const DoubleProgressBar = ({
-  leftBarValue,
-  rightBarValue,
-  maxValue,
-}: DoubleProgressBarProps) => {
+export const DoubleProgressBar = ({leftBarValue, rightBarValue, maxValue}: DoubleProgressBarProps) => {
   const PROGRESS_BAR_INPUT = {
     width: '50%',
     margin: '0',

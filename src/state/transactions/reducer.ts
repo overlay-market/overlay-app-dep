@@ -4,12 +4,12 @@ import {
   finalizeTransaction,
   checkedTransaction,
   SerializableTransactionReceipt,
-  TransactionInfo
+  TransactionInfo,
 } from './actions'
 
-import { createReducer } from '@reduxjs/toolkit';
+import {createReducer} from '@reduxjs/toolkit'
 
-const now = () => new Date().getTime();
+const now = () => new Date().getTime()
 
 export interface TransactionDetails {
   hash: string
@@ -19,19 +19,19 @@ export interface TransactionDetails {
   confirmedTime?: number
   from: string
   info: TransactionInfo
-};
+}
 
 export interface TransactionState {
   [chainId: number]: {
     [txHash: string]: TransactionDetails
-  };
-};
+  }
+}
 
-export const initialState: TransactionState = {};
+export const initialState: TransactionState = {}
 
-export default createReducer(initialState, (builder) =>
+export default createReducer(initialState, builder =>
   builder
-    .addCase(addTransaction, (transactions, { payload: { chainId, from, hash, info } }) => {
+    .addCase(addTransaction, (transactions, {payload: {chainId, from, hash, info}}) => {
       if (transactions[chainId]?.[hash]) {
         throw Error('Attempted to add existing transaction.')
       }
@@ -40,15 +40,15 @@ export default createReducer(initialState, (builder) =>
         hash,
         from,
         addedTime: now(),
-        info
+        info,
       }
       transactions[chainId] = txs
     })
-    .addCase(clearAllTransactions, (transactions, { payload: { chainId } }) => {
+    .addCase(clearAllTransactions, (transactions, {payload: {chainId}}) => {
       if (!transactions[chainId]) return
       transactions[chainId] = {}
     })
-    .addCase(checkedTransaction, (transactions, { payload: { chainId, hash, blockNumber } }) => {
+    .addCase(checkedTransaction, (transactions, {payload: {chainId, hash, blockNumber}}) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
@@ -59,12 +59,12 @@ export default createReducer(initialState, (builder) =>
         tx.lastCheckedBlockNumber = Math.max(blockNumber, tx.lastCheckedBlockNumber)
       }
     })
-    .addCase(finalizeTransaction, (transactions, { payload: { hash, chainId, receipt } }) => {
+    .addCase(finalizeTransaction, (transactions, {payload: {hash, chainId, receipt}}) => {
       const tx = transactions[chainId]?.[hash]
       if (!tx) {
         return
       }
       tx.receipt = receipt
       tx.confirmedTime = now()
-    })
-);
+    }),
+)

@@ -6,10 +6,7 @@ import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 import {formatWeiToParsedNumber} from '../utils/formatWei'
 
-export function usePositionCost(
-  marketAddress?: string,
-  positionId?: string | number,
-): BigNumber | undefined {
+export function usePositionCost(marketAddress?: string, positionId?: string | number): BigNumber | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()

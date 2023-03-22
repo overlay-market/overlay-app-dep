@@ -62,15 +62,12 @@ function useBuildCallArguments(
       utils.parseUnits(buildData.typedValue),
       utils.parseUnits(buildData.selectedLeverage),
       buildData.isLong,
-      buildData.isLong
-        ? price.mul(increaseNumerator).div(base)
-        : price.mul(decreaseNumerator).div(base),
+      buildData.isLong ? price.mul(increaseNumerator).div(base) : price.mul(decreaseNumerator).div(base),
     ])
   }
 
   return useMemo(() => {
-    if (!buildData || !marketAddress || !chainId || !account || !marketContract || !calldata)
-      return []
+    if (!buildData || !marketAddress || !chainId || !account || !marketContract || !calldata) return []
 
     const txn: {address: string; calldata: string; value: string} = {
       address: marketAddress,
@@ -104,13 +101,7 @@ export function useBuildCallback(
   const addTransaction = useTransactionAdder()
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
-  const buildCalls = useBuildCallArguments(
-    buildData,
-    marketAddress,
-    price,
-    minCollateral,
-    inputError,
-  )
+  const buildCalls = useBuildCallArguments(buildData, marketAddress, price, minCollateral, inputError)
 
   return useMemo(() => {
     if (!buildData || !library || !account || !chainId || !marketAddress || inputError) {
@@ -149,12 +140,7 @@ export function useBuildCallback(
                 return library
                   .call(tx)
                   .then(result => {
-                    console.debug(
-                      'Unexpected successful call after failed estimate gas',
-                      call,
-                      gasError,
-                      result,
-                    )
+                    console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
 
                     const error = 'Unexpected issue with estimating the gas. ' + 'Please try again.'
 
@@ -190,8 +176,7 @@ export function useBuildCallback(
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         let bestCallOption: SuccessfulCall | BuildCallEstimate | undefined = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall =>
-            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         // check if any calls errored with a recognizable error
@@ -199,11 +184,8 @@ export function useBuildCallback(
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
           if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>(
-            (call): call is BuildCallEstimate => !('error' in call),
-          )
-          if (!firstNoErrorCall)
-            throw new Error('Unexpected error. Could not estimate gas for the build.')
+          const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>((call): call is BuildCallEstimate => !('error' in call))
+          if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the build.')
           bestCallOption = firstNoErrorCall
         }
 
@@ -220,9 +202,7 @@ export function useBuildCallback(
             to: address,
             data: calldata,
             // let the wallet try if we can't estimate the gas
-            ...('gasEstimate' in bestCallOption
-              ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)}
-              : {}),
+            ...('gasEstimate' in bestCallOption ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)} : {}),
             ...(value && !isZero(value) ? {value} : {}),
           })
           .then((response: TransactionResponse) => {
@@ -260,16 +240,5 @@ export function useBuildCallback(
       },
       error: null,
     }
-  }, [
-    buildData,
-    marketAddress,
-    library,
-    account,
-    chainId,
-    buildCalls,
-    addTransaction,
-    addPopup,
-    currentTimeForId,
-    inputError,
-  ])
+  }, [buildData, marketAddress, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId, inputError])
 }

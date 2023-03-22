@@ -4,58 +4,26 @@ import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 import {utils} from 'ethers'
 
-export function useEstimatedBuildLiquidationPrice(
-  marketAddress?: string,
-  collateral?: any,
-  leverage?: any,
-  isLong?: any,
-): any {
+export function useEstimatedBuildLiquidationPrice(marketAddress?: string, collateral?: any, leverage?: any, isLong?: any): any {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()
   const [estimatedLiquidationPrice, setEstimatedLiquidationPrice] = useState()
 
   useEffect(() => {
-    if (
-      !peripheryContract ||
-      !marketAddress ||
-      !collateral ||
-      collateral === '.' ||
-      !leverage ||
-      isLong === undefined ||
-      !account ||
-      !blockNumber
-    )
+    if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || isLong === undefined || !account || !blockNumber)
       return
     let formatCollateral = utils.parseUnits(collateral)
     let formatLeverage = utils.parseUnits(leverage)
 
     ;(async () => {
       try {
-        setEstimatedLiquidationPrice(
-          await peripheryContract.liquidationPriceEstimate(
-            marketAddress,
-            formatCollateral,
-            formatLeverage,
-            isLong,
-          ),
-        )
+        setEstimatedLiquidationPrice(await peripheryContract.liquidationPriceEstimate(marketAddress, formatCollateral, formatLeverage, isLong))
       } catch (error) {
-        console.error(
-          'error coming from useEstimatedBuildLiquidationPrice: ',
-          error,
-        )
+        console.error('error coming from useEstimatedBuildLiquidationPrice: ', error)
       }
     })()
-  }, [
-    peripheryContract,
-    marketAddress,
-    collateral,
-    leverage,
-    isLong,
-    blockNumber,
-    account,
-  ])
+  }, [peripheryContract, marketAddress, collateral, leverage, isLong, blockNumber, account])
 
   return useMemo(() => {
     if (!collateral || collateral === '.') return null

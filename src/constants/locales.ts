@@ -5,11 +5,11 @@ export const SUPPORTED_LOCALES = [
   'vi-VN',
   'zh-CN',
 ] as const
-export type SupportedLocale = typeof SUPPORTED_LOCALES[number]
+export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 
 export const DEFAULT_LOCALE: SupportedLocale = 'en-US'
 
-export const LOCALE_LABEL: { [locale in SupportedLocale]: string } = {
+export const LOCALE_LABEL: {[locale in SupportedLocale]: string} = {
   'en-US': 'English',
   'fr-FR': 'Français',
   'vi-VN': 'Tiếng Việt',

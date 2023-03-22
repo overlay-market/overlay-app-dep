@@ -6,10 +6,7 @@ import {useAppSelector, useAppDispatch} from '../hooks'
 import {addTransaction, TransactionInfo, TransactionType} from './actions'
 
 // helper that can take a ethers library transaction response and add it to the list of transactions
-export function useTransactionAdder(): (
-  response: TransactionResponse,
-  info: TransactionInfo,
-) => void {
+export function useTransactionAdder(): (response: TransactionResponse, info: TransactionInfo) => void {
   const {chainId, account} = useActiveWeb3React()
   const dispatch = useAppDispatch()
 
@@ -66,10 +63,7 @@ export function isTransactionRecent(tx: TransactionDetails): boolean {
 }
 
 // returns whether a token has a pending approval transaction
-export function useHasPendingApproval(
-  tokenAddress: string | undefined,
-  spender: string | undefined,
-): boolean {
+export function useHasPendingApproval(tokenAddress: string | undefined, spender: string | undefined): boolean {
   const allTransactions = useAllTransactions()
 
   return useMemo(
@@ -85,11 +79,7 @@ export function useHasPendingApproval(
           return false
         } else {
           if (tx.info.type !== TransactionType.APPROVAL) return false
-          return (
-            tx.info.spender === spender &&
-            tx.info.tokenAddress === tokenAddress &&
-            isTransactionRecent(tx)
-          )
+          return tx.info.spender === spender && tx.info.tokenAddress === tokenAddress && isTransactionRecent(tx)
         }
       }),
     [allTransactions, spender, tokenAddress],

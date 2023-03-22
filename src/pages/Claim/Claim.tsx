@@ -49,8 +49,7 @@ const Claim = ({
     setIsFullyClaimed(false)
   }, [claimId])
 
-  const userClaimAmount =
-    userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
+  const userClaimAmount = userClaimData?.amount && formatWeiToParsedNumber(userClaimData.amount, 18, 0)
 
   // monitor the status of the claim from contracts and txns
   const {claimCallback} = useClaimCallback(account, claimId)
@@ -103,15 +102,11 @@ const Claim = ({
             <FlexColumn padding="16px">
               <FlexRow marginBottom="8px">
                 <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
-                <TEXT.SmallBody>
-                  {account ? shortenAddress(account) : 'Not connected'}
-                </TEXT.SmallBody>
+                <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
               </FlexRow>
             </FlexColumn>
             <FlexColumn padding="16px 16px 32px">
-              <TEXT.SmallBody marginRight="auto">
-                Wrong network, switch to Arbitrum-One
-              </TEXT.SmallBody>
+              <TEXT.SmallBody marginRight="auto">Wrong network, switch to Arbitrum-One</TEXT.SmallBody>
             </FlexColumn>
           </ClaimModalContainer>
         </BridgeContainer>
@@ -125,9 +120,7 @@ const Claim = ({
               <TEXT.SmallBody marginRight="auto" marginBottom="16px">
                 Claim OVL
               </TEXT.SmallBody>
-              <TEXT.StandardBody marginBottom="16px">
-                Connect your wallet to see if you have any claimable OVL.
-              </TEXT.StandardBody>
+              <TEXT.StandardBody marginBottom="16px">Connect your wallet to see if you have any claimable OVL.</TEXT.StandardBody>
               <TriggerActionButton onClick={toggleWalletModal} active={true}>
                 Connect Wallet
               </TriggerActionButton>
@@ -151,80 +144,69 @@ const Claim = ({
           </ClaimModalContainer>
         )}
 
-        {account &&
-          userClaimAmount &&
-          userHasAvailableClaim &&
-          userHasAvailableClaim !== undefined &&
-          !isWrongNetwork && (
-            <ClaimModalContainer>
-              <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
-                <FlexRow marginBottom="8px">
-                  <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
-                  <TEXT.SmallBody>
-                    {account ? shortenAddress(account) : 'Not connected'}
-                  </TEXT.SmallBody>
-                </FlexRow>
-                <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
-                  {userClaimAmount} OVL
-                </TEXT.AdjustableSize>
-              </FlexColumn>
-              <FlexColumn padding="16px">
-                <TEXT.SmallBody>
-                  As a member of the Overlay community, you may claim OVL to be used for voting and
-                  governance, and to interact with the Overlay protocol.
-                </TEXT.SmallBody>
-                <ExternalLink
-                  href="https://docs.overlay.market/"
-                  style={{
-                    color: '#71CEFF',
-                    textDecoration: 'underline',
-                    fontSize: '14px',
-                    margin: '16px auto 16px 0',
-                  }}
-                >
-                  Read more about OVL
-                </ExternalLink>
-                <ClaimButton />
-              </FlexColumn>
-            </ClaimModalContainer>
-          )}
+        {account && userClaimAmount && userHasAvailableClaim && userHasAvailableClaim !== undefined && !isWrongNetwork && (
+          <ClaimModalContainer>
+            <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+              <FlexRow marginBottom="8px">
+                <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+                <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
+              </FlexRow>
+              <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+                {userClaimAmount} OVL
+              </TEXT.AdjustableSize>
+            </FlexColumn>
+            <FlexColumn padding="16px">
+              <TEXT.SmallBody>
+                As a member of the Overlay community, you may claim OVL to be used for voting and governance, and to interact with the Overlay
+                protocol.
+              </TEXT.SmallBody>
+              <ExternalLink
+                href="https://docs.overlay.market/"
+                style={{
+                  color: '#71CEFF',
+                  textDecoration: 'underline',
+                  fontSize: '14px',
+                  margin: '16px auto 16px 0',
+                }}
+              >
+                Read more about OVL
+              </ExternalLink>
+              <ClaimButton />
+            </FlexColumn>
+          </ClaimModalContainer>
+        )}
 
-        {account &&
-          userClaimAmount &&
-          !userHasAvailableClaim &&
-          userHasAvailableClaim !== undefined && (
-            <ClaimModalContainer>
-              <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
-                <FlexRow marginBottom="8px">
-                  <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
-                  <TEXT.SmallBody>
-                    {account ? shortenAddress(account) : 'Not connected'}
-                  </TEXT.SmallBody>
-                </FlexRow>
-                <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
-                  Already Claimed
-                </TEXT.AdjustableSize>
-              </FlexColumn>
-              <FlexColumn padding="16px">
-                <TEXT.SmallBody>
-                  As a member of the Overlay community, you may claim OVL to be used for voting and
-                  governance, and to interact with the Overlay protocol.
-                </TEXT.SmallBody>
-                <ExternalLink
-                  href="https://docs.overlay.market/"
-                  style={{
-                    color: '#71CEFF',
-                    textDecoration: 'underline',
-                    fontSize: '14px',
-                    margin: '16px auto 16px 0',
-                  }}
-                >
-                  Read more about OVL
-                </ExternalLink>
-                <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
-              </FlexColumn>
-            </ClaimModalContainer>
-          )}
+        {account && userClaimAmount && !userHasAvailableClaim && userHasAvailableClaim !== undefined && (
+          <ClaimModalContainer>
+            <FlexColumn padding="16px" borderBottom="1px solid #71CEFF">
+              <FlexRow marginBottom="8px">
+                <TEXT.SmallBody marginRight="16px">Claim OVL</TEXT.SmallBody>
+                <TEXT.SmallBody>{account ? shortenAddress(account) : 'Not connected'}</TEXT.SmallBody>
+              </FlexRow>
+              <TEXT.AdjustableSize fontSize="34px" marginRight="auto">
+                Already Claimed
+              </TEXT.AdjustableSize>
+            </FlexColumn>
+            <FlexColumn padding="16px">
+              <TEXT.SmallBody>
+                As a member of the Overlay community, you may claim OVL to be used for voting and governance, and to interact with the Overlay
+                protocol.
+              </TEXT.SmallBody>
+              <ExternalLink
+                href="https://docs.overlay.market/"
+                style={{
+                  color: '#71CEFF',
+                  textDecoration: 'underline',
+                  fontSize: '14px',
+                  margin: '16px auto 16px 0',
+                }}
+              >
+                Read more about OVL
+              </ExternalLink>
+              <TriggerActionButton isDisabled={true}>Claim OVL</TriggerActionButton>
+            </FlexColumn>
+          </ClaimModalContainer>
+        )}
       </BridgeContainer>
     )
   }, [

@@ -13,14 +13,9 @@ export default {
   formatOptions: {
     lineNumbers: false,
   },
-  locales: [
-    'en-US',
-    'fr-FR',
-    'vi-VN',
-    'zh-CN',
-  ],
+  locales: ['en-US', 'fr-FR', 'vi-VN', 'zh-CN'],
   orderBy: 'messageId',
   rootDir: '.',
   runtimeConfigModule: ['@lingui/core', 'i18n'],
   sourceLocale: 'en-US',
-};
+}

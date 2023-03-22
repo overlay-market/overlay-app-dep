@@ -1,69 +1,69 @@
-import { useState, useEffect } from "react";
-import styled from 'styled-components/macro';
-import { X } from "react-feather";
-import { isMobile } from "react-device-detect"
-import { UnsupportedChainIdError } from "@web3-react/core";
-import { AbstractConnector } from "@web3-react/abstract-connector";
-import { TEXT } from "../../theme/theme";
-import { useActiveWeb3React } from "../../hooks/web3";
-import { injected } from "../../connectors/connectors";
-import { SUPPORTED_WALLETS } from "../../constants/wallet";
-import { ApplicationModal } from "../../state/application/actions";
-import { useModalOpen, useWalletModalToggle } from "../../state/application/hooks";
-import Modal from "../Modal/Modal";
-import PendingView from "./PendingView";
-import WalletOption from './WalletOptions';
-import usePrevious from "../../hooks/usePrevious";
-import METAMASK_ICON from '../../assets/images/metamask.png';
+import {useState, useEffect} from 'react'
+import styled from 'styled-components/macro'
+import {X} from 'react-feather'
+import {isMobile} from 'react-device-detect'
+import {UnsupportedChainIdError} from '@web3-react/core'
+import {AbstractConnector} from '@web3-react/abstract-connector'
+import {TEXT} from '../../theme/theme'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {injected} from '../../connectors/connectors'
+import {SUPPORTED_WALLETS} from '../../constants/wallet'
+import {ApplicationModal} from '../../state/application/actions'
+import {useModalOpen, useWalletModalToggle} from '../../state/application/hooks'
+import Modal from '../Modal/Modal'
+import PendingView from './PendingView'
+import WalletOption from './WalletOptions'
+import usePrevious from '../../hooks/usePrevious'
+import METAMASK_ICON from '../../assets/images/metamask.png'
 
 export const ModalContent = styled.div`
   display: flex;
   flex-direction: column;
   padding: 16px;
   width: 100%;
-`;
+`
 
 export const WalletHeader = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
-`;
+`
 
 export const CloseIcon = styled.div`
   :hover {
     cursor: pointer;
     opacity: 0.7;
   }
-`;
+`
 
 const WALLET_VIEWS = {
   OPTIONS: 'options',
   OPTIONS_SECONDARY: 'options_secondary',
   ACCOUNT: 'account',
   PENDING: 'pending',
-};
+}
 
 export default function ConnectWalletModal() {
-  const { account, connector, activate } = useActiveWeb3React();
+  const {account, connector, activate} = useActiveWeb3React()
 
-  const walletModalOpen = useModalOpen(ApplicationModal.WALLET);
+  const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
 
-  const toggleWalletModal = useWalletModalToggle();
+  const toggleWalletModal = useWalletModalToggle()
 
-  const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT);
+  const [walletView, setWalletView] = useState(WALLET_VIEWS.ACCOUNT)
 
-  const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>();
+  const [pendingWallet, setPendingWallet] = useState<AbstractConnector | undefined>()
 
-  const [pendingError, setPendingError] = useState<boolean>();
+  const [pendingError, setPendingError] = useState<boolean>()
 
-  const previousAccount = usePrevious(account);
+  const previousAccount = usePrevious(account)
 
   // close on connection, when logged out before
   useEffect(() => {
     if (account && !previousAccount && walletModalOpen) {
       toggleWalletModal()
     }
-  }, [account, previousAccount, toggleWalletModal, walletModalOpen]);
+  }, [account, previousAccount, toggleWalletModal, walletModalOpen])
 
   // always reset to account view
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function ConnectWalletModal() {
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
     let name = ''
-    Object.keys(SUPPORTED_WALLETS).map((key) => {
+    Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
         return (name = SUPPORTED_WALLETS[key].name)
       }
@@ -90,23 +90,22 @@ export default function ConnectWalletModal() {
     // }
 
     connector &&
-      activate(connector, undefined, true).catch((error) => {
+      activate(connector, undefined, true).catch(error => {
         if (error instanceof UnsupportedChainIdError) {
           activate(connector) // a little janky...can't use setError because the connector isn't set
         } else {
           setPendingError(true)
         }
       })
-  };
+  }
 
   function getOptions() {
-    const isMetamask = window.ethereum && window.ethereum.isMetaMask;
-    
-    return Object.keys(SUPPORTED_WALLETS).map((key) => {
+    const isMetamask = window.ethereum && window.ethereum.isMetaMask
+
+    return Object.keys(SUPPORTED_WALLETS).map(key => {
       const option = SUPPORTED_WALLETS[key]
       // check for mobile options
       if (isMobile) {
-
         if (!window.web3 && !window.ethereum && option.mobile) {
           return (
             <WalletOption
@@ -162,9 +161,7 @@ export default function ConnectWalletModal() {
           <WalletOption
             id={`connect-${key}`}
             onClick={() => {
-              option.connector === connector
-                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
+              option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option.connector)
             }}
             key={key}
             active={option.connector === connector}
@@ -176,30 +173,25 @@ export default function ConnectWalletModal() {
         )
       )
     })
-  };
+  }
 
   return (
     <Modal isOpen={walletModalOpen} onDismiss={toggleWalletModal} minHeight={false} maxHeight={90}>
       <ModalContent>
         <WalletHeader>
           <TEXT.StandardBody color={'white'} fontWeight={600} m={'auto 0'}>
-              Connect to a wallet
+            Connect to a wallet
           </TEXT.StandardBody>
           <CloseIcon onClick={toggleWalletModal}>
             <X color={'white'} height={24} width={24} />
           </CloseIcon>
         </WalletHeader>
         {walletView === WALLET_VIEWS.PENDING ? (
-            <PendingView
-              connector={pendingWallet}
-              error={pendingError}
-              setPendingError={setPendingError}
-              tryActivation={tryActivation}
-            />
-          ) : (
-            <>{getOptions()}</>
-          )}
+          <PendingView connector={pendingWallet} error={pendingError} setPendingError={setPendingError} tryActivation={tryActivation} />
+        ) : (
+          <>{getOptions()}</>
+        )}
       </ModalContent>
     </Modal>
   )
-};
+}

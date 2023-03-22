@@ -4,13 +4,7 @@ import {TableContainer, TableHead, Paper} from '@material-ui/core'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {TransparentButton} from '../../components/Button/Button'
 import {PageContainer} from '../../components/Container/Container'
-import {
-  StyledTable,
-  StyledHeaderCell,
-  StyledTableCellThin,
-  StyledTableRow,
-  StyledTableHeaderRow,
-} from '../../components/Table/Table'
+import {StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow} from '../../components/Table/Table'
 import {useAllPositions} from '../../state/build/hooks'
 import {useV1PeripheryContract} from '../../hooks/useContract'
 import {useSingleContractMultipleData} from '../../state/multicall/hooks'
@@ -24,20 +18,8 @@ import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {MarketCard} from '../../components/Card/MarketCard'
 import {LoadingStatusView} from '../Positions/Positions'
 
-const LiquidateButton = ({
-  marketAddress,
-  ownerAddress,
-  positionId,
-}: {
-  marketAddress?: string
-  ownerAddress?: string
-  positionId?: string
-}) => {
-  const {callback: liquidateCallback} = useLiquidateCallback(
-    marketAddress,
-    ownerAddress,
-    positionId,
-  )
+const LiquidateButton = ({marketAddress, ownerAddress, positionId}: {marketAddress?: string; ownerAddress?: string; positionId?: string}) => {
+  const {callback: liquidateCallback} = useLiquidateCallback(marketAddress, ownerAddress, positionId)
 
   const handleLiquidate = useCallback(() => {
     if (!marketAddress) throw new Error('missing market address')
@@ -67,11 +49,7 @@ const Liquidate = () => {
 
   const positionsCallData = useMemo(() => {
     if (positions === undefined || !positions) return []
-    return positions.map((position: any) => [
-      position.market.id,
-      position.owner.id,
-      position.positionId,
-    ])
+    return positions.map((position: any) => [position.market.id, position.owner.id, position.positionId])
   }, [positions])
 
   const isLiquidatedPositions = useMemo(() => {
@@ -80,26 +58,10 @@ const Liquidate = () => {
   }, [positions])
 
   const peripheryContract = useV1PeripheryContract()
-  const fetchCheckLiquidatablePositions = useSingleContractMultipleData(
-    peripheryContract,
-    'liquidatable',
-    positionsCallData,
-  )
-  const fetchPositionValues = useSingleContractMultipleData(
-    peripheryContract,
-    'value',
-    positionsCallData,
-  )
-  const fetchLiquidationFees = useSingleContractMultipleData(
-    peripheryContract,
-    'liquidationFee',
-    positionsCallData,
-  )
-  const fetchMaintenanceMargins = useSingleContractMultipleData(
-    peripheryContract,
-    'maintenanceMargin',
-    positionsCallData,
-  )
+  const fetchCheckLiquidatablePositions = useSingleContractMultipleData(peripheryContract, 'liquidatable', positionsCallData)
+  const fetchPositionValues = useSingleContractMultipleData(peripheryContract, 'value', positionsCallData)
+  const fetchLiquidationFees = useSingleContractMultipleData(peripheryContract, 'liquidationFee', positionsCallData)
+  const fetchMaintenanceMargins = useSingleContractMultipleData(peripheryContract, 'maintenanceMargin', positionsCallData)
 
   const liquidatablePositions = useMemo(() => {
     return fetchCheckLiquidatablePositions.map((position, index) => {
@@ -146,17 +108,9 @@ const Liquidate = () => {
 
             {liquidatablePositions?.map((position, key) => {
               const maintenanceMargin =
-                maintenanceMargins !== undefined && maintenanceMargins
-                  ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 2)
-                  : null
-              const positionValue =
-                positionValues !== undefined && positionValues
-                  ? formatWeiToParsedNumber(positionValues[key], 18, 2)
-                  : null
-              const liquidationFee =
-                liquidationFees !== undefined && liquidationFees
-                  ? formatWeiToParsedNumber(liquidationFees[key], 18, 2)
-                  : null
+                maintenanceMargins !== undefined && maintenanceMargins ? formatWeiToParsedNumber(maintenanceMargins[key], 18, 2) : null
+              const positionValue = positionValues !== undefined && positionValues ? formatWeiToParsedNumber(positionValues[key], 18, 2) : null
+              const liquidationFee = liquidationFees !== undefined && liquidationFees ? formatWeiToParsedNumber(liquidationFees[key], 18, 2) : null
               const isLiquidated = isLiquidatedPositions[key]
 
               // if (key === 0 && liquidatablePositions && liquidatablePositions[0] === undefined) {
@@ -167,13 +121,7 @@ const Liquidate = () => {
                   <StyledTableRow hover={false}>
                     <StyledTableCellThin component="th" scope="row">
                       {chainId && positionsCallData[key][0] && (
-                        <ExternalLink
-                          href={getExplorerLink(
-                            chainId,
-                            positionsCallData[key][0],
-                            ExplorerDataType.ADDRESS,
-                          )}
-                        >
+                        <ExternalLink href={getExplorerLink(chainId, positionsCallData[key][0], ExplorerDataType.ADDRESS)}>
                           {shortenAddress(positionsCallData[key][0])}
                         </ExternalLink>
                       )}

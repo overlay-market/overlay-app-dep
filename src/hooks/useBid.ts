@@ -8,10 +8,7 @@ export function useBid(market: any, fractionOfCapOi: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
-  const callResult = useSingleCallResult(peripheryContract, 'bid', [
-    market,
-    fractionOfCapOi,
-  ])
+  const callResult = useSingleCallResult(peripheryContract, 'bid', [market, fractionOfCapOi])
 
   return useMemo(() => {
     if (!chainId || !blockNumber || !callResult) return null

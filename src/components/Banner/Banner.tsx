@@ -50,15 +50,11 @@ export const Banner = ({content, animated, duration = 0}: BannerProps) => {
       <Carousel>
         {animated ? (
           <AnimatedCarouselText duration={duration}>
-            <TEXT.BoldSmallBody>
-              please make sure you are on https://app.overlay.market
-            </TEXT.BoldSmallBody>
+            <TEXT.BoldSmallBody>please make sure you are on https://app.overlay.market</TEXT.BoldSmallBody>
           </AnimatedCarouselText>
         ) : (
           <StaticCarouselText>
-            <TEXT.BoldSmallBody>
-              please make sure you are on https://app.overlay.market
-            </TEXT.BoldSmallBody>
+            <TEXT.BoldSmallBody>please make sure you are on https://app.overlay.market</TEXT.BoldSmallBody>
           </StaticCarouselText>
         )}
       </Carousel>

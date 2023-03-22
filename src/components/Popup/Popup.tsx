@@ -87,11 +87,7 @@ export default function Popup({removeAfterMs, content, popKey, title, children}:
       <FlexRow>
         {popupContent}
         <Icon clickable={true} color={POPUP_CONSTANTS.iconColor}>
-          <XIcon
-            width={POPUP_CONSTANTS.iconSize}
-            height={POPUP_CONSTANTS.iconSize}
-            onClick={removeThisPopup}
-          />
+          <XIcon width={POPUP_CONSTANTS.iconSize} height={POPUP_CONSTANTS.iconSize} onClick={removeThisPopup} />
         </Icon>
       </FlexRow>
       {removeAfterMs !== null ? <AnimatedFader style={faderStyle} /> : null}

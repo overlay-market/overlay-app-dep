@@ -9,10 +9,7 @@ enum RegisterResponseMessage {
   CREATED = 'Address register successful',
 }
 
-export default async function registerWalletAddressToChainalysis(
-  req: VercelRequest,
-  res: VercelResponse,
-) {
+export default async function registerWalletAddressToChainalysis(req: VercelRequest, res: VercelResponse) {
   const {walletAddress} = req.query
 
   const bodyObject = {

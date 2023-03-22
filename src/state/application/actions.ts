@@ -31,9 +31,7 @@ export enum UserTermsOfServiceStatus {
 }
 
 export const updateChainId = createAction<{chainId: number | null}>('application/updateChainId')
-export const updateBlockNumber = createAction<{chainId: number; blockNumber: number}>(
-  'application/updateBlockNumber',
-)
+export const updateBlockNumber = createAction<{chainId: number; blockNumber: number}>('application/updateBlockNumber')
 export const addPopup = createAction<{
   key?: string
   removeAfterMs?: number | null

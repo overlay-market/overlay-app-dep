@@ -8,10 +8,7 @@ export function useAsk(market: any, fractionOfCapOi: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
-  const callResult = useSingleCallResult(peripheryContract, 'ask', [
-    market,
-    fractionOfCapOi,
-  ])
+  const callResult = useSingleCallResult(peripheryContract, 'ask', [market, fractionOfCapOi])
 
   return useMemo(() => {
     if (!chainId || !blockNumber || !callResult) return null

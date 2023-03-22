@@ -97,10 +97,7 @@ export const Positions = () => {
             <TEXT.BoldSmallBody ml="auto" mr="8px">
               Show closed positions
             </TEXT.BoldSmallBody>
-            <StyledSwitchToggle
-              checked={!userHideClosedPositions}
-              onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
-            />
+            <StyledSwitchToggle checked={!userHideClosedPositions} onClick={() => setUserHideClosedPositions(!userHideClosedPositions)} />
           </ShowClosedPositionsToggleContainer>
         )}
         <PositionTableHeader />
@@ -119,40 +116,25 @@ export const PositionsInner = () => {
   const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
   const [userHideClosedPositions] = useUserHideClosedPositions()
 
-  const feedAddresses = useMemo(
-    () =>
-      !positions ? [] : positions.map((position: PositionData) => position.market.feedAddress),
-    [positions],
-  )
+  const feedAddresses = useMemo(() => (!positions ? [] : positions.map((position: PositionData) => position.market.feedAddress)), [positions])
   const {baseTokens, quoteTokens, decimals, descriptions} = useMarketNames(feedAddresses)
   const baseAmounts = useMarketBaseAmounts(feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(feedAddresses)
 
   const tokenPairDecimals = useMemo(
     () => ({
-      baseTokens:
-        baseAmounts.length === 0 ? null : baseAmounts.map((tokenDecimals: any) => tokenDecimals),
-      quoteTokens:
-        quoteAmounts.length === 0 ? null : quoteAmounts.map((tokenDecimals: any) => tokenDecimals),
+      baseTokens: baseAmounts.length === 0 ? null : baseAmounts.map((tokenDecimals: any) => tokenDecimals),
+      quoteTokens: quoteAmounts.length === 0 ? null : quoteAmounts.map((tokenDecimals: any) => tokenDecimals),
     }),
     [baseAmounts, quoteAmounts],
   )
 
   const calldata = useMemo(() => {
     if (!positions || !account || !blockNumber) return []
-    return positions.map((position: PositionData) => [
-      position.market.id,
-      account,
-      position.positionId,
-    ])
+    return positions.map((position: PositionData) => [position.market.id, account, position.positionId])
   }, [positions, account, blockNumber])
 
-  const ois = usePositionOis(
-    calldata,
-    tokenPairDecimals.baseTokens,
-    tokenPairDecimals.quoteTokens,
-    decimals,
-  )
+  const ois = usePositionOis(calldata, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens, decimals)
 
   const costs = usePositionCosts(calldata)
   const values = usePositionValues(calldata)

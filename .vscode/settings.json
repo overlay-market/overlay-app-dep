@@ -29,12 +29,7 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": false
   },
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "typescript",
-    "typescriptreact"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
   "eslint.options": {
     "env": {
       "browser": true,

@@ -42,11 +42,7 @@ export function useETHBalances(uncheckedAddresses?: (string | undefined)[]): {
     () =>
       addresses.reduce<{[address: string]: CurrencyAmount<Currency>}>((memo, address, i) => {
         const value = results?.[i]?.result?.[0]
-        if (value && chainId)
-          memo[address] = CurrencyAmount.fromRawAmount(
-            Ether.onChain(chainId),
-            JSBI.BigInt(value.toString()),
-          )
+        if (value && chainId) memo[address] = CurrencyAmount.fromRawAmount(Ether.onChain(chainId), JSBI.BigInt(value.toString()))
         return memo
       }, {}),
     [addresses, chainId, results],
@@ -60,29 +56,13 @@ export function useTokenBalancesWithLoadingIndicator(
   address?: string,
   tokens?: (Token | undefined)[],
 ): [{[tokenAddress: string]: CurrencyAmount<Token> | undefined}, boolean] {
-  const validatedTokens: Token[] = useMemo(
-    () => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [],
-    [tokens],
-  )
+  const validatedTokens: Token[] = useMemo(() => tokens?.filter((t?: Token): t is Token => isAddress(t?.address) !== false) ?? [], [tokens])
 
-  const validatedTokenAddresses = useMemo(
-    () => validatedTokens.map(vt => vt.address),
-    [validatedTokens],
-  )
+  const validatedTokenAddresses = useMemo(() => validatedTokens.map(vt => vt.address), [validatedTokens])
   const ERC20Interface = new Interface(ERC20_ABI)
-  const balances = useMultipleContractSingleData(
-    validatedTokenAddresses,
-    ERC20Interface,
-    'balanceOf',
-    [address],
-    undefined,
-    100_000,
-  )
+  const balances = useMultipleContractSingleData(validatedTokenAddresses, ERC20Interface, 'balanceOf', [address], undefined, 100_000)
 
-  const anyLoading: boolean = useMemo(
-    () => balances.some(callState => callState.loading),
-    [balances],
-  )
+  const anyLoading: boolean = useMemo(() => balances.some(callState => callState.loading), [balances])
 
   return [
     useMemo(
@@ -105,18 +85,12 @@ export function useTokenBalancesWithLoadingIndicator(
   ]
 }
 
-export function useTokenBalances(
-  address?: string,
-  tokens?: (Token | undefined)[],
-): {[tokenAddress: string]: CurrencyAmount<Token> | undefined} {
+export function useTokenBalances(address?: string, tokens?: (Token | undefined)[]): {[tokenAddress: string]: CurrencyAmount<Token> | undefined} {
   return useTokenBalancesWithLoadingIndicator(address, tokens)[0]
 }
 
 // get the balance for a single token/account combo
-export function useTokenBalance(
-  account?: string,
-  token?: Token,
-): CurrencyAmount<Token> | undefined {
+export function useTokenBalance(account?: string, token?: Token): CurrencyAmount<Token> | undefined {
   const tokenBalances = useTokenBalances(account, [token])
   if (!token) return undefined
   return tokenBalances[token.address]
@@ -134,9 +108,7 @@ export function useOvlBalance(): CurrencyAmount<Token> | undefined {
   return CurrencyAmount.fromRawAmount(ovl, ovlBalance?.quotient ?? JSBI.BigInt(0))
 }
 
-export function useChainOvlBalance(
-  chainId: ChainId | undefined,
-): CurrencyAmount<Token> | undefined {
+export function useChainOvlBalance(chainId: ChainId | undefined): CurrencyAmount<Token> | undefined {
   const {account} = useActiveWeb3React()
 
   const ovl = chainId ? OVL[chainId] : undefined

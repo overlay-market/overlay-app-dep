@@ -1,5 +1,5 @@
-import { createAction } from "@reduxjs/toolkit";
+import {createAction} from '@reduxjs/toolkit'
 
-export const updateMarkets = createAction<{ 
+export const updateMarkets = createAction<{
   marketsData: object | undefined
-}>('/markets/updateMarkets');
+}>('/markets/updateMarkets')

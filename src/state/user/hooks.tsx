@@ -31,10 +31,7 @@ export function useUserLocale(): SupportedLocale | null {
   return useAppSelector(state => state.user.userLocale)
 }
 
-export function useUserLocaleManager(): [
-  SupportedLocale | null,
-  (newLocale: SupportedLocale) => void,
-] {
+export function useUserLocaleManager(): [SupportedLocale | null, (newLocale: SupportedLocale) => void] {
   const dispatch = useAppDispatch()
   const locale = useUserLocale()
 

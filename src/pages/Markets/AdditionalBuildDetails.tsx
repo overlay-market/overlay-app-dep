@@ -128,17 +128,11 @@ export const AdditionalDetails = ({
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
-    if (!typedValue || isLong === undefined || bidPrice === undefined || askPrice === undefined)
-      return null
-    if (bidPrice === 'loading' || askPrice === 'loading')
-      return <Loader stroke="white" size="12px" />
+    if (!typedValue || isLong === undefined || bidPrice === undefined || askPrice === undefined) return null
+    if (bidPrice === 'loading' || askPrice === 'loading') return <Loader stroke="white" size="12px" />
 
-    const priceImpactValue = isLong
-      ? estimatedReceivedPrice - askPrice
-      : bidPrice - estimatedReceivedPrice
-    const priceImpactPercentage = isLong
-      ? (priceImpactValue / askPrice) * 100
-      : (priceImpactValue / bidPrice) * 100
+    const priceImpactValue = isLong ? estimatedReceivedPrice - askPrice : bidPrice - estimatedReceivedPrice
+    const priceImpactPercentage = isLong ? (priceImpactValue / askPrice) * 100 : (priceImpactValue / bidPrice) * 100
 
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
@@ -159,23 +153,17 @@ export const AdditionalDetails = ({
     <ContentContainer>
       <AdditionalDetailRow>
         <PositionDetailType>Fee</PositionDetailType>
-        <DetailValue>
-          {fee === 'loading' ? <Loader stroke="white" size="12px" /> : `${fee}%`}
-        </DetailValue>
+        <DetailValue>{fee === 'loading' ? <Loader stroke="white" size="12px" /> : `${fee}%`}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType>Bid</PositionDetailType>
-        <DetailValue>
-          {bidPrice === 'loading' ? <Loader stroke="white" size="12px" /> : bidPrice}
-        </DetailValue>
+        <DetailValue>{bidPrice === 'loading' ? <Loader stroke="white" size="12px" /> : bidPrice}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType>Ask</PositionDetailType>
-        <DetailValue>
-          {askPrice === 'loading' ? <Loader stroke="white" size="12px" /> : askPrice}
-        </DetailValue>
+        <DetailValue>{askPrice === 'loading' ? <Loader stroke="white" size="12px" /> : askPrice}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
@@ -210,13 +198,7 @@ export const AdditionalDetails = ({
             {oiLong || oiLong === 0 ? oiLong + ' ' : <Loader stroke="white" size="12px" />}/
             {oiCap || oiCap === 0 ? ' ' + oiCap : <Loader stroke="white" size="12px" />}
           </OpenInterestValue>
-          <ProgressBar
-            value={oiLong}
-            max={oiCap}
-            width={'130px'}
-            color={'#10DCB1'}
-            margin={'0 0 0 auto'}
-          />
+          <ProgressBar value={oiLong} max={oiCap} width={'130px'} color={'#10DCB1'} margin={'0 0 0 auto'} />
         </FlexColumn>
       </AdditionalDetailRow>
 
@@ -227,30 +209,20 @@ export const AdditionalDetails = ({
             {oiShort || oiShort === 0 ? oiShort + ' ' : <Loader stroke="white" size="12px" />}/
             {oiCap || oiCap === 0 ? ' ' + oiCap : <Loader stroke="white" size="12px" />}
           </OpenInterestValue>
-          <ProgressBar
-            value={oiShort}
-            max={oiCap}
-            width={'130px'}
-            color={'#DC1F4E'}
-            margin={'0 0 0 auto'}
-          />
+          <ProgressBar value={oiShort} max={oiCap} width={'130px'} color={'#DC1F4E'} margin={'0 0 0 auto'} />
         </FlexColumn>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType>Funding Rate</PositionDetailType>
-        <DetailValue color={'#10DCB1'}>
-          {fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}
-        </DetailValue>
+        <DetailValue color={'#10DCB1'}>{fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType>Market Contract</PositionDetailType>
         {chainId && marketAddress && (
           <HoverableDetailValue>
-            <ExternalLink href={getExplorerLink(chainId, marketAddress, ExplorerDataType.ADDRESS)}>
-              {ShortenedAddresses.marketContract}
-            </ExternalLink>
+            <ExternalLink href={getExplorerLink(chainId, marketAddress, ExplorerDataType.ADDRESS)}>{ShortenedAddresses.marketContract}</ExternalLink>
             <Icon size={16} margin={'auto'}>
               <StyledLinkIcon href={''} />
             </Icon>
@@ -261,9 +233,7 @@ export const AdditionalDetails = ({
         <PositionDetailType>Feed Contract</PositionDetailType>
         {chainId && feedAddress && (
           <HoverableDetailValue>
-            <ExternalLink href={getExplorerLink(chainId, feedAddress, ExplorerDataType.ADDRESS)}>
-              {ShortenedAddresses.feedContract}
-            </ExternalLink>
+            <ExternalLink href={getExplorerLink(chainId, feedAddress, ExplorerDataType.ADDRESS)}>{ShortenedAddresses.feedContract}</ExternalLink>
             <Icon size={16} margin={'auto'}>
               <StyledLinkIcon href={''} />
             </Icon>

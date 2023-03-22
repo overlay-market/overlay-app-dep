@@ -1,8 +1,8 @@
-const EXPLORER_HOSTNAMES: { [hostname: string]: true } = {
+const EXPLORER_HOSTNAMES: {[hostname: string]: true} = {
   'etherscan.io': true,
   'kovan.etherscan.io': true,
   'rinkeby.etherscan.io': true,
-};
+}
 
 /**
  * Returns the anonymized version of the given href, i.e. one that does not leak user information
@@ -15,12 +15,12 @@ export function anonymizeLink(href: string): string {
     if (EXPLORER_HOSTNAMES[url.hostname]) {
       const pathPieces = url.pathname.split('/')
 
-      const anonymizedPath = pathPieces.map((pc) => (/0x[a-fA-F0-9]+/.test(pc) ? '***' : pc)).join('/')
+      const anonymizedPath = pathPieces.map(pc => (/0x[a-fA-F0-9]+/.test(pc) ? '***' : pc)).join('/')
 
       return `${url.protocol}//${url.hostname}${anonymizedPath}`
     }
-    return href;
+    return href
   } catch (error) {
-    return href;
+    return href
   }
-};
+}

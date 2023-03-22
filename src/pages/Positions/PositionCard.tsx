@@ -111,8 +111,7 @@ export const PositionCard = ({
       let string = String(description)
       return MARKET_NAME[string]
     }
-    if (baseToken === 'loading' && quoteToken === 'loading')
-      return <Loader stroke="white" size="12px" />
+    if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
 
@@ -149,12 +148,7 @@ export const PositionCard = ({
   console.log('hidePosition: ', hidePosition)
 
   return (
-    <CardContainer
-      navigate={navigate}
-      border={border}
-      to={`/positions/${id}/${positionId}`}
-      hide={hidePosition}
-    >
+    <CardContainer navigate={navigate} border={border} to={`/positions/${id}/${positionId}`} hide={hidePosition}>
       <PositionCardColumn width="50%">
         <Detail fontWeight={700} color={'white'}>
           {marketName}
@@ -180,9 +174,7 @@ export const PositionCard = ({
 
         <Detail color={'#C0C0C0'}>OI: {oi === undefined ? 'loading...' : oi}</Detail>
 
-        <Detail color={'#C0C0C0'}>
-          Value: {value === 'loading' ? 'loading...' : `${value} ${collateralToken}`}
-        </Detail>
+        <Detail color={'#C0C0C0'}>Value: {value === 'loading' ? 'loading...' : `${value} ${collateralToken}`}</Detail>
       </PositionCardColumn>
 
       <PositionCardColumn width="20%">

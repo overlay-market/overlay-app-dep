@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import {useCallback, useEffect, useState} from 'react'
 
 const VISIBILITY_STATE_SUPPORTED = 'visibilityState' in document
 

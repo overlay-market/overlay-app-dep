@@ -19,12 +19,7 @@ const Popups = () => {
   return (
     <PopupsContainer>
       {activePopups.map(popup => (
-        <Popup
-          key={popup.key}
-          content={popup.content}
-          popKey={popup.key}
-          removeAfterMs={popup.removeAfterMs}
-        />
+        <Popup key={popup.key} content={popup.content} popKey={popup.key} removeAfterMs={popup.removeAfterMs} />
       ))}
     </PopupsContainer>
   )

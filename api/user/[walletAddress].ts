@@ -15,15 +15,12 @@ enum ErrorMessage {
 export default async function getWalletAddressRiskInfo(req: VercelRequest, res: VercelResponse) {
   const {walletAddress} = req.query
 
-  const response = await fetch(
-    `https://api.chainalysis.com/api/risk/v2/entities/${walletAddress}`,
-    {
-      headers: {
-        Accept: 'application/json',
-        Token: `${process.env.REACT_APP_CHAINALYSIS_KEY_TEST}`,
-      },
+  const response = await fetch(`https://api.chainalysis.com/api/risk/v2/entities/${walletAddress}`, {
+    headers: {
+      Accept: 'application/json',
+      Token: `${process.env.REACT_APP_CHAINALYSIS_KEY_TEST}`,
     },
-  )
+  })
 
   if (response.status === StatusCode.FOUND) {
     const json = await response.json()

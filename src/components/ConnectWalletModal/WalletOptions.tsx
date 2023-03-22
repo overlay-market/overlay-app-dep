@@ -1,9 +1,9 @@
 import React from 'react'
 import styled from 'styled-components/macro'
-import { TEXT } from '../../theme/theme';
-import { ExternalLink } from '../ExternalLink/ExternalLink';
+import {TEXT} from '../../theme/theme'
+import {ExternalLink} from '../ExternalLink/ExternalLink'
 
-const InfoCard = styled.button<{ active?: boolean }>`
+const InfoCard = styled.button<{active?: boolean}>`
   background-color: transparent;
   padding: 1rem;
   outline: none;
@@ -27,26 +27,26 @@ const CardHeader = styled.div`
   text-align: left;
 `
 
-const OptionCardClickable = styled(OptionCard as any)<{ clickable?: boolean}>`
+const OptionCardClickable = styled(OptionCard as any)<{clickable?: boolean}>`
   margin-top: 0;
   border: ${({active}) => (active ? '1px solid green !important' : '')};
   background: ${({active}) => (active ? '#154015 !important' : '')};
 
   &:hover {
-    cursor: ${({ clickable }) => (clickable ? 'pointer' : '')};
-    border: ${({ clickable, theme }) => (clickable ? `1px solid ${theme.primary1}` : ``)};
+    cursor: ${({clickable}) => (clickable ? 'pointer' : '')};
+    border: ${({clickable, theme}) => (clickable ? `1px solid ${theme.primary1}` : ``)};
     background: #2e3348;
   }
-  opacity: ${({ disabled }) => (disabled ? '0.5' : '1')};
+  opacity: ${({disabled}) => (disabled ? '0.5' : '1')};
 `
 
 const CardText = styled.div`
   display: flex;
   flex-direction: row;
-`;
+`
 
 const SubHeader = styled.div`
-  color: ${({ theme }) => theme.text1};
+  color: ${({theme}) => theme.text1};
   margin-top: 10px;
   font-size: 12px;
 `
@@ -60,13 +60,13 @@ const Connected = styled.div`
   padding: 2px 4px;
 `
 
-const IconWrapper = styled.div<{ size?: number | null }>`
+const IconWrapper = styled.div<{size?: number | null}>`
   align-items: center;
   justify-content: center;
   & > img,
   span {
-    height: ${({ size }) => (size ? size + 'px' : '24px')};
-    width: ${({ size }) => (size ? size + 'px' : '24px')};
+    height: ${({size}) => (size ? size + 'px' : '24px')};
+    width: ${({size}) => (size ? size + 'px' : '24px')};
   }
 `
 
@@ -91,7 +91,6 @@ export default function WalletOption({
   active?: boolean
   id: string
 }) {
-
   const content = (
     <OptionCardClickable id={id} onClick={onClick} clickable={clickable && !active} active={active}>
       <CardHeader>
@@ -100,19 +99,10 @@ export default function WalletOption({
             {header}
           </TEXT.StandardBody>
 
-          {active ? (
-            <Connected>
-              Connected
-            </Connected>
-          ):(null)}
-          
+          {active ? <Connected>Connected</Connected> : null}
         </CardText>
-        
-        {subheader && (
-          <SubHeader>
-            {subheader}
-          </SubHeader>
-        )}
+
+        {subheader && <SubHeader>{subheader}</SubHeader>}
       </CardHeader>
       <IconWrapper size={size}>
         <img src={icon} alt={'Icon'} />
@@ -123,5 +113,5 @@ export default function WalletOption({
     return <ExternalLink href={link}>{content}</ExternalLink>
   }
 
-  return content;
-};
+  return content
+}

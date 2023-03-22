@@ -1,33 +1,28 @@
-import { useEffect, useState, useMemo } from "react";
-import { useV1PeripheryContract } from "./useContract";
-import { BigNumber } from "ethers";
-import { useBlockNumber } from "../state/application/hooks";
-import { useActiveWeb3React } from "./web3";
+import {useEffect, useState, useMemo} from 'react'
+import {useV1PeripheryContract} from './useContract'
+import {BigNumber} from 'ethers'
+import {useBlockNumber} from '../state/application/hooks'
+import {useActiveWeb3React} from './web3'
 
-export function usePositionNotional(
-  marketAddress?: string,
-  positionId?: string | number
-): BigNumber | undefined {
-  const peripheryContract = useV1PeripheryContract();
-  const blockNumber = useBlockNumber();
-  const { account } = useActiveWeb3React();
-  const [notional, setNotional] = useState<BigNumber>();
+export function usePositionNotional(marketAddress?: string, positionId?: string | number): BigNumber | undefined {
+  const peripheryContract = useV1PeripheryContract()
+  const blockNumber = useBlockNumber()
+  const {account} = useActiveWeb3React()
+  const [notional, setNotional] = useState<BigNumber>()
 
   useEffect(() => {
-    if (!peripheryContract || !marketAddress || !account || !blockNumber) return;
+    if (!peripheryContract || !marketAddress || !account || !blockNumber) return
 
-    (async () => {
+    ;(async () => {
       try {
         setNotional(await peripheryContract.notional(marketAddress, account, positionId))
+      } catch (error) {
+        console.log('market inside usePositionNotional: ', marketAddress)
       }
-      catch (error) {
-        console.log('market inside usePositionNotional: ', marketAddress);
-      }
-
-    })();
-  }, [peripheryContract, marketAddress, positionId, blockNumber, account]);
+    })()
+  }, [peripheryContract, marketAddress, positionId, blockNumber, account])
 
   return useMemo(() => {
-    return notional;
-  }, [notional]);
-};
+    return notional
+  }, [notional])
+}

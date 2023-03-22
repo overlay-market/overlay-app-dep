@@ -86,7 +86,8 @@
     "graphql:generate": "graphql-codegen --config codegen.yml",
     "eject": "react-scripts eject",
     "extract": "lingui extract",
-    "compile": "lingui compile"
+    "compile": "lingui compile",
+    "pretty": "prettier --write \"./**/*.{js,jsx,ts,tsx,json}\""
   },
   "eslintConfig": {
     "extends": [

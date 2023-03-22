@@ -31,24 +31,16 @@ export const MERKLE_DISTIBUTOR_ADDRESSES: ClaimMap = {
 }
 
 export const MERKLE_PROOFS: ClaimMap = {
-  [ClaimId.BEACON_HOLDERS]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/DegenScore/src/treeInfo.json',
-  [ClaimId.OVERLAY]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/OVL/src/treeInfo.json',
-  [ClaimId.GEARBOX]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/GearBox/src/treeInfo.json',
-  [ClaimId.SENSE_FINANCE]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Sense/src/treeInfo.json',
-  [ClaimId.NFT_PERP]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/NFTPerp/src/treeInfo.json',
-  [ClaimId.AMBIRE_WALLET]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Ambire/src/treeInfo.json',
+  [ClaimId.BEACON_HOLDERS]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/DegenScore/src/treeInfo.json',
+  [ClaimId.OVERLAY]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/OVL/src/treeInfo.json',
+  [ClaimId.GEARBOX]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/GearBox/src/treeInfo.json',
+  [ClaimId.SENSE_FINANCE]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Sense/src/treeInfo.json',
+  [ClaimId.NFT_PERP]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/NFTPerp/src/treeInfo.json',
+  [ClaimId.AMBIRE_WALLET]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/Ambire/src/treeInfo.json',
   [ClaimId.ELEMENT_FINANCE]: '',
   [ClaimId.GMX]: '',
   [ClaimId.COW_SWAP]: '',
   [ClaimId.ARBITRUM]: '',
-  [ClaimId.TESTING_A]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/ovl-test/src/treeInfo.json',
-  [ClaimId.TESTING_B]:
-    'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/ovl-test/src/treeInfo.json',
+  [ClaimId.TESTING_A]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/ovl-test/src/treeInfo.json',
+  [ClaimId.TESTING_B]: 'https://raw.githubusercontent.com/overlay-market/MerkleDistributor/ovl-test/src/treeInfo.json',
 }

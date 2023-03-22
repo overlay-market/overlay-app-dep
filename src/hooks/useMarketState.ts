@@ -25,14 +25,9 @@ interface UseMarketStateResults {
   markets: MarketStateDetails[] | undefined
 }
 
-export function useMarketStateFromAddresses(
-  marketAddresses: string[] | undefined,
-): UseMarketStateResults {
+export function useMarketStateFromAddresses(marketAddresses: string[] | undefined): UseMarketStateResults {
   const peripheryContract = useV1PeripheryContract()
-  const inputs = useMemo(
-    () => (marketAddresses ? marketAddresses.map(marketAddress => [marketAddress]) : []),
-    [marketAddresses],
-  )
+  const inputs = useMemo(() => (marketAddresses ? marketAddresses.map(marketAddress => [marketAddress]) : []), [marketAddresses])
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
 
   const loading = useMemo(() => results.some(({loading}) => loading), [results])

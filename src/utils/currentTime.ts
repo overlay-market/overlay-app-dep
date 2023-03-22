@@ -1,5 +1,5 @@
 export function currentTimeParsed(): string {
-  const currentTime = new Date();
+  const currentTime = new Date()
   // @ts-ignore
-  return Date.parse(currentTime).toString();
-};
+  return Date.parse(currentTime).toString()
+}

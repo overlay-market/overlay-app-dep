@@ -8,10 +8,7 @@ export function useFractionOfCapOi(market: any, oi: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
-  const callResult = useSingleCallResult(peripheryContract, 'fractionOfCapOi', [
-    market,
-    oi,
-  ])
+  const callResult = useSingleCallResult(peripheryContract, 'fractionOfCapOi', [market, oi])
 
   return useMemo(() => {
     if (!chainId || !blockNumber || !callResult) return null

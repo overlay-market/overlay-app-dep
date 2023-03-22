@@ -14,16 +14,8 @@ import {useCurrentWalletPositions} from '../../state/build/hooks'
 import {NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
-import {
-  useUnwindState,
-  useUnwindActionHandlers,
-  useDerivedUnwindInfo,
-} from '../../state/unwind/hooks'
-import {
-  formatWeiToParsedNumber,
-  formatBigNumberUsingDecimalsToString,
-  formatBigNumberUsingDecimalsToNumber,
-} from '../../utils/formatWei'
+import {useUnwindState, useUnwindActionHandlers, useDerivedUnwindInfo} from '../../state/unwind/hooks'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString, formatBigNumberUsingDecimalsToNumber} from '../../utils/formatWei'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {TransparentUnderlineButton, TriggerActionButton} from '../../components/Button/Button'
 import {useToken} from '../../hooks/useToken'
@@ -99,21 +91,18 @@ export function Unwind({
   }, [account, refetch, isLoading])
 
   const {typedValue, selectedPositionId, setSlippageValue, txnDeadline} = useUnwindState()
-  const {onAmountInput, onSelectPositionId, onSetSlippage, onSetTxnDeadline, onResetUnwindState} =
-    useUnwindActionHandlers()
+  const {onAmountInput, onSelectPositionId, onSetSlippage, onSetTxnDeadline, onResetUnwindState} = useUnwindActionHandlers()
   const isTxnSettingsAuto = useIsTxnSettingsAuto()
 
   const filtered = positions?.filter((index, key) => index.id === marketPositionId)
 
   const position = filtered ? filtered[0] : null
 
-  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} =
-    useMarketName(position?.market.feedAddress)
+  const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} = useMarketName(position?.market.feedAddress)
 
   const marketName = useMemo(() => {
     if (description) return MARKET_NAME[description]
-    if (baseToken === 'loading' && quoteToken === 'loading')
-      return <Loader stroke="white" size="12px" />
+    if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
 
@@ -137,24 +126,13 @@ export function Unwind({
   const collateral = usePositionCollateral(position?.market.id, positionId)
   const cost = usePositionCost(position?.market.id, positionId)
   const value = usePositionValue(position?.market.id, positionId)
-  const oi = usePositionOi(
-    position?.market.id,
-    positionId,
-    baseTokenDecimals,
-    quoteTokenDecimals,
-    decimals,
-  )
+  const oi = usePositionOi(position?.market.id, positionId, baseTokenDecimals, quoteTokenDecimals, decimals)
   const debt = usePositionDebt(position?.market.id, positionId)
   const notional = usePositionNotional(position?.market.id, positionId)
   const maintenanceMargin = useMaintenanceMargin(position?.market.id, positionId)
   const liquidationPriceResult = useLiquidationPrice(position?.market.id, positionId)
   const liquidationPrice =
-    liquidationPriceResult &&
-    formatBigNumberUsingDecimalsToNumber(
-      liquidationPriceResult,
-      decimals ? 18 : quoteTokenDecimals,
-      2,
-    )
+    liquidationPriceResult && formatBigNumberUsingDecimalsToNumber(liquidationPriceResult, decimals ? 18 : quoteTokenDecimals, 2)
 
   const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi?.rawOi)
   const estimatedBid = useBid(position?.market.id, fractionOfCapOi)
@@ -199,24 +177,16 @@ export function Unwind({
     }
   }, [fetchPrices])
 
-  const bidPrice = fetchPrices
-    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.bid_, decimals ? 18 : quoteTokenDecimals, 2)
-    : null
-  const askPrice = fetchPrices
-    ? formatBigNumberUsingDecimalsToNumber(fetchPrices.ask_, decimals ? 18 : quoteTokenDecimals, 2)
-    : null
+  const bidPrice = fetchPrices ? formatBigNumberUsingDecimalsToNumber(fetchPrices.bid_, decimals ? 18 : quoteTokenDecimals, 2) : null
+  const askPrice = fetchPrices ? formatBigNumberUsingDecimalsToNumber(fetchPrices.ask_, decimals ? 18 : quoteTokenDecimals, 2) : null
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
     if (!typedValue || isLong === undefined || !bidPrice || !askPrice) return null
 
-    const priceImpactValue = isLong
-      ? bidPrice - estimatedReceivedPrice
-      : estimatedReceivedPrice - askPrice
+    const priceImpactValue = isLong ? bidPrice - estimatedReceivedPrice : estimatedReceivedPrice - askPrice
 
-    const priceImpactPercentage = isLong
-      ? (priceImpactValue / bidPrice) * 100
-      : (priceImpactValue / askPrice) * 100
+    const priceImpactPercentage = isLong ? (priceImpactValue / bidPrice) * 100 : (priceImpactValue / askPrice) * 100
 
     return priceImpactPercentage.toFixed(6)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
@@ -224,15 +194,10 @@ export function Unwind({
   const PnL = cost && value ? value.sub(cost) : null
   const parsedPnL = PnL ? formatWeiToParsedNumber(PnL, 18, 2) : 0
   const entryPrice: number | string | null | undefined =
-    position &&
-    formatBigNumberUsingDecimalsToString(position.entryPrice, decimals ? 18 : quoteTokenDecimals, 2)
+    position && formatBigNumberUsingDecimalsToString(position.entryPrice, decimals ? 18 : quoteTokenDecimals, 2)
 
   const showUnderwaterFlow =
-    liquidationPriceResult && prices._mid
-      ? isLong
-        ? liquidationPriceResult.gt(prices._mid)
-        : liquidationPriceResult.lt(prices._mid)
-      : false
+    liquidationPriceResult && prices._mid ? (isLong ? liquidationPriceResult.gt(prices._mid) : liquidationPriceResult.lt(prices._mid)) : false
 
   const {unwindData, parsedAmount, inputError} = useDerivedUnwindInfo()
   const {callback: unwindCallback, error: unwindCallbackError} = useUnwindCallback(
@@ -307,15 +272,7 @@ export function Unwind({
             {marketName}
           </TEXT.StandardHeader1>
           <TEXT.StandardHeader1 minHeight={'30px'}>
-            {isLong !== undefined ? (
-              isLong ? (
-                bidPrice
-              ) : (
-                askPrice
-              )
-            ) : (
-              <Loader stroke="white" size="12px" />
-            )}
+            {isLong !== undefined ? isLong ? bidPrice : askPrice : <Loader stroke="white" size="12px" />}
           </TEXT.StandardHeader1>
           <Icon
             onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
@@ -343,14 +300,7 @@ export function Unwind({
           Unwind Amount
         </TEXT.StandardBody>
 
-        <PercentageSlider
-          name={'Unwind Position Amount'}
-          min={0}
-          max={100}
-          step={1}
-          value={Number(typedValue)}
-          onChange={handleUserAmount}
-        >
+        <PercentageSlider name={'Unwind Position Amount'} min={0} max={100} step={1} value={Number(typedValue)} onChange={handleUserAmount}>
           <FlexRow ml="auto" mb="4px" width="auto">
             <TransparentUnderlineButton onClick={() => handleQuickInput(25)} border={'none'}>
               25%
@@ -383,11 +333,7 @@ export function Unwind({
             Position Underwater
           </UnwindButton>
         ) : (
-          <UnwindButton
-            onClick={() => handleUnwind()}
-            isDisabled={disableUnwindButton}
-            disabled={disableUnwindButton}
-          >
+          <UnwindButton onClick={() => handleUnwind()} isDisabled={disableUnwindButton} disabled={disableUnwindButton}>
             Unwind
           </UnwindButton>
         )}
@@ -395,20 +341,10 @@ export function Unwind({
       <FlexColumn mt="48px">
         <AdditionalDetailRow
           detail={'Profit/Loss'}
-          valueColor={
-            parsedPnL !== undefined && parsedPnL !== 0
-              ? parsedPnL < 0
-                ? '#FF648A'
-                : '#10DCB1'
-              : '#F2F2F2'
-          }
+          valueColor={parsedPnL !== undefined && parsedPnL !== 0 ? (parsedPnL < 0 ? '#FF648A' : '#10DCB1') : '#F2F2F2'}
           value={PnL ? `${formatWeiToParsedNumber(PnL, 18, 2)} OVL` : 'loading'}
         />
-        <AdditionalDetailRow
-          detail={'Side'}
-          valueColor={'#F2F2F2'}
-          value={isLong !== undefined ? (isLong ? 'Long' : 'Short') : 'loading'}
-        />
+        <AdditionalDetailRow detail={'Side'} valueColor={'#F2F2F2'} value={isLong !== undefined ? (isLong ? 'Long' : 'Short') : 'loading'} />
       </FlexColumn>
 
       {/* <Accordion 
@@ -420,81 +356,33 @@ export function Unwind({
         clickableMargin={"auto"}
         > */}
       <FlexColumn mt="48px">
-        <AdditionalDetailRow
-          detail={'Value'}
-          value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Open Interest'}
-          value={oi.formattedOi || oi.formattedOi === 0 ? oi.formattedOi : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Leverage'}
-          value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Debt'}
-          value={debt ? `${formatWeiToParsedNumber(debt, 18, 4)} OVL` : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Cost'}
-          value={cost ? `${formatWeiToParsedNumber(cost, 18, 4)} OVL` : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Current Collateral'}
-          value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 4)} OVL` : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Current Notional'}
-          value={notional ? `${formatWeiToParsedNumber(notional, 18, 4)} OVL` : 'loading'}
-        />
+        <AdditionalDetailRow detail={'Value'} value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : 'loading'} />
+        <AdditionalDetailRow detail={'Open Interest'} value={oi.formattedOi || oi.formattedOi === 0 ? oi.formattedOi : 'loading'} />
+        <AdditionalDetailRow detail={'Leverage'} value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : 'loading'} />
+        <AdditionalDetailRow detail={'Debt'} value={debt ? `${formatWeiToParsedNumber(debt, 18, 4)} OVL` : 'loading'} />
+        <AdditionalDetailRow detail={'Cost'} value={cost ? `${formatWeiToParsedNumber(cost, 18, 4)} OVL` : 'loading'} />
+        <AdditionalDetailRow detail={'Current Collateral'} value={collateral ? `${formatWeiToParsedNumber(collateral, 18, 4)} OVL` : 'loading'} />
+        <AdditionalDetailRow detail={'Current Notional'} value={notional ? `${formatWeiToParsedNumber(notional, 18, 4)} OVL` : 'loading'} />
         <AdditionalDetailRow
           detail={'Initial Collateral'}
-          value={
-            position?.initialCollateral
-              ? `${formatWeiToParsedNumber(position?.initialCollateral, 18, 4)} OVL`
-              : 'loading'
-          }
+          value={position?.initialCollateral ? `${formatWeiToParsedNumber(position?.initialCollateral, 18, 4)} OVL` : 'loading'}
         />
         <AdditionalDetailRow
           detail={'Initial Notional'}
-          value={
-            position?.initialNotional
-              ? `${formatWeiToParsedNumber(position?.initialNotional, 18, 4)} OVL`
-              : 'loading'
-          }
+          value={position?.initialNotional ? `${formatWeiToParsedNumber(position?.initialNotional, 18, 4)} OVL` : 'loading'}
         />
         <AdditionalDetailRow
           detail={'Maintenance'}
-          value={
-            maintenanceMargin
-              ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 4)} OVL`
-              : 'loading'
-          }
+          value={maintenanceMargin ? `${formatWeiToParsedNumber(maintenanceMargin, 18, 4)} OVL` : 'loading'}
         />
       </FlexColumn>
 
       <FlexColumn mt="48px">
-        <AdditionalDetailRow
-          detail={'Entry Price'}
-          value={entryPrice ? `${entryPrice}` : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Current Price'}
-          value={bidPrice && askPrice ? (isLong ? bidPrice : askPrice) : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Est. Received Price'}
-          value={estimatedReceivedPrice ? estimatedReceivedPrice : 'loading'}
-        />
-        <AdditionalDetailRow
-          detail={'Price Impact'}
-          value={priceImpact ? `${priceImpact}%` : '-'}
-        />
-        <AdditionalDetailRow
-          detail={'Liquidation Price (est)'}
-          value={liquidationPrice ? liquidationPrice : 'loading'}
-        />
+        <AdditionalDetailRow detail={'Entry Price'} value={entryPrice ? `${entryPrice}` : 'loading'} />
+        <AdditionalDetailRow detail={'Current Price'} value={bidPrice && askPrice ? (isLong ? bidPrice : askPrice) : 'loading'} />
+        <AdditionalDetailRow detail={'Est. Received Price'} value={estimatedReceivedPrice ? estimatedReceivedPrice : 'loading'} />
+        <AdditionalDetailRow detail={'Price Impact'} value={priceImpact ? `${priceImpact}%` : '-'} />
+        <AdditionalDetailRow detail={'Liquidation Price (est)'} value={liquidationPrice ? liquidationPrice : 'loading'} />
       </FlexColumn>
 
       {/* <FlexColumn mt={"48px"}>

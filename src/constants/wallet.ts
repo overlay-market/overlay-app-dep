@@ -1,7 +1,7 @@
-import { AbstractConnector } from '@web3-react/abstract-connector';
-import { injected, walletconnect } from '../connectors/connectors';
-import METAMASK_ICON from '../assets/images/metamask.png';
-import WALLETCONNECT_ICON from '../assets/images/walletconnect.svg';
+import {AbstractConnector} from '@web3-react/abstract-connector'
+import {injected, walletconnect} from '../connectors/connectors'
+import METAMASK_ICON from '../assets/images/metamask.png'
+import WALLETCONNECT_ICON from '../assets/images/walletconnect.svg'
 
 interface WalletInfo {
   connector?: AbstractConnector
@@ -12,9 +12,9 @@ interface WalletInfo {
   primary?: true
   mobile?: true
   mobileOnly?: true
-};
+}
 
-export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
+export const SUPPORTED_WALLETS: {[key: string]: WalletInfo} = {
   INJECTED: {
     connector: injected,
     name: 'Injected',
@@ -37,5 +37,5 @@ export const SUPPORTED_WALLETS: { [key: string]: WalletInfo } = {
     description: 'Connect to Trust Wallet, Rainbow Wallet and more...',
     href: null,
     mobile: true,
-  }
-};
+  },
+}

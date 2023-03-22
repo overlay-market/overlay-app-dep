@@ -65,10 +65,7 @@ export function fetchClaim(account: string, claimId: string): any {
   )
 }
 
-export function useUserClaimData(
-  account: string | null | undefined,
-  claimId: string,
-): UserClaimData | null {
+export function useUserClaimData(account: string | null | undefined, claimId: string): UserClaimData | null {
   const {chainId} = useActiveWeb3React()
   const [claimInfo, setClaimInfo] = useState<{[account: string]: UserClaimData | null}>({})
 
@@ -97,10 +94,7 @@ export function useUserClaimData(
   return account ? claimInfo[account] : null
 }
 
-export function useUserHasAvailableClaim(
-  account: string | null | undefined,
-  claimId: string,
-): boolean | undefined {
+export function useUserHasAvailableClaim(account: string | null | undefined, claimId: string): boolean | undefined {
   const {chainId} = useActiveWeb3React()
   const userClaimData = useUserClaimData(account, claimId)
   const distributorContract = useMerkleDistributorContract(claimId)

@@ -31,14 +31,7 @@ export const InfoTip = ({children, margin, color, tipFor}: InfoTipProps) => {
             <Info height={12} width={12} />
           </IconWrapper>
 
-          <ReactTooltip
-            place="top"
-            type="dark"
-            effect="solid"
-            textColor={color}
-            id={mobileDataTip}
-            globalEventOff="click"
-          >
+          <ReactTooltip place="top" type="dark" effect="solid" textColor={color} id={mobileDataTip} globalEventOff="click">
             <TipContainer>{children}</TipContainer>
           </ReactTooltip>
         </>
@@ -48,13 +41,7 @@ export const InfoTip = ({children, margin, color, tipFor}: InfoTipProps) => {
             <Info height={12} width={12} />
           </IconWrapper>
 
-          <ReactTooltip
-            place="bottom"
-            type="dark"
-            effect="solid"
-            textColor={color}
-            id={desktopDataTip}
-          >
+          <ReactTooltip place="bottom" type="dark" effect="solid" textColor={color} id={desktopDataTip}>
             <TipContainer>{children}</TipContainer>
           </ReactTooltip>
         </>

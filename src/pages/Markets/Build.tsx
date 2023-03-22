@@ -121,10 +121,7 @@ const NumericalInputBottomText = styled(TEXT.Supplemental)`
 // to be moved to respective sub-components to keep clean
 export const BuildInterface = ({marketId}: {marketId: string}) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
-  const [
-    {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
-    setBuildState,
-  ] = useState<{
+  const [{showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash}, setBuildState] = useState<{
     showConfirm: boolean
     attemptingTransaction: boolean
     transactionErrorMessage: string | undefined
@@ -152,13 +149,11 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const ovl = chainId ? OVL[chainId] : undefined
 
   // @TO-DO: pull market name from feed
-  const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} =
-    useMarketName(market?.feedAddress)
+  const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(market?.feedAddress)
 
   const marketName = useMemo(() => {
     if (description) return MARKET_NAME[description]
-    if (baseToken === 'loading' && quoteToken === 'loading')
-      return <Loader stroke="white" size="12px" />
+    if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
 
@@ -184,8 +179,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const sigFigConstant = 4
 
-  const isInverseMarket =
-    chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null
+  const isInverseMarket = chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null
 
   // @TO-DO: pull market attributes
   const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined
@@ -199,12 +193,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const formattedOiLong = useMemo(() => {
     if (!rawOiLong) return undefined
     if (!baseTokenDecimals && !decimals) return undefined
-    if (
-      !marketTokensDecimalsDifference &&
-      typeof marketTokensDecimalsDifference !== 'number' &&
-      !decimals
-    )
-      return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number' && !decimals) return undefined
     if (decimals) {
       return formatBigNumberUsingDecimalsToNumber(rawOiLong, decimals, sigFigConstant)
     }
@@ -213,23 +202,14 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     } else {
       // divide by ONE or 1e18 based on fixed point calc for OI in solidity
       const divBy1e18 = rawOiLong.div(ethers.constants.WeiPerEther)
-      return formatBigNumberUsingDecimalsToNumber(
-        divBy1e18,
-        marketTokensDecimalsDifference,
-        sigFigConstant,
-      )
+      return formatBigNumberUsingDecimalsToNumber(divBy1e18, marketTokensDecimalsDifference, sigFigConstant)
     }
   }, [rawOiLong, baseTokenDecimals, decimals, marketTokensDecimalsDifference])
 
   const formattedOiShort = useMemo(() => {
     if (!rawOiShort) return undefined
     if (!baseTokenDecimals && !decimals) return undefined
-    if (
-      !marketTokensDecimalsDifference &&
-      typeof marketTokensDecimalsDifference !== 'number' &&
-      !decimals
-    )
-      return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number' && !decimals) return undefined
     if (decimals) {
       return formatBigNumberUsingDecimalsToNumber(rawOiShort, decimals, sigFigConstant)
     }
@@ -238,11 +218,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     } else {
       // divide by ONE or 1e18 based on fixed point calc for OI in solidity
       const divBy1e18 = rawOiShort.div(ethers.constants.WeiPerEther)
-      return formatBigNumberUsingDecimalsToNumber(
-        divBy1e18,
-        marketTokensDecimalsDifference,
-        sigFigConstant,
-      )
+      return formatBigNumberUsingDecimalsToNumber(divBy1e18, marketTokensDecimalsDifference, sigFigConstant)
     }
   }, [rawOiShort, baseTokenDecimals, decimals, marketTokensDecimalsDifference])
 
@@ -251,12 +227,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const formattedCapOi = useMemo(() => {
     if (!rawCapOi) return undefined
     if (!baseTokenDecimals && !decimals) return undefined
-    if (
-      !marketTokensDecimalsDifference &&
-      typeof marketTokensDecimalsDifference !== 'number' &&
-      !decimals
-    )
-      return undefined
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number' && !decimals) return undefined
     if (decimals) {
       return formatBigNumberUsingDecimalsToNumber(rawCapOi, decimals, sigFigConstant)
     }
@@ -265,11 +236,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     } else {
       // divide by ONE or 1e18 based on fixed point calc for OI in solidity
       const divBy1e18 = rawCapOi.div(ethers.constants.WeiPerEther)
-      return formatBigNumberUsingDecimalsToNumber(
-        divBy1e18,
-        marketTokensDecimalsDifference,
-        sigFigConstant,
-      )
+      return formatBigNumberUsingDecimalsToNumber(divBy1e18, marketTokensDecimalsDifference, sigFigConstant)
     }
   }, [rawCapOi, decimals, baseTokenDecimals, marketTokensDecimalsDifference])
 
@@ -295,21 +262,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     // @dev TO-DO: update variable names to differentiate between chainlink and uni v3 feeds
     if (decimals && quoteTokenDecimals === undefined) {
       return {
-        bid: formatBigNumberUsingDecimalsToString(
-          fetchPrices.result?.bid_,
-          decimals,
-          sigFigConstant,
-        ),
-        ask: formatBigNumberUsingDecimalsToString(
-          fetchPrices.result?.ask_,
-          decimals,
-          sigFigConstant,
-        ),
-        mid: formatBigNumberUsingDecimalsToString(
-          fetchPrices.result?.mid_,
-          decimals,
-          sigFigConstant,
-        ),
+        bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, decimals, sigFigConstant),
+        ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, decimals, sigFigConstant),
+        mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, decimals, sigFigConstant),
         _bid: fetchPrices.result?.bid_,
         _ask: fetchPrices.result?.ask_,
         _mid: fetchPrices.result?.mid_,
@@ -317,21 +272,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     }
 
     return {
-      bid: formatBigNumberUsingDecimalsToString(
-        fetchPrices.result?.bid_,
-        quoteTokenDecimals,
-        sigFigConstant,
-      ),
-      ask: formatBigNumberUsingDecimalsToString(
-        fetchPrices.result?.ask_,
-        quoteTokenDecimals,
-        sigFigConstant,
-      ),
-      mid: formatBigNumberUsingDecimalsToString(
-        fetchPrices.result?.mid_,
-        quoteTokenDecimals,
-        sigFigConstant,
-      ),
+      bid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.bid_, quoteTokenDecimals, sigFigConstant),
+      ask: formatBigNumberUsingDecimalsToString(fetchPrices.result?.ask_, quoteTokenDecimals, sigFigConstant),
+      mid: formatBigNumberUsingDecimalsToString(fetchPrices.result?.mid_, quoteTokenDecimals, sigFigConstant),
       _bid: fetchPrices.result?.bid_,
       _ask: fetchPrices.result?.ask_,
       _mid: fetchPrices.result?.mid_,
@@ -344,23 +287,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [fetchFundingRate])
 
   const {buildData, parsedAmount, inputError} = useDerivedBuildInfo()
-  const {callback: buildCallback} = useBuildCallback(
-    buildData,
-    market?.id,
-    prices._mid,
-    minCollateral,
-    inputError,
-  )
+  const {callback: buildCallback} = useBuildCallback(buildData, market?.id, prices._mid, minCollateral, inputError)
 
   const {selectedLeverage, isLong, typedValue, setSlippageValue, txnDeadline} = useBuildState()
-  const {
-    onAmountInput,
-    onSelectLeverage,
-    onSelectPositionSide,
-    onSetSlippage,
-    onSetTxnDeadline,
-    onResetBuildState,
-  } = useBuildActionHandlers()
+  const {onAmountInput, onSelectLeverage, onSelectPositionSide, onSetSlippage, onSetTxnDeadline, onResetBuildState} = useBuildActionHandlers()
 
   const handleResetTxnSettings = useCallback(
     (e: any) => {
@@ -512,15 +442,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       })
   }, [approveCallback, typedValue])
 
-  const estimatedOiResult = useEstimatedBuildOi(
-    market?.id,
-    typedValue,
-    selectedLeverage,
-    isLong,
-    decimals,
-    baseTokenDecimals,
-    quoteTokenDecimals,
-  )
+  const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong, decimals, baseTokenDecimals, quoteTokenDecimals)
 
   const rawExpectedOi = estimatedOiResult.rawOi ? estimatedOiResult.rawOi : null
   const expectedOi = estimatedOiResult?.formattedOi ? estimatedOiResult?.formattedOi : null
@@ -528,19 +450,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi)
   const estimatedAsk = useAsk(market?.id, estimatedFractionOfCapOi)
 
-  const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(
-    market?.id,
-    typedValue,
-    selectedLeverage,
-    isLong,
-  )
+  const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
 
   const estimatedLiquidationPrice = estimatedLiquidationPriceResult
-    ? formatBigNumberUsingDecimalsToNumber(
-        estimatedLiquidationPriceResult,
-        decimals ?? quoteTokenDecimals,
-        sigFigConstant,
-      )
+    ? formatBigNumberUsingDecimalsToNumber(estimatedLiquidationPriceResult, decimals ?? quoteTokenDecimals, sigFigConstant)
     : null
 
   const estimatedReceivedPrice: any = useMemo(() => {
@@ -560,17 +473,11 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
-    if (!typedValue || isLong === undefined || prices.bid === undefined || prices.ask === undefined)
-      return null
-    if (prices.bid === 'loading' || prices.ask === 'loading')
-      return <Loader stroke="white" size="12px" />
+    if (!typedValue || isLong === undefined || prices.bid === undefined || prices.ask === undefined) return null
+    if (prices.bid === 'loading' || prices.ask === 'loading') return <Loader stroke="white" size="12px" />
 
-    const priceImpactValue = isLong
-      ? estimatedReceivedPrice - prices.ask
-      : prices.bid - estimatedReceivedPrice
-    const priceImpactPercentage = isLong
-      ? (priceImpactValue / prices.ask) * 100
-      : (priceImpactValue / prices.bid) * 100
+    const priceImpactValue = isLong ? estimatedReceivedPrice - prices.ask : prices.bid - estimatedReceivedPrice
+    const priceImpactPercentage = isLong ? (priceImpactValue / prices.ask) * 100 : (priceImpactValue / prices.bid) * 100
 
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, prices.bid, prices.ask])
@@ -582,27 +489,20 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [estimatedReceivedPrice, priceImpact, setSlippageValue])
 
   const showUnderwaterFlow = useMemo(() => {
-    if (prices.mid === undefined || prices.mid === 'loading' || !estimatedLiquidationPrice)
-      return false
-    return isLong
-      ? estimatedLiquidationPrice > parseFloat(prices.mid)
-      : estimatedLiquidationPrice < parseFloat(prices.mid)
+    if (prices.mid === undefined || prices.mid === 'loading' || !estimatedLiquidationPrice) return false
+    return isLong ? estimatedLiquidationPrice > parseFloat(prices.mid) : estimatedLiquidationPrice < parseFloat(prices.mid)
   }, [prices, isLong, estimatedLiquidationPrice])
 
   const exceedOiCap = useMemo(() => {
-    if (!rawOiLong || !rawOiShort || !rawCapOi || !rawExpectedOi || isLong === undefined)
-      return false
-    return isLong
-      ? rawExpectedOi.add(rawOiLong).gt(rawCapOi)
-      : rawExpectedOi.add(rawOiShort).gt(rawCapOi)
+    if (!rawOiLong || !rawOiShort || !rawCapOi || !rawExpectedOi || isLong === undefined) return false
+    return isLong ? rawExpectedOi.add(rawOiLong).gt(rawCapOi) : rawExpectedOi.add(rawOiShort).gt(rawCapOi)
   }, [isLong, rawOiLong, rawOiShort, rawCapOi, rawExpectedOi])
 
-  const {preAdjustedOi, calculatedBuildFee, adjustedCollateral, adjustedOi, adjustedDebt} =
-    useEstimatedBuild(
-      selectedLeverage,
-      Number(typedValue),
-      buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
-    )
+  const {preAdjustedOi, calculatedBuildFee, adjustedCollateral, adjustedOi, adjustedDebt} = useEstimatedBuild(
+    selectedLeverage,
+    Number(typedValue),
+    buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
+  )
 
   return (
     <MarketCard align={'left'} padding={'0px'}>
@@ -635,10 +535,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         <SelectLongPositionButton onClick={() => handleSelectPositionSide(true)} active={isLong}>
           Long
         </SelectLongPositionButton>
-        <SelectShortPositionButton
-          onClick={() => handleSelectPositionSide(false)}
-          active={!isLong && isLong !== undefined}
-        >
+        <SelectShortPositionButton onClick={() => handleSelectPositionSide(false)} active={!isLong && isLong !== undefined}>
           Short
         </SelectShortPositionButton>
         <LeverageSlider
@@ -653,39 +550,18 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         <NumericalInputLabel htmlFor="Build Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
           <FlexRow ml="auto" mb="4px" width="auto">
-            <TransparentUnderlineButton
-              onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}
-            >
-              25%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}
-            >
-              50%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}
-            >
-              75%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton
-              onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}
-            >
-              Max
-            </TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>25%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}>50%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}>75%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}>Max</TransparentUnderlineButton>
           </FlexRow>
         </NumericalInputLabel>
         <NumericalInputContainer>
           <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
-          <NumericalInput
-            align={'right'}
-            onUserInput={handleUserInput}
-            value={typedValue?.toString()}
-          />
+          <NumericalInput align={'right'} onUserInput={handleUserInput} value={typedValue?.toString()} />
         </NumericalInputContainer>
         <NumericalInputBottomText>
-          minimum:{' '}
-          {minCollateral !== undefined ? minCollateral : <Loader stroke="white" size="12px" />}
+          minimum: {minCollateral !== undefined ? minCollateral : <Loader stroke="white" size="12px" />}
         </NumericalInputBottomText>
 
         {showUnderwaterFlow ? (
@@ -701,10 +577,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
             Exceeds OI Cap
           </TriggerBuildButton>
         ) : showApprovalFlow ? (
-          <ApproveTransactionButton
-            attemptingTransaction={attemptingTransaction}
-            onClick={handleApprove}
-          />
+          <ApproveTransactionButton attemptingTransaction={attemptingTransaction} onClick={handleApprove} />
         ) : (
           <TriggerBuildButton
             onClick={() => {
@@ -736,9 +609,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         bidPrice={prices.bid}
         askPrice={prices.ask}
         midPrice={prices.mid}
-        fee={
-          buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : 'loading'
-        }
+        fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : 'loading'}
         oiCap={formattedCapOi}
         capPayoff={capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={formattedOiLong}
@@ -746,9 +617,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         slippageTolerance={setSlippageValue}
         fundingRate={fundingRate}
         expectedOi={expectedOi && typedValue !== '' ? expectedOi : null}
-        estLiquidationPrice={
-          estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'
-        }
+        estLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
         marketAddress={market?.id}
         feedAddress={market?.feedAddress}
       />
@@ -766,9 +635,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         selectedLeverage={selectedLeverage}
         adjustedCollateral={adjustedCollateral}
         expectedOi={expectedOi && typedValue !== '' ? expectedOi : null}
-        estimatedLiquidationPrice={
-          estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'
-        }
+        estimatedLiquidationPrice={estimatedLiquidationPrice && typedValue !== '' ? estimatedLiquidationPrice : '-'}
         transactionHash={transactionHash}
         transactionErrorMessage={transactionErrorMessage}
       />

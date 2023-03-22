@@ -4,10 +4,7 @@ import {Token} from '@uniswap/sdk-core'
 import {useCallback, useMemo} from 'react'
 import {BigNumber, utils} from 'ethers'
 import {useAddPopup} from '../state/application/hooks'
-import {
-  useTransactionAdder,
-  useHasPendingApproval,
-} from '../state/transactions/hooks'
+import {useTransactionAdder, useHasPendingApproval} from '../state/transactions/hooks'
 import {TransactionType} from '../state/transactions/actions'
 import {calculateGasMargin} from '../utils/calculateGasMargin'
 import {useTokenContract} from './useContract'
@@ -41,11 +38,7 @@ export function useApproveCallback(
     if (!currentAllowance) return ApprovalState.UNKNOWN
 
     // amountToApprove will be defined if currentAllowance is
-    return currentAllowance.lt(amountToApprove)
-      ? pendingApproval
-        ? ApprovalState.PENDING
-        : ApprovalState.NOT_APPROVED
-      : ApprovalState.APPROVED
+    return currentAllowance.lt(amountToApprove) ? (pendingApproval ? ApprovalState.PENDING : ApprovalState.NOT_APPROVED) : ApprovalState.APPROVED
   }, [amountToApprove, currentAllowance, pendingApproval, spender])
 
   const tokenContract = useTokenContract(currencyToken?.address)
@@ -66,25 +59,16 @@ export function useApproveCallback(
     if (!spender) return console.error('no spender')
 
     let useExact = false
-    const estimatedGas = await tokenContract.estimateGas
-      .approve(spender, MaxUint256)
-      .catch(() => {
-        // general fallback for tokens who restrict approval amounts
-        useExact = true
-        return tokenContract.estimateGas.approve(
-          spender,
-          utils.formatUnits(amountToApprove),
-        )
-      })
+    const estimatedGas = await tokenContract.estimateGas.approve(spender, MaxUint256).catch(() => {
+      // general fallback for tokens who restrict approval amounts
+      useExact = true
+      return tokenContract.estimateGas.approve(spender, utils.formatUnits(amountToApprove))
+    })
 
     return tokenContract
-      .approve(
-        spender,
-        useExact ? utils.formatUnits(amountToApprove) : MaxUint256,
-        {
-          gasLimit: calculateGasMargin(estimatedGas),
-        },
-      )
+      .approve(spender, useExact ? utils.formatUnits(amountToApprove) : MaxUint256, {
+        gasLimit: calculateGasMargin(estimatedGas),
+      })
       .then((response: TransactionResponse) => {
         addTransaction(response, {
           type: TransactionType.APPROVAL,
@@ -108,16 +92,7 @@ export function useApproveCallback(
 
         throw error
       })
-  }, [
-    approvalState,
-    currencyToken,
-    tokenContract,
-    amountToApprove,
-    spender,
-    addTransaction,
-    addPopup,
-    currentTimeForId,
-  ])
+  }, [approvalState, currencyToken, tokenContract, amountToApprove, spender, addTransaction, addPopup, currentTimeForId])
 
   return [approvalState, approve]
 }

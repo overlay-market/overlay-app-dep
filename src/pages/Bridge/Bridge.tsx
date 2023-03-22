@@ -136,13 +136,7 @@ const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
           </button> */}
         </FlexRow>
         <FlexRow justify="space-between">
-          <NumericalInput
-            align="left"
-            padding="0px"
-            fontWeight="700"
-            onUserInput={handleUserInput}
-            value={typedValue?.toString()}
-          />
+          <NumericalInput align="left" padding="0px" fontWeight="700" onUserInput={handleUserInput} value={typedValue?.toString()} />
           <InputCurrency>OVL</InputCurrency>
         </FlexRow>
       </InputContainer>
@@ -172,13 +166,7 @@ const BridgeToNetwork = ({chainId}: {chainId: ChainId}) => {
           <TEXT.Supplemental>Balance: {parsedBalance ? parsedBalance : '-'} OVL</TEXT.Supplemental>
         </FlexRow>
         <FlexRow justify="space-between">
-          <NumericalInput
-            align="left"
-            padding="0px"
-            fontWeight="700"
-            onUserInput={() => null}
-            value={typedValue?.toString()}
-          />
+          <NumericalInput align="left" padding="0px" fontWeight="700" onUserInput={() => null} value={typedValue?.toString()} />
           <InputCurrency>OVL</InputCurrency>
         </FlexRow>
       </InputContainer>
@@ -194,10 +182,7 @@ const Bridge = () => {
   const userOvlBalance = useChainOvlBalance(chainId)
   const parsedOvlBalance = userOvlBalance && userOvlBalance.toFixed(4)
 
-  const [
-    {showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash},
-    setBridgeState,
-  ] = useState<{
+  const [{showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash}, setBridgeState] = useState<{
     showConfirm: boolean
     attemptingTransaction: boolean
     transactionErrorMessage: string | undefined
@@ -220,11 +205,7 @@ const Bridge = () => {
   useEffect(() => {
     setBridgeIdState({
       bridgeFromChainId: chainId ? chainId : SupportedChainId.MAINNET,
-      bridgeToChainId: chainId
-        ? chainId === 1
-          ? SupportedChainId.ARBITRUM
-          : SupportedChainId.MAINNET
-        : SupportedChainId.ARBITRUM,
+      bridgeToChainId: chainId ? (chainId === 1 ? SupportedChainId.ARBITRUM : SupportedChainId.MAINNET) : SupportedChainId.ARBITRUM,
     })
   }, [chainId])
 
@@ -341,9 +322,7 @@ const Bridge = () => {
       )}
       <FlexRow justify="space-between" mt="24px">
         <TEXT.Supplemental>Estimated Fee</TEXT.Supplemental>
-        <TEXT.Supplemental>
-          {estimatedFees ? formatWeiToParsedNumber(estimatedFees, 18, 5) + ` ETH` : `-`}
-        </TEXT.Supplemental>
+        <TEXT.Supplemental>{estimatedFees ? formatWeiToParsedNumber(estimatedFees, 18, 5) + ` ETH` : `-`}</TEXT.Supplemental>
       </FlexRow>
       <FlexRow justify="space-between" mt="24px">
         <TEXT.Supplemental>Time to transfer</TEXT.Supplemental>

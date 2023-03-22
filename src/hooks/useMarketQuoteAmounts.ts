@@ -7,11 +7,7 @@ import ERC20_INTERFACE from '../constants/abis/erc20'
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
 
 export function useMarketQuoteAmounts(feedAddresses: (string | undefined)[]): number[] {
-  const callResult = useMultipleContractSingleData(
-    feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketQuoteToken',
-  )
+  const callResult = useMultipleContractSingleData(feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken')
 
   const quoteTokens = useMemo(() => {
     if (callResult.length === 0) return []

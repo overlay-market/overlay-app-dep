@@ -53,16 +53,11 @@ function useBridgeTokenArguments(
     if (!destinationChainId || !amount || !layerZeroContract) {
       return undefined
     } else {
-      return layerZeroContract.interface.encodeFunctionData('bridgeToken', [
-        LAYER_ZERO_DESTINATION_ID[destinationChainId],
-        utils.parseUnits(amount),
-      ])
+      return layerZeroContract.interface.encodeFunctionData('bridgeToken', [LAYER_ZERO_DESTINATION_ID[destinationChainId], utils.parseUnits(amount)])
     }
   }, [destinationChainId, amount, layerZeroContract])
 
-  const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [
-    LAYER_ZERO_DESTINATION_ID[destinationChainId],
-  ])
+  const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [LAYER_ZERO_DESTINATION_ID[destinationChainId]])
 
   const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
     LAYER_ZERO_DESTINATION_ID[destinationChainId],
@@ -180,12 +175,7 @@ export function useBridgeTokenCallback(
                 return library
                   .call(tx)
                   .then(result => {
-                    console.debug(
-                      'Unexpected successful call after failed estimate gas',
-                      call,
-                      gasError,
-                      result,
-                    )
+                    console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
 
                     const error = 'Unexpected issue with estimating the gas. ' + 'Please try again.'
 
@@ -218,22 +208,17 @@ export function useBridgeTokenCallback(
         )
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        let bestCallOption: SuccessfulCall | BridgeTokenCallEstimate | undefined =
-          estimatedCalls.find(
-            (el, ix, list): el is SuccessfulCall =>
-              'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
-          )
+        let bestCallOption: SuccessfulCall | BridgeTokenCallEstimate | undefined = estimatedCalls.find(
+          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+        )
 
         // check if any calls errored with a recognizable error
         if (!bestCallOption) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
           if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<BridgeTokenCallEstimate>(
-            (call): call is BridgeTokenCallEstimate => !('error' in call),
-          )
-          if (!firstNoErrorCall)
-            throw new Error('Unexpected error. Could not estimate gas for the bridge.')
+          const firstNoErrorCall = estimatedCalls.find<BridgeTokenCallEstimate>((call): call is BridgeTokenCallEstimate => !('error' in call))
+          if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the bridge.')
           bestCallOption = firstNoErrorCall
         }
 
@@ -250,9 +235,7 @@ export function useBridgeTokenCallback(
             to: address,
             data: calldata,
             // let the wallet try if we can't estimate the gas
-            ...('gasEstimate' in bestCallOption
-              ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)}
-              : {}),
+            ...('gasEstimate' in bestCallOption ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)} : {}),
             ...(value && !isZero(value) ? {value} : {}),
           })
           .then((response: TransactionResponse) => {
@@ -288,14 +271,5 @@ export function useBridgeTokenCallback(
       error: null,
       estimatedFees: bridgeTokenCalls?.[0]?.estimatedFees,
     }
-  }, [
-    account,
-    addPopup,
-    addTransaction,
-    amount,
-    bridgeTokenCalls,
-    chainId,
-    currentTimeForId,
-    library,
-  ])
+  }, [account, addPopup, addTransaction, amount, bridgeTokenCalls, chainId, currentTimeForId, library])
 }

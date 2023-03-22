@@ -11,11 +11,7 @@ export function formatWeiToParsedString(wei: BigNumberish | string | undefined, 
   }
 }
 
-export function formatWeiToParsedNumber(
-  wei: BigNumberish | string | undefined,
-  decimals: number,
-  round?: number,
-) {
+export function formatWeiToParsedNumber(wei: BigNumberish | string | undefined, decimals: number, round?: number) {
   let parsedWei
 
   if (wei) {
@@ -26,11 +22,7 @@ export function formatWeiToParsedNumber(
   }
 }
 
-export function formatBigNumberUsingDecimalsToString(
-  bignumber: BigNumberish | string | undefined,
-  decimals: number | undefined,
-  sigFigs?: number,
-) {
+export function formatBigNumberUsingDecimalsToString(bignumber: BigNumberish | string | undefined, decimals: number | undefined, sigFigs?: number) {
   let parsedBigNumber
 
   if (!decimals && decimals !== 0) return undefined
@@ -43,11 +35,7 @@ export function formatBigNumberUsingDecimalsToString(
   }
 }
 
-export function formatBigNumberUsingDecimalsToNumber(
-  bignumber: BigNumberish | string | undefined,
-  decimals: number | undefined,
-  sigFigs?: number,
-) {
+export function formatBigNumberUsingDecimalsToNumber(bignumber: BigNumberish | string | undefined, decimals: number | undefined, sigFigs?: number) {
   let parsedBigNumber
 
   if (!decimals && decimals !== 0) return undefined
@@ -60,11 +48,7 @@ export function formatBigNumberUsingDecimalsToNumber(
   }
 }
 
-export function formatFundingRateToDaily(
-  wei: BigNumberish | string | undefined,
-  decimals: number,
-  round: number,
-) {
+export function formatFundingRateToDaily(wei: BigNumberish | string | undefined, decimals: number, round: number) {
   let roundedDailyPercentage
 
   if (wei) {
@@ -77,11 +61,7 @@ export function formatFundingRateToDaily(
   return roundedDailyPercentage
 }
 
-export function formatFundingRateToAnnual(
-  wei: BigNumberish | string | undefined,
-  decimals: number,
-  round: number,
-) {
+export function formatFundingRateToAnnual(wei: BigNumberish | string | undefined, decimals: number, round: number) {
   let roundedAnnualPercentage
 
   if (wei) {

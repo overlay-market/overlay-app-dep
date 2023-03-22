@@ -24,8 +24,7 @@ const Description = styled.div<{
 }>`
   color: ${({theme, descriptionColor}) => (descriptionColor ? descriptionColor : theme.text1)};
   font-size: ${({descriptionFontSize}) => (descriptionFontSize ? descriptionFontSize : '20px')};
-  font-weight: ${({descriptionFontWeight}) =>
-    descriptionFontWeight ? descriptionFontWeight : 700};
+  font-weight: ${({descriptionFontWeight}) => (descriptionFontWeight ? descriptionFontWeight : 700)};
 `
 
 type InfoColumnProps = {
@@ -55,18 +54,10 @@ export const InfoColumn = ({
 }: InfoColumnProps) => {
   return (
     <Container align={align} margin={margin}>
-      <Title
-        titleColor={titleColor}
-        titleFontSize={titleFontSize}
-        titleFontWeight={titleFontWeight}
-      >
+      <Title titleColor={titleColor} titleFontSize={titleFontSize} titleFontWeight={titleFontWeight}>
         {title}
       </Title>
-      <Description
-        descriptionColor={descriptionColor}
-        descriptionFontSize={descriptionFontSize}
-        descriptionFontWeight={descriptionFontWeight}
-      >
+      <Description descriptionColor={descriptionColor} descriptionFontSize={descriptionFontSize} descriptionFontWeight={descriptionFontWeight}>
         {description}
       </Description>
     </Container>

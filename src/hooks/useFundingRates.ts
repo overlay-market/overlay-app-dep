@@ -13,11 +13,7 @@ export function useFundingRates(marketAddresses: any) {
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
 
-  const fundingRatesResult = useSingleContractMultipleData(
-    peripheryContract,
-    'fundingRate',
-    marketAddresses,
-  )
+  const fundingRatesResult = useSingleContractMultipleData(peripheryContract, 'fundingRate', marketAddresses)
 
   return useMemo(() => {
     return fundingRatesResult.map(market => {

@@ -73,30 +73,17 @@ function useUnwindCallArguments(
 
     let fraction = Number(unwindValue) / 100
 
-    console.log(
-      'prices._bid.mul(decreaseNumerator).div(base): ',
-      prices._bid.mul(decreaseNumerator).div(base),
-    )
+    console.log('prices._bid.mul(decreaseNumerator).div(base): ', prices._bid.mul(decreaseNumerator).div(base))
 
     calldata = marketContract.interface.encodeFunctionData('unwind', [
       BigNumber.from(positionId),
       utils.parseUnits(fraction.toString()),
-      isLong
-        ? prices._bid.mul(decreaseNumerator).div(base)
-        : prices._ask.mul(increaseNumerator).div(base),
+      isLong ? prices._bid.mul(decreaseNumerator).div(base) : prices._ask.mul(increaseNumerator).div(base),
     ])
   }
 
   return useMemo(() => {
-    if (
-      !marketAddress ||
-      unwindValue === '' ||
-      !positionCurrentValue ||
-      !positionId ||
-      !account ||
-      !chainId
-    )
-      return []
+    if (!marketAddress || unwindValue === '' || !positionCurrentValue || !positionId || !account || !chainId) return []
 
     const txn: {address: string; calldata: string; value: string} = {
       address: marketAddress,
@@ -111,15 +98,7 @@ function useUnwindCallArguments(
         value: txn.value,
       },
     ]
-  }, [
-    calldata,
-    chainId,
-    account,
-    marketAddress,
-    positionCurrentValue,
-    positionId,
-    unwindValue,
-  ])
+  }, [calldata, chainId, account, marketAddress, positionCurrentValue, positionId, unwindValue])
 }
 
 export function useUnwindCallback(
@@ -139,26 +118,10 @@ export function useUnwindCallback(
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
   const addTransaction = useTransactionAdder()
-  const unwindCalls = useUnwindCallArguments(
-    unwindData,
-    marketAddress,
-    unwindValue,
-    positionCurrentValue,
-    positionId,
-    isLong,
-    prices,
-  )
+  const unwindCalls = useUnwindCallArguments(unwindData, marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices)
 
   return useMemo(() => {
-    if (
-      !unwindData ||
-      !unwindValue ||
-      unwindValue === '.' ||
-      positionId === null ||
-      !library ||
-      !account ||
-      !chainId
-    ) {
+    if (!unwindData || !unwindValue || unwindValue === '.' || positionId === null || !library || !account || !chainId) {
       return {
         state: UnwindCallbackState.INVALID,
         callback: null,
@@ -189,25 +152,15 @@ export function useUnwindCallback(
                 }
               })
               .catch(gasError => {
-                console.debug(
-                  'Gas estimate failed, trying eth_call to extract error',
-                  call,
-                )
+                console.debug('Gas estimate failed, trying eth_call to extract error', call)
 
                 return library
                   .call(tx)
                   .then(result => {
-                    console.debug(
-                      'Unexpected successful call after failed estimate gas',
-                      call,
-                      gasError,
-                      result,
-                    )
+                    console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
                     return {
                       call,
-                      error: new Error(
-                        'Unexpected issue with estimating the gas. Please try again.',
-                      ),
+                      error: new Error('Unexpected issue with estimating the gas. Please try again.'),
                     }
                   })
                   .catch(callError => {
@@ -229,27 +182,16 @@ export function useUnwindCallback(
         )
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        let bestCallOption: SuccessfulCall | UnwindCallEstimate | undefined =
-          estimatedCalls.find(
-            (el, ix, list): el is SuccessfulCall =>
-              'gasEstimate' in el &&
-              (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
-          )
+        let bestCallOption: SuccessfulCall | UnwindCallEstimate | undefined = estimatedCalls.find(
+          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+        )
 
         // check if any calls errored with a recognizable error
         if (!bestCallOption) {
-          const errorCalls = estimatedCalls.filter(
-            (call): call is FailedCall => 'error' in call,
-          )
-          if (errorCalls.length > 0)
-            throw errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<UnwindCallEstimate>(
-            (call): call is UnwindCallEstimate => !('error' in call),
-          )
-          if (!firstNoErrorCall)
-            throw new Error(
-              'Unexpected error. Could not estimate gas for unwinding position.',
-            )
+          const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
+          if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
+          const firstNoErrorCall = estimatedCalls.find<UnwindCallEstimate>((call): call is UnwindCallEstimate => !('error' in call))
+          if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for unwinding position.')
           bestCallOption = firstNoErrorCall
         }
 
@@ -264,9 +206,7 @@ export function useUnwindCallback(
             to: address,
             data: calldata,
             // let the wallet try if we can't estimate the gas
-            ...('gasEstimate' in bestCallOption
-              ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)}
-              : {}),
+            ...('gasEstimate' in bestCallOption ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)} : {}),
             ...(value && !isZero(value) ? {value} : {}),
           })
           .then((response: TransactionResponse) => {
@@ -302,16 +242,5 @@ export function useUnwindCallback(
       },
       error: null,
     }
-  }, [
-    unwindData,
-    unwindValue,
-    positionId,
-    library,
-    account,
-    chainId,
-    unwindCalls,
-    addTransaction,
-    addPopup,
-    currentTimeForId,
-  ])
+  }, [unwindData, unwindValue, positionId, library, account, chainId, unwindCalls, addTransaction, addPopup, currentTimeForId])
 }

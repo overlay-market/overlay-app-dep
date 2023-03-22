@@ -36,12 +36,7 @@ export function useMarketCapOi(marketAddress?: string): any | undefined {
  * Returns cap ois associated with input market addresses array
  * @param marketAddresses markets to query cap ois of
  */
-export function useMarketCapOis(
-  marketAddresses?: any,
-  baseTokensAmounts?: any,
-  quoteTokensAmounts?: any,
-  decimals?: any,
-) {
+export function useMarketCapOis(marketAddresses?: any, baseTokensAmounts?: any, quoteTokensAmounts?: any, decimals?: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
@@ -76,13 +71,7 @@ export function useMarketCapOis(
       } else {
         const _capOi = marketCapOi ? marketCapOi.div(ethers.constants.WeiPerEther) : null
 
-        return _capOi
-          ? formatBigNumberUsingDecimalsToNumber(
-              _capOi,
-              baseTokenQuoteTokenDecimalDifference,
-              sigFigs,
-            )
-          : undefined
+        return _capOi ? formatBigNumberUsingDecimalsToNumber(_capOi, baseTokenQuoteTokenDecimalDifference, sigFigs) : undefined
       }
     })
   }, [capOisResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts, decimals])

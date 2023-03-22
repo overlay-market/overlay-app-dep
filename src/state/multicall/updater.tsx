@@ -1,16 +1,16 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { Contract } from 'ethers';
-import { AppState } from '../state';
-import { Call, parseCallKey } from './utils';
-import useDebounce from '../../hooks/useDebounce';
-import { chunkArray } from '../../utils/chunkArray';
-import { useActiveWeb3React } from '../../hooks/web3';
-import { useBlockNumber } from '../application/hooks';
-import { RetryableError, retry } from '../../utils/retry';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { updateBlockNumber } from '../application/actions';
-import { useMulticall2Contract } from '../../hooks/useContract';
-import { errorFetchingMulticallResults, fetchingMulticallResults, updateMulticallResults } from './actions';
+import {useEffect, useMemo, useRef} from 'react'
+import {Contract} from 'ethers'
+import {AppState} from '../state'
+import {Call, parseCallKey} from './utils'
+import useDebounce from '../../hooks/useDebounce'
+import {chunkArray} from '../../utils/chunkArray'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {useBlockNumber} from '../application/hooks'
+import {RetryableError, retry} from '../../utils/retry'
+import {useAppDispatch, useAppSelector} from '../hooks'
+import {updateBlockNumber} from '../application/actions'
+import {useMulticall2Contract} from '../../hooks/useContract'
+import {errorFetchingMulticallResults, fetchingMulticallResults, updateMulticallResults} from './actions'
 
 /**
  * Fetches a chunk of calls, enforcing a minimum block number constraint
@@ -21,19 +21,19 @@ import { errorFetchingMulticallResults, fetchingMulticallResults, updateMultical
 async function fetchChunk(
   multicall: Contract,
   chunk: Call[],
-  minBlockNumber: number
+  minBlockNumber: number,
 ): Promise<{
-  results: { success: boolean; returnData: string }[]
+  results: {success: boolean; returnData: string}[]
   blockNumber: number
 }> {
   console.debug('Fetching chunk', chunk, minBlockNumber)
   let resultsBlockNumber: number
-  let results: { success: boolean; returnData: string }[]
+  let results: {success: boolean; returnData: string}[]
   try {
-    const { blockNumber, returnData } = await multicall.callStatic.tryBlockAndAggregate(
+    const {blockNumber, returnData} = await multicall.callStatic.tryBlockAndAggregate(
       false,
-      chunk.map((obj) => ({ target: obj.address, callData: obj.callData, gasLimit: obj.gasRequired ?? 1_000_000 })),
-      { blockTag: minBlockNumber }
+      chunk.map(obj => ({target: obj.address, callData: obj.callData, gasLimit: obj.gasRequired ?? 1_000_000})),
+      {blockTag: minBlockNumber},
     )
     resultsBlockNumber = blockNumber.toNumber()
     results = returnData
@@ -46,7 +46,7 @@ async function fetchChunk(
     console.debug(retryMessage)
     throw new RetryableError(retryMessage)
   }
-  return { results, blockNumber: resultsBlockNumber }
+  return {results, blockNumber: resultsBlockNumber}
 }
 
 /**
@@ -55,19 +55,16 @@ async function fetchChunk(
  * @param allListeners the all listeners state
  * @param chainId the current chain id
  */
-export function activeListeningKeys(
-  allListeners: AppState['multicall']['callListeners'],
-  chainId?: number
-): { [callKey: string]: number } {
+export function activeListeningKeys(allListeners: AppState['multicall']['callListeners'], chainId?: number): {[callKey: string]: number} {
   if (!allListeners || !chainId) return {}
   const listeners = allListeners[chainId]
   if (!listeners) return {}
 
-  return Object.keys(listeners).reduce<{ [callKey: string]: number }>((memo, callKey) => {
+  return Object.keys(listeners).reduce<{[callKey: string]: number}>((memo, callKey) => {
     const keyListeners = listeners[callKey]
 
     memo[callKey] = Object.keys(keyListeners)
-      .filter((key) => {
+      .filter(key => {
         const blocksPerFetch = parseInt(key)
         if (blocksPerFetch <= 0) return false
         return keyListeners[blocksPerFetch] > 0
@@ -88,16 +85,16 @@ export function activeListeningKeys(
  */
 export function outdatedListeningKeys(
   callResults: AppState['multicall']['callResults'],
-  listeningKeys: { [callKey: string]: number },
+  listeningKeys: {[callKey: string]: number},
   chainId: number | undefined,
-  latestBlockNumber: number | undefined
+  latestBlockNumber: number | undefined,
 ): string[] {
   if (!chainId || !latestBlockNumber) return []
   const results = callResults[chainId]
   // no results at all, load everything
   if (!results) return Object.keys(listeningKeys)
 
-  return Object.keys(listeningKeys).filter((callKey) => {
+  return Object.keys(listeningKeys).filter(callKey => {
     const blocksPerFetch = listeningKeys[callKey]
 
     const data = callResults[chainId][callKey]
@@ -116,15 +113,15 @@ export function outdatedListeningKeys(
 
 export default function Updater(): null {
   const dispatch = useAppDispatch()
-  const state = useAppSelector((state) => state.multicall)
+  const state = useAppSelector(state => state.multicall)
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100)
   const latestBlockNumber = useBlockNumber()
-  const { chainId } = useActiveWeb3React()
+  const {chainId} = useActiveWeb3React()
   const multicall2Contract = useMulticall2Contract()
-  const cancellations = useRef<{ blockNumber: number; cancellations: (() => void)[] }>()
+  const cancellations = useRef<{blockNumber: number; cancellations: (() => void)[]}>()
 
-  const listeningKeys: { [callKey: string]: number } = useMemo(() => {
+  const listeningKeys: {[callKey: string]: number} = useMemo(() => {
     return activeListeningKeys(debouncedListeners, chainId)
   }, [debouncedListeners, chainId])
 
@@ -132,22 +129,19 @@ export default function Updater(): null {
     return outdatedListeningKeys(state.callResults, listeningKeys, chainId, latestBlockNumber)
   }, [chainId, state.callResults, listeningKeys, latestBlockNumber])
 
-  const serializedOutdatedCallKeys = useMemo(
-    () => JSON.stringify(unserializedOutdatedCallKeys.sort()),
-    [unserializedOutdatedCallKeys]
-  )
+  const serializedOutdatedCallKeys = useMemo(() => JSON.stringify(unserializedOutdatedCallKeys.sort()), [unserializedOutdatedCallKeys])
 
   useEffect(() => {
     if (!latestBlockNumber || !chainId || !multicall2Contract) return
 
     const outdatedCallKeys: string[] = JSON.parse(serializedOutdatedCallKeys)
     if (outdatedCallKeys.length === 0) return
-    const calls = outdatedCallKeys.map((key) => parseCallKey(key))
+    const calls = outdatedCallKeys.map(key => parseCallKey(key))
 
     const chunkedCalls = chunkArray(calls)
 
     if (cancellations.current && cancellations.current.blockNumber !== latestBlockNumber) {
-      cancellations.current.cancellations.forEach((c) => c())
+      cancellations.current.cancellations.forEach(c => c())
     }
 
     dispatch(
@@ -155,19 +149,19 @@ export default function Updater(): null {
         calls,
         chainId,
         fetchingBlockNumber: latestBlockNumber,
-      })
+      }),
     )
 
     cancellations.current = {
       blockNumber: latestBlockNumber,
       cancellations: chunkedCalls.map((chunk, index) => {
-        const { cancel, promise } = retry(() => fetchChunk(multicall2Contract, chunk, latestBlockNumber), {
+        const {cancel, promise} = retry(() => fetchChunk(multicall2Contract, chunk, latestBlockNumber), {
           n: Infinity,
           minWait: 1000,
           maxWait: 2500,
         })
         promise
-          .then(({ results: returnData, blockNumber: fetchBlockNumber }) => {
+          .then(({results: returnData, blockNumber: fetchBlockNumber}) => {
             // accumulates the length of all previous indices
             const firstCallKeyIndex = chunkedCalls.slice(0, index).reduce<number>((memo, curr) => memo + curr.length, 0)
             const lastCallKeyIndex = firstCallKeyIndex + returnData.length
@@ -175,9 +169,9 @@ export default function Updater(): null {
             const slice = outdatedCallKeys.slice(firstCallKeyIndex, lastCallKeyIndex)
 
             // split the returned slice into errors and success
-            const { erroredCalls, results } = slice.reduce<{
+            const {erroredCalls, results} = slice.reduce<{
               erroredCalls: Call[]
-              results: { [callKey: string]: string | null }
+              results: {[callKey: string]: string | null}
             }>(
               (memo, callKey, i) => {
                 if (returnData[i].success) {
@@ -187,7 +181,7 @@ export default function Updater(): null {
                 }
                 return memo
               },
-              { erroredCalls: [], results: {} }
+              {erroredCalls: [], results: {}},
             )
 
             // dispatch any new results
@@ -197,7 +191,7 @@ export default function Updater(): null {
                   chainId,
                   results,
                   blockNumber: fetchBlockNumber,
-                })
+                }),
               )
 
             // dispatch any errored calls
@@ -208,12 +202,12 @@ export default function Updater(): null {
                   calls: erroredCalls,
                   chainId,
                   fetchingBlockNumber: fetchBlockNumber,
-                })
+                }),
               )
             }
 
             if (fetchBlockNumber > latestBlockNumber) {
-              dispatch(updateBlockNumber({ chainId, blockNumber: fetchBlockNumber }))
+              dispatch(updateBlockNumber({chainId, blockNumber: fetchBlockNumber}))
             }
           })
           .catch((error: any) => {
@@ -227,7 +221,7 @@ export default function Updater(): null {
                 calls: chunk,
                 chainId,
                 fetchingBlockNumber: latestBlockNumber,
-              })
+              }),
             )
           })
         return cancel

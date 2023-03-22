@@ -35,16 +35,7 @@ type LeverageSliderProps = {
   margin?: string
 }
 
-export const LeverageSlider = ({
-  value,
-  liquidationPrice,
-  onChange,
-  name,
-  min,
-  max,
-  step,
-  margin,
-}: LeverageSliderProps) => {
+export const LeverageSlider = ({value, liquidationPrice, onChange, name, min, max, step, margin}: LeverageSliderProps) => {
   const SLIDER_CONSTANTS = {
     backgroundColor: '#F2F2F2',
     sliderColor: '#12B4FF',

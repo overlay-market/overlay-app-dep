@@ -36,21 +36,13 @@ enum LiquidateCallbackState {
   VALID,
 }
 
-function useLiquidateCallArguments(
-  marketAddress?: string,
-  ownerAddress?: string,
-  positionId?: string,
-  chainId?: any,
-) {
+function useLiquidateCallArguments(marketAddress?: string, ownerAddress?: string, positionId?: string, chainId?: any) {
   let calldata: any
   const marketContract = useMarketContract(marketAddress)
 
   if (!ownerAddress || !positionId || !marketContract) calldata = undefined
   else {
-    calldata = marketContract.interface.encodeFunctionData('liquidate', [
-      ownerAddress,
-      positionId,
-    ])
+    calldata = marketContract.interface.encodeFunctionData('liquidate', [ownerAddress, positionId])
   }
 
   return useMemo(() => {
@@ -84,12 +76,7 @@ export function useLiquidateCallback(
   const {account, chainId, library} = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
   const addPopup = useAddPopup()
-  const liquidateCalls = useLiquidateCallArguments(
-    marketAddress,
-    ownerAddress,
-    positionId,
-    chainId,
-  )
+  const liquidateCalls = useLiquidateCallArguments(marketAddress, ownerAddress, positionId, chainId)
   const currentTimeForId = currentTimeParsed()
 
   return useMemo(() => {
@@ -121,24 +108,14 @@ export function useLiquidateCallback(
                 return {call, gasEstimate}
               })
               .catch(gasError => {
-                console.debug(
-                  'Gas estimate failed, trying eth_call to extract error',
-                  call,
-                )
+                console.debug('Gas estimate failed, trying eth_call to extract error', call)
 
                 return library
                   .call(tx)
                   .then(result => {
-                    console.debug(
-                      'Unexpected successful call after failed estimate gas',
-                      call,
-                      gasError,
-                      result,
-                    )
+                    console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
 
-                    const error =
-                      'Unexpected issue with estimating the gas. ' +
-                      'Please try again.'
+                    const error = 'Unexpected issue with estimating the gas. ' + 'Please try again.'
 
                     return {
                       error: new Error(error),
@@ -166,28 +143,17 @@ export function useLiquidateCallback(
         )
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
-        let bestCallOption: SuccessfulCall | LiquidateCallEstimate | undefined =
-          estimatedCalls.find(
-            (el, ix, list): el is SuccessfulCall =>
-              'gasEstimate' in el &&
-              (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
-          )
+        let bestCallOption: SuccessfulCall | LiquidateCallEstimate | undefined = estimatedCalls.find(
+          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+        )
 
         // check if any calls errored with a recognizable error
         if (!bestCallOption) {
-          const errorCalls = estimatedCalls.filter(
-            (call): call is FailedCall => 'error' in call,
-          )
+          const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
-          if (errorCalls.length > 0)
-            throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<LiquidateCallEstimate>(
-            (call): call is LiquidateCallEstimate => !('error' in call),
-          )
-          if (!firstNoErrorCall)
-            throw new Error(
-              'Unexpected error. Could not estimate gas for the swap.',
-            )
+          if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
+          const firstNoErrorCall = estimatedCalls.find<LiquidateCallEstimate>((call): call is LiquidateCallEstimate => !('error' in call))
+          if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the swap.')
           bestCallOption = firstNoErrorCall
         }
 
@@ -204,9 +170,7 @@ export function useLiquidateCallback(
             to: address,
             data: calldata,
             // let the wallet try if we can't estimate the gas
-            ...('gasEstimate' in bestCallOption
-              ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)}
-              : {}),
+            ...('gasEstimate' in bestCallOption ? {gasLimit: calculateGasMargin(bestCallOption.gasEstimate)} : {}),
             ...(value && !isZero(value) ? {value} : {}),
           })
           .then((response: TransactionResponse) => {
@@ -241,14 +205,5 @@ export function useLiquidateCallback(
       },
       error: null,
     }
-  }, [
-    positionId,
-    library,
-    account,
-    chainId,
-    liquidateCalls,
-    addTransaction,
-    addPopup,
-    currentTimeForId,
-  ])
+  }, [positionId, library, account, chainId, liquidateCalls, addTransaction, addPopup, currentTimeForId])
 }

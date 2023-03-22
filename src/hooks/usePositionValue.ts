@@ -6,10 +6,7 @@ import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useActiveWeb3React} from './web3'
 import {formatWeiToParsedNumber} from '../utils/formatWei'
 
-export function usePositionValue(
-  marketAddress?: string,
-  positionId?: string | number,
-): BigNumber | undefined {
+export function usePositionValue(marketAddress?: string, positionId?: string | number): BigNumber | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()

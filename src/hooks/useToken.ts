@@ -13,11 +13,7 @@ import {OVL} from '../constants/tokens'
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/
 
-function parseStringOrBytes32(
-  str: string | undefined,
-  bytes32: string | undefined,
-  defaultValue: string,
-): string {
+function parseStringOrBytes32(str: string | undefined, bytes32: string | undefined, defaultValue: string): string {
   return str && str.length > 0
     ? str
     : // need to check for proper bytes string and valid terminator
@@ -35,23 +31,10 @@ export function useToken(tokenAddress?: string | null): Token | undefined | null
   const formattedAddress = isAddress(tokenAddress)
 
   const tokenContract = useTokenContract(formattedAddress ? formattedAddress : undefined, false)
-  const tokenContractBytes32 = useBytes32TokenContract(
-    formattedAddress ? formattedAddress : undefined,
-    false,
-  )
+  const tokenContractBytes32 = useBytes32TokenContract(formattedAddress ? formattedAddress : undefined, false)
 
-  const tokenName = useSingleCallResult(
-    tokenContract ? undefined : tokenContract,
-    'name',
-    undefined,
-    NEVER_RELOAD,
-  )
-  const tokenNameBytes32 = useSingleCallResult(
-    tokenContractBytes32,
-    'name',
-    undefined,
-    NEVER_RELOAD,
-  )
+  const tokenName = useSingleCallResult(tokenContract ? undefined : tokenContract, 'name', undefined, NEVER_RELOAD)
+  const tokenNameBytes32 = useSingleCallResult(tokenContractBytes32, 'name', undefined, NEVER_RELOAD)
   const symbol = useSingleCallResult(tokenContract, 'symbol', undefined, NEVER_RELOAD)
   const symbolBytes32 = useSingleCallResult(tokenContractBytes32, 'symbol', undefined, NEVER_RELOAD)
   const decimals = useSingleCallResult(tokenContract, 'decimals', undefined, NEVER_RELOAD)

@@ -17,10 +17,7 @@ import {formatWeiToParsedNumber} from '../utils/formatWei'
 // D = current debt
 // OI(0) = open interest at entry
 
-export function useLiquidationPrice(
-  marketAddress?: string,
-  positionId?: string | number,
-): BigNumber | undefined {
+export function useLiquidationPrice(marketAddress?: string, positionId?: string | number): BigNumber | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {account} = useActiveWeb3React()
@@ -30,9 +27,7 @@ export function useLiquidationPrice(
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
     ;(async () => {
       try {
-        setLiquidationPrice(
-          await peripheryContract.liquidationPrice(marketAddress, account, positionId),
-        )
+        setLiquidationPrice(await peripheryContract.liquidationPrice(marketAddress, account, positionId))
       } catch (error) {
         console.log('error from useLiquidationPrice: ', error)
       }

@@ -23,11 +23,9 @@ export const ButtonText = styled.button`
   }
 `
 
-export const Button = styled.button.attrs<{warning: boolean}, {backgroundColor: string}>(
-  ({warning, theme}) => ({
-    backgroundColor: warning ? theme.red1 : theme.text1,
-  }),
-)`
+export const Button = styled.button.attrs<{warning: boolean}, {backgroundColor: string}>(({warning, theme}) => ({
+  backgroundColor: warning ? theme.red1 : theme.text1,
+}))`
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 3rem;
   cursor: pointer;
@@ -164,9 +162,7 @@ export function ExternalLink({
   rel = 'noopener noreferrer',
   ...rest
 }: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & {href: string}) {
-  return (
-    <StyledLink target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest} />
-  )
+  return <StyledLink target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest} />
 }
 
 export function ExternalLinkIcon({
@@ -176,13 +172,7 @@ export function ExternalLinkIcon({
   ...rest
 }: Omit<HTMLProps<HTMLAnchorElement>, 'as' | 'ref' | 'onClick'> & {href: string}) {
   return (
-    <LinkIconWrapper
-      target={target}
-      rel={rel}
-      href={href}
-      onClick={handleClickExternalLink}
-      {...rest}
-    >
+    <LinkIconWrapper target={target} rel={rel} href={href} onClick={handleClickExternalLink} {...rest}>
       <LinkIcon />
     </LinkIconWrapper>
   )

@@ -25,30 +25,14 @@ export function useEstimatedBuildOi(
   const [estimatedOi, setEstimatedOi] = useState<BigNumber>()
 
   useEffect(() => {
-    if (
-      !peripheryContract ||
-      !marketAddress ||
-      !collateral ||
-      collateral === '.' ||
-      !leverage ||
-      isLong === undefined ||
-      !account ||
-      !blockNumber
-    )
+    if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || isLong === undefined || !account || !blockNumber)
       return
     let formatCollateral = utils.parseUnits(collateral)
     let formatLeverage = utils.parseUnits(leverage)
 
     ;(async () => {
       try {
-        setEstimatedOi(
-          await peripheryContract.oiEstimate(
-            marketAddress,
-            formatCollateral,
-            formatLeverage,
-            isLong,
-          ),
-        )
+        setEstimatedOi(await peripheryContract.oiEstimate(marketAddress, formatCollateral, formatLeverage, isLong))
       } catch (error) {
         console.error('error coming from useEstimatedBuildOi: ', error)
       }
@@ -74,11 +58,7 @@ export function useEstimatedBuildOi(
         rawOi: undefined,
       }
     }
-    if (
-      !marketTokensDecimalsDifference &&
-      typeof marketTokensDecimalsDifference !== 'number' &&
-      !decimals
-    ) {
+    if (!marketTokensDecimalsDifference && typeof marketTokensDecimalsDifference !== 'number' && !decimals) {
       return {
         formattedOi: undefined,
         rawOi: undefined,
@@ -97,19 +77,8 @@ export function useEstimatedBuildOi(
       }
     }
     return {
-      formattedOi: formatBigNumberUsingDecimalsToNumber(
-        parsedOi,
-        decimals ?? marketTokensDecimalsDifference,
-        4,
-      ),
+      formattedOi: formatBigNumberUsingDecimalsToNumber(parsedOi, decimals ?? marketTokensDecimalsDifference, 4),
       rawOi: estimatedOi,
     }
-  }, [
-    estimatedOi,
-    collateral,
-    parsedOi,
-    marketTokensDecimalsDifference,
-    baseTokenDecimals,
-    decimals,
-  ])
+  }, [estimatedOi, collateral, parsedOi, marketTokensDecimalsDifference, baseTokenDecimals, decimals])
 }

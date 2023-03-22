@@ -43,20 +43,7 @@ type IconProps = {
   position?: string
 }
 
-export const Icon = ({
-  size,
-  margin,
-  children,
-  color,
-  transform,
-  clickable,
-  onClick,
-  top,
-  right,
-  left,
-  bottom,
-  position,
-}: IconProps) => {
+export const Icon = ({size, margin, children, color, transform, clickable, onClick, top, right, left, bottom, position}: IconProps) => {
   return (
     <IconWrapper
       size={size}

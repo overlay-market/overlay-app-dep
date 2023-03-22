@@ -1,11 +1,7 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
-import {
-  formatWeiToParsedNumber,
-  formatBigNumberUsingDecimalsToNumber,
-  formatBigNumberUsingDecimalsToString,
-} from '../utils/formatWei'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber, formatBigNumberUsingDecimalsToString} from '../utils/formatWei'
 import {BigNumber, ethers} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
@@ -76,22 +72,13 @@ export function usePositionOi(
       }
     }
     return {
-      formattedOi: formatBigNumberUsingDecimalsToNumber(
-        parsedOi,
-        marketTokensDecimalsDifference,
-        4,
-      ),
+      formattedOi: formatBigNumberUsingDecimalsToNumber(parsedOi, marketTokensDecimalsDifference, 4),
       rawOi: oi,
     }
   }, [parsedOi, marketTokensDecimalsDifference, oi, baseTokenDecimals])
 }
 
-export function usePositionOis(
-  positionsCallData?: any,
-  baseTokensAmounts?: any,
-  quoteTokensAmounts?: any,
-  decimals?: any,
-) {
+export function usePositionOis(positionsCallData?: any, baseTokensAmounts?: any, quoteTokensAmounts?: any, decimals?: any) {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
@@ -128,13 +115,7 @@ export function usePositionOis(
       if (baseTokenQuoteTokenDecimalDifference === 0) {
         return formatWeiToParsedNumber(oi, baseTokensAmounts[index], sigFigs)
       } else {
-        return parsedOi
-          ? formatBigNumberUsingDecimalsToNumber(
-              parsedOi,
-              baseTokenQuoteTokenDecimalDifference,
-              sigFigs,
-            )
-          : undefined
+        return parsedOi ? formatBigNumberUsingDecimalsToNumber(parsedOi, baseTokenQuoteTokenDecimalDifference, sigFigs) : undefined
       }
     })
   }, [callResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts, decimals])

@@ -6,16 +6,11 @@ import {DocumentNode} from 'graphql'
 import {SupportedChainId} from '../../constants/chains'
 
 const CHAIN_SUBGRAPH_URL: Record<number, string> = {
-  [SupportedChainId.MAINNET]:
-    'https://api.thegraph.com/subgraphs/id/QmdpFb4G8w72age18nbAkKYPRtqR52g6qwBko9WKCcsJEY',
-  [SupportedChainId.GÖRLI]:
-    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-goerli',
-  [SupportedChainId.RINKEBY]:
-    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
-  [SupportedChainId.ARBITRUM]:
-    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arbitrum',
-  [SupportedChainId.ARBITRUM_GÖRLI]:
-    'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arb-goerli',
+  [SupportedChainId.MAINNET]: 'https://api.thegraph.com/subgraphs/id/QmdpFb4G8w72age18nbAkKYPRtqR52g6qwBko9WKCcsJEY',
+  [SupportedChainId.GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-goerli',
+  [SupportedChainId.RINKEBY]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
+  [SupportedChainId.ARBITRUM]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arbitrum',
+  [SupportedChainId.ARBITRUM_GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arb-goerli',
 }
 
 export const api = createApi({

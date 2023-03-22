@@ -1,98 +1,96 @@
-import { useCallback } from "react";
-import { AppState } from "../state";
-import { useAppSelector, useAppDispatch } from "../hooks";
-import { typeInput, selectPositionId, resetUnwindState, setSlippage, setTxnDeadline } from './actions';
-import { DefaultTxnSettings } from "./actions";
-import { useActiveWeb3React } from "../../hooks/web3";
+import {useCallback} from 'react'
+import {AppState} from '../state'
+import {useAppSelector, useAppDispatch} from '../hooks'
+import {typeInput, selectPositionId, resetUnwindState, setSlippage, setTxnDeadline} from './actions'
+import {DefaultTxnSettings} from './actions'
+import {useActiveWeb3React} from '../../hooks/web3'
 
 export function useUnwindState(): AppState['unwind'] {
-  return useAppSelector((state) => state.unwind);
-};
+  return useAppSelector(state => state.unwind)
+}
 
 export function useUnwindActionHandlers(): {
-  onAmountInput: (typedValue: string) => void;
-  onSelectPositionId: (selectedPositionId: number | null) => void;
-  onSetSlippage: (setSlippageValue: DefaultTxnSettings | string) => void;
-  onSetTxnDeadline: ( txnDeadline: DefaultTxnSettings | string) => void;
-  onResetUnwindState: () => void;
+  onAmountInput: (typedValue: string) => void
+  onSelectPositionId: (selectedPositionId: number | null) => void
+  onSetSlippage: (setSlippageValue: DefaultTxnSettings | string) => void
+  onSetTxnDeadline: (txnDeadline: DefaultTxnSettings | string) => void
+  onResetUnwindState: () => void
 } {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
 
   const onAmountInput = useCallback(
     (typedValue: string) => {
-      dispatch(typeInput({ typedValue }))
-    }, [dispatch]
-  );
+      dispatch(typeInput({typedValue}))
+    },
+    [dispatch],
+  )
 
   const onSelectPositionId = useCallback(
     (selectedPositionId: number | null) => {
-      dispatch(selectPositionId({ selectedPositionId }))
-    }, [dispatch]
-  );
+      dispatch(selectPositionId({selectedPositionId}))
+    },
+    [dispatch],
+  )
 
   const onSetSlippage = useCallback(
     (setSlippageValue: DefaultTxnSettings | string) => {
-      dispatch(setSlippage({ setSlippageValue }))
+      dispatch(setSlippage({setSlippageValue}))
     },
-    [dispatch]
+    [dispatch],
   )
 
   const onSetTxnDeadline = useCallback(
     (txnDeadline: DefaultTxnSettings | string) => {
-      dispatch(setTxnDeadline({ txnDeadline }))
+      dispatch(setTxnDeadline({txnDeadline}))
     },
-    [dispatch]
+    [dispatch],
   )
 
-  const onResetUnwindState = useCallback(
-    () => {
-      dispatch(resetUnwindState())
-    },
-    [dispatch]
-  )
-
+  const onResetUnwindState = useCallback(() => {
+    dispatch(resetUnwindState())
+  }, [dispatch])
 
   return {
     onAmountInput,
     onSelectPositionId,
     onSetSlippage,
     onSetTxnDeadline,
-    onResetUnwindState
+    onResetUnwindState,
   }
-};
+}
 
 export function useDerivedUnwindInfo(): {
   unwindData: object | undefined
   inputError?: string
   parsedAmount?: string
 } {
-  const { account } = useActiveWeb3React();
+  const {account} = useActiveWeb3React()
 
-  const { typedValue, setSlippageValue, txnDeadline } = useUnwindState();
+  const {typedValue, setSlippageValue, txnDeadline} = useUnwindState()
 
-  let unwindData: object | undefined;
+  let unwindData: object | undefined
 
-  if (typedValue === '' || typedValue === '.') unwindData = undefined;
+  if (typedValue === '' || typedValue === '.') unwindData = undefined
   else {
     unwindData = {
       setSlippageValue,
-      txnDeadline
-    };
+      txnDeadline,
+    }
   }
 
-  let inputError: string | undefined;
+  let inputError: string | undefined
 
   if (!account) {
-    inputError = `Connect Wallet`;
+    inputError = `Connect Wallet`
   }
 
   if (typedValue === '' || typedValue === '.') {
-    inputError = `Input Unwind Amount`;
+    inputError = `Input Unwind Amount`
   }
 
   return {
     unwindData,
     inputError,
-    parsedAmount: typedValue
+    parsedAmount: typedValue,
   }
 }

@@ -58,11 +58,7 @@ export const Accordion = ({
 
   return (
     <AccordionWrapper>
-      <ClickableDropdown
-        onClick={() => setOpen(!isOpen)}
-        clickableMargin={clickableMargin}
-        width={width}
-      >
+      <ClickableDropdown onClick={() => setOpen(!isOpen)} clickableMargin={clickableMargin} width={width}>
         {isOpen ? (
           <AccordionText color={activeColor}>{activeAccordionText}</AccordionText>
         ) : (

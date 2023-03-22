@@ -1,12 +1,12 @@
-import styled from 'styled-components/macro';
-import Loader from 'react-loader-spinner';
-import { darken } from 'polished';
-import { AlertTriangle } from 'react-feather';
-import { AbstractConnector } from '@web3-react/abstract-connector';
-import { TEXT } from '../../theme/theme';
-import { injected } from '../../connectors/connectors';
-import { SUPPORTED_WALLETS } from '../../constants/wallet';
-import WalletOption from './WalletOptions';
+import styled from 'styled-components/macro'
+import Loader from 'react-loader-spinner'
+import {darken} from 'polished'
+import {AlertTriangle} from 'react-feather'
+import {AbstractConnector} from '@web3-react/abstract-connector'
+import {TEXT} from '../../theme/theme'
+import {injected} from '../../connectors/connectors'
+import {SUPPORTED_WALLETS} from '../../constants/wallet'
+import WalletOption from './WalletOptions'
 
 const PendingSection = styled.div`
   align-items: center;
@@ -17,13 +17,13 @@ const PendingSection = styled.div`
   }
 `
 
-const LoadingMessage = styled.div<{ error?: boolean }>`
+const LoadingMessage = styled.div<{error?: boolean}>`
   align-items: center;
   justify-content: flex-start;
   border-radius: 12px;
   margin: 16px 0;
-  color: ${({ theme, error }) => (error ? theme.red1 : 'inherit')};
-  border: 1px solid ${({ theme, error }) => (error ? theme.red1 : 'transparent')};
+  color: ${({theme, error}) => (error ? theme.red1 : 'inherit')};
+  border: 1px solid ${({theme, error}) => (error ? theme.red1 : 'transparent')};
 
   & > * {
     padding: 1rem;
@@ -33,12 +33,12 @@ const LoadingMessage = styled.div<{ error?: boolean }>`
 const ErrorContainer = styled.div`
   display: flex;
   flex-direction: row;
-`;
+`
 
 const ErrorMessage = styled.div`
   display: flex;
   flex-direction: row;
-`;
+`
 
 const IconContainer = styled.div`
   display: flex;
@@ -46,12 +46,12 @@ const IconContainer = styled.div`
   svg {
     margin: auto;
   }
-`;
+`
 
 const ErrorButton = styled.div`
   border-radius: 8px;
   font-size: 12px;
-  color: ${({ theme }) => theme.text1};
+  color: ${({theme}) => theme.text1};
   background-color: rgb(86, 90, 105);
   padding: 0.5rem;
   display: flex;
@@ -111,15 +111,13 @@ export default function PendingView({
             </ErrorContainer>
           ) : (
             <>
-              <Loader type="BallTriangle" height={30} width={30} color={'#12B4FF'}/>
-              <TEXT.StandardBody m={'auto 8px'}>
-                Initializing...
-              </TEXT.StandardBody>
+              <Loader type="BallTriangle" height={30} width={30} color={'#12B4FF'} />
+              <TEXT.StandardBody m={'auto 8px'}>Initializing...</TEXT.StandardBody>
             </>
           )}
         </LoadingContainer>
       </LoadingMessage>
-      {Object.keys(SUPPORTED_WALLETS).map((key) => {
+      {Object.keys(SUPPORTED_WALLETS).map(key => {
         const option = SUPPORTED_WALLETS[key]
         if (option.connector === connector) {
           if (option.connector === injected) {
@@ -145,4 +143,4 @@ export default function PendingView({
       })}
     </PendingSection>
   )
-};
+}

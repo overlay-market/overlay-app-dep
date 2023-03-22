@@ -1,4 +1,4 @@
-import { SupportedChainId } from '../constants/chains'
+import {SupportedChainId} from '../constants/chains'
 
 /**
  * Returns the input chain ID if chain is supported. If not, return undefined
@@ -6,7 +6,7 @@ import { SupportedChainId } from '../constants/chains'
  */
 export function supportedChainId(chainId: number): number | undefined {
   if (chainId in SupportedChainId) {
-    return chainId;
+    return chainId
   }
-  return undefined;
-};
+  return undefined
+}
