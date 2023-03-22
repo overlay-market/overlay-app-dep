@@ -11,7 +11,8 @@ import {ProgressBar, DoubleProgressBar} from '../../components/ProgressBar/Progr
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow} from '../../components/Table/Table'
 import Loader from '../../components/Loaders/Loaders'
-import {useMarketNames, useMarketDetails} from '../../hooks/useMarketName'
+import {useMarketNames} from '../../hooks/useMarketName'
+import {useMarketDetails} from '../../hooks/useMarketDetails'
 import {useMarketMidPrices} from '../../hooks/useMarketPrices'
 import {useFundingRates} from '../../hooks/useFundingRates'
 import {useMarketOis} from '../../hooks/useMarketOis'
@@ -208,7 +209,6 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
   const marketDetails = useMarketDetails(markets)
-  console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
