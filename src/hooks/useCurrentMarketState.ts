@@ -27,24 +27,21 @@ interface UseMarketStateResults {
   markets: MarketStateDetails[] | undefined
 }
 
-export function useCurrentMarketState(marketsInput: AdditionalMarketData[] | undefined) {
+export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined) {
   const peripheryContract = useV1PeripheryContract()
-  const inputs = useMemo(() => (marketsInput ? marketsInput.map(market => [market.id]) : []), [marketsInput])
+  const inputs = useMemo(() => (marketsData ? marketsData.map(market => [market.id]) : []), [marketsData])
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
-
   const loading = useMemo(() => results.some(({loading}) => loading), [results])
   const error = useMemo(() => results.some(({error}) => error), [results])
 
   const markets = useMemo(() => {
-    if (!loading && !error && marketsInput) {
+    if (!loading && !error && marketsData) {
       return results.map((call, index) => {
-        const marketAddress = marketsInput[index]
+        const market = marketsData[index]
         const result = call.result as Result
 
-        console.log('test: ', formatBigNumber(result.state_.oiLong))
-
         return {
-          marketAddress,
+          ...market,
           bid: result.state_.bid,
           ask: result.state_.ask,
           mid: result.state_.mid,
@@ -59,7 +56,7 @@ export function useCurrentMarketState(marketsInput: AdditionalMarketData[] | und
       })
     }
     return undefined
-  }, [loading, error, results, marketsInput])
+  }, [loading, error, results, marketsData])
 
   return {
     loading,
