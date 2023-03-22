@@ -12,7 +12,7 @@ import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow} from '../../components/Table/Table'
 import Loader from '../../components/Loaders/Loaders'
 import {useMarketNames} from '../../hooks/useMarketName'
-import {useMarketDetails} from '../../hooks/useMarketDetails'
+import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useMarketMidPrices} from '../../hooks/useMarketPrices'
 import {useFundingRates} from '../../hooks/useFundingRates'
 import {useMarketOis} from '../../hooks/useMarketOis'
@@ -20,6 +20,7 @@ import {useMarketCapOis} from '../../hooks/useMarketCapOi'
 import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
+import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
 import {Result} from '../../state/multicall/hooks'
@@ -208,7 +209,11 @@ const MarketRow = ({
 const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
-  const marketDetails = useMarketDetails(markets)
+  const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
+  const marketsData = useCurrentMarketState(marketDetails)
+
+  console.log('marketsData: ', marketsData)
+  // console.log('marketDetails: ', marketDetails)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()

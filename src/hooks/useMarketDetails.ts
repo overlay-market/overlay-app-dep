@@ -12,13 +12,13 @@ import ERC20_INTERFACE from '../constants/abis/erc20'
 const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
 const CHAINLINK_FEED_INTERFACE = new Interface(CHAINLINK_FEED_ABI)
 
-enum FeedType {
+export enum FeedType {
   CHAINLINK = 'Chainlink',
   UNISWAP = 'Uniswap',
   NFTPERP = 'NFTPerp',
 }
 
-interface AdditionalMarketData extends MarketData {
+export interface AdditionalMarketData extends MarketData {
   decimals: number | undefined
   description: Result | string | undefined
   type: FeedType | undefined
