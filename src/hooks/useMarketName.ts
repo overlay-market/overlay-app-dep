@@ -2,10 +2,15 @@ import {useMemo} from 'react'
 import {Interface} from '@ethersproject/abi'
 import {useSingleCallResult, useMultipleContractSingleData} from '../state/multicall/hooks'
 import {useUniswapV3FeedContract, useChainlinkFeedContract, useTokenContract} from './useContract'
+import {useMarketBaseAmounts} from './useMarketBaseAmount'
+import {useMarketQuoteAmounts} from './useMarketQuoteAmounts'
 import {MarketData} from '../state/markets/hooks'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
+
+const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
+const CHAINLINK_FEED_INTERFACE = new Interface(CHAINLINK_FEED_ABI)
 
 //@dev: need to add in displaying market name based on Chainlink feeds
 export function useMarketName(feedAddress?: string) {
@@ -56,10 +61,49 @@ export function useMarketDetails(markets: MarketData[] | null | undefined) {
       feedAddresses,
     }
   }, [markets])
-}
 
-const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
-const CHAINLINK_FEED_INTERFACE = new Interface(CHAINLINK_FEED_ABI)
+  const chainlinkDecimals = useMultipleContractSingleData(
+    inputs.feedAddresses,
+    CHAINLINK_FEED_INTERFACE,
+    'decimals',
+  )
+  const chainlinkDescriptions = useMultipleContractSingleData(
+    inputs.feedAddresses,
+    CHAINLINK_FEED_INTERFACE,
+    'description',
+  )
+
+  const uniswapBaseTokenAddresses = useMultipleContractSingleData(
+    inputs.feedAddresses,
+    UNI_V3_FEED_INTERFACE,
+    'marketBaseToken',
+  )
+  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(
+    inputs.feedAddresses,
+    UNI_V3_FEED_INTERFACE,
+    'marketQuoteToken',
+  )
+
+  const uniswapBaseTokenAmounts = useMarketBaseAmounts(inputs.feedAddresses)
+  const uniswapQuoteTokenAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
+
+  console.log('uniswapBaseTokenAmounts: ', uniswapBaseTokenAmounts)
+
+  const details = useMemo(() => {
+    // const isChainlink: boolean = Boolean(
+    //   Array.isArray(chainlinkDecimals) &&
+    //     chainlinkDecimals.length > 0 &&
+    //     chainlinkDecimals[0].result,
+    // )
+    // const isUniswap: boolean = Boolean(
+    //   Array.isArray(uniswapBaseTokens) &&
+    //     uniswapBaseTokens.length > 0 &&
+    //     uniswapBaseTokens[0].result,
+    // )
+    // console.log('isChainlink: ', isChainlink)
+    // console.log('isUniswap: ', isUniswap)
+  }, [chainlinkDecimals, uniswapBaseTokenAddresses])
+}
 
 export function useMarketNames(feedAddresses: any) {
   const decimals = useMultipleContractSingleData(
