@@ -9,7 +9,7 @@ import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
 import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS} from '../constants/markets'
 
-interface MarketStateDetails {
+export interface MarketStateDetails {
   marketAddress: string
   bid: BigNumber
   ask: BigNumber
@@ -23,23 +23,22 @@ interface MarketStateDetails {
   fundingRate: BigNumber
 }
 
-interface ParsedMarketStateDetails extends MarketStateDetails {
-  marketName: string
-  parsedBid: number
-  parsedAsk: number
-  parsedMid: number
-  parsedOiLong: number
-  parsedOiShort: number
-  parsedCapOi: number
-  parsedFundingRate: number
-  parsedAnnualFundingRate: number | string
-  parsedDailyFundingRate: number | string
+export interface ParsedMarketStateDetails extends MarketStateDetails {
+  marketName: string | undefined
+  parsedBid: number | undefined
+  parsedAsk: number | undefined
+  parsedMid: number | undefined
+  parsedOiLong: number | undefined
+  parsedOiShort: number | undefined
+  parsedCapOi: number | undefined
+  parsedAnnualFundingRate: number | string | undefined
+  parsedDailyFundingRate: number | string | undefined
 }
 
 export interface MarketStateResults {
   loading: boolean
   error: boolean
-  markets: MarketStateDetails[] | ParsedMarketStateDetails[] | undefined
+  markets: ParsedMarketStateDetails[] | undefined
 }
 
 export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 4): MarketStateResults {
@@ -122,6 +121,31 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
   return {
     loading,
     error,
-    markets: markets?.map((market, index) => ({...market, marketAddress: inputs[index][0]})),
+    markets: markets?.map((market, index) => {
+      // {...market, marketAddress: inputs[index][0]}
+      let marketName = undefined
+      let parsedBid: string | number | undefined = undefined
+      let parsedAsk: string | number | undefined = undefined
+      let parsedMid: string | number | undefined = undefined
+      let parsedOiLong: string | number | undefined = undefined
+      let parsedOiShort: string | number | undefined = undefined
+      let parsedCapOi: string | number | undefined = undefined
+      let parsedDailyFundingRate: string | number | undefined = undefined
+      let parsedAnnualFundingRate: string | number | undefined = undefined
+
+      return {
+        ...market,
+        marketAddress: inputs[index][0],
+        marketName,
+        parsedBid,
+        parsedAsk,
+        parsedMid,
+        parsedOiLong,
+        parsedOiShort,
+        parsedCapOi,
+        parsedDailyFundingRate,
+        parsedAnnualFundingRate,
+      }
+    }),
   }
 }

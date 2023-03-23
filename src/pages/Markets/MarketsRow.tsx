@@ -5,11 +5,11 @@ import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 
 type MarketsRowProps = {
   marketId: string
-  marketName: string
+  marketName: string | undefined
   midPrice: string | number | undefined
   oiLong: string | number | undefined
   oiShort: string | number | undefined
-  totalCurrentOi: string | number | undefined
+  // totalCurrentOi: string | number | undefined
   capOi: string | number | undefined
   dailyFundingRate: string | number | undefined
   annualFundingRate: string | number | undefined
@@ -21,7 +21,7 @@ const MarketsRow = ({
   midPrice,
   oiLong,
   oiShort,
-  totalCurrentOi,
+  // totalCurrentOi,
   capOi,
   dailyFundingRate,
   annualFundingRate,

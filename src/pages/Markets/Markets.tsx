@@ -20,7 +20,7 @@ import {useMarketCapOis} from '../../hooks/useMarketCapOi'
 import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
-import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
+import {useCurrentMarketState, MarketStateResults, ParsedMarketStateDetails} from '../../hooks/useCurrentMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
 import {Result} from '../../state/multicall/hooks'
@@ -206,7 +206,7 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
-  const marketsData: MarketStateResults = useCurrentMarketState(marketDetails)
+  const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
   console.log('marketsData: ', marketsData)
   // force refetch when page refreshes
@@ -239,7 +239,7 @@ const Markets = () => {
   const ois = useMarketOis(calldata.marketAddresses, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens, decimals)
   const capOis = useMarketCapOis(calldata.marketAddresses, tokenPairDecimals.baseTokens, tokenPairDecimals.quoteTokens, decimals)
 
-  const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
+  // const {loading, error, markets: marketStates} = useMarketStateFromAddresses(calldata.marketIds)
 
   return (
     <PageContainer>
@@ -264,7 +264,7 @@ const Markets = () => {
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
-            {markets?.map((market: any, index: any) => (
+            {/* {markets?.map((market: any, index: any) => (
               <MarketRow
                 marketId={marketStates?.[index]?.marketAddress}
                 decimals={decimals[index]}
@@ -279,10 +279,19 @@ const Markets = () => {
                 fundingRate={marketStates?.[index]?.fundingRate}
                 index={index}
               />
+            ))} */}
+            {marketsData?.map((market: ParsedMarketStateDetails, index: number) => (
+              <MarketsRow
+                marketId={market.marketAddress}
+                marketName={market.marketName}
+                midPrice={market.parsedMid}
+                oiLong={market.parsedOiLong}
+                oiShort={market.parsedOiShort}
+                capOi={market.parsedCapOi}
+                dailyFundingRate={market.parsedDailyFundingRate}
+                annualFundingRate={market.parsedAnnualFundingRate}
+              />
             ))}
-            {/* {marketsData.map((market, index) => {
-
-            })} */}
           </TableBody>
         </StyledTable>
       </TableContainer>
