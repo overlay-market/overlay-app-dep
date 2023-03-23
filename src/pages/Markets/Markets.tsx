@@ -280,20 +280,26 @@ const Markets = () => {
                 index={index}
               />
             ))} */}
-            {marketsData
-              ?.filter(market => market.marketAddress !== '0x909d893d5e7f250659fa56c2ca2920760eebb17f')
-              .map((market: ParsedMarketStateDetails, index: number) => (
-                <MarketsRow
-                  marketId={market.marketAddress}
-                  marketName={market.marketName}
-                  midPrice={market.parsedMid}
-                  oiLong={market.parsedOiLong}
-                  oiShort={market.parsedOiShort}
-                  capOi={market.parsedCapOi}
-                  dailyFundingRate={market.parsedDailyFundingRate}
-                  annualFundingRate={market.parsedAnnualFundingRate}
-                />
-              ))}
+            {marketsData ? (
+              marketsData
+                ?.filter(market => market.marketAddress !== '0x909d893d5e7f250659fa56c2ca2920760eebb17f')
+                .map((market: ParsedMarketStateDetails, index: number) => (
+                  <MarketsRow
+                    marketId={market.marketAddress}
+                    marketName={market.marketName}
+                    midPrice={market.parsedMid}
+                    oiLong={market.parsedOiLong}
+                    oiShort={market.parsedOiShort}
+                    capOi={market.parsedCapOi}
+                    dailyFundingRate={market.parsedDailyFundingRate}
+                    annualFundingRate={market.parsedAnnualFundingRate}
+                  />
+                ))
+            ) : (
+              <FlexRow>
+                <Loader stroke="white" size="12px" />
+              </FlexRow>
+            )}
           </TableBody>
         </StyledTable>
       </TableContainer>

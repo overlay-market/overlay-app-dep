@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import {useMemo, useState, useEffect} from 'react'
 import {StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow} from '../../components/Table/Table'
 import {FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
@@ -27,9 +27,16 @@ const MarketsRow = ({
   dailyFundingRate,
   annualFundingRate,
 }: MarketsRowProps) => {
-  // console.log('marketName: ', marketName)
+  const [long, setLong] = useState(0)
+  const [short, setShort] = useState(0)
+
+  useEffect(() => {
+    if (oiLong !== undefined) setLong(Number(oiLong))
+    if (oiShort !== undefined) setShort(Number(oiShort))
+  }, [oiLong, oiShort])
+
   const currentTotalOi = useMemo(() => {
-    return typeof oiLong === 'undefined' || typeof oiShort === 'undefined' ? Number(oiLong) + Number(oiShort) : undefined
+    return typeof oiLong !== 'undefined' && typeof oiShort !== 'undefined' ? Number(oiLong) + Number(oiShort) : undefined
   }, [oiShort, oiLong])
 
   return (
@@ -43,7 +50,7 @@ const MarketsRow = ({
           <TEXT.SmallBody mr="auto"></TEXT.SmallBody>
           <TEXT.SmallBody></TEXT.SmallBody>
         </FlexRow>
-        <DoubleProgressBar leftBarValue={Number(oiShort)} rightBarValue={Number(oiLong)} maxValue={currentTotalOi} />
+        <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={currentTotalOi} />
       </StyledTableCellThin>
       <StyledTableCellThin align="right">
         {dailyFundingRate}% ({annualFundingRate}%)
