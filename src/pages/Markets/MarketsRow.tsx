@@ -29,15 +29,17 @@ const MarketsRow = ({
 }: MarketsRowProps) => {
   const [long, setLong] = useState(0)
   const [short, setShort] = useState(0)
+  const [total, setTotal] = useState(0)
 
   useEffect(() => {
     if (oiLong !== undefined) setLong(Number(oiLong))
     if (oiShort !== undefined) setShort(Number(oiShort))
   }, [oiLong, oiShort])
 
-  const currentTotalOi = useMemo(() => {
-    return typeof oiLong !== 'undefined' && typeof oiShort !== 'undefined' ? Number(oiLong) + Number(oiShort) : undefined
-  }, [oiShort, oiLong])
+  useEffect(() => setTotal(long + short), [long, short])
+
+  const shortPercentageOfTotal = useMemo(() => ((short / total) * 100).toFixed(2), [short, total])
+  const longPercentageOfTotal = useMemo(() => ((long / total) * 100).toFixed(2), [long, total])
 
   return (
     <StyledTableRow hover={true}>
@@ -47,10 +49,10 @@ const MarketsRow = ({
       <StyledTableCellThin align="left">{midPrice}</StyledTableCellThin>
       <StyledTableCellThin align="left">
         <FlexRow>
-          <TEXT.SmallBody mr="auto"></TEXT.SmallBody>
-          <TEXT.SmallBody></TEXT.SmallBody>
+          <TEXT.SmallBody mr="auto">{shortPercentageOfTotal}%</TEXT.SmallBody>
+          <TEXT.SmallBody>{longPercentageOfTotal}%</TEXT.SmallBody>
         </FlexRow>
-        <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={currentTotalOi} />
+        <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
       <StyledTableCellThin align="right">
         {dailyFundingRate}% ({annualFundingRate}%)

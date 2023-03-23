@@ -210,9 +210,9 @@ const Markets = () => {
 
   console.log('marketsData: ', marketsData)
   // force refetch when page refreshes
-  useEffect(() => {
-    refetch()
-  }, [isLoading, refetch])
+  // useEffect(() => {
+  //   refetch()
+  // }, [isLoading, refetch])
 
   const calldata = useMemo(
     () => ({
