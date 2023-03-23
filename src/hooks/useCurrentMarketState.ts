@@ -60,14 +60,14 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         const description = market.description
 
         let marketName = undefined
-        let parsedBid = undefined
-        let parsedAsk = undefined
-        let parsedMid = undefined
-        let parsedOiLong = undefined
-        let parsedOiShort = undefined
-        let parsedCapOi = undefined
-        let parsedDailyFundingRate = undefined
-        let parsedAnnualFundingRate = undefined
+        let parsedBid: string | number | undefined = undefined
+        let parsedAsk: string | number | undefined = undefined
+        let parsedMid: string | number | undefined = undefined
+        let parsedOiLong: string | number | undefined = undefined
+        let parsedOiShort: string | number | undefined = undefined
+        let parsedCapOi: string | number | undefined = undefined
+        let parsedDailyFundingRate: string | number | undefined = undefined
+        let parsedAnnualFundingRate: string | number | undefined = undefined
 
         if (decimals && market.type === FeedType.CHAINLINK) {
           marketName =
