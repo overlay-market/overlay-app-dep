@@ -20,12 +20,13 @@ import {useMarketCapOis} from '../../hooks/useMarketCapOi'
 import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 import {useMarketStateFromAddresses} from '../../hooks/useMarketState'
-import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
+import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
 import {isAddress} from '../../utils/web3'
 import {BigNumberish, BigNumber} from 'ethers'
 import {Result} from '../../state/multicall/hooks'
 import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
 import {InfoTip} from '../../components/InfoTip/InfoTip'
+import MarketsRow from './MarketsRow'
 
 const activeClassName = 'INACTIVE'
 
@@ -205,8 +206,9 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
 
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
-  const marketsData = useCurrentMarketState(marketDetails)
+  const marketsData: MarketStateResults = useCurrentMarketState(marketDetails)
 
+  console.log('marketsData: ', marketsData)
   // force refetch when page refreshes
   useEffect(() => {
     refetch()
@@ -278,6 +280,9 @@ const Markets = () => {
                 index={index}
               />
             ))}
+            {/* {marketsData.map((market, index) => {
+
+            })} */}
           </TableBody>
         </StyledTable>
       </TableContainer>

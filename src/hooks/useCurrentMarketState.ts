@@ -36,13 +36,13 @@ interface ParsedMarketStateDetails extends MarketStateDetails {
   parsedDailyFundingRate: number | string
 }
 
-interface UseMarketStateResults {
+export interface MarketStateResults {
   loading: boolean
   error: boolean
   markets: MarketStateDetails[] | ParsedMarketStateDetails[] | undefined
 }
 
-export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 4): UseMarketStateResults {
+export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 4): MarketStateResults {
   const peripheryContract = useV1PeripheryContract()
   const inputs = useMemo(() => (marketsData ? marketsData.map(market => [market.id]) : []), [marketsData])
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
