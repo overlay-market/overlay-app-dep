@@ -33,51 +33,40 @@ export interface AdditionalMarketData extends MarketData {
  */
 export function useMarketDetails(markets: MarketData[] | null | undefined): AdditionalMarketData[] {
   const inputs = useMemo(() => {
-    let marketAddresses: any = []
-    let feedAddresses: any = []
-    markets &&
-      markets.forEach((market, index) => {
-        marketAddresses[index] = market.id
-        feedAddresses[index] = market.feedAddress
-      })
-    return {
-      marketAddresses,
-      feedAddresses,
-    }
+    return markets ? markets.map((market, index) => market.feedAddress) : []
   }, [markets])
 
-  const chainlinkDecimals = useMultipleContractSingleData(inputs.feedAddresses, CHAINLINK_FEED_INTERFACE, 'decimals')
-  const chainlinkDescriptions = useMultipleContractSingleData(inputs.feedAddresses, CHAINLINK_FEED_INTERFACE, 'description')
-  const uniswapBaseTokenAddresses = useMultipleContractSingleData(inputs.feedAddresses, UNI_V3_FEED_INTERFACE, 'marketBaseToken')
-  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(inputs.feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken')
+  const chainlinkDecimals = useMultipleContractSingleData(inputs, CHAINLINK_FEED_INTERFACE, 'decimals')
+  const chainlinkDescriptions = useMultipleContractSingleData(inputs, CHAINLINK_FEED_INTERFACE, 'description')
 
-  const uniswapTokenAddresses = useMemo(() => {
-    let baseTokens: any = []
-    let quoteTokens: any = []
-    if (
-      (Array.isArray(uniswapBaseTokenAddresses) && uniswapBaseTokenAddresses.length === 0) ||
-      (Array.isArray(uniswapQuoteTokenAddresses) && uniswapQuoteTokenAddresses.length === 0)
-    ) {
-      console.log('Contract call returned invalid data format')
-      return {
-        baseTokens,
-        quoteTokens,
-      }
-    }
-    uniswapBaseTokenAddresses.forEach((token, index) => {
-      baseTokens[index] = uniswapBaseTokenAddresses[index].result
-      quoteTokens[index] = uniswapQuoteTokenAddresses[index].result
-    })
-    return {
-      baseTokens,
-      quoteTokens,
-    }
-  }, [uniswapBaseTokenAddresses, uniswapQuoteTokenAddresses])
+  const uniswapBaseTokenAddresses = useMultipleContractSingleData(inputs, UNI_V3_FEED_INTERFACE, 'marketBaseToken')
+  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(inputs, UNI_V3_FEED_INTERFACE, 'marketQuoteToken')
 
-  const uniswapBaseTokenSymbols = useMultipleContractSingleData(uniswapTokenAddresses.baseTokens, ERC20_INTERFACE, 'symbol')
-  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(uniswapTokenAddresses.quoteTokens, ERC20_INTERFACE, 'symbol')
-  const uniswapBaseTokenDecimalAmounts = useMarketBaseAmounts(inputs.feedAddresses)
-  const uniswapQuoteTokenDecimalAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
+  const uniswapBaseTokens = useMemo(() => {
+    let result = uniswapBaseTokenAddresses
+    return Array.isArray(result) && result.length > 0
+      ? result.map((token, index) => {
+          const address: string = token?.result?.[0]
+          return address
+        })
+      : []
+  }, [uniswapBaseTokenAddresses])
+
+  const uniswapQuoteTokens = useMemo(() => {
+    let result = uniswapQuoteTokenAddresses
+    return Array.isArray(result) && result.length > 0
+      ? result.map((token, index) => {
+          const address: string = token?.result?.[0]
+          return address
+        })
+      : []
+  }, [uniswapQuoteTokenAddresses])
+
+  const uniswapBaseTokenSymbols = useMultipleContractSingleData(uniswapBaseTokens, ERC20_INTERFACE, 'symbol')
+  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(uniswapQuoteTokens, ERC20_INTERFACE, 'symbol')
+
+  const uniswapBaseTokenDecimalAmounts = useMarketBaseAmounts(inputs)
+  const uniswapQuoteTokenDecimalAmounts = useMarketQuoteAmounts(inputs)
 
   return useMemo(() => {
     return markets
