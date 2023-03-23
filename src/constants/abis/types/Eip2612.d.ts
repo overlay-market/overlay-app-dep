@@ -2,7 +2,17 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import {ethers, EventFilter, Signer, BigNumber, BigNumberish, PopulatedTransaction, BaseContract, ContractTransaction, CallOverrides} from 'ethers'
+import {
+  ethers,
+  EventFilter,
+  Signer,
+  BigNumber,
+  BigNumberish,
+  PopulatedTransaction,
+  BaseContract,
+  ContractTransaction,
+  CallOverrides,
+} from 'ethers'
 import {BytesLike} from '@ethersproject/bytes'
 import {Listener, Provider} from '@ethersproject/providers'
 import {FunctionFragment, EventFragment, Result} from '@ethersproject/abi'
@@ -47,7 +57,9 @@ export class Eip2612 extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  ): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this

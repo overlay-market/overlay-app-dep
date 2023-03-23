@@ -22,7 +22,9 @@ function isMethodArg(x: unknown): x is MethodArg {
 }
 
 function isValidMethodArgs(x: unknown): x is MethodArgs | undefined {
-  return x === undefined || (Array.isArray(x) && x.every(xi => isMethodArg(xi) || (Array.isArray(xi) && xi.every(isMethodArg))))
+  return (
+    x === undefined || (Array.isArray(x) && x.every(xi => isMethodArg(xi) || (Array.isArray(xi) && xi.every(isMethodArg))))
+  )
 }
 
 interface CallResult {
@@ -200,7 +202,8 @@ export function useMultipleContractSingleData(
 ): CallState[] {
   const fragment = useMemo(() => contractInterface.getFunction(methodName), [contractInterface, methodName])
   const callData: string | undefined = useMemo(
-    () => (fragment && isValidMethodArgs(callInputs) ? contractInterface.encodeFunctionData(fragment, callInputs) : undefined),
+    () =>
+      fragment && isValidMethodArgs(callInputs) ? contractInterface.encodeFunctionData(fragment, callInputs) : undefined,
     [callInputs, contractInterface, fragment],
   )
 

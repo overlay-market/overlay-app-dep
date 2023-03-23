@@ -180,7 +180,9 @@ function Web3StatusInner() {
           </PendingTransactions>
         )}
 
-        {account && chainId && ovlBalance && <TokenBalance balance={Number(ovlBalance?.toFixed(4))} network={NETWORK_LABELS[chainId]} />}
+        {account && chainId && ovlBalance && (
+          <TokenBalance balance={Number(ovlBalance?.toFixed(4))} network={NETWORK_LABELS[chainId]} />
+        )}
 
         {account && chainId && !ovlBalance && <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />}
 

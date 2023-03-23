@@ -11,7 +11,11 @@ export function formatWeiToParsedString(wei: BigNumberish | string | undefined, 
   }
 }
 
-export function formatWeiToParsedNumber(wei: BigNumberish | string | undefined, decimals: number | undefined, round?: number) {
+export function formatWeiToParsedNumber(
+  wei: BigNumberish | string | undefined,
+  decimals: number | undefined,
+  round?: number,
+) {
   let parsedWei
 
   if (wei) {
@@ -22,7 +26,11 @@ export function formatWeiToParsedNumber(wei: BigNumberish | string | undefined, 
   }
 }
 
-export function formatBigNumberUsingDecimalsToString(bignumber: BigNumberish | string | undefined, decimals: number | undefined, sigFigs?: number) {
+export function formatBigNumberUsingDecimalsToString(
+  bignumber: BigNumberish | string | undefined,
+  decimals: number | undefined,
+  sigFigs?: number,
+) {
   let parsedBigNumber
 
   if (!decimals && decimals !== 0) return undefined
@@ -35,7 +43,11 @@ export function formatBigNumberUsingDecimalsToString(bignumber: BigNumberish | s
   }
 }
 
-export function formatBigNumberUsingDecimalsToNumber(bignumber: BigNumberish | string | undefined, decimals: number | undefined, sigFigs?: number) {
+export function formatBigNumberUsingDecimalsToNumber(
+  bignumber: BigNumberish | string | undefined,
+  decimals: number | undefined,
+  sigFigs?: number,
+) {
   let parsedBigNumber
 
   if (!decimals && decimals !== 0) return undefined

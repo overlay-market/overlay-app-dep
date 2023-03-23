@@ -57,7 +57,11 @@ export const InfoColumn = ({
       <Title titleColor={titleColor} titleFontSize={titleFontSize} titleFontWeight={titleFontWeight}>
         {title}
       </Title>
-      <Description descriptionColor={descriptionColor} descriptionFontSize={descriptionFontSize} descriptionFontWeight={descriptionFontWeight}>
+      <Description
+        descriptionColor={descriptionColor}
+        descriptionFontSize={descriptionFontSize}
+        descriptionFontWeight={descriptionFontWeight}
+      >
         {description}
       </Description>
     </Container>

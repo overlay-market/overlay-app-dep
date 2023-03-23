@@ -25,8 +25,8 @@ const BaseTemplateButton = styled(RebassButton)<
   transition: transform 450ms ease;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+    'Droid Sans', 'Helvetica Neue', sans-serif;
 `
 
 // border: ${({ active }) => ( active ? 'none !important' : '' )};
@@ -55,7 +55,13 @@ export const PendingActionButton = styled(SelectActionButton)`
   background: linear-gradient(91.32deg, #10dcb1 0%, #33e0eb 26.86%, #12b4ff 52.65%, #5295f9 77.89%, #9874ff 102.61%);
 `
 
-export const ApproveTransactionButton = ({attemptingTransaction, onClick}: {attemptingTransaction: boolean; onClick: () => void}) => (
+export const ApproveTransactionButton = ({
+  attemptingTransaction,
+  onClick,
+}: {
+  attemptingTransaction: boolean
+  onClick: () => void
+}) => (
   <>
     {attemptingTransaction ? (
       <PendingActionButton>Pending Confirmation...</PendingActionButton>

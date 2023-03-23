@@ -79,7 +79,12 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     }
   }, [connectedAccount, userRiskLevel, executeRegisterAndScreenCallback])
 
-  if (userRiskLevel && connectedAccount && userRiskLevel.address === connectedAccount && userRiskLevel.risk === SecurityRiskLevels.SEVERE) {
+  if (
+    userRiskLevel &&
+    connectedAccount &&
+    userRiskLevel.address === connectedAccount &&
+    userRiskLevel.risk === SecurityRiskLevels.SEVERE
+  ) {
     return <AccessDenied message={AccessDeniedType.EXCEED_RISK_TOLERANCE} />
   }
   return <>{children}</>

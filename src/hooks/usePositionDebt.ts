@@ -12,7 +12,6 @@ export function usePositionDebt(marketAddress?: string, positionId?: string | nu
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
-
     ;(async () => {
       try {
         setDebt(await peripheryContract.debt(marketAddress, account, positionId))

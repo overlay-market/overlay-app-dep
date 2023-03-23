@@ -141,7 +141,9 @@ export class EnsPublicResolver extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  ): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -193,7 +195,11 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<ContractTransaction>
 
-    'setAddr(bytes32,address)'(node: BytesLike, a: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    'setAddr(bytes32,address)'(
+      node: BytesLike,
+      a: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
     setAuthorisation(
       node: BytesLike,
@@ -202,9 +208,17 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<ContractTransaction>
 
-    setContenthash(node: BytesLike, hash: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    setContenthash(
+      node: BytesLike,
+      hash: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
-    setDNSRecords(node: BytesLike, data: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    setDNSRecords(
+      node: BytesLike,
+      data: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
     setInterface(
       node: BytesLike,
@@ -213,11 +227,25 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<ContractTransaction>
 
-    setName(node: BytesLike, name: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    setName(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
-    setPubkey(node: BytesLike, x: BytesLike, y: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
-    setText(node: BytesLike, key: string, value: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
     supportsInterface(interfaceID: BytesLike, overrides?: CallOverrides): Promise<[boolean]>
 
@@ -258,7 +286,11 @@ export class EnsPublicResolver extends BaseContract {
     overrides?: Overrides & {from?: string | Promise<string>},
   ): Promise<ContractTransaction>
 
-  'setAddr(bytes32,address)'(node: BytesLike, a: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  'setAddr(bytes32,address)'(
+    node: BytesLike,
+    a: string,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
   setAuthorisation(
     node: BytesLike,
@@ -267,9 +299,17 @@ export class EnsPublicResolver extends BaseContract {
     overrides?: Overrides & {from?: string | Promise<string>},
   ): Promise<ContractTransaction>
 
-  setContenthash(node: BytesLike, hash: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  setContenthash(
+    node: BytesLike,
+    hash: BytesLike,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
-  setDNSRecords(node: BytesLike, data: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  setDNSRecords(
+    node: BytesLike,
+    data: BytesLike,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
   setInterface(
     node: BytesLike,
@@ -278,11 +318,25 @@ export class EnsPublicResolver extends BaseContract {
     overrides?: Overrides & {from?: string | Promise<string>},
   ): Promise<ContractTransaction>
 
-  setName(node: BytesLike, name: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  setName(
+    node: BytesLike,
+    name: string,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
-  setPubkey(node: BytesLike, x: BytesLike, y: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  setPubkey(
+    node: BytesLike,
+    x: BytesLike,
+    y: BytesLike,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
-  setText(node: BytesLike, key: string, value: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  setText(
+    node: BytesLike,
+    key: string,
+    value: string,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
   supportsInterface(interfaceID: BytesLike, overrides?: CallOverrides): Promise<boolean>
 
@@ -311,7 +365,12 @@ export class EnsPublicResolver extends BaseContract {
 
     setABI(node: BytesLike, contentType: BigNumberish, data: BytesLike, overrides?: CallOverrides): Promise<void>
 
-    'setAddr(bytes32,uint256,bytes)'(node: BytesLike, coinType: BigNumberish, a: BytesLike, overrides?: CallOverrides): Promise<void>
+    'setAddr(bytes32,uint256,bytes)'(
+      node: BytesLike,
+      coinType: BigNumberish,
+      a: BytesLike,
+      overrides?: CallOverrides,
+    ): Promise<void>
 
     'setAddr(bytes32,address)'(node: BytesLike, a: string, overrides?: CallOverrides): Promise<void>
 
@@ -353,9 +412,15 @@ export class EnsPublicResolver extends BaseContract {
       owner?: string | null,
       target?: string | null,
       isAuthorised?: null,
-    ): TypedEventFilter<[string, string, string, boolean], {node: string; owner: string; target: string; isAuthorised: boolean}>
+    ): TypedEventFilter<
+      [string, string, string, boolean],
+      {node: string; owner: string; target: string; isAuthorised: boolean}
+    >
 
-    ContenthashChanged(node?: BytesLike | null, hash?: null): TypedEventFilter<[string, string], {node: string; hash: string}>
+    ContenthashChanged(
+      node?: BytesLike | null,
+      hash?: null,
+    ): TypedEventFilter<[string, string], {node: string; hash: string}>
 
     DNSRecordChanged(
       node?: BytesLike | null,
@@ -380,7 +445,11 @@ export class EnsPublicResolver extends BaseContract {
 
     NameChanged(node?: BytesLike | null, name?: null): TypedEventFilter<[string, string], {node: string; name: string}>
 
-    PubkeyChanged(node?: BytesLike | null, x?: null, y?: null): TypedEventFilter<[string, string, string], {node: string; x: string; y: string}>
+    PubkeyChanged(
+      node?: BytesLike | null,
+      x?: null,
+      y?: null,
+    ): TypedEventFilter<[string, string, string], {node: string; x: string; y: string}>
 
     TextChanged(
       node?: BytesLike | null,
@@ -410,7 +479,12 @@ export class EnsPublicResolver extends BaseContract {
 
     pubkey(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
-    setABI(node: BytesLike, contentType: BigNumberish, data: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    setABI(
+      node: BytesLike,
+      contentType: BigNumberish,
+      data: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
     'setAddr(bytes32,uint256,bytes)'(
       node: BytesLike,
@@ -419,7 +493,11 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<BigNumber>
 
-    'setAddr(bytes32,address)'(node: BytesLike, a: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    'setAddr(bytes32,address)'(
+      node: BytesLike,
+      a: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
     setAuthorisation(
       node: BytesLike,
@@ -428,9 +506,17 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<BigNumber>
 
-    setContenthash(node: BytesLike, hash: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    setContenthash(
+      node: BytesLike,
+      hash: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
-    setDNSRecords(node: BytesLike, data: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    setDNSRecords(
+      node: BytesLike,
+      data: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
     setInterface(
       node: BytesLike,
@@ -441,9 +527,19 @@ export class EnsPublicResolver extends BaseContract {
 
     setName(node: BytesLike, name: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
-    setPubkey(node: BytesLike, x: BytesLike, y: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
-    setText(node: BytesLike, key: string, value: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
     supportsInterface(interfaceID: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -461,7 +557,12 @@ export class EnsPublicResolver extends BaseContract {
 
     contenthash(node: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    dnsRecord(node: BytesLike, name: BytesLike, resource: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
+    dnsRecord(
+      node: BytesLike,
+      name: BytesLike,
+      resource: BigNumberish,
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
     hasDNSRecords(node: BytesLike, name: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
@@ -485,7 +586,11 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    'setAddr(bytes32,address)'(node: BytesLike, a: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    'setAddr(bytes32,address)'(
+      node: BytesLike,
+      a: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
     setAuthorisation(
       node: BytesLike,
@@ -494,9 +599,17 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    setContenthash(node: BytesLike, hash: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    setContenthash(
+      node: BytesLike,
+      hash: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
-    setDNSRecords(node: BytesLike, data: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    setDNSRecords(
+      node: BytesLike,
+      data: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
     setInterface(
       node: BytesLike,
@@ -505,11 +618,25 @@ export class EnsPublicResolver extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    setName(node: BytesLike, name: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    setName(
+      node: BytesLike,
+      name: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
-    setPubkey(node: BytesLike, x: BytesLike, y: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    setPubkey(
+      node: BytesLike,
+      x: BytesLike,
+      y: BytesLike,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
-    setText(node: BytesLike, key: string, value: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    setText(
+      node: BytesLike,
+      key: string,
+      value: string,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
     supportsInterface(interfaceID: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 

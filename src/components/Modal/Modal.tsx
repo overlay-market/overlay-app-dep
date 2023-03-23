@@ -26,7 +26,9 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
 const AnimatedDialogContent = animated(DialogContent)
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogContent = styled(({minHeight, maxHeight, mobile, isOpen, width, ...rest}) => <AnimatedDialogContent {...rest} />).attrs({
+const StyledDialogContent = styled(({minHeight, maxHeight, mobile, isOpen, width, ...rest}) => (
+  <AnimatedDialogContent {...rest} />
+)).attrs({
   'aria-label': 'dialog',
 })`
   overflow-y: auto;
@@ -86,7 +88,15 @@ interface ModalProps {
   children?: React.ReactNode
 }
 
-export default function Modal({isOpen, onDismiss, width, minHeight = false, maxHeight = 90, initialFocusRef, children}: ModalProps) {
+export default function Modal({
+  isOpen,
+  onDismiss,
+  width,
+  minHeight = false,
+  maxHeight = 90,
+  initialFocusRef,
+  children,
+}: ModalProps) {
   const fadeTransition = useTransition(isOpen, null, {
     config: {duration: 200},
     from: {opacity: 0},

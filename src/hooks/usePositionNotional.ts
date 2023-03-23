@@ -12,7 +12,6 @@ export function usePositionNotional(marketAddress?: string, positionId?: string 
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
-
     ;(async () => {
       try {
         setNotional(await peripheryContract.notional(marketAddress, account, positionId))

@@ -1,5 +1,5 @@
 import {useMemo, useState, useEffect} from 'react'
-import {StyledTable, StyledHeaderCell, StyledTableCellThin, StyledTableRow, StyledTableHeaderRow} from '../../components/Table/Table'
+import {StyledTableCellThin, StyledTableRow} from '../../components/Table/Table'
 import {FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
@@ -10,7 +10,6 @@ type MarketsRowProps = {
   midPrice: string | number | undefined
   oiLong: string | number | undefined
   oiShort: string | number | undefined
-  // totalCurrentOi: string | number | undefined
   capOi: string | number | undefined
   dailyFundingRate: string | number | undefined
   annualFundingRate: string | number | undefined
@@ -22,7 +21,6 @@ const MarketsRow = ({
   midPrice,
   oiLong,
   oiShort,
-  // totalCurrentOi,
   capOi,
   dailyFundingRate,
   annualFundingRate,

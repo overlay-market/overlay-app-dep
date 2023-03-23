@@ -4,7 +4,14 @@ import {AppState} from '../state'
 import {ApplicationModal} from './actions'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useAppSelector, useAppDispatch} from '../hooks'
-import {addPopup, PopupContent, setOpenModal, removePopup, updateTermsOfServiceStatus, UserTermsOfServiceStatus} from './actions'
+import {
+  addPopup,
+  PopupContent,
+  setOpenModal,
+  removePopup,
+  updateTermsOfServiceStatus,
+  UserTermsOfServiceStatus,
+} from './actions'
 
 export function useBlockNumber(): number | undefined {
   const {chainId} = useActiveWeb3React()
@@ -64,7 +71,10 @@ export function useTermsOfServiceStatus(): UserTermsOfServiceStatus {
   return useAppSelector(state => state.application.termsOfServiceStatus)
 }
 
-export function useTermsOfServiceStatusManager(): [UserTermsOfServiceStatus, (termsOfServiceStatus: UserTermsOfServiceStatus) => void] {
+export function useTermsOfServiceStatusManager(): [
+  UserTermsOfServiceStatus,
+  (termsOfServiceStatus: UserTermsOfServiceStatus) => void,
+] {
   const dispatch = useAppDispatch()
   const status = useTermsOfServiceStatus()
 

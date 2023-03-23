@@ -163,10 +163,22 @@ export default function More() {
   return (
     <div className={classes.root}>
       <div>
-        <StyledButton ref={anchorRef} aria-controls={open ? 'menu-list-grow' : undefined} aria-haspopup="true" onClick={handleToggle}>
+        <StyledButton
+          ref={anchorRef}
+          aria-controls={open ? 'menu-list-grow' : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+        >
           <MoreVertical color={'white'} />
         </StyledButton>
-        <StyledPopper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
+        <StyledPopper
+          open={open}
+          anchorEl={anchorRef.current}
+          placement={'bottom-end'}
+          role={undefined}
+          transition
+          disablePortal
+        >
           {({TransitionProps, placement}) => (
             <Fade {...TransitionProps} timeout={200}>
               <StyledPaper>
@@ -182,7 +194,11 @@ export default function More() {
                         </StyledMenuHeaderItem>
                         {SUPPORTED_LOCALES.map((locale, key) => (
                           <StyledMenuItem disableRipple>
-                            <LanguageMenuItem locale={locale} active={activeLocale === locale} componentKey={key.toString()} />
+                            <LanguageMenuItem
+                              locale={locale}
+                              active={activeLocale === locale}
+                              componentKey={key.toString()}
+                            />
                           </StyledMenuItem>
                         ))}
                       </>

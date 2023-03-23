@@ -118,7 +118,15 @@ export function useUnwindCallback(
   const addPopup = useAddPopup()
   const currentTimeForId = currentTimeParsed()
   const addTransaction = useTransactionAdder()
-  const unwindCalls = useUnwindCallArguments(unwindData, marketAddress, unwindValue, positionCurrentValue, positionId, isLong, prices)
+  const unwindCalls = useUnwindCallArguments(
+    unwindData,
+    marketAddress,
+    unwindValue,
+    positionCurrentValue,
+    positionId,
+    isLong,
+    prices,
+  )
 
   return useMemo(() => {
     if (!unwindData || !unwindValue || unwindValue === '.' || positionId === null || !library || !account || !chainId) {
@@ -183,14 +191,17 @@ export function useUnwindCallback(
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         let bestCallOption: SuccessfulCall | UnwindCallEstimate | undefined = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+          (el, ix, list): el is SuccessfulCall =>
+            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         // check if any calls errored with a recognizable error
         if (!bestCallOption) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
           if (errorCalls.length > 0) throw errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<UnwindCallEstimate>((call): call is UnwindCallEstimate => !('error' in call))
+          const firstNoErrorCall = estimatedCalls.find<UnwindCallEstimate>(
+            (call): call is UnwindCallEstimate => !('error' in call),
+          )
           if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for unwinding position.')
           bestCallOption = firstNoErrorCall
         }
@@ -242,5 +253,16 @@ export function useUnwindCallback(
       },
       error: null,
     }
-  }, [unwindData, unwindValue, positionId, library, account, chainId, unwindCalls, addTransaction, addPopup, currentTimeForId])
+  }, [
+    unwindData,
+    unwindValue,
+    positionId,
+    library,
+    account,
+    chainId,
+    unwindCalls,
+    addTransaction,
+    addPopup,
+    currentTimeForId,
+  ])
 }

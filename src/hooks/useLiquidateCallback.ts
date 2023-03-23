@@ -144,7 +144,8 @@ export function useLiquidateCallback(
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         let bestCallOption: SuccessfulCall | LiquidateCallEstimate | undefined = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+          (el, ix, list): el is SuccessfulCall =>
+            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         // check if any calls errored with a recognizable error
@@ -152,7 +153,9 @@ export function useLiquidateCallback(
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
           if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<LiquidateCallEstimate>((call): call is LiquidateCallEstimate => !('error' in call))
+          const firstNoErrorCall = estimatedCalls.find<LiquidateCallEstimate>(
+            (call): call is LiquidateCallEstimate => !('error' in call),
+          )
           if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the swap.')
           bestCallOption = firstNoErrorCall
         }

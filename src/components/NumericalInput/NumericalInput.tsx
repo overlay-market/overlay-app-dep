@@ -82,7 +82,9 @@ export const NumericalInput = React.memo(function InnerInput({
         if (prependSymbol) {
           const value = event.target.value
           // cut off prepended symbol
-          const formattedValue = value.toString().includes(prependSymbol) ? value.toString().slice(1, value.toString().length + 1) : value
+          const formattedValue = value.toString().includes(prependSymbol)
+            ? value.toString().slice(1, value.toString().length + 1)
+            : value
 
           // replace commas with periods, because uniswap exclusively uses period as the decimal separator
           enforcer(formattedValue.replace(/,/g, '.'))

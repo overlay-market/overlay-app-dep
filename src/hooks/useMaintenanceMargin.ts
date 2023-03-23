@@ -12,7 +12,6 @@ export function useMaintenanceMargin(marketAddress?: string, positionId?: string
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
-
     ;(async () => {
       try {
         setMaintenanceMargin(await peripheryContract.maintenanceMargin(marketAddress, account, positionId))

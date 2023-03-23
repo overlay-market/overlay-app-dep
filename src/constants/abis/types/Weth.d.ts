@@ -96,7 +96,9 @@ export class Weth extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  ): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -116,11 +118,20 @@ export class Weth extends BaseContract {
   functions: {
     name(overrides?: CallOverrides): Promise<[string]>
 
-    approve(guy: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    approve(
+      guy: string,
+      wad: BigNumberish,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    transferFrom(src: string, dst: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    transferFrom(
+      src: string,
+      dst: string,
+      wad: BigNumberish,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
     withdraw(wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -130,7 +141,11 @@ export class Weth extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<[string]>
 
-    transfer(dst: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+    transfer(
+      dst: string,
+      wad: BigNumberish,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<ContractTransaction>
 
     deposit(overrides?: PayableOverrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -139,11 +154,20 @@ export class Weth extends BaseContract {
 
   name(overrides?: CallOverrides): Promise<string>
 
-  approve(guy: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  approve(
+    guy: string,
+    wad: BigNumberish,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-  transferFrom(src: string, dst: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  transferFrom(
+    src: string,
+    dst: string,
+    wad: BigNumberish,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
   withdraw(wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -153,7 +177,11 @@ export class Weth extends BaseContract {
 
   symbol(overrides?: CallOverrides): Promise<string>
 
-  transfer(dst: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
+  transfer(
+    dst: string,
+    wad: BigNumberish,
+    overrides?: Overrides & {from?: string | Promise<string>},
+  ): Promise<ContractTransaction>
 
   deposit(overrides?: PayableOverrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -208,7 +236,12 @@ export class Weth extends BaseContract {
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-    transferFrom(src: string, dst: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
+    transferFrom(
+      src: string,
+      dst: string,
+      wad: BigNumberish,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<BigNumber>
 
     withdraw(wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
@@ -228,7 +261,11 @@ export class Weth extends BaseContract {
   populateTransaction: {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    approve(guy: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    approve(
+      guy: string,
+      wad: BigNumberish,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
@@ -247,7 +284,11 @@ export class Weth extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    transfer(dst: string, wad: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
+    transfer(
+      dst: string,
+      wad: BigNumberish,
+      overrides?: Overrides & {from?: string | Promise<string>},
+    ): Promise<PopulatedTransaction>
 
     deposit(overrides?: PayableOverrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 

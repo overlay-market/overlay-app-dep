@@ -12,7 +12,6 @@ export function usePositionCollateral(marketAddress?: string, positionId?: strin
 
   useEffect(() => {
     if (!peripheryContract || !marketAddress || !account || !blockNumber) return
-
     ;(async () => {
       try {
         setCollateral(await peripheryContract.collateral(marketAddress, account, positionId))

@@ -176,7 +176,8 @@ export function useBuildCallback(
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         let bestCallOption: SuccessfulCall | BuildCallEstimate | undefined = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+          (el, ix, list): el is SuccessfulCall =>
+            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         // check if any calls errored with a recognizable error
@@ -184,7 +185,9 @@ export function useBuildCallback(
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
           if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>((call): call is BuildCallEstimate => !('error' in call))
+          const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>(
+            (call): call is BuildCallEstimate => !('error' in call),
+          )
           if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the build.')
           bestCallOption = firstNoErrorCall
         }
@@ -240,5 +243,16 @@ export function useBuildCallback(
       },
       error: null,
     }
-  }, [buildData, marketAddress, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId, inputError])
+  }, [
+    buildData,
+    marketAddress,
+    library,
+    account,
+    chainId,
+    buildCalls,
+    addTransaction,
+    addPopup,
+    currentTimeForId,
+    inputError,
+  ])
 }

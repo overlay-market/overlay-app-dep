@@ -95,7 +95,9 @@ export default function CurrentBlock() {
   )
 
   return (
-    <ExternalLink href={chainId && blockNumber ? getExplorerLink(chainId, blockNumber.toString(), ExplorerDataType.BLOCK) : ''}>
+    <ExternalLink
+      href={chainId && blockNumber ? getExplorerLink(chainId, blockNumber.toString(), ExplorerDataType.BLOCK) : ''}
+    >
       {/* {account ? ( */}
       <StyledPolling onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
         <StyledPollingNumber breathe={isMounting} hovering={isHover}>
