@@ -38,7 +38,7 @@ export interface ParsedMarketStateDetails extends MarketStateDetails {
 export interface MarketStateResults {
   loading: boolean
   error: boolean
-  markets: ParsedMarketStateDetails[] | undefined
+  markets: ParsedMarketStateDetails[] | []
 }
 
 export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 4): MarketStateResults {
@@ -121,6 +121,6 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
   return {
     loading,
     error,
-    markets: markets?.map((market, index) => ({...market, marketAddress: inputs[index][0]})),
+    markets: markets ? markets.map((market, index) => ({...market, marketAddress: inputs[index][0]})) : [],
   }
 }
