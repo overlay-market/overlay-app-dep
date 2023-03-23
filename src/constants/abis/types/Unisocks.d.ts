@@ -123,9 +123,7 @@ export class Unisocks extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-  ): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -147,11 +145,7 @@ export class Unisocks extends BaseContract {
 
     tokenByIndex(_index: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber] & {out: BigNumber}>
 
-    tokenOfOwnerByIndex(
-      _owner: string,
-      _index: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<[BigNumber] & {out: BigNumber}>
+    tokenOfOwnerByIndex(_owner: string, _index: BigNumberish, overrides?: CallOverrides): Promise<[BigNumber] & {out: BigNumber}>
 
     transferFrom(
       _from: string,
@@ -175,17 +169,9 @@ export class Unisocks extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<ContractTransaction>
 
-    approve(
-      _approved: string,
-      _tokenId: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    approve(_approved: string, _tokenId: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
-    setApprovalForAll(
-      _operator: string,
-      _approved: boolean,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    setApprovalForAll(_operator: string, _approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     mint(_to: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -244,17 +230,9 @@ export class Unisocks extends BaseContract {
     overrides?: Overrides & {from?: string | Promise<string>},
   ): Promise<ContractTransaction>
 
-  approve(
-    _approved: string,
-    _tokenId: BigNumberish,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  approve(_approved: string, _tokenId: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
-  setApprovalForAll(
-    _operator: string,
-    _approved: boolean,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  setApprovalForAll(_operator: string, _approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   mint(_to: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -293,12 +271,7 @@ export class Unisocks extends BaseContract {
 
     transferFrom(_from: string, _to: string, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<void>
 
-    'safeTransferFrom(address,address,uint256)'(
-      _from: string,
-      _to: string,
-      _tokenId: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<void>
+    'safeTransferFrom(address,address,uint256)'(_from: string, _to: string, _tokenId: BigNumberish, overrides?: CallOverrides): Promise<void>
 
     'safeTransferFrom(address,address,uint256,bytes)'(
       _from: string,
@@ -368,12 +341,7 @@ export class Unisocks extends BaseContract {
 
     tokenOfOwnerByIndex(_owner: string, _index: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    transferFrom(
-      _from: string,
-      _to: string,
-      _tokenId: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    transferFrom(_from: string, _to: string, _tokenId: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     'safeTransferFrom(address,address,uint256)'(
       _from: string,
@@ -390,17 +358,9 @@ export class Unisocks extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<BigNumber>
 
-    approve(
-      _approved: string,
-      _tokenId: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    approve(_approved: string, _tokenId: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
-    setApprovalForAll(
-      _operator: string,
-      _approved: boolean,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    setApprovalForAll(_operator: string, _approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     mint(_to: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
@@ -460,17 +420,9 @@ export class Unisocks extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    approve(
-      _approved: string,
-      _tokenId: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    approve(_approved: string, _tokenId: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
-    setApprovalForAll(
-      _operator: string,
-      _approved: boolean,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    setApprovalForAll(_operator: string, _approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     mint(_to: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 

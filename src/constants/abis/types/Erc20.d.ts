@@ -85,9 +85,7 @@ export class Erc20 extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-  ): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -107,11 +105,7 @@ export class Erc20 extends BaseContract {
   functions: {
     name(overrides?: CallOverrides): Promise<[string]>
 
-    approve(
-      _spender: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    approve(_spender: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     totalSupply(overrides?: CallOverrides): Promise<[BigNumber]>
 
@@ -128,22 +122,14 @@ export class Erc20 extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<[string]>
 
-    transfer(
-      _to: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    transfer(_to: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     allowance(_owner: string, _spender: string, overrides?: CallOverrides): Promise<[BigNumber]>
   }
 
   name(overrides?: CallOverrides): Promise<string>
 
-  approve(
-    _spender: string,
-    _value: BigNumberish,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  approve(_spender: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -160,11 +146,7 @@ export class Erc20 extends BaseContract {
 
   symbol(overrides?: CallOverrides): Promise<string>
 
-  transfer(
-    _to: string,
-    _value: BigNumberish,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  transfer(_to: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   allowance(_owner: string, _spender: string, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -205,20 +187,11 @@ export class Erc20 extends BaseContract {
   estimateGas: {
     name(overrides?: CallOverrides): Promise<BigNumber>
 
-    approve(
-      _spender: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    approve(_spender: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     totalSupply(overrides?: CallOverrides): Promise<BigNumber>
 
-    transferFrom(
-      _from: string,
-      _to: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    transferFrom(_from: string, _to: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     decimals(overrides?: CallOverrides): Promise<BigNumber>
 
@@ -226,11 +199,7 @@ export class Erc20 extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<BigNumber>
 
-    transfer(
-      _to: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    transfer(_to: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     allowance(_owner: string, _spender: string, overrides?: CallOverrides): Promise<BigNumber>
   }
@@ -238,11 +207,7 @@ export class Erc20 extends BaseContract {
   populateTransaction: {
     name(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    approve(
-      _spender: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    approve(_spender: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     totalSupply(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
@@ -259,11 +224,7 @@ export class Erc20 extends BaseContract {
 
     symbol(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    transfer(
-      _to: string,
-      _value: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    transfer(_to: string, _value: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     allowance(_owner: string, _spender: string, overrides?: CallOverrides): Promise<PopulatedTransaction>
   }

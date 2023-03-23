@@ -25,16 +25,7 @@ export function useEstimatedBuildOi(
   const [estimatedOi, setEstimatedOi] = useState<BigNumber>()
 
   useEffect(() => {
-    if (
-      !peripheryContract ||
-      !marketAddress ||
-      !collateral ||
-      collateral === '.' ||
-      !leverage ||
-      isLong === undefined ||
-      !account ||
-      !blockNumber
-    )
+    if (!peripheryContract || !marketAddress || !collateral || collateral === '.' || !leverage || isLong === undefined || !account || !blockNumber)
       return
     let formatCollateral = utils.parseUnits(collateral)
     let formatLeverage = utils.parseUnits(leverage)

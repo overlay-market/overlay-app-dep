@@ -30,27 +30,11 @@ const ErrorMessage = styled(TEXT.Supplemental)`
   margin-top: 3px;
 `
 
-export default function TransactionPopup({
-  hash,
-  success,
-  summary,
-  info,
-}: {
-  hash: string
-  success?: boolean
-  summary?: string
-  info?: any
-}) {
+export default function TransactionPopup({hash, success, summary, info}: {hash: string; success?: boolean; summary?: string; info?: any}) {
   const {chainId} = useActiveWeb3React()
   return (
     <PopupContentsContainer>
-      <Icon>
-        {success ? (
-          <CheckCircle width={22} height={22} color={'#10DCB1'} />
-        ) : (
-          <AlertTriangle width={22} height={22} color={'#FF648A'} />
-        )}
-      </Icon>
+      <Icon>{success ? <CheckCircle width={22} height={22} color={'#10DCB1'} /> : <AlertTriangle width={22} height={22} color={'#FF648A'} />}</Icon>
       <PopupTextContainer>
         <TEXT.BoldSmallBody>
           {info?.type === TransactionType.APPROVAL && 'Spending Limit Approved'}
@@ -64,29 +48,17 @@ export default function TransactionPopup({
           {info?.code === -32603 && 'Transaction Failed'}
         </TEXT.BoldSmallBody>
 
-        {chainId && info?.message === 'execution reverted: OVLV1: shutdown' && (
-          <ErrorMessage>Market has been shutdown.</ErrorMessage>
-        )}
+        {chainId && info?.message === 'execution reverted: OVLV1: shutdown' && <ErrorMessage>Market has been shutdown.</ErrorMessage>}
 
-        {chainId && info?.message === 'execution reverted: OVLV1:lev<min' && (
-          <ErrorMessage>Leverage must be at least 1.</ErrorMessage>
-        )}
+        {chainId && info?.message === 'execution reverted: OVLV1:lev<min' && <ErrorMessage>Leverage must be at least 1.</ErrorMessage>}
 
-        {chainId && info?.message === 'execution reverted: OVLV1:lev>max' && (
-          <ErrorMessage>Leverage is greater than max.</ErrorMessage>
-        )}
+        {chainId && info?.message === 'execution reverted: OVLV1:lev>max' && <ErrorMessage>Leverage is greater than max.</ErrorMessage>}
 
-        {chainId && info?.message === 'execution reverted: OVLV1:fraction>max' && (
-          <ErrorMessage>Fraction cannot equal greater than 1.</ErrorMessage>
-        )}
+        {chainId && info?.message === 'execution reverted: OVLV1:fraction>max' && <ErrorMessage>Fraction cannot equal greater than 1.</ErrorMessage>}
 
-        {chainId && info?.message === 'execution reverted: OVLV1:fraction<min' && (
-          <ErrorMessage>Fraction cannot equal less than 0.</ErrorMessage>
-        )}
+        {chainId && info?.message === 'execution reverted: OVLV1:fraction<min' && <ErrorMessage>Fraction cannot equal less than 0.</ErrorMessage>}
 
-        {chainId && info?.message === 'execution reverted: OVLV1:!position' && (
-          <ErrorMessage>Position does not currently exist.</ErrorMessage>
-        )}
+        {chainId && info?.message === 'execution reverted: OVLV1:!position' && <ErrorMessage>Position does not currently exist.</ErrorMessage>}
 
         {chainId && info?.message === 'execution reverted: OVLV1:collateral<min' && (
           <ErrorMessage>Input collateral is less than minimum required collateral.</ErrorMessage>

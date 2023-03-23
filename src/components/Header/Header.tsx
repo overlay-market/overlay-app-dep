@@ -97,23 +97,9 @@ export default function Header() {
     <HeaderContainer>
       <LogoContainer onClick={returnHome}>
         {darkMode ? (
-          <Image
-            src={OverlayLogoOnlyDark}
-            alt={'Overlay Logo Light'}
-            height={'100%'}
-            width={'100%'}
-            minHeight={'30px'}
-            minWidth={'30px'}
-          />
+          <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo Light'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
         ) : (
-          <Image
-            src={OverlayLogoOnlyDark}
-            alt={'Overlay Logo'}
-            height={'100%'}
-            width={'100%'}
-            minHeight={'30px'}
-            minWidth={'30px'}
-          />
+          <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
         )}
       </LogoContainer>
 

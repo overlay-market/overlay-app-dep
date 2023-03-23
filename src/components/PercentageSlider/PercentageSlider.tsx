@@ -30,17 +30,7 @@ type PercentageSliderProps = {
   children?: React.ReactNode
 }
 
-export const PercentageSlider = ({
-  value,
-  liquidationPrice,
-  onChange,
-  name,
-  min,
-  max,
-  step,
-  margin,
-  children,
-}: PercentageSliderProps) => {
+export const PercentageSlider = ({value, liquidationPrice, onChange, name, min, max, step, margin, children}: PercentageSliderProps) => {
   const SLIDER_INPUT = {
     backgroundColor: '#F2F2F2',
     sliderDotColor: '#12B4FF',

@@ -40,10 +40,7 @@ export interface MarketStateResults {
   markets: ParsedMarketStateDetails[] | []
 }
 
-export function useCurrentMarketState(
-  marketsData: AdditionalMarketData[] | undefined,
-  sigFigs: number = 4,
-): MarketStateResults {
+export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 4): MarketStateResults {
   const peripheryContract = useV1PeripheryContract()
   const inputs = useMemo(() => (marketsData ? marketsData.map(market => [market.id]) : []), [marketsData])
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
@@ -72,9 +69,7 @@ export function useCurrentMarketState(
 
         if (decimals && market.type === FeedType.CHAINLINK) {
           marketName =
-            description && MARKET_NAME_FROM_DESCRIPTION[description]
-              ? MARKET_NAME_FROM_DESCRIPTION[description]
-              : MARKET_NAME_FROM_ADDRESS[marketId]
+            description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
           parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
           parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)

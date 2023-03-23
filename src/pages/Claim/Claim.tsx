@@ -120,9 +120,7 @@ const Claim = ({
               <TEXT.SmallBody marginRight="auto" marginBottom="16px">
                 Claim OVL
               </TEXT.SmallBody>
-              <TEXT.StandardBody marginBottom="16px">
-                Connect your wallet to see if you have any claimable OVL.
-              </TEXT.StandardBody>
+              <TEXT.StandardBody marginBottom="16px">Connect your wallet to see if you have any claimable OVL.</TEXT.StandardBody>
               <TriggerActionButton onClick={toggleWalletModal} active={true}>
                 Connect Wallet
               </TriggerActionButton>
@@ -159,8 +157,8 @@ const Claim = ({
             </FlexColumn>
             <FlexColumn padding="16px">
               <TEXT.SmallBody>
-                As a member of the Overlay community, you may claim OVL to be used for voting and governance, and to interact
-                with the Overlay protocol.
+                As a member of the Overlay community, you may claim OVL to be used for voting and governance, and to interact with the Overlay
+                protocol.
               </TEXT.SmallBody>
               <ExternalLink
                 href="https://docs.overlay.market/"
@@ -191,8 +189,8 @@ const Claim = ({
             </FlexColumn>
             <FlexColumn padding="16px">
               <TEXT.SmallBody>
-                As a member of the Overlay community, you may claim OVL to be used for voting and governance, and to interact
-                with the Overlay protocol.
+                As a member of the Overlay community, you may claim OVL to be used for voting and governance, and to interact with the Overlay
+                protocol.
               </TEXT.SmallBody>
               <ExternalLink
                 href="https://docs.overlay.market/"

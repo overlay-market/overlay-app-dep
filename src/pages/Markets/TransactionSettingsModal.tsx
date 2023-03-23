@@ -86,13 +86,7 @@ export const TransactionSettingsModal = ({
         </FlexRow> */}
 
         <FlexRow margin="auto 0 0 0" padding="16px" borderTop="1px solid white">
-          <TransactionSettingsButton
-            onClick={handleResetTxnSettings}
-            border={'none'}
-            width={'96px'}
-            margin={'0 auto 0 0'}
-            padding={'0px'}
-          >
+          <TransactionSettingsButton onClick={handleResetTxnSettings} border={'none'} width={'96px'} margin={'0 auto 0 0'} padding={'0px'}>
             Reset
           </TransactionSettingsButton>
           {/* <TransactionSettingsButton

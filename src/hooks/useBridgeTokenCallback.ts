@@ -53,16 +53,11 @@ function useBridgeTokenArguments(
     if (!destinationChainId || !amount || !layerZeroContract) {
       return undefined
     } else {
-      return layerZeroContract.interface.encodeFunctionData('bridgeToken', [
-        LAYER_ZERO_DESTINATION_ID[destinationChainId],
-        utils.parseUnits(amount),
-      ])
+      return layerZeroContract.interface.encodeFunctionData('bridgeToken', [LAYER_ZERO_DESTINATION_ID[destinationChainId], utils.parseUnits(amount)])
     }
   }, [destinationChainId, amount, layerZeroContract])
 
-  const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [
-    LAYER_ZERO_DESTINATION_ID[destinationChainId],
-  ])
+  const adapterParams = useSingleCallResult(layerZeroContract, 'getAdapterParams', [LAYER_ZERO_DESTINATION_ID[destinationChainId]])
 
   const estimatedFees = useSingleCallResult(layerZeroEndpointContract, 'estimateFees', [
     LAYER_ZERO_DESTINATION_ID[destinationChainId],
@@ -214,8 +209,7 @@ export function useBridgeTokenCallback(
 
         // a successful estimation is a bignumber gas estimate and the next call is also a bignumber gas estimate
         let bestCallOption: SuccessfulCall | BridgeTokenCallEstimate | undefined = estimatedCalls.find(
-          (el, ix, list): el is SuccessfulCall =>
-            'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
+          (el, ix, list): el is SuccessfulCall => 'gasEstimate' in el && (ix === list.length - 1 || 'gasEstimate' in list[ix + 1]),
         )
 
         // check if any calls errored with a recognizable error
@@ -223,9 +217,7 @@ export function useBridgeTokenCallback(
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
           if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
-          const firstNoErrorCall = estimatedCalls.find<BridgeTokenCallEstimate>(
-            (call): call is BridgeTokenCallEstimate => !('error' in call),
-          )
+          const firstNoErrorCall = estimatedCalls.find<BridgeTokenCallEstimate>((call): call is BridgeTokenCallEstimate => !('error' in call))
           if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the bridge.')
           bestCallOption = firstNoErrorCall
         }

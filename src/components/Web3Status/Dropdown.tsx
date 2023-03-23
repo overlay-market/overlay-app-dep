@@ -116,35 +116,17 @@ export default function Dropdown({connectedNetwork, colorStatus}: DropdownProps)
   return (
     <div className={classes.root}>
       <div>
-        <TriangleButton
-          ref={anchorRef}
-          aria-controls={open ? 'menu-list-grow' : undefined}
-          aria-haspopup="true"
-          onClick={handleToggle}
-        >
+        <TriangleButton ref={anchorRef} aria-controls={open ? 'menu-list-grow' : undefined} aria-haspopup="true" onClick={handleToggle}>
           <RotatingTriangle color={'white'} fill={'white'} height={8} width={20} open={open} />
         </TriangleButton>
-        <StyledPopper
-          open={open}
-          anchorEl={anchorRef.current}
-          placement={'bottom-end'}
-          role={undefined}
-          transition
-          disablePortal
-        >
+        <StyledPopper open={open} anchorEl={anchorRef.current} placement={'bottom-end'} role={undefined} transition disablePortal>
           {({TransitionProps, placement}) => (
             <Fade {...TransitionProps} timeout={200}>
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                     <Web3StatusMenuItem disabled>
-                      <Web3Status
-                        m={'4px 16px 4px 8px'}
-                        p={'8px 16px 8px 11px'}
-                        width={'auto'}
-                        color={'white'}
-                        fontSize={14}
-                      >
+                      <Web3Status m={'4px 16px 4px 8px'} p={'8px 16px 8px 11px'} width={'auto'} color={'white'} fontSize={14}>
                         <ColorStatus colorStatus={colorStatus} />
                         <TEXT.Menu>{connectedNetwork}</TEXT.Menu>
                       </Web3Status>

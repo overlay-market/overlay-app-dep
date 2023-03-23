@@ -25,10 +25,7 @@ interface ArgentWalletContractInterface extends ethers.utils.Interface {
     'isValidSignature(bytes32,bytes)': FunctionFragment
   }
 
-  encodeFunctionData(
-    functionFragment: 'wc_multiCall',
-    values: [{to: string; value: BigNumberish; data: BytesLike}[]],
-  ): string
+  encodeFunctionData(functionFragment: 'wc_multiCall', values: [{to: string; value: BigNumberish; data: BytesLike}[]]): string
   encodeFunctionData(functionFragment: 'isValidSignature', values: [BytesLike, BytesLike]): string
 
   decodeFunctionResult(functionFragment: 'wc_multiCall', data: BytesLike): Result
@@ -61,9 +58,7 @@ export class ArgentWalletContract extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-  ): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -97,10 +92,7 @@ export class ArgentWalletContract extends BaseContract {
   isValidSignature(_msgHash: BytesLike, _signature: BytesLike, overrides?: CallOverrides): Promise<string>
 
   callStatic: {
-    wc_multiCall(
-      _transactions: {to: string; value: BigNumberish; data: BytesLike}[],
-      overrides?: CallOverrides,
-    ): Promise<string[]>
+    wc_multiCall(_transactions: {to: string; value: BigNumberish; data: BytesLike}[], overrides?: CallOverrides): Promise<string[]>
 
     isValidSignature(_msgHash: BytesLike, _signature: BytesLike, overrides?: CallOverrides): Promise<string>
   }

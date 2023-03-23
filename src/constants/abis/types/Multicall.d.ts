@@ -46,10 +46,7 @@ interface MulticallInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'getEthBalance', values: [string]): string
   encodeFunctionData(functionFragment: 'getLastBlockHash', values?: undefined): string
   encodeFunctionData(functionFragment: 'tryAggregate', values: [boolean, {target: string; callData: BytesLike}[]]): string
-  encodeFunctionData(
-    functionFragment: 'tryBlockAndAggregate',
-    values: [boolean, {target: string; callData: BytesLike}[]],
-  ): string
+  encodeFunctionData(functionFragment: 'tryBlockAndAggregate', values: [boolean, {target: string; callData: BytesLike}[]]): string
 
   decodeFunctionResult(functionFragment: 'aggregate', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'blockAndAggregate', data: BytesLike): Result
@@ -91,9 +88,7 @@ export class Multicall extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-  ): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -111,10 +106,7 @@ export class Multicall extends BaseContract {
   interface: MulticallInterface
 
   functions: {
-    aggregate(
-      calls: {target: string; callData: BytesLike}[],
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    aggregate(calls: {target: string; callData: BytesLike}[], overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     blockAndAggregate(
       calls: {target: string; callData: BytesLike}[],
@@ -161,10 +153,7 @@ export class Multicall extends BaseContract {
     ): Promise<ContractTransaction>
   }
 
-  aggregate(
-    calls: {target: string; callData: BytesLike}[],
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  aggregate(calls: {target: string; callData: BytesLike}[], overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   blockAndAggregate(
     calls: {target: string; callData: BytesLike}[],
@@ -282,15 +271,9 @@ export class Multicall extends BaseContract {
   filters: {}
 
   estimateGas: {
-    aggregate(
-      calls: {target: string; callData: BytesLike}[],
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    aggregate(calls: {target: string; callData: BytesLike}[], overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
-    blockAndAggregate(
-      calls: {target: string; callData: BytesLike}[],
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    blockAndAggregate(calls: {target: string; callData: BytesLike}[], overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     getBlockHash(blockNumber: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 

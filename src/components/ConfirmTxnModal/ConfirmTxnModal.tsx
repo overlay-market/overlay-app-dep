@@ -2,10 +2,7 @@ import {useMemo} from 'react'
 import {X} from 'react-feather'
 import Modal from '../Modal/Modal'
 import {TEXT} from '../../theme/theme'
-import {
-  TriggerActionButton as TriggerConfirmBuildButton,
-  PendingActionButton as PendingConfirmationButton,
-} from '../Button/Button'
+import {TriggerActionButton as TriggerConfirmBuildButton, PendingActionButton as PendingConfirmationButton} from '../Button/Button'
 import {AdditionalDetailRow} from '../../pages/Positions/Unwind'
 import {FlexColumn} from '../Container/Container'
 import {ModalContent, WalletHeader, CloseIcon} from '../ConnectWalletModal/ConnectWalletModal'
@@ -89,19 +86,11 @@ export default function ConfirmTxnModal({
 
               <AdditionalDetailRow detail={'Slippage Tolerance'} detailColor={'#B9BABD'} value={`${setSlippageValue}%`} />
 
-              <AdditionalDetailRow
-                detail={'Est. Liquidation Price'}
-                detailColor={'#B9BABD'}
-                value={estimatedLiquidationPrice}
-              />
+              <AdditionalDetailRow detail={'Est. Liquidation Price'} detailColor={'#B9BABD'} value={estimatedLiquidationPrice} />
             </FlexColumn>
 
             <FlexColumn mt={'48px'} color={'white'}>
-              <AdditionalDetailRow
-                detail={'Estimated Collateral'}
-                detailColor={'#B9BABD'}
-                value={`${adjustedCollateral} OVL`}
-              />
+              <AdditionalDetailRow detail={'Estimated Collateral'} detailColor={'#B9BABD'} value={`${adjustedCollateral} OVL`} />
 
               <AdditionalDetailRow detail={'Estimated OI'} detailColor={'#B9BABD'} value={`${expectedOi}`} />
             </FlexColumn>

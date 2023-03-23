@@ -48,16 +48,8 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
 
   const chainlinkDecimals = useMultipleContractSingleData(inputs.feedAddresses, CHAINLINK_FEED_INTERFACE, 'decimals')
   const chainlinkDescriptions = useMultipleContractSingleData(inputs.feedAddresses, CHAINLINK_FEED_INTERFACE, 'description')
-  const uniswapBaseTokenAddresses = useMultipleContractSingleData(
-    inputs.feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketBaseToken',
-  )
-  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(
-    inputs.feedAddresses,
-    UNI_V3_FEED_INTERFACE,
-    'marketQuoteToken',
-  )
+  const uniswapBaseTokenAddresses = useMultipleContractSingleData(inputs.feedAddresses, UNI_V3_FEED_INTERFACE, 'marketBaseToken')
+  const uniswapQuoteTokenAddresses = useMultipleContractSingleData(inputs.feedAddresses, UNI_V3_FEED_INTERFACE, 'marketQuoteToken')
 
   const uniswapTokenAddresses = useMemo(() => {
     let baseTokens: any = []
@@ -83,24 +75,16 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
   }, [uniswapBaseTokenAddresses, uniswapQuoteTokenAddresses])
 
   const uniswapBaseTokenSymbols = useMultipleContractSingleData(uniswapTokenAddresses.baseTokens, ERC20_INTERFACE, 'symbol')
-  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(
-    uniswapTokenAddresses.quoteTokens,
-    ERC20_INTERFACE,
-    'symbol',
-  )
+  const uniswapQuoteTokenSymbols = useMultipleContractSingleData(uniswapTokenAddresses.quoteTokens, ERC20_INTERFACE, 'symbol')
   const uniswapBaseTokenDecimalAmounts = useMarketBaseAmounts(inputs.feedAddresses)
   const uniswapQuoteTokenDecimalAmounts = useMarketQuoteAmounts(inputs.feedAddresses)
 
   return useMemo(() => {
     return markets
       ? markets.map((market, index) => {
-          const isChainlink: boolean = Boolean(
-            Array.isArray(chainlinkDecimals) && chainlinkDecimals.length > 0 && chainlinkDecimals[index].result,
-          )
+          const isChainlink: boolean = Boolean(Array.isArray(chainlinkDecimals) && chainlinkDecimals.length > 0 && chainlinkDecimals[index].result)
           const isUniswap: boolean = Boolean(
-            Array.isArray(uniswapBaseTokenAddresses) &&
-              uniswapBaseTokenAddresses.length > 0 &&
-              uniswapBaseTokenAddresses[index].result,
+            Array.isArray(uniswapBaseTokenAddresses) && uniswapBaseTokenAddresses.length > 0 && uniswapBaseTokenAddresses[index].result,
           )
 
           if (isChainlink) {

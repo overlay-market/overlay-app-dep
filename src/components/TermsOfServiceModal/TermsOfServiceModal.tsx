@@ -81,8 +81,8 @@ export default function TermsOfServiceModal() {
       <ModalContent>
         <FlexColumn>
           <TEXT.BoldSmallBody lineHeight={1.5} m={'auto'}>
-            Perpetuals are not available to anyone residents of, or are located, incorporated, or having a registered agent
-            in, the United States or a restricted territory (as defined in Overlay's Terms of Service (the "TOS").
+            Perpetuals are not available to anyone residents of, or are located, incorporated, or having a registered agent in, the United States or a
+            restricted territory (as defined in Overlay's Terms of Service (the "TOS").
             <br />
             <br />
             By accepting, you accept the TOS, which you can find here:

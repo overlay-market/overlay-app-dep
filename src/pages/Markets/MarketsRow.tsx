@@ -15,16 +15,7 @@ type MarketsRowProps = {
   annualFundingRate: string | number | undefined
 }
 
-const MarketsRow = ({
-  marketId,
-  marketName,
-  midPrice,
-  oiLong,
-  oiShort,
-  capOi,
-  dailyFundingRate,
-  annualFundingRate,
-}: MarketsRowProps) => {
+const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dailyFundingRate, annualFundingRate}: MarketsRowProps) => {
   const [long, setLong] = useState(0)
   const [short, setShort] = useState(0)
   const [total, setTotal] = useState(0)

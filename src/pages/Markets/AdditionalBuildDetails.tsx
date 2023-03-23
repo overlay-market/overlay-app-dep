@@ -215,18 +215,14 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType>Funding Rate</PositionDetailType>
-        <DetailValue color={'#10DCB1'}>
-          {fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}
-        </DetailValue>
+        <DetailValue color={'#10DCB1'}>{fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType>Market Contract</PositionDetailType>
         {chainId && marketAddress && (
           <HoverableDetailValue>
-            <ExternalLink href={getExplorerLink(chainId, marketAddress, ExplorerDataType.ADDRESS)}>
-              {ShortenedAddresses.marketContract}
-            </ExternalLink>
+            <ExternalLink href={getExplorerLink(chainId, marketAddress, ExplorerDataType.ADDRESS)}>{ShortenedAddresses.marketContract}</ExternalLink>
             <Icon size={16} margin={'auto'}>
               <StyledLinkIcon href={''} />
             </Icon>
@@ -237,9 +233,7 @@ export const AdditionalDetails = ({
         <PositionDetailType>Feed Contract</PositionDetailType>
         {chainId && feedAddress && (
           <HoverableDetailValue>
-            <ExternalLink href={getExplorerLink(chainId, feedAddress, ExplorerDataType.ADDRESS)}>
-              {ShortenedAddresses.feedContract}
-            </ExternalLink>
+            <ExternalLink href={getExplorerLink(chainId, feedAddress, ExplorerDataType.ADDRESS)}>{ShortenedAddresses.feedContract}</ExternalLink>
             <Icon size={16} margin={'auto'}>
               <StyledLinkIcon href={''} />
             </Icon>

@@ -1,11 +1,7 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
 import {useSingleContractMultipleData} from '../state/multicall/hooks'
-import {
-  formatWeiToParsedNumber,
-  formatBigNumberUsingDecimalsToNumber,
-  formatBigNumberUsingDecimalsToString,
-} from '../utils/formatWei'
+import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber, formatBigNumberUsingDecimalsToString} from '../utils/formatWei'
 import {BigNumber, ethers} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
@@ -119,9 +115,7 @@ export function usePositionOis(positionsCallData?: any, baseTokensAmounts?: any,
       if (baseTokenQuoteTokenDecimalDifference === 0) {
         return formatWeiToParsedNumber(oi, baseTokensAmounts[index], sigFigs)
       } else {
-        return parsedOi
-          ? formatBigNumberUsingDecimalsToNumber(parsedOi, baseTokenQuoteTokenDecimalDifference, sigFigs)
-          : undefined
+        return parsedOi ? formatBigNumberUsingDecimalsToNumber(parsedOi, baseTokenQuoteTokenDecimalDifference, sigFigs) : undefined
       }
     })
   }, [callResult, blockNumber, chainId, baseTokensAmounts, quoteTokensAmounts, decimals])

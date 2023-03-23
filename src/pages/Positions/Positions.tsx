@@ -97,10 +97,7 @@ export const Positions = () => {
             <TEXT.BoldSmallBody ml="auto" mr="8px">
               Show closed positions
             </TEXT.BoldSmallBody>
-            <StyledSwitchToggle
-              checked={!userHideClosedPositions}
-              onClick={() => setUserHideClosedPositions(!userHideClosedPositions)}
-            />
+            <StyledSwitchToggle checked={!userHideClosedPositions} onClick={() => setUserHideClosedPositions(!userHideClosedPositions)} />
           </ShowClosedPositionsToggleContainer>
         )}
         <PositionTableHeader />
@@ -119,10 +116,7 @@ export const PositionsInner = () => {
   const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
   const [userHideClosedPositions] = useUserHideClosedPositions()
 
-  const feedAddresses = useMemo(
-    () => (!positions ? [] : positions.map((position: PositionData) => position.market.feedAddress)),
-    [positions],
-  )
+  const feedAddresses = useMemo(() => (!positions ? [] : positions.map((position: PositionData) => position.market.feedAddress)), [positions])
   const {baseTokens, quoteTokens, decimals, descriptions} = useMarketNames(feedAddresses)
   const baseAmounts = useMarketBaseAmounts(feedAddresses)
   const quoteAmounts = useMarketQuoteAmounts(feedAddresses)

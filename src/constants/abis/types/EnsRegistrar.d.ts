@@ -46,10 +46,7 @@ interface EnsRegistrarInterface extends ethers.utils.Interface {
   encodeFunctionData(functionFragment: 'setRecord', values: [BytesLike, string, string, BigNumberish]): string
   encodeFunctionData(functionFragment: 'setResolver', values: [BytesLike, string]): string
   encodeFunctionData(functionFragment: 'setSubnodeOwner', values: [BytesLike, BytesLike, string]): string
-  encodeFunctionData(
-    functionFragment: 'setSubnodeRecord',
-    values: [BytesLike, BytesLike, string, string, BigNumberish],
-  ): string
+  encodeFunctionData(functionFragment: 'setSubnodeRecord', values: [BytesLike, BytesLike, string, string, BigNumberish]): string
   encodeFunctionData(functionFragment: 'setTTL', values: [BytesLike, BigNumberish]): string
   encodeFunctionData(functionFragment: 'ttl', values: [BytesLike]): string
 
@@ -106,9 +103,7 @@ export class EnsRegistrar extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-  ): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -136,17 +131,9 @@ export class EnsRegistrar extends BaseContract {
 
     resolver(node: BytesLike, overrides?: CallOverrides): Promise<[string]>
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    setApprovalForAll(operator: string, approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
-    setOwner(
-      node: BytesLike,
-      owner: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    setOwner(node: BytesLike, owner: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     setRecord(
       node: BytesLike,
@@ -156,11 +143,7 @@ export class EnsRegistrar extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<ContractTransaction>
 
-    setResolver(
-      node: BytesLike,
-      resolver: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    setResolver(node: BytesLike, resolver: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     setSubnodeOwner(
       node: BytesLike,
@@ -178,11 +161,7 @@ export class EnsRegistrar extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<ContractTransaction>
 
-    setTTL(
-      node: BytesLike,
-      ttl: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    setTTL(node: BytesLike, ttl: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     ttl(node: BytesLike, overrides?: CallOverrides): Promise<[BigNumber]>
   }
@@ -197,17 +176,9 @@ export class EnsRegistrar extends BaseContract {
 
   resolver(node: BytesLike, overrides?: CallOverrides): Promise<string>
 
-  setApprovalForAll(
-    operator: string,
-    approved: boolean,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  setApprovalForAll(operator: string, approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
-  setOwner(
-    node: BytesLike,
-    owner: string,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  setOwner(node: BytesLike, owner: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   setRecord(
     node: BytesLike,
@@ -217,11 +188,7 @@ export class EnsRegistrar extends BaseContract {
     overrides?: Overrides & {from?: string | Promise<string>},
   ): Promise<ContractTransaction>
 
-  setResolver(
-    node: BytesLike,
-    resolver: string,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  setResolver(node: BytesLike, resolver: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   setSubnodeOwner(
     node: BytesLike,
@@ -239,11 +206,7 @@ export class EnsRegistrar extends BaseContract {
     overrides?: Overrides & {from?: string | Promise<string>},
   ): Promise<ContractTransaction>
 
-  setTTL(
-    node: BytesLike,
-    ttl: BigNumberish,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  setTTL(node: BytesLike, ttl: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   ttl(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
@@ -268,14 +231,7 @@ export class EnsRegistrar extends BaseContract {
 
     setSubnodeOwner(node: BytesLike, label: BytesLike, owner: string, overrides?: CallOverrides): Promise<string>
 
-    setSubnodeRecord(
-      node: BytesLike,
-      label: BytesLike,
-      owner: string,
-      resolver: string,
-      ttl: BigNumberish,
-      overrides?: CallOverrides,
-    ): Promise<void>
+    setSubnodeRecord(node: BytesLike, label: BytesLike, owner: string, resolver: string, ttl: BigNumberish, overrides?: CallOverrides): Promise<void>
 
     setTTL(node: BytesLike, ttl: BigNumberish, overrides?: CallOverrides): Promise<void>
 
@@ -295,10 +251,7 @@ export class EnsRegistrar extends BaseContract {
       owner?: null,
     ): TypedEventFilter<[string, string, string], {node: string; label: string; owner: string}>
 
-    NewResolver(
-      node?: BytesLike | null,
-      resolver?: null,
-    ): TypedEventFilter<[string, string], {node: string; resolver: string}>
+    NewResolver(node?: BytesLike | null, resolver?: null): TypedEventFilter<[string, string], {node: string; resolver: string}>
 
     NewTTL(node?: BytesLike | null, ttl?: null): TypedEventFilter<[string, BigNumber], {node: string; ttl: BigNumber}>
 
@@ -316,11 +269,7 @@ export class EnsRegistrar extends BaseContract {
 
     resolver(node: BytesLike, overrides?: CallOverrides): Promise<BigNumber>
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    setApprovalForAll(operator: string, approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     setOwner(node: BytesLike, owner: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
@@ -332,18 +281,9 @@ export class EnsRegistrar extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<BigNumber>
 
-    setResolver(
-      node: BytesLike,
-      resolver: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    setResolver(node: BytesLike, resolver: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
-    setSubnodeOwner(
-      node: BytesLike,
-      label: BytesLike,
-      owner: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    setSubnodeOwner(node: BytesLike, label: BytesLike, owner: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     setSubnodeRecord(
       node: BytesLike,
@@ -370,17 +310,9 @@ export class EnsRegistrar extends BaseContract {
 
     resolver(node: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    setApprovalForAll(
-      operator: string,
-      approved: boolean,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    setApprovalForAll(operator: string, approved: boolean, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
-    setOwner(
-      node: BytesLike,
-      owner: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    setOwner(node: BytesLike, owner: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     setRecord(
       node: BytesLike,
@@ -390,11 +322,7 @@ export class EnsRegistrar extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    setResolver(
-      node: BytesLike,
-      resolver: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    setResolver(node: BytesLike, resolver: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     setSubnodeOwner(
       node: BytesLike,
@@ -412,11 +340,7 @@ export class EnsRegistrar extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    setTTL(
-      node: BytesLike,
-      ttl: BigNumberish,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    setTTL(node: BytesLike, ttl: BigNumberish, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     ttl(node: BytesLike, overrides?: CallOverrides): Promise<PopulatedTransaction>
   }

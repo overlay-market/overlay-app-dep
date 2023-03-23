@@ -11,17 +11,14 @@ export const MEDIA_WIDTHS = {
   minLarge: 1400,
 }
 
-const mediaWidthTemplates: {[width in keyof typeof MEDIA_WIDTHS]: typeof css} = Object.keys(MEDIA_WIDTHS).reduce(
-  (accumulator, size) => {
-    ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
-      @media (min-width: ${(MEDIA_WIDTHS as any)[size]}px) {
-        ${css(a, b, c)}
-      }
-    `
-    return accumulator
-  },
-  {},
-) as any
+const mediaWidthTemplates: {[width in keyof typeof MEDIA_WIDTHS]: typeof css} = Object.keys(MEDIA_WIDTHS).reduce((accumulator, size) => {
+  ;(accumulator as any)[size] = (a: any, b: any, c: any) => css`
+    @media (min-width: ${(MEDIA_WIDTHS as any)[size]}px) {
+      ${css(a, b, c)}
+    }
+  `
+  return accumulator
+}, {}) as any
 
 export function colors(darkMode: boolean): Colors {
   return {

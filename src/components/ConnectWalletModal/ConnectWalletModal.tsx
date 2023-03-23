@@ -161,9 +161,7 @@ export default function ConnectWalletModal() {
           <WalletOption
             id={`connect-${key}`}
             onClick={() => {
-              option.connector === connector
-                ? setWalletView(WALLET_VIEWS.ACCOUNT)
-                : !option.href && tryActivation(option.connector)
+              option.connector === connector ? setWalletView(WALLET_VIEWS.ACCOUNT) : !option.href && tryActivation(option.connector)
             }}
             key={key}
             active={option.connector === connector}
@@ -189,12 +187,7 @@ export default function ConnectWalletModal() {
           </CloseIcon>
         </WalletHeader>
         {walletView === WALLET_VIEWS.PENDING ? (
-          <PendingView
-            connector={pendingWallet}
-            error={pendingError}
-            setPendingError={setPendingError}
-            tryActivation={tryActivation}
-          />
+          <PendingView connector={pendingWallet} error={pendingError} setPendingError={setPendingError} tryActivation={tryActivation} />
         ) : (
           <>{getOptions()}</>
         )}

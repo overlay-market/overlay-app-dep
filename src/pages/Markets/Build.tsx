@@ -149,9 +149,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const ovl = chainId ? OVL[chainId] : undefined
 
   // @TO-DO: pull market name from feed
-  const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(
-    market?.feedAddress,
-  )
+  const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(market?.feedAddress)
 
   const marketName = useMemo(() => {
     if (description) return MARKET_NAME_FROM_DESCRIPTION[description]
@@ -292,8 +290,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const {callback: buildCallback} = useBuildCallback(buildData, market?.id, prices._mid, minCollateral, inputError)
 
   const {selectedLeverage, isLong, typedValue, setSlippageValue, txnDeadline} = useBuildState()
-  const {onAmountInput, onSelectLeverage, onSelectPositionSide, onSetSlippage, onSetTxnDeadline, onResetBuildState} =
-    useBuildActionHandlers()
+  const {onAmountInput, onSelectLeverage, onSelectPositionSide, onSetSlippage, onSetTxnDeadline, onResetBuildState} = useBuildActionHandlers()
 
   const handleResetTxnSettings = useCallback(
     (e: any) => {
@@ -445,15 +442,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       })
   }, [approveCallback, typedValue])
 
-  const estimatedOiResult = useEstimatedBuildOi(
-    market?.id,
-    typedValue,
-    selectedLeverage,
-    isLong,
-    decimals,
-    baseTokenDecimals,
-    quoteTokenDecimals,
-  )
+  const estimatedOiResult = useEstimatedBuildOi(market?.id, typedValue, selectedLeverage, isLong, decimals, baseTokenDecimals, quoteTokenDecimals)
 
   const rawExpectedOi = estimatedOiResult.rawOi ? estimatedOiResult.rawOi : null
   const expectedOi = estimatedOiResult?.formattedOi ? estimatedOiResult?.formattedOi : null
@@ -561,18 +550,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         <NumericalInputLabel htmlFor="Build Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
           <FlexRow ml="auto" mb="4px" width="auto">
-            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>
-              25%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}>
-              50%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}>
-              75%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}>
-              Max
-            </TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>25%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}>50%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}>75%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}>Max</TransparentUnderlineButton>
           </FlexRow>
         </NumericalInputLabel>
         <NumericalInputContainer>

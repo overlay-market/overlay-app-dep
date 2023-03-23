@@ -90,9 +90,7 @@ export class ArgentWalletDetector extends BaseContract {
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
     listener: TypedListener<EventArgsArray, EventArgsObject>,
   ): this
-  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-  ): this
+  removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>): this
 
   listeners(eventName?: string): Array<Listener>
   off(eventName: string, listener: Listener): this
@@ -110,22 +108,13 @@ export class ArgentWalletDetector extends BaseContract {
   interface: ArgentWalletDetectorInterface
 
   functions: {
-    acceptedCodes(
-      arg0: BytesLike,
-      overrides?: CallOverrides,
-    ): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
+    acceptedCodes(arg0: BytesLike, overrides?: CallOverrides): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
 
-    acceptedImplementations(
-      arg0: string,
-      overrides?: CallOverrides,
-    ): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
+    acceptedImplementations(arg0: string, overrides?: CallOverrides): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
 
     addCode(_code: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
-    addCodeAndImplementationFromWallet(
-      _argentWallet: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<ContractTransaction>
+    addCodeAndImplementationFromWallet(_argentWallet: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
     addImplementation(_impl: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -140,22 +129,13 @@ export class ArgentWalletDetector extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>
   }
 
-  acceptedCodes(
-    arg0: BytesLike,
-    overrides?: CallOverrides,
-  ): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
+  acceptedCodes(arg0: BytesLike, overrides?: CallOverrides): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
 
-  acceptedImplementations(
-    arg0: string,
-    overrides?: CallOverrides,
-  ): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
+  acceptedImplementations(arg0: string, overrides?: CallOverrides): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
 
   addCode(_code: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
-  addCodeAndImplementationFromWallet(
-    _argentWallet: string,
-    overrides?: Overrides & {from?: string | Promise<string>},
-  ): Promise<ContractTransaction>
+  addCodeAndImplementationFromWallet(_argentWallet: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
   addImplementation(_impl: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<ContractTransaction>
 
@@ -170,15 +150,9 @@ export class ArgentWalletDetector extends BaseContract {
   owner(overrides?: CallOverrides): Promise<string>
 
   callStatic: {
-    acceptedCodes(
-      arg0: BytesLike,
-      overrides?: CallOverrides,
-    ): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
+    acceptedCodes(arg0: BytesLike, overrides?: CallOverrides): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
 
-    acceptedImplementations(
-      arg0: string,
-      overrides?: CallOverrides,
-    ): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
+    acceptedImplementations(arg0: string, overrides?: CallOverrides): Promise<[boolean, BigNumber] & {exists: boolean; index: BigNumber}>
 
     addCode(_code: BytesLike, overrides?: CallOverrides): Promise<void>
 
@@ -212,10 +186,7 @@ export class ArgentWalletDetector extends BaseContract {
 
     addCode(_code: BytesLike, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
-    addCodeAndImplementationFromWallet(
-      _argentWallet: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<BigNumber>
+    addCodeAndImplementationFromWallet(_argentWallet: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
     addImplementation(_impl: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<BigNumber>
 
@@ -242,10 +213,7 @@ export class ArgentWalletDetector extends BaseContract {
       overrides?: Overrides & {from?: string | Promise<string>},
     ): Promise<PopulatedTransaction>
 
-    addImplementation(
-      _impl: string,
-      overrides?: Overrides & {from?: string | Promise<string>},
-    ): Promise<PopulatedTransaction>
+    addImplementation(_impl: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
     changeOwner(_newOwner: string, overrides?: Overrides & {from?: string | Promise<string>}): Promise<PopulatedTransaction>
 
