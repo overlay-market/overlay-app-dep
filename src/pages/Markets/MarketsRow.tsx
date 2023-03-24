@@ -3,6 +3,7 @@ import {StyledTableCellThin, StyledTableRow} from '../../components/Table/Table'
 import {FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
+import {useHistory} from 'react-router-dom'
 
 type MarketsRowProps = {
   marketId: string
@@ -19,6 +20,7 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
   const [long, setLong] = useState(0)
   const [short, setShort] = useState(0)
   const [total, setTotal] = useState(0)
+  let history = useHistory()
 
   useEffect(() => {
     if (oiLong !== undefined) setLong(Number(oiLong))
@@ -30,8 +32,12 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
   const shortPercentageOfTotal = useMemo(() => ((short / total) * 100).toFixed(2), [short, total])
   const longPercentageOfTotal = useMemo(() => ((long / total) * 100).toFixed(2), [long, total])
 
+  function handleNavigate() {
+    history.push(`/markets/${marketId}`)
+  }
+
   return (
-    <StyledTableRow hover={true}>
+    <StyledTableRow hover={true} onClick={handleNavigate}>
       <StyledTableCellThin component="th" scope="row">
         {marketName}
       </StyledTableCellThin>

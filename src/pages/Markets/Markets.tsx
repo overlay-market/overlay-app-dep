@@ -101,7 +101,7 @@ const Markets = () => {
                   />
                 ))
             ) : (
-              <FlexRow>
+              <FlexRow margin="auto">
                 <Loader stroke="white" size="12px" />
               </FlexRow>
             )}
