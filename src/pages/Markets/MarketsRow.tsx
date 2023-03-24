@@ -29,12 +29,14 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
 
   useEffect(() => setTotal(long + short), [long, short])
 
+  const defaultZero = '00.00'
+
   const shortPercentageOfTotalOi = useMemo(() => {
-    return Number.isFinite(short) && Number.isFinite(total) && total > short ? ((short / total) * 100).toFixed(2) : '-'
+    return Number.isFinite(short) && Number.isFinite(total) && total > short ? ((short / total) * 100).toFixed(2) : defaultZero
   }, [short, total])
 
   const longPercentageOfTotalOi = useMemo(() => {
-    return Number.isFinite(long) && Number.isFinite(total) && total > long ? ((long / total) * 100).toFixed(2) : '-'
+    return Number.isFinite(long) && Number.isFinite(total) && total > long ? ((long / total) * 100).toFixed(2) : defaultZero
   }, [long, total])
 
   function handleNavigate() {
