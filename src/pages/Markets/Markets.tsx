@@ -85,7 +85,7 @@ const Markets = () => {
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
-            {marketsData.length > 0 ? (
+            {marketsData.length > 0 &&
               marketsData
                 ?.filter(market => market.marketAddress !== '0x909d893d5e7f250659fa56c2ca2920760eebb17f')
                 .map((market: ParsedMarketStateDetails, index: number) => (
@@ -99,17 +99,19 @@ const Markets = () => {
                     dailyFundingRate={market.parsedDailyFundingRate}
                     annualFundingRate={market.parsedAnnualFundingRate}
                   />
-                ))
-            ) : (
-              <FlexRow margin="auto">
-                <Loader stroke="white" size="12px" />
-              </FlexRow>
-            )}
+                ))}
           </TableBody>
         </StyledTable>
       </TableContainer>
+      {marketsData.length === 0 && (
+        <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
+          <Loader stroke="white" size="21px" />
+        </FlexRow>
+      )}
     </PageContainer>
   )
 }
 
+{
+}
 export default Markets
