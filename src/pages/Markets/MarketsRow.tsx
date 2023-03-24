@@ -17,9 +17,9 @@ type MarketsRowProps = {
 }
 
 const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dailyFundingRate, annualFundingRate}: MarketsRowProps) => {
-  const [long, setLong] = useState(0)
-  const [short, setShort] = useState(0)
-  const [total, setTotal] = useState(0)
+  const [long, setLong] = useState<number>(0)
+  const [short, setShort] = useState<number>(0)
+  const [total, setTotal] = useState<number>(0)
   let history = useHistory()
 
   useEffect(() => {
@@ -29,8 +29,13 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
 
   useEffect(() => setTotal(long + short), [long, short])
 
-  const shortPercentageOfTotal = useMemo(() => ((short / total) * 100).toFixed(2), [short, total])
-  const longPercentageOfTotal = useMemo(() => ((long / total) * 100).toFixed(2), [long, total])
+  const shortPercentageOfTotalOi = useMemo(() => {
+    return Number.isFinite(short) && Number.isFinite(total) ? ((short / total) * 100).toFixed(2) : '-'
+  }, [short, total])
+
+  const longPercentageOfTotalOi = useMemo(() => {
+    return Number.isFinite(long) && Number.isFinite(total) ? ((long / total) * 100).toFixed(2) : '-'
+  }, [long, total])
 
   function handleNavigate() {
     history.push(`/markets/${marketId}`)
@@ -44,8 +49,8 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
       <StyledTableCellThin align="left">{midPrice}</StyledTableCellThin>
       <StyledTableCellThin align="left">
         <FlexRow>
-          <TEXT.SmallBody mr="auto">{shortPercentageOfTotal}%</TEXT.SmallBody>
-          <TEXT.SmallBody>{longPercentageOfTotal}%</TEXT.SmallBody>
+          <TEXT.SmallBody mr="auto">{shortPercentageOfTotalOi}%</TEXT.SmallBody>
+          <TEXT.SmallBody>{longPercentageOfTotalOi}%</TEXT.SmallBody>
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
