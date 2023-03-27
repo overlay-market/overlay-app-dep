@@ -10,6 +10,7 @@ import AmbireLogo from '../../assets/images/ambire-logo.png'
 import ElementFinanceLogo from '../../assets/images/elementfinance-logo.png'
 import GMXLogo from '../../assets/images/gmx-logo.png'
 import CowSwapLogo from '../../assets/images/coWswap-logo.png'
+import ArbitrumLogo from '../../assets/images/arbitrum-logo.png'
 import {Link} from 'react-router-dom'
 import {ClaimId} from '../../constants/claims'
 
@@ -78,6 +79,15 @@ const ClaimData: Array<ClaimDataProps> = [
     isDisabled: true,
     isClosed: false,
   },
+  {
+    platform: 'Arbitrum AMA Premint',
+    seatsAvailable: 200,
+    claimLink: `/claim/${ClaimId.ARBITRUM}`,
+    claimText: 'Coming Soon',
+    logoSrc: `${ArbitrumLogo}`,
+    isDisabled: true,
+    isClosed: false,
+  },
   // {
   //   platform: 'Element Finance users',
   //   seatsAvailable: 100,
@@ -98,13 +108,6 @@ const ClaimData: Array<ClaimDataProps> = [
   //   seatsAvailable: 100,
   //   claimLink: `/claim/${ClaimId.COW_SWAP}`,
   //   logoSrc: `${CowSwapLogo}`,
-  //   isDisabled: true,
-  // },
-  // {
-  //   platform: 'Arbitrum users',
-  //   seatsAvailable: 100,
-  //   claimLink: `/claim/${ClaimId.ARBITRUM}`,
-  //   logoSrc: `${GMXLogo}`,
   //   isDisabled: true,
   // },
 ]
