@@ -9,6 +9,7 @@ export const OVL: {[chainId: number]: Token} = {
   [SupportedChainId.GÖRLI]: new Token(SupportedChainId.GÖRLI, OVL_TOKEN_ADDRESS[5], 18, 'OVL', 'Overlay'),
   [SupportedChainId.RINKEBY]: new Token(SupportedChainId.RINKEBY, OVL_TOKEN_ADDRESS[4], 18, 'OVL', 'Overlay'),
   [SupportedChainId.ARBITRUM]: new Token(SupportedChainId.ARBITRUM, OVL_TOKEN_ADDRESS[42161], 18, 'OVL', 'Overlay'),
+  [SupportedChainId.ARBITRUM_GÖRLI]: new Token(SupportedChainId.ARBITRUM_GÖRLI, OVL_TOKEN_ADDRESS[421613], 18, 'OVL', 'Overlay'),
 }
 
 export const NETWORK_LOGO: {[chainId: number]: string} = {

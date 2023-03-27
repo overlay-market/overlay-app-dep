@@ -61,7 +61,6 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
-
   return (
     <PageContainer>
       <TableContainer component={Paper}>
