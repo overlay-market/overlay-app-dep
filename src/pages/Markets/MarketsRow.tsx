@@ -48,7 +48,7 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
       <StyledTableCellThin component="th" scope="row">
         {marketName}
       </StyledTableCellThin>
-      <StyledTableCellThin align="left">{midPrice}</StyledTableCellThin>
+      <StyledTableCellThin align="left">{Number(midPrice).toLocaleString()}</StyledTableCellThin>
       <StyledTableCellThin align="left">
         <FlexRow>
           <TEXT.SmallBody mr="auto">{shortPercentageOfTotalOi}%</TEXT.SmallBody>
