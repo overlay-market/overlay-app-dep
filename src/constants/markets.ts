@@ -10,6 +10,7 @@ export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
   'SOL / USD': 'SOL / USD',
   'AVAX / USD': 'AVAX / USD',
   'MATIC / USD': 'MATIC / USD',
+  'MCap1000 Feed': 'MCap1000',
   price: 'BAYC / WETH',
 }
 
