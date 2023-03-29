@@ -35,4 +35,5 @@ export const MARKET_LOGO_FROM_BASE: MarketLogoMap = {
   AVAX: AvaxLogo,
   SOL: SolanaLogo,
   APE: ApeLogo,
+  BAYC: ApeLogo,
 }

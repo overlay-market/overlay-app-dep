@@ -17,6 +17,7 @@ type MarketsRowProps = {
   dailyFundingRate: string | number | undefined
   annualFundingRate: string | number | undefined
   oracleLogo: string | undefined
+  marketLogo: string | undefined
 }
 
 const MarketsRow = ({
@@ -30,6 +31,7 @@ const MarketsRow = ({
   dailyFundingRate,
   annualFundingRate,
   oracleLogo,
+  marketLogo,
 }: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
@@ -66,18 +68,28 @@ const MarketsRow = ({
       <StyledTableCellThin component="th" scope="row" id="marketIndex">
         {index}
       </StyledTableCellThin>
+
       <StyledTableCellThin component="th" scope="row" id="marketName">
-        {marketName}
+        <FlexRow>
+          <Icon size={20}>
+            <img src={marketLogo} alt="Market Feed Logo" />
+          </Icon>
+          <TEXT.BoldSmallBody ml="8px">{marketName}</TEXT.BoldSmallBody>
+        </FlexRow>
       </StyledTableCellThin>
+
       <StyledTableCellThin align="left" id="marketPrice">
         {Number(midPrice).toLocaleString()}
       </StyledTableCellThin>
+
       <StyledTableCellThin align="left" id="market7DayChange">
         -
       </StyledTableCellThin>
+
       <StyledTableCellThin align="left" id="marketFundingRate">
         <TEXT.BoldNumber color={isFundingRatePositive ? '#FF648A' : '#5FD0AB'}>{dailyFundingRate}%</TEXT.BoldNumber>
       </StyledTableCellThin>
+
       <StyledTableCellThin align="left" id="marketOi">
         <FlexRow>
           <TEXT.SmallBody mr="auto" color="#FF648A">
@@ -87,6 +99,7 @@ const MarketsRow = ({
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
+
       <StyledTableCellThin align="left" id="marketFeedLogo">
         <Icon size={20}>
           <img src={oracleLogo} alt="Market Feed Logo" />
