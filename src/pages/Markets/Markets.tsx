@@ -11,6 +11,7 @@ import Loader from '../../components/Loaders/Loaders'
 import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState, MarketStateResults, ParsedMarketStateDetails} from '../../hooks/useCurrentMarketState'
 import {InfoTip} from '../../components/InfoTip/InfoTip'
+import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 
 const activeClassName = 'INACTIVE'
@@ -72,24 +73,36 @@ const Markets = () => {
                 <Trans> # </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> Market </Trans>
+                <Trans>
+                  <TEXT.Supplemental>Market</TEXT.Supplemental>
+                </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> Price </Trans>
+                <Trans>
+                  <TEXT.Supplemental>Price</TEXT.Supplemental>
+                </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> 7d </Trans>
+                <Trans>
+                  <TEXT.Supplemental>7d</TEXT.Supplemental>
+                </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell align="right">
-                <Trans> Funding Rate </Trans>
-                <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" />
+                <Trans>
+                  <TEXT.Supplemental>Funding</TEXT.Supplemental>
+                </Trans>
+                {/* <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" /> */}
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> OI Balance </Trans>
-                <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" />
+                <Trans>
+                  <TEXT.Supplemental>OI Balance</TEXT.Supplemental>
+                </Trans>
+                {/* <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" /> */}
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> Oracle </Trans>
+                <Trans>
+                  <TEXT.Supplemental>Oracle</TEXT.Supplemental>
+                </Trans>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
