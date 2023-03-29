@@ -4,6 +4,7 @@ import {FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {useHistory} from 'react-router-dom'
+import {Icon} from '../../components/Icon/Icon'
 
 type MarketsRowProps = {
   index: number
@@ -46,14 +47,22 @@ const MarketsRow = ({index, marketId, marketName, midPrice, oiLong, oiShort, cap
 
   return (
     <StyledTableRow hover={true} onClick={handleNavigate}>
-      <StyledTableCellThin component="th" scope="row">
+      <StyledTableCellThin component="th" scope="row" id="marketIndex">
         {index}
       </StyledTableCellThin>
-      <StyledTableCellThin component="th" scope="row">
+      <StyledTableCellThin component="th" scope="row" id="marketName">
         {marketName}
       </StyledTableCellThin>
-      <StyledTableCellThin align="left">{Number(midPrice).toLocaleString()}</StyledTableCellThin>
-      <StyledTableCellThin align="left">
+      <StyledTableCellThin align="left" id="marketPrice">
+        {Number(midPrice).toLocaleString()}
+      </StyledTableCellThin>
+      <StyledTableCellThin align="left" id="market7DayChange">
+        -
+      </StyledTableCellThin>
+      <StyledTableCellThin align="right" id="marketFundingRate">
+        {dailyFundingRate}% ({annualFundingRate}%)
+      </StyledTableCellThin>
+      <StyledTableCellThin align="left" id="marketOi">
         <FlexRow>
           <TEXT.SmallBody mr="auto" color="#FF648A">
             {shortPercentageOfTotalOi}%
@@ -62,8 +71,8 @@ const MarketsRow = ({index, marketId, marketName, midPrice, oiLong, oiShort, cap
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
-      <StyledTableCellThin align="right">
-        {dailyFundingRate}% ({annualFundingRate}%)
+      <StyledTableCellThin align="right" id="marketFeedLogo">
+        {/* <Icon></Icon> */}
       </StyledTableCellThin>
     </StyledTableRow>
   )
