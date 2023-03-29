@@ -16,9 +16,21 @@ type MarketsRowProps = {
   capOi: string | number | undefined
   dailyFundingRate: string | number | undefined
   annualFundingRate: string | number | undefined
+  oracleLogo: string | undefined
 }
 
-const MarketsRow = ({index, marketId, marketName, midPrice, oiLong, oiShort, capOi, dailyFundingRate, annualFundingRate}: MarketsRowProps) => {
+const MarketsRow = ({
+  index,
+  marketId,
+  marketName,
+  midPrice,
+  oiLong,
+  oiShort,
+  capOi,
+  dailyFundingRate,
+  annualFundingRate,
+  oracleLogo,
+}: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
@@ -71,8 +83,10 @@ const MarketsRow = ({index, marketId, marketName, midPrice, oiLong, oiShort, cap
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
-      <StyledTableCellThin align="right" id="marketFeedLogo">
-        {/* <Icon></Icon> */}
+      <StyledTableCellThin align="center" id="marketFeedLogo">
+        <Icon size={20}>
+          <img src={oracleLogo} alt="Market Feed Logo" />
+        </Icon>
       </StyledTableCellThin>
     </StyledTableRow>
   )

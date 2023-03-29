@@ -33,6 +33,7 @@ export interface ParsedMarketStateDetails extends MarketStateDetails {
   parsedCapOi: string | number | undefined
   parsedAnnualFundingRate: number | string | undefined
   parsedDailyFundingRate: number | string | undefined
+  oracleLogo: string | undefined
 }
 
 export interface MarketStateResults {
@@ -112,6 +113,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedCapOi,
           parsedDailyFundingRate,
           parsedAnnualFundingRate,
+          oracleLogo: market.oracleLogo,
         }
       })
     }
