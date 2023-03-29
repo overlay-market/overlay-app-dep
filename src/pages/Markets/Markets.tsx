@@ -87,7 +87,7 @@ const Markets = () => {
                   <TEXT.Supplemental>7d</TEXT.Supplemental>
                 </Trans>
               </StyledHeaderCell>
-              <StyledHeaderCell align="right">
+              <StyledHeaderCell>
                 <Trans>
                   <TEXT.Supplemental>Funding</TEXT.Supplemental>
                 </Trans>

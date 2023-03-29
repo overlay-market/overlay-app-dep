@@ -101,4 +101,10 @@ export const TEXT = {
   BoldSupplemental(props: TextProps) {
     return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={700} color={'white1'} {...props} />
   },
+  BoldNumber(props: TextProps) {
+    return <TextWrapper fontFamily="Roboto Mono, monospace" fontSize={14} fontWeight={700} {...props} />
+  },
+  Number(props: TextProps) {
+    return <TextWrapper fontFamily="Roboto Mono, monospace" fontSize={14} fontWeight={400} {...props} />
+  },
 }

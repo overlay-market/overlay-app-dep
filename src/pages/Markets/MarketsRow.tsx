@@ -57,6 +57,10 @@ const MarketsRow = ({
     history.push(`/markets/${marketId}`)
   }
 
+  const isFundingRatePositive = useMemo(() => {
+    return Math.sign(Number(dailyFundingRate)) > 0
+  }, [dailyFundingRate])
+
   return (
     <StyledTableRow hover={true} onClick={handleNavigate}>
       <StyledTableCellThin component="th" scope="row" id="marketIndex">
@@ -71,8 +75,8 @@ const MarketsRow = ({
       <StyledTableCellThin align="left" id="market7DayChange">
         -
       </StyledTableCellThin>
-      <StyledTableCellThin align="right" id="marketFundingRate">
-        {dailyFundingRate}% ({annualFundingRate}%)
+      <StyledTableCellThin align="left" id="marketFundingRate">
+        <TEXT.BoldNumber color={isFundingRatePositive ? '#FF648A' : '#5FD0AB'}>{dailyFundingRate}%</TEXT.BoldNumber>
       </StyledTableCellThin>
       <StyledTableCellThin align="left" id="marketOi">
         <FlexRow>
@@ -83,7 +87,7 @@ const MarketsRow = ({
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
-      <StyledTableCellThin align="center" id="marketFeedLogo">
+      <StyledTableCellThin align="left" id="marketFeedLogo">
         <Icon size={20}>
           <img src={oracleLogo} alt="Market Feed Logo" />
         </Icon>
