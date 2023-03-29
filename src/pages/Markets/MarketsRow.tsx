@@ -6,6 +6,7 @@ import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {useHistory} from 'react-router-dom'
 
 type MarketsRowProps = {
+  index: number
   marketId: string
   marketName: string | undefined
   midPrice: string | number | undefined
@@ -16,7 +17,7 @@ type MarketsRowProps = {
   annualFundingRate: string | number | undefined
 }
 
-const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dailyFundingRate, annualFundingRate}: MarketsRowProps) => {
+const MarketsRow = ({index, marketId, marketName, midPrice, oiLong, oiShort, capOi, dailyFundingRate, annualFundingRate}: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
   const [total, setTotal] = useState<number>(0)
@@ -45,6 +46,9 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
 
   return (
     <StyledTableRow hover={true} onClick={handleNavigate}>
+      <StyledTableCellThin component="th" scope="row">
+        {index}
+      </StyledTableCellThin>
       <StyledTableCellThin component="th" scope="row">
         {marketName}
       </StyledTableCellThin>
