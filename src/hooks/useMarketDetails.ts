@@ -4,7 +4,7 @@ import {useMultipleContractSingleData} from '../state/multicall/hooks'
 import {useMarketBaseAmounts} from './useMarketBaseAmount'
 import {useMarketQuoteAmounts} from './useMarketQuoteAmounts'
 import {MarketData} from '../state/markets/hooks'
-import {FeedType} from '../constants/oracles'
+import {FeedType, ORACLE_LOGO} from '../constants/oracles'
 import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
 import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
 import ERC20_INTERFACE from '../constants/abis/erc20'
@@ -17,6 +17,7 @@ export interface AdditionalMarketData extends MarketData {
   decimalsDifference: number | undefined
   description: string | undefined
   type: FeedType | undefined
+  oracleLogo: string | undefined
 }
 
 /**
@@ -77,6 +78,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
               decimals: 18, //temporarily hardcode all chainlink markets for 18 decimals until v2
               description: String(chainlinkDescriptions[index].result),
               type: FeedType.CHAINLINK,
+              oracleLogo: ORACLE_LOGO[FeedType.CHAINLINK],
             }
           } else if (isUniswap) {
             const baseToken = String(uniswapBaseTokenSymbols[index].result)
@@ -90,6 +92,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
               decimalsDifference: uniswapDecimalsDifference,
               description: `${baseToken} / ${quoteToken}`,
               type: FeedType.UNISWAP,
+              oracleLogo: ORACLE_LOGO[FeedType.UNISWAP],
             }
           } else {
             return {
@@ -98,6 +101,7 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
               decimalsDifference: undefined,
               description: undefined,
               type: undefined,
+              oracleLogo: undefined,
             }
           }
         })
