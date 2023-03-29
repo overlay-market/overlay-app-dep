@@ -82,7 +82,7 @@ const ClaimData: Array<ClaimDataProps> = [
   {
     platform: 'Arbitrum AMA Premint',
     seatsAvailable: 200,
-    claimLink: `/claim/${ClaimId.ARBITRUM}`,
+    claimLink: `/claim/${ClaimId.ARBITRUM_AMA}`,
     claimText: 'Open 3/29',
     logoSrc: `${ArbitrumLogo}`,
     isDisabled: false,

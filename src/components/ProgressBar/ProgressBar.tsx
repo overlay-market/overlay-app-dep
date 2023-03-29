@@ -10,13 +10,12 @@ const Container = styled.div<{width: string; margin?: string}>`
 
 const ProgressBackground = styled.div<{reverse: boolean; split: boolean}>`
   border-radius: ${({split}) => (split ? '0 30px 30px 0' : '30px')};
-  border: 1px solid #f2f2f2;
   border-left: ${({split}) => (split ? '0px' : 'auto')};
   overflow: hidden;
-  background: rgba(0, 0, 0, 0.25);
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
+  background: #bbbbbb;
   transform: ${({reverse}) => (reverse ? 'rotate(-180deg)' : '')};
 `
+// box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
 
 const Bar = styled.div<{width?: number; color: string; split: boolean}>`
   height: 6px;
@@ -26,9 +25,9 @@ const Bar = styled.div<{width?: number; color: string; split: boolean}>`
   transition-property: width, background-color;
   width: ${({width}) => `${width}%`};
   background-color: ${({color}) => color};
-  border-left: ${({split}) => (split ? '0.5px solid #6D6D6D' : 'auto')};
   animation: progressAnimation 1s;
 `
+// border-left: ${({split}) => (split ? '0.5px solid #6D6D6D' : 'auto')};
 
 type ProgressBarProps = {
   value: number | undefined | null
@@ -69,8 +68,8 @@ export const DoubleProgressBar = ({leftBarValue, rightBarValue, maxValue}: Doubl
   const PROGRESS_BAR_INPUT = {
     width: '50%',
     margin: '0',
-    redColor: '#DC1F4E',
-    greenColor: '#10DCB1',
+    redColor: '#FF648A',
+    greenColor: '#5FD0AB',
   }
   return (
     <FlexColumn>

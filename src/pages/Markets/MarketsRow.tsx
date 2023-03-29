@@ -51,8 +51,10 @@ const MarketsRow = ({marketId, marketName, midPrice, oiLong, oiShort, capOi, dai
       <StyledTableCellThin align="left">{Number(midPrice).toLocaleString()}</StyledTableCellThin>
       <StyledTableCellThin align="left">
         <FlexRow>
-          <TEXT.SmallBody mr="auto">{shortPercentageOfTotalOi}%</TEXT.SmallBody>
-          <TEXT.SmallBody>{longPercentageOfTotalOi}%</TEXT.SmallBody>
+          <TEXT.SmallBody mr="auto" color="#FF648A">
+            {shortPercentageOfTotalOi}%
+          </TEXT.SmallBody>
+          <TEXT.SmallBody color="#5FD0AB">{longPercentageOfTotalOi}%</TEXT.SmallBody>
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
