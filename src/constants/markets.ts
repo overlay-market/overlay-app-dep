@@ -2,7 +2,7 @@ export type DescriptionNameMap = {[description: string]: string}
 export type MarketNameAddressMap = {[marketAddress: string]: string}
 
 export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
-  'Azuki Floor Price': 'Azuki / WETH',
+  'Azuki Floor Price': 'Azuki/ WETH',
   'BAYC Floor Price': 'BAYC / WETH',
   'LINK / USD': 'LINK / USD',
   'WBTC / USD': 'WBTC / USD',

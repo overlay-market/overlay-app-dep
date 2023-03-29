@@ -8,6 +8,7 @@ import {FeedType} from '../constants/oracles'
 import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
 import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS} from '../constants/markets'
+import getCharactersBeforeSlash from '../utils/getCharactersBeforeSlash'
 
 export interface MarketStateDetails {
   marketAddress: string
@@ -33,6 +34,7 @@ export interface ParsedMarketStateDetails extends MarketStateDetails {
   parsedCapOi: string | number | undefined
   parsedAnnualFundingRate: number | string | undefined
   parsedDailyFundingRate: number | string | undefined
+  marketBaseToken: string | undefined
   oracleLogo: string | undefined
 }
 
@@ -59,7 +61,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         const marketId = market.id
         const description = market.description
 
-        let marketName = undefined
+        let marketName: string | undefined = undefined
         let parsedBid: string | number | undefined = undefined
         let parsedAsk: string | number | undefined = undefined
         let parsedMid: string | number | undefined = undefined
@@ -68,6 +70,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         let parsedCapOi: string | number | undefined = undefined
         let parsedDailyFundingRate: string | number | undefined = undefined
         let parsedAnnualFundingRate: string | number | undefined = undefined
+        let marketBaseToken: string | undefined = undefined
 
         if (decimals && market.type === FeedType.CHAINLINK) {
           marketName =
@@ -80,6 +83,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedCapOi = decimals && formatBigNumber(result.state_.capOi, decimals, sigFigs)
           parsedDailyFundingRate = decimals && formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
           parsedAnnualFundingRate = decimals && formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
+          marketBaseToken = getCharactersBeforeSlash(marketName)
         } else if (decimals && uniswapDecimalsDifference && market.type === FeedType.UNISWAP) {
           marketName = description
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
@@ -90,6 +94,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedCapOi = decimals && formatBigNumber(result.state_.capOi, uniswapDecimalsDifference + 18, sigFigs)
           parsedDailyFundingRate = decimals && formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
           parsedAnnualFundingRate = decimals && formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
+          marketBaseToken = marketName ? getCharactersBeforeSlash(marketName) : ''
         }
 
         return {
@@ -114,6 +119,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedDailyFundingRate,
           parsedAnnualFundingRate,
           oracleLogo: market.oracleLogo,
+          marketBaseToken,
         }
       })
     }
