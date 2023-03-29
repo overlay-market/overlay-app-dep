@@ -7,7 +7,7 @@ import {AdditionalMarketData} from './useMarketDetails'
 import {FeedType} from '../constants/oracles'
 import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
-import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS, MARKET_LOGO_FROM_BASE} from '../constants/markets'
+import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS, MARKET_LOGO_FROM_BASE, PRICE_CURRENCY_FROM_QUOTE} from '../constants/markets'
 import {getCharactersBeforeSlash, getCharactersAfterSlash} from '../utils/getCharactersBeforeSlash'
 
 export interface MarketStateDetails {
@@ -92,6 +92,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           marketBaseToken = getCharactersBeforeSlash(marketName)
           marketQuoteToken = getCharactersAfterSlash(marketName)
           marketLogo = MARKET_LOGO_FROM_BASE[marketBaseToken]
+          priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken]
         } else if (decimals && uniswapDecimalsDifference && market.type === FeedType.UNISWAP) {
           marketName = description
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
@@ -105,6 +106,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           marketBaseToken = marketName ? getCharactersBeforeSlash(marketName) : ''
           marketQuoteToken = marketName ? getCharactersAfterSlash(marketName) : ''
           marketLogo = MARKET_LOGO_FROM_BASE[marketBaseToken]
+          priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken]
         }
 
         return {

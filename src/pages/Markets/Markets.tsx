@@ -125,6 +125,7 @@ const Markets = () => {
                     annualFundingRate={market.parsedAnnualFundingRate}
                     oracleLogo={market.oracleLogo}
                     marketLogo={market.marketLogo}
+                    priceCurrency={market.priceCurrency}
                   />
                 ))}
           </TableBody>

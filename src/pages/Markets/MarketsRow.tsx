@@ -18,6 +18,7 @@ type MarketsRowProps = {
   annualFundingRate: string | number | undefined
   oracleLogo: string | undefined
   marketLogo: string | undefined
+  priceCurrency: string | undefined
 }
 
 const MarketsRow = ({
@@ -32,6 +33,7 @@ const MarketsRow = ({
   annualFundingRate,
   oracleLogo,
   marketLogo,
+  priceCurrency,
 }: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
@@ -79,7 +81,7 @@ const MarketsRow = ({
       </StyledTableCellThin>
 
       <StyledTableCellThin align="left" id="marketPrice">
-        {Number(midPrice).toLocaleString()}
+        <TEXT.BoldNumber>{priceCurrency + Number(midPrice).toLocaleString()}</TEXT.BoldNumber>
       </StyledTableCellThin>
 
       <StyledTableCellThin align="left" id="market7DayChange">
