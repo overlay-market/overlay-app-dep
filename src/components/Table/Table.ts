@@ -15,7 +15,7 @@ export const StyledTable = styled(Table)`
 export const StyledTableCell = styled(TableCell)<{width?: number}>`
   font-size: 14px;
   color: ${({theme}) => theme.text1} !important;
-  width: ${({width}) => (width ? width : 'auto')};
+  width: ${({width}) => (width ? `${width}%` : 'auto')};
 `
 
 export const StyledHeaderCell = styled(StyledTableCell)`

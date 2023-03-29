@@ -71,10 +71,10 @@ const Markets = () => {
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledHeaderCell>
+              <StyledHeaderCell width={1}>
                 <Trans> # </Trans>
               </StyledHeaderCell>
-              <StyledHeaderCell>
+              <StyledHeaderCell width={25}>
                 <Trans>
                   <TEXT.Supplemental>Market</TEXT.Supplemental>
                 </Trans>
