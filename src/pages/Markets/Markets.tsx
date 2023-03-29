@@ -68,18 +68,27 @@ const Markets = () => {
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell>
+                <Trans> # </Trans>
+              </StyledHeaderCell>
+              <StyledHeaderCell>
                 <Trans> Market </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
                 <Trans> Price </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans> Balance </Trans>
-                <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" />
+                <Trans> 7d </Trans>
               </StyledHeaderCell>
               <StyledHeaderCell align="right">
                 <Trans> Funding Rate </Trans>
                 <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" />
+              </StyledHeaderCell>
+              <StyledHeaderCell>
+                <Trans> OI Balance </Trans>
+                <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" />
+              </StyledHeaderCell>
+              <StyledHeaderCell>
+                <Trans> Oracle </Trans>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
