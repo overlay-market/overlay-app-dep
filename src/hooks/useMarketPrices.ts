@@ -4,6 +4,10 @@ import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 import {formatWeiToParsedNumber} from '../utils/formatWei'
+import {getNetworkLibrary} from '../connectors/connectors'
+import {NETWORK_URLS} from '../connectors/connectors'
+import {ethers} from 'ethers'
+import {SupportedChainId} from '../constants/chains'
 
 export function useMarketPrice(marketAddress?: string): any | undefined {
   const peripheryContract = useV1PeripheryContract()
@@ -32,18 +36,32 @@ export function useMarketPrice(marketAddress?: string): any | undefined {
  * @param marketAddresses array of market addresses to query market mid prices for
  * @returns market mid prices associated with input market addresses
  */
-export function useMarketMidPrices(marketAddresses?: any) {
+export function useMarketMidPrices(marketAddresses?: string[][], blockNumber?: number | undefined) {
   const peripheryContract = useV1PeripheryContract()
-  const blockNumber = useBlockNumber()
   const {chainId} = useActiveWeb3React()
+  const [midPrices, setMidPrices] = useState([])
 
-  const pricesResult = useSingleContractMultipleData(peripheryContract, 'mid', marketAddresses)
+  useEffect(() => {
+    if (!peripheryContract || !marketAddresses || !blockNumber) return
+
+    const getPrices = async (marketAddress: string) => {
+      return await peripheryContract.mid(marketAddress, {blockTag: blockNumber})
+    }
+    const batch = new ethers.providers.InfuraProvider(NETWORK_URLS[SupportedChainId.ARBITRUM])
+
+    const requestPromises = marketAddresses.map(marketAddress => {
+      const request = getPrices(marketAddress[0]).then(result => {
+        return result
+      })
+      return request
+    })
+
+    Promise.all(requestPromises).then(results => {
+      console.log(results)
+    })
+  }, [peripheryContract, marketAddresses, blockNumber])
 
   return useMemo(() => {
-    return pricesResult.map(market => {
-      if (!chainId || !blockNumber || !market) return null
-      const marketPrice = market?.result && market.result[0]
-      return marketPrice
-    })
-  }, [pricesResult, blockNumber, chainId])
+    return midPrices
+  }, [midPrices])
 }

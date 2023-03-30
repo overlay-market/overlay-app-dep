@@ -9,7 +9,7 @@ import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
 import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS, MARKET_LOGO_FROM_BASE, PRICE_CURRENCY_FROM_QUOTE} from '../constants/markets'
 import {getCharactersBeforeSlash, getCharactersAfterSlash} from '../utils/getCharactersBeforeSlash'
-
+import {useMarketMidPrices} from './useMarketPrices'
 export interface MarketStateDetails {
   marketAddress: string
   bid: BigNumber
@@ -53,6 +53,8 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
   const loading = useMemo(() => results.some(({loading}) => loading), [results])
   const error = useMemo(() => results.some(({error}) => error), [results])
+
+  const midPrices = useMarketMidPrices(inputs, 75374578)
 
   const markets = useMemo(() => {
     if (!loading && !error && marketsData) {
