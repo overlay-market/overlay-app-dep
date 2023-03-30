@@ -89,8 +89,8 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           parsedCapOi = decimals && formatBigNumber(result.state_.capOi, decimals, sigFigs)
           parsedDailyFundingRate = decimals && formatFundingRateToDaily(result.state_.fundingRate, 18, 2)
           parsedAnnualFundingRate = decimals && formatFundingRateToAnnual(result.state_.fundingRate, 18, 2)
-          marketBaseToken = getCharactersBeforeSlash(marketName)
-          marketQuoteToken = getCharactersAfterSlash(marketName)
+          marketBaseToken = marketName ? getCharactersBeforeSlash(marketName) : ''
+          marketQuoteToken = marketName ? getCharactersAfterSlash(marketName) : ''
           marketLogo = MARKET_LOGO_FROM_BASE[marketBaseToken]
           priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken]
         } else if (decimals && uniswapDecimalsDifference && market.type === FeedType.UNISWAP) {

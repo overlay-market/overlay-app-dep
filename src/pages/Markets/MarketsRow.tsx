@@ -5,6 +5,7 @@ import {TEXT} from '../../theme/theme'
 import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {useHistory} from 'react-router-dom'
 import {Icon} from '../../components/Icon/Icon'
+import {AlertCircle} from 'react-feather'
 
 type MarketsRowProps = {
   index: number
@@ -73,9 +74,7 @@ const MarketsRow = ({
 
       <StyledTableCellThin component="th" scope="row" id="marketName">
         <FlexRow>
-          <Icon size={20}>
-            <img src={marketLogo} alt="Market Feed Logo" />
-          </Icon>
+          <Icon size={20}>{marketLogo ? <img src={marketLogo} alt="Market Feed Logo" /> : <AlertCircle />}</Icon>
           <TEXT.BoldSmallBody ml="8px">{marketName}</TEXT.BoldSmallBody>
         </FlexRow>
       </StyledTableCellThin>
