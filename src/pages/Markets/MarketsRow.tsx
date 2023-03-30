@@ -74,7 +74,7 @@ const MarketsRow = ({
 
       <StyledTableCellThin component="th" scope="row" id="marketName">
         <FlexRow>
-          <Icon size={20}>{marketLogo ? <img src={marketLogo} alt="Market Feed Logo" /> : <AlertCircle />}</Icon>
+          <Icon size={20}>{marketLogo ? <img src={marketLogo} alt="Market Feed Logo" /> : <AlertCircle size={20} />}</Icon>
           <TEXT.BoldSmallBody ml="8px">{marketName}</TEXT.BoldSmallBody>
         </FlexRow>
       </StyledTableCellThin>
@@ -101,8 +101,8 @@ const MarketsRow = ({
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>
 
-      <StyledTableCellThin align="left" id="marketFeedLogo">
-        <Icon size={20}>
+      <StyledTableCellThin id="marketFeedLogo">
+        <Icon size={20} margin="auto">
           <img src={oracleLogo} alt="Market Feed Logo" />
         </Icon>
       </StyledTableCellThin>

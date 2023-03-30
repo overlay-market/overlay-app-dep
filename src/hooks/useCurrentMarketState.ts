@@ -79,8 +79,9 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         let priceCurrency: string | undefined = undefined
 
         if (decimals && market.type === FeedType.CHAINLINK) {
-          marketName =
+          const convertedMarketName =
             description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
+          marketName = convertedMarketName ?? 'Parsing error'
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
           parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
           parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)
@@ -92,7 +93,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           marketBaseToken = marketName ? getCharactersBeforeSlash(marketName) : ''
           marketQuoteToken = marketName ? getCharactersAfterSlash(marketName) : ''
           marketLogo = MARKET_LOGO_FROM_BASE[marketBaseToken]
-          priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken]
+          priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken] ?? ''
         } else if (decimals && uniswapDecimalsDifference && market.type === FeedType.UNISWAP) {
           marketName = description
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
@@ -106,7 +107,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
           marketBaseToken = marketName ? getCharactersBeforeSlash(marketName) : ''
           marketQuoteToken = marketName ? getCharactersAfterSlash(marketName) : ''
           marketLogo = MARKET_LOGO_FROM_BASE[marketBaseToken]
-          priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken]
+          priceCurrency = PRICE_CURRENCY_FROM_QUOTE[marketQuoteToken] ?? ''
         }
 
         return {

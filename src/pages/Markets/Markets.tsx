@@ -101,7 +101,7 @@ const Markets = () => {
                 </Trans>
                 {/* <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" /> */}
               </StyledHeaderCell>
-              <StyledHeaderCell>
+              <StyledHeaderCell align="center">
                 <Trans>
                   <TEXT.Supplemental>Oracle</TEXT.Supplemental>
                 </Trans>
