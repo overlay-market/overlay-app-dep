@@ -24,6 +24,10 @@ if (typeof INFURA_KEY === 'undefined') {
   throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
 }
 
+if (typeof ALCHEMY_KEY === 'undefined') {
+  throw new Error(`REACT_APP_ALCHEMY_KEY must be a defined environment variable`)
+}
+
 export const NETWORK_URLS: {[key in SupportedChainId]: string} = {
   [SupportedChainId.MAINNET]: `https://mainnet.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.GÖRLI]: `https://goerli.infura.io/v3/${INFURA_KEY}`,

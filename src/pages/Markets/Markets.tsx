@@ -83,11 +83,11 @@ const Markets = () => {
                   <TEXT.Supplemental>Price</TEXT.Supplemental>
                 </Trans>
               </StyledHeaderCell>
-              <StyledHeaderCell>
+              {/* <StyledHeaderCell>
                 <Trans>
                   <TEXT.Supplemental>7d</TEXT.Supplemental>
                 </Trans>
-              </StyledHeaderCell>
+              </StyledHeaderCell> */}
               <StyledHeaderCell>
                 <Trans>
                   <TEXT.Supplemental>Funding</TEXT.Supplemental>

@@ -55,10 +55,10 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
   const loading = useMemo(() => results.some(({loading}) => loading), [results])
   const error = useMemo(() => results.some(({error}) => error), [results])
 
-  // const currentBlockNumber = useBlockNumber()
-
-  // console.log('currentBlockNumber: ', currentBlockNumber)
-  const midPrices = useMarketMidPrices(inputs, 75690009)
+  const currentBlockNumber = useBlockNumber()
+  console.log('currentBlockNumber: ', currentBlockNumber)
+  // const blockNumberHalfDayAgo = curre
+  const midPrices = useMarketMidPrices(inputs, 75701635)
 
   const markets = useMemo(() => {
     if (!loading && !error && marketsData) {

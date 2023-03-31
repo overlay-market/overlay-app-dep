@@ -83,9 +83,9 @@ const MarketsRow = ({
         <TEXT.BoldNumber>{priceCurrency + Number(midPrice).toLocaleString()}</TEXT.BoldNumber>
       </StyledTableCellThin>
 
-      <StyledTableCellThin align="left" id="market7DayChange">
+      {/* <StyledTableCellThin align="left" id="market7DayChange">
         -
-      </StyledTableCellThin>
+      </StyledTableCellThin> */}
 
       <StyledTableCellThin align="left" id="marketFundingRate">
         <TEXT.BoldNumber color={isFundingRatePositive ? '#FF648A' : '#5FD0AB'}>{dailyFundingRate}%</TEXT.BoldNumber>
