@@ -337,9 +337,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
     let calculatedAmountByPercentage
     if (percentage < 100) {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(0)
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(4)
     } else {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(10)
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(2)
     }
     return handleUserInput(calculatedAmountByPercentage)
   }
