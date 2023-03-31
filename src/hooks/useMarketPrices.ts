@@ -47,7 +47,6 @@ export function useMarketMidPrices(marketAddresses?: string[][], blockNumber?: n
     const getPrices = async (marketAddress: string) => {
       return await peripheryContract.mid(marketAddress, {blockTag: blockNumber})
     }
-    const batch = new ethers.providers.InfuraProvider(NETWORK_URLS[SupportedChainId.ARBITRUM])
 
     const requestPromises = marketAddresses.map(marketAddress => {
       const request = getPrices(marketAddress[0]).then(result => {

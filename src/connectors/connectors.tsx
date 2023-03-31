@@ -18,6 +18,7 @@ export const injected = new InjectedConnector({
 })
 
 const INFURA_KEY = process.env.REACT_APP_INFURA_KEY
+const ALCHEMY_KEY = process.env.REACT_APP_ALCHEMY_KEY
 
 if (typeof INFURA_KEY === 'undefined') {
   throw new Error(`REACT_APP_INFURA_KEY must be a defined environment variable`)
@@ -28,7 +29,8 @@ export const NETWORK_URLS: {[key in SupportedChainId]: string} = {
   [SupportedChainId.GÖRLI]: `https://goerli.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.RINKEBY]: `https://kovan.infura.io/v3/${INFURA_KEY}`,
   [SupportedChainId.ARBITRUM]: `https://arbitrum-mainnet.infura.io/v3/${INFURA_KEY}`,
-  [SupportedChainId.ARBITRUM_GÖRLI]: `https://arbitrum-goerli.infura.io/v3/${INFURA_KEY}`,
+  // [SupportedChainId.ARBITRUM_GÖRLI]: `https://arbitrum-goerli.infura.io/v3/${INFURA_KEY}`,
+  [SupportedChainId.ARBITRUM_GÖRLI]: `https://arb-mainnet.g.alchemy.com/v2/${ALCHEMY_KEY}`,
 }
 
 export const network = new NetworkConnector({
