@@ -122,11 +122,11 @@ export default function Header() {
         </Trans>
       </StyledLink>
 
-      <StyledLink to={'/claimpage'}>
+      {/* <StyledLink to={'/claimpage'}>
         <Trans>
           <TEXT.BoldSmallBody>Claim</TEXT.BoldSmallBody>
         </Trans>
-      </StyledLink>
+      </StyledLink> */}
 
       <AccountContainer>
         <Web3Status />

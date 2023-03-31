@@ -76,8 +76,8 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.AMBIRE_WALLET}`,
     claimText: 'Open 3/29',
     logoSrc: `${AmbireLogo}`,
-    isDisabled: false,
-    isClosed: false,
+    isDisabled: true,
+    isClosed: true,
   },
   {
     platform: 'Arbitrum AMA Premint',
@@ -85,8 +85,8 @@ const ClaimData: Array<ClaimDataProps> = [
     claimLink: `/claim/${ClaimId.ARBITRUM_AMA}`,
     claimText: 'Open 3/29',
     logoSrc: `${ArbitrumLogo}`,
-    isDisabled: false,
-    isClosed: false,
+    isDisabled: true,
+    isClosed: true,
   },
   // {
   //   platform: 'Element Finance users',
