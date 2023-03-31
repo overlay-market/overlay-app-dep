@@ -111,7 +111,9 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
     return (
       <>
         <BalanceContainer>
-          <Trans>Balance:</Trans>
+          <Trans>
+            <TEXT.BoldSmallBody>Balance:</TEXT.BoldSmallBody>
+          </Trans>
           <TEXT.BoldSupplemental ml={1} mr={0} minWidth={'auto'}>
             <Loader size="12px" stroke="white" />
           </TEXT.BoldSupplemental>
@@ -123,7 +125,9 @@ export const TokenBalance = ({balance, network}: TokenBalanceProps) => {
       <>
         <BalanceContainer>
           <TEXT.Supplemental minWidth={'fit-content'}>
-            <Trans>Balance:</Trans>
+            <Trans>
+              <TEXT.BoldSmallBody>Balance:</TEXT.BoldSmallBody>:
+            </Trans>
           </TEXT.Supplemental>
           <Amount>{NumberSpring(balance, 'OVL')}</Amount>
         </BalanceContainer>

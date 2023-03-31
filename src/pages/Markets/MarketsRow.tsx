@@ -26,7 +26,7 @@ const MarketsRow = ({
   index,
   marketId,
   marketName,
-  midPrice,
+  midPrice = '',
   oiLong,
   oiShort,
   capOi,
@@ -34,7 +34,7 @@ const MarketsRow = ({
   annualFundingRate,
   oracleLogo,
   marketLogo,
-  priceCurrency,
+  priceCurrency = '',
 }: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
