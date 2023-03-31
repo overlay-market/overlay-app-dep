@@ -6,6 +6,7 @@ import {Image} from 'rebass'
 import {useDarkModeManager} from '../../state/user/hooks'
 import {FlexRow} from '../Container/Container'
 import {enableLock, disableLock} from '../../utils/scrollLock'
+import {TEXT} from '../../theme/theme'
 import More from '../More/More'
 import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
@@ -104,19 +105,27 @@ export default function Header() {
       </LogoContainer>
 
       <StyledLink to={'/markets'}>
-        <Trans>Markets</Trans>
+        <Trans>
+          <TEXT.BoldSmallBody>Markets</TEXT.BoldSmallBody>
+        </Trans>
       </StyledLink>
 
       <StyledLink to={'/positions'}>
-        <Trans>Positions</Trans>
+        <Trans>
+          <TEXT.BoldSmallBody>Positions</TEXT.BoldSmallBody>
+        </Trans>
       </StyledLink>
 
       <StyledLink to={'/bridge'}>
-        <Trans>Bridge</Trans>
+        <Trans>
+          <TEXT.BoldSmallBody>Bridge</TEXT.BoldSmallBody>
+        </Trans>
       </StyledLink>
 
       <StyledLink to={'/claimpage'}>
-        <Trans>Claim</Trans>
+        <Trans>
+          <TEXT.BoldSmallBody>Claim</TEXT.BoldSmallBody>
+        </Trans>
       </StyledLink>
 
       <AccountContainer>

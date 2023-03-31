@@ -71,17 +71,19 @@ const Markets = () => {
           <TableHead>
             <StyledTableHeaderRow>
               <StyledHeaderCell width={1}>
-                <Trans> # </Trans>
+                <TEXT.Supplemental>
+                  <Trans>#</Trans>
+                </TEXT.Supplemental>
               </StyledHeaderCell>
               <StyledHeaderCell width={25}>
-                <Trans>
-                  <TEXT.Supplemental>Market</TEXT.Supplemental>
-                </Trans>
+                <TEXT.Supplemental>
+                  <Trans>Market</Trans>
+                </TEXT.Supplemental>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans>
-                  <TEXT.Supplemental>Price</TEXT.Supplemental>
-                </Trans>
+                <TEXT.Supplemental>
+                  <Trans>Price</Trans>
+                </TEXT.Supplemental>
               </StyledHeaderCell>
               {/* <StyledHeaderCell>
                 <Trans>
@@ -89,21 +91,21 @@ const Markets = () => {
                 </Trans>
               </StyledHeaderCell> */}
               <StyledHeaderCell>
-                <Trans>
-                  <TEXT.Supplemental>Funding</TEXT.Supplemental>
-                </Trans>
+                <TEXT.Supplemental>
+                  <Trans>Funding</Trans>
+                </TEXT.Supplemental>
                 {/* <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" /> */}
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <Trans>
-                  <TEXT.Supplemental>OI Balance</TEXT.Supplemental>
-                </Trans>
+                <TEXT.Supplemental>
+                  <Trans>OI Balance</Trans>
+                </TEXT.Supplemental>
                 {/* <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" /> */}
               </StyledHeaderCell>
               <StyledHeaderCell align="center">
-                <Trans>
-                  <TEXT.Supplemental>Oracle</TEXT.Supplemental>
-                </Trans>
+                <TEXT.Supplemental>
+                  <Trans>Oracle</Trans>
+                </TEXT.Supplemental>
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>

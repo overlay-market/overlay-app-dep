@@ -23,7 +23,6 @@ export const Web3StatusConnected = styled.div`
 `
 
 export const Web3StatusUnconnected = styled.button`
-  text-decoration: underline;
   background: ${({theme}) => theme.bg1};
   color: ${({theme}) => theme.text1};
   border: 0px;
@@ -230,7 +229,9 @@ function Web3StatusInner() {
   } else {
     return (
       // not connected
-      <Web3StatusUnconnected onClick={toggleWalletModal}>Connect wallet</Web3StatusUnconnected>
+      <Web3StatusUnconnected onClick={toggleWalletModal}>
+        <TEXT.BoldSmallBody>Connect wallet</TEXT.BoldSmallBody>
+      </Web3StatusUnconnected>
     )
   }
 }
