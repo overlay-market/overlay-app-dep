@@ -93,10 +93,10 @@ const MarketsRow = ({
 
       <StyledTableCellThin align="left" id="marketOi">
         <FlexRow>
-          <TEXT.SmallBody mr="auto" color="#FF648A">
+          <TEXT.BoldNumber mr="auto" color="#FF648A">
             {shortPercentageOfTotalOi}%
-          </TEXT.SmallBody>
-          <TEXT.SmallBody color="#5FD0AB">{longPercentageOfTotalOi}%</TEXT.SmallBody>
+          </TEXT.BoldNumber>
+          <TEXT.BoldNumber color="#5FD0AB">{longPercentageOfTotalOi}%</TEXT.BoldNumber>
         </FlexRow>
         <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
       </StyledTableCellThin>

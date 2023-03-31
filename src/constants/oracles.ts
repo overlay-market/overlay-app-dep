@@ -1,6 +1,6 @@
 import ChainlinkOracleLogo from '../assets/images/oracle-type-chainlink.png'
 import UniswapOracleLogo from '../assets/images/oracle-type-uniswap.png'
-import NFTPerpOracleLogo from '../assets/images/oracle-type-chainlink.png'
+import NFTPerpOracleLogo from '../assets/images/oracle-type-nftperp.png'
 import OverlayOracleLogo from '../assets/images/oracle-type-overlay.png'
 
 export type OracleMap = {[feedType: string]: string}

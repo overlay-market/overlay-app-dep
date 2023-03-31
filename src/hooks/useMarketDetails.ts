@@ -71,7 +71,18 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
             Array.isArray(uniswapBaseTokenAddresses) && uniswapBaseTokenAddresses.length > 0 && uniswapBaseTokenAddresses[index].result,
           )
 
-          if (isChainlink) {
+          // temporarily hardcode nftperp markets until we add identifier on smart contracts
+          if (market.id === '0xb31d222c23104cbc2c04df77941f1f2c478133dd') {
+            console.log('market.id: ', market.id)
+            return {
+              ...market,
+              decimalsDifference: undefined,
+              decimals: 18, //temporarily hardcode all nftperp markets for 18 decimals until v2
+              description: String(chainlinkDescriptions[index].result),
+              type: FeedType.NFTPERP,
+              oracleLogo: ORACLE_LOGO[FeedType.NFTPERP],
+            }
+          } else if (isChainlink) {
             return {
               ...market,
               decimalsDifference: undefined,

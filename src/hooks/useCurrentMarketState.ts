@@ -55,10 +55,10 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
   const loading = useMemo(() => results.some(({loading}) => loading), [results])
   const error = useMemo(() => results.some(({error}) => error), [results])
 
-  const currentBlockNumber = useBlockNumber()
-  console.log('currentBlockNumber: ', currentBlockNumber)
-  // const blockNumberHalfDayAgo = curre
-  const midPrices = useMarketMidPrices(inputs, 75701635)
+  // console.log('marketsData: ', marketsData)
+  // const currentBlockNumber = useBlockNumber()
+  // console.log('currentBlockNumber: ', currentBlockNumber)
+  // const midPrices = useMarketMidPrices(inputs, 75701635)
 
   const markets = useMemo(() => {
     if (!loading && !error && marketsData) {
@@ -84,7 +84,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         let marketLogo: string | undefined = undefined
         let priceCurrency: string | undefined = undefined
 
-        if (decimals && market.type === FeedType.CHAINLINK) {
+        if ((decimals && market.type === FeedType.CHAINLINK) || market.type === FeedType.NFTPERP) {
           const convertedMarketName =
             description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
           marketName = convertedMarketName ?? 'Parsing error'
