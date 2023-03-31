@@ -56,7 +56,7 @@ export function useMarketMidPrices(marketAddresses?: string[][], blockNumber?: n
     })
 
     Promise.all(requestPromises).then(results => {
-      console.log(results)
+      console.log('Promise returned from useMarketMidPrice', results)
     })
   }, [peripheryContract, marketAddresses, blockNumber])
 
