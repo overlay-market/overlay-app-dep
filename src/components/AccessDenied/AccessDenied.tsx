@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {PlanckCatLoader} from '../Loaders/Loaders'
+import {ExternalLink} from '../ExternalLink/ExternalLink'
 import {FlexColumn} from '../Container/Container'
 import {TEXT} from '../../theme/theme'
 
@@ -9,12 +9,12 @@ const MessageContainer = styled(FlexColumn)`
   box-shadow: 0 0 12px #5b60a4;
   padding: 16px 16px 24px;
   background: #1b2131;
-  width: 300px;
   margin: auto;
+  max-width: 400px;
 `
 
 interface AccessDeniedProps {
-  message: string
+  message: AccessDeniedType | string
 }
 
 export enum AccessDeniedType {
@@ -26,9 +26,17 @@ export const AccessDenied = ({message}: AccessDeniedProps) => {
   return (
     <FlexColumn height="100vh">
       <MessageContainer>
-        <PlanckCatLoader duration={5} width={25} />
-        <TEXT.StandardBody>Access Denied:</TEXT.StandardBody>
-        <TEXT.StandardBody>{message}</TEXT.StandardBody>
+        <TEXT.BoldHeader1 textAlign="center">Service Not Available In Your Region</TEXT.BoldHeader1>
+        <TEXT.StandardBody textAlign="center" mt="12px">
+          For compliance reasons, service is not available in your region.
+        </TEXT.StandardBody>
+        <TEXT.StandardBody textAlign="center" mt="12px">
+          Use of Tor, VPN, proxies or other means to circumvent this restriction is a violation of our
+          <ExternalLink href={'https://overlay.market/#/tos'}>
+            <TEXT.StandardBody color={'#12b4ff'}>Terms of Service.</TEXT.StandardBody>
+          </ExternalLink>
+        </TEXT.StandardBody>
+        {/* <TEXT.StandardBody>{message}</TEXT.StandardBody> */}
       </MessageContainer>
     </FlexColumn>
   )
