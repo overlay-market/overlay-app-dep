@@ -9,6 +9,7 @@ import Markets from './Markets/Markets'
 import {Market} from './Markets/Market'
 import {Unwind} from './Positions/Unwind'
 import Positions from './Positions/Positions'
+import PositionsPage from './Positions/PositionsPage'
 import Liquidate from './Liquidate/Liquidate'
 import styled from 'styled-components/macro'
 import Bridge from './Bridge/Bridge'
@@ -36,6 +37,7 @@ const App = () => {
               <Route exact strict path="/markets" component={Markets} />
               <Route exact strict path="/markets/:marketId" component={Market} />
               <Route exact strict path="/positions" component={Positions} />
+              <Route exact strict path="/positionspage" component={PositionsPage} />
               <Route exact strict path="/positions/:marketPositionId/:positionId" component={Unwind} />
               <Route exact strict path="/claim/:claimId" component={Claim} />
               <Route exact strict path="/claimpage" component={ClaimPage} />

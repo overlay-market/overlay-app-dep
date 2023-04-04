@@ -49,14 +49,21 @@ const CardContainer = styled(Link)<{navigate?: boolean; border?: boolean; hide: 
 export const PositionTableHeader = () => (
   <CardHeaderContainer>
     <HeaderCell align="left" width="50%">
+      Market
+    </HeaderCell>
+    <HeaderCell align="left" width="10%">
+      Size
+    </HeaderCell>
+    <HeaderCell align="left" width="10%">
       Position
     </HeaderCell>
-
-    <HeaderCell align="left" width="30%">
-      Est. Liq.
+    <HeaderCell align="left" width="10%">
+      Entry Price
     </HeaderCell>
-
-    <HeaderCell align="right" width="20%">
+    <HeaderCell align="right" width="10%">
+      Liq Price
+    </HeaderCell>
+    <HeaderCell align="right" width="10%">
       PnL
     </HeaderCell>
   </CardHeaderContainer>

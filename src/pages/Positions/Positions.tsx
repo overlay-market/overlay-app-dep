@@ -4,7 +4,6 @@ import Loader from 'react-loader-spinner'
 import {Button} from 'rebass'
 import {Switch as SwitchToggle} from '@rebass/forms'
 import {useActiveWeb3React} from '../../hooks/web3'
-import {MarketCard} from '../../components/Card/MarketCard'
 import {useCurrentWalletPositions, PositionData} from '../../state/build/hooks'
 import {useUnwindActionHandlers} from '../../state/unwind/hooks'
 import {PositionCard, PositionTableHeader} from './PositionCard'
@@ -19,29 +18,20 @@ import {useLiquidationPrices} from '../../hooks/useLiquidationPrice'
 import {usePositionOis} from '../../hooks/usePositionOi'
 import {useMarketQuoteAmounts} from '../../hooks/useMarketQuoteAmounts'
 import {useMarketBaseAmounts} from '../../hooks/useMarketBaseAmount'
-import {useToken} from '../../hooks/useToken'
 import {TEXT} from '../../theme/theme'
+
+const PageContainer = styled(FlexColumn)`
+  width: 900px;
+  margin: auto;
+`
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 350px;
-  margin: 0 auto 32px;
+  width: 900px;
   position: static;
   z-index: 0;
-`
-
-export const RouteHeader = styled.div`
-  font-size: 20px;
-  text-align: center;
-  margin-bottom: 48px;
-  font-weight: 700;
-  color: white;
-  padding-top: 16px;
-
-  ${({theme}) => theme.mediaWidth.minSmall`
-    padding-top: 0px;
-  `}
+  margin-top: 48px;
 `
 
 export const LoadingStatusView = styled(FlexColumn)`
@@ -66,6 +56,7 @@ const ConnectWalletButton = styled(Button)`
 const ShowClosedPositionsToggleContainer = styled(FlexRow)`
   border: 1px solid #828282;
   border-radius: 8px;
+  margin-top: 16px;
   margin-bottom: 24px;
   padding: 8px;
 `
@@ -88,10 +79,10 @@ export const Positions = () => {
   const {account, active} = useActiveWeb3React()
 
   return (
-    <MarketCard>
+    <PageContainer>
       {onResetUnwindState()}
       <Container>
-        <RouteHeader>Positions</RouteHeader>
+        <TEXT.BoldStandardBody>Open Positions</TEXT.BoldStandardBody>
         {active && account && (
           <ShowClosedPositionsToggleContainer>
             <TEXT.BoldSmallBody ml="auto" mr="8px">
@@ -105,7 +96,7 @@ export const Positions = () => {
           <PositionsInner />
         </FlexColumn>
       </Container>
-    </MarketCard>
+    </PageContainer>
   )
 }
 
