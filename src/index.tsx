@@ -7,6 +7,8 @@ import {NetworkContextName} from './constants/misc'
 import {LanguageProvider} from './i18n'
 import {SnackbarProvider} from 'notistack'
 import {CookiesProvider} from 'react-cookie'
+import {ThemeProvider as MUIThemeProvider} from '@material-ui/core'
+import {muiTheme} from './theme/theme'
 import SnackMessage from './components/SnackbarAlert/Snackbar'
 import ApplicationUpdater from './state/application/updater'
 import MulticallUpdater from './state/multicall/updater'
@@ -49,7 +51,9 @@ ReactDOM.render(
                   content={(key, message) => <SnackMessage id={key} message={message} />}
                 >
                   <ThemeProvider>
-                    <App />
+                    <MUIThemeProvider theme={muiTheme}>
+                      <App />
+                    </MUIThemeProvider>
                   </ThemeProvider>
                 </SnackbarProvider>
               </Web3ProviderNetwork>

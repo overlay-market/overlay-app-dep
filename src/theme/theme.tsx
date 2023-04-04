@@ -3,6 +3,17 @@ import {Text, TextProps as TextPropsOriginal} from 'rebass'
 import styled, {css, DefaultTheme, ThemeProvider as StyledComponentsThemeProvider} from 'styled-components'
 import {useIsDarkMode} from '../state/user/hooks'
 import {Colors} from './styled'
+import {createMuiTheme} from '@material-ui/core/styles'
+
+export const muiTheme = createMuiTheme({
+  overrides: {
+    MuiPaper: {
+      root: {
+        backgroundColor: 'transparent',
+      },
+    },
+  },
+})
 
 export const MEDIA_WIDTHS = {
   minExtraSmall: 576,
