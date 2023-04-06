@@ -78,9 +78,9 @@ const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableP
               </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
+          <TableBody>{children}</TableBody>
         </StyledTable>
       </TableContainer>
-      <TableBody>{children}</TableBody>
 
       {isLoading && (
         <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
