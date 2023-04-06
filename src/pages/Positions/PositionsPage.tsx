@@ -7,6 +7,7 @@ import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {Trans} from '@lingui/macro'
 import {FlexRow} from '../../components/Container/Container'
+import {useCurrentWalletPositions} from '../../state/build/hooks'
 import Loader from '../../components/Loaders/Loaders'
 
 const Container = styled.div`
@@ -17,9 +18,10 @@ interface PositionsTableProps {
   title: string
   children?: React.ReactNode
   marginTop?: string
+  isLoading?: boolean
 }
 
-const PositionsTable = ({title, children, marginTop}: PositionsTableProps) => {
+const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableProps) => {
   return (
     <Container>
       <TableContainer component={Paper}>
@@ -68,21 +70,32 @@ const PositionsTable = ({title, children, marginTop}: PositionsTableProps) => {
           </TableHead>
         </StyledTable>
       </TableContainer>
-      {!children && (
+      {isLoading && (
         <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
           <Loader stroke="white" size="21px" />
+        </FlexRow>
+      )}
+
+      {!isLoading && !children && (
+        <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
+          <TEXT.StandardBody color="#858585">You have no closed positions.</TEXT.StandardBody>
         </FlexRow>
       )}
     </Container>
   )
 }
+
 const Positions = () => {
   const {account, active} = useActiveWeb3React()
+  const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
+
+  const loadingProp = false
+  const positionsProp = null
 
   return (
     <PageContainer>
-      <PositionsTable title="Open Positions" marginTop="50px"></PositionsTable>
-      <PositionsTable title="Closed Positions" marginTop="200px"></PositionsTable>
+      <PositionsTable title="Open Positions" marginTop="50px" isLoading={loadingProp}></PositionsTable>
+      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={loadingProp}></PositionsTable>
     </PageContainer>
   )
 }
