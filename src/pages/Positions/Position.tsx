@@ -1,5 +1,6 @@
+import {useMemo} from 'react'
 import styled from 'styled-components'
-import {StyledTableRow, StyledTableCell, StyledTableCellThin} from '../../components/Table/Table'
+import {StyledTableRow, StyledTableCell, StyledTableCellThin, StyledHeaderCell} from '../../components/Table/Table'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
 
@@ -8,6 +9,7 @@ export interface PositionProps {
   positionId: string
   marketName: string
   marketAddress: string
+  leverage: string | number
   createdTimestamp: string
   isLong: boolean
   entryPrice: string
@@ -16,34 +18,38 @@ export interface PositionProps {
 }
 
 export const Position = ({...props}: PositionProps) => {
-  const {id, positionId, marketName, marketAddress, createdTimestamp, isLong, entryPrice, liquidationPrice, currentMidPrice} = props
+  const {id, positionId, marketName, marketAddress, leverage, createdTimestamp, isLong, entryPrice, liquidationPrice, currentMidPrice} = props
+
+  const positionSide = useMemo(() => {
+    if (isLong === null || isLong === undefined) return null
+    return isLong ? 'Long' : 'Short'
+  }, [isLong])
 
   return (
     <StyledTableRow>
-      <StyledTableCellThin>
+      <StyledTableCell>
         <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
-        <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
+      </StyledTableCell>
+      <StyledTableCell>
+        <TEXT.Supplemental>
+          {leverage}x {positionSide}
+        </TEXT.Supplemental>
+      </StyledTableCell>
+      <StyledTableCell>
         <TEXT.Supplemental>{createdTimestamp}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
+      </StyledTableCell>
+      <StyledTableCell>
         <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
+      </StyledTableCell>
+      <StyledTableCell>
         <TEXT.Supplemental>{entryPrice}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
+      </StyledTableCell>
+      <StyledTableCell>
         <TEXT.Supplemental>{currentMidPrice}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
+      </StyledTableCell>
+      <StyledTableCell>
         <TEXT.Supplemental>{liquidationPrice}</TEXT.Supplemental>
-      </StyledTableCellThin>
-      <StyledTableCellThin>
-        <TEXT.Supplemental>PnL</TEXT.Supplemental>
-      </StyledTableCellThin>
+      </StyledTableCell>
     </StyledTableRow>
   )
 }

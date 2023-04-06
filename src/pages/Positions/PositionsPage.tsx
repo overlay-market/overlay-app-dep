@@ -11,6 +11,7 @@ import {useCurrentWalletPositions} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
 import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
+import {Position} from './Position'
 import Loader from '../../components/Loaders/Loaders'
 
 const Container = styled.div`
@@ -79,6 +80,8 @@ const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableP
           </TableHead>
         </StyledTable>
       </TableContainer>
+      <TableBody>{children}</TableBody>
+
       {isLoading && (
         <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
           <Loader stroke="white" size="21px" />
@@ -131,7 +134,22 @@ const Positions = () => {
 
   return (
     <PageContainer>
-      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading}></PositionsTable>
+      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading}>
+        {openPositions.map(position => (
+          <Position
+            id={position.id}
+            positionId={position.positionId}
+            marketName={position.marketName}
+            marketAddress={position.marketAddress}
+            leverage={position.leverage}
+            createdTimestamp={position.createdAtTimestamp}
+            isLong={position.isLong}
+            entryPrice={position.entryPrice}
+            liquidationPrice={position.liquidationPrice}
+            currentMidPrice={position.parsedMid}
+          />
+        ))}
+      </PositionsTable>
       <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading}></PositionsTable>
     </PageContainer>
   )
