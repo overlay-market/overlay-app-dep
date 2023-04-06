@@ -48,6 +48,12 @@ const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableP
 
               <StyledHeaderCell>
                 <TEXT.Supplemental>
+                  <Trans>Created</Trans>
+                </TEXT.Supplemental>
+              </StyledHeaderCell>
+
+              <StyledHeaderCell>
+                <TEXT.Supplemental>
                   <Trans>Position</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
@@ -96,15 +102,31 @@ const Positions = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
+  const marketIdMap = useMemo(() => {
+    const result: any = {}
+    if (marketsData.length === 0) return result
+    marketsData.forEach(market => {
+      result[market.marketAddress] = market
+    })
+    return result
+  }, [marketsData])
+
   const openPositions = useMemo(() => {
     if (!positions) return []
-    return positions.filter(position => !position.isClosed)
-  }, [positions])
+    return positions
+      .filter(position => !position.isClosed)
+      .map(filteredPosition => {
+        const marketAddress = filteredPosition.market.id
+        const marketState = marketIdMap[marketAddress]
+        return {
+          ...filteredPosition,
+          ...marketState,
+        }
+      })
+  }, [positions, marketIdMap])
 
-  const closedPositions = useMemo(() => {
-    if (!positions) return []
-    return positions.filter(position => position.isClosed)
-  }, [positions])
+  console.log('marketsData: ', marketsData)
+  console.log('openPositions: ', openPositions)
 
   return (
     <PageContainer>
