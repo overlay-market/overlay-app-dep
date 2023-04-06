@@ -5,6 +5,9 @@ import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
+import {usePositionCost} from '../../hooks/usePositionCost'
+import {usePositionValue} from '../../hooks/usePositionValue'
+import Loader from '../../components/Loaders/Loaders'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
 
@@ -51,13 +54,32 @@ export const Position = ({
     return formatBigNumber(entryPrice, Number(decimals))
   }, [entryPrice, decimals])
 
+  const value = usePositionValue(marketAddress, positionId)
+  const cost = usePositionCost(marketAddress, positionId)
+
+  const parsedValue: string | number | undefined = useMemo(() => {
+    if (!value && value === undefined) return undefined
+    return formatBigNumber(value, 18, 2)
+  }, [value])
+
+  const parsedCost: string | number | undefined = useMemo(() => {
+    if (!cost && cost === undefined) return undefined
+    return formatBigNumber(cost, 18, 2, true)
+  }, [cost])
+
+  const PnL: string | number | undefined = useMemo(() => {
+    if (value === undefined || cost === undefined) return undefined
+    const difference = value.sub(cost)
+    return formatBigNumber(difference, 18, 2, true)
+  }, [value, cost])
+
   return (
     <StyledTableRow>
       <StyledTableCell>
         <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
+        <TEXT.Supplemental>{parsedValue ? `${parsedValue} OVL` : <Loader />}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
         <TEXT.Supplemental>{parsedCreatedTimestamp}</TEXT.Supplemental>
@@ -81,7 +103,7 @@ export const Position = ({
         </TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{liquidationPrice}</TEXT.Supplemental>
+        <TEXT.Supplemental>{}</TEXT.Supplemental>
       </StyledTableCell>
     </StyledTableRow>
   )
