@@ -22,10 +22,12 @@ interface PositionsTableProps {
   title: string
   children?: React.ReactNode
   marginTop?: string
-  isLoading?: boolean
+  isLoading: boolean
+  isUninitialized: boolean
+  isFetching: boolean
 }
 
-const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableProps) => {
+const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, isFetching}: PositionsTableProps) => {
   return (
     <Container>
       <TableContainer component={Paper}>
@@ -99,11 +101,15 @@ const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableP
 
 const Positions = () => {
   const {account, active} = useActiveWeb3React()
-  const {isLoading: isPositionsLoading, isFetching, positions} = useCurrentWalletPositions(account)
+  const {isLoading: isPositionsLoading, isFetching, isUninitialized, positions} = useCurrentWalletPositions(account)
 
   const {markets, isLoading: isMarketsLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
+
+  console.log('isFetching: ', isFetching)
+  console.log('isPositionsLoading: ', isPositionsLoading)
+  console.log('isUninitialized: ', isUninitialized)
 
   const marketIdMap = useMemo(() => {
     const result: any = {}
@@ -129,12 +135,18 @@ const Positions = () => {
       })
   }, [positions, marketIdMap])
 
-  console.log('marketsData: ', marketsData)
-  console.log('openPositions: ', openPositions)
+  // console.log('marketsData: ', marketsData)
+  // console.log('openPositions: ', openPositions)
 
   return (
     <PageContainer>
-      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading}>
+      <PositionsTable
+        title="Open Positions"
+        marginTop="50px"
+        isLoading={isPositionsLoading}
+        isUninitialized={isUninitialized}
+        isFetching={isFetching}
+      >
         {openPositions.map(position => (
           <Position
             id={position.id}
@@ -153,7 +165,13 @@ const Positions = () => {
           />
         ))}
       </PositionsTable>
-      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading}></PositionsTable>
+      <PositionsTable
+        title="Closed Positions"
+        marginTop="200px"
+        isLoading={isPositionsLoading}
+        isUninitialized={isUninitialized}
+        isFetching={isFetching}
+      ></PositionsTable>
     </PageContainer>
   )
 }
