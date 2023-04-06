@@ -119,8 +119,9 @@ const Positions = () => {
         const marketAddress = filteredPosition.market.id
         const marketState = marketIdMap[marketAddress]
         return {
-          ...filteredPosition,
           ...marketState,
+          ...filteredPosition,
+          id: filteredPosition.id,
         }
       })
   }, [positions, marketIdMap])
