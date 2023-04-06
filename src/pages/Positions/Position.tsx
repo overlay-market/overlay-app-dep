@@ -1,6 +1,7 @@
 import {useMemo} from 'react'
 import styled from 'styled-components'
 import {StyledTableRow, StyledTableCell, StyledTableCellThin, StyledHeaderCell} from '../../components/Table/Table'
+import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
 
@@ -25,6 +26,8 @@ export const Position = ({...props}: PositionProps) => {
     return isLong ? 'Long' : 'Short'
   }, [isLong])
 
+  const parsedCreatedTimestamp = createdTimestamp ? formatUnixTimestampToDate(createdTimestamp) : null
+
   return (
     <StyledTableRow>
       <StyledTableCell>
@@ -36,7 +39,7 @@ export const Position = ({...props}: PositionProps) => {
         </TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{createdTimestamp}</TEXT.Supplemental>
+        <TEXT.Supplemental>{parsedCreatedTimestamp}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
         <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
