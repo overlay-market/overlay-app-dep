@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {StyledTableRow, StyledTableCell, StyledTableCellThin, StyledHeaderCell} from '../../components/Table/Table'
 import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {useActiveWeb3React} from '../../hooks/web3'
+import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
@@ -56,15 +57,16 @@ export const Position = ({
         <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>
-          {leverage}x {positionSide}
-        </TEXT.Supplemental>
+        <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
         <TEXT.Supplemental>{parsedCreatedTimestamp}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
+        <FlexRow>
+          <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
+          <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
+        </FlexRow>
       </StyledTableCell>
       <StyledTableCell>
         <TEXT.Supplemental>

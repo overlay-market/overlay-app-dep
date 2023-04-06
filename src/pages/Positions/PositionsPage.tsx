@@ -67,7 +67,7 @@ const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableP
 
               <StyledHeaderCell>
                 <TEXT.Supplemental>
-                  <Trans>Liq. Price</Trans>
+                  <Trans>Current Price</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
 
