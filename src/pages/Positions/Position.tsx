@@ -1,8 +1,11 @@
 import styled from 'styled-components'
-import {StyledTableRow} from '../../components/Table/Table'
+import {StyledTableRow, StyledTableCell, StyledTableCellThin} from '../../components/Table/Table'
 import {Link} from 'react-router-dom'
+import {TEXT} from '../../theme/theme'
+
 export interface PositionProps {
   id: string
+  positionId: string
   marketName: string
   marketAddress: string
   createdTimestamp: string
@@ -13,7 +16,34 @@ export interface PositionProps {
 }
 
 export const Position = ({...props}: PositionProps) => {
-  const {id, marketName, marketAddress, createdTimestamp, isLong, entryPrice, liquidationPrice, currentMidPrice} = props
+  const {id, positionId, marketName, marketAddress, createdTimestamp, isLong, entryPrice, liquidationPrice, currentMidPrice} = props
 
-  return <StyledTableRow></StyledTableRow>
+  return (
+    <StyledTableRow>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{createdTimestamp}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{entryPrice}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{currentMidPrice}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>{liquidationPrice}</TEXT.Supplemental>
+      </StyledTableCellThin>
+      <StyledTableCellThin>
+        <TEXT.Supplemental>PnL</TEXT.Supplemental>
+      </StyledTableCellThin>
+    </StyledTableRow>
+  )
 }
