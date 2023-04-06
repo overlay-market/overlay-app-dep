@@ -7,6 +7,7 @@ import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
 import {usePositionCost} from '../../hooks/usePositionCost'
 import {usePositionValue} from '../../hooks/usePositionValue'
+import {checkIsNegative} from '../../utils/checkIsNegative'
 import Loader from '../../components/Loaders/Loaders'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
@@ -24,6 +25,7 @@ export interface PositionProps {
   liquidationPrice: string
   currentMidPrice: string
   decimals: string | number
+  isClosed: boolean
 }
 
 export const Position = ({
@@ -39,6 +41,7 @@ export const Position = ({
   liquidationPrice,
   currentMidPrice,
   decimals,
+  isClosed,
 }: PositionProps) => {
   const {account} = useActiveWeb3React()
 
@@ -72,7 +75,6 @@ export const Position = ({
     const difference = value.sub(cost)
     return formatBigNumber(difference, 18, 2, true)
   }, [value, cost])
-
   return (
     <StyledTableRow>
       <StyledTableCell>
@@ -102,9 +104,22 @@ export const Position = ({
           {currentMidPrice}
         </TEXT.Supplemental>
       </StyledTableCell>
-      <StyledTableCell>
-        <TEXT.Supplemental>{}</TEXT.Supplemental>
-      </StyledTableCell>
+      <ProfitLossCell PnL={Number(PnL)} isClosed={isClosed} />
     </StyledTableRow>
+  )
+}
+
+const ProfitLossCell = ({PnL, isClosed}: {PnL: number; isClosed: boolean}) => {
+  return (
+    <StyledTableCell>
+      {isClosed ? (
+        <TEXT.Supplemental>Closed</TEXT.Supplemental>
+      ) : (
+        <FlexRow>
+          <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{checkIsNegative(PnL) ? '-' : '+'}</TEXT.Supplemental>
+          <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental>
+        </FlexRow>
+      )}
+    </StyledTableCell>
   )
 }

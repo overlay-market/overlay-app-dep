@@ -149,6 +149,7 @@ const Positions = () => {
             liquidationPrice={position.liquidationPrice}
             currentMidPrice={position.parsedMid}
             decimals={position.decimals}
+            isClosed={position.isClosed}
           />
         ))}
       </PositionsTable>
