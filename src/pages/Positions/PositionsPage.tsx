@@ -8,6 +8,9 @@ import {TEXT} from '../../theme/theme'
 import {Trans} from '@lingui/macro'
 import {FlexRow} from '../../components/Container/Container'
 import {useCurrentWalletPositions} from '../../state/build/hooks'
+import {useTotalMarketsData} from '../../state/markets/hooks'
+import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
+import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
 import Loader from '../../components/Loaders/Loaders'
 
 const Container = styled.div`
@@ -87,21 +90,26 @@ const PositionsTable = ({title, children, marginTop, isLoading}: PositionsTableP
 
 const Positions = () => {
   const {account, active} = useActiveWeb3React()
-  const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
+  const {isLoading: isPositionsLoading, isFetching, positions} = useCurrentWalletPositions(account)
 
-  // const openPositions = useMemo(() => {
-  //   if (!positions) return []
-  //   return positions.filter(position => position.isClosed)
-  // }, [positions])
+  const {markets, isLoading: isMarketsLoading, refetch} = useTotalMarketsData()
+  const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
+  const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
-  // console.log('positions: ', positions)
-  const loadingProp = false
-  const positionsProp = null
+  const openPositions = useMemo(() => {
+    if (!positions) return []
+    return positions.filter(position => !position.isClosed)
+  }, [positions])
+
+  const closedPositions = useMemo(() => {
+    if (!positions) return []
+    return positions.filter(position => position.isClosed)
+  }, [positions])
 
   return (
     <PageContainer>
-      <PositionsTable title="Open Positions" marginTop="50px" isLoading={loadingProp}></PositionsTable>
-      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={loadingProp}></PositionsTable>
+      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading}></PositionsTable>
+      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading}></PositionsTable>
     </PageContainer>
   )
 }
