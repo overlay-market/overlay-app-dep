@@ -206,6 +206,7 @@ export interface PositionData {
   isLong: boolean
   leverage: string
   isLiquidated: boolean
+  isClosed: boolean
   entryPrice: string
   initialCollateral: string
   initialNotional: string

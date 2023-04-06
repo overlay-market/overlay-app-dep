@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
 import {StyledTable, StyledHeaderCell, StyledTableHeaderRow, StyledTableRow} from '../../components/Table/Table'
@@ -89,6 +89,12 @@ const Positions = () => {
   const {account, active} = useActiveWeb3React()
   const {isLoading, isFetching, positions} = useCurrentWalletPositions(account)
 
+  // const openPositions = useMemo(() => {
+  //   if (!positions) return []
+  //   return positions.filter(position => position.isClosed)
+  // }, [positions])
+
+  // console.log('positions: ', positions)
   const loadingProp = false
   const positionsProp = null
 

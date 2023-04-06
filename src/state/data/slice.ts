@@ -37,6 +37,7 @@ export const api = createApi({
                 isLong
                 entryPrice
                 isLiquidated
+                isClosed
                 currentOi
                 currentDebt
                 mint
