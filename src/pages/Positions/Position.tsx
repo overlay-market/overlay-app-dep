@@ -2,6 +2,8 @@ import {useMemo} from 'react'
 import styled from 'styled-components'
 import {StyledTableRow, StyledTableCell, StyledTableCellThin, StyledHeaderCell} from '../../components/Table/Table'
 import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
+import {useActiveWeb3React} from '../../hooks/web3'
+import {formatBigNumber} from '../../utils/formatBigNumber'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
 
@@ -14,12 +16,27 @@ export interface PositionProps {
   createdTimestamp: string
   isLong: boolean
   entryPrice: string
+  priceCurrency: string
   liquidationPrice: string
   currentMidPrice: string
+  decimals: string | number
 }
 
-export const Position = ({...props}: PositionProps) => {
-  const {id, positionId, marketName, marketAddress, leverage, createdTimestamp, isLong, entryPrice, liquidationPrice, currentMidPrice} = props
+export const Position = ({
+  id,
+  positionId,
+  marketName,
+  marketAddress,
+  leverage,
+  createdTimestamp,
+  isLong,
+  entryPrice,
+  priceCurrency,
+  liquidationPrice,
+  currentMidPrice,
+  decimals,
+}: PositionProps) => {
+  const {account} = useActiveWeb3React()
 
   const positionSide = useMemo(() => {
     if (isLong === null || isLong === undefined) return null
@@ -27,6 +44,11 @@ export const Position = ({...props}: PositionProps) => {
   }, [isLong])
 
   const parsedCreatedTimestamp = createdTimestamp ? formatUnixTimestampToDate(createdTimestamp) : null
+
+  const parsedEntryPrice = useMemo(() => {
+    if (!entryPrice || decimals === undefined) return null
+    return formatBigNumber(entryPrice, Number(decimals))
+  }, [entryPrice, decimals])
 
   return (
     <StyledTableRow>
@@ -45,10 +67,16 @@ export const Position = ({...props}: PositionProps) => {
         <TEXT.Supplemental>{isLong}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{entryPrice}</TEXT.Supplemental>
+        <TEXT.Supplemental>
+          {priceCurrency}
+          {parsedEntryPrice}
+        </TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{currentMidPrice}</TEXT.Supplemental>
+        <TEXT.Supplemental>
+          {priceCurrency}
+          {currentMidPrice}
+        </TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
         <TEXT.Supplemental>{liquidationPrice}</TEXT.Supplemental>

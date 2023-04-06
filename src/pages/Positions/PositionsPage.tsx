@@ -145,8 +145,10 @@ const Positions = () => {
             createdTimestamp={position.createdAtTimestamp}
             isLong={position.isLong}
             entryPrice={position.entryPrice}
+            priceCurrency={position.priceCurrency}
             liquidationPrice={position.liquidationPrice}
             currentMidPrice={position.parsedMid}
+            decimals={position.decimals}
           />
         ))}
       </PositionsTable>
