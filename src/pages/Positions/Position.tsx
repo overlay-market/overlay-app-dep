@@ -26,6 +26,7 @@ export interface PositionProps {
   currentMidPrice: string
   decimals: string | number
   isClosed: boolean
+  isLiquidated: boolean
 }
 
 export const Position = ({
@@ -42,6 +43,7 @@ export const Position = ({
   currentMidPrice,
   decimals,
   isClosed,
+  isLiquidated,
 }: PositionProps) => {
   const {account} = useActiveWeb3React()
 
@@ -105,15 +107,17 @@ export const Position = ({
           {currentMidPrice}
         </TEXT.Supplemental>
       </StyledTableCell>
-      <ProfitLossCell PnL={Number(PnL)} isClosed={isClosed} />
+      <ProfitLossCell PnL={Number(PnL)} isClosed={isClosed} isLiquidated={isLiquidated} />
     </StyledTableRow>
   )
 }
 
-const ProfitLossCell = ({PnL, isClosed}: {PnL: number; isClosed: boolean}) => {
+const ProfitLossCell = ({PnL, isClosed, isLiquidated}: {PnL: number; isClosed: boolean; isLiquidated: boolean}) => {
   return (
     <StyledTableCell>
-      {isClosed ? (
+      {isLiquidated ? (
+        <TEXT.Supplemental>Liquidated</TEXT.Supplemental>
+      ) : isClosed ? (
         <TEXT.Supplemental>Closed</TEXT.Supplemental>
       ) : (
         <FlexRow>

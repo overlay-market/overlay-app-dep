@@ -183,6 +183,7 @@ const Positions = () => {
                 currentMidPrice={position.parsedMid}
                 decimals={position.decimals}
                 isClosed={false}
+                isLiquidated={position.isLiquidated}
               />
             ))
           : null}
@@ -204,6 +205,7 @@ const Positions = () => {
                 currentMidPrice={position.parsedMid}
                 decimals={position.decimals}
                 isClosed={true}
+                isLiquidated={position.isLiquidated}
               />
             ))
           : null}
