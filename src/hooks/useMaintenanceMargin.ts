@@ -16,7 +16,7 @@ export function useMaintenanceMargin(marketAddress?: string, positionId?: string
       try {
         setMaintenanceMargin(await peripheryContract.maintenanceMargin(marketAddress, account, positionId))
       } catch (error) {
-        console.log('market inside useMaintenanceMargin: ', marketAddress)
+        console.error('market inside useMaintenanceMargin: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])

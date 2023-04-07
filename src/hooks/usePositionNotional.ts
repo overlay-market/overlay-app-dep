@@ -16,7 +16,7 @@ export function usePositionNotional(marketAddress?: string, positionId?: string 
       try {
         setNotional(await peripheryContract.notional(marketAddress, account, positionId))
       } catch (error) {
-        console.log('market inside usePositionNotional: ', marketAddress)
+        console.error('market inside usePositionNotional: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])

@@ -18,7 +18,7 @@ export function usePositionValue(marketAddress?: string, positionId?: string | n
       try {
         setValue(await peripheryContract.value(marketAddress, account, positionId))
       } catch (error) {
-        console.log('market inside usePositionValue: ', marketAddress)
+        console.error('market inside usePositionValue: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])

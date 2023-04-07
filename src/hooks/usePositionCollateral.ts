@@ -16,7 +16,6 @@ export function usePositionCollateral(marketAddress?: string, positionId?: strin
       try {
         setCollateral(await peripheryContract.collateral(marketAddress, account, positionId))
       } catch (error) {
-        console.log('market inside usePositionCollateral: ', marketAddress)
         console.error('error coming from usePositionCollateral: ', error)
       }
     })()

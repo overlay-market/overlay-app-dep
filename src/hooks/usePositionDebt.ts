@@ -16,7 +16,7 @@ export function usePositionDebt(marketAddress?: string, positionId?: string | nu
       try {
         setDebt(await peripheryContract.debt(marketAddress, account, positionId))
       } catch (error) {
-        console.log('market inside usePositionDebt: ', marketAddress)
+        console.error('market inside usePositionDebt: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])

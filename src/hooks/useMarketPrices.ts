@@ -21,7 +21,7 @@ export function useMarketPrice(marketAddress?: string): any | undefined {
       try {
         setPrices(await peripheryContract.prices(marketAddress))
       } catch (error) {
-        console.log('market inside useMarketPrice: ', marketAddress)
+        console.error('market inside useMarketPrice: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, blockNumber, account])

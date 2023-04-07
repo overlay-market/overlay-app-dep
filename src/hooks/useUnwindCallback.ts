@@ -73,8 +73,6 @@ function useUnwindCallArguments(
 
     let fraction = Number(unwindValue) / 100
 
-    console.log('prices._bid.mul(decreaseNumerator).div(base): ', prices._bid.mul(decreaseNumerator).div(base))
-
     calldata = marketContract.interface.encodeFunctionData('unwind', [
       BigNumber.from(positionId),
       utils.parseUnits(fraction.toString()),

@@ -29,7 +29,7 @@ export function usePositionOi(
       try {
         setOi(await peripheryContract.oi(marketAddress, account, positionId))
       } catch (error) {
-        console.log('market inside usePositionOi: ', marketAddress)
+        console.error('market inside usePositionOi: ', marketAddress)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])
