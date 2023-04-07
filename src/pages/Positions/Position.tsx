@@ -10,6 +10,7 @@ import {usePositionValue} from '../../hooks/usePositionValue'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {checkIsNegative} from '../../utils/checkIsNegative'
 import Loader from '../../components/Loaders/Loaders'
+import {useHistory} from 'react-router-dom'
 import {Link} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
 
@@ -84,8 +85,23 @@ export const Position = ({
     return formatBigNumber(difference, 18, 2, true)
   }, [value, cost])
 
+  let history = useHistory()
+
+  function handleNavigate(location: string | undefined) {
+    if (location) {
+      const string = `/positions/${location}`
+      history.push(string)
+    }
+  }
+
+  const positionUrl = useMemo(() => {
+    if (!positionId && positionId === undefined) return undefined
+    if (!id && id === undefined) return undefined
+    return `${id}/${positionId}`
+  }, [positionId, id])
+
   return (
-    <StyledTableRow>
+    <StyledTableRow onClick={() => handleNavigate(positionUrl)}>
       <StyledTableCell>
         <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
       </StyledTableCell>
