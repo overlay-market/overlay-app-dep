@@ -129,9 +129,8 @@ const ProfitLossCell = ({PnL, isClosed, isLiquidated}: {PnL: number; isClosed: b
       ) : isClosed ? (
         <TEXT.Supplemental>Closed</TEXT.Supplemental>
       ) : (
-        <FlexRow>
-          <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{checkIsNegative(PnL) ? '-' : '+'}</TEXT.Supplemental>
-          <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental>
+        <FlexRow justify="center">
+          {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}
         </FlexRow>
       )}
     </StyledTableCell>
