@@ -72,6 +72,11 @@ export const Position = ({
     return formatBigNumber(cost, 18, 2, true)
   }, [cost])
 
+  const parsedLiquidationPrice: string | number | undefined = useMemo(() => {
+    if (!liquidationPrice && liquidationPrice === undefined) return undefined
+    return formatBigNumber(liquidationPrice, Number(decimals), 4)
+  }, [liquidationPrice, decimals])
+
   const PnL: string | number | undefined = useMemo(() => {
     if (value === undefined || cost === undefined) return undefined
     const difference = value.sub(cost)
