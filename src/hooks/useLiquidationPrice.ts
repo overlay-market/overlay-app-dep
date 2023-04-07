@@ -38,21 +38,3 @@ export function useLiquidationPrice(marketAddress?: string, positionId?: string 
     return liquidationPrice
   }, [liquidationPrice])
 }
-
-export function useLiquidationPrices(calldata: any) {
-  const peripheryContract = useV1PeripheryContract()
-  const blockNumber = useBlockNumber()
-  const {chainId} = useActiveWeb3React()
-  const callResult = useSingleContractMultipleData(peripheryContract, 'liquidationPrice', calldata)
-  return useMemo(() => {
-    return callResult.map(position => {
-      const {loading, error, result} = position
-      if (!chainId || !blockNumber || loading) return 'loading'
-      if (!loading && result === undefined) return 'Unwound'
-      if (error) console.error('Error from useLiquidationPrices')
-      const value = result && result[0]
-      // return formatWeiToParsedNumber(value, 18, 4)
-      return value
-    })
-  }, [callResult, blockNumber, chainId])
-}

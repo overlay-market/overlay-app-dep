@@ -27,19 +27,3 @@ export function usePositionValue(marketAddress?: string, positionId?: string | n
     return value
   }, [value])
 }
-
-export function usePositionValues(calldata: any[]) {
-  const peripheryContract = useV1PeripheryContract()
-  const blockNumber = useBlockNumber()
-  const {chainId} = useActiveWeb3React()
-  const callResult = useSingleContractMultipleData(peripheryContract, 'value', calldata)
-  return useMemo(() => {
-    return callResult.map(position => {
-      const {loading, error, result} = position
-      if (!chainId || !blockNumber || loading) return 'loading'
-      if (error) console.error('Error from usePositionValues')
-      const value = result && result[0]
-      return formatWeiToParsedNumber(value, 18, 4)
-    })
-  }, [callResult, blockNumber, chainId])
-}

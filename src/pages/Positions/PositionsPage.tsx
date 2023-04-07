@@ -1,7 +1,7 @@
 import React, {useMemo} from 'react'
 import styled from 'styled-components'
 import {TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
-import {StyledTable, StyledHeaderCell, StyledTableHeaderRow, StyledTableRow} from '../../components/Table/Table'
+import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../components/Table/Table'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
@@ -12,7 +12,6 @@ import {useTotalMarketsData} from '../../state/markets/hooks'
 import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
 import {Position} from './Position'
-import Loader from '../../components/Loaders/Loaders'
 
 const Container = styled.div`
   display: flex;
@@ -110,16 +109,12 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
 }
 
 const Positions = () => {
-  const {account, active} = useActiveWeb3React()
+  const {account, active, chainId} = useActiveWeb3React()
   const {isLoading: isPositionsLoading, isFetching, isUninitialized, positions} = useCurrentWalletPositions(account)
 
   const {markets, isLoading: isMarketsLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
-
-  // console.log('isFetching: ', isFetching)
-  // console.log('isPositionsLoading: ', isPositionsLoading)
-  // console.log('isUninitialized: ', isUninitialized)
 
   const marketIdMap = useMemo(() => {
     const result: any = {}
@@ -144,9 +139,6 @@ const Positions = () => {
         }
       })
   }, [positions, marketIdMap])
-
-  // console.log('marketsData: ', marketsData)
-  console.log('openPositions: ', openPositions)
 
   const sortedPositions = useMemo(() => {
     const open: any[] = []

@@ -27,19 +27,3 @@ export function usePositionCost(marketAddress?: string, positionId?: string | nu
     return cost
   }, [cost])
 }
-
-export function usePositionCosts(calldata: any[]) {
-  const peripheryContract = useV1PeripheryContract()
-  const blockNumber = useBlockNumber()
-  const {chainId} = useActiveWeb3React()
-  const callResult = useSingleContractMultipleData(peripheryContract, 'cost', calldata)
-  return useMemo(() => {
-    return callResult.map(position => {
-      const {loading, error, result} = position
-      if (!chainId || !blockNumber || loading) return 'loading'
-      if (error) console.error('Error from usePositionCosts')
-      const value = result && result[0]
-      return formatWeiToParsedNumber(value, 18, 4)
-    })
-  }, [callResult, blockNumber, chainId])
-}
