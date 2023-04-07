@@ -24,9 +24,10 @@ interface PositionsTableProps {
   marginTop?: string
   isLoading: boolean
   isUninitialized: boolean
+  open?: boolean
 }
 
-const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized}: PositionsTableProps) => {
+const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, open = true}: PositionsTableProps) => {
   const {account} = useActiveWeb3React()
 
   return (
@@ -95,7 +96,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized}
         </FlexRow>
       ) : !isLoading && !children ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
-          <TEXT.StandardBody color="#858585">You have no closed positions.</TEXT.StandardBody>
+          <TEXT.StandardBody color="#858585">You have no {open ? `open` : `closed`} positions.</TEXT.StandardBody>
         </FlexRow>
       ) : null}
     </Container>
@@ -165,7 +166,7 @@ const Positions = () => {
 
   return (
     <PageContainer>
-      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}>
+      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading} isUninitialized={isUninitialized} open={true}>
         {open.length > 0
           ? open.map(position => (
               <Position
@@ -181,12 +182,12 @@ const Positions = () => {
                 liquidationPrice={position.liquidationPrice}
                 currentMidPrice={position.parsedMid}
                 decimals={position.decimals}
-                isClosed={position.isClosed}
+                isClosed={false}
               />
             ))
           : null}
       </PositionsTable>
-      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}>
+      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading} isUninitialized={isUninitialized} open={false}>
         {closed.length > 0
           ? closed.map(position => (
               <Position
@@ -202,7 +203,7 @@ const Positions = () => {
                 liquidationPrice={position.liquidationPrice}
                 currentMidPrice={position.parsedMid}
                 decimals={position.decimals}
-                isClosed={position.isClosed}
+                isClosed={true}
               />
             ))
           : null}
