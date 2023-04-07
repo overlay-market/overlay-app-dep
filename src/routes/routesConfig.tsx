@@ -1,5 +1,5 @@
 import Markets from '../pages/Markets/Markets'
-import Positions from '../pages/Positions/Positions'
+import Positions from '../pages/Positions/PositionsPage'
 import Liquidate from '../pages/Liquidate/Liquidate'
 import {Market} from '../pages/Markets/Market'
 import {Unwind} from '../pages/Positions/Unwind'

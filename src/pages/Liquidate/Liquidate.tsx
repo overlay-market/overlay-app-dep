@@ -16,7 +16,6 @@ import {useActiveWeb3React} from '../../hooks/web3'
 import Loader from '../../components/Loaders/Loaders'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {MarketCard} from '../../components/Card/MarketCard'
-import {LoadingStatusView} from '../Positions/Positions'
 
 const LiquidateButton = ({marketAddress, ownerAddress, positionId}: {marketAddress?: string; ownerAddress?: string; positionId?: string}) => {
   const {callback: liquidateCallback} = useLiquidateCallback(marketAddress, ownerAddress, positionId)
@@ -153,8 +152,6 @@ const Liquidate = () => {
           </TableHead>
         </StyledTable>
       </TableContainer>
-
-      {!liquidatablePositions && <LoadingStatusView>No liquidatable positions.</LoadingStatusView>}
     </MarketCard>
   )
 }
