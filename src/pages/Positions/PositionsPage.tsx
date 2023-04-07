@@ -96,11 +96,11 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">No wallet connected. </TEXT.StandardBody>
         </FlexRow>
-      ) : isUninitialized || isLoading ? (
+      ) : isUninitialized ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">Fetching positions...</TEXT.StandardBody>
         </FlexRow>
-      ) : !isLoading && !children ? (
+      ) : !children ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">You have no {open ? `open` : `closed`} positions.</TEXT.StandardBody>
         </FlexRow>
@@ -117,9 +117,9 @@ const Positions = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
-  // console.log('isFetching: ', isFetching)
-  // console.log('isPositionsLoading: ', isPositionsLoading)
-  // console.log('isUninitialized: ', isUninitialized)
+  console.log('isFetching: ', isFetching)
+  console.log('isPositionsLoading: ', isPositionsLoading)
+  console.log('isUninitialized: ', isUninitialized)
 
   const marketIdMap = useMemo(() => {
     const result: any = {}
