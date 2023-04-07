@@ -75,6 +75,7 @@ export const Position = ({
     const difference = value.sub(cost)
     return formatBigNumber(difference, 18, 2, true)
   }, [value, cost])
+
   return (
     <StyledTableRow>
       <StyledTableCell>

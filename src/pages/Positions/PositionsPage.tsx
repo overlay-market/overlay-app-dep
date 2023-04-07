@@ -110,9 +110,9 @@ const Positions = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
-  console.log('isFetching: ', isFetching)
-  console.log('isPositionsLoading: ', isPositionsLoading)
-  console.log('isUninitialized: ', isUninitialized)
+  // console.log('isFetching: ', isFetching)
+  // console.log('isPositionsLoading: ', isPositionsLoading)
+  // console.log('isUninitialized: ', isUninitialized)
 
   const marketIdMap = useMemo(() => {
     const result: any = {}
@@ -123,7 +123,7 @@ const Positions = () => {
     return result
   }, [marketsData])
 
-  const openPositions = useMemo(() => {
+  const openPositions: any[] | [] = useMemo(() => {
     if (!positions) return []
     return positions
       .filter(position => !position.isClosed)
@@ -141,11 +141,33 @@ const Positions = () => {
   // console.log('marketsData: ', marketsData)
   // console.log('openPositions: ', openPositions)
 
+  const sortedPositions = useMemo(() => {
+    const open: any[] = []
+    const closed: any[] = []
+    if (!openPositions)
+      return {
+        open,
+        closed,
+      }
+
+    for (const position of openPositions) {
+      if (position.hasOwnProperty('currentOi') && position.currentOi !== '0') {
+        open.push(position)
+      } else {
+        closed.push(position)
+      }
+    }
+
+    return {open, closed}
+  }, [openPositions])
+
+  const {open, closed} = sortedPositions
+
   return (
     <PageContainer>
       <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}>
-        {openPositions.length > 0
-          ? openPositions.map(position => (
+        {open.length > 0
+          ? open.map(position => (
               <Position
                 id={position.id}
                 positionId={position.positionId}
@@ -164,7 +186,27 @@ const Positions = () => {
             ))
           : null}
       </PositionsTable>
-      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}></PositionsTable>
+      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}>
+        {closed.length > 0
+          ? closed.map(position => (
+              <Position
+                id={position.id}
+                positionId={position.positionId}
+                marketName={position.marketName}
+                marketAddress={position.marketAddress}
+                leverage={position.leverage}
+                createdTimestamp={position.createdAtTimestamp}
+                isLong={position.isLong}
+                entryPrice={position.entryPrice}
+                priceCurrency={position.priceCurrency}
+                liquidationPrice={position.liquidationPrice}
+                currentMidPrice={position.parsedMid}
+                decimals={position.decimals}
+                isClosed={position.isClosed}
+              />
+            ))
+          : null}
+      </PositionsTable>
     </PageContainer>
   )
 }
