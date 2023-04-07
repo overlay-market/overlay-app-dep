@@ -77,6 +77,12 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
 
               <StyledHeaderCell>
                 <TEXT.Supplemental>
+                  <Trans>Liquidation Price</Trans>
+                </TEXT.Supplemental>
+              </StyledHeaderCell>
+
+              <StyledHeaderCell align="center">
+                <TEXT.Supplemental>
                   <Trans>PnL</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>

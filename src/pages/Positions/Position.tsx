@@ -72,8 +72,8 @@ export const Position = ({
     return formatBigNumber(cost, 18, 2, true)
   }, [cost])
 
-  const parsedLiquidationPrice: string | number | undefined = useMemo(() => {
-    if (!liquidationPrice && liquidationPrice === undefined) return undefined
+  const parsedLiquidationPrice: string | number | undefined | null = useMemo(() => {
+    if (!liquidationPrice && liquidationPrice === undefined) return null
     return formatBigNumber(liquidationPrice, Number(decimals), 4)
   }, [liquidationPrice, decimals])
 
@@ -112,6 +112,9 @@ export const Position = ({
           {currentMidPrice}
         </TEXT.Supplemental>
       </StyledTableCell>
+      <StyledTableCell>
+        <TEXT.Supplemental>{parsedLiquidationPrice ? `${priceCurrency} ${parsedLiquidationPrice}` : `-`}</TEXT.Supplemental>
+      </StyledTableCell>
       <ProfitLossCell PnL={Number(PnL)} isClosed={isClosed} isLiquidated={isLiquidated} />
     </StyledTableRow>
   )
@@ -119,7 +122,7 @@ export const Position = ({
 
 const ProfitLossCell = ({PnL, isClosed, isLiquidated}: {PnL: number; isClosed: boolean; isLiquidated: boolean}) => {
   return (
-    <StyledTableCell>
+    <StyledTableCell align="center">
       {isLiquidated ? (
         <TEXT.Supplemental>Liquidated</TEXT.Supplemental>
       ) : isClosed ? (
