@@ -24,10 +24,9 @@ interface PositionsTableProps {
   marginTop?: string
   isLoading: boolean
   isUninitialized: boolean
-  isFetching: boolean
 }
 
-const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, isFetching}: PositionsTableProps) => {
+const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized}: PositionsTableProps) => {
   return (
     <Container>
       <TableContainer component={Paper}>
@@ -84,17 +83,15 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
         </StyledTable>
       </TableContainer>
 
-      {isLoading && (
-        <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
-          <Loader stroke="white" size="21px" />
+      {isUninitialized || isLoading ? (
+        <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
+          <TEXT.StandardBody color="#858585">Fetching positions...</TEXT.StandardBody>
         </FlexRow>
-      )}
-
-      {!isLoading && !children && (
+      ) : !isLoading && !children ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">You have no closed positions.</TEXT.StandardBody>
         </FlexRow>
-      )}
+      ) : null}
     </Container>
   )
 }
@@ -140,38 +137,28 @@ const Positions = () => {
 
   return (
     <PageContainer>
-      <PositionsTable
-        title="Open Positions"
-        marginTop="50px"
-        isLoading={isPositionsLoading}
-        isUninitialized={isUninitialized}
-        isFetching={isFetching}
-      >
-        {openPositions.map(position => (
-          <Position
-            id={position.id}
-            positionId={position.positionId}
-            marketName={position.marketName}
-            marketAddress={position.marketAddress}
-            leverage={position.leverage}
-            createdTimestamp={position.createdAtTimestamp}
-            isLong={position.isLong}
-            entryPrice={position.entryPrice}
-            priceCurrency={position.priceCurrency}
-            liquidationPrice={position.liquidationPrice}
-            currentMidPrice={position.parsedMid}
-            decimals={position.decimals}
-            isClosed={position.isClosed}
-          />
-        ))}
+      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}>
+        {openPositions.length > 0
+          ? openPositions.map(position => (
+              <Position
+                id={position.id}
+                positionId={position.positionId}
+                marketName={position.marketName}
+                marketAddress={position.marketAddress}
+                leverage={position.leverage}
+                createdTimestamp={position.createdAtTimestamp}
+                isLong={position.isLong}
+                entryPrice={position.entryPrice}
+                priceCurrency={position.priceCurrency}
+                liquidationPrice={position.liquidationPrice}
+                currentMidPrice={position.parsedMid}
+                decimals={position.decimals}
+                isClosed={position.isClosed}
+              />
+            ))
+          : null}
       </PositionsTable>
-      <PositionsTable
-        title="Closed Positions"
-        marginTop="200px"
-        isLoading={isPositionsLoading}
-        isUninitialized={isUninitialized}
-        isFetching={isFetching}
-      ></PositionsTable>
+      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading} isUninitialized={isUninitialized}></PositionsTable>
     </PageContainer>
   )
 }
