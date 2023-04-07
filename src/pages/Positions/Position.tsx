@@ -7,6 +7,7 @@ import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
 import {usePositionCost} from '../../hooks/usePositionCost'
 import {usePositionValue} from '../../hooks/usePositionValue'
+import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {checkIsNegative} from '../../utils/checkIsNegative'
 import Loader from '../../components/Loaders/Loaders'
 import {Link} from 'react-router-dom'
@@ -22,7 +23,6 @@ export interface PositionProps {
   isLong: boolean
   entryPrice: string
   priceCurrency: string
-  liquidationPrice: string
   currentMidPrice: string
   decimals: string | number
   isClosed: boolean
@@ -39,7 +39,6 @@ export const Position = ({
   isLong,
   entryPrice,
   priceCurrency,
-  liquidationPrice,
   currentMidPrice,
   decimals,
   isClosed,
@@ -61,6 +60,7 @@ export const Position = ({
 
   const value = usePositionValue(marketAddress, positionId)
   const cost = usePositionCost(marketAddress, positionId)
+  const liquidationPrice = useLiquidationPrice(marketAddress, positionId)
 
   const parsedValue: string | number | undefined = useMemo(() => {
     if (!value && value === undefined) return undefined
@@ -84,7 +84,7 @@ export const Position = ({
         <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
-        <TEXT.Supplemental>{parsedValue ? `${parsedValue} OVL` : <Loader />}</TEXT.Supplemental>
+        <TEXT.Supplemental>{parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
         <TEXT.Supplemental>{parsedCreatedTimestamp}</TEXT.Supplemental>
