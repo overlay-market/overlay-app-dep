@@ -27,6 +27,8 @@ interface PositionsTableProps {
 }
 
 const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized}: PositionsTableProps) => {
+  const {account} = useActiveWeb3React()
+
   return (
     <Container>
       <TableContainer component={Paper}>
@@ -83,7 +85,11 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized}
         </StyledTable>
       </TableContainer>
 
-      {isUninitialized || isLoading ? (
+      {!account ? (
+        <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
+          <TEXT.StandardBody color="#858585">No wallet connected. </TEXT.StandardBody>
+        </FlexRow>
+      ) : isUninitialized || isLoading ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">Fetching positions...</TEXT.StandardBody>
         </FlexRow>
