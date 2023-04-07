@@ -74,6 +74,7 @@ export const Position = ({
 
   const parsedLiquidationPrice: string | number | undefined | null = useMemo(() => {
     if (!liquidationPrice && liquidationPrice === undefined) return null
+    if (decimals === undefined || decimals === null) return null
     return formatBigNumber(liquidationPrice, Number(decimals), 4)
   }, [liquidationPrice, decimals])
 

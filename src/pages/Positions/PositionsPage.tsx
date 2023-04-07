@@ -117,9 +117,9 @@ const Positions = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
-  console.log('isFetching: ', isFetching)
-  console.log('isPositionsLoading: ', isPositionsLoading)
-  console.log('isUninitialized: ', isUninitialized)
+  // console.log('isFetching: ', isFetching)
+  // console.log('isPositionsLoading: ', isPositionsLoading)
+  // console.log('isUninitialized: ', isUninitialized)
 
   const marketIdMap = useMemo(() => {
     const result: any = {}
@@ -146,7 +146,7 @@ const Positions = () => {
   }, [positions, marketIdMap])
 
   // console.log('marketsData: ', marketsData)
-  // console.log('openPositions: ', openPositions)
+  console.log('openPositions: ', openPositions)
 
   const sortedPositions = useMemo(() => {
     const open: any[] = []
