@@ -122,6 +122,7 @@ const Markets = () => {
                 ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
                 .map((market: ParsedMarketStateDetails, index: number) => (
                   <MarketsRow
+                    key={market.marketAddress}
                     index={index + 1} //start count at 1
                     marketId={market.marketAddress}
                     marketName={market.marketName}
