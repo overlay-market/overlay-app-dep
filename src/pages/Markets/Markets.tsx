@@ -115,6 +115,7 @@ const Markets = () => {
                 ?.filter(market => market.marketAddress !== '0x909d893d5e7f250659fa56c2ca2920760eebb17f')
                 .map((market: ParsedMarketStateDetails, index: number) => (
                   <MarketsRow
+                    key={market.marketAddress}
                     index={index + 1} //start count at 1
                     marketId={market.marketAddress}
                     marketName={market.marketName}

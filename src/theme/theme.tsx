@@ -3,9 +3,9 @@ import {Text, TextProps as TextPropsOriginal} from 'rebass'
 import styled, {css, DefaultTheme, ThemeProvider as StyledComponentsThemeProvider} from 'styled-components'
 import {useIsDarkMode} from '../state/user/hooks'
 import {Colors} from './styled'
-import {createMuiTheme} from '@material-ui/core/styles'
+import {createTheme} from '@material-ui/core/styles'
 
-export const muiTheme = createMuiTheme({
+export const muiTheme = createTheme({
   overrides: {
     MuiPaper: {
       root: {
