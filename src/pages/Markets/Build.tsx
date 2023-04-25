@@ -143,7 +143,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   // const market = marketData?.market
   const {account, chainId} = useActiveWeb3React()
   const ovlBalance = useOvlBalance()
-  const parsedOvlBalance = ovlBalance && ovlBalance.toFixed(2)
+  const parsedOvlBalance = ovlBalance && ovlBalance.toFixed(8)
 
   const isTxnSettingsAuto = useIsTxnSettingsAuto()
   const ovl = chainId ? OVL[chainId] : undefined
@@ -326,8 +326,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     let buildFeeValueFromMaxInput
 
     if (!parsedOvlBalance || !buildFee) return parsedOvlBalance
-    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee) * 0.99
-
+    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee) * 1.1
     let returnValue = Number(parsedOvlBalance) - buildFeeValueFromMaxInput
     return returnValue.toString()
   }, [buildFee, parsedOvlBalance])
@@ -339,7 +338,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (percentage < 100) {
       calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(4)
     } else {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(2)
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(6)
     }
     return handleUserInput(calculatedAmountByPercentage)
   }
