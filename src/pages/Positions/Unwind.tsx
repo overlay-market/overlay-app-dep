@@ -226,8 +226,8 @@ export function Unwind({
   )
 
   const handleUserAmount = useCallback(
-    (e: any) => {
-      setCustomInput(((e.target.value / 100) * currentValue).toString())
+    (e: any, maxAmount: number) => {
+      setCustomInput(((e.target.value / 100) * maxAmount).toString())
       onAmountInput(e.target.value)
     },
     [onAmountInput],
@@ -352,7 +352,7 @@ export function Unwind({
           max={100}
           step={1}
           value={Number(typedValue)}
-          onChange={handleUserAmount}
+          onChange={e => handleUserAmount(e, currentValue)}
           margin={'20px 0 0 0'}
           justifyContent={'flex-end'}
         ></PercentageSlider>
