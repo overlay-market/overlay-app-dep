@@ -83,6 +83,7 @@ export function Unwind({
   },
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
+  const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
   const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
 
@@ -137,6 +138,8 @@ export function Unwind({
   const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi?.rawOi)
   const estimatedBid = useBid(position?.market.id, fractionOfCapOi)
   const estimatedAsk = useAsk(position?.market.id, fractionOfCapOi)
+
+  const currentValue: number = useMemo(() => formatWeiToParsedNumber(value, 18, 4) ?? 0, [value])
 
   const estimatedReceivedPrice = useMemo(() => {
     if (isLong === undefined) return null
@@ -224,16 +227,39 @@ export function Unwind({
 
   const handleUserAmount = useCallback(
     (e: any) => {
+      setCustomInput(((e.target.value / 100) * currentValue).toString())
       onAmountInput(e.target.value)
     },
     [onAmountInput],
   )
 
-  // const handleUserInput = useCallback((input: string) => {
-  //   onAmountInput(input)}, [onAmountInput]);
+  const handleUserInput = useCallback(
+    (input: string, maxAmount: number) => {
+      const exactAmount = Number(input)
+      if (exactAmount === 0) {
+        setCustomInput(input)
+        onAmountInput('0')
+        return
+      }
+
+      if (exactAmount > 0 && exactAmount <= maxAmount) {
+        const res = Math.round((exactAmount / Number(maxAmount)) * 100)
+        setCustomInput(input)
+        onAmountInput(res.toString())
+      } else {
+        setCustomInput(maxAmount.toString())
+        onAmountInput('100')
+      }
+    },
+    [setCustomInput],
+  )
 
   const handleQuickInput = (percentage: number) => {
-    if (percentage < 0 || percentage > 100) return onAmountInput('0')
+    if (percentage < 0 || percentage > 100) {
+      setCustomInput('0')
+      return onAmountInput('0')
+    }
+    setCustomInput(((percentage / 100) * currentValue).toString())
     return onAmountInput(percentage.toString())
   }
 
@@ -296,38 +322,43 @@ export function Unwind({
           handleResetTxnSettings={handleResetTxnSettings}
           onSetTxnDeadline={onSetTxnDeadline}
         />
-        <TEXT.StandardBody margin={'0 auto 24px 0'} color={'white'}>
-          Unwind Amount
-        </TEXT.StandardBody>
 
-        <PercentageSlider name={'Unwind Position Amount'} min={0} max={100} step={1} value={Number(typedValue)} onChange={handleUserAmount}>
-          <FlexRow ml="auto" mb="4px" width="auto">
-            <TransparentUnderlineButton onClick={() => handleQuickInput(25)} border={'none'}>
-              25%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50)} border={'none'}>
-              50%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75)} border={'none'}>
-              75%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(100)} border={'none'}>
-              Max
-            </TransparentUnderlineButton>
-          </FlexRow>
-        </PercentageSlider>
+        <FlexRow mb="4px" width="100%">
+          <TEXT.StandardBody margin={'0 auto 4px 0'} color={'white'}>
+            Unwind Amount
+          </TEXT.StandardBody>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(25)} border={'none'}>
+            25%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(50)} border={'none'}>
+            50%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(75)} border={'none'}>
+            75%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(100)} border={'none'}>
+            Max
+          </TransparentUnderlineButton>
+        </FlexRow>
+
+        <NumericalInputContainer>
+          <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
+          <NumericalInput align={'right'} onUserInput={input => handleUserInput(input, currentValue)} value={customInput} />
+        </NumericalInputContainer>
+
+        <PercentageSlider
+          name={'Unwind Position Amount'}
+          min={0}
+          max={100}
+          step={1}
+          value={Number(typedValue)}
+          onChange={handleUserAmount}
+          margin={'20px 0 0 0'}
+          justifyContent={'flex-end'}
+        ></PercentageSlider>
         {/* <Label htmlFor="Amount" mt={"24px"}>
 
-      </Label> */}
-        {/* <NumericalInputContainer>
-        <NumericalInputDescriptor>OVL</NumericalInputDescriptor>
-        <NumericalInput
-          value={typedValue}
-          onUserInput={handleUserInput}
-          align={"right"}
-        />
-      </NumericalInputContainer> */}
-
+        </Label> */}
         {showUnderwaterFlow ? (
           <UnwindButton onClick={() => null} isDisabled={true} disabled={true}>
             Position Underwater
