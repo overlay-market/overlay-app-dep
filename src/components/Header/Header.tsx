@@ -106,25 +106,25 @@ export default function Header() {
 
       <StyledLink to={'/markets'}>
         <Trans>
-          <TEXT.BoldSmallBody>Markets</TEXT.BoldSmallBody>
+          <TEXT.Menu>Markets</TEXT.Menu>
         </Trans>
       </StyledLink>
 
       <StyledLink to={'/positions'}>
         <Trans>
-          <TEXT.BoldSmallBody>Positions</TEXT.BoldSmallBody>
+          <TEXT.Menu>Positions</TEXT.Menu>
         </Trans>
       </StyledLink>
 
       <StyledLink to={'/bridge'}>
         <Trans>
-          <TEXT.BoldSmallBody>Bridge</TEXT.BoldSmallBody>
+          <TEXT.Menu>Bridge</TEXT.Menu>
         </Trans>
       </StyledLink>
 
       {/* <StyledLink to={'/claimpage'}>
         <Trans>
-          <TEXT.BoldSmallBody>Claim</TEXT.BoldSmallBody>
+          <TEXT.Menu>Claim</TEXT.Menu>
         </Trans>
       </StyledLink> */}
 
