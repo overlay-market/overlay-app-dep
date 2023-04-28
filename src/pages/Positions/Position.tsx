@@ -65,7 +65,7 @@ export const Position = ({
 
   const parsedValue: string | number | undefined = useMemo(() => {
     if (!value && value === undefined) return undefined
-    return formatBigNumber(value, 18, 2)
+    return formatBigNumber(value, 18, 2) === 0 ? formatBigNumber(value, 18, 6) : formatBigNumber(value, 18, 2)
   }, [value])
 
   const parsedCost: string | number | undefined = useMemo(() => {
@@ -82,7 +82,7 @@ export const Position = ({
   const PnL: string | number | undefined = useMemo(() => {
     if (value === undefined || cost === undefined) return undefined
     const difference = value.sub(cost)
-    return formatBigNumber(difference, 18, 2, true)
+    return formatBigNumber(difference, 18, 2, true) === 0 ? formatBigNumber(difference, 18, 6, true) : formatBigNumber(difference, 18, 2, true)
   }, [value, cost])
 
   let history = useHistory()
