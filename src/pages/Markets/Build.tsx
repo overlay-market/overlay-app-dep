@@ -326,9 +326,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     let buildFeeValueFromMaxInput
 
     if (!parsedOvlBalance || !buildFee) return parsedOvlBalance
-    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee) * 1.1
-    let returnValue = Number(parsedOvlBalance) - buildFeeValueFromMaxInput
-    return returnValue.toString()
+    buildFeeValueFromMaxInput = Number(ovlBalance && ovlBalance.toFixed(18)) * Number(parsedBuildFee)
+    let returnValue = Number(ovlBalance && ovlBalance.toFixed(18)) - buildFeeValueFromMaxInput
+    const decimals = 6;
+    return (Math.trunc(returnValue * Math.pow(10, decimals)) / Math.pow(10, decimals)).toString()
   }, [buildFee, parsedOvlBalance])
 
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
