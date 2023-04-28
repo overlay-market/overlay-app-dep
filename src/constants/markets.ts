@@ -5,6 +5,9 @@ import AvaxLogo from '../assets/images/tokens/avax-logo.png'
 import SolanaLogo from '../assets/images/tokens/solana-logo.png'
 import ApeLogo from '../assets/images/tokens/ape-logo.png'
 import MaticLogo from '../assets/images/tokens/matic-logo.png'
+import BaycLogo from '../assets/images/tokens/bayc-logo.png'
+
+
 
 export type DescriptionNameMap = {[description: string]: string}
 export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
@@ -35,7 +38,7 @@ export const MARKET_LOGO_FROM_BASE: MarketLogoMap = {
   AVAX: AvaxLogo,
   SOL: SolanaLogo,
   APE: ApeLogo,
-  BAYC: ApeLogo,
+  BAYC: BaycLogo,
   MATIC: MaticLogo,
 }
 
