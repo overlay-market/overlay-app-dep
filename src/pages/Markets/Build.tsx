@@ -143,7 +143,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   // const market = marketData?.market
   const {account, chainId} = useActiveWeb3React()
   const ovlBalance = useOvlBalance()
-  const parsedOvlBalance = ovlBalance && ovlBalance.toFixed(2)
+  const parsedOvlBalance = ovlBalance && ovlBalance.toFixed(8)
 
   const isTxnSettingsAuto = useIsTxnSettingsAuto()
   const ovl = chainId ? OVL[chainId] : undefined
@@ -314,6 +314,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     [onSelectPositionSide],
   )
 
+  if (isLong === undefined) {
+    handleSelectPositionSide(true)
+  }
+
   const handleUserInput = useCallback(
     (input: string) => {
       onAmountInput(input)
@@ -326,10 +330,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     let buildFeeValueFromMaxInput
 
     if (!parsedOvlBalance || !buildFee) return parsedOvlBalance
-    buildFeeValueFromMaxInput = Number(parsedOvlBalance) * Number(parsedBuildFee) * 0.99
-
-    let returnValue = Number(parsedOvlBalance) - buildFeeValueFromMaxInput
-    return returnValue.toString()
+    buildFeeValueFromMaxInput = Number(ovlBalance && ovlBalance.toFixed(18)) * Number(parsedBuildFee)
+    let returnValue = Number(ovlBalance && ovlBalance.toFixed(18)) - buildFeeValueFromMaxInput
+    const decimals = 6;
+    return (Math.trunc(returnValue * Math.pow(10, decimals)) / Math.pow(10, decimals)).toString()
   }, [buildFee, parsedOvlBalance])
 
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
@@ -339,7 +343,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (percentage < 100) {
       calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(4)
     } else {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(2)
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(6)
     }
     return handleUserInput(calculatedAmountByPercentage)
   }

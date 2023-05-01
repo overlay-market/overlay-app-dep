@@ -38,6 +38,7 @@ export const LogoContainer = styled.div`
   height: 30px;
   width: 30px;
   margin: auto 16px auto 0px;
+  cursor: pointer;
 `
 
 export const AccountContainer = styled(FlexRow)`
