@@ -30,6 +30,7 @@ type PercentageSliderProps = {
   margin?: string
   justifyContent?: string
   children?: React.ReactNode
+  showTilde?: boolean
 }
 
 export const PercentageSlider = ({
@@ -43,6 +44,7 @@ export const PercentageSlider = ({
   margin,
   justifyContent,
   children,
+  showTilde,
 }: PercentageSliderProps) => {
   const SLIDER_INPUT = {
     backgroundColor: '#F2F2F2',
@@ -51,7 +53,7 @@ export const PercentageSlider = ({
   return (
     <SliderContainer margin={margin}>
       <StyledLabel justifyContent={justifyContent} htmlFor={name}>
-        <Header>{value}%</Header>
+        <Header>{`${showTilde ? '~' : ''}${value}%`}</Header>
         {children}
       </StyledLabel>
       <Slider

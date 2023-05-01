@@ -39,6 +39,7 @@ import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import Loader from '../../components/Loaders/Loaders'
+import {formatDecimalPlaces, formatDecimalToPercentage} from '../../utils/formatDecimal'
 
 const ControlInterfaceContainer = styled(FlexColumn)`
   padding: 16px;
@@ -243,11 +244,11 @@ export function Unwind({
       }
 
       if (exactAmount > 0 && exactAmount <= maxAmount) {
-        const res = Math.round((exactAmount / Number(maxAmount)) * 100)
+        const res = formatDecimalPlaces(6, formatDecimalToPercentage(exactAmount / Number(maxAmount)))
         setCustomInput(input)
-        onAmountInput(res.toString())
+        if (res) onAmountInput(Number(res).toFixed(6))
       } else {
-        setCustomInput(maxAmount.toString())
+        setCustomInput(maxAmount.toFixed(6))
         onAmountInput('100')
       }
     },
@@ -351,7 +352,8 @@ export function Unwind({
           min={0}
           max={100}
           step={1}
-          value={Number(typedValue)}
+          showTilde={Number(typedValue) <= 0.01 && Boolean(typedValue)}
+          value={Number(typedValue) >= 0.01 ? Number(typedValue) : 0.0}
           onChange={e => handleUserAmount(e, currentValue)}
           margin={'20px 0 0 0'}
           justifyContent={'flex-end'}
