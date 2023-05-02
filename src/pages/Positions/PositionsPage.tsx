@@ -24,6 +24,7 @@ interface PositionsTableProps {
   isLoading: boolean
   isUninitialized: boolean
   open?: boolean
+  initialCollateral?: string
 }
 
 const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, open = true}: PositionsTableProps) => {
@@ -196,6 +197,7 @@ const Positions = () => {
                 decimals={position.decimals}
                 isClosed={false}
                 isLiquidated={position.isLiquidated}
+                initialCollateral={position.initialCollateral}
               />
             ))
           : null}
@@ -223,6 +225,7 @@ const Positions = () => {
                 decimals={position.decimals}
                 isClosed={true}
                 isLiquidated={position.isLiquidated}
+                initialCollateral={position.initialCollateral}
               />
             ))
           : null}
@@ -244,6 +247,7 @@ const Positions = () => {
                 decimals={position.decimals}
                 isClosed={false}
                 isLiquidated={position.isLiquidated}
+                initialCollateral={position.initialCollateral}
               />
             ))
           : null}

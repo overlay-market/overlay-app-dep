@@ -22,6 +22,7 @@ export interface PositionProps {
   leverage: string | number
   createdTimestamp: string
   isLong: boolean
+  initialCollateral?: string
   entryPrice: string
   priceCurrency: string
   currentMidPrice: string
@@ -39,6 +40,7 @@ export const Position = ({
   createdTimestamp,
   isLong,
   entryPrice,
+  initialCollateral,
   priceCurrency,
   currentMidPrice,
   decimals,
@@ -65,8 +67,12 @@ export const Position = ({
 
   const parsedValue: string | number | undefined = useMemo(() => {
     if (!value && value === undefined) return undefined
+    if (value._hex === '0x00' && initialCollateral) {
+      const initialCollateralFormated = +initialCollateral / (10 ** 18)
+      return initialCollateralFormated < 1 ? initialCollateralFormated.toFixed(6) : initialCollateralFormated.toFixed(2)
+    }
     return formatBigNumber(value, 18, 2) === 0 ? formatBigNumber(value, 18, 6) : formatBigNumber(value, 18, 2)
-  }, [value])
+  }, [value, initialCollateral])
 
   const parsedCost: string | number | undefined = useMemo(() => {
     if (!cost && cost === undefined) return undefined
