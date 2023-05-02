@@ -75,7 +75,7 @@ function useUnwindCallArguments(
 
     calldata = marketContract.interface.encodeFunctionData('unwind', [
       BigNumber.from(positionId),
-      utils.parseUnits(fraction.toString()),
+      BigInt(Math.trunc(fraction * 10 ** 18)),
       isLong ? prices._bid.mul(decreaseNumerator).div(base) : prices._ask.mul(increaseNumerator).div(base),
     ])
   }
