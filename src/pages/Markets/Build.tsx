@@ -314,10 +314,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     [onSelectPositionSide],
   )
 
-  if (isLong === undefined) {
-    handleSelectPositionSide(true)
-  }
-
   const handleUserInput = useCallback(
     (input: string) => {
       onAmountInput(input)
