@@ -550,9 +550,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         <NumericalInputLabel htmlFor="Build Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
           <FlexRow ml="auto" mb="4px" width="auto">
-            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>25%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}>50%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}>75%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(6) ?? null)}>25%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(6) ?? null)}>50%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(6) ?? null)}>75%</TransparentUnderlineButton>
             <TransparentUnderlineButton onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}>Max</TransparentUnderlineButton>
           </FlexRow>
         </NumericalInputLabel>
