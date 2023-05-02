@@ -394,7 +394,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
           transactionErrorMessage: undefined,
           transactionHash: hash,
         })
-        // onResetBuildState();
+        onResetBuildState();
       })
       .catch(error => {
         setBuildState({
