@@ -1,17 +1,15 @@
 import React, {useEffect, useCallback, useMemo, useState} from 'react'
 import styled from 'styled-components'
-import {Label} from '@rebass/forms'
-import {BigNumber, utils, BigNumberish} from 'ethers'
+import {BigNumber, BigNumberish} from 'ethers'
 import {RouteComponentProps} from 'react-router'
 import {TEXT} from '../../theme/theme'
 import {InterfaceWrapper} from '../../components/Container/Container'
 import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
-import {Accordion} from '../../components/Accordion/Accordion'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
 import {useCurrentWalletPositions} from '../../state/build/hooks'
-import {NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
+import {NumericalInputBottomText, NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {useUnwindState, useUnwindActionHandlers, useDerivedUnwindInfo} from '../../state/unwind/hooks'
@@ -39,7 +37,7 @@ import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import Loader from '../../components/Loaders/Loaders'
-import {formatDecimalPlaces, formatDecimalToPercentage} from '../../utils/formatDecimal'
+import {formatDecimalToPercentage} from '../../utils/formatDecimal'
 
 const ControlInterfaceContainer = styled(FlexColumn)`
   padding: 16px;
@@ -244,12 +242,15 @@ export function Unwind({
       }
 
       if (exactAmount > 0 && exactAmount <= maxAmount) {
-        const res = formatDecimalPlaces(6, formatDecimalToPercentage(exactAmount / Number(maxAmount)))
+        if (exactAmount < 0.0000001) {
+          return
+        }
+        const res = formatDecimalToPercentage(exactAmount / Number(maxAmount))
         setCustomInput(input)
-        if (res) onAmountInput(Number(res).toFixed(6))
+        if (res) onAmountInput(res.toFixed(18))
       } else {
-        setCustomInput(maxAmount.toFixed(6))
-        onAmountInput('100')
+        setCustomInput(input)
+        if (!isNaN(Number(input))) onAmountInput('100')
       }
     },
     [setCustomInput],
@@ -346,6 +347,7 @@ export function Unwind({
           <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
           <NumericalInput align={'right'} onUserInput={input => handleUserInput(input, currentValue)} value={customInput} />
         </NumericalInputContainer>
+        <NumericalInputBottomText>minimum: 0.0000001</NumericalInputBottomText>
 
         <PercentageSlider
           name={'Unwind Position Amount'}
@@ -353,7 +355,7 @@ export function Unwind({
           max={100}
           step={1}
           showTilde={Number(typedValue) <= 0.01 && Boolean(typedValue)}
-          value={Number(typedValue) >= 0.01 ? Number(typedValue) : 0.0}
+          value={Number(typedValue) >= 0.01 ? Number(Number(typedValue).toFixed(2)) : 0.0}
           onChange={e => handleUserAmount(e, currentValue)}
           margin={'20px 0 0 0'}
           justifyContent={'flex-end'}
