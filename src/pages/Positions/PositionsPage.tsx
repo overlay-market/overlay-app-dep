@@ -140,6 +140,21 @@ const Positions = () => {
       })
   }, [positions, marketIdMap])
 
+  const liquidated: any[] | [] = useMemo(() => {
+    if (!positions) return []
+    return positions
+      .filter(position => position.isLiquidated)
+      .map(filteredPosition => {
+        const marketAddress = filteredPosition.market.id
+        const marketState = marketIdMap[marketAddress]
+        return {
+          ...marketState,
+          ...filteredPosition,
+          id: filteredPosition.id,
+        }
+      })
+  }, [positions, marketIdMap])
+
   const sortedPositions = useMemo(() => {
     const open: any[] = []
     const closed: any[] = []
@@ -185,7 +200,13 @@ const Positions = () => {
             ))
           : null}
       </PositionsTable>
-      <PositionsTable title="Closed Positions" marginTop="200px" isLoading={isPositionsLoading} isUninitialized={isUninitialized} open={false}>
+      <PositionsTable 
+        title="Closed Positions" 
+        marginTop="100px" 
+        isLoading={isPositionsLoading} 
+        isUninitialized={isUninitialized} 
+        open={false}
+      >
         {closed.length > 0
           ? closed.map(position => (
               <Position
@@ -201,6 +222,27 @@ const Positions = () => {
                 currentMidPrice={position.parsedMid}
                 decimals={position.decimals}
                 isClosed={true}
+                isLiquidated={position.isLiquidated}
+              />
+            ))
+          : null}
+      </PositionsTable>
+      <PositionsTable title="Liquidated Positions" marginTop="100px" isLoading={isPositionsLoading} isUninitialized={isUninitialized} open={false}>
+        {liquidated.length > 0
+          ? liquidated.map(position => (
+              <Position
+                id={position.id}
+                positionId={position.positionId}
+                marketName={position.marketName}
+                marketAddress={position.marketAddress}
+                leverage={position.leverage}
+                createdTimestamp={position.createdAtTimestamp}
+                isLong={position.isLong}
+                entryPrice={position.entryPrice}
+                priceCurrency={position.priceCurrency}
+                currentMidPrice={position.parsedMid}
+                decimals={position.decimals}
+                isClosed={false}
                 isLiquidated={position.isLiquidated}
               />
             ))
