@@ -23,11 +23,11 @@ interface PositionsTableProps {
   marginTop?: string
   isLoading: boolean
   isUninitialized: boolean
-  open?: boolean
+  positionStatus?: string
   initialCollateral?: string
 }
 
-const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, open = true}: PositionsTableProps) => {
+const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, positionStatus}: PositionsTableProps) => {
   const {account} = useActiveWeb3React()
 
   return (
@@ -102,7 +102,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
         </FlexRow>
       ) : !children ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
-          <TEXT.StandardBody color="#858585">You have no {open ? `open` : `closed`} positions.</TEXT.StandardBody>
+          <TEXT.StandardBody color="#858585">You have no {positionStatus} positions.</TEXT.StandardBody>
         </FlexRow>
       ) : null}
     </Container>
@@ -180,7 +180,13 @@ const Positions = () => {
 
   return (
     <PageContainer>
-      <PositionsTable title="Open Positions" marginTop="50px" isLoading={isPositionsLoading} isUninitialized={isUninitialized} open={true}>
+      <PositionsTable 
+        title="Open Positions" 
+        marginTop="50px" 
+        isLoading={isPositionsLoading} 
+        isUninitialized={isUninitialized} 
+        positionStatus='open'
+      >
         {open.length > 0
           ? open.map(position => (
               <Position
@@ -207,7 +213,7 @@ const Positions = () => {
         marginTop="100px" 
         isLoading={isPositionsLoading} 
         isUninitialized={isUninitialized} 
-        open={false}
+        positionStatus='closed'
       >
         {closed.length > 0
           ? closed.map(position => (
@@ -230,7 +236,13 @@ const Positions = () => {
             ))
           : null}
       </PositionsTable>
-      <PositionsTable title="Liquidated Positions" marginTop="100px" isLoading={isPositionsLoading} isUninitialized={isUninitialized} open={false}>
+      <PositionsTable 
+        title="Liquidated Positions" 
+        marginTop="100px" 
+        isLoading={isPositionsLoading} 
+        isUninitialized={isUninitialized} 
+        positionStatus='liquidated'
+      >
         {liquidated.length > 0
           ? liquidated.map(position => (
               <Position
