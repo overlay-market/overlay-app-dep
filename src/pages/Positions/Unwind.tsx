@@ -232,9 +232,19 @@ export function Unwind({
     [onAmountInput],
   )
 
+  // Stop keyboard inputs at 18 decimals
+  const handleUserInputKeyPress = (event: any) => {
+    const regex = /^\d*\.?\d{0,17}$/
+    if (!regex.test(event.target.value)) {
+      event.preventDefault()
+      return
+    }
+  }
+
   const handleUserInput = useCallback(
     (input: string, maxAmount: number) => {
       const exactAmount = Number(input)
+
       if (exactAmount === 0) {
         setCustomInput(input)
         onAmountInput('0')
@@ -345,7 +355,12 @@ export function Unwind({
 
         <NumericalInputContainer>
           <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
-          <NumericalInput align={'right'} onUserInput={input => handleUserInput(input, currentValue)} value={customInput} />
+          <NumericalInput
+            align={'right'}
+            onUserInput={input => handleUserInput(input, currentValue)}
+            value={customInput}
+            onKeyPress={handleUserInputKeyPress}
+          />
         </NumericalInputContainer>
         <NumericalInputBottomText>minimum: 0.0000001</NumericalInputBottomText>
 
