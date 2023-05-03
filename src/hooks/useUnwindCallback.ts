@@ -75,7 +75,7 @@ function useUnwindCallArguments(
 
     calldata = marketContract.interface.encodeFunctionData('unwind', [
       BigNumber.from(positionId),
-      BigInt(Math.trunc(fraction * 10 ** 18)),
+      utils.parseUnits(fraction.toFixed(18), 18),
       isLong ? prices._bid.mul(decreaseNumerator).div(base) : prices._ask.mul(increaseNumerator).div(base),
     ])
   }
@@ -167,7 +167,7 @@ export function useUnwindCallback(
                         txn: {
                           hash: currentTimeForId,
                           success: false,
-                          info: callError.error,
+                          info: callError.error ?? callError.data,
                         },
                       },
                       currentTimeForId,
