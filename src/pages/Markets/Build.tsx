@@ -121,6 +121,7 @@ const NumericalInputBottomText = styled(TEXT.Supplemental)`
 // to be moved to respective sub-components to keep clean
 export const BuildInterface = ({marketId}: {marketId: string}) => {
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
+  const [showBalanceNotEnoughWarning, setShowBalanceNotEnoughWarning] = useState<boolean>(false)
   const [{showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash}, setBuildState] = useState<{
     showConfirm: boolean
     attemptingTransaction: boolean
@@ -314,10 +315,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     [onSelectPositionSide],
   )
 
-  if (isLong === undefined) {
-    handleSelectPositionSide(true)
-  }
-
   const handleUserInput = useCallback(
     (input: string) => {
       onAmountInput(input)
@@ -329,22 +326,32 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     const parsedBuildFee = formatWeiToParsedNumber(buildFee, 18, 6)
     let buildFeeValueFromMaxInput
 
-    if (!parsedOvlBalance || !buildFee) return parsedOvlBalance
+    if (!ovlBalance || !buildFee) return parsedOvlBalance
     buildFeeValueFromMaxInput = Number(ovlBalance && ovlBalance.toFixed(18)) * Number(parsedBuildFee)
     let returnValue = Number(ovlBalance && ovlBalance.toFixed(18)) - buildFeeValueFromMaxInput
     const decimals = 6;
     return (Math.trunc(returnValue * Math.pow(10, decimals)) / Math.pow(10, decimals)).toString()
-  }, [buildFee, parsedOvlBalance])
+  }, [buildFee, ovlBalance, parsedOvlBalance])
+
+  // Show warning with wallet balance is below minimum
+  useEffect(() => {
+    if (maxInputIncludingFees && minCollateral && +maxInputIncludingFees < minCollateral) {
+      setShowBalanceNotEnoughWarning(true)
+    } else {
+      setShowBalanceNotEnoughWarning(false)
+    }
+  }, [maxInputIncludingFees, minCollateral])
 
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
     if (totalSupply == '0' || totalSupply === null) return
 
     let calculatedAmountByPercentage
     if (percentage < 100) {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(4)
+      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(6)
     } else {
       calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(6)
     }
+    if (minCollateral && +calculatedAmountByPercentage < minCollateral) return handleUserInput("")
     return handleUserInput(calculatedAmountByPercentage)
   }
 
@@ -394,7 +401,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
           transactionErrorMessage: undefined,
           transactionHash: hash,
         })
-        // onResetBuildState();
+        onResetBuildState();
       })
       .catch(error => {
         setBuildState({
@@ -554,9 +561,9 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         <NumericalInputLabel htmlFor="Build Amount Input">
           <NumericalInputTitle> Amount </NumericalInputTitle>
           <FlexRow ml="auto" mb="4px" width="auto">
-            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(2) ?? null)}>25%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(2) ?? null)}>50%</TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(2) ?? null)}>75%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(25, ovlBalance?.toFixed(6) ?? null)}>25%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(50, ovlBalance?.toFixed(6) ?? null)}>50%</TransparentUnderlineButton>
+            <TransparentUnderlineButton onClick={() => handleQuickInput(75, ovlBalance?.toFixed(6) ?? null)}>75%</TransparentUnderlineButton>
             <TransparentUnderlineButton onClick={() => handleQuickInput(100, maxInputIncludingFees ?? null)}>Max</TransparentUnderlineButton>
           </FlexRow>
         </NumericalInputLabel>
@@ -579,6 +586,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         ) : exceedOiCap ? (
           <TriggerBuildButton onClick={() => null} isDisabled={true} disabled={true}>
             Exceeds OI Cap
+          </TriggerBuildButton>
+        ) : showBalanceNotEnoughWarning ? (
+          <TriggerBuildButton onClick={() => null} isDisabled={true} disabled={true}>
+            OVL Balance Below Minimum
           </TriggerBuildButton>
         ) : showApprovalFlow ? (
           <ApproveTransactionButton attemptingTransaction={attemptingTransaction} onClick={handleApprove} />

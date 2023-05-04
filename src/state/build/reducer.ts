@@ -22,7 +22,7 @@ export interface BuildState {
 export const initialState: BuildState = {
   typedValue: "",
   selectedLeverage: "1",
-  isLong: undefined,
+  isLong: true,
   inputCurrency: OVL[1].address,
   setSlippageValue: "1",
   txnDeadline: "30",
