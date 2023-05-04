@@ -297,6 +297,13 @@ export function Unwind({
       .catch(err => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, onResetUnwindState])
 
+  const isUnwindAmountTooLow: boolean = useMemo(() => {
+    if (Number(typedValue) < 0.01 && customInput) {
+      return true
+    }
+    return false
+  }, [typedValue, customInput])
+
   return (
     <InterfaceWrapper>
       {handleSelectPosition(Number(position?.positionId))}
@@ -381,6 +388,10 @@ export function Unwind({
         {showUnderwaterFlow ? (
           <UnwindButton onClick={() => null} isDisabled={true} disabled={true}>
             Position Underwater
+          </UnwindButton>
+        ) : isUnwindAmountTooLow ? (
+          <UnwindButton onClick={() => null} isDisabled={true} disabled={true}>
+            Percentage Below Minimum
           </UnwindButton>
         ) : (
           <UnwindButton onClick={() => handleUnwind()} isDisabled={disableUnwindButton} disabled={disableUnwindButton}>
