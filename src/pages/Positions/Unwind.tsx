@@ -301,6 +301,13 @@ export function Unwind({
     return false
   }, [typedValue, customInput])
 
+  const isUnwindAmountTooHigh: boolean = useMemo(() => {
+    if (currentValue < Number(customInput)) {
+      return true
+    }
+    return false
+  }, [customInput, currentValue])
+
   return (
     <InterfaceWrapper>
       {handleSelectPosition(Number(position?.positionId))}
@@ -391,7 +398,11 @@ export function Unwind({
             Percentage Below Minimum
           </UnwindButton>
         ) : (
-          <UnwindButton onClick={() => handleUnwind()} isDisabled={disableUnwindButton} disabled={disableUnwindButton}>
+          <UnwindButton
+            onClick={() => handleUnwind()}
+            isDisabled={isUnwindAmountTooHigh || disableUnwindButton}
+            disabled={isUnwindAmountTooHigh || disableUnwindButton}
+          >
             Unwind
           </UnwindButton>
         )}
