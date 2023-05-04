@@ -252,9 +252,6 @@ export function Unwind({
       }
 
       if (exactAmount > 0 && exactAmount <= maxAmount) {
-        if (exactAmount < 0.0000001) {
-          return
-        }
         const res = formatDecimalToPercentage(exactAmount / Number(maxAmount))
         setCustomInput(input)
         if (res) onAmountInput(res.toFixed(18))
@@ -369,7 +366,7 @@ export function Unwind({
             onKeyPress={handleUserInputKeyPress}
           />
         </NumericalInputContainer>
-        <NumericalInputBottomText>minimum: 0.0000001</NumericalInputBottomText>
+        <NumericalInputBottomText>minimum: 0.01%</NumericalInputBottomText>
 
         <PercentageSlider
           name={'Unwind Position Amount'}
