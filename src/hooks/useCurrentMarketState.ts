@@ -7,7 +7,7 @@ import {AdditionalMarketData} from './useMarketDetails'
 import {FeedType} from '../constants/oracles'
 import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
-import {MARKET_NAME_FROM_DESCRIPTION, MARKET_NAME_FROM_ADDRESS, MARKET_LOGO_FROM_BASE, PRICE_CURRENCY_FROM_QUOTE} from '../constants/markets'
+import {MARKET_LOGO_FROM_BASE, PRICE_CURRENCY_FROM_QUOTE, marketNameFromDescription} from '../constants/markets'
 import {getCharactersBeforeSlash, getCharactersAfterSlash} from '../utils/getCharactersBeforeSlash'
 import {useMarketMidPrices} from './useMarketPrices'
 import {useBlockNumber} from '../state/application/hooks'
@@ -80,12 +80,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         let priceCurrency: string | undefined = undefined
 
         if ((decimals && market.type === FeedType.CHAINLINK) || market.type === FeedType.NFTPERP) {
-          const convertedMarketName = 
-            marketId === '0xb31d222c23104cbc2c04df77941f1f2c478133dd'
-            ? 'BAYC / WETH'
-            : marketId === '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342'
-            ? 'AZUKI / WETH'
-            : description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
+          const convertedMarketName = marketNameFromDescription(description, marketId)
           marketName = convertedMarketName ?? 'Parsing error'
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
           parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
