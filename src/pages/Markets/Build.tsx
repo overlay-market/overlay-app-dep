@@ -109,7 +109,7 @@ export const NumericalInputTitle = styled(TEXT.StandardBody)`
   margin-bottom: 4px !important;
 `
 
-const NumericalInputBottomText = styled(TEXT.Supplemental)`
+export const NumericalInputBottomText = styled(TEXT.Supplemental)`
   margin: 4px 0 24px auto !important;
 `
 
@@ -329,7 +329,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (!ovlBalance || !buildFee) return parsedOvlBalance
     buildFeeValueFromMaxInput = Number(ovlBalance && ovlBalance.toFixed(18)) * Number(parsedBuildFee)
     let returnValue = Number(ovlBalance && ovlBalance.toFixed(18)) - buildFeeValueFromMaxInput
-    const decimals = 6;
+    const decimals = 6
     return (Math.trunc(returnValue * Math.pow(10, decimals)) / Math.pow(10, decimals)).toString()
   }, [buildFee, ovlBalance, parsedOvlBalance])
 
