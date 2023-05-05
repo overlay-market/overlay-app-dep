@@ -67,8 +67,7 @@ const Markets = () => {
 
   // list of hidden markets from Markets page
   const hiddenMarkets = [
-    '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
-    '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342'
+    '0x909d893d5e7f250659fa56c2ca2920760eebb17f'
   ]
 
   return (

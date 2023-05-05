@@ -6,6 +6,7 @@ import SolanaLogo from '../assets/images/tokens/solana-logo.png'
 import ApeLogo from '../assets/images/tokens/ape-logo.png'
 import MaticLogo from '../assets/images/tokens/matic-logo.png'
 import BaycLogo from '../assets/images/tokens/bayc-logo.png'
+import AzukiLogo from '../assets/images/tokens/azuki-logo.png'
 
 
 
@@ -21,6 +22,19 @@ export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
   'MATIC / USD': 'MATIC / USD',
   'MCap1000 Feed': 'MCap1000',
   price: 'BAYC / WETH',
+}
+
+export const marketNameFromDescription = (description: string | undefined, address: string = '') => {
+  if (!description) {
+    description = address
+  }
+  if (address === '0xb31d222c23104cbc2c04df77941f1f2c478133dd') {
+    return 'BAYC / WETH'
+  } else if (address === '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342') {
+    return 'AZUKI / WETH'
+  } else {
+    return MARKET_NAME_FROM_DESCRIPTION[description]
+  }
 }
 
 export type MarketNameAddressMap = {[marketAddress: string]: string}
@@ -40,6 +54,7 @@ export const MARKET_LOGO_FROM_BASE: MarketLogoMap = {
   APE: ApeLogo,
   BAYC: BaycLogo,
   MATIC: MaticLogo,
+  AZUKI: AzukiLogo,
 }
 
 export type CurrencyMap = {[marketQuoteToken: string]: string}
