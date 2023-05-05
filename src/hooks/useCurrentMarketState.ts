@@ -80,8 +80,12 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         let priceCurrency: string | undefined = undefined
 
         if ((decimals && market.type === FeedType.CHAINLINK) || market.type === FeedType.NFTPERP) {
-          const convertedMarketName =
-            description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
+          const convertedMarketName = 
+            marketId === '0xb31d222c23104cbc2c04df77941f1f2c478133dd'
+            ? 'BAYC / WETH'
+            : marketId === '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342'
+            ? 'AZUKI / WETH'
+            : description && MARKET_NAME_FROM_DESCRIPTION[description] ? MARKET_NAME_FROM_DESCRIPTION[description] : MARKET_NAME_FROM_ADDRESS[marketId]
           marketName = convertedMarketName ?? 'Parsing error'
           parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
           parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)

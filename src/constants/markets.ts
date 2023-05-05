@@ -6,6 +6,7 @@ import SolanaLogo from '../assets/images/tokens/solana-logo.png'
 import ApeLogo from '../assets/images/tokens/ape-logo.png'
 import MaticLogo from '../assets/images/tokens/matic-logo.png'
 import BaycLogo from '../assets/images/tokens/bayc-logo.png'
+import AzukiLogo from '../assets/images/tokens/azuki-logo.png'
 
 
 
@@ -40,6 +41,7 @@ export const MARKET_LOGO_FROM_BASE: MarketLogoMap = {
   APE: ApeLogo,
   BAYC: BaycLogo,
   MATIC: MaticLogo,
+  AZUKI: AzukiLogo,
 }
 
 export type CurrencyMap = {[marketQuoteToken: string]: string}
