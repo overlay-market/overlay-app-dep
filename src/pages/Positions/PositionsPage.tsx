@@ -7,7 +7,7 @@ import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {Trans} from '@lingui/macro'
 import {FlexRow} from '../../components/Container/Container'
-import {useCurrentWalletPositions} from '../../state/build/hooks'
+import {useCurrentWalletPositions, useCurrentWalletUnwinds} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
 import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
@@ -17,13 +17,41 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+const openPositionsColumns = [
+  "Market", 
+  "Size", 
+  "Position", 
+  "Entry Price", 
+  "Current Price", 
+  "Liquidation Price", 
+  "Created", 
+  "Unrealized PnL"
+]
+
+const closedPositionsColumns = [
+  "Market", 
+  "Size", 
+  "Position", 
+  "Entry Price", 
+  "Exit Price", 
+  "Closed", 
+  "Created", 
+  "PnL"
+]
+const positionColumns = {
+  open: openPositionsColumns,
+  closed: closedPositionsColumns,
+  liquidated: closedPositionsColumns
+}
+
 interface PositionsTableProps {
   title: string
   children?: React.ReactNode
   marginTop?: string
   isLoading: boolean
   isUninitialized: boolean
-  positionStatus?: string
+  positionStatus: keyof typeof positionColumns
   initialCollateral?: string
 }
 
@@ -39,53 +67,14 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Market</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Size</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Created</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Position</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Entry Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Current Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Liquidation Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell align="center">
-                <TEXT.Supplemental>
-                  <Trans>PnL</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
+              {positionColumns[positionStatus].map((column: string) => {
+                  return <StyledHeaderCell>
+                  <TEXT.Supplemental>
+                    <Trans>{column}</Trans>
+                  </TEXT.Supplemental>
+                </StyledHeaderCell>
+                })
+              }
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>{children}</TableBody>
@@ -111,7 +100,9 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
 
 const Positions = () => {
   const {account, active, chainId} = useActiveWeb3React()
+  // const account = '0x8a007aa8efba8f6342ff2689b887de567865c611'
   const {isLoading: isPositionsLoading, isFetching, isUninitialized, positions} = useCurrentWalletPositions(account)
+  const {isLoading: isUnwindsLoading, isFetching: isUnwindsFetching, isUninitialized: isUnwindsUninitialized, unwinds} = useCurrentWalletUnwinds(account)
 
   const {markets, isLoading: isMarketsLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
@@ -129,7 +120,7 @@ const Positions = () => {
   const openPositions: any[] | [] = useMemo(() => {
     if (!positions) return []
     return positions
-      .filter(position => !position.isClosed)
+      .filter(position => !position.isLiquidated)
       .map(filteredPosition => {
         const marketAddress = filteredPosition.market.id
         const marketState = marketIdMap[marketAddress]
@@ -169,6 +160,9 @@ const Positions = () => {
       if (position.hasOwnProperty('currentOi') && position.currentOi !== '0') {
         open.push(position)
       } else {
+        if (unwinds) {
+          position.exitPrice = unwinds.filter(unwind => unwind.position.id === position.id)[0]?.price ?? null
+        }
         closed.push(position)
       }
     }
@@ -226,6 +220,7 @@ const Positions = () => {
                 createdTimestamp={position.createdAtTimestamp}
                 isLong={position.isLong}
                 entryPrice={position.entryPrice}
+                exitPrice={position.exitPrice}
                 priceCurrency={position.priceCurrency}
                 currentMidPrice={position.parsedMid}
                 decimals={position.decimals}

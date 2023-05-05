@@ -206,10 +206,23 @@ export interface PositionData {
   isLong: boolean
   leverage: string
   isLiquidated: boolean
-  isClosed: boolean
   entryPrice: string
   initialCollateral: string
   initialNotional: string
+}
+
+export interface UniwndsData { 
+  id: string
+  price: string
+  value: string;
+  unwindNumber: string;
+  timestamp: string;
+  mint: string;
+  fraction: string;
+  currentOi: string;
+  currentDebt: string;
+  collateral: string;
+  position: Pick<PositionData, 'id'>
 }
 
 export function useCurrentWalletPositions(
@@ -224,7 +237,6 @@ export function useCurrentWalletPositions(
   refetch: () => void
 } {
   const walletPositionsData = useWalletPositionsFromSubgraph(address ? address : undefined)
-
   return {
     isLoading: walletPositionsData.isLoading,
     isFetching: walletPositionsData.isFetching,
@@ -232,6 +244,29 @@ export function useCurrentWalletPositions(
     isError: walletPositionsData.isError, 
     error: walletPositionsData.error,
     positions: walletPositionsData.data?.account?.positions,
+    refetch: walletPositionsData.refetch
+  }
+}
+
+export function useCurrentWalletUnwinds(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  unwinds: UniwndsData[] | undefined
+  refetch: () => void
+} {
+  const walletPositionsData = useWalletPositionsFromSubgraph(address ? address : undefined)
+  return {
+    isLoading: walletPositionsData.isLoading,
+    isFetching: walletPositionsData.isFetching,
+    isUninitialized: walletPositionsData.isUninitialized,
+    isError: walletPositionsData.isError, 
+    error: walletPositionsData.error,
+    unwinds: walletPositionsData.data?.account?.unwinds,
     refetch: walletPositionsData.refetch
   }
 }

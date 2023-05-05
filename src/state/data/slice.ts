@@ -6,10 +6,12 @@ import {DocumentNode} from 'graphql'
 import {SupportedChainId} from '../../constants/chains'
 
 const CHAIN_SUBGRAPH_URL: Record<number, string> = {
-  [SupportedChainId.MAINNET]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph',
+  // [SupportedChainId.MAINNET]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph',
+  [SupportedChainId.MAINNET]: 'https://api.studio.thegraph.com/query/46086/overlay-subgraph-eth/v2.0.1',
   [SupportedChainId.GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-goerli',
   [SupportedChainId.RINKEBY]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
-  [SupportedChainId.ARBITRUM]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arbitrum',
+  // [SupportedChainId.ARBITRUM]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arbitrum',
+  [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/proxy/46086/overlay-subgraph-arbitrum/v2.0.12',
   [SupportedChainId.ARBITRUM_GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arb-goerli',
 }
 
@@ -37,21 +39,42 @@ export const api = createApi({
                 isLong
                 entryPrice
                 isLiquidated
-                isClosed
                 currentOi
                 currentDebt
                 mint
                 createdAtTimestamp
                 createdAtBlockNumber
+                numberOfUniwnds
               }
               builds {
                 id
+                isLong
+                price
+                timestamp
+                value
+                collateral
               }
               unwinds {
                 id
+                value
+                unwindNumber
+                timestamp
+                price
+                mint
+                fraction
+                currentOi
+                currentDebt
+                collateral
+                position {
+                  id
+                }
               }
               liquidates {
                 id
+                value
+                timestamp
+                price
+                mint
               }
             }
           }

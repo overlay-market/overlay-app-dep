@@ -24,6 +24,7 @@ export interface PositionProps {
   isLong: boolean
   initialCollateral?: string
   entryPrice: string
+  exitPrice?: string
   priceCurrency: string
   currentMidPrice: string
   decimals: string | number
@@ -41,6 +42,7 @@ export const Position = ({
   isLong,
   entryPrice,
   initialCollateral,
+  exitPrice,
   priceCurrency,
   currentMidPrice,
   decimals,
@@ -60,6 +62,11 @@ export const Position = ({
     if (!entryPrice || decimals === undefined) return null
     return formatBigNumber(entryPrice, Number(decimals))
   }, [entryPrice, decimals])
+
+  const parsedExitPrice = useMemo(() => {
+    if (!exitPrice || decimals === undefined) return null
+    return formatBigNumber(exitPrice, Number(decimals))
+  }, [exitPrice, decimals])
 
   const value = usePositionValue(marketAddress, positionId)
   const cost = usePositionCost(marketAddress, positionId)
@@ -85,18 +92,30 @@ export const Position = ({
     return formatBigNumber(liquidationPrice, Number(decimals), 4)
   }, [liquidationPrice, decimals])
 
-  const PnL: string | number | undefined = useMemo(() => {
+  const unrealizedPnL: string | number | undefined = useMemo(() => {
     if (value === undefined || cost === undefined) return undefined
     const difference = value.sub(cost)
     return formatBigNumber(difference, 18, 2, true) === 0 ? formatBigNumber(difference, 18, 6, true) : formatBigNumber(difference, 18, 2, true)
   }, [value, cost])
 
+  const PnL: string | number | undefined = useMemo(() => {
+    if (!(parsedEntryPrice && parsedExitPrice && parsedValue)) return undefined
+    const priceDiff =  +parsedExitPrice - +parsedEntryPrice
+    const pnl = (priceDiff / +parsedEntryPrice) * +parsedValue
+    return pnl < 1 ? pnl.toFixed(6) : pnl.toFixed(2)
+  }, [parsedEntryPrice, parsedExitPrice, parsedValue])
+
   let history = useHistory()
 
-  function handleNavigate(location: string | undefined) {
+  function handleNavigate(location: string | undefined, isClosed: boolean) {
     if (location) {
-      const string = `/positions/${location}`
-      history.push(string)
+      if (isClosed) {
+        const string = `/closed-positions/${location}`
+        history.push(string)
+      } else {
+        const string = `/positions/${location}`
+        history.push(string)
+      }
     }
   }
 
@@ -106,8 +125,9 @@ export const Position = ({
     return `${id}/${positionId}`
   }, [positionId, id])
 
-  return (
-    <StyledTableRow onClick={() => handleNavigate(positionUrl)}>
+  return isClosed 
+  ? (
+    <StyledTableRow onClick={() => handleNavigate(positionUrl, isClosed)}>
       <StyledTableCell>
         <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
       </StyledTableCell>
@@ -115,7 +135,38 @@ export const Position = ({
         <TEXT.Supplemental>{parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
+        <FlexRow>
+          <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
+          <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
+        </FlexRow>
+      </StyledTableCell>
+      <StyledTableCell>
+        <TEXT.Supplemental>
+          {priceCurrency}
+          {parsedEntryPrice}
+        </TEXT.Supplemental>
+      </StyledTableCell>
+      <StyledTableCell>
+        <TEXT.Supplemental>{priceCurrency}{parsedExitPrice}</TEXT.Supplemental>
+      </StyledTableCell>
+      <StyledTableCell>
         <TEXT.Supplemental>{parsedCreatedTimestamp}</TEXT.Supplemental>
+      </StyledTableCell>
+      <StyledTableCell>
+        <TEXT.Supplemental>
+          04/24/2023
+        </TEXT.Supplemental>
+      </StyledTableCell>
+      <ProfitLossCell PnL={Number(PnL)} isClosed={isClosed} isLiquidated={isLiquidated} />
+    </StyledTableRow>
+  )
+  : (
+    <StyledTableRow onClick={() => handleNavigate(positionUrl, isClosed)}>
+      <StyledTableCell>
+        <TEXT.Supplemental>{marketName}</TEXT.Supplemental>
+      </StyledTableCell>
+      <StyledTableCell>
+        <TEXT.Supplemental>{parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />}</TEXT.Supplemental>
       </StyledTableCell>
       <StyledTableCell>
         <FlexRow>
@@ -138,7 +189,10 @@ export const Position = ({
       <StyledTableCell>
         <TEXT.Supplemental>{parsedLiquidationPrice ? `${priceCurrency} ${parsedLiquidationPrice}` : `-`}</TEXT.Supplemental>
       </StyledTableCell>
-      <ProfitLossCell PnL={Number(PnL)} isClosed={isClosed} isLiquidated={isLiquidated} />
+      <StyledTableCell>
+        <TEXT.Supplemental>{parsedCreatedTimestamp}</TEXT.Supplemental>
+      </StyledTableCell>
+      <ProfitLossCell PnL={Number(unrealizedPnL)} isClosed={isClosed} isLiquidated={isLiquidated} />
     </StyledTableRow>
   )
 }
@@ -149,7 +203,9 @@ const ProfitLossCell = ({PnL, isClosed, isLiquidated}: {PnL: number; isClosed: b
       {isLiquidated ? (
         <TEXT.Supplemental>Liquidated</TEXT.Supplemental>
       ) : isClosed ? (
-        <TEXT.Supplemental>Closed</TEXT.Supplemental>
+        <FlexRow justify="center">
+          {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}
+        </FlexRow>
       ) : (
         <FlexRow justify="center">
           {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}

@@ -106,7 +106,7 @@ export type Build = {
   __typename?: 'Build';
   id: Scalars['ID'];
   owner: Account;
-  positionId: Scalars['String'];
+  position: Position;
   currentOi: Scalars['BigInt'];
   currentDebt: Scalars['BigInt'];
   isLong: Scalars['Boolean'];
@@ -147,26 +147,27 @@ export type Build_Filter = {
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_?: Maybe<Account_Filter>;
-  positionId?: Maybe<Scalars['String']>;
-  positionId_not?: Maybe<Scalars['String']>;
-  positionId_gt?: Maybe<Scalars['String']>;
-  positionId_lt?: Maybe<Scalars['String']>;
-  positionId_gte?: Maybe<Scalars['String']>;
-  positionId_lte?: Maybe<Scalars['String']>;
-  positionId_in?: Maybe<Array<Scalars['String']>>;
-  positionId_not_in?: Maybe<Array<Scalars['String']>>;
-  positionId_contains?: Maybe<Scalars['String']>;
-  positionId_contains_nocase?: Maybe<Scalars['String']>;
-  positionId_not_contains?: Maybe<Scalars['String']>;
-  positionId_not_contains_nocase?: Maybe<Scalars['String']>;
-  positionId_starts_with?: Maybe<Scalars['String']>;
-  positionId_starts_with_nocase?: Maybe<Scalars['String']>;
-  positionId_not_starts_with?: Maybe<Scalars['String']>;
-  positionId_not_starts_with_nocase?: Maybe<Scalars['String']>;
-  positionId_ends_with?: Maybe<Scalars['String']>;
-  positionId_ends_with_nocase?: Maybe<Scalars['String']>;
-  positionId_not_ends_with?: Maybe<Scalars['String']>;
-  positionId_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  position?: Maybe<Scalars['String']>;
+  position_not?: Maybe<Scalars['String']>;
+  position_gt?: Maybe<Scalars['String']>;
+  position_lt?: Maybe<Scalars['String']>;
+  position_gte?: Maybe<Scalars['String']>;
+  position_lte?: Maybe<Scalars['String']>;
+  position_in?: Maybe<Array<Scalars['String']>>;
+  position_not_in?: Maybe<Array<Scalars['String']>>;
+  position_contains?: Maybe<Scalars['String']>;
+  position_contains_nocase?: Maybe<Scalars['String']>;
+  position_not_contains?: Maybe<Scalars['String']>;
+  position_not_contains_nocase?: Maybe<Scalars['String']>;
+  position_starts_with?: Maybe<Scalars['String']>;
+  position_starts_with_nocase?: Maybe<Scalars['String']>;
+  position_not_starts_with?: Maybe<Scalars['String']>;
+  position_not_starts_with_nocase?: Maybe<Scalars['String']>;
+  position_ends_with?: Maybe<Scalars['String']>;
+  position_ends_with_nocase?: Maybe<Scalars['String']>;
+  position_not_ends_with?: Maybe<Scalars['String']>;
+  position_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  position_?: Maybe<Position_Filter>;
   currentOi?: Maybe<Scalars['BigInt']>;
   currentOi_not?: Maybe<Scalars['BigInt']>;
   currentOi_gt?: Maybe<Scalars['BigInt']>;
@@ -250,7 +251,23 @@ export enum Build_OrderBy {
   Id = 'id',
   Owner = 'owner',
   OwnerId = 'owner__id',
-  PositionId = 'positionId',
+  Position = 'position',
+  PositionId = 'position__id',
+  PositionPositionId = 'position__positionId',
+  PositionInitialOi = 'position__initialOi',
+  PositionInitialDebt = 'position__initialDebt',
+  PositionInitialCollateral = 'position__initialCollateral',
+  PositionInitialNotional = 'position__initialNotional',
+  PositionLeverage = 'position__leverage',
+  PositionIsLong = 'position__isLong',
+  PositionEntryPrice = 'position__entryPrice',
+  PositionIsLiquidated = 'position__isLiquidated',
+  PositionCurrentOi = 'position__currentOi',
+  PositionCurrentDebt = 'position__currentDebt',
+  PositionMint = 'position__mint',
+  PositionCreatedAtTimestamp = 'position__createdAtTimestamp',
+  PositionCreatedAtBlockNumber = 'position__createdAtBlockNumber',
+  PositionNumberOfUniwnds = 'position__numberOfUniwnds',
   CurrentOi = 'currentOi',
   CurrentDebt = 'currentDebt',
   IsLong = 'isLong',
@@ -377,11 +394,13 @@ export type Liquidate = {
   __typename?: 'Liquidate';
   id: Scalars['ID'];
   owner: Account;
-  positionId: Scalars['String'];
+  sender: Account;
+  position: Position;
   currentOi: Scalars['BigInt'];
   currentDebt: Scalars['BigInt'];
   isLong: Scalars['Boolean'];
   price: Scalars['BigInt'];
+  mint: Scalars['BigInt'];
   collateral: Scalars['BigInt'];
   value: Scalars['BigInt'];
   timestamp: Scalars['BigInt'];
@@ -418,26 +437,48 @@ export type Liquidate_Filter = {
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_?: Maybe<Account_Filter>;
-  positionId?: Maybe<Scalars['String']>;
-  positionId_not?: Maybe<Scalars['String']>;
-  positionId_gt?: Maybe<Scalars['String']>;
-  positionId_lt?: Maybe<Scalars['String']>;
-  positionId_gte?: Maybe<Scalars['String']>;
-  positionId_lte?: Maybe<Scalars['String']>;
-  positionId_in?: Maybe<Array<Scalars['String']>>;
-  positionId_not_in?: Maybe<Array<Scalars['String']>>;
-  positionId_contains?: Maybe<Scalars['String']>;
-  positionId_contains_nocase?: Maybe<Scalars['String']>;
-  positionId_not_contains?: Maybe<Scalars['String']>;
-  positionId_not_contains_nocase?: Maybe<Scalars['String']>;
-  positionId_starts_with?: Maybe<Scalars['String']>;
-  positionId_starts_with_nocase?: Maybe<Scalars['String']>;
-  positionId_not_starts_with?: Maybe<Scalars['String']>;
-  positionId_not_starts_with_nocase?: Maybe<Scalars['String']>;
-  positionId_ends_with?: Maybe<Scalars['String']>;
-  positionId_ends_with_nocase?: Maybe<Scalars['String']>;
-  positionId_not_ends_with?: Maybe<Scalars['String']>;
-  positionId_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  sender?: Maybe<Scalars['String']>;
+  sender_not?: Maybe<Scalars['String']>;
+  sender_gt?: Maybe<Scalars['String']>;
+  sender_lt?: Maybe<Scalars['String']>;
+  sender_gte?: Maybe<Scalars['String']>;
+  sender_lte?: Maybe<Scalars['String']>;
+  sender_in?: Maybe<Array<Scalars['String']>>;
+  sender_not_in?: Maybe<Array<Scalars['String']>>;
+  sender_contains?: Maybe<Scalars['String']>;
+  sender_contains_nocase?: Maybe<Scalars['String']>;
+  sender_not_contains?: Maybe<Scalars['String']>;
+  sender_not_contains_nocase?: Maybe<Scalars['String']>;
+  sender_starts_with?: Maybe<Scalars['String']>;
+  sender_starts_with_nocase?: Maybe<Scalars['String']>;
+  sender_not_starts_with?: Maybe<Scalars['String']>;
+  sender_not_starts_with_nocase?: Maybe<Scalars['String']>;
+  sender_ends_with?: Maybe<Scalars['String']>;
+  sender_ends_with_nocase?: Maybe<Scalars['String']>;
+  sender_not_ends_with?: Maybe<Scalars['String']>;
+  sender_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  sender_?: Maybe<Account_Filter>;
+  position?: Maybe<Scalars['String']>;
+  position_not?: Maybe<Scalars['String']>;
+  position_gt?: Maybe<Scalars['String']>;
+  position_lt?: Maybe<Scalars['String']>;
+  position_gte?: Maybe<Scalars['String']>;
+  position_lte?: Maybe<Scalars['String']>;
+  position_in?: Maybe<Array<Scalars['String']>>;
+  position_not_in?: Maybe<Array<Scalars['String']>>;
+  position_contains?: Maybe<Scalars['String']>;
+  position_contains_nocase?: Maybe<Scalars['String']>;
+  position_not_contains?: Maybe<Scalars['String']>;
+  position_not_contains_nocase?: Maybe<Scalars['String']>;
+  position_starts_with?: Maybe<Scalars['String']>;
+  position_starts_with_nocase?: Maybe<Scalars['String']>;
+  position_not_starts_with?: Maybe<Scalars['String']>;
+  position_not_starts_with_nocase?: Maybe<Scalars['String']>;
+  position_ends_with?: Maybe<Scalars['String']>;
+  position_ends_with_nocase?: Maybe<Scalars['String']>;
+  position_not_ends_with?: Maybe<Scalars['String']>;
+  position_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  position_?: Maybe<Position_Filter>;
   currentOi?: Maybe<Scalars['BigInt']>;
   currentOi_not?: Maybe<Scalars['BigInt']>;
   currentOi_gt?: Maybe<Scalars['BigInt']>;
@@ -466,6 +507,14 @@ export type Liquidate_Filter = {
   price_lte?: Maybe<Scalars['BigInt']>;
   price_in?: Maybe<Array<Scalars['BigInt']>>;
   price_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  mint?: Maybe<Scalars['BigInt']>;
+  mint_not?: Maybe<Scalars['BigInt']>;
+  mint_gt?: Maybe<Scalars['BigInt']>;
+  mint_lt?: Maybe<Scalars['BigInt']>;
+  mint_gte?: Maybe<Scalars['BigInt']>;
+  mint_lte?: Maybe<Scalars['BigInt']>;
+  mint_in?: Maybe<Array<Scalars['BigInt']>>;
+  mint_not_in?: Maybe<Array<Scalars['BigInt']>>;
   collateral?: Maybe<Scalars['BigInt']>;
   collateral_not?: Maybe<Scalars['BigInt']>;
   collateral_gt?: Maybe<Scalars['BigInt']>;
@@ -521,11 +570,30 @@ export enum Liquidate_OrderBy {
   Id = 'id',
   Owner = 'owner',
   OwnerId = 'owner__id',
-  PositionId = 'positionId',
+  Sender = 'sender',
+  SenderId = 'sender__id',
+  Position = 'position',
+  PositionId = 'position__id',
+  PositionPositionId = 'position__positionId',
+  PositionInitialOi = 'position__initialOi',
+  PositionInitialDebt = 'position__initialDebt',
+  PositionInitialCollateral = 'position__initialCollateral',
+  PositionInitialNotional = 'position__initialNotional',
+  PositionLeverage = 'position__leverage',
+  PositionIsLong = 'position__isLong',
+  PositionEntryPrice = 'position__entryPrice',
+  PositionIsLiquidated = 'position__isLiquidated',
+  PositionCurrentOi = 'position__currentOi',
+  PositionCurrentDebt = 'position__currentDebt',
+  PositionMint = 'position__mint',
+  PositionCreatedAtTimestamp = 'position__createdAtTimestamp',
+  PositionCreatedAtBlockNumber = 'position__createdAtBlockNumber',
+  PositionNumberOfUniwnds = 'position__numberOfUniwnds',
   CurrentOi = 'currentOi',
   CurrentDebt = 'currentDebt',
   IsLong = 'isLong',
   Price = 'price',
+  Mint = 'mint',
   Collateral = 'collateral',
   Value = 'value',
   Timestamp = 'timestamp',
@@ -842,13 +910,42 @@ export type Position = {
   isLong: Scalars['Boolean'];
   entryPrice: Scalars['BigInt'];
   isLiquidated: Scalars['Boolean'];
-  isClosed: Scalars['Boolean'];
   currentOi: Scalars['BigInt'];
   currentDebt: Scalars['BigInt'];
   mint: Scalars['BigInt'];
   createdAtTimestamp: Scalars['BigInt'];
   createdAtBlockNumber: Scalars['BigInt'];
-  transaction: Transaction;
+  numberOfUniwnds: Scalars['BigInt'];
+  builds: Array<Build>;
+  liquidates: Array<Liquidate>;
+  unwinds: Array<Unwind>;
+};
+
+
+export type PositionBuildsArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Build_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Build_Filter>;
+};
+
+
+export type PositionLiquidatesArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Liquidate_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Liquidate_Filter>;
+};
+
+
+export type PositionUnwindsArgs = {
+  skip?: Maybe<Scalars['Int']>;
+  first?: Maybe<Scalars['Int']>;
+  orderBy?: Maybe<Unwind_OrderBy>;
+  orderDirection?: Maybe<OrderDirection>;
+  where?: Maybe<Unwind_Filter>;
 };
 
 export type Position_Filter = {
@@ -978,10 +1075,6 @@ export type Position_Filter = {
   isLiquidated_not?: Maybe<Scalars['Boolean']>;
   isLiquidated_in?: Maybe<Array<Scalars['Boolean']>>;
   isLiquidated_not_in?: Maybe<Array<Scalars['Boolean']>>;
-  isClosed?: Maybe<Scalars['Boolean']>;
-  isClosed_not?: Maybe<Scalars['Boolean']>;
-  isClosed_in?: Maybe<Array<Scalars['Boolean']>>;
-  isClosed_not_in?: Maybe<Array<Scalars['Boolean']>>;
   currentOi?: Maybe<Scalars['BigInt']>;
   currentOi_not?: Maybe<Scalars['BigInt']>;
   currentOi_gt?: Maybe<Scalars['BigInt']>;
@@ -1022,27 +1115,17 @@ export type Position_Filter = {
   createdAtBlockNumber_lte?: Maybe<Scalars['BigInt']>;
   createdAtBlockNumber_in?: Maybe<Array<Scalars['BigInt']>>;
   createdAtBlockNumber_not_in?: Maybe<Array<Scalars['BigInt']>>;
-  transaction?: Maybe<Scalars['String']>;
-  transaction_not?: Maybe<Scalars['String']>;
-  transaction_gt?: Maybe<Scalars['String']>;
-  transaction_lt?: Maybe<Scalars['String']>;
-  transaction_gte?: Maybe<Scalars['String']>;
-  transaction_lte?: Maybe<Scalars['String']>;
-  transaction_in?: Maybe<Array<Scalars['String']>>;
-  transaction_not_in?: Maybe<Array<Scalars['String']>>;
-  transaction_contains?: Maybe<Scalars['String']>;
-  transaction_contains_nocase?: Maybe<Scalars['String']>;
-  transaction_not_contains?: Maybe<Scalars['String']>;
-  transaction_not_contains_nocase?: Maybe<Scalars['String']>;
-  transaction_starts_with?: Maybe<Scalars['String']>;
-  transaction_starts_with_nocase?: Maybe<Scalars['String']>;
-  transaction_not_starts_with?: Maybe<Scalars['String']>;
-  transaction_not_starts_with_nocase?: Maybe<Scalars['String']>;
-  transaction_ends_with?: Maybe<Scalars['String']>;
-  transaction_ends_with_nocase?: Maybe<Scalars['String']>;
-  transaction_not_ends_with?: Maybe<Scalars['String']>;
-  transaction_not_ends_with_nocase?: Maybe<Scalars['String']>;
-  transaction_?: Maybe<Transaction_Filter>;
+  numberOfUniwnds?: Maybe<Scalars['BigInt']>;
+  numberOfUniwnds_not?: Maybe<Scalars['BigInt']>;
+  numberOfUniwnds_gt?: Maybe<Scalars['BigInt']>;
+  numberOfUniwnds_lt?: Maybe<Scalars['BigInt']>;
+  numberOfUniwnds_gte?: Maybe<Scalars['BigInt']>;
+  numberOfUniwnds_lte?: Maybe<Scalars['BigInt']>;
+  numberOfUniwnds_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfUniwnds_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  builds_?: Maybe<Build_Filter>;
+  liquidates_?: Maybe<Liquidate_Filter>;
+  unwinds_?: Maybe<Unwind_Filter>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
   and?: Maybe<Array<Maybe<Position_Filter>>>;
@@ -1085,18 +1168,15 @@ export enum Position_OrderBy {
   IsLong = 'isLong',
   EntryPrice = 'entryPrice',
   IsLiquidated = 'isLiquidated',
-  IsClosed = 'isClosed',
   CurrentOi = 'currentOi',
   CurrentDebt = 'currentDebt',
   Mint = 'mint',
   CreatedAtTimestamp = 'createdAtTimestamp',
   CreatedAtBlockNumber = 'createdAtBlockNumber',
-  Transaction = 'transaction',
-  TransactionId = 'transaction__id',
-  TransactionBlockNumber = 'transaction__blockNumber',
-  TransactionTimestamp = 'transaction__timestamp',
-  TransactionGasLimit = 'transaction__gasLimit',
-  TransactionGasPrice = 'transaction__gasPrice'
+  NumberOfUniwnds = 'numberOfUniwnds',
+  Builds = 'builds',
+  Liquidates = 'liquidates',
+  Unwinds = 'unwinds'
 }
 
 export type Query = {
@@ -1545,11 +1625,14 @@ export type Unwind = {
   __typename?: 'Unwind';
   id: Scalars['ID'];
   owner: Account;
-  positionId: Scalars['String'];
+  position: Position;
+  unwindNumber: Scalars['BigInt'];
   currentOi: Scalars['BigInt'];
   currentDebt: Scalars['BigInt'];
   isLong: Scalars['Boolean'];
   price: Scalars['BigInt'];
+  fraction: Scalars['BigInt'];
+  mint: Scalars['BigInt'];
   collateral: Scalars['BigInt'];
   value: Scalars['BigInt'];
   timestamp: Scalars['BigInt'];
@@ -1586,26 +1669,35 @@ export type Unwind_Filter = {
   owner_not_ends_with?: Maybe<Scalars['String']>;
   owner_not_ends_with_nocase?: Maybe<Scalars['String']>;
   owner_?: Maybe<Account_Filter>;
-  positionId?: Maybe<Scalars['String']>;
-  positionId_not?: Maybe<Scalars['String']>;
-  positionId_gt?: Maybe<Scalars['String']>;
-  positionId_lt?: Maybe<Scalars['String']>;
-  positionId_gte?: Maybe<Scalars['String']>;
-  positionId_lte?: Maybe<Scalars['String']>;
-  positionId_in?: Maybe<Array<Scalars['String']>>;
-  positionId_not_in?: Maybe<Array<Scalars['String']>>;
-  positionId_contains?: Maybe<Scalars['String']>;
-  positionId_contains_nocase?: Maybe<Scalars['String']>;
-  positionId_not_contains?: Maybe<Scalars['String']>;
-  positionId_not_contains_nocase?: Maybe<Scalars['String']>;
-  positionId_starts_with?: Maybe<Scalars['String']>;
-  positionId_starts_with_nocase?: Maybe<Scalars['String']>;
-  positionId_not_starts_with?: Maybe<Scalars['String']>;
-  positionId_not_starts_with_nocase?: Maybe<Scalars['String']>;
-  positionId_ends_with?: Maybe<Scalars['String']>;
-  positionId_ends_with_nocase?: Maybe<Scalars['String']>;
-  positionId_not_ends_with?: Maybe<Scalars['String']>;
-  positionId_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  position?: Maybe<Scalars['String']>;
+  position_not?: Maybe<Scalars['String']>;
+  position_gt?: Maybe<Scalars['String']>;
+  position_lt?: Maybe<Scalars['String']>;
+  position_gte?: Maybe<Scalars['String']>;
+  position_lte?: Maybe<Scalars['String']>;
+  position_in?: Maybe<Array<Scalars['String']>>;
+  position_not_in?: Maybe<Array<Scalars['String']>>;
+  position_contains?: Maybe<Scalars['String']>;
+  position_contains_nocase?: Maybe<Scalars['String']>;
+  position_not_contains?: Maybe<Scalars['String']>;
+  position_not_contains_nocase?: Maybe<Scalars['String']>;
+  position_starts_with?: Maybe<Scalars['String']>;
+  position_starts_with_nocase?: Maybe<Scalars['String']>;
+  position_not_starts_with?: Maybe<Scalars['String']>;
+  position_not_starts_with_nocase?: Maybe<Scalars['String']>;
+  position_ends_with?: Maybe<Scalars['String']>;
+  position_ends_with_nocase?: Maybe<Scalars['String']>;
+  position_not_ends_with?: Maybe<Scalars['String']>;
+  position_not_ends_with_nocase?: Maybe<Scalars['String']>;
+  position_?: Maybe<Position_Filter>;
+  unwindNumber?: Maybe<Scalars['BigInt']>;
+  unwindNumber_not?: Maybe<Scalars['BigInt']>;
+  unwindNumber_gt?: Maybe<Scalars['BigInt']>;
+  unwindNumber_lt?: Maybe<Scalars['BigInt']>;
+  unwindNumber_gte?: Maybe<Scalars['BigInt']>;
+  unwindNumber_lte?: Maybe<Scalars['BigInt']>;
+  unwindNumber_in?: Maybe<Array<Scalars['BigInt']>>;
+  unwindNumber_not_in?: Maybe<Array<Scalars['BigInt']>>;
   currentOi?: Maybe<Scalars['BigInt']>;
   currentOi_not?: Maybe<Scalars['BigInt']>;
   currentOi_gt?: Maybe<Scalars['BigInt']>;
@@ -1634,6 +1726,22 @@ export type Unwind_Filter = {
   price_lte?: Maybe<Scalars['BigInt']>;
   price_in?: Maybe<Array<Scalars['BigInt']>>;
   price_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  fraction?: Maybe<Scalars['BigInt']>;
+  fraction_not?: Maybe<Scalars['BigInt']>;
+  fraction_gt?: Maybe<Scalars['BigInt']>;
+  fraction_lt?: Maybe<Scalars['BigInt']>;
+  fraction_gte?: Maybe<Scalars['BigInt']>;
+  fraction_lte?: Maybe<Scalars['BigInt']>;
+  fraction_in?: Maybe<Array<Scalars['BigInt']>>;
+  fraction_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  mint?: Maybe<Scalars['BigInt']>;
+  mint_not?: Maybe<Scalars['BigInt']>;
+  mint_gt?: Maybe<Scalars['BigInt']>;
+  mint_lt?: Maybe<Scalars['BigInt']>;
+  mint_gte?: Maybe<Scalars['BigInt']>;
+  mint_lte?: Maybe<Scalars['BigInt']>;
+  mint_in?: Maybe<Array<Scalars['BigInt']>>;
+  mint_not_in?: Maybe<Array<Scalars['BigInt']>>;
   collateral?: Maybe<Scalars['BigInt']>;
   collateral_not?: Maybe<Scalars['BigInt']>;
   collateral_gt?: Maybe<Scalars['BigInt']>;
@@ -1689,11 +1797,30 @@ export enum Unwind_OrderBy {
   Id = 'id',
   Owner = 'owner',
   OwnerId = 'owner__id',
-  PositionId = 'positionId',
+  Position = 'position',
+  PositionId = 'position__id',
+  PositionPositionId = 'position__positionId',
+  PositionInitialOi = 'position__initialOi',
+  PositionInitialDebt = 'position__initialDebt',
+  PositionInitialCollateral = 'position__initialCollateral',
+  PositionInitialNotional = 'position__initialNotional',
+  PositionLeverage = 'position__leverage',
+  PositionIsLong = 'position__isLong',
+  PositionEntryPrice = 'position__entryPrice',
+  PositionIsLiquidated = 'position__isLiquidated',
+  PositionCurrentOi = 'position__currentOi',
+  PositionCurrentDebt = 'position__currentDebt',
+  PositionMint = 'position__mint',
+  PositionCreatedAtTimestamp = 'position__createdAtTimestamp',
+  PositionCreatedAtBlockNumber = 'position__createdAtBlockNumber',
+  PositionNumberOfUniwnds = 'position__numberOfUniwnds',
+  UnwindNumber = 'unwindNumber',
   CurrentOi = 'currentOi',
   CurrentDebt = 'currentDebt',
   IsLong = 'isLong',
   Price = 'price',
+  Fraction = 'fraction',
+  Mint = 'mint',
   Collateral = 'collateral',
   Value = 'value',
   Timestamp = 'timestamp',
@@ -1749,20 +1876,24 @@ export type AccountQuery = (
     { __typename?: 'Account' }
     & { positions: Array<(
       { __typename?: 'Position' }
-      & Pick<Position, 'id' | 'positionId' | 'initialOi' | 'initialDebt' | 'initialCollateral' | 'initialNotional' | 'leverage' | 'isLong' | 'entryPrice' | 'isLiquidated' | 'isClosed' | 'currentOi' | 'currentDebt' | 'mint' | 'createdAtTimestamp' | 'createdAtBlockNumber'>
+      & Pick<Position, 'id' | 'positionId' | 'initialOi' | 'initialDebt' | 'initialCollateral' | 'initialNotional' | 'leverage' | 'isLong' | 'entryPrice' | 'isLiquidated' | 'currentOi' | 'currentDebt' | 'mint' | 'createdAtTimestamp' | 'createdAtBlockNumber' | 'numberOfUniwnds'>
       & { market: (
         { __typename?: 'Market' }
         & Pick<Market, 'id' | 'feedAddress'>
       ) }
     )>, builds: Array<(
       { __typename?: 'Build' }
-      & Pick<Build, 'id'>
+      & Pick<Build, 'id' | 'isLong' | 'price' | 'timestamp' | 'value' | 'collateral'>
     )>, unwinds: Array<(
       { __typename?: 'Unwind' }
-      & Pick<Unwind, 'id'>
+      & Pick<Unwind, 'id' | 'value' | 'unwindNumber' | 'timestamp' | 'price' | 'mint' | 'fraction' | 'currentOi' | 'currentDebt' | 'collateral'>
+      & { position: (
+        { __typename?: 'Position' }
+        & Pick<Position, 'id'>
+      ) }
     )>, liquidates: Array<(
       { __typename?: 'Liquidate' }
-      & Pick<Liquidate, 'id'>
+      & Pick<Liquidate, 'id' | 'value' | 'timestamp' | 'price' | 'mint'>
     )> }
   )> }
 );
@@ -1839,21 +1970,42 @@ export const AccountDocument = `
       isLong
       entryPrice
       isLiquidated
-      isClosed
       currentOi
       currentDebt
       mint
       createdAtTimestamp
       createdAtBlockNumber
+      numberOfUniwnds
     }
     builds {
       id
+      isLong
+      price
+      timestamp
+      value
+      collateral
     }
     unwinds {
       id
+      value
+      unwindNumber
+      timestamp
+      price
+      mint
+      fraction
+      currentOi
+      currentDebt
+      collateral
+      position {
+        id
+      }
     }
     liquidates {
       id
+      value
+      timestamp
+      price
+      mint
     }
   }
 }

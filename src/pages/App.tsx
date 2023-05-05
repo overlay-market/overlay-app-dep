@@ -15,6 +15,7 @@ import Bridge from './Bridge/Bridge'
 import Claim from './Claim/Claim'
 import ClaimPage from './Claim/ClaimPage'
 import Popups from '../components/Popup/Popups'
+import { ClosedPosition } from './Positions/ClosedPosition'
 
 export const AppWrapper = styled.div`
   background-color: ${({theme}) => theme.bg1};
@@ -37,6 +38,7 @@ const App = () => {
               <Route exact strict path="/markets/:marketId" component={Market} />
               <Route exact strict path="/positions" component={Positions} />
               <Route exact strict path="/positions/:marketPositionId/:positionId" component={Unwind} />
+              <Route exact strict path="/closed-positions/:marketPositionId/:positionId" component={ClosedPosition} />
               <Route exact strict path="/claim/:claimId" component={Claim} />
               <Route exact strict path="/claimpage" component={ClaimPage} />
               <Route exact strict path="/liquidate" component={Liquidate} />
