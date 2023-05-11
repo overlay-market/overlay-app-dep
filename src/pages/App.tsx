@@ -38,7 +38,7 @@ const App = () => {
               <Route exact strict path="/markets/:marketId" component={Market} />
               <Route exact strict path="/positions" component={Positions} />
               <Route exact strict path="/positions/:marketPositionId/:positionId" component={Unwind} />
-              <Route exact strict path="/closed-positions/:marketPositionId/:positionId" component={ClosedPosition} />
+              <Route exact strict path="/closed-positions/:unwindId/:positionId" component={ClosedPosition} />
               <Route exact strict path="/claim/:claimId" component={Claim} />
               <Route exact strict path="/claimpage" component={ClaimPage} />
               <Route exact strict path="/liquidate" component={Liquidate} />
