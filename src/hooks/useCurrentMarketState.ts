@@ -48,7 +48,7 @@ export interface MarketStateResults {
   markets: ParsedMarketStateDetails[] | []
 }
 
-export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 5): MarketStateResults {
+export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 5) {
   const peripheryContract = useV1PeripheryContract()
   const inputs = useMemo(() => (marketsData ? marketsData.map(market => [market.id]) : []), [marketsData])
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
@@ -58,7 +58,7 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
   const markets = useMemo(() => {
     if (!loading && !error && marketsData) {
       return results.map((call, index) => {
-        const market: AdditionalMarketData = marketsData[index]
+        const market = marketsData[index]
         const decimals = market.decimals
         const uniswapDecimalsDifference = market.decimalsDifference
         const result = call.result as Result
