@@ -5,6 +5,7 @@ import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
 import {usePositionCost} from '../../hooks/usePositionCost'
 import {usePositionValue} from '../../hooks/usePositionValue'
+import { usePositionTradingFee } from '../../hooks/usePositionTradingFee'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {checkIsNegative} from '../../utils/checkIsNegative'
 import Loader from '../../components/Loaders/Loaders'
@@ -70,6 +71,7 @@ export const OpenPosition = ({
 
   const value = usePositionValue(marketAddress, positionId)
   const cost = usePositionCost(marketAddress, positionId)
+  const tradingFee = usePositionTradingFee(marketAddress, positionId)
   const liquidationPrice = useLiquidationPrice(marketAddress, positionId)
 
   const parsedValue: string | number | undefined = useMemo(() => {
@@ -86,10 +88,10 @@ export const OpenPosition = ({
   }, [liquidationPrice, decimals])
 
   const unrealizedPnL: string | number | undefined = useMemo(() => {
-    if (value === undefined || cost === undefined || decimals === undefined) return undefined
-    const diff = (+value - +cost) / (10 ** +decimals)
+    if (value === undefined || cost === undefined || tradingFee === undefined || decimals === undefined) return undefined
+    const diff = (+value - +cost - +tradingFee) / (10 ** +decimals)
     return diff < 1 ? diff.toFixed(6) : diff.toFixed(2)
-  }, [value, cost, decimals])
+  }, [value, cost, decimals, tradingFee])
 
   let history = useHistory()
 
