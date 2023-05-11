@@ -56,6 +56,7 @@ export function colors(darkMode: boolean): Colors {
     blue3: '#12B4FF',
     red1: darkMode ? '#FF4343' : '#DA2D2B',
     green1: darkMode ? '#27AE60' : '#007D35',
+    grey2: darkMode ? '#A8A6A6' : '#A8A6A6'
   }
 }
 
@@ -89,28 +90,31 @@ export const TEXT = {
     return <TextWrapper fontFamily="Inter, sans-serif" fontWeight={700} fontSize={14} {...props} />
   },
   StandardHeader1(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={400} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={400} color={colors(false).white1} {...props} />
   },
   BoldHeader1(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={700} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={700} color={colors(false).white1} {...props} />
   },
   StandardBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={400} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={400} color={colors(false).white1} {...props} />
   },
   BoldStandardBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={700} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={700} color={colors(false).white1} {...props} />
   },
   SmallBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={400} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={400} color={colors(false).white1} {...props} />
   },
   BoldSmallBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={700} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={700} color={colors(false).white1} {...props} />
   },
   Supplemental(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(false).white1} {...props} />
+  },
+  SupplementalHeader(props: TextProps) {
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(true).grey2} {...props} />
   },
   BoldSupplemental(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={700} color={'white1'} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={700} color={colors(false).white1} {...props} />
   },
   BoldNumber(props: TextProps) {
     return <TextWrapper fontFamily="Roboto Mono, monospace" fontSize={14} fontWeight={700} {...props} />
