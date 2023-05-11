@@ -42,6 +42,19 @@ export const StyledTableRow = styled(TableRow)`
   `}
 `
 
+export const StyledTableRowNoPointer = styled(TableRow)`
+  background: ${({theme}) => theme.bg1};
+  height: 69px;
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    height: auto;
+
+    :hover { 
+      background: #262626 !important;
+    }
+  `}
+`
+
 export const StyledTableHeaderRow = styled(TableRow)`
   background: ${({theme}) => theme.bg1};
   cursor: default;

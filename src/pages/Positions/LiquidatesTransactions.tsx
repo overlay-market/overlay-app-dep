@@ -1,5 +1,5 @@
 import {useMemo, useCallback} from 'react'
-import {StyledTableRow, StyledTableCell} from '../../components/Table/Table'
+import {StyledTableRowNoPointer, StyledTableCell} from '../../components/Table/Table'
 import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
@@ -160,7 +160,7 @@ export const LiquidatesTransactions = ({
 
   return (
     <>
-      <StyledTableRow onClick={() => handleNavigate(positionUrl, isClosed)}>
+      <StyledTableRowNoPointer>
         {
           sortedValues.map((value) => {
             return <StyledTableCell>
@@ -168,7 +168,7 @@ export const LiquidatesTransactions = ({
           </StyledTableCell>
           })
         }
-      </StyledTableRow>
+      </StyledTableRowNoPointer>
     </>
   )
 }
