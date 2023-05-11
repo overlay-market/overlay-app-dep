@@ -11,7 +11,8 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   [SupportedChainId.GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-goerli',
   [SupportedChainId.RINKEBY]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
   // [SupportedChainId.ARBITRUM]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arbitrum',
-  [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/proxy/46086/overlay-subgraph-arbitrum/v2.0.12',
+  // [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/proxy/46086/overlay-subgraph-arbitrum/v2.0.12',
+  [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/query/46086/overlay-v2-subgraph-arbitrum/v2.0.16',
   [SupportedChainId.ARBITRUM_GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arb-goerli',
 }
 
@@ -75,6 +76,78 @@ export const api = createApi({
                 timestamp
                 price
                 mint
+              }
+            }
+          }
+        `,
+        variables: {
+          account,
+        },
+      }),
+    }),
+    accountV2Query: builder.query({
+      query: ({account}) => ({
+        document: gql`
+          query accountV2($account: ID!) {
+            account(id: $account) {
+              positions(orderBy: createdAtTimestamp, orderDirection: desc) {
+                id
+                positionId
+                market {
+                  id
+                  feedAddress
+                }
+                initialOi
+                initialDebt
+                initialCollateral
+                initialNotional
+                leverage
+                isLong
+                entryPrice
+                isLiquidated
+                currentOi
+                currentDebt
+                mint
+                createdAtTimestamp
+                createdAtBlockNumber
+                numberOfUniwnds
+                fractionUnwound
+                builds {
+                  collateral
+                  currentDebt
+                  currentOi
+                  id
+                  price
+                  timestamp
+                  value
+                }
+                liquidates {
+                  collateral
+                  currentDebt
+                  id
+                  currentOi
+                  isLong
+                  mint
+                  price
+                  timestamp
+                  value
+                }
+                unwinds(orderBy: unwindNumber, orderDirection: asc) {
+                  collateral
+                  currentDebt
+                  currentOi
+                  fraction
+                  id
+                  isLong
+                  mint
+                  timestamp
+                  price
+                  unwindNumber
+                  value
+                  transferAmount
+                  pnl
+                  size
+                }
               }
             }
           }

@@ -259,6 +259,7 @@ export enum Build_OrderBy {
   PositionInitialCollateral = 'position__initialCollateral',
   PositionInitialNotional = 'position__initialNotional',
   PositionLeverage = 'position__leverage',
+  PositionFractionUnwound = 'position__fractionUnwound',
   PositionIsLong = 'position__isLong',
   PositionEntryPrice = 'position__entryPrice',
   PositionIsLiquidated = 'position__isLiquidated',
@@ -580,6 +581,7 @@ export enum Liquidate_OrderBy {
   PositionInitialCollateral = 'position__initialCollateral',
   PositionInitialNotional = 'position__initialNotional',
   PositionLeverage = 'position__leverage',
+  PositionFractionUnwound = 'position__fractionUnwound',
   PositionIsLong = 'position__isLong',
   PositionEntryPrice = 'position__entryPrice',
   PositionIsLiquidated = 'position__isLiquidated',
@@ -907,6 +909,7 @@ export type Position = {
   initialCollateral: Scalars['BigInt'];
   initialNotional: Scalars['BigInt'];
   leverage: Scalars['BigDecimal'];
+  fractionUnwound: Scalars['BigInt'];
   isLong: Scalars['Boolean'];
   entryPrice: Scalars['BigInt'];
   isLiquidated: Scalars['Boolean'];
@@ -1059,6 +1062,14 @@ export type Position_Filter = {
   leverage_lte?: Maybe<Scalars['BigDecimal']>;
   leverage_in?: Maybe<Array<Scalars['BigDecimal']>>;
   leverage_not_in?: Maybe<Array<Scalars['BigDecimal']>>;
+  fractionUnwound?: Maybe<Scalars['BigInt']>;
+  fractionUnwound_not?: Maybe<Scalars['BigInt']>;
+  fractionUnwound_gt?: Maybe<Scalars['BigInt']>;
+  fractionUnwound_lt?: Maybe<Scalars['BigInt']>;
+  fractionUnwound_gte?: Maybe<Scalars['BigInt']>;
+  fractionUnwound_lte?: Maybe<Scalars['BigInt']>;
+  fractionUnwound_in?: Maybe<Array<Scalars['BigInt']>>;
+  fractionUnwound_not_in?: Maybe<Array<Scalars['BigInt']>>;
   isLong?: Maybe<Scalars['Boolean']>;
   isLong_not?: Maybe<Scalars['Boolean']>;
   isLong_in?: Maybe<Array<Scalars['Boolean']>>;
@@ -1165,6 +1176,7 @@ export enum Position_OrderBy {
   InitialCollateral = 'initialCollateral',
   InitialNotional = 'initialNotional',
   Leverage = 'leverage',
+  FractionUnwound = 'fractionUnwound',
   IsLong = 'isLong',
   EntryPrice = 'entryPrice',
   IsLiquidated = 'isLiquidated',
@@ -1632,6 +1644,9 @@ export type Unwind = {
   isLong: Scalars['Boolean'];
   price: Scalars['BigInt'];
   fraction: Scalars['BigInt'];
+  transferAmount: Scalars['BigInt'];
+  pnl: Scalars['BigInt'];
+  size: Scalars['BigInt'];
   mint: Scalars['BigInt'];
   collateral: Scalars['BigInt'];
   value: Scalars['BigInt'];
@@ -1734,6 +1749,30 @@ export type Unwind_Filter = {
   fraction_lte?: Maybe<Scalars['BigInt']>;
   fraction_in?: Maybe<Array<Scalars['BigInt']>>;
   fraction_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  transferAmount?: Maybe<Scalars['BigInt']>;
+  transferAmount_not?: Maybe<Scalars['BigInt']>;
+  transferAmount_gt?: Maybe<Scalars['BigInt']>;
+  transferAmount_lt?: Maybe<Scalars['BigInt']>;
+  transferAmount_gte?: Maybe<Scalars['BigInt']>;
+  transferAmount_lte?: Maybe<Scalars['BigInt']>;
+  transferAmount_in?: Maybe<Array<Scalars['BigInt']>>;
+  transferAmount_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  pnl?: Maybe<Scalars['BigInt']>;
+  pnl_not?: Maybe<Scalars['BigInt']>;
+  pnl_gt?: Maybe<Scalars['BigInt']>;
+  pnl_lt?: Maybe<Scalars['BigInt']>;
+  pnl_gte?: Maybe<Scalars['BigInt']>;
+  pnl_lte?: Maybe<Scalars['BigInt']>;
+  pnl_in?: Maybe<Array<Scalars['BigInt']>>;
+  pnl_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  size?: Maybe<Scalars['BigInt']>;
+  size_not?: Maybe<Scalars['BigInt']>;
+  size_gt?: Maybe<Scalars['BigInt']>;
+  size_lt?: Maybe<Scalars['BigInt']>;
+  size_gte?: Maybe<Scalars['BigInt']>;
+  size_lte?: Maybe<Scalars['BigInt']>;
+  size_in?: Maybe<Array<Scalars['BigInt']>>;
+  size_not_in?: Maybe<Array<Scalars['BigInt']>>;
   mint?: Maybe<Scalars['BigInt']>;
   mint_not?: Maybe<Scalars['BigInt']>;
   mint_gt?: Maybe<Scalars['BigInt']>;
@@ -1805,6 +1844,7 @@ export enum Unwind_OrderBy {
   PositionInitialCollateral = 'position__initialCollateral',
   PositionInitialNotional = 'position__initialNotional',
   PositionLeverage = 'position__leverage',
+  PositionFractionUnwound = 'position__fractionUnwound',
   PositionIsLong = 'position__isLong',
   PositionEntryPrice = 'position__entryPrice',
   PositionIsLiquidated = 'position__isLiquidated',
@@ -1820,6 +1860,9 @@ export enum Unwind_OrderBy {
   IsLong = 'isLong',
   Price = 'price',
   Fraction = 'fraction',
+  TransferAmount = 'transferAmount',
+  Pnl = 'pnl',
+  Size = 'size',
   Mint = 'mint',
   Collateral = 'collateral',
   Value = 'value',
@@ -1894,6 +1937,35 @@ export type AccountQuery = (
     )>, liquidates: Array<(
       { __typename?: 'Liquidate' }
       & Pick<Liquidate, 'id' | 'value' | 'timestamp' | 'price' | 'mint'>
+    )> }
+  )> }
+);
+
+export type AccountV2QueryVariables = Exact<{
+  account: Scalars['ID'];
+}>;
+
+
+export type AccountV2Query = (
+  { __typename?: 'Query' }
+  & { account?: Maybe<(
+    { __typename?: 'Account' }
+    & { positions: Array<(
+      { __typename?: 'Position' }
+      & Pick<Position, 'id' | 'positionId' | 'initialOi' | 'initialDebt' | 'initialCollateral' | 'initialNotional' | 'leverage' | 'isLong' | 'entryPrice' | 'isLiquidated' | 'currentOi' | 'currentDebt' | 'mint' | 'createdAtTimestamp' | 'createdAtBlockNumber' | 'numberOfUniwnds' | 'fractionUnwound'>
+      & { market: (
+        { __typename?: 'Market' }
+        & Pick<Market, 'id' | 'feedAddress'>
+      ), builds: Array<(
+        { __typename?: 'Build' }
+        & Pick<Build, 'collateral' | 'currentDebt' | 'currentOi' | 'id' | 'price' | 'timestamp' | 'value'>
+      )>, liquidates: Array<(
+        { __typename?: 'Liquidate' }
+        & Pick<Liquidate, 'collateral' | 'currentDebt' | 'id' | 'currentOi' | 'isLong' | 'mint' | 'price' | 'timestamp' | 'value'>
+      )>, unwinds: Array<(
+        { __typename?: 'Unwind' }
+        & Pick<Unwind, 'collateral' | 'currentDebt' | 'currentOi' | 'fraction' | 'id' | 'isLong' | 'mint' | 'timestamp' | 'price' | 'unwindNumber' | 'value' | 'transferAmount' | 'pnl' | 'size'>
+      )> }
     )> }
   )> }
 );
@@ -2010,6 +2082,71 @@ export const AccountDocument = `
   }
 }
     `;
+export const AccountV2Document = `
+    query accountV2($account: ID!) {
+  account(id: $account) {
+    positions(orderBy: createdAtTimestamp, orderDirection: desc) {
+      id
+      positionId
+      market {
+        id
+        feedAddress
+      }
+      initialOi
+      initialDebt
+      initialCollateral
+      initialNotional
+      leverage
+      isLong
+      entryPrice
+      isLiquidated
+      currentOi
+      currentDebt
+      mint
+      createdAtTimestamp
+      createdAtBlockNumber
+      numberOfUniwnds
+      fractionUnwound
+      builds {
+        collateral
+        currentDebt
+        currentOi
+        id
+        price
+        timestamp
+        value
+      }
+      liquidates {
+        collateral
+        currentDebt
+        id
+        currentOi
+        isLong
+        mint
+        price
+        timestamp
+        value
+      }
+      unwinds(orderBy: unwindNumber, orderDirection: asc) {
+        collateral
+        currentDebt
+        currentOi
+        fraction
+        id
+        isLong
+        mint
+        timestamp
+        price
+        unwindNumber
+        value
+        transferAmount
+        pnl
+        size
+      }
+    }
+  }
+}
+    `;
 export const MarketDocument = `
     query market($market: ID!) {
   market(id: $market) {
@@ -2088,6 +2225,9 @@ const injectedRtkApi = api.injectEndpoints({
     account: build.query<AccountQuery, AccountQueryVariables>({
       query: (variables) => ({ document: AccountDocument, variables })
     }),
+    accountV2: build.query<AccountV2Query, AccountV2QueryVariables>({
+      query: (variables) => ({ document: AccountV2Document, variables })
+    }),
     market: build.query<MarketQuery, MarketQueryVariables>({
       query: (variables) => ({ document: MarketDocument, variables })
     }),
@@ -2101,5 +2241,5 @@ const injectedRtkApi = api.injectEndpoints({
 });
 
 export { injectedRtkApi as api };
-export const { useAccountQuery, useLazyAccountQuery, useMarketQuery, useLazyMarketQuery, useMarketsQuery, useLazyMarketsQuery, usePositionsQuery, useLazyPositionsQuery } = injectedRtkApi;
+export const { useAccountQuery, useLazyAccountQuery, useAccountV2Query, useLazyAccountV2Query, useMarketQuery, useLazyMarketQuery, useMarketsQuery, useLazyMarketsQuery, usePositionsQuery, useLazyPositionsQuery } = injectedRtkApi;
 

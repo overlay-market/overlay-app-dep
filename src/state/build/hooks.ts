@@ -194,6 +194,18 @@ export function useWalletPositionsFromSubgraph(address: string | undefined | nul
   })
 }
 
+export function useWalletPositionsFromSubgraphV2(address: string | undefined | null) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+
+  return useAccountV2Query(accountAddress ? { account: accountAddress } : skipToken, {
+    pollingInterval: 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
 interface PositionMarketData {
   id: string
   feedAddress: string
@@ -208,6 +220,69 @@ export interface PositionData {
   entryPrice: string
   initialCollateral: string
   initialNotional: string
+}
+
+export interface PositionDataV2 { 
+  id: string
+  positionId: string
+  market: PositionMarketData
+  initialOi: string
+  initialDebt: string
+  initialCollateral: string
+  initialNotional: string
+  leverage: string
+  isLong: boolean
+  entryPrice: string
+  isLiquidated: boolean
+  currentOi: string
+  currentDebt: string
+  mint: string
+  createdAtTimestamp: string
+  createdAtBlockNumber: string
+  numberOfUniwnds: string
+  builds: Build[]
+  liquidates: Liquidate[]
+  unwinds: Unwind[]
+  fractionUnwound: string
+}
+
+export interface Build {
+  collateral: string
+  currentDebt: string
+  currentOi: string
+  id: string
+  price: string
+  timestamp: string
+  value: string
+}
+
+export interface Liquidate {
+  collateral: string
+  currentDebt: string
+  currentOi: string
+  id: string
+  isLong: boolean
+  mint: string
+  price: string
+  timestamp: string
+  value: string
+}
+
+export interface Unwind {
+  collateral: string
+  currentDebt: string
+  currentOi: string
+  id: string
+  fraction: string
+  isLong: boolean
+  mint: string
+  price: string
+  timestamp: string
+  value: string
+  unwindNumber: string
+  pnl: string
+  transferAmount: string
+  size: string
 }
 
 export interface UniwndsData { 
@@ -236,6 +311,29 @@ export function useCurrentWalletPositions(
   refetch: () => void
 } {
   const walletPositionsData = useWalletPositionsFromSubgraph(address ? address : undefined)
+  return {
+    isLoading: walletPositionsData.isLoading,
+    isFetching: walletPositionsData.isFetching,
+    isUninitialized: walletPositionsData.isUninitialized,
+    isError: walletPositionsData.isError, 
+    error: walletPositionsData.error,
+    positions: walletPositionsData.data?.account?.positions,
+    refetch: walletPositionsData.refetch
+  }
+}
+
+export function useCurrentWalletPositionsV2(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  positions: PositionDataV2[] | undefined
+  refetch: () => void
+} {
+  const walletPositionsData = useWalletPositionsFromSubgraphV2(address ? address : undefined)
   return {
     isLoading: walletPositionsData.isLoading,
     isFetching: walletPositionsData.isFetching,
