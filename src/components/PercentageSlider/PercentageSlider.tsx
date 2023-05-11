@@ -13,9 +13,10 @@ const Header = styled.div`
   color: ${({theme}) => theme.text1};
 `
 
-const StyledLabel = styled(Label)`
+const StyledLabel = styled(Label)<{justifyContent?: string}>`
   align-items: baseline;
   margin-bottom: 8px !important;
+  justify-content: ${({justifyContent}) => (justifyContent ? justifyContent : 'start')};
 `
 
 type PercentageSliderProps = {
@@ -27,18 +28,32 @@ type PercentageSliderProps = {
   max: number
   step: number
   margin?: string
+  justifyContent?: string
   children?: React.ReactNode
+  showTilde?: boolean
 }
 
-export const PercentageSlider = ({value, liquidationPrice, onChange, name, min, max, step, margin, children}: PercentageSliderProps) => {
+export const PercentageSlider = ({
+  value,
+  liquidationPrice,
+  onChange,
+  name,
+  min,
+  max,
+  step,
+  margin,
+  justifyContent,
+  children,
+  showTilde,
+}: PercentageSliderProps) => {
   const SLIDER_INPUT = {
     backgroundColor: '#F2F2F2',
     sliderDotColor: '#12B4FF',
   }
   return (
     <SliderContainer margin={margin}>
-      <StyledLabel htmlFor={name}>
-        <Header>{value}%</Header>
+      <StyledLabel justifyContent={justifyContent} htmlFor={name}>
+        <Header>{`${showTilde ? '~' : ''}${value}%`}</Header>
         {children}
       </StyledLabel>
       <Slider

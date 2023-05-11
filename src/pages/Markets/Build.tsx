@@ -56,7 +56,7 @@ import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
-import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
+import {marketNameFromDescription} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 
 const SelectPositionSideButton = styled(SelectActionButton)`
@@ -109,7 +109,7 @@ export const NumericalInputTitle = styled(TEXT.StandardBody)`
   margin-bottom: 4px !important;
 `
 
-const NumericalInputBottomText = styled(TEXT.Supplemental)`
+export const NumericalInputBottomText = styled(TEXT.Supplemental)`
   margin: 4px 0 24px auto !important;
 `
 
@@ -153,10 +153,10 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const {decimals, description, baseToken, quoteToken, baseTokenAddress, quoteTokenAddress} = useMarketName(market?.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return MARKET_NAME_FROM_DESCRIPTION[description]
+    if (description) return marketNameFromDescription(description, market?.id)
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
-  }, [description, baseToken, quoteToken])
+  }, [description, baseToken, quoteToken, market])
 
   const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
@@ -329,7 +329,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     if (!ovlBalance || !buildFee) return parsedOvlBalance
     buildFeeValueFromMaxInput = Number(ovlBalance && ovlBalance.toFixed(18)) * Number(parsedBuildFee)
     let returnValue = Number(ovlBalance && ovlBalance.toFixed(18)) - buildFeeValueFromMaxInput
-    const decimals = 6;
+    const decimals = 6
     return (Math.trunc(returnValue * Math.pow(10, decimals)) / Math.pow(10, decimals)).toString()
   }, [buildFee, ovlBalance, parsedOvlBalance])
 
