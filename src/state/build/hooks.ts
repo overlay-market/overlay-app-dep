@@ -1,8 +1,7 @@
-import { useCallback, useMemo, useEffect } from "react";
+import { useCallback, useMemo } from "react";
 import { parseUnits } from '@ethersproject/units';
 import { CurrencyAmount, Currency } from "@uniswap/sdk-core";
 import JSBI from 'jsbi';
-import { BigNumberish } from "ethers";
 import { 
   DefaultTxnSettings,
   typeInput, 
@@ -14,7 +13,7 @@ import {
 import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useAccountQuery, usePositionsQuery } from "../data/generated";
+import { useAccountQuery, useAccountV2Query, usePositionsQuery } from "../data/generated";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 
 export function useBuildState(): AppState['build'] {
