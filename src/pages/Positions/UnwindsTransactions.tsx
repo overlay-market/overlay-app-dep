@@ -61,22 +61,17 @@ export const UnwindsTransactions = ({
     leverage,
     createdAtTimestamp,
     isLong,
-    initialCollateral,
     entryPrice,
     priceCurrency,
     decimals,
-    unwinds,
   } = transaction.position
   const {
     id,
-    fraction,
     price,
     timestamp,
-    unwindNumber,
     pnl,
     size,
   } = transaction
-  const BN_ONE = 10 ** 18
 
   const positionSide = useMemo(() => {
     if (isLong === null || isLong === undefined) return null
@@ -96,31 +91,14 @@ export const UnwindsTransactions = ({
     return formatBigNumber(pnl, Number(decimals), Math.abs(+pnl) > 10**(+decimals) ? 4 : 6)
   }, [pnl, decimals])
 
-  const parsedBigStringUsingDecimals = useCallback((bigString: string, toFixed: boolean = false) => {
-    if (!decimals) return '-'
-    return (toFixed 
-    ? formatBigNumber(bigString, Number(decimals))
-    : formatBigNumber(bigString, Number(decimals), Number(decimals)))
-  }, [decimals])
-
   const parsedExitPrice = useMemo(() => {
     if (!price || decimals === undefined) return null
     return formatBigNumber(price, Number(decimals))
   }, [price, decimals])
 
   const unwindSize: string | undefined = useMemo(() => {
-    if (!initialCollateral) return undefined
-    let parsedInitialCollateral = parsedBigStringUsingDecimals(initialCollateral)
-    if (!parsedInitialCollateral) return undefined
-    let positionCost = +parsedInitialCollateral
-    if (!positionCost) return undefined
-    for (let i=0; i < +unwindNumber; i++) {
-      positionCost = +positionCost * (1 - (+unwinds.filter(item => +item.unwindNumber === i)[0].fraction / BN_ONE))
-    }
-    let unwindAmount = +positionCost * +fraction / BN_ONE
-    console.log("unwindAmount", unwindAmount, size)
-    return unwindAmount < 1 ? unwindAmount.toFixed(6) : unwindAmount.toFixed(2)
-  }, [initialCollateral, parsedBigStringUsingDecimals, BN_ONE, unwinds, fraction, unwindNumber, size])
+    return (+size / 10**18) < 1 ? (+size / 10**18).toFixed(6) : (+size / 10**18).toFixed(2)
+  }, [size])
 
   let history = useHistory()
 
