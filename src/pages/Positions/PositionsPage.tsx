@@ -96,7 +96,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
               {positionColumns[positionStatus].map((column: string) => {
                   return (<StyledHeaderCell>
                   <TEXT.SupplementalHeader>
-                    <Trans>{column}</Trans>
+                    <Trans>{`${column}`}</Trans>
                   </TEXT.SupplementalHeader>
                 </StyledHeaderCell>)
                 })
