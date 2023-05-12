@@ -5,7 +5,6 @@ import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../compone
 import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
-import {Trans} from '@lingui/macro'
 import {FlexRow} from '../../components/Container/Container'
 import {useCurrentWalletPositionsV2} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
@@ -96,7 +95,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
               {positionColumns[positionStatus].map((column: string) => {
                   return (<StyledHeaderCell>
                   <TEXT.SupplementalHeader>
-                    <Trans>{`${column}`}</Trans>
+                    {column}
                   </TEXT.SupplementalHeader>
                 </StyledHeaderCell>)
                 })
