@@ -13,6 +13,7 @@ import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
 import { OpenPosition } from './OpenPosition'
 import { UnwindsTransactions } from './UnwindsTransactions'
 import { LiquidatesTransactions } from './LiquidatesTransactions'
+import { Overview } from './Overview'
 
 const Container = styled.div`
   display: flex;
@@ -191,6 +192,11 @@ const Positions = () => {
 
   return (
     <PageContainer>
+      <Overview 
+        marginTop="50px"
+        openPositions={openPositions}
+        unwinds={unwindRows}
+      />
       <PositionsTable 
         title="Open Positions" 
         marginTop="50px" 
