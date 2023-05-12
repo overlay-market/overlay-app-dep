@@ -45,7 +45,7 @@ export const Overview = ({
     if (totalValueLocked && totalCost && totalFees) {
       let _formatValue = formatBigNumber(totalValueLocked.sub(totalCost).sub(totalFees), 18, 2)
       if (_formatValue) {
-        formatValue = +_formatValue > 1 ? +_formatValue : (+(formatBigNumber(totalValueLocked.sub(totalCost).sub(totalFees), 18, 4) ?? 0))
+        formatValue = +_formatValue > 1 ? +_formatValue : (+(formatBigNumber(totalValueLocked.sub(totalCost).sub(totalFees), 18, 6) ?? 0))
       }
     }
     return formatValue
@@ -56,7 +56,7 @@ export const Overview = ({
     if (totalValueLocked) {
       let _formatValue = formatBigNumber(totalValueLocked, 18, 2)
       if (_formatValue) {
-        formatValue = +_formatValue > 1 ? +_formatValue : (+(formatBigNumber(totalValueLocked, 18, 4) ?? 0))
+        formatValue = +_formatValue > 1 ? +_formatValue : (+(formatBigNumber(totalValueLocked, 18, 6) ?? 0))
       }
     }
     return formatValue

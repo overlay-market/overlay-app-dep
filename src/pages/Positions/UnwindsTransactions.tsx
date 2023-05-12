@@ -1,4 +1,4 @@
-import {useMemo, useCallback} from 'react'
+import {useMemo} from 'react'
 import {StyledTableRow, StyledTableCell} from '../../components/Table/Table'
 import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {FlexRow} from '../../components/Container/Container'
