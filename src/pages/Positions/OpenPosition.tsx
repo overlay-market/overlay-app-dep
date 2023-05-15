@@ -116,7 +116,7 @@ export const OpenPosition = ({
       "Current Price": string;
       "Liq. Price": string;
       Created?: string;
-      "Unrealized PnL": JSX.Element;
+      "Unrealized PnL": JSX.Element | string;
     }
 
     const values: Values = {
@@ -130,7 +130,7 @@ export const OpenPosition = ({
       "Current Price": `${priceCurrency ? priceCurrency : ''}${parsedMid ? parsedMid : '-'}`, 
       "Liq. Price": parsedLiquidationPrice ? `${priceCurrency ?? ''} ${parsedLiquidationPrice}` : `-`, 
       "Created": parsedCreatedTimestamp ?? undefined, 
-      "Unrealized PnL": <ProfitLossCell PnL={Number(unrealizedPnL)} />
+      "Unrealized PnL": unrealizedPnL ? <ProfitLossCell PnL={Number(unrealizedPnL)} /> : '-'
     }
     return columns.map((columnName) => {
       return values[columnName]
@@ -156,6 +156,6 @@ export const OpenPosition = ({
 const ProfitLossCell = ({PnL}: {PnL: number}) => {
   return ( 
   <FlexRow justify="left">
-    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}
+    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '0.00'}
   </FlexRow>)
 }

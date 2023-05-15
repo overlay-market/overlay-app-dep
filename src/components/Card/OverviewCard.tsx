@@ -1,4 +1,4 @@
-import { Lock, Unlock, TrendingDown, TrendingUp} from "react-feather"
+import { Lock, Unlock, TrendingDown, TrendingUp, Book} from "react-feather"
 
 interface DataProps {
     title: string,
@@ -47,6 +47,7 @@ const OverviewCard = ( props: DataProps) => {
                 icon === 'lock' ? <Lock color="#D5B4FF"/> :
                 icon === 'up' ? <TrendingUp color="#5FD0AB"/> :
                 icon === 'down' ? <TrendingDown color="#FF648A"/> :
+                icon === 'book' ? <Book color="#71CEFF"/> :
                 null
             }
         </div>

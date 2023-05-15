@@ -125,7 +125,7 @@ export const UnwindsTransactions = ({
       "Exit Price": string;
       "Closed": string;
       Created?: string;
-      "PnL": JSX.Element;
+      "PnL": JSX.Element | string;
     }
 
     const values: Values = {
@@ -139,7 +139,7 @@ export const UnwindsTransactions = ({
       "Exit Price": `${priceCurrency ? priceCurrency : ''}${parsedExitPrice ?? '-'}`, 
       "Closed": parsedClosedTimestamp, 
       "Created": parsedCreatedTimestamp, 
-      "PnL": <ProfitLossCell PnL={Number(parsedPnl)} />
+      "PnL": parsedPnl ? <ProfitLossCell PnL={Number(parsedPnl)} /> : '-'
     }
     return columns.map((columnName) => {
       return values[columnName]
@@ -165,6 +165,6 @@ export const UnwindsTransactions = ({
 const ProfitLossCell = ({PnL}: {PnL: number}) => {
   return ( 
   <FlexRow justify="left">
-    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}
+    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '0.00'}
   </FlexRow>)
 }
