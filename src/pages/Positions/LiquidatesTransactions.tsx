@@ -4,7 +4,6 @@ import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
 import Loader from '../../components/Loaders/Loaders'
-import {useHistory} from 'react-router-dom'
 import {TEXT} from '../../theme/theme'
 import { Build, Liquidate, Unwind } from '../../state/build/hooks'
 
@@ -51,7 +50,6 @@ export const LiquidatesTransactions = ({
   columns,
 }: PositionProps) => {
   const {
-    positionId,
     marketName,
     leverage,
     createdAtTimestamp,
@@ -63,12 +61,10 @@ export const LiquidatesTransactions = ({
     unwinds,
   } = transaction.position
   const {
-    id,
     price,
     timestamp,
   } = transaction
   const BN_ONE = 10 ** 18
-  const isClosed = false;
 
   const positionSide = useMemo(() => {
     if (isLong === null || isLong === undefined) return null
@@ -107,26 +103,6 @@ export const LiquidatesTransactions = ({
     let unwindAmount = +positionCost
     return unwindAmount < 1 ? unwindAmount.toFixed(6) : unwindAmount.toFixed(2)
   }, [initialCollateral, parsedBigStringUsingDecimals, BN_ONE, unwinds])
-
-  let history = useHistory()
-
-  function handleNavigate(location: string | undefined, isClosed: boolean) {
-    if (location) {
-      if (isClosed) {
-        const string = `/closed-positions/${location}`
-        history.push(string)
-      } else {
-        const string = `/positions/${location}`
-        history.push(string)
-      }
-    }
-  }
-
-  const positionUrl = useMemo(() => {
-    if (!positionId && positionId === undefined) return undefined
-    if (!id && id === undefined) return undefined
-    return `${id}/${positionId}`
-  }, [positionId, id])
 
   const sortedValues: any[] = useMemo(() => {
     interface Values {
