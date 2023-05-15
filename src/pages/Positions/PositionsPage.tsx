@@ -5,27 +5,78 @@ import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../compone
 import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
-import {Trans} from '@lingui/macro'
 import {FlexRow} from '../../components/Container/Container'
-import {useCurrentWalletPositions} from '../../state/build/hooks'
+import {useCurrentWalletPositionsV2} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
-import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
-import {useCurrentMarketState, MarketStateResults} from '../../hooks/useCurrentMarketState'
-import {Position} from './Position'
+import {useMarketDetails} from '../../hooks/useMarketDetails'
+import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
+import { OpenPosition } from './OpenPosition'
+import { UnwindsTransactions } from './UnwindsTransactions'
+import { LiquidatesTransactions } from './LiquidatesTransactions'
+import { Overview } from './Overview'
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
 `
+
+const liquidatedColumns = [
+  "Market", 
+  "Size", 
+  "Position", 
+  "Entry Price", 
+  "Exit Price", 
+  "Created", 
+  "Liquidated"
+]
+
+const openPositionsColumns = [
+  "Market", 
+  "Size", 
+  "Position", 
+  "Entry Price", 
+  "Current Price", 
+  "Liq. Price", 
+  "Created", 
+  "Unrealized PnL"
+]
+
+const closedPositionsColumns = [
+  "Market", 
+  "Size", 
+  "Position", 
+  "Entry Price", 
+  "Exit Price", 
+  "Created", 
+  "Closed", 
+  "PnL"
+]
+const positionColumns = {
+  open: openPositionsColumns,
+  closed: closedPositionsColumns,
+  liquidated: liquidatedColumns
+}
+
 interface PositionsTableProps {
   title: string
   children?: React.ReactNode
   marginTop?: string
   isLoading: boolean
   isUninitialized: boolean
-  positionStatus?: string
+  positionStatus: PositionStatus
   initialCollateral?: string
+  // onClickColumn: {
+  //   'Status': () => void
+  // }
 }
+
+type PositionStatus = 'open' | 'closed' | 'liquidated';
+
+export const positionStatuses: PositionStatus[] = [
+  'open',
+  'closed',
+  'liquidated'
+];
 
 const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, positionStatus}: PositionsTableProps) => {
   const {account} = useActiveWeb3React()
@@ -34,58 +85,22 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
     <Container>
       <TableContainer component={Paper}>
         <TEXT.BoldStandardBody mt={marginTop} mb="16px">
-          {title}
+          {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
+          {`${title}`}
         </TEXT.BoldStandardBody>
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Market</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Size</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Created</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Position</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Entry Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Current Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell>
-                <TEXT.Supplemental>
-                  <Trans>Liquidation Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-
-              <StyledHeaderCell align="center">
-                <TEXT.Supplemental>
-                  <Trans>PnL</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
+              {/* <StyledHeaderChevron>
+              </StyledHeaderChevron> */}
+              {positionColumns[positionStatus].map((column: string) => {
+                  return (<StyledHeaderCell>
+                  <TEXT.SupplementalHeader>
+                    {column}
+                  </TEXT.SupplementalHeader>
+                </StyledHeaderCell>)
+                })
+              }
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>{children}</TableBody>
@@ -110,156 +125,125 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
 }
 
 const Positions = () => {
-  const {account, active, chainId} = useActiveWeb3React()
-  const {isLoading: isPositionsLoading, isFetching, isUninitialized, positions} = useCurrentWalletPositions(account)
+  // const [statusFilter, setStatusFilter] = useState<PositionStatus>('all')
+  const {account} = useActiveWeb3React()
+  // const {isLoading: isPositionsLoading, isFetching, isUninitialized, positions} = useCurrentWalletPositions(account)
+  const {isLoading: isPositionsLoading, isUninitialized, positions} = useCurrentWalletPositionsV2(account)
 
-  const {markets, isLoading: isMarketsLoading, refetch} = useTotalMarketsData()
-  const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
-  const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
+  const {markets} = useTotalMarketsData()
+  const marketDetails = useMarketDetails(markets)
+  const {markets: marketsData} = useCurrentMarketState(marketDetails)
 
-  const marketIdMap = useMemo(() => {
-    const result: any = {}
-    if (marketsData.length === 0) return result
-    marketsData.forEach(market => {
-      result[market.marketAddress] = market
-    })
-    return result
-  }, [marketsData])
-
-  const openPositions: any[] | [] = useMemo(() => {
+  const handledPositions = useMemo(() => {
     if (!positions) return []
     return positions
-      .filter(position => !position.isClosed)
       .map(filteredPosition => {
         const marketAddress = filteredPosition.market.id
-        const marketState = marketIdMap[marketAddress]
+        const marketState = marketsData.filter(market => market.marketAddress === marketAddress)[0]
+
+
+        const positionStatus = filteredPosition.isLiquidated ? positionStatuses[2]
+        : filteredPosition.currentOi === '0' ? positionStatuses[1]
+        : +filteredPosition.numberOfUniwnds > 0 ? positionStatuses[0]
+        : positionStatuses[0]
+
         return {
           ...marketState,
           ...filteredPosition,
           id: filteredPosition.id,
+          positionStatus,
         }
       })
-  }, [positions, marketIdMap])
+  }, [positions, marketsData])
 
-  const liquidated: any[] | [] = useMemo(() => {
-    if (!positions) return []
-    return positions
-      .filter(position => position.isLiquidated)
-      .map(filteredPosition => {
-        const marketAddress = filteredPosition.market.id
-        const marketState = marketIdMap[marketAddress]
-        return {
-          ...marketState,
-          ...filteredPosition,
-          id: filteredPosition.id,
+  const openPositions = useMemo(() => {
+    return handledPositions.filter(position => 
+        position.positionStatus === positionStatuses[0]
+      )
+  }, [handledPositions])
+
+  const unwindRows = useMemo(() => {
+    let rows = []
+    for (let position of handledPositions) {
+      for (let unwind of position.unwinds) {
+        let row = {
+          ...unwind,
+          position: position,
         }
-      })
-  }, [positions, marketIdMap])
-
-  const sortedPositions = useMemo(() => {
-    const open: any[] = []
-    const closed: any[] = []
-    if (!openPositions)
-      return {
-        open,
-        closed,
-      }
-
-    for (const position of openPositions) {
-      if (position.hasOwnProperty('currentOi') && position.currentOi !== '0') {
-        open.push(position)
-      } else {
-        closed.push(position)
+        rows.push(row)
       }
     }
+    return rows
+  }, [handledPositions])
 
-    return {open, closed}
-  }, [openPositions])
-
-  const {open, closed} = sortedPositions
+  const liquidatedRows = useMemo(() => {
+    let rows = []
+    for (let position of handledPositions) {
+      for (let liquidated of position.liquidates) {
+        let row = {
+          ...liquidated,
+          position: position,
+        }
+        rows.push(row)
+      }
+    }
+    return rows
+  }, [handledPositions])
 
   return (
     <PageContainer>
+      <Overview 
+        marginTop="50px"
+        openPositions={openPositions}
+        unwinds={unwindRows}
+      />
       <PositionsTable 
         title="Open Positions" 
         marginTop="50px" 
         isLoading={isPositionsLoading} 
         isUninitialized={isUninitialized} 
-        positionStatus='open'
+        positionStatus={'open'}
+        // onClickColumn={{Status: setNextStatusFilter}}
       >
-        {open.length > 0
-          ? open.map(position => (
-              <Position
-                id={position.id}
-                positionId={position.positionId}
-                marketName={position.marketName}
-                marketAddress={position.marketAddress}
-                leverage={position.leverage}
-                createdTimestamp={position.createdAtTimestamp}
-                isLong={position.isLong}
-                entryPrice={position.entryPrice}
-                priceCurrency={position.priceCurrency}
-                currentMidPrice={position.parsedMid}
-                decimals={position.decimals}
-                isClosed={false}
-                isLiquidated={position.isLiquidated}
-                initialCollateral={position.initialCollateral}
+        {(openPositions && openPositions.length > 0)
+          ? openPositions.map(position => (
+              <OpenPosition
+                position={position}
+                columns={positionColumns['open']}
               />
             ))
           : null}
       </PositionsTable>
       <PositionsTable 
-        title="Closed Positions" 
-        marginTop="100px" 
+        title="Unwinds" 
+        marginTop="50px" 
         isLoading={isPositionsLoading} 
         isUninitialized={isUninitialized} 
-        positionStatus='closed'
+        positionStatus={'closed'}
+        // onClickColumn={{Status: setNextStatusFilter}}
       >
-        {closed.length > 0
-          ? closed.map(position => (
-              <Position
-                id={position.id}
-                positionId={position.positionId}
-                marketName={position.marketName}
-                marketAddress={position.marketAddress}
-                leverage={position.leverage}
-                createdTimestamp={position.createdAtTimestamp}
-                isLong={position.isLong}
-                entryPrice={position.entryPrice}
-                priceCurrency={position.priceCurrency}
-                currentMidPrice={position.parsedMid}
-                decimals={position.decimals}
-                isClosed={true}
-                isLiquidated={position.isLiquidated}
-                initialCollateral={position.initialCollateral}
+        {(unwindRows && unwindRows.length > 0)
+          ? unwindRows.map(transaction => (
+              <UnwindsTransactions
+                transaction={transaction}
+                columns={positionColumns['closed']}
               />
             ))
           : null}
       </PositionsTable>
       <PositionsTable 
-        title="Liquidated Positions" 
-        marginTop="100px" 
+        title="Liquidates" 
+        marginTop="50px" 
         isLoading={isPositionsLoading} 
         isUninitialized={isUninitialized} 
-        positionStatus='liquidated'
+        positionStatus={'liquidated'}
+        // onClickColumn={{Status: setNextStatusFilter}}
       >
-        {liquidated.length > 0
-          ? liquidated.map(position => (
-              <Position
-                id={position.id}
-                positionId={position.positionId}
-                marketName={position.marketName}
-                marketAddress={position.marketAddress}
-                leverage={position.leverage}
-                createdTimestamp={position.createdAtTimestamp}
-                isLong={position.isLong}
-                entryPrice={position.entryPrice}
-                priceCurrency={position.priceCurrency}
-                currentMidPrice={position.parsedMid}
-                decimals={position.decimals}
-                isClosed={false}
-                isLiquidated={position.isLiquidated}
-                initialCollateral={position.initialCollateral}
+        {(liquidatedRows && liquidatedRows.length > 0)
+          ? liquidatedRows.map(transaction => (
+              <LiquidatesTransactions
+                transaction={transaction}
+                columns={positionColumns['liquidated']}
               />
             ))
           : null}

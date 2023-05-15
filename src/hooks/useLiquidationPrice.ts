@@ -1,10 +1,8 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 import {BigNumber} from 'ethers'
-import {formatWeiToParsedNumber} from '../utils/formatWei'
 
 // for longs:
 // liq_price = (entryPrice / OI) * (MM * OI(0) + D)
@@ -29,7 +27,6 @@ export function useLiquidationPrice(marketAddress?: string, positionId?: string 
       try {
         setLiquidationPrice(await peripheryContract.liquidationPrice(marketAddress, account, positionId))
       } catch (error) {
-        console.log('error from useLiquidationPrice: ', error)
       }
     })()
   }, [peripheryContract, marketAddress, positionId, blockNumber, account])
