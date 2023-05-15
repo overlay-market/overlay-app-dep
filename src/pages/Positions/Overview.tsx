@@ -80,7 +80,7 @@ export const Overview = ({
     {
       title: 'Open Positions',
       value: openPositions?.length.toString() ?? '0',
-      icon: 'unlock',
+      icon: 'book',
     },
     {
       title: 'Total Locked',
