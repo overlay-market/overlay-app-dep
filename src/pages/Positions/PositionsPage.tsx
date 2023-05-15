@@ -53,8 +53,8 @@ export const TriangleButton = styled(Button)`
   padding: 0 !important;
   padding-bottom: 2px !important;
   width: auto;
-  min-width: 0 !important;
-  margin-left: 8px !important;
+  min-width: 20px !important;
+  margin-left: 4px !important;
 `
 
 interface RotatingTriangleProps {
