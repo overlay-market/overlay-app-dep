@@ -84,24 +84,25 @@ export const Overview = ({
     },
     {
       title: 'Total Locked',
-      value: `${tvl ? tvl + ' OVL' : 'loading'}`,
+      value: `${tvlArray.length > 0 ? tvl ? tvl + ' OVL' : 'loading' : 'No open positions'}`,
       icon: 'lock',
     },
     {
       title: 'Total Realized PnL',
-      value: `${pnl ? pnl + ' OVL' : 'loading'}`,
+      value: `${unwinds ? pnl ? pnl + ' OVL' : 'loading' : 'No unwinds yet'}`,
       icon: +pnl < 0 ? 'down' : 'up',
       valueColor: +pnl < 0 ? '#FF648A' : '#5FD0AB'
     },
     {
       title: 'Unrealized PnL',
-      value: `${upnl ? upnl + ' OVL' : 'loading'}`,
+      value: `${tvlArray.length > 0 ? upnl ? upnl + ' OVL' : 'loading' : 'No open positions'}`,
       icon: +upnl < 0 ? 'down' : 'up',
       valueColor: +upnl < 0 ? '#FF648A' : '#5FD0AB'
     },
   ]
 
-  return (
+  return tvlArray.length > 0 && unwinds
+  ? (
     <Container>
       <TEXT.BoldStandardBody mt={marginTop} mb="16px">
         {`${title}`}
@@ -124,6 +125,18 @@ export const Overview = ({
             })
           }
         </Grid>
+      </Box>
+    </Container>
+  )
+  : (
+    <Container>
+      <TEXT.BoldStandardBody mt={marginTop} mb="16px">
+        {`${title}`}
+      </TEXT.BoldStandardBody>
+      <Box>
+      <TEXT.SupplementalHeader fontSize={14}>
+      Nothing here yet. Open a position on the <a href="/">Markets</a> page to begin.
+      </TEXT.SupplementalHeader>
       </Box>
     </Container>
   )
