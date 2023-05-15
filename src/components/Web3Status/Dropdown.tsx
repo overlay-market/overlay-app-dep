@@ -12,6 +12,7 @@ import {FlexRow} from '../Container/Container'
 import {ApplicationModal} from '../../state/application/actions'
 import {useWalletModalToggle, useModalOpen} from '../../state/application/hooks'
 import {StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper} from '../More/More'
+import { injected } from '../../connectors/connectors'
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
@@ -77,6 +78,8 @@ export default function Dropdown({connectedNetwork, colorStatus}: DropdownProps)
 
   const disconnectWallet = () => {
     deactivate()
+    localStorage.setItem('disconnected', "true");
+    window.location.reload()
   }
 
   const classes = useStyles()
