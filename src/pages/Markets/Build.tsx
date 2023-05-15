@@ -1,22 +1,19 @@
 import {useState, useCallback, useMemo, useEffect} from 'react'
 import styled from 'styled-components'
 import {utils, BigNumberish, ethers} from 'ethers'
-import {Label, Input} from '@rebass/forms'
+import {Label} from '@rebass/forms'
 import {Sliders, X} from 'react-feather'
 import {MarketCard} from '../../components/Card/MarketCard'
 import {
   SelectActionButton,
   TriggerActionButton,
   TransparentUnderlineButton,
-  TransactionSettingsButton,
   ApproveTransactionButton,
 } from '../../components/Button/Button'
 import {TEXT} from '../../theme/theme'
 import {OVL} from '../../constants/tokens'
 import {Icon} from '../../components/Icon/Icon'
 import {useActiveWeb3React} from '../../hooks/web3'
-import {InfoTip} from '../../components/InfoTip/InfoTip'
-import {useAddPopup} from '../../state/application/hooks'
 import {useBuildState} from '../../state/build/hooks'
 import {useDerivedBuildInfo} from '../../state/build/hooks'
 import {DefaultTxnSettings} from '../../state/build/actions'
@@ -24,7 +21,6 @@ import {useBuildActionHandlers} from '../../state/build/hooks'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {
-  formatWeiToParsedString,
   formatWeiToParsedNumber,
   formatFundingRateToDaily,
   formatBigNumberUsingDecimalsToString,
@@ -32,15 +28,12 @@ import {
 } from '../../utils/formatWei'
 import {ApprovalState, useApproveCallback} from '../../hooks/useApproveCallback'
 import {LeverageSlider} from '../../components/LeverageSlider/LeverageSlider'
-import {PopupType} from '../../components/SnackbarAlert/SnackbarAlert'
 import {TransactionSettingsModal} from './TransactionSettingsModal'
 import {formatDecimalToPercentage} from '../../utils/formatDecimal'
 import {useIsTxnSettingsAuto} from '../../state/build/hooks'
 import {useEstimatedBuild} from '../../hooks/useEstimatedBuild'
 import {useBuildCallback} from '../../hooks/useBuildCallback'
-import {shortenAddress} from '../../utils/web3'
 import {AdditionalDetails} from './AdditionalBuildDetails'
-import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import ConfirmTxnModal from '../../components/ConfirmTxnModal/ConfirmTxnModal'
 import {useMarketData} from '../../state/markets/hooks'
 import {useSingleCallResult} from '../../state/multicall/hooks'
@@ -343,7 +336,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [maxInputIncludingFees, minCollateral])
 
   const handleQuickInput = (percentage: number, totalSupply: string | null) => {
-    if (totalSupply == '0' || totalSupply === null) return
+    if (totalSupply === '0' || totalSupply === null) return
 
     let calculatedAmountByPercentage
     if (percentage < 100) {

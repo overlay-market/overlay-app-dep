@@ -10,8 +10,6 @@ import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../compone
 import Loader from '../../components/Loaders/Loaders'
 import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState, MarketStateResults, ParsedMarketStateDetails} from '../../hooks/useCurrentMarketState'
-import {InfoTip} from '../../components/InfoTip/InfoTip'
-import {getCharactersBeforeSlash} from '../../utils/getCharactersBeforeSlash'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 

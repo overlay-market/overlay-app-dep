@@ -9,8 +9,7 @@ import {TEXT} from '../../theme/theme'
 import {MenuButton} from '../Button/Button'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {FlexRow} from '../Container/Container'
-import {ApplicationModal} from '../../state/application/actions'
-import {useWalletModalToggle, useModalOpen} from '../../state/application/hooks'
+import {useWalletModalToggle} from '../../state/application/hooks'
 import {StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper} from '../More/More'
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
@@ -72,8 +71,6 @@ export default function Dropdown({connectedNetwork, colorStatus}: DropdownProps)
   const {deactivate, account} = useActiveWeb3React()
 
   const toggleWalletModal = useWalletModalToggle()
-
-  const walletModalOpen = useModalOpen(ApplicationModal.WALLET)
 
   const disconnectWallet = () => {
     deactivate()

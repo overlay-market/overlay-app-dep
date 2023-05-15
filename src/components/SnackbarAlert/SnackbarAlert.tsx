@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React from 'react'
 import styled from 'styled-components/macro'
 import CloseIcon from '@material-ui/icons/Close'
 import {Alert, AlertTitle} from '@material-ui/lab'
@@ -40,7 +40,7 @@ interface SnackbarAlertProps {
 }
 
 export const SnackbarAlert: React.FC<SnackbarAlertProps> = ({message, severity, title, children, onClick, autoHideDuration}) => {
-  const [open, setOpen] = useState(true)
+  const open = true;
 
   return (
     <StyledSnackbar

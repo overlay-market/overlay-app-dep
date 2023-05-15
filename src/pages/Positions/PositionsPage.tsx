@@ -94,7 +94,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
               {/* <StyledHeaderChevron>
               </StyledHeaderChevron> */}
               {positionColumns[positionStatus].map((column: string) => {
-                  return (<StyledHeaderCell>
+                  return (<StyledHeaderCell key={column}>
                   <TEXT.SupplementalHeader>
                     {column}
                   </TEXT.SupplementalHeader>
@@ -208,6 +208,7 @@ const Positions = () => {
         {(openPositions && openPositions.length > 0)
           ? openPositions.map(position => (
               <OpenPosition
+                key={position.id}
                 position={position}
                 columns={positionColumns['open']}
               />
@@ -225,6 +226,7 @@ const Positions = () => {
         {(unwindRows && unwindRows.length > 0)
           ? unwindRows.map(transaction => (
               <UnwindsTransactions
+                key={transaction.id}
                 transaction={transaction}
                 columns={positionColumns['closed']}
               />
@@ -242,6 +244,7 @@ const Positions = () => {
         {(liquidatedRows && liquidatedRows.length > 0)
           ? liquidatedRows.map(transaction => (
               <LiquidatesTransactions
+                key={transaction.id}
                 transaction={transaction}
                 columns={positionColumns['liquidated']}
               />

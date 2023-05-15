@@ -1,10 +1,8 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {BigNumber} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
-import {formatWeiToParsedNumber} from '../utils/formatWei'
 
 export function usePositionCost(marketAddress?: string, positionId?: string | number): BigNumber | undefined {
   const peripheryContract = useV1PeripheryContract()

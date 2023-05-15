@@ -1,4 +1,4 @@
-import {useEffect, useState, useCallback} from 'react'
+import {useEffect, useCallback} from 'react'
 import {useCookies} from 'react-cookie'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {ClientCookies} from '../TermsOfServiceModal/TermsOfServiceModal'

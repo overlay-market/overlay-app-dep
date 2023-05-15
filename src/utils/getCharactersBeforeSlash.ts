@@ -1,6 +1,6 @@
 export function getCharactersBeforeSlash(inputString: string) {
   // Use a regular expression to match any non-space characters before a slash
-  const regex = /^\s*([^\/\s]+)/
+  const regex = /^\s*([^\s]+)/
   const match = inputString.match(regex)
 
   // If there is a match, return the characters before the slash
@@ -14,7 +14,7 @@ export function getCharactersBeforeSlash(inputString: string) {
 
 export function getCharactersAfterSlash(inputString: string) {
   // Use a regular expression to match any non-space characters after a slash
-  const regex = /\/\s*([^\/\s]+)/
+  const regex = /\/\s*([^\s]+)/
   const match = inputString.match(regex)
 
   // If there is a match, return the characters after the slash

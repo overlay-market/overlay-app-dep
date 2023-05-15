@@ -172,40 +172,38 @@ export default function More() {
               <StyledPaper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <StyledMenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
-                    {showLanguage ? (
-                      <>
-                        <StyledMenuHeaderItem disableRipple onClick={handleLanguageClose}>
-                          <IconContainer>
-                            <ChevronLeft size={14} />
-                          </IconContainer>
-                          Menu
-                        </StyledMenuHeaderItem>
-                        {SUPPORTED_LOCALES.map((locale, key) => (
-                          <StyledMenuItem disableRipple>
-                            <LanguageMenuItem locale={locale} active={activeLocale === locale} componentKey={key.toString()} />
-                          </StyledMenuItem>
-                        ))}
-                      </>
-                    ) : (
-                      <>
-                        <StyledMenuItem disableRipple onClick={handleClose}>
-                          <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="https://overlay.market">
-                            <IconContainer mr={'3px'}>
-                              <AlertCircle size={14} />
+                    {showLanguage
+                      ? [
+                          <StyledMenuHeaderItem key="menu-header" disableRipple onClick={handleLanguageClose}>
+                            <IconContainer>
+                              <ChevronLeft size={14} />
                             </IconContainer>
-                            Risks
-                          </MenuLink>
-                        </StyledMenuItem>
-                        <StyledMenuItem disableRipple onClick={handleLanguageToggle}>
-                          <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="">
-                            <IconContainer mr={'3px'}>
-                              <Globe size={14} />
-                            </IconContainer>
-                            Language
-                          </MenuLink>
-                        </StyledMenuItem>
-                      </>
-                    )}
+                            Menu
+                          </StyledMenuHeaderItem>,
+                          ...SUPPORTED_LOCALES.map((locale, key) => (
+                            <StyledMenuItem key={locale} disableRipple>
+                              <LanguageMenuItem locale={locale} active={activeLocale === locale} componentKey={key.toString()} />
+                            </StyledMenuItem>
+                          )),
+                        ]
+                      : [
+                          <StyledMenuItem key="risks" disableRipple onClick={handleClose}>
+                            <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="https://overlay.market">
+                              <IconContainer mr={'3px'}>
+                                <AlertCircle size={14} />
+                              </IconContainer>
+                              Risks
+                            </MenuLink>
+                          </StyledMenuItem>,
+                          <StyledMenuItem key="language" disableRipple onClick={handleLanguageToggle}>
+                            <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="">
+                              <IconContainer mr={'3px'}>
+                                <Globe size={14} />
+                              </IconContainer>
+                              Language
+                            </MenuLink>
+                          </StyledMenuItem>,
+                        ]}
                   </StyledMenuList>
                 </ClickAwayListener>
               </StyledPaper>

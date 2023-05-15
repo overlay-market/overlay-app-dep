@@ -101,9 +101,10 @@ export function Unwind({
   const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} = useMarketName(position?.market.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return marketNameFromDescription(description, marketPositionId.substring(0,42))
+    if (description) return marketNameFromDescription(description, marketPositionId.substring(0, 42))
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
+    // eslint-disable-next-line
   }, [description, baseToken, quoteToken])
 
   const baseTokenInfo = useToken(baseTokenAddress)
@@ -260,6 +261,7 @@ export function Unwind({
         if (!isNaN(Number(input))) onAmountInput('100')
       }
     },
+    // eslint-disable-next-line
     [setCustomInput],
   )
 

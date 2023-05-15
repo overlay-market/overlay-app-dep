@@ -11,10 +11,6 @@ import More from '../More/More'
 import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
 import Web3Status from '../Web3Status/Web3Status'
-import OverlayLogo from '../../assets/images/overlay-logo.png'
-import LightOverlayLogo from '../../assets/images/overlay-logo-light.png'
-import UpdatedOverlayLogo from '../../assets/images/updated-overlay-icon.png'
-import OverlayLogoDark from '../../assets/images/overlay-logo-dark.png'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
 
 export const HeaderContainer = styled.div`
@@ -80,6 +76,8 @@ export default function Header() {
     if (open) {
       setOpen(open => false)
     }
+
+    // eslint-disable-next-line
   }, [location])
 
   // disable scroll when mobile menu open

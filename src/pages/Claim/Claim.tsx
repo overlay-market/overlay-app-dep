@@ -10,9 +10,8 @@ import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
 import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
-import {RouteComponentProps, Link, useHistory, useLocation} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import {SupportedChainId} from '../../constants/chains'
-import {isAddress} from '../../utils/web3'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -209,6 +208,7 @@ const Claim = ({
         )}
       </BridgeContainer>
     )
+    // eslint-disable-next-line
   }, [
     account,
     claimId,

@@ -1,7 +1,6 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import {useSingleContractMultipleData} from '../state/multicall/hooks'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber, formatBigNumberUsingDecimalsToString} from '../utils/formatWei'
+import {formatBigNumberUsingDecimalsToNumber} from '../utils/formatWei'
 import {BigNumber, ethers} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
@@ -75,5 +74,7 @@ export function usePositionOi(
       formattedOi: formatBigNumberUsingDecimalsToNumber(parsedOi, marketTokensDecimalsDifference, 4),
       rawOi: oi,
     }
+
+    // eslint-disable-next-line
   }, [parsedOi, marketTokensDecimalsDifference, oi, baseTokenDecimals])
 }
