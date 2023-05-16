@@ -2,7 +2,7 @@ import {useMemo, useState, useEffect} from 'react'
 import {StyledTableCellThin, StyledTableRow} from '../../components/Table/Table'
 import {FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
-import {DoubleProgressBar} from '../../components/ProgressBar/ProgressBar'
+import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {useHistory} from 'react-router-dom'
 import {Icon} from '../../components/Icon/Icon'
 import {AlertCircle} from 'react-feather'
@@ -98,7 +98,15 @@ const MarketsRow = ({
           </TEXT.BoldNumber>
           <TEXT.BoldNumber color="#5FD0AB">{longPercentageOfTotalOi}%</TEXT.BoldNumber>
         </FlexRow>
-        <DoubleProgressBar leftBarValue={short} rightBarValue={long} maxValue={total} />
+        <ProgressBar
+          reverse={false}
+          split={false}
+          max={total}
+          value={short}
+          width={'100%'}
+          margin={'0'}
+          color={'#FF648A'}
+        />
       </StyledTableCellThin>
 
       <StyledTableCellThin id="marketFeedLogo">

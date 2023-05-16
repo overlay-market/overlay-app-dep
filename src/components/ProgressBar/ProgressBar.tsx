@@ -11,15 +11,15 @@ const Container = styled.div<{width: string; margin?: string}>`
 const ProgressBackground = styled.div<{reverse: boolean; split: boolean}>`
   border-radius: ${({split}) => (split ? '0 30px 30px 0' : '30px')};
   border-left: ${({split}) => (split ? '0px' : 'auto')};
-  overflow: hidden;
-  background: #bbbbbb;
+  background: #5FD0AB;
   transform: ${({reverse}) => (reverse ? 'rotate(-180deg)' : '')};
 `
 // box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25), 0 1px rgba(255, 255, 255, 0.08);
 
 const Bar = styled.div<{width?: number; color: string; split: boolean}>`
+  position: relative;
   height: 6px;
-  border-radius: 0px;
+  border-radius: 30px 0px 0px 30px;
   background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
   transition: 1s ease-out;
   transition-property: width, background-color;
@@ -27,6 +27,17 @@ const Bar = styled.div<{width?: number; color: string; split: boolean}>`
   background-color: ${({color}) => color};
   animation: progressAnimation 1s;
 `
+
+const Triangle = styled.div`
+  position: absolute;
+  top: 6px;
+  right: -6px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-bottom: 6px solid white;
+`;
 // border-left: ${({split}) => (split ? '0.5px solid #6D6D6D' : 'auto')};
 
 type ProgressBarProps = {
@@ -52,7 +63,10 @@ export const ProgressBar = ({value, max, color, margin, width = 'auto', reverse 
   return (
     <Container width={width} margin={margin}>
       <ProgressBackground reverse={reverse} split={split}>
-        <Bar width={progressValue} color={color} split={split} />
+        <Bar width={progressValue} color={color} split={split}>
+          <Triangle />
+        </Bar>
+
       </ProgressBackground>
     </Container>
   )
