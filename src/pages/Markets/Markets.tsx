@@ -70,6 +70,23 @@ const Markets = () => {
     '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
   ]
 
+  const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
+    const order = [
+      'MILADY / WETH',
+      'PUDGIES / WETH',
+      'PUNKS / WETH',
+      'BAYC / WETH',
+      'MAYC / WETH',
+      'AZUKI / WETH',
+      'WBTC / USD',
+    ]
+    for (let marketOrdered of order) {
+      if (a.marketName === marketOrdered) return -1
+      if (b.marketName === marketOrdered) return 1;
+    }
+    return 0;
+  };
+
   return (
     <PageContainer>
       <TableContainer component={Paper}>
@@ -119,6 +136,7 @@ const Markets = () => {
             {marketsData.length > 0 &&
               marketsData
                 ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
+                .sort(customSort)
                 .map((market: ParsedMarketStateDetails, index: number) => (
                   <MarketsRow
                     key={market.marketAddress}
