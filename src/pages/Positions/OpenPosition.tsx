@@ -93,31 +93,29 @@ export const OpenPosition = ({position, columns}: PositionProps) => {
 
   const sortedValues: any[] = useMemo(() => {
     interface Values {
-      [key: string]: string | JSX.Element | null | undefined
-      Market?: string
-      Size: string | JSX.Element
-      Position: JSX.Element
-      'Entry Price': string
-      'Current Price': string
-      'Liq. Price': string
-      Created?: string
-      'Unrealized PnL': JSX.Element
+      [key: string]: string | JSX.Element | null | undefined;
+      Market?: string;
+      Size: string | JSX.Element;
+      Position: JSX.Element;
+      "Entry Price": string;
+      "Current Price": string;
+      "Liq. Price": string;
+      Created?: string;
+      "Unrealized PnL": JSX.Element | string;
     }
 
     const values: Values = {
-      Market: marketName,
-      Size: parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />,
-      Position: (
-        <FlexRow>
-          <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
-          <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
-        </FlexRow>
-      ),
-      'Entry Price': `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`,
-      'Current Price': `${priceCurrency ? priceCurrency : ''}${parsedMid ? parsedMid : '-'}`,
-      'Liq. Price': parsedLiquidationPrice ? `${priceCurrency ?? ''} ${parsedLiquidationPrice}` : `-`,
-      Created: parsedCreatedTimestamp ?? undefined,
-      'Unrealized PnL': <ProfitLossCell PnL={Number(unrealizedPnL)} />,
+      "Market": marketName, 
+      "Size": parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />, 
+      "Position": <FlexRow>
+                    <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
+                    <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
+                  </FlexRow>, 
+      "Entry Price": `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`, 
+      "Current Price": `${priceCurrency ? priceCurrency : ''}${parsedMid ? parsedMid : '-'}`, 
+      "Liq. Price": parsedLiquidationPrice ? `${priceCurrency ?? ''} ${parsedLiquidationPrice}` : `-`, 
+      "Created": parsedCreatedTimestamp ?? undefined, 
+      "Unrealized PnL": unrealizedPnL ? <ProfitLossCell PnL={Number(unrealizedPnL)} /> : '-'
     }
     return columns.map(columnName => {
       return values[columnName]
@@ -153,9 +151,8 @@ export const OpenPosition = ({position, columns}: PositionProps) => {
 }
 
 const ProfitLossCell = ({PnL}: {PnL: number}) => {
-  return (
-    <FlexRow justify="left">
-      {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}
-    </FlexRow>
-  )
+  return ( 
+  <FlexRow justify="left">
+    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '0.00'}
+  </FlexRow>)
 }

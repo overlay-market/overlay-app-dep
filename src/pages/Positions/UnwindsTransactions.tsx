@@ -99,31 +99,29 @@ export const UnwindsTransactions = ({transaction, columns}: PositionProps) => {
 
   const sortedValues: any[] = useMemo(() => {
     interface Values {
-      [key: string]: string | JSX.Element | null | undefined
-      Market?: string
-      Size: string | JSX.Element
-      Position: JSX.Element
-      'Entry Price': string
-      'Exit Price': string
-      Closed: string
-      Created?: string
-      PnL: JSX.Element
+      [key: string]: string | JSX.Element | null | undefined;
+      Market?: string;
+      Size: string | JSX.Element;
+      Position: JSX.Element;
+      "Entry Price": string;
+      "Exit Price": string;
+      "Closed": string;
+      Created?: string;
+      "PnL": JSX.Element | string;
     }
 
     const values: Values = {
-      Market: marketName,
-      Size: unwindSize ? `${unwindSize} OVL` : <Loader size="12px" />,
-      Position: (
-        <FlexRow>
-          <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
-          <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
-        </FlexRow>
-      ),
-      'Entry Price': `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`,
-      'Exit Price': `${priceCurrency ? priceCurrency : ''}${parsedExitPrice ?? '-'}`,
-      Closed: parsedClosedTimestamp,
-      Created: parsedCreatedTimestamp,
-      PnL: <ProfitLossCell PnL={Number(parsedPnl)} />,
+      "Market": marketName, 
+      "Size": unwindSize ? `${unwindSize} OVL` : <Loader size="12px" />, 
+      "Position": <FlexRow>
+                    <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
+                    <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
+                  </FlexRow>, 
+      "Entry Price": `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`, 
+      "Exit Price": `${priceCurrency ? priceCurrency : ''}${parsedExitPrice ?? '-'}`, 
+      "Closed": parsedClosedTimestamp, 
+      "Created": parsedCreatedTimestamp, 
+      "PnL": parsedPnl ? <ProfitLossCell PnL={Number(parsedPnl)} /> : '-'
     }
     return columns.map(columnName => {
       return values[columnName]
@@ -159,9 +157,8 @@ export const UnwindsTransactions = ({transaction, columns}: PositionProps) => {
 }
 
 const ProfitLossCell = ({PnL}: {PnL: number}) => {
-  return (
-    <FlexRow justify="left">
-      {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '-'}
-    </FlexRow>
-  )
+  return ( 
+  <FlexRow justify="left">
+    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '0.00'}
+  </FlexRow>)
 }
