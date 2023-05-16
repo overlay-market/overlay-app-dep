@@ -26,7 +26,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
   const [cookies, setCookie] = useCookies([ClientCookies.userRiskLevel])
   const {userRiskLevel} = cookies
 
-  const [{data: getRegisterData, loading: getRegisterLoading, error: getRegisterError}, executeRegisterAddress] = useAxios(
+  const [, executeRegisterAddress] = useAxios(
     {
       url: LambdaEndpoint.REGISTER_ADDRESS + connectedAccount,
       method: 'POST',
@@ -34,7 +34,7 @@ export default function ChainalysisManager({children}: {children: JSX.Element | 
     {manual: true},
   )
 
-  const [{data: getAddressData, loading: getAddressLoading, error: getAddressError}, executeGetAddress] = useAxios(
+  const [, executeGetAddress] = useAxios(
     {
       url: LambdaEndpoint.SCREEN_ADDRESS + connectedAccount,
       method: 'GET',

@@ -28,39 +28,39 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
-const infoTipDescriptions = {
-  openInterest: (
-    <React.Fragment>
-      <div>Open Interest (OI) refers to </div>
-      <div>the total available outstanding</div>
-      <div>positions that have not been settled,</div>
-      <div>per market, denoted in OVL.</div>
-      <br />
-      <div>Shows the current percent (%)</div>
-      <div>balance between shorts (red)</div>
-      <div>and longs (green).</div>
-    </React.Fragment>
-  ),
-  fundingRate: (
-    <React.Fragment>
-      <div>Funding Rate per Market</div>
-      <br />
-      <div>24 hour funding rate.</div>
-      <div>Positive funding rates suggests</div>
-      <div>users are bullish and long positions</div>
-      <div>pay funding to short positions. </div>
-      <br />
-      <div>Negative funding rates suggest</div>
-      <div>users are bearish and short positions</div>
-      <div>pay funding to long positions.</div>
-    </React.Fragment>
-  ),
-}
+// const infoTipDescriptions = {
+//   openInterest: (
+//     <React.Fragment>
+//       <div>Open Interest (OI) refers to </div>
+//       <div>the total available outstanding</div>
+//       <div>positions that have not been settled,</div>
+//       <div>per market, denoted in OVL.</div>
+//       <br />
+//       <div>Shows the current percent (%)</div>
+//       <div>balance between shorts (red)</div>
+//       <div>and longs (green).</div>
+//     </React.Fragment>
+//   ),
+//   fundingRate: (
+//     <React.Fragment>
+//       <div>Funding Rate per Market</div>
+//       <br />
+//       <div>24 hour funding rate.</div>
+//       <div>Positive funding rates suggests</div>
+//       <div>users are bullish and long positions</div>
+//       <div>pay funding to short positions. </div>
+//       <br />
+//       <div>Negative funding rates suggest</div>
+//       <div>users are bearish and short positions</div>
+//       <div>pay funding to long positions.</div>
+//     </React.Fragment>
+//   ),
+// }
 
 const Markets = () => {
-  const {markets, isLoading, refetch} = useTotalMarketsData()
+  const {markets} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
-  const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
+  const {markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
   console.log(marketsData)
 
   // list of hidden markets from Markets page

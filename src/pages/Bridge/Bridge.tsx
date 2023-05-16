@@ -182,7 +182,7 @@ const Bridge = () => {
   const userOvlBalance = useChainOvlBalance(chainId)
   const parsedOvlBalance = userOvlBalance && userOvlBalance.toFixed(4)
 
-  const [{showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash}, setBridgeState] = useState<{
+  const [, setBridgeState] = useState<{
     showConfirm: boolean
     attemptingTransaction: boolean
     transactionErrorMessage: string | undefined

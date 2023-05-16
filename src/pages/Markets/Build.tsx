@@ -135,7 +135,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   }, [marketId, isLoading, refetch])
 
   // const market = marketData?.market
-  const {account, chainId} = useActiveWeb3React()
+  const {chainId} = useActiveWeb3React()
   const ovlBalance = useOvlBalance()
   const parsedOvlBalance = ovlBalance && ovlBalance.toFixed(8)
 
@@ -280,7 +280,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     return formatFundingRateToDaily(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate])
 
-  const {buildData, parsedAmount, inputError} = useDerivedBuildInfo()
+  const {buildData, inputError} = useDerivedBuildInfo()
   const {callback: buildCallback} = useBuildCallback(buildData, market?.id, prices._mid, minCollateral, inputError)
 
   const {selectedLeverage, isLong, typedValue, setSlippageValue, txnDeadline} = useBuildState()
@@ -502,7 +502,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     return isLong ? rawExpectedOi.add(rawOiLong).gt(rawCapOi) : rawExpectedOi.add(rawOiShort).gt(rawCapOi)
   }, [isLong, rawOiLong, rawOiShort, rawCapOi, rawExpectedOi])
 
-  const {preAdjustedOi, calculatedBuildFee, adjustedCollateral, adjustedOi, adjustedDebt} = useEstimatedBuild(
+  const {adjustedCollateral} = useEstimatedBuild(
     selectedLeverage,
     Number(typedValue),
     buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,

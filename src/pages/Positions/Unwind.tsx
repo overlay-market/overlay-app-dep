@@ -84,13 +84,13 @@ export function Unwind({
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
-  const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
+  const {isLoading, positions, refetch} = useCurrentWalletPositions(account)
 
   useEffect(() => {
     refetch()
   }, [account, refetch, isLoading])
 
-  const {typedValue, selectedPositionId, setSlippageValue, txnDeadline} = useUnwindState()
+  const {typedValue, setSlippageValue, txnDeadline} = useUnwindState()
   const {onAmountInput, onSelectPositionId, onSetSlippage, onSetTxnDeadline, onResetUnwindState} = useUnwindActionHandlers()
   const isTxnSettingsAuto = useIsTxnSettingsAuto()
 
@@ -202,8 +202,8 @@ export function Unwind({
   const showUnderwaterFlow =
     liquidationPriceResult && prices._mid ? (isLong ? liquidationPriceResult.gt(prices._mid) : liquidationPriceResult.lt(prices._mid)) : false
 
-  const {unwindData, parsedAmount, inputError} = useDerivedUnwindInfo()
-  const {callback: unwindCallback, error: unwindCallbackError} = useUnwindCallback(
+  const {unwindData} = useDerivedUnwindInfo()
+  const {callback: unwindCallback} = useUnwindCallback(
     unwindData,
     position?.market.id,
     typedValue,
@@ -281,9 +281,9 @@ export function Unwind({
     [onSelectPositionId],
   )
 
-  const handleClearInput = useCallback(() => {
-    onAmountInput('')
-  }, [onAmountInput])
+  // const handleClearInput = useCallback(() => {
+  //   onAmountInput('')
+  // }, [onAmountInput])
 
   const disableUnwindButton: boolean = useMemo(() => {
     return !unwindCallback || parseFloat(typedValue) === 0 ? true : false

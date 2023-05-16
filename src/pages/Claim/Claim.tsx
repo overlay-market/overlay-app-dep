@@ -8,7 +8,6 @@ import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
-import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {RouteComponentProps} from 'react-router-dom'
 import {SupportedChainId} from '../../constants/chains'
@@ -36,7 +35,7 @@ const Claim = ({
     params: {claimId},
   },
 }: RouteComponentProps<{claimId: string}>) => {
-  const {account, chainId, error} = useActiveWeb3React()
+  const {account, chainId} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
@@ -54,10 +53,7 @@ const Claim = ({
   const {claimCallback} = useClaimCallback(account, claimId)
 
   // used for UI loading states
-  const [attempting, setAttempting] = useState<boolean>(false)
-
-  const {claimSubmitted, claimTxn} = useUserHasSubmittedClaim(account ?? undefined)
-  const claimConfirmed = Boolean(claimTxn?.receipt)
+  const [, setAttempting] = useState<boolean>(false)
 
   // wrap in useMemo hook to account for changes in claimId
   const handleClaim = useCallback(() => {

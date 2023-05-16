@@ -32,8 +32,7 @@ export function useMarketPrice(marketAddress?: string): any | undefined {
  */
 export function useMarketMidPrices(marketAddresses?: string[][], blockNumber?: number | undefined) {
   const peripheryContract = useV1PeripheryContract()
-  const {chainId} = useActiveWeb3React()
-  const [midPrices, setMidPrices] = useState([])
+  const [midPrices] = useState([])
 
   useEffect(() => {
     if (!peripheryContract || !marketAddresses || !blockNumber) return
