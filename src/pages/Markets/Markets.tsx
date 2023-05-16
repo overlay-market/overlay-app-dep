@@ -14,6 +14,7 @@ import {InfoTip} from '../../components/InfoTip/InfoTip'
 import {getCharactersBeforeSlash} from '../../utils/getCharactersBeforeSlash'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
+import ReactTooltip from 'react-tooltip'
 
 const activeClassName = 'INACTIVE'
 
@@ -100,16 +101,34 @@ const Markets = () => {
                 </Trans>
               </StyledHeaderCell> */}
               <StyledHeaderCell>
-                <TEXT.Supplemental>
+                <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
                   <Trans>Funding</Trans>
-                  <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" />
-                </TEXT.Supplemental>
+                </TEXT.SupplementalUnderlinedDashes>
+                <ReactTooltip
+                  place="bottom"
+                  type="info" 
+                  effect="solid" 
+                  textColor={'#FFFFFF'} 
+                  backgroundColor='#000000' 
+                  id={'funding info'}
+                >
+                  {infoTipDescriptions.fundingRate}
+                </ReactTooltip>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <TEXT.Supplemental>
+                <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
                   <Trans>OI Balance</Trans>
-                  <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" />
-                </TEXT.Supplemental>
+                </TEXT.SupplementalUnderlinedDashes>
+                <ReactTooltip
+                  place="bottom"
+                  type="info" 
+                  effect="solid" 
+                  textColor={'#FFFFFF'} 
+                  backgroundColor='#000000' 
+                  id={'Balance info'}
+                >
+                  {infoTipDescriptions.openInterest}
+                </ReactTooltip>
               </StyledHeaderCell>
               <StyledHeaderCell align="center">
                 <TEXT.Supplemental>
