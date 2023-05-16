@@ -72,7 +72,18 @@ export function useMarketDetails(markets: MarketData[] | null | undefined): Addi
           )
 
           // temporarily hardcode nftperp markets until we add identifier on smart contracts
-          if (market.id === '0xb31d222c23104cbc2c04df77941f1f2c478133dd' || market.id === '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342') {
+          const nftPerpAddresses = [
+            '0xb31d222c23104cbc2c04df77941f1f2c478133dd',
+            '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342',
+            '0x8c82c349e349ffd9403c3984cb1ad1b0f76f7d2e',
+            '0xce45c64911bd0a088daabd73ee1bc09ae98cd84b',
+            '0xccd645835ca0033f0c1106e7b24f288e59e867e8',
+            '0x8c7dc90243fc7984583339da8df0a5d57ec491db'
+          ]
+          
+          if (
+            nftPerpAddresses.includes(market.id.toLowerCase())
+          ) {
             return {
               ...market,
               decimalsDifference: undefined,
