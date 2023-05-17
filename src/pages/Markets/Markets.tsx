@@ -68,11 +68,24 @@ const Markets = () => {
   // list of hidden markets from Markets page
   const hiddenMarkets = [
     '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
-    '0x8c82c349e349ffd9403c3984cb1ad1b0f76f7d2e',
-    '0xce45c64911bd0a088daabd73ee1bc09ae98cd84b',
-    '0xccd645835ca0033f0c1106e7b24f288e59e867e8',
-    '0x8c7dc90243fc7984583339da8df0a5d57ec491db'
   ]
+
+  const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
+    const order = [
+      'MILADY / WETH',
+      'PUDGIES / WETH',
+      'PUNKS / WETH',
+      'BAYC / WETH',
+      'MAYC / WETH',
+      'AZUKI / WETH',
+      'WBTC / USD',
+    ]
+    for (let marketOrdered of order) {
+      if (a.marketName === marketOrdered) return -1
+      if (b.marketName === marketOrdered) return 1;
+    }
+    return 0;
+  };
 
   return (
     <PageContainer>
@@ -123,6 +136,7 @@ const Markets = () => {
             {marketsData.length > 0 &&
               marketsData
                 ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
+                .sort(customSort)
                 .map((market: ParsedMarketStateDetails, index: number) => (
                   <MarketsRow
                     key={market.marketAddress}
