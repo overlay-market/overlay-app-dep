@@ -63,7 +63,6 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
-  console.log(marketsData)
 
   // list of hidden markets from Markets page
   const hiddenMarkets = [
