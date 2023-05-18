@@ -1,4 +1,5 @@
 import React, {useEffect, useCallback, useMemo, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import {Label} from '@rebass/forms'
 import {BigNumber, utils, BigNumberish} from 'ethers'
@@ -82,6 +83,7 @@ export function Unwind({
     params: {marketPositionId, positionId},
   },
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
+  const history = useHistory()
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const {account} = useActiveWeb3React()
   const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
@@ -255,7 +257,10 @@ export function Unwind({
   const handleUnwind = useCallback(() => {
     if (!unwindCallback) return
     unwindCallback()
-      .then(success => onResetUnwindState())
+      .then(success => {
+        onResetUnwindState()
+        history.push('/positions')
+      })
       .catch(err => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, onResetUnwindState])
 
