@@ -1,6 +1,7 @@
 import {useState, useEffect} from 'react'
 import {NavLink, useLocation, useHistory} from 'react-router-dom'
 import styled from 'styled-components/macro'
+import {IconButton} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
 import {Image} from 'rebass'
 import {useDarkModeManager} from '../../state/user/hooks'
@@ -90,18 +91,16 @@ export default function Header() {
     }
   }, [open])
 
-  const returnHome = () => {
-    history.push(`/markets`)
-  }
-
   return (
     <HeaderContainer>
-      <LogoContainer onClick={returnHome}>
-        {darkMode ? (
-          <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo Light'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
-        ) : (
-          <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
-        )}
+      <LogoContainer>
+        <IconButton href="https://overlay.market" target="_blank" style={{padding: 0}}>
+          {darkMode ? (
+            <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo Light'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
+          ) : (
+            <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
+          )}
+        </IconButton>
       </LogoContainer>
 
       <StyledLink to={'/markets'}>
