@@ -104,6 +104,8 @@ export function Unwind({
     if (description) return marketNameFromDescription(description, marketPositionId.substring(0, 42))
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
+
+    // Disabling eslint warning as marketPositionId is a path param which will not change
     // eslint-disable-next-line
   }, [description, baseToken, quoteToken])
 
@@ -261,8 +263,8 @@ export function Unwind({
         if (!isNaN(Number(input))) onAmountInput('100')
       }
     },
-    // eslint-disable-next-line
-    [setCustomInput],
+    
+    [setCustomInput, onAmountInput],
   )
 
   const handleQuickInput = (percentage: number) => {

@@ -75,6 +75,5 @@ export function usePositionOi(
       rawOi: oi,
     }
 
-    // eslint-disable-next-line
-  }, [parsedOi, marketTokensDecimalsDifference, oi, baseTokenDecimals])
+  }, [parsedOi, marketTokensDecimalsDifference, oi, baseTokenDecimals, decimals])
 }

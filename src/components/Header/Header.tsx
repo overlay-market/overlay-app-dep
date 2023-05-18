@@ -77,6 +77,7 @@ export default function Header() {
       setOpen(open => false)
     }
 
+    // Disabling eslint warning as passing open as a depencdency will prevent the menu from opening
     // eslint-disable-next-line
   }, [location])
 

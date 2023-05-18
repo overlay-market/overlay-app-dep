@@ -204,6 +204,7 @@ const Claim = ({
         )}
       </BridgeContainer>
     )
+    // Disabling eslint warning as claimId, handleClaim and isFullyClaimed are used indirectly in ClaimButton
     // eslint-disable-next-line
   }, [
     account,
