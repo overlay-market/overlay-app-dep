@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import OverviewCard from '../../components/Card/OverviewCard'
-import {Grid, Box} from '@material-ui/core'
-import {PositionDataV2} from '../../state/build/hooks'
-import {useTotalValueLocked} from '../../hooks/useTotalValueLocked'
-import {useTotalCost} from '../../hooks/useTotalCost'
-import {useTotalFees} from '../../hooks/useTotalFees'
-import {formatBigNumber} from '../../utils/formatBigNumber'
-import {useMemo} from 'react'
+import { Grid, Box } from '@material-ui/core'
+import { PositionDataV2 } from '../../state/build/hooks'
+import { useTotalValueLocked } from '../../hooks/useTotalValueLocked'
+import { useTotalCost } from '../../hooks/useTotalCost'
+import { useTotalFees } from '../../hooks/useTotalFees'
+import { formatBigNumber } from '../../utils/formatBigNumber'
+import { useMemo } from 'react'
+import { colors } from '../../theme/theme'
 
 const Container = styled.div`
   display: flex;
@@ -122,7 +123,7 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
       </TEXT.BoldStandardBody>
       <Box>
       <TEXT.SupplementalHeader fontSize={14}>
-      Nothing here yet. Open a position on the <a href="/">Markets</a> page to begin.
+      Nothing here yet. Open a position on the <a href="/" style={{color: colors(false).blue2}}>Markets</a> page to begin.
       </TEXT.SupplementalHeader>
       </Box>
     </Container>

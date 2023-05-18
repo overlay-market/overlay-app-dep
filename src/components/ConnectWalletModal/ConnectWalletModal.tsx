@@ -96,6 +96,9 @@ export default function ConnectWalletModal() {
           setPendingError(true)
         }
       })
+      .then(() => {
+        localStorage.setItem('disconnected', "false");
+      })
   }
 
   function getOptions() {

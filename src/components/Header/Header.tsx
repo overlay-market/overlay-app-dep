@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {NavLink, useLocation, useHistory} from 'react-router-dom'
+import {NavLink, useLocation} from 'react-router-dom'
 import styled from 'styled-components/macro'
 import {IconButton} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
@@ -67,7 +67,6 @@ export const StyledLink = styled(NavLink).attrs({
 export default function Header() {
   const [darkMode] = useDarkModeManager()
   const [open, setOpen] = useState(false)
-  const history = useHistory()
   const menuId = 'main-menu'
 
   let location = useLocation().pathname
