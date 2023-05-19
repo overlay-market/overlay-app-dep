@@ -20,7 +20,6 @@ export function useUnwindActionHandlers(): {
 
   const onAmountInput = useCallback(
     (typedValue: string) => {
-      console.log('hello world')
       dispatch(typeInput({typedValue}))
     },
     [dispatch],

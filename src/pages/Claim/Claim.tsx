@@ -72,7 +72,7 @@ const Claim = ({
       })
   }, [claimCallback, claimId])
 
-  const ClaimButton = () => {
+  const ClaimButton = useMemo(() => {
     return isFullyClaimed ? (
       <TriggerActionButton isDisabled={true} onClick={() => null}>
         Tokens fully claimed
@@ -82,7 +82,7 @@ const Claim = ({
         Claim OVL
       </TriggerActionButton>
     )
-  }
+  }, [isFullyClaimed, handleClaim])
 
   const isWrongNetwork = useMemo(() => {
     if (!chainId) return true
@@ -166,7 +166,7 @@ const Claim = ({
               >
                 Read more about OVL
               </ExternalLink>
-              <ClaimButton />
+              {ClaimButton}
             </FlexColumn>
           </ClaimModalContainer>
         )}
@@ -204,17 +204,12 @@ const Claim = ({
         )}
       </BridgeContainer>
     )
-    // Disabling eslint warning as claimId, handleClaim and isFullyClaimed are used indirectly in ClaimButton
-    // eslint-disable-next-line
   }, [
     account,
-    claimId,
     isWrongNetwork,
     userClaimAmount,
     userClaimData,
     userHasAvailableClaim,
-    handleClaim,
-    isFullyClaimed,
     ClaimButton,
     toggleWalletModal,
   ])
