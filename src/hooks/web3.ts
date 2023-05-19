@@ -19,23 +19,29 @@ export function useEagerConnect() {
   const {activate, active} = useWeb3ReactCore()
   const [tried, setTried] = useState(false)
 
+  const storedValue = localStorage.getItem('disconnected');
+
   useEffect(() => {
-    injected.isAuthorized().then(isAuthorized => {
-      if (isAuthorized) {
-        activate(injected, undefined, true).catch(() => {
-          setTried(true)
-        })
-      } else {
-        if (isMobile && window.ethereum) {
+    if (storedValue === 'true') {
+      setTried(true)
+    } else {
+      injected.isAuthorized().then(isAuthorized => {
+        if (isAuthorized) {
           activate(injected, undefined, true).catch(() => {
             setTried(true)
           })
         } else {
-          setTried(true)
+          if (isMobile && window.ethereum) {
+            activate(injected, undefined, true).catch(() => {
+              setTried(true)
+            })
+          } else {
+            setTried(true)
+          }
         }
-      }
-    })
-  }, [activate])
+      })
+    }
+  }, [activate, storedValue])
 
   useEffect(() => {
     if (active) {

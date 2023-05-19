@@ -9,6 +9,7 @@ import { useTotalFees } from '../../hooks/useTotalFees'
 import { formatBigNumber } from '../../utils/formatBigNumber'
 import { BigNumber } from 'ethers'
 import { useMemo } from 'react'
+import { colors } from '../../theme/theme'
 
 const Container = styled.div`
   display: flex;
@@ -135,7 +136,7 @@ export const Overview = ({
       </TEXT.BoldStandardBody>
       <Box>
       <TEXT.SupplementalHeader fontSize={14}>
-      Nothing here yet. Open a position on the <a href="/">Markets</a> page to begin.
+      Nothing here yet. Open a position on the <a href="/" style={{color: colors(false).blue2}}>Markets</a> page to begin.
       </TEXT.SupplementalHeader>
       </Box>
     </Container>
