@@ -88,10 +88,10 @@ export const OpenPosition = ({
   }, [liquidationPrice, decimals])
 
   const unrealizedPnL: string | number | undefined = useMemo(() => {
-    if (value === undefined || cost === undefined || tradingFee === undefined || decimals === undefined) return undefined
-    const diff = (+value - +cost - +tradingFee) / (10 ** +decimals)
+    if (value === undefined || cost === undefined || tradingFee === undefined) return undefined
+    const diff = (+value - +cost - +tradingFee) / (10 ** 18)
     return diff < 1 ? diff.toFixed(6) : diff.toFixed(2)
-  }, [value, cost, decimals, tradingFee])
+  }, [value, cost, tradingFee])
 
   let history = useHistory()
 
