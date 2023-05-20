@@ -103,7 +103,7 @@ export function Unwind({
   const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} = useMarketName(position?.market.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return marketNameFromDescription(description, marketPositionId.substring(0,42))
+    if (description) return marketNameFromDescription(description, marketPositionId.substring(0, 42))
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
@@ -294,7 +294,9 @@ export function Unwind({
     unwindCallback()
       .then(success => {
         onResetUnwindState()
-        history.push('/positions')
+        // @ts-ignore
+        const numberOfUnwinds = Number(position['numberOfUniwnds'])
+        history.push(`/closed-positions/${marketPositionId}-${numberOfUnwinds}/${positionId}`)
       })
       .catch(err => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, onResetUnwindState])
