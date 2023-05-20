@@ -63,13 +63,28 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
-  console.log(marketsData)
 
   // list of hidden markets from Markets page
   const hiddenMarkets = [
     '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
-    '0x35e1d28ad9d8a80cff5bbf163a735c54eb6c1342'
   ]
+
+  const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
+    const order = [
+      'MILADY / WETH',
+      'PUDGIES / WETH',
+      'PUNKS / WETH',
+      'BAYC / WETH',
+      'MAYC / WETH',
+      'AZUKI / WETH',
+      'WBTC / USD',
+    ]
+    for (let marketOrdered of order) {
+      if (a.marketName === marketOrdered) return -1
+      if (b.marketName === marketOrdered) return 1;
+    }
+    return 0;
+  };
 
   return (
     <PageContainer>
@@ -120,8 +135,10 @@ const Markets = () => {
             {marketsData.length > 0 &&
               marketsData
                 ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
+                .sort(customSort)
                 .map((market: ParsedMarketStateDetails, index: number) => (
                   <MarketsRow
+                    key={market.marketAddress}
                     index={index + 1} //start count at 1
                     marketId={market.marketAddress}
                     marketName={market.marketName}

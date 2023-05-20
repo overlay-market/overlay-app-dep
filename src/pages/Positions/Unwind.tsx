@@ -1,18 +1,16 @@
 import React, {useEffect, useCallback, useMemo, useState} from 'react'
 import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
-import {Label} from '@rebass/forms'
-import {BigNumber, utils, BigNumberish} from 'ethers'
+import {BigNumber, BigNumberish} from 'ethers'
 import {RouteComponentProps} from 'react-router'
 import {TEXT} from '../../theme/theme'
 import {InterfaceWrapper} from '../../components/Container/Container'
 import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
-import {Accordion} from '../../components/Accordion/Accordion'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
 import {useCurrentWalletPositions} from '../../state/build/hooks'
-import {NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
+import {NumericalInputBottomText, NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {useUnwindState, useUnwindActionHandlers, useDerivedUnwindInfo} from '../../state/unwind/hooks'
@@ -35,11 +33,12 @@ import {DefaultTxnSettings} from '../../state/build/actions'
 import {useIsTxnSettingsAuto} from '../../state/build/hooks'
 import {PercentageSlider} from '../../components/PercentageSlider/PercentageSlider'
 import {useMarketName} from '../../hooks/useMarketName'
-import {MARKET_NAME_FROM_DESCRIPTION} from '../../constants/markets'
+import {marketNameFromDescription} from '../../constants/markets'
 import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
 import Loader from '../../components/Loaders/Loaders'
+import {formatDecimalToPercentage} from '../../utils/formatDecimal'
 
 const ControlInterfaceContainer = styled(FlexColumn)`
   padding: 16px;
@@ -85,6 +84,7 @@ export function Unwind({
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
   const history = useHistory()
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
+  const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
   const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
 
@@ -103,7 +103,7 @@ export function Unwind({
   const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} = useMarketName(position?.market.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return MARKET_NAME_FROM_DESCRIPTION[description]
+    if (description) return marketNameFromDescription(description, marketPositionId.substring(0,42))
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
@@ -139,6 +139,8 @@ export function Unwind({
   const fractionOfCapOi = useFractionOfCapOi(position?.market.id, oi?.rawOi)
   const estimatedBid = useBid(position?.market.id, fractionOfCapOi)
   const estimatedAsk = useAsk(position?.market.id, fractionOfCapOi)
+
+  const currentValue: number = useMemo(() => formatWeiToParsedNumber(value, 18, 4) ?? 0, [value])
 
   const estimatedReceivedPrice = useMemo(() => {
     if (isLong === undefined) return null
@@ -225,17 +227,50 @@ export function Unwind({
   )
 
   const handleUserAmount = useCallback(
-    (e: any) => {
+    (e: any, maxAmount: number) => {
+      setCustomInput(((e.target.value / 100) * maxAmount).toString())
       onAmountInput(e.target.value)
     },
     [onAmountInput],
   )
 
-  // const handleUserInput = useCallback((input: string) => {
-  //   onAmountInput(input)}, [onAmountInput]);
+  // Stop keyboard inputs at 18 decimals
+  const handleUserInputKeyPress = (event: any) => {
+    const regex = /^\d*\.?\d{0,17}$/
+    if (!regex.test(event.target.value)) {
+      event.preventDefault()
+      return
+    }
+  }
+
+  const handleUserInput = useCallback(
+    (input: string, maxAmount: number) => {
+      const exactAmount = Number(input)
+
+      if (exactAmount === 0) {
+        setCustomInput(input)
+        onAmountInput('0')
+        return
+      }
+
+      if (exactAmount > 0 && exactAmount <= maxAmount) {
+        const res = formatDecimalToPercentage(exactAmount / Number(maxAmount))
+        setCustomInput(input)
+        if (res) onAmountInput(res.toFixed(18))
+      } else {
+        setCustomInput(input)
+        if (!isNaN(Number(input))) onAmountInput('100')
+      }
+    },
+    [setCustomInput],
+  )
 
   const handleQuickInput = (percentage: number) => {
-    if (percentage < 0 || percentage > 100) return onAmountInput('0')
+    if (percentage < 0 || percentage > 100) {
+      setCustomInput('0')
+      return onAmountInput('0')
+    }
+    setCustomInput(((percentage / 100) * currentValue).toString())
     return onAmountInput(percentage.toString())
   }
 
@@ -263,6 +298,20 @@ export function Unwind({
       })
       .catch(err => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, onResetUnwindState])
+
+  const isUnwindAmountTooLow: boolean = useMemo(() => {
+    if (Number(typedValue) < 0.01 && customInput) {
+      return true
+    }
+    return false
+  }, [typedValue, customInput])
+
+  const isUnwindAmountTooHigh: boolean = useMemo(() => {
+    if (currentValue < Number(customInput)) {
+      return true
+    }
+    return false
+  }, [customInput, currentValue])
 
   return (
     <InterfaceWrapper>
@@ -301,44 +350,64 @@ export function Unwind({
           handleResetTxnSettings={handleResetTxnSettings}
           onSetTxnDeadline={onSetTxnDeadline}
         />
-        <TEXT.StandardBody margin={'0 auto 24px 0'} color={'white'}>
-          Unwind Amount
-        </TEXT.StandardBody>
 
-        <PercentageSlider name={'Unwind Position Amount'} min={0} max={100} step={1} value={Number(typedValue)} onChange={handleUserAmount}>
-          <FlexRow ml="auto" mb="4px" width="auto">
-            <TransparentUnderlineButton onClick={() => handleQuickInput(25)} border={'none'}>
-              25%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(50)} border={'none'}>
-              50%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(75)} border={'none'}>
-              75%
-            </TransparentUnderlineButton>
-            <TransparentUnderlineButton onClick={() => handleQuickInput(100)} border={'none'}>
-              Max
-            </TransparentUnderlineButton>
-          </FlexRow>
-        </PercentageSlider>
+        <FlexRow mb="4px" width="100%">
+          <TEXT.StandardBody margin={'0 auto 4px 0'} color={'white'}>
+            Unwind Amount
+          </TEXT.StandardBody>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(25)} border={'none'}>
+            25%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(50)} border={'none'}>
+            50%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(75)} border={'none'}>
+            75%
+          </TransparentUnderlineButton>
+          <TransparentUnderlineButton onClick={() => handleQuickInput(100)} border={'none'}>
+            Max
+          </TransparentUnderlineButton>
+        </FlexRow>
+
+        <NumericalInputContainer>
+          <NumericalInputDescriptor> OVL </NumericalInputDescriptor>
+          <NumericalInput
+            align={'right'}
+            onUserInput={input => handleUserInput(input, currentValue)}
+            value={customInput}
+            onKeyPress={handleUserInputKeyPress}
+          />
+        </NumericalInputContainer>
+        <NumericalInputBottomText>minimum: 0.01%</NumericalInputBottomText>
+
+        <PercentageSlider
+          name={'Unwind Position Amount'}
+          min={0}
+          max={100}
+          step={1}
+          showTilde={Number(typedValue) <= 0.01 && Boolean(typedValue)}
+          value={Number(typedValue) >= 0.01 ? Number(Number(typedValue).toFixed(2)) : 0.0}
+          onChange={e => handleUserAmount(e, currentValue)}
+          margin={'20px 0 0 0'}
+          justifyContent={'flex-end'}
+        ></PercentageSlider>
         {/* <Label htmlFor="Amount" mt={"24px"}>
 
-      </Label> */}
-        {/* <NumericalInputContainer>
-        <NumericalInputDescriptor>OVL</NumericalInputDescriptor>
-        <NumericalInput
-          value={typedValue}
-          onUserInput={handleUserInput}
-          align={"right"}
-        />
-      </NumericalInputContainer> */}
-
+        </Label> */}
         {showUnderwaterFlow ? (
           <UnwindButton onClick={() => null} isDisabled={true} disabled={true}>
             Position Underwater
           </UnwindButton>
+        ) : isUnwindAmountTooLow ? (
+          <UnwindButton onClick={() => null} isDisabled={true} disabled={true}>
+            Percentage Below Minimum
+          </UnwindButton>
         ) : (
-          <UnwindButton onClick={() => handleUnwind()} isDisabled={disableUnwindButton} disabled={disableUnwindButton}>
+          <UnwindButton
+            onClick={() => handleUnwind()}
+            isDisabled={isUnwindAmountTooHigh || disableUnwindButton}
+            disabled={isUnwindAmountTooHigh || disableUnwindButton}
+          >
             Unwind
           </UnwindButton>
         )}

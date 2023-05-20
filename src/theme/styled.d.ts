@@ -26,6 +26,7 @@ export interface Colors {
   blue3: Color
   red1: Color
   green1: Color
+  grey2: Color
 }
 
 declare module 'styled-components' {

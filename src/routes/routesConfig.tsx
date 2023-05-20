@@ -3,6 +3,7 @@ import Positions from '../pages/Positions/PositionsPage'
 import Liquidate from '../pages/Liquidate/Liquidate'
 import {Market} from '../pages/Markets/Market'
 import {Unwind} from '../pages/Positions/Unwind'
+import { ClosedPosition } from '../pages/Positions/ClosedPosition'
 
 const routesConfig = [
   {
@@ -27,6 +28,10 @@ const routesConfig = [
   {
     path: '/positions/:marketPositionId/:positionId',
     component: () => Unwind,
+  },
+  {
+    path: '/closed-positions/:marketPositionId/:positionId',
+    component: () => ClosedPosition,
   },
   {
     path: '/liquidate',
