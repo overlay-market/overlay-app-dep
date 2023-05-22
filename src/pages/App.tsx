@@ -15,10 +15,10 @@ import Bridge from './Bridge/Bridge'
 import Claim from './Claim/Claim'
 import ClaimPage from './Claim/ClaimPage'
 import Popups from '../components/Popup/Popups'
-import { ClosedPosition } from './Positions/ClosedPosition'
+import {ClosedPosition} from './Positions/ClosedPosition'
 
 export const AppWrapper = styled.div`
-  background-color: ${({theme}) => theme.bg1};
+  background-color: ${({theme}) => theme.dark.background};
   height: 100%;
   min-height: 100vh;
   width: 100vw;

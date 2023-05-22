@@ -10,7 +10,7 @@ const StyledInput = styled.input<{
   height?: string
   padding?: string
 }>`
-  color: ${({error, theme}) => (error ? theme.red1 : theme.text1)};
+  color: ${({error, theme}) => (error ? theme.dark.red : theme.dark.white)};
   width: 100%;
   position: relative;
   font-weight: 500;

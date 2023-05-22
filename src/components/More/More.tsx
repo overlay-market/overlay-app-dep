@@ -66,7 +66,7 @@ export const StyledPaper = styled(Paper)`
 
 export const InternalMenuItem = styled(Link)<{fontFamily?: string}>`
   text-decoration: none;
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   padding: 8px 16px 8px 12px;
   font-family: ${({fontFamily}) => (fontFamily ? fontFamily : 'default')};
   -webkit-touch-callout: none;

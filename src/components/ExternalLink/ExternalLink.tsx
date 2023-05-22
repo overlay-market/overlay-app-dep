@@ -24,7 +24,7 @@ export const ButtonText = styled.button`
 `
 
 export const Button = styled.button.attrs<{warning: boolean}, {backgroundColor: string}>(({warning, theme}) => ({
-  backgroundColor: warning ? theme.red1 : theme.text1,
+  backgroundColor: warning ? theme.dark.red : theme.dark.white,
 }))`
   padding: 1rem 2rem 1rem 2rem;
   border-radius: 3rem;
@@ -34,7 +34,7 @@ export const Button = styled.button.attrs<{warning: boolean}, {backgroundColor: 
   border: none;
   outline: none;
   background-color: ${({backgroundColor}) => backgroundColor};
-  color: ${({theme}) => theme.white};
+  color: ${({theme}) => theme.dark.white};
   width: 100%;
 
   :hover,
@@ -47,8 +47,8 @@ export const Button = styled.button.attrs<{warning: boolean}, {backgroundColor: 
   }
 
   :disabled {
-    background-color: ${({theme}) => theme.bg1};
-    color: ${({theme}) => theme.text4};
+    background-color: ${({theme}) => theme.dark.background};
+    color: ${({theme}) => theme.dark.blue2};
     cursor: auto;
   }
 `
@@ -64,7 +64,7 @@ export const LinkStyledButton = styled.button<{disabled?: boolean}>`
   background: none;
 
   cursor: ${({disabled}) => (disabled ? 'default' : 'pointer')};
-  color: ${({theme, disabled}) => (disabled ? theme.text2 : theme.text1)};
+  color: ${({theme, disabled}) => (disabled ? theme.dark.green : theme.dark.white)};
   font-weight: 500;
 
   :hover {
@@ -85,7 +85,7 @@ export const LinkStyledButton = styled.button<{disabled?: boolean}>`
 export const StyledInternalLink = styled(Link)`
   text-decoration: none;
   cursor: pointer;
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   font-weight: 500;
 
   :hover {
@@ -105,7 +105,7 @@ export const StyledInternalLink = styled(Link)`
 const StyledLink = styled.a`
   text-decoration: none;
   cursor: pointer;
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   font-weight: 500;
   :focus {
     outline: none;
@@ -137,7 +137,7 @@ export const LinkIcon = styled(LinkIconFeather)`
   height: 16px;
   width: 18px;
   margin-left: 10px;
-  stroke: ${({theme}) => theme.blue1};
+  stroke: ${({theme}) => theme.dark.blue2};
   color: #f2f2f2;
   padding: 8px 8px;
 `
@@ -194,7 +194,7 @@ export const Spinner = styled.img`
 `
 
 const BackArrowLink = styled(StyledInternalLink)`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
 `
 export function BackArrow({to}: {to: string}) {
   return (

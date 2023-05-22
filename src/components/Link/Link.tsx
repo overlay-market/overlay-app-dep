@@ -9,7 +9,7 @@ export const MenuLink = styled(RebassLink).attrs(props => ({
 }))`
   text-decoration: none;
   cursor: pointer;
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   width: 100%;
   display: flex;
 

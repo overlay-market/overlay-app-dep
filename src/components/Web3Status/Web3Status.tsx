@@ -23,8 +23,8 @@ export const Web3StatusConnected = styled.div`
 `
 
 export const Web3StatusUnconnected = styled.button`
-  background: ${({theme}) => theme.bg1};
-  color: ${({theme}) => theme.text1};
+  background: ${({theme}) => theme.dark.background};
+  color: ${({theme}) => theme.dark.white};
   border: 0px;
   border-radius: 25px;
   margin-right: 24px;
@@ -36,7 +36,7 @@ export const Web3StatusError = styled(Web3StatusConnected)`
   opacity: 0.8;
   cursor: default;
   font-size: 12px;
-  border: 1px solid ${({theme}) => theme.text1};
+  border: 1px solid ${({theme}) => theme.dark.white};
   border-radius: 15px;
   padding: 4px 8px;
 `

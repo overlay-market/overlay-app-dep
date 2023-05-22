@@ -14,7 +14,7 @@ export const StyledTable = styled(Table)`
 
 export const StyledTableCell = styled(TableCell)<{width?: number}>`
   font-size: 14px;
-  color: ${({theme}) => theme.text1} !important;
+  color: ${({theme}) => theme.dark.white} !important;
   width: ${({width}) => (width ? `${width}%` : 'auto')};
 `
 
@@ -30,7 +30,7 @@ export const StyledTableCellThin = styled(StyledTableCell)`
 
 export const StyledTableRow = styled(TableRow)`
   cursor: pointer;
-  background: ${({theme}) => theme.bg1};
+  background: ${({theme}) => theme.dark.background};
   height: 69px;
 
   ${({theme}) => theme.mediaWidth.minMedium`
@@ -43,7 +43,7 @@ export const StyledTableRow = styled(TableRow)`
 `
 
 export const StyledTableRowNoPointer = styled(TableRow)`
-  background: ${({theme}) => theme.bg1};
+  background: ${({theme}) => theme.dark.background};
   height: 69px;
 
   ${({theme}) => theme.mediaWidth.minMedium`
@@ -56,6 +56,6 @@ export const StyledTableRowNoPointer = styled(TableRow)`
 `
 
 export const StyledTableHeaderRow = styled(TableRow)`
-  background: ${({theme}) => theme.bg1};
+  background: ${({theme}) => theme.dark.background};
   cursor: default;
 `

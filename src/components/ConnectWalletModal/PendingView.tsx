@@ -22,8 +22,8 @@ const LoadingMessage = styled.div<{error?: boolean}>`
   justify-content: flex-start;
   border-radius: 12px;
   margin: 16px 0;
-  color: ${({theme, error}) => (error ? theme.red1 : 'inherit')};
-  border: 1px solid ${({theme, error}) => (error ? theme.red1 : 'transparent')};
+  color: ${({theme, error}) => (error ? theme.dark.red : 'inherit')};
+  border: 1px solid ${({theme, error}) => (error ? theme.dark.red : 'transparent')};
 
   & > * {
     padding: 1rem;
@@ -51,7 +51,7 @@ const IconContainer = styled.div`
 const ErrorButton = styled.div`
   border-radius: 8px;
   font-size: 12px;
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   background-color: rgb(86, 90, 105);
   padding: 0.5rem;
   display: flex;

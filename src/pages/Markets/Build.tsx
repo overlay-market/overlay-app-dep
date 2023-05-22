@@ -88,7 +88,7 @@ const ControlInterfaceHeadContainer = styled(FlexColumn)`
 `
 
 export const NumericalInputContainer = styled(FlexRow)`
-  border: 1px solid ${({theme}) => theme.white};
+  border: 1px solid ${({theme}) => theme.dark.white};
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 0px;
@@ -351,7 +351,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     } else {
       calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(6)
     }
-    if (minCollateral && +calculatedAmountByPercentage < minCollateral) return handleUserInput("")
+    if (minCollateral && +calculatedAmountByPercentage < minCollateral) return handleUserInput('')
     return handleUserInput(calculatedAmountByPercentage)
   }
 
@@ -401,7 +401,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
           transactionErrorMessage: undefined,
           transactionHash: hash,
         })
-        onResetBuildState();
+        onResetBuildState()
       })
       .catch(error => {
         setBuildState({
