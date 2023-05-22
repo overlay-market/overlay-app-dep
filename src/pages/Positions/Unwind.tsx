@@ -9,7 +9,7 @@ import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
-import {useCurrentWalletPositions} from '../../state/build/hooks'
+import {PositionDataV2, useCurrentWalletPositions, useCurrentWalletPositionsV2} from '../../state/build/hooks'
 import {NumericalInputBottomText, NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
@@ -86,7 +86,7 @@ export function Unwind({
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
-  const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
+  const {error, isLoading, positions, refetch} = useCurrentWalletPositionsV2(account)
 
   useEffect(() => {
     refetch()
@@ -294,8 +294,7 @@ export function Unwind({
     unwindCallback()
       .then(success => {
         onResetUnwindState()
-        // @ts-ignore
-        const numberOfUnwinds = Number(position['numberOfUniwnds'])
+        const numberOfUnwinds = position && Number(position['numberOfUniwnds'])
         history.push(`/closed-positions/${marketPositionId}-${numberOfUnwinds}/${positionId}`)
       })
       .catch(err => console.error('Error from handleUnwind: ', err))
