@@ -1,4 +1,5 @@
 import React, {useEffect, useCallback, useMemo, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import {BigNumber, BigNumberish} from 'ethers'
 import {RouteComponentProps} from 'react-router'
@@ -8,7 +9,7 @@ import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
-import {useCurrentWalletPositions} from '../../state/build/hooks'
+import {PositionDataV2, useCurrentWalletPositions, useCurrentWalletPositionsV2} from '../../state/build/hooks'
 import {NumericalInputBottomText, NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
@@ -81,10 +82,11 @@ export function Unwind({
     params: {marketPositionId, positionId},
   },
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
+  const history = useHistory()
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
-  const {error, isLoading, positions, refetch} = useCurrentWalletPositions(account)
+  const {error, isLoading, positions, refetch} = useCurrentWalletPositionsV2(account)
 
   useEffect(() => {
     refetch()
@@ -101,7 +103,7 @@ export function Unwind({
   const {baseToken, quoteToken, baseTokenAddress, quoteTokenAddress, decimals, description} = useMarketName(position?.market.feedAddress)
 
   const marketName = useMemo(() => {
-    if (description) return marketNameFromDescription(description, marketPositionId.substring(0,42))
+    if (description) return marketNameFromDescription(description, marketPositionId.substring(0, 42))
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
   }, [description, baseToken, quoteToken])
@@ -290,7 +292,11 @@ export function Unwind({
   const handleUnwind = useCallback(() => {
     if (!unwindCallback) return
     unwindCallback()
-      .then(success => onResetUnwindState())
+      .then(success => {
+        onResetUnwindState()
+        const numberOfUnwinds = position && Number(position['numberOfUniwnds'])
+        history.push(`/closed-positions/${marketPositionId}-${numberOfUnwinds}/${positionId}`)
+      })
       .catch(err => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, onResetUnwindState])
 
