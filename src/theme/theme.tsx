@@ -80,6 +80,11 @@ const TextWrapper = styled(Text)<{color: keyof Colors}>`
   color: ${({color, theme}) => (theme as any)[color]};
 `
 
+const TextWrapperUnderlined = styled(Text)<{color: keyof Colors}>`
+  color: ${({color, theme}) => (theme as any)[color]};
+  text-decoration: underline dashed;
+`
+
 type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
@@ -109,6 +114,9 @@ export const TEXT = {
   },
   Supplemental(props: TextProps) {
     return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(false).white1} {...props} />
+  },
+  SupplementalUnderlinedDashes(props: TextProps) {
+    return <TextWrapperUnderlined fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(false).white1} {...props} />
   },
   SupplementalHeader(props: TextProps) {
     return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(true).grey2} {...props} />

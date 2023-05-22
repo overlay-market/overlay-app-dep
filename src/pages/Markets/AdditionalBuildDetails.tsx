@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
 import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
@@ -12,6 +12,7 @@ import {ExternalLinkIcon} from '../../components/ExternalLink/ExternalLink'
 import {Icon} from '../../components/Icon/Icon'
 import {ExternalLink as LinkIconFeather} from 'react-feather'
 import {useActiveWeb3React} from '../../hooks/web3'
+import ReactTooltip from 'react-tooltip'
 
 const ContentContainer = styled(FlexColumn)`
   padding: 0 16px;
@@ -191,8 +192,8 @@ export const AdditionalDetails = ({
         <DetailValue>{expectedOi ? expectedOi : '-'}</DetailValue>
       </AdditionalDetailRow>
 
-      <AdditionalDetailRow>
-        <PositionDetailType>OI Long</PositionDetailType>
+      <AdditionalDetailRow data-for={'long info'} data-tip={'long info'}>
+        <PositionDetailType>OI Long / OI Cap</PositionDetailType>
         <FlexColumn width={'auto'} ml={'auto'} alignContent={'end'}>
           <OpenInterestValue>
             {oiLong || oiLong === 0 ? oiLong + ' ' : <Loader stroke="white" size="12px" />}/
@@ -202,8 +203,15 @@ export const AdditionalDetails = ({
         </FlexColumn>
       </AdditionalDetailRow>
 
-      <AdditionalDetailRow>
-        <PositionDetailType>OI Short</PositionDetailType>
+      <ReactTooltip place="top" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'long info'}>
+        <React.Fragment>
+          <div>The OI Cap is the maximum open interest</div>
+          <div>that the protocol allows at a given time.</div>
+        </React.Fragment>
+      </ReactTooltip>
+
+      <AdditionalDetailRow data-for={'long info'} data-tip={'long info'}>
+        <PositionDetailType>OI Short / OI Cap</PositionDetailType>
         <FlexColumn width={'auto'} ml={'auto'} alignContent={'end'}>
           <OpenInterestValue>
             {oiShort || oiShort === 0 ? oiShort + ' ' : <Loader stroke="white" size="12px" />}/

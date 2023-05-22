@@ -14,6 +14,7 @@ import {InfoTip} from '../../components/InfoTip/InfoTip'
 import {getCharactersBeforeSlash} from '../../utils/getCharactersBeforeSlash'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
+import ReactTooltip from 'react-tooltip'
 
 const activeClassName = 'INACTIVE'
 
@@ -34,13 +35,12 @@ const infoTipDescriptions = {
   openInterest: (
     <React.Fragment>
       <div>Open Interest (OI) refers to </div>
-      <div>the total available outstanding</div>
-      <div>positions that have not been settled,</div>
-      <div>per market, denoted in OVL.</div>
+      <div>the total open positions on a given market.</div>
+      <div>It is the sum of all OVL divided</div>
+      <div>by the price of the market.</div>
       <br />
-      <div>Shows the current percent (%)</div>
-      <div>balance between shorts (red)</div>
-      <div>and longs (green).</div>
+      <div>The OI Balance shows whether the</div>
+      <div>long or the short side has more OI.</div>
     </React.Fragment>
   ),
   fundingRate: (
@@ -48,13 +48,13 @@ const infoTipDescriptions = {
       <div>Funding Rate per Market</div>
       <br />
       <div>24 hour funding rate.</div>
-      <div>Positive funding rates suggests</div>
-      <div>users are bullish and long positions</div>
-      <div>pay funding to short positions. </div>
+      <div>The side with more OI pays the side </div>
+      <div>with less.</div>
       <br />
-      <div>Negative funding rates suggest</div>
-      <div>users are bearish and short positions</div>
-      <div>pay funding to long positions.</div>
+      <div>Positive funding suggests bullish</div>
+      <div>sentiment, longs pay shorts.</div>
+      <div>Negative funding suggests bearish</div>
+      <div>sentiment, shorts pay longs.</div>
     </React.Fragment>
   ),
 }
@@ -113,16 +113,34 @@ const Markets = () => {
                 </Trans>
               </StyledHeaderCell> */}
               <StyledHeaderCell>
-                <TEXT.Supplemental>
+                <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
                   <Trans>Funding</Trans>
-                </TEXT.Supplemental>
-                {/* <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" /> */}
+                </TEXT.SupplementalUnderlinedDashes>
+                <ReactTooltip
+                  place="bottom"
+                  type="info" 
+                  effect="solid" 
+                  textColor={'#FFFFFF'} 
+                  backgroundColor='#000000' 
+                  id={'funding info'}
+                >
+                  {infoTipDescriptions.fundingRate}
+                </ReactTooltip>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <TEXT.Supplemental>
+                <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
                   <Trans>OI Balance</Trans>
-                </TEXT.Supplemental>
-                {/* <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" /> */}
+                </TEXT.SupplementalUnderlinedDashes>
+                <ReactTooltip
+                  place="bottom"
+                  type="info" 
+                  effect="solid" 
+                  textColor={'#FFFFFF'} 
+                  backgroundColor='#000000' 
+                  id={'Balance info'}
+                >
+                  {infoTipDescriptions.openInterest}
+                </ReactTooltip>
               </StyledHeaderCell>
               <StyledHeaderCell align="center">
                 <TEXT.Supplemental>
