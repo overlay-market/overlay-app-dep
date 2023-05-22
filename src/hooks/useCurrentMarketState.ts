@@ -48,7 +48,7 @@ export interface MarketStateResults {
   markets: ParsedMarketStateDetails[] | []
 }
 
-export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 5) {
+export function useCurrentMarketState(marketsData: AdditionalMarketData[] | undefined, sigFigs: number = 18) {
   const peripheryContract = useV1PeripheryContract()
   const inputs = useMemo(() => (marketsData ? marketsData.map(market => [market.id]) : []), [marketsData])
   const results = useSingleContractMultipleData(peripheryContract, 'marketState', inputs)
@@ -82,9 +82,9 @@ export function useCurrentMarketState(marketsData: AdditionalMarketData[] | unde
         if ((decimals && market.type === FeedType.CHAINLINK) || market.type === FeedType.NFTPERP) {
           const convertedMarketName = marketNameFromDescription(description, marketId)
           marketName = convertedMarketName ?? 'Parsing error'
-          parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, sigFigs)
-          parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, sigFigs)
-          parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, sigFigs)
+          parsedBid = decimals && formatBigNumber(result.state_.bid, decimals, 5)
+          parsedAsk = decimals && formatBigNumber(result.state_.ask, decimals, 5)
+          parsedMid = decimals && formatBigNumber(result.state_.mid, decimals, 5)
           parsedOiLong = decimals && formatBigNumber(result.state_.oiLong, decimals, sigFigs)
           parsedOiShort = decimals && formatBigNumber(result.state_.oiShort, decimals, sigFigs)
           parsedCapOi = decimals && formatBigNumber(result.state_.capOi, decimals, sigFigs)
