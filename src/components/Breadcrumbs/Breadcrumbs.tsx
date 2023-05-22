@@ -12,13 +12,13 @@ const Container = styled.div<{padding?: string}>`
 `
 
 const Breadcrumb = styled.div`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   display: flex;
   flex-direction: row;
 `
 
 const StyledNavLink = styled(NavLink)`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   text-decoration: none;
   font-size: 12px;
 `

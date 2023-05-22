@@ -19,7 +19,7 @@ import ReactTooltip from 'react-tooltip'
 const activeClassName = 'INACTIVE'
 
 export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   font-weight: 500;
   text-decoration: none;
 
@@ -65,26 +65,16 @@ const Markets = () => {
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
   // list of hidden markets from Markets page
-  const hiddenMarkets = [
-    '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
-  ]
+  const hiddenMarkets = ['0x909d893d5e7f250659fa56c2ca2920760eebb17f']
 
   const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
-    const order = [
-      'MILADY / WETH',
-      'PUDGIES / WETH',
-      'PUNKS / WETH',
-      'BAYC / WETH',
-      'MAYC / WETH',
-      'AZUKI / WETH',
-      'WBTC / USD',
-    ]
+    const order = ['MILADY / WETH', 'PUDGIES / WETH', 'PUNKS / WETH', 'BAYC / WETH', 'MAYC / WETH', 'AZUKI / WETH', 'WBTC / USD']
     for (let marketOrdered of order) {
       if (a.marketName === marketOrdered) return -1
-      if (b.marketName === marketOrdered) return 1;
+      if (b.marketName === marketOrdered) return 1
     }
-    return 0;
-  };
+    return 0
+  }
 
   return (
     <PageContainer>
@@ -116,14 +106,7 @@ const Markets = () => {
                 <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
                   <Trans>Funding</Trans>
                 </TEXT.SupplementalUnderlinedDashes>
-                <ReactTooltip
-                  place="bottom"
-                  type="info" 
-                  effect="solid" 
-                  textColor={'#FFFFFF'} 
-                  backgroundColor='#000000' 
-                  id={'funding info'}
-                >
+                <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'funding info'}>
                   {infoTipDescriptions.fundingRate}
                 </ReactTooltip>
               </StyledHeaderCell>
@@ -131,14 +114,7 @@ const Markets = () => {
                 <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
                   <Trans>OI Balance</Trans>
                 </TEXT.SupplementalUnderlinedDashes>
-                <ReactTooltip
-                  place="bottom"
-                  type="info" 
-                  effect="solid" 
-                  textColor={'#FFFFFF'} 
-                  backgroundColor='#000000' 
-                  id={'Balance info'}
-                >
+                <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'Balance info'}>
                   {infoTipDescriptions.openInterest}
                 </ReactTooltip>
               </StyledHeaderCell>

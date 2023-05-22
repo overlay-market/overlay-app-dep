@@ -29,7 +29,7 @@ const StyledMenu = styled.nav<{open: boolean; height: number; width: number}>`
 `
 
 const StyledInternalLink = styled(NavLink)`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   font-size: 14px;
   text-align: left;
   text-decoration: none;

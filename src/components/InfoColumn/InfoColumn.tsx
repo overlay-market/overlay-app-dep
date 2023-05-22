@@ -12,7 +12,7 @@ const Title = styled.div<{
   titleFontSize?: string
   titleFontWeight?: number
 }>`
-  color: ${({theme, titleColor}) => (titleColor ? titleColor : theme.text1)};
+  color: ${({theme, titleColor}) => (titleColor ? titleColor : theme.dark.white)};
   font-size: ${({titleFontSize}) => (titleFontSize ? titleFontSize : '14px')};
   font-weight: ${({titleFontWeight}) => (titleFontWeight ? titleFontWeight : 400)};
 `
@@ -22,7 +22,7 @@ const Description = styled.div<{
   descriptionFontSize?: string
   descriptionFontWeight?: number
 }>`
-  color: ${({theme, descriptionColor}) => (descriptionColor ? descriptionColor : theme.text1)};
+  color: ${({theme, descriptionColor}) => (descriptionColor ? descriptionColor : theme.dark.white)};
   font-size: ${({descriptionFontSize}) => (descriptionFontSize ? descriptionFontSize : '20px')};
   font-weight: ${({descriptionFontWeight}) => (descriptionFontWeight ? descriptionFontWeight : 700)};
 `

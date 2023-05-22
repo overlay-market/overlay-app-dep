@@ -46,7 +46,7 @@ const CardText = styled.div`
 `
 
 const SubHeader = styled.div`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   margin-top: 10px;
   font-size: 12px;
 `
