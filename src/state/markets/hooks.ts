@@ -11,9 +11,10 @@ export function useMarketsState(): AppState['markets'] {
 
 export function useMarketDataFromSubgraph(marketAddress: string | undefined | null) {
   const marketId: string = marketAddress ? marketAddress : ''
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
 
   return useMarketQuery(marketId ? {market: marketId} : skipToken, {
-    pollingInterval: 1000,
+    pollingInterval: chainId === 42161 ? 10000 : 1000,
     refetchOnMountOrArgChange: true,
     refetchOnFocus: true,
     refetchOnReconnect: true,
@@ -68,10 +69,12 @@ export function useMarketData(marketAddress: string | undefined | null): {
 }
 
 export function useTotalMarketsDataFromSubgraph() {
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
   return useMarketsQuery(
     {},
     {
-      pollingInterval: 1000,
+      pollingInterval: chainId === 42161 ? 10000 : 1000,
       refetchOnMountOrArgChange: true,
       refetchOnReconnect: true,
       skip: false,
