@@ -10,6 +10,25 @@ import {useActiveLocale} from '../../hooks/useActiveLocale'
 import {FlexRow} from '../Container/Container'
 import {MenuLink} from '../Link/Link'
 
+const COMMUNITY_LINKS = [
+  {
+    name: 'Discord',
+    href: 'http://discord.gg/ovl',
+  },
+  {
+    name: 'Twitter',
+    href: 'https://twitter.com/OverlayProtocol',
+  },
+  {
+    name: 'Telegram',
+    href: 'https://t.me/overlay_protocol',
+  },
+  {
+    name: 'Mirror',
+    href: 'https://mirror.xyz/0x7999C7f0b9f2259434b7aD130bBe36723a49E14e',
+  },
+]
+
 export const IconContainer = styled(FlexRow)`
   width: auto;
   min-width: 16px;
@@ -188,6 +207,7 @@ export default function More() {
                       </>
                     ) : (
                       <>
+                        {/* Risks */}
                         <StyledMenuItem disableRipple onClick={handleClose}>
                           <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="https://overlay.market">
                             <IconContainer mr={'3px'}>
@@ -196,6 +216,18 @@ export default function More() {
                             Risks
                           </MenuLink>
                         </StyledMenuItem>
+
+                        {/* Community */}
+                        <StyledMenuItem disableRipple onClick={handleLanguageToggle}>
+                          <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="">
+                            <IconContainer mr={'3px'}>
+                              <Globe size={14} />
+                            </IconContainer>
+                            Community
+                          </MenuLink>
+                        </StyledMenuItem>
+
+                        {/* Language */}
                         <StyledMenuItem disableRipple onClick={handleLanguageToggle}>
                           <MenuLink pt={2} pb={2} pl={2} pr={3} minWidth={100} href="">
                             <IconContainer mr={'3px'}>

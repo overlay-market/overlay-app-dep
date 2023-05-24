@@ -4,6 +4,7 @@ import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager'
 import TermsOfServiceManager from '../components/TermsOfServiceModal/TermsOfServiceManager'
 import ChainalysisManager from '../components/ChainalysisManager/ChainanalysisManager'
 import Header from '../components/Header/Header'
+import Footer from '../components/Footer/Footer'
 import CurrentBlock from '../components/CurrentBlock/CurrentBlock'
 import Markets from './Markets/Markets'
 import {Market} from './Markets/Market'
@@ -45,6 +46,7 @@ const App = () => {
               <Route exact strict path="/bridge" component={Bridge} />
             </Switch>
           </Web3ReactManager>
+          <Footer />
         </TermsOfServiceManager>
       </ChainalysisManager>
       <CurrentBlock />
