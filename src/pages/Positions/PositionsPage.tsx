@@ -169,7 +169,7 @@ const Positions = () => {
         rows.push(row)
       }
     }
-    return rows
+    return rows.sort((a, b) => +b.timestamp - +a.timestamp)
   }, [handledPositions])
 
   const liquidatedRows = useMemo(() => {
