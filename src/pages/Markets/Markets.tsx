@@ -15,6 +15,7 @@ import {getCharactersBeforeSlash} from '../../utils/getCharactersBeforeSlash'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 import ReactTooltip from 'react-tooltip'
+import {MarketChartMap} from '../../constants/markets'
 
 const activeClassName = 'INACTIVE'
 
@@ -123,6 +124,11 @@ const Markets = () => {
                   <Trans>Oracle</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
+              <StyledHeaderCell align="center">
+                <TEXT.Supplemental>
+                  <Trans>7D Chart</Trans>
+                </TEXT.Supplemental>
+              </StyledHeaderCell>
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
@@ -145,6 +151,7 @@ const Markets = () => {
                     oracleLogo={market.oracleLogo}
                     marketLogo={market.marketLogo}
                     priceCurrency={market.priceCurrency}
+                    marketChartData={MarketChartMap[market.marketName!!]}
                   />
                 ))}
           </TableBody>

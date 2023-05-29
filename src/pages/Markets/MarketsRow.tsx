@@ -6,6 +6,9 @@ import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {useHistory} from 'react-router-dom'
 import {Icon} from '../../components/Icon/Icon'
 import {AlertCircle} from 'react-feather'
+import {MarketChartData} from '../../constants/markets'
+import Chart7dCoin from './Chart7dCoin'
+import Chart7dNft from './Chart7dNft'
 
 type MarketsRowProps = {
   index: number
@@ -20,6 +23,7 @@ type MarketsRowProps = {
   oracleLogo: string | undefined
   marketLogo: string | undefined
   priceCurrency: string | undefined
+  marketChartData: MarketChartData
 }
 
 const MarketsRow = ({
@@ -35,6 +39,7 @@ const MarketsRow = ({
   oracleLogo,
   marketLogo,
   priceCurrency = '',
+  marketChartData,
 }: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
@@ -105,6 +110,11 @@ const MarketsRow = ({
         <Icon size={20} margin="auto">
           <img src={oracleLogo} alt="Market Feed Logo" />
         </Icon>
+      </StyledTableCellThin>
+
+      {/* 7D chart */}
+      <StyledTableCellThin id="market7dChart" align="center">
+        {marketChartData.isNft ? <Chart7dNft marketChartData={marketChartData} /> : <Chart7dCoin marketChartData={marketChartData} />}
       </StyledTableCellThin>
     </StyledTableRow>
   )
