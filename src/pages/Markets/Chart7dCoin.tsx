@@ -15,23 +15,23 @@ const Chart7dCoin = ({marketChartData}: ChartProps) => {
       try {
         const data = JSON.stringify({
           query: `
-                query PriceHistoryQuery($schemaName: String!, $contractAddress: String!) {
-                  priceHistoryWithTimestamp(
-                    schemaName: $schemaName
-                    contractAddress: $contractAddress
-                  ) {
-                    nodes {
-                      id
-                      latestAnswer
-                      blockNumber
-                      blockTimestamp
-                    }
-                  }
+            query PriceHistoryQuery($schemaName: String!, $contractAddress: String!) {
+              priceHistoryWithTimestamp(
+                schemaName: $schemaName
+                contractAddress: $contractAddress
+              ) {
+                nodes {
+                  id
+                  latestAnswer
+                  blockNumber
+                  blockTimestamp
                 }
-              `,
+              }
+            }
+          `,
           variables: {
             contractAddress: marketChartData.contractAddress,
-            schemaName: 'ethereum-mainnet-arbitrum-1',
+            schemaName: marketChartData.schemaName,
           },
         })
 
@@ -44,16 +44,14 @@ const Chart7dCoin = ({marketChartData}: ChartProps) => {
         })
 
         const resData = await response.json()
-
-        console.log('coin data: ', resData.data.priceHistoryWithTimestamp.nodes)
         setCoinData(resData.data.priceHistoryWithTimestamp.nodes)
       } catch (err) {
-        console.log(err)
+        console.error(err)
       }
     }
 
     fetchData()
-  }, [marketChartData.contractAddress])
+  }, [marketChartData.contractAddress, marketChartData.schemaName])
 
   const chartData = useMemo(() => {
     if (coinData.length) {
@@ -73,11 +71,11 @@ const Chart7dCoin = ({marketChartData}: ChartProps) => {
 
   const getStrokeColor = (data: any) => {
     if (data && data.length > 1) {
-      const firstPrice = data[0].latestAnswer
-      const lastPrice = data[data.length - 1].latestAnswer
+      const firstPrice = parseInt(data[0].latestAnswer)
+      const lastPrice = parseInt(data[data.length - 1].latestAnswer)
       return firstPrice > lastPrice ? colors(true).dark.red : colors(true).dark.green
     }
-    return '#FFFFFF'
+    return undefined
   }
 
   return (

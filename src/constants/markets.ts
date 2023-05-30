@@ -79,6 +79,7 @@ export const PRICE_CURRENCY_FROM_QUOTE: CurrencyMap = {
 export type MarketChartData = {
   contractAddress: string
   isNft: boolean
+  schemaName?: string
 }
 export const MarketChartMap: {[name: string]: MarketChartData} = {
   'MILADY / WETH': {
@@ -108,25 +109,31 @@ export const MarketChartMap: {[name: string]: MarketChartData} = {
   'WBTC / USD': {
     contractAddress: '0xb20bd22d3d2e5a628523d37b3ded569598eb649b',
     isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
   },
   'LINK / USD': {
     contractAddress: '0x9b8ddcf800a7bfcdebad6d65514de59160a2c9cc',
     isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
   },
   'SOL / USD': {
     contractAddress: '0x8c4308f7cbd7fb829645853cd188500d7da8610a',
     isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
   },
   'APE / USD': {
     contractAddress: '0x076577765a3e66db410ecc1372d0b0db503a42c5',
     isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
   },
   'AVAX / USD': {
-    contractAddress: '0xa4a2b2000d447cc1086d15c077730008b0251ffd', // not available
+    contractAddress: '0x0fc3657899693648bba4dbd2d8b33b82e875105d',
     isNft: false,
+    schemaName: 'ethereum-mainnet', // arbitrum not available
   },
   'MATIC / USD': {
     contractAddress: '0xa4a2b2000d447cc1086d15c077730008b0251ffd',
     isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
   },
 }

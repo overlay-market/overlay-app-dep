@@ -1,7 +1,6 @@
-import {useMemo} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import {LineChart, Line, ResponsiveContainer, YAxis} from 'recharts'
 import {MarketChartData} from '../../constants/markets'
-import {useNfts7dQueryQuery} from '../../state/data/enhanced'
 import {colors} from '../../theme/theme'
 import {currentTimeUnix} from '../../utils/currentTime'
 
@@ -10,12 +9,63 @@ export interface ChartProps {
 }
 
 const Chart7dNft = ({marketChartData}: ChartProps) => {
-  const {data: nftData} = useNfts7dQueryQuery({amm: marketChartData.contractAddress, to: 1685345483, interval: 3600})
+  const unixTimestamp = currentTimeUnix()
+  const [nftData, setNftData] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = JSON.stringify({
+          query: `
+            query($amm: Bytes, $to: BigInt, $interval: Int!) { 
+              candles(
+                first: 1000,
+                orderBy: timestamp,
+                orderDirection: asc,
+                where: {
+                  amm: $amm,
+                  interval: $interval,
+                  timestamp_lte: $to
+                }
+              ) {
+                amm
+                timestamp
+                interval
+                open
+                close 
+              }
+            }
+          `,
+          variables: {
+            amm: marketChartData.contractAddress,
+            to: unixTimestamp,
+            interval: 3600,
+          },
+        })
+
+        const response = await fetch('https://api.thegraph.com/subgraphs/name/nftperp/beta', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: data,
+        })
+
+        const resData = await response.json()
+        setNftData(resData.data.candles)
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    fetchData()
+    // Disabling eslint warning as passing unixTimestamp will cause the useEffect to keep running
+    // eslint-disable-next-line
+  }, [marketChartData.contractAddress])
 
   const chartData = useMemo(() => {
-    if (nftData && nftData.candles.length) {
-      console.log('nft data: ', nftData.candles)
-      return nftData.candles.map((item: any) => ({close: item.close}))
+    if (nftData && nftData.length) {
+      return nftData.map((item: any) => ({close: item.close}))
     }
   }, [nftData])
 
@@ -31,11 +81,11 @@ const Chart7dNft = ({marketChartData}: ChartProps) => {
 
   const getStrokeColor = (data: any) => {
     if (data && data.length) {
-      const firstPrice = data[0].close
-      const lastPrice = data[data.length - 1].close
+      const firstPrice = parseInt(data[0].close)
+      const lastPrice = parseInt(data[data.length - 1].close)
       return firstPrice > lastPrice ? colors(true).dark.red : colors(true).dark.green
     }
-    return '#FFFFFF'
+    return undefined
   }
 
   return (

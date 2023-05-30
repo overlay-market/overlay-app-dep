@@ -244,27 +244,6 @@ export const api = createApi({
         `,
       }),
     }),
-    nfts7dQuery: builder.query({
-      query: ({amm, to, interval}) => ({
-        document: gql`
-          query NFTs7dQuery($amm: Bytes, $to: BigInt, $interval: Int!) {
-            candles(first: 1000, orderBy: timestamp, orderDirection: asc, where: {amm: $amm, interval: $interval, timestamp_lte: $to}) {
-              timestamp
-              interval
-              open
-              close
-              high
-              volume
-            }
-          }
-        `,
-        variables: {
-          amm,
-          to,
-          interval,
-        },
-      }),
-    }),
   }),
 })
 
@@ -289,13 +268,6 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
             message: `Subgraph queries against ChainId ${chainId} are not supported.`,
             stack: '',
           },
-        }
-      }
-
-      if (document.toString().includes('NFT')) {
-        return {
-          data: await new GraphQLClient('https://api.thegraph.com/subgraphs/name/nftperp/beta').request(document, variables),
-          meta: {},
         }
       }
 

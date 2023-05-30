@@ -23,7 +23,8 @@ type MarketsRowProps = {
   oracleLogo: string | undefined
   marketLogo: string | undefined
   priceCurrency: string | undefined
-  marketChartData: MarketChartData
+  marketChartData: MarketChartData | undefined
+  hide7dChart: boolean
 }
 
 const MarketsRow = ({
@@ -40,6 +41,7 @@ const MarketsRow = ({
   marketLogo,
   priceCurrency = '',
   marketChartData,
+  hide7dChart,
 }: MarketsRowProps) => {
   const [long, setLong] = useState<number>(0)
   const [short, setShort] = useState<number>(0)
@@ -113,9 +115,12 @@ const MarketsRow = ({
       </StyledTableCellThin>
 
       {/* 7D chart */}
-      <StyledTableCellThin id="market7dChart" align="center">
-        {marketChartData.isNft ? <Chart7dNft marketChartData={marketChartData} /> : <Chart7dCoin marketChartData={marketChartData} />}
-      </StyledTableCellThin>
+      {!hide7dChart && (
+        <StyledTableCellThin id="market7dChart" align="center">
+          {marketChartData && marketChartData.isNft && <Chart7dNft marketChartData={marketChartData!!} />}
+          {marketChartData && !marketChartData.isNft && <Chart7dCoin marketChartData={marketChartData!!} />}
+        </StyledTableCellThin>
+      )}
     </StyledTableRow>
   )
 }
