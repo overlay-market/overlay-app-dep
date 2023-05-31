@@ -8,7 +8,7 @@ export const PageContainer = styled.div<{maxWidth?: string}>`
   padding: 16px;
 
   > div {
-    background: ${({theme}) => theme.bg1} !important;
+    background: ${({theme}) => theme.dark.background} !important;
   }
 
   ${({theme}) => theme.mediaWidth.minMedium`

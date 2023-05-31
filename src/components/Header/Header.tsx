@@ -15,7 +15,7 @@ import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
 
 export const HeaderContainer = styled.div`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   display: flex;
   flex-direction: row;
   width: auto;
@@ -48,7 +48,7 @@ const activeClassName = 'ACTIVE'
 export const StyledLink = styled(NavLink).attrs({
   activeClassName,
 })`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   font-size: 14px;
   font-weight: 700;
   text-decoration: none;
@@ -56,7 +56,7 @@ export const StyledLink = styled(NavLink).attrs({
   display: none;
 
   &.${activeClassName} {
-    color: ${({theme}) => theme.text4};
+    color: ${({theme}) => theme.dark.blue2};
   }
 
   ${({theme}) => theme.mediaWidth.minSmall`
@@ -101,37 +101,31 @@ export default function Header() {
           )}
         </IconButton>
       </LogoContainer>
-
       <StyledLink to={'/markets'}>
         <Trans>
           <TEXT.Menu>Markets</TEXT.Menu>
         </Trans>
       </StyledLink>
-
       <StyledLink to={'/positions'}>
         <Trans>
           <TEXT.Menu>Positions</TEXT.Menu>
         </Trans>
       </StyledLink>
-
       <StyledLink to={'/bridge'}>
         <Trans>
           <TEXT.Menu>Bridge</TEXT.Menu>
         </Trans>
       </StyledLink>
-
       {/* <StyledLink to={'/claimpage'}>
         <Trans>
           <TEXT.Menu>Claim</TEXT.Menu>
         </Trans>
       </StyledLink> */}
-
       <AccountContainer>
         <Web3Status />
         <More />
         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
       </AccountContainer>
-
       <SlideMenu open={open} setOpen={setOpen} />
     </HeaderContainer>
   )

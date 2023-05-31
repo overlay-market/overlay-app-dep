@@ -73,10 +73,10 @@ export const OpenPosition = ({position, columns}: PositionProps) => {
   }, [liquidationPrice, decimals])
 
   const unrealizedPnL: string | number | undefined = useMemo(() => {
-    if (value === undefined || cost === undefined || tradingFee === undefined || decimals === undefined) return undefined
-    const diff = (+value - +cost - +tradingFee) / 10 ** +decimals
+    if (value === undefined || cost === undefined || tradingFee === undefined) return undefined
+    const diff = (+value - +cost - +tradingFee) / 10 ** 18
     return diff < 1 ? diff.toFixed(6) : diff.toFixed(2)
-  }, [value, cost, decimals, tradingFee])
+  }, [value, cost, tradingFee])
 
   let history = useHistory()
 
@@ -93,29 +93,31 @@ export const OpenPosition = ({position, columns}: PositionProps) => {
 
   const sortedValues: any[] = useMemo(() => {
     interface Values {
-      [key: string]: string | JSX.Element | null | undefined;
-      Market?: string;
-      Size: string | JSX.Element;
-      Position: JSX.Element;
-      "Entry Price": string;
-      "Current Price": string;
-      "Liq. Price": string;
-      Created?: string;
-      "Unrealized PnL": JSX.Element | string;
+      [key: string]: string | JSX.Element | null | undefined
+      Market?: string
+      Size: string | JSX.Element
+      Position: JSX.Element
+      'Entry Price': string
+      'Current Price': string
+      'Liq. Price': string
+      Created?: string
+      'Unrealized PnL': JSX.Element | string
     }
 
     const values: Values = {
-      "Market": marketName, 
-      "Size": parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />, 
-      "Position": <FlexRow>
-                    <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
-                    <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
-                  </FlexRow>, 
-      "Entry Price": `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`, 
-      "Current Price": `${priceCurrency ? priceCurrency : ''}${parsedMid ? parsedMid : '-'}`, 
-      "Liq. Price": parsedLiquidationPrice ? `${priceCurrency ?? ''} ${parsedLiquidationPrice}` : `-`, 
-      "Created": parsedCreatedTimestamp ?? undefined, 
-      "Unrealized PnL": unrealizedPnL ? <ProfitLossCell PnL={Number(unrealizedPnL)} /> : '-'
+      Market: marketName,
+      Size: parsedValue ? `${parsedValue} OVL` : <Loader size="12px" />,
+      Position: (
+        <FlexRow>
+          <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
+          <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
+        </FlexRow>
+      ),
+      'Entry Price': `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`,
+      'Current Price': `${priceCurrency ? priceCurrency : ''}${parsedMid ? parsedMid : '-'}`,
+      'Liq. Price': parsedLiquidationPrice ? `${priceCurrency ?? ''} ${parsedLiquidationPrice}` : `-`,
+      Created: parsedCreatedTimestamp ?? undefined,
+      'Unrealized PnL': unrealizedPnL ? <ProfitLossCell PnL={Number(unrealizedPnL)} /> : '-',
     }
     return columns.map(columnName => {
       return values[columnName]
@@ -151,8 +153,9 @@ export const OpenPosition = ({position, columns}: PositionProps) => {
 }
 
 const ProfitLossCell = ({PnL}: {PnL: number}) => {
-  return ( 
-  <FlexRow justify="left">
-    {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '0.00'}
-  </FlexRow>)
+  return (
+    <FlexRow justify="left">
+      {PnL ? <TEXT.Supplemental color={checkIsNegative(PnL) ? '#FF648A' : '#5FD0AB'}>{PnL} OVL</TEXT.Supplemental> : '0.00'}
+    </FlexRow>
+  )
 }

@@ -12,11 +12,12 @@ import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetai
 import {useCurrentMarketState, MarketStateResults, ParsedMarketStateDetails} from '../../hooks/useCurrentMarketState'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
+import ReactTooltip from 'react-tooltip'
 
 const activeClassName = 'INACTIVE'
 
 export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
   font-weight: 500;
   text-decoration: none;
 
@@ -28,34 +29,33 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
-// const infoTipDescriptions = {
-//   openInterest: (
-//     <React.Fragment>
-//       <div>Open Interest (OI) refers to </div>
-//       <div>the total available outstanding</div>
-//       <div>positions that have not been settled,</div>
-//       <div>per market, denoted in OVL.</div>
-//       <br />
-//       <div>Shows the current percent (%)</div>
-//       <div>balance between shorts (red)</div>
-//       <div>and longs (green).</div>
-//     </React.Fragment>
-//   ),
-//   fundingRate: (
-//     <React.Fragment>
-//       <div>Funding Rate per Market</div>
-//       <br />
-//       <div>24 hour funding rate.</div>
-//       <div>Positive funding rates suggests</div>
-//       <div>users are bullish and long positions</div>
-//       <div>pay funding to short positions. </div>
-//       <br />
-//       <div>Negative funding rates suggest</div>
-//       <div>users are bearish and short positions</div>
-//       <div>pay funding to long positions.</div>
-//     </React.Fragment>
-//   ),
-// }
+const infoTipDescriptions = {
+  openInterest: (
+    <React.Fragment>
+      <div>Open Interest (OI) refers to </div>
+      <div>the total open positions on a given market.</div>
+      <div>It is the sum of all OVL divided</div>
+      <div>by the price of the market.</div>
+      <br />
+      <div>The OI Balance shows whether the</div>
+      <div>long or the short side has more OI.</div>
+    </React.Fragment>
+  ),
+  fundingRate: (
+    <React.Fragment>
+      <div>Funding Rate per Market</div>
+      <br />
+      <div>24 hour funding rate.</div>
+      <div>The side with more OI pays the side </div>
+      <div>with less.</div>
+      <br />
+      <div>Positive funding suggests bullish</div>
+      <div>sentiment, longs pay shorts.</div>
+      <div>Negative funding suggests bearish</div>
+      <div>sentiment, shorts pay longs.</div>
+    </React.Fragment>
+  ),
+}
 
 const Markets = () => {
   const {markets} = useTotalMarketsData()
@@ -63,26 +63,16 @@ const Markets = () => {
   const {markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
   // list of hidden markets from Markets page
-  const hiddenMarkets = [
-    '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
-  ]
+  const hiddenMarkets = ['0x909d893d5e7f250659fa56c2ca2920760eebb17f']
 
   const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
-    const order = [
-      'MILADY / WETH',
-      'PUDGIES / WETH',
-      'PUNKS / WETH',
-      'BAYC / WETH',
-      'MAYC / WETH',
-      'AZUKI / WETH',
-      'WBTC / USD',
-    ]
+    const order = ['MILADY / WETH', 'PUDGIES / WETH', 'PUNKS / WETH', 'BAYC / WETH', 'MAYC / WETH', 'AZUKI / WETH', 'WBTC / USD']
     for (let marketOrdered of order) {
       if (a.marketName === marketOrdered) return -1
-      if (b.marketName === marketOrdered) return 1;
+      if (b.marketName === marketOrdered) return 1
     }
-    return 0;
-  };
+    return 0
+  }
 
   return (
     <PageContainer>
@@ -111,16 +101,20 @@ const Markets = () => {
                 </Trans>
               </StyledHeaderCell> */}
               <StyledHeaderCell>
-                <TEXT.Supplemental>
+                <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
                   <Trans>Funding</Trans>
-                </TEXT.Supplemental>
-                {/* <InfoTip children={infoTipDescriptions.fundingRate} tipFor="Market Funding Rate" /> */}
+                </TEXT.SupplementalUnderlinedDashes>
+                <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'funding info'}>
+                  {infoTipDescriptions.fundingRate}
+                </ReactTooltip>
               </StyledHeaderCell>
               <StyledHeaderCell>
-                <TEXT.Supplemental>
+                <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
                   <Trans>OI Balance</Trans>
-                </TEXT.Supplemental>
-                {/* <InfoTip children={infoTipDescriptions.openInterest} tipFor="Market Open Interest" /> */}
+                </TEXT.SupplementalUnderlinedDashes>
+                <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'Balance info'}>
+                  {infoTipDescriptions.openInterest}
+                </ReactTooltip>
               </StyledHeaderCell>
               <StyledHeaderCell align="center">
                 <TEXT.Supplemental>

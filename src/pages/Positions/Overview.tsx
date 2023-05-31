@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import OverviewCard from '../../components/Card/OverviewCard'
-import { Grid, Box } from '@material-ui/core'
-import { PositionDataV2 } from '../../state/build/hooks'
-import { useTotalValueLocked } from '../../hooks/useTotalValueLocked'
-import { useTotalCost } from '../../hooks/useTotalCost'
-import { useTotalFees } from '../../hooks/useTotalFees'
-import { formatBigNumber } from '../../utils/formatBigNumber'
-import { useMemo } from 'react'
-import { colors } from '../../theme/theme'
+import {Grid, Box} from '@material-ui/core'
+import {PositionDataV2} from '../../state/build/hooks'
+import {useTotalValueLocked} from '../../hooks/useTotalValueLocked'
+import {useTotalCost} from '../../hooks/useTotalCost'
+import {useTotalFees} from '../../hooks/useTotalFees'
+import {formatBigNumber} from '../../utils/formatBigNumber'
+import {useMemo} from 'react'
+import {colors} from '../../theme/theme'
 
 const Container = styled.div`
   display: flex;
@@ -80,25 +80,24 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
     },
     {
       title: 'Total Locked',
-      value: `${tvlArray.length > 0 ? tvl ? tvl + ' OVL' : 'loading' : 'No open positions'}`,
+      value: `${tvlArray.length > 0 ? (tvl ? tvl + ' OVL' : 'loading') : 'No open positions'}`,
       icon: 'lock',
     },
     {
       title: 'Total Realized PnL',
-      value: `${unwinds ? pnl ? pnl + ' OVL' : 'loading' : 'No unwinds yet'}`,
+      value: `${unwinds ? (pnl ? pnl + ' OVL' : 'loading') : 'No unwinds yet'}`,
       icon: +pnl < 0 ? 'down' : 'up',
       valueColor: +pnl < 0 ? '#FF648A' : '#5FD0AB',
     },
     {
       title: 'Unrealized PnL',
-      value: `${tvlArray.length > 0 ? upnl ? upnl + ' OVL' : 'loading' : 'No open positions'}`,
+      value: `${tvlArray.length > 0 ? (upnl ? upnl + ' OVL' : 'loading') : 'No open positions'}`,
       icon: +upnl < 0 ? 'down' : 'up',
       valueColor: +upnl < 0 ? '#FF648A' : '#5FD0AB',
     },
   ]
 
-  return tvlArray.length > 0 && unwinds
-  ? (
+  return tvlArray.length > 0 && unwinds ? (
     <Container>
       <TEXT.BoldStandardBody mt={marginTop} mb="16px">
         {`${title}`}
@@ -115,16 +114,19 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
         </Grid>
       </Box>
     </Container>
-  )
-  : (
+  ) : (
     <Container>
       <TEXT.BoldStandardBody mt={marginTop} mb="16px">
         {`${title}`}
       </TEXT.BoldStandardBody>
       <Box>
-      <TEXT.SupplementalHeader fontSize={14}>
-      Nothing here yet. Open a position on the <a href="/" style={{color: colors(false).blue2}}>Markets</a> page to begin.
-      </TEXT.SupplementalHeader>
+        <TEXT.SupplementalHeader fontSize={14}>
+          Nothing here yet. Open a position on the{' '}
+          <a href="/" style={{color: colors(false).dark.blue2}}>
+            Markets
+          </a>{' '}
+          page to begin.
+        </TEXT.SupplementalHeader>
       </Box>
     </Container>
   )

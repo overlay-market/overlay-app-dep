@@ -3,30 +3,31 @@ import {ThemedCssFunction} from 'styled-components'
 export type Color = string
 
 export interface Colors {
-  primary: Color
-  // base
-  white: Color
-  black: Color
-
-  // text
-  text1: Color
-  text2: Color
-  text3: Color
-  text4: Color
-
-  // backgrounds
-  bg1: Color
-  bg2: Color
-  bg3: Color
-
-  // misc
-  white1: Color
-  blue1: Color
-  blue2: Color
-  blue3: Color
-  red1: Color
-  green1: Color
-  grey2: Color
+  dark: {
+    background: string
+    grey4: string
+    grey3: string
+    grey2: string
+    grey1: string
+    white: string
+    tan1: string
+    tan2: string
+    purple1: string
+    purple2: string
+    blue1: string
+    blue2: string
+    green: string
+    red: string
+    black: string
+  }
+  light: {
+    background: string
+    FFFFFF: string
+    purple: string
+    blue: string
+    green: string
+    red: string
+  }
 }
 
 declare module 'styled-components' {

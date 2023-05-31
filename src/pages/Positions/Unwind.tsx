@@ -1,4 +1,5 @@
 import React, {useEffect, useCallback, useMemo, useState} from 'react'
+import {useHistory} from 'react-router-dom'
 import styled from 'styled-components'
 import {BigNumber, BigNumberish} from 'ethers'
 import {RouteComponentProps} from 'react-router'
@@ -8,7 +9,7 @@ import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
-import {useCurrentWalletPositions} from '../../state/build/hooks'
+import {useCurrentWalletPositionsV2} from '../../state/build/hooks'
 import {NumericalInputBottomText, NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
@@ -81,10 +82,11 @@ export function Unwind({
     params: {marketPositionId, positionId},
   },
 }: RouteComponentProps<{marketPositionId: string; positionId: string}>) {
+  const history = useHistory()
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
-  const {isLoading, positions, refetch} = useCurrentWalletPositions(account)
+  const {isLoading, positions, refetch} = useCurrentWalletPositionsV2(account)
 
   useEffect(() => {
     refetch()
@@ -202,15 +204,7 @@ export function Unwind({
     liquidationPriceResult && prices._mid ? (isLong ? liquidationPriceResult.gt(prices._mid) : liquidationPriceResult.lt(prices._mid)) : false
 
   const {unwindData} = useDerivedUnwindInfo()
-  const {callback: unwindCallback} = useUnwindCallback(
-    unwindData,
-    position?.market.id,
-    typedValue,
-    value,
-    positionId,
-    isLong,
-    prices,
-  )
+  const {callback: unwindCallback} = useUnwindCallback(unwindData, position?.market.id, typedValue, value, positionId, isLong, prices)
 
   useEffect(() => {
     onResetUnwindState()
@@ -260,7 +254,7 @@ export function Unwind({
         if (!isNaN(Number(input))) onAmountInput('100')
       }
     },
-    
+
     [setCustomInput, onAmountInput],
   )
 
@@ -291,7 +285,11 @@ export function Unwind({
   const handleUnwind = useCallback(() => {
     if (!unwindCallback) return
     unwindCallback()
-      .then(success => onResetUnwindState())
+      .then(success => {
+        onResetUnwindState()
+        const numberOfUnwinds = position && Number(position['numberOfUniwnds'])
+        history.push(`/closed-positions/${marketPositionId}-${numberOfUnwinds}/${positionId}`)
+      })
       .catch(err => console.error('Error from handleUnwind: ', err))
   }, [unwindCallback, onResetUnwindState])
 

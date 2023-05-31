@@ -1,15 +1,16 @@
-import {useMemo} from 'react'
+import React, {useMemo} from 'react'
 import styled from 'styled-components'
-import {ProgressBar} from '../../components/ProgressBar/ProgressBar'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
+import {colors} from '../../theme/theme'
 import {getExplorerLink, ExplorerDataType} from '../../utils/getExplorerLink'
 import {shortenAddress} from '../../utils/web3'
 import {Icon} from '../../components/Icon/Icon'
 import {ExternalLink as LinkIconFeather} from 'react-feather'
 import {useActiveWeb3React} from '../../hooks/web3'
+import ReactTooltip from 'react-tooltip'
 
 const ContentContainer = styled(FlexColumn)`
   padding: 0 16px;
@@ -26,6 +27,13 @@ export const PositionDetailType = styled.div`
   color: #b9babd;
   font-size: 14px;
   font-weight: 700;
+`
+
+export const PositionDetailTypeDashed = styled.div`
+  color: #b9babd;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline dashed;
 `
 
 export const DetailValue = styled.div<{color?: string}>`
@@ -189,31 +197,36 @@ export const AdditionalDetails = ({
         <DetailValue>{expectedOi ? expectedOi : '-'}</DetailValue>
       </AdditionalDetailRow>
 
-      <AdditionalDetailRow>
-        <PositionDetailType>OI Long</PositionDetailType>
+      <AdditionalDetailRow data-for={'long info'} data-tip={'long info'}>
+        <PositionDetailTypeDashed>OI Long / OI Cap</PositionDetailTypeDashed>
         <FlexColumn width={'auto'} ml={'auto'} alignContent={'end'}>
           <OpenInterestValue>
             {oiLong || oiLong === 0 ? oiLong + ' ' : <Loader stroke="white" size="12px" />}/
             {oiCap || oiCap === 0 ? ' ' + oiCap : <Loader stroke="white" size="12px" />}
           </OpenInterestValue>
-          <ProgressBar value={oiLong} max={oiCap} width={'130px'} color={'#10DCB1'} margin={'0 0 0 auto'} />
         </FlexColumn>
       </AdditionalDetailRow>
 
-      <AdditionalDetailRow>
-        <PositionDetailType>OI Short</PositionDetailType>
+      <ReactTooltip place="top" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'long info'}>
+        <React.Fragment>
+          <div>The OI Cap is the maximum open interest</div>
+          <div>that the protocol allows at a given time.</div>
+        </React.Fragment>
+      </ReactTooltip>
+
+      <AdditionalDetailRow data-for={'long info'} data-tip={'long info'}>
+        <PositionDetailTypeDashed>OI Short / OI Cap</PositionDetailTypeDashed>
         <FlexColumn width={'auto'} ml={'auto'} alignContent={'end'}>
           <OpenInterestValue>
             {oiShort || oiShort === 0 ? oiShort + ' ' : <Loader stroke="white" size="12px" />}/
             {oiCap || oiCap === 0 ? ' ' + oiCap : <Loader stroke="white" size="12px" />}
           </OpenInterestValue>
-          <ProgressBar value={oiShort} max={oiCap} width={'130px'} color={'#DC1F4E'} margin={'0 0 0 auto'} />
         </FlexColumn>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
         <PositionDetailType>Funding Rate</PositionDetailType>
-        <DetailValue color={'#10DCB1'}>{fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}</DetailValue>
+        <DetailValue color={colors(true).dark.green}>{fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>

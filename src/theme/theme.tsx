@@ -32,32 +32,61 @@ const mediaWidthTemplates: {[width in keyof typeof MEDIA_WIDTHS]: typeof css} = 
 }, {}) as any
 
 export function colors(darkMode: boolean): Colors {
-  return {
-    primary: '#12B4FF',
-    // base
-    white: '#FFFFFF',
-    black: '#000000',
-
-    // text
-    text1: darkMode ? '#FFFFFF' : '#000000',
-    text2: '10DCB1',
-    text3: '#0B0F1C',
-    text4: '#12B4FF',
-
-    // backgrounds
-    bg1: darkMode ? '#202431' : '#F7F7F7',
-    bg2: darkMode ? '#F7F7F7' : '#0B0F1C',
-    bg3: darkMode ? '#565A69' : '#edeef2',
-
-    //misc
-    white1: '#f2f2f2',
-    blue1: darkMode ? '#2172E5' : '#0068FC',
-    blue2: '#56CCF2',
-    blue3: '#12B4FF',
-    red1: darkMode ? '#FF4343' : '#DA2D2B',
-    green1: darkMode ? '#27AE60' : '#007D35',
-    grey2: darkMode ? '#A8A6A6' : '#A8A6A6'
-  }
+  return darkMode
+    ? {
+        dark: {
+          background: '#202431',
+          grey4: '#2E3343',
+          grey3: '#474747',
+          grey2: '#A8A6A6',
+          grey1: '#BBBBBB',
+          white: '#FFFFFF',
+          tan1: '#FFDBB0',
+          tan2: '#FFCC8F',
+          purple1: '#F5EEFE',
+          purple2: '#D5B4FF',
+          blue1: '#E5F6FF',
+          blue2: '#71CEFF',
+          green: '#5FD0AB',
+          red: '#FF648A',
+          black: '#000000',
+        },
+        light: {
+          background: '#F8F8F8',
+          FFFFFF: '#FFFFFF',
+          purple: '#E8D7FF',
+          blue: '#B4E5FF',
+          green: '#83E2C3',
+          red: '#FFA1B9',
+        },
+      }
+    : {
+        dark: {
+          background: '#202431',
+          grey4: '#2E3343',
+          grey3: '#474747',
+          grey2: '#A8A6A6',
+          grey1: '#BBBBBB',
+          white: '#F0F0F0',
+          tan1: '#FFDBB0',
+          tan2: '#FFCC8F',
+          purple1: '#F5EEFE',
+          purple2: '#D5B4FF',
+          blue1: '#E5F6FF',
+          blue2: '#71CEFF',
+          green: '#5FD0AB',
+          red: '#FF648A',
+          black: '#000000',
+        },
+        light: {
+          background: '#F8F8F8',
+          FFFFFF: '#FFFFFF',
+          purple: '#E8D7FF',
+          blue: '#B4E5FF',
+          green: '#83E2C3',
+          red: '#FFA1B9',
+        },
+      }
 }
 
 export function theme(darkMode: boolean): DefaultTheme {
@@ -80,6 +109,11 @@ const TextWrapper = styled(Text)<{color: keyof Colors}>`
   color: ${({color, theme}) => (theme as any)[color]};
 `
 
+const TextWrapperUnderlined = styled(Text)<{color: keyof Colors}>`
+  color: ${({color, theme}) => (theme as any)[color]};
+  text-decoration: underline dashed;
+`
+
 type TextProps = Omit<TextPropsOriginal, 'css'>
 
 export const TEXT = {
@@ -90,31 +124,34 @@ export const TEXT = {
     return <TextWrapper fontFamily="Inter, sans-serif" fontWeight={700} fontSize={14} {...props} />
   },
   StandardHeader1(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={400} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={400} color={colors(false).dark.white} {...props} />
   },
   BoldHeader1(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={700} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={20} fontWeight={700} color={colors(false).dark.white} {...props} />
   },
   StandardBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={400} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={400} color={colors(false).dark.white} {...props} />
   },
   BoldStandardBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={700} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={16} fontWeight={700} color={colors(false).dark.white} {...props} />
   },
   SmallBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={400} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={400} color={colors(false).dark.white} {...props} />
   },
   BoldSmallBody(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={700} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={14} fontWeight={700} color={colors(false).dark.white} {...props} />
   },
   Supplemental(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(false).dark.white} {...props} />
+  },
+  SupplementalUnderlinedDashes(props: TextProps) {
+    return <TextWrapperUnderlined fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(false).dark.white} {...props} />
   },
   SupplementalHeader(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(true).grey2} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={400} color={colors(true).dark.grey2} {...props} />
   },
   BoldSupplemental(props: TextProps) {
-    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={700} color={colors(false).white1} {...props} />
+    return <TextWrapper fontFamily="Inter, sans-serif" fontSize={12} fontWeight={700} color={colors(false).dark.white} {...props} />
   },
   BoldNumber(props: TextProps) {
     return <TextWrapper fontFamily="Roboto Mono, monospace" fontSize={14} fontWeight={700} {...props} />

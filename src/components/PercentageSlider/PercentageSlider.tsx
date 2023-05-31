@@ -10,7 +10,7 @@ const SliderContainer = styled.div<{margin?: string}>`
 
 const Header = styled.div`
   font-size: 16px;
-  color: ${({theme}) => theme.text1};
+  color: ${({theme}) => theme.dark.white};
 `
 
 const StyledLabel = styled(Label)<{justifyContent?: string}>`

@@ -39,7 +39,7 @@ export const SelectActionButton = styled(BaseTemplateButton)`
 `
 
 export const TriggerActionButton = styled(SelectActionButton)`
-  color: ${({theme, active}) => (active ? theme.white : '#71d2ff')};
+  color: ${({theme, active}) => (active ? theme.dark.white : '#71d2ff')};
   background: ${({active}) => (active ? '#12B4FF' : 'transparent')};
   border: 1px solid transparent;
 
