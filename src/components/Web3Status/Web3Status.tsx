@@ -16,6 +16,7 @@ import NumberSpring from '../NumberSpring/NumberSpring'
 import Dropdown from './Dropdown'
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal'
 import Loader from '../Loaders/Loaders'
+import {switchNetworkToArbitrum} from '../../utils/switchNetworkToArbitrum'
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -213,6 +214,7 @@ function Web3StatusInner() {
       </Web3StatusConnected>
     )
   } else if (error && isUnsupportedChainIdError) {
+    switchNetworkToArbitrum()
     console.error('Network Error: ', error)
     // either wrong network or error
     return (

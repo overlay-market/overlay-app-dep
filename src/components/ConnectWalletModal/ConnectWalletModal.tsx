@@ -15,6 +15,7 @@ import PendingView from './PendingView'
 import WalletOption from './WalletOptions'
 import usePrevious from '../../hooks/usePrevious'
 import METAMASK_ICON from '../../assets/images/metamask.png'
+import {switchNetworkToArbitrum} from '../../utils/switchNetworkToArbitrum'
 
 export const ModalContent = styled.div`
   display: flex;
@@ -90,16 +91,18 @@ export default function ConnectWalletModal() {
     // }
 
     connector &&
-      activate(connector, undefined, true).catch(error => {
-        if (error instanceof UnsupportedChainIdError) {
-          activate(connector) // a little janky...can't use setError because the connector isn't set
-        } else {
-          setPendingError(true)
-        }
-      })
-      .then(() => {
-        localStorage.setItem('disconnected', "false");
-      })
+      activate(connector, undefined, true)
+        .catch(error => {
+          if (error instanceof UnsupportedChainIdError) {
+            switchNetworkToArbitrum()
+            activate(connector) // a little janky...can't use setError because the connector isn't set
+          } else {
+            setPendingError(true)
+          }
+        })
+        .then(() => {
+          localStorage.setItem('disconnected', 'false')
+        })
   }
 
   function getOptions() {
