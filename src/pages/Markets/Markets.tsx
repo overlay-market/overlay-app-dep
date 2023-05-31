@@ -15,6 +15,7 @@ import {getCharactersBeforeSlash} from '../../utils/getCharactersBeforeSlash'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 import ReactTooltip from 'react-tooltip'
+import {MarketChartMap} from '../../constants/markets'
 
 const activeClassName = 'INACTIVE'
 
@@ -63,6 +64,9 @@ const Markets = () => {
   const {markets, isLoading, refetch} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
+
+  // toggle to hide 7d chart if data unavailable
+  const hide7dChart = false
 
   // list of hidden markets from Markets page
   const hiddenMarkets = ['0x909d893d5e7f250659fa56c2ca2920760eebb17f']
@@ -123,6 +127,13 @@ const Markets = () => {
                   <Trans>Oracle</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
+              {!hide7dChart && (
+                <StyledHeaderCell align="center">
+                  <TEXT.Supplemental>
+                    <Trans>7D Chart</Trans>
+                  </TEXT.Supplemental>
+                </StyledHeaderCell>
+              )}
             </StyledTableHeaderRow>
           </TableHead>
           <TableBody>
@@ -145,6 +156,8 @@ const Markets = () => {
                     oracleLogo={market.oracleLogo}
                     marketLogo={market.marketLogo}
                     priceCurrency={market.priceCurrency}
+                    marketChartData={MarketChartMap[market.marketName!!]}
+                    hide7dChart={hide7dChart}
                   />
                 ))}
           </TableBody>
