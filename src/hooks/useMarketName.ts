@@ -1,17 +1,5 @@
-import {useMemo} from 'react'
-import {Interface} from '@ethersproject/abi'
-import {useSingleCallResult, useMultipleContractSingleData} from '../state/multicall/hooks'
+import {useSingleCallResult} from '../state/multicall/hooks'
 import {useUniswapV3FeedContract, useChainlinkFeedContract, useTokenContract} from './useContract'
-import {useMarketBaseAmounts} from './useMarketBaseAmount'
-import {useMarketQuoteAmounts} from './useMarketQuoteAmounts'
-import {MarketData} from '../state/markets/hooks'
-import {Result} from '../state/multicall/hooks'
-import UNISWAP_V3_FEED_ABI from '../constants/abis/OverlayV1UniswapV3Feed.json'
-import CHAINLINK_FEED_ABI from '../constants/abis/OverlayV1ChainlinkFeed.json'
-import ERC20_INTERFACE from '../constants/abis/erc20'
-
-const UNI_V3_FEED_INTERFACE = new Interface(UNISWAP_V3_FEED_ABI)
-const CHAINLINK_FEED_INTERFACE = new Interface(CHAINLINK_FEED_ABI)
 
 //@dev: need to add in displaying market name based on Chainlink feeds
 export function useMarketName(feedAddress?: string) {

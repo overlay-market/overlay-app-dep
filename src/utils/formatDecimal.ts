@@ -1,5 +1,3 @@
-import {number} from '@lingui/core/cjs/formats'
-
 export function formatDecimalToPercentage(decimal?: number | string) {
   const number = typeof decimal === 'string' ? Number(decimal) : decimal
   return number ? number * 100 : undefined

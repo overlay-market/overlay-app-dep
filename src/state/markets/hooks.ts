@@ -1,5 +1,3 @@
-import {BigNumberish} from 'ethers'
-import {useMemo} from 'react'
 import {AppState} from '../state'
 import {useAppSelector} from '../hooks'
 import {useMarketsQuery, useMarketQuery} from '../data/enhanced'

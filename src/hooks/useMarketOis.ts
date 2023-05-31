@@ -1,10 +1,7 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
-import {formatBigNumberUsingDecimalsToNumber, formatWeiToParsedNumber} from '../utils/formatWei'
-import {ethers} from 'ethers'
 
 /**
  * Returns open interest for input market address

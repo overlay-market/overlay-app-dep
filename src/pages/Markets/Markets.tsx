@@ -10,8 +10,6 @@ import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../compone
 import Loader from '../../components/Loaders/Loaders'
 import {useMarketDetails, AdditionalMarketData} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState, MarketStateResults, ParsedMarketStateDetails} from '../../hooks/useCurrentMarketState'
-import {InfoTip} from '../../components/InfoTip/InfoTip'
-import {getCharactersBeforeSlash} from '../../utils/getCharactersBeforeSlash'
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 import ReactTooltip from 'react-tooltip'
@@ -61,9 +59,9 @@ const infoTipDescriptions = {
 }
 
 const Markets = () => {
-  const {markets, isLoading, refetch} = useTotalMarketsData()
+  const {markets} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
-  const {loading, error, markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
+  const {markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
 
   // toggle to hide 7d chart if data unavailable
   const hide7dChart = false

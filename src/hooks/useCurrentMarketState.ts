@@ -9,8 +9,7 @@ import {formatBigNumber} from '../utils/formatBigNumber'
 import {formatFundingRateToAnnual, formatFundingRateToDaily} from '../utils/formatWei'
 import {MARKET_LOGO_FROM_BASE, PRICE_CURRENCY_FROM_QUOTE, marketNameFromDescription} from '../constants/markets'
 import {getCharactersBeforeSlash, getCharactersAfterSlash} from '../utils/getCharactersBeforeSlash'
-import {useMarketMidPrices} from './useMarketPrices'
-import {useBlockNumber} from '../state/application/hooks'
+
 export interface MarketStateDetails {
   marketAddress: string
   bid: BigNumber
