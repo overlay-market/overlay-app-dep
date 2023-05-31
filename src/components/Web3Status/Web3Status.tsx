@@ -149,7 +149,7 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.MAINNET]: 'Ethereum Mainnet',
   [SupportedChainId.GÖRLI]: 'Goerli Testnet',
   [SupportedChainId.RINKEBY]: 'Rinkeby Testnet',
-  [SupportedChainId.ARBITRUM]: 'Arbitrum One Mainnet',
+  [SupportedChainId.ARBITRUM]: 'Arbitrum One',
   [SupportedChainId.ARBITRUM_GÖRLI]: 'Arbitrum Goerli Testnet',
 }
 
