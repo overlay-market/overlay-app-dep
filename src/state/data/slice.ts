@@ -258,8 +258,8 @@ function graphqlRequestBaseQuery(): BaseQueryFn<
     try {
       const chainId = (getState() as AppState).application.chainId
 
-      // if chainId in state is null, set default query to Kovan
-      const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : CHAIN_SUBGRAPH_URL[42]
+      // if chainId in state is null, set default query to Arbitrum One
+      const subgraphUrl = chainId ? CHAIN_SUBGRAPH_URL[chainId] : CHAIN_SUBGRAPH_URL[42161]
 
       if (!subgraphUrl) {
         return {

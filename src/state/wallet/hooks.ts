@@ -4,7 +4,6 @@ import {Currency, CurrencyAmount, Ether, Token} from '@uniswap/sdk-core'
 import {ChainId} from '@sushiswap/sdk'
 import JSBI from 'jsbi'
 import {isAddress} from '../../utils/web3'
-// import { useAccountQuery } from '../data/enhanced';
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useMulticall2Contract} from '../../hooks/useContract'
 import {useMultipleContractSingleData, useSingleContractMultipleData} from '../multicall/hooks'
