@@ -2,14 +2,14 @@ import {useEffect, useMemo, useState} from 'react'
 import {LineChart, Line, ResponsiveContainer, YAxis} from 'recharts'
 import {MarketChartData} from '../../constants/markets'
 import {colors} from '../../theme/theme'
-import {currentTimeUnix} from '../../utils/currentTime'
+import {daysAgoTimeUnix} from '../../utils/currentTime'
 
 export interface ChartProps {
   marketChartData: MarketChartData
 }
 
 const Chart7dNft = ({marketChartData}: ChartProps) => {
-  const unixTimestamp = currentTimeUnix()
+  const weekAgoUnixTimestamp = daysAgoTimeUnix(7)
   const [nftData, setNftData] = useState([])
 
   useEffect(() => {
@@ -17,7 +17,7 @@ const Chart7dNft = ({marketChartData}: ChartProps) => {
       try {
         const data = JSON.stringify({
           query: `
-            query($amm: Bytes, $to: BigInt, $interval: Int!) { 
+            query($amm: Bytes, $from: BigInt, $interval: Int!) { 
               candles(
                 first: 1000,
                 orderBy: timestamp,
@@ -25,7 +25,7 @@ const Chart7dNft = ({marketChartData}: ChartProps) => {
                 where: {
                   amm: $amm,
                   interval: $interval,
-                  timestamp_lte: $to
+                  timestamp_gte: $from
                 }
               ) {
                 amm
@@ -38,7 +38,7 @@ const Chart7dNft = ({marketChartData}: ChartProps) => {
           `,
           variables: {
             amm: marketChartData.contractAddress,
-            to: unixTimestamp,
+            from: weekAgoUnixTimestamp,
             interval: 3600,
           },
         })
