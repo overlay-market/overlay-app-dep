@@ -1,4 +1,4 @@
-import {useMemo} from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import styled from 'styled-components/macro'
 import {Trans} from '@lingui/macro'
 import {AlertTriangle} from 'react-feather'
@@ -16,6 +16,7 @@ import NumberSpring from '../NumberSpring/NumberSpring'
 import Dropdown from './Dropdown'
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal'
 import Loader from '../Loaders/Loaders'
+import {ethers} from 'ethers'
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -153,6 +154,8 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.ARBITRUM_GÖRLI]: 'Arbitrum Goerli Testnet',
 }
 
+const providerEth = ethers.getDefaultProvider()
+
 function Web3StatusInner() {
   const {account, chainId, error} = useActiveWeb3React()
 
@@ -172,6 +175,28 @@ function Web3StatusInner() {
 
   const toggleWalletModal = useWalletModalToggle()
 
+  const [ens, setEns] = useState<string | null>(null)
+  useEffect(() => {
+    const fetchENS = async () => {
+      if (account) {
+        const storedENS = localStorage.getItem(`ens-${account}`)
+        if (storedENS) {
+          if (storedENS === 'null') {
+            setEns(null)
+          } else {
+            setEns(storedENS)
+          }
+        } else {
+          const result = await providerEth.lookupAddress(account)
+          setEns(result)
+          localStorage.setItem(`ens-${account}`, result ?? 'null')
+        }
+      }
+    }
+
+    fetchENS()
+  }, [account])
+
   if (account) {
     // connected
     return (
@@ -188,7 +213,7 @@ function Web3StatusInner() {
         {account && chainId && !ovlBalance && <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />}
 
         <Account>
-          {shortenAddress(account)}
+          {ens ?? shortenAddress(account)}
 
           {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.MAINNET] && (
             <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
