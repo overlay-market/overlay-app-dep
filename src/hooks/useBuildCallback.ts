@@ -183,7 +183,7 @@ export function useBuildCallback(
         if (!bestCallOption) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
-          if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
+          if (errorCalls.length > 0) throw new Error('ERROR ' + errorCalls[errorCalls.length - 1].error)
           const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>((call): call is BuildCallEstimate => !('error' in call))
           if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the build.')
           bestCallOption = firstNoErrorCall
