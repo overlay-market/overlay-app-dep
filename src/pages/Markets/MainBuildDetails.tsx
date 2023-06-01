@@ -99,15 +99,15 @@ export const MainDetails = ({
 
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
-  return priceImpact ? (
+  return (
     <ContentContainer>
       <AdditionalDetailRow>
         <PositionDetailType>Est. Received Price</PositionDetailType>
-        <DetailValue>{estimatedReceivedPrice ? estimatedReceivedPrice : '-'}</DetailValue>
+        <DetailValue>{estimatedReceivedPrice && minPrice ? estimatedReceivedPrice : '-'}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
-        <PositionDetailType>{isLong ? 'Max' : 'Min'}. Received Price</PositionDetailType>
+        <PositionDetailType>Worst Received Price</PositionDetailType>
         <DetailValue>{minPrice ? formatBigNumberUsingDecimalsToString(minPrice, 18, 4) : '-'}</DetailValue>
       </AdditionalDetailRow>
 
@@ -116,5 +116,5 @@ export const MainDetails = ({
         <DetailValue>{priceImpact ? `${priceImpact}%` : `-`}</DetailValue>
       </AdditionalDetailRow>
     </ContentContainer>
-  ) : null
+  )
 }
