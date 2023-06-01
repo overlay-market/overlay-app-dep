@@ -1,15 +1,10 @@
 import {useState, useCallback, useMemo, useEffect} from 'react'
 import styled from 'styled-components'
-import {utils, BigNumberish, ethers} from 'ethers'
+import {utils, BigNumberish, ethers, BigNumber} from 'ethers'
 import {Label} from '@rebass/forms'
 import {Sliders, X} from 'react-feather'
 import {MarketCard} from '../../components/Card/MarketCard'
-import {
-  SelectActionButton,
-  TriggerActionButton,
-  TransparentUnderlineButton,
-  ApproveTransactionButton,
-} from '../../components/Button/Button'
+import {SelectActionButton, TriggerActionButton, TransparentUnderlineButton, ApproveTransactionButton} from '../../components/Button/Button'
 import {TEXT} from '../../theme/theme'
 import {OVL} from '../../constants/tokens'
 import {Icon} from '../../components/Icon/Icon'
@@ -51,6 +46,7 @@ import {useAsk} from '../../hooks/useAsk'
 import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
 import {marketNameFromDescription} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
+import {MainDetails} from './MainBuildDetails'
 
 const SelectPositionSideButton = styled(SelectActionButton)`
   border: 1px solid #f2f2f2;
@@ -280,9 +276,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     return formatFundingRateToDaily(fetchFundingRate.result?.[0], 18, 2)?.toString() + '%'
   }, [fetchFundingRate])
 
-  const {buildData, inputError} = useDerivedBuildInfo()
-  const {callback: buildCallback} = useBuildCallback(buildData, market?.id, prices._mid, minCollateral, inputError)
-
   const {selectedLeverage, isLong, typedValue, setSlippageValue, txnDeadline} = useBuildState()
   const {onAmountInput, onSelectLeverage, onSelectPositionSide, onSetSlippage, onSetTxnDeadline, onResetBuildState} = useBuildActionHandlers()
 
@@ -357,55 +350,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     })
   }, [attemptingTransaction, transactionErrorMessage, transactionHash])
 
-  const disableBuildButton: boolean = useMemo(() => {
-    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined) {
-      return true
-    }
-    if (Number(typedValue) > Number(parsedOvlBalance)) {
-      return true
-    }
-    if (minCollateral > Number(typedValue)) {
-      return true
-    }
-    return false
-  }, [typedValue, isLong, minCollateral, parsedOvlBalance])
-
-  const handleBuild = useCallback(() => {
-    if (!typedValue) throw new Error('missing position input size')
-    if (isLong === undefined) throw new Error('please choose a long/short position')
-    if (!buildCallback) return
-    setBuildState({
-      showConfirm: true,
-      attemptingTransaction: true,
-      transactionErrorMessage: undefined,
-      transactionHash: undefined,
-    })
-    buildCallback()
-      .then(hash => {
-        setBuildState({
-          showConfirm: true,
-          attemptingTransaction: true,
-          transactionErrorMessage: undefined,
-          transactionHash: hash,
-        })
-        setBuildState({
-          showConfirm: false,
-          attemptingTransaction: false,
-          transactionErrorMessage: undefined,
-          transactionHash: hash,
-        })
-        onResetBuildState()
-      })
-      .catch(error => {
-        setBuildState({
-          showConfirm: false,
-          attemptingTransaction: false,
-          transactionErrorMessage: error,
-          transactionHash: undefined,
-        })
-      })
-  }, [buildCallback, onResetBuildState, isLong, typedValue])
-
   const [approval, approveCallback] = useApproveCallback(
     typedValue !== '.' ? utils.parseUnits(typedValue ? typedValue : '0') : undefined,
     market?.id,
@@ -451,8 +395,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const rawExpectedOi = estimatedOiResult.rawOi ? estimatedOiResult.rawOi : null
   const expectedOi = estimatedOiResult?.formattedOi ? estimatedOiResult?.formattedOi : null
   const estimatedFractionOfCapOi = useFractionOfCapOi(market?.id, estimatedOiResult?.rawOi)
-  const estimatedBid = useBid(market?.id, estimatedFractionOfCapOi)
-  const estimatedAsk = useAsk(market?.id, estimatedFractionOfCapOi)
+  const estimatedBid: BigNumber | undefined = useBid(market?.id, estimatedFractionOfCapOi)
+  const estimatedAsk: BigNumber | undefined = useAsk(market?.id, estimatedFractionOfCapOi)
 
   const estimatedLiquidationPriceResult = useEstimatedBuildLiquidationPrice(market?.id, typedValue, selectedLeverage, isLong)
 
@@ -486,7 +430,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     return priceImpactPercentage.toFixed(2)
   }, [estimatedReceivedPrice, typedValue, isLong, prices.bid, prices.ask])
 
-  const isSlippageTooHigh: boolean | null = useMemo(() => {
+  const isPriceImpactHigh: boolean | null = useMemo(() => {
     if (!estimatedReceivedPrice || !priceImpact) return null
     if (!setSlippageValue) return null
     return Number(priceImpact) - Number(setSlippageValue) > 0 ? true : false
@@ -507,6 +451,59 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
     Number(typedValue),
     buildFee ? formatWeiToParsedNumber(buildFee, 18, 10) : undefined,
   )
+
+  const {buildData, inputError} = useDerivedBuildInfo()
+  const estPrice = isLong ? estimatedAsk : estimatedBid
+  const {callback: buildCallback, minPrice} = useBuildCallback(buildData, market?.id, estPrice, minCollateral, inputError) //change here
+  console.log({minPrice})
+  const disableBuildButton: boolean = useMemo(() => {
+    if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined || !estPrice) {
+      return true
+    }
+    if (Number(typedValue) > Number(parsedOvlBalance)) {
+      return true
+    }
+    if (minCollateral > Number(typedValue)) {
+      return true
+    }
+    return false
+  }, [typedValue, isLong, minCollateral, parsedOvlBalance, estPrice])
+
+  const handleBuild = useCallback(() => {
+    if (!typedValue) throw new Error('missing position input size')
+    if (isLong === undefined) throw new Error('please choose a long/short position')
+    if (!buildCallback) return
+    setBuildState({
+      showConfirm: true,
+      attemptingTransaction: true,
+      transactionErrorMessage: undefined,
+      transactionHash: undefined,
+    })
+    buildCallback()
+      .then(hash => {
+        setBuildState({
+          showConfirm: true,
+          attemptingTransaction: true,
+          transactionErrorMessage: undefined,
+          transactionHash: hash,
+        })
+        setBuildState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: undefined,
+          transactionHash: hash,
+        })
+        onResetBuildState()
+      })
+      .catch(error => {
+        setBuildState({
+          showConfirm: false,
+          attemptingTransaction: false,
+          transactionErrorMessage: error,
+          transactionHash: undefined,
+        })
+      })
+  }, [buildCallback, onResetBuildState, isLong, typedValue])
 
   return (
     <MarketCard align={'left'} padding={'0px'}>
@@ -568,13 +565,21 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
           minimum: {minCollateral !== undefined ? minCollateral : <Loader stroke="white" size="12px" />}
         </NumericalInputBottomText>
 
+        <MainDetails
+          quoteTokenDecimals={quoteTokenDecimals}
+          decimals={decimals}
+          typedValue={typedValue}
+          isLong={isLong}
+          estimatedBid={estimatedBid}
+          estimatedAsk={estimatedAsk}
+          bidPrice={prices.bid}
+          askPrice={prices.ask}
+          minPrice={minPrice.length === 1 ? minPrice[0] : undefined}
+        />
+
         {showUnderwaterFlow ? (
           <TriggerBuildButton onClick={() => null} isDisabled={true} disabled={true}>
             Position Underwater
-          </TriggerBuildButton>
-        ) : isSlippageTooHigh ? (
-          <TriggerBuildButton onClick={() => null} isDisabled={true} disabled={true}>
-            Slippage Too High
           </TriggerBuildButton>
         ) : exceedOiCap ? (
           <TriggerBuildButton onClick={() => null} isDisabled={true} disabled={true}>
@@ -599,27 +604,16 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
             isDisabled={disableBuildButton}
             disabled={disableBuildButton}
           >
-            Build
+            Build {isPriceImpactHigh && '- High Price Impact'}
           </TriggerBuildButton>
         )}
       </ControlInterfaceContainer>
 
       <AdditionalDetails
-        isInverseMarket={isInverseMarket}
-        baseToken={baseToken === 'loading' ? null : baseToken}
-        quoteToken={quoteToken === 'loading' ? null : quoteToken}
-        quoteTokenDecimals={quoteTokenDecimals}
-        decimals={decimals}
-        typedValue={typedValue}
-        isLong={isLong}
-        estimatedBid={estimatedBid}
-        estimatedAsk={estimatedAsk}
         bidPrice={prices.bid}
         askPrice={prices.ask}
-        midPrice={prices.mid}
         fee={buildFee ? formatDecimalToPercentage(formatWeiToParsedNumber(buildFee, 18, 5)) : 'loading'}
         oiCap={formattedCapOi}
-        capPayoff={capPayoff && formatWeiToParsedNumber(capPayoff, 18, 2)}
         oiLong={formattedOiLong}
         oiShort={formattedOiShort}
         slippageTolerance={setSlippageValue}
