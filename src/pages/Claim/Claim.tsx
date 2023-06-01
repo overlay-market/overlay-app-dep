@@ -8,11 +8,9 @@ import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {TriggerActionButton} from '../../components/Button/Button'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {useUserClaimData, useClaimCallback, useUserHasAvailableClaim} from '../../state/claim/hooks'
-import {useUserHasSubmittedClaim} from '../../state/transactions/hooks'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
-import {RouteComponentProps, Link, useHistory, useLocation} from 'react-router-dom'
+import {RouteComponentProps} from 'react-router-dom'
 import {SupportedChainId} from '../../constants/chains'
-import {isAddress} from '../../utils/web3'
 
 const BridgeContainer = styled.div`
   display: flex;
@@ -37,7 +35,7 @@ const Claim = ({
     params: {claimId},
   },
 }: RouteComponentProps<{claimId: string}>) => {
-  const {account, chainId, error} = useActiveWeb3React()
+  const {account, chainId} = useActiveWeb3React()
   const toggleWalletModal = useWalletModalToggle()
 
   const userHasAvailableClaim = useUserHasAvailableClaim(account, claimId)
@@ -55,10 +53,7 @@ const Claim = ({
   const {claimCallback} = useClaimCallback(account, claimId)
 
   // used for UI loading states
-  const [attempting, setAttempting] = useState<boolean>(false)
-
-  const {claimSubmitted, claimTxn} = useUserHasSubmittedClaim(account ?? undefined)
-  const claimConfirmed = Boolean(claimTxn?.receipt)
+  const [, setAttempting] = useState<boolean>(false)
 
   // wrap in useMemo hook to account for changes in claimId
   const handleClaim = useCallback(() => {
@@ -77,7 +72,7 @@ const Claim = ({
       })
   }, [claimCallback, claimId])
 
-  const ClaimButton = () => {
+  const ClaimButton = useMemo(() => {
     return isFullyClaimed ? (
       <TriggerActionButton isDisabled={true} onClick={() => null}>
         Tokens fully claimed
@@ -87,7 +82,7 @@ const Claim = ({
         Claim OVL
       </TriggerActionButton>
     )
-  }
+  }, [isFullyClaimed, handleClaim])
 
   const isWrongNetwork = useMemo(() => {
     if (!chainId) return true
@@ -171,7 +166,7 @@ const Claim = ({
               >
                 Read more about OVL
               </ExternalLink>
-              <ClaimButton />
+              {ClaimButton}
             </FlexColumn>
           </ClaimModalContainer>
         )}
@@ -211,13 +206,10 @@ const Claim = ({
     )
   }, [
     account,
-    claimId,
     isWrongNetwork,
     userClaimAmount,
     userClaimData,
     userHasAvailableClaim,
-    handleClaim,
-    isFullyClaimed,
     ClaimButton,
     toggleWalletModal,
   ])

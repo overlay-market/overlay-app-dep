@@ -177,7 +177,7 @@ export function useBridgeTokenCallback(
                   .then(result => {
                     console.debug('Unexpected successful call after failed estimate gas', call, gasError, result)
 
-                    const error = 'Unexpected issue with estimating the gas. ' + 'Please try again.'
+                    const error = 'Unexpected issue with estimating the gas. Please try again.'
 
                     console.log('gasError from call: ', gasError)
                     return {

@@ -8,7 +8,6 @@ import {Token, Currency} from '@uniswap/sdk-core'
 import {NEVER_RELOAD, useSingleCallResult} from '../state/multicall/hooks'
 import {ExtendedEther} from '../constants/tokens'
 import {SupportedChainId} from '../constants/chains'
-import {OVL} from '../constants/tokens'
 
 // parse a name or symbol from a token response
 const BYTES32_REGEX = /^0x[a-fA-F0-9]{64}$/

@@ -1,6 +1,6 @@
 import {useState, useEffect, useCallback, useMemo} from 'react'
 import styled from 'styled-components'
-import {useChainOvlBalance, useChainLLBalance} from '../../state/wallet/hooks'
+import {useChainOvlBalance} from '../../state/wallet/hooks'
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../../components/Web3Status/Web3Status'
 import {TEXT} from '../../theme/theme'
@@ -15,7 +15,7 @@ import {LAYER_ZERO_ADDRESS} from '../../constants/bridge'
 import {utils} from 'ethers'
 import {formatWeiToParsedNumber} from '../../utils/formatWei'
 import {useApproveCallback, ApprovalState} from '../../hooks/useApproveCallback'
-import {OVL, LL} from '../../constants/tokens'
+import {OVL} from '../../constants/tokens'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {Icon} from '../../components/Icon/Icon'
 import {RefreshCw} from 'react-feather'
@@ -103,17 +103,17 @@ const BridgeFromNetwork = ({chainId}: {chainId: ChainId}) => {
     [onAmountInput],
   )
 
-  const handleQuickInput = (percentage: number, totalSupply: string | undefined | null) => {
-    if (totalSupply == '0' || totalSupply === null || totalSupply === undefined) return
+  // const handleQuickInput = (percentage: number, totalSupply: string | undefined | null) => {
+  //   if (totalSupply == '0' || totalSupply === null || totalSupply === undefined) return
 
-    let calculatedAmountByPercentage
-    if (percentage < 100) {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(0)
-    } else {
-      calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(10)
-    }
-    return handleUserInput(calculatedAmountByPercentage)
-  }
+  //   let calculatedAmountByPercentage
+  //   if (percentage < 100) {
+  //     calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(0)
+  //   } else {
+  //     calculatedAmountByPercentage = (Number(totalSupply) * (percentage / 100)).toFixed(10)
+  //   }
+  //   return handleUserInput(calculatedAmountByPercentage)
+  // }
 
   return (
     <BridgeSelectorContainer>
@@ -182,7 +182,7 @@ const Bridge = () => {
   const userOvlBalance = useChainOvlBalance(chainId)
   const parsedOvlBalance = userOvlBalance && userOvlBalance.toFixed(4)
 
-  const [{showConfirm, attemptingTransaction, transactionErrorMessage, transactionHash}, setBridgeState] = useState<{
+  const [, setBridgeState] = useState<{
     showConfirm: boolean
     attemptingTransaction: boolean
     transactionErrorMessage: string | undefined

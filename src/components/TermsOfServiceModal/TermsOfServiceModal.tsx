@@ -57,7 +57,7 @@ export enum ClientCookies {
 export default function TermsOfServiceModal() {
   const [userAgreementStatus, setUserAgreementStatus] = useTermsOfServiceStatusManager()
   const termsOfServiceModalOpen = useModalOpen(ApplicationModal.TERMS_OF_SERVICE)
-  const [cookies, setCookie] = useCookies([ClientCookies.userHasAcceptedServiceAgreement])
+  const [, setCookie] = useCookies([ClientCookies.userHasAcceptedServiceAgreement])
 
   const toggleTermsOfServiceModal = useTermsOfServiceModalToggle()
 

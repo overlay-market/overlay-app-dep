@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
-import {InfoTip} from '../../components/InfoTip/InfoTip'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {TransactionSettingsButton} from '../../components/Button/Button'
 import {NumericalInputContainer} from './Build'

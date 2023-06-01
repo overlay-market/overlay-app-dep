@@ -1,4 +1,3 @@
-import {useMemo} from 'react'
 import {X} from 'react-feather'
 import Modal from '../Modal/Modal'
 import {TEXT} from '../../theme/theme'
@@ -6,9 +5,7 @@ import {TriggerActionButton as TriggerConfirmBuildButton, PendingActionButton as
 import {AdditionalDetailRow} from '../../pages/Positions/Unwind'
 import {FlexColumn} from '../Container/Container'
 import {ModalContent, WalletHeader, CloseIcon} from '../ConnectWalletModal/ConnectWalletModal'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import {BigNumberish} from 'ethers'
-import Loader from '../Loaders/Loaders'
 
 export default function ConfirmTxnModal({
   marketName,

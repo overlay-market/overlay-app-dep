@@ -9,7 +9,6 @@ import {useMulticall2Contract} from '../../hooks/useContract'
 import {useMultipleContractSingleData, useSingleContractMultipleData} from '../multicall/hooks'
 import {OVL, LL} from '../../constants/tokens'
 import ERC20_ABI from '../../constants/abis/erc20.json'
-import {SupportedChainId} from '../../constants/chains'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.
