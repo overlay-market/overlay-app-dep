@@ -99,7 +99,6 @@ export default function ChangeNetworkModal() {
   const toggleWalletModal = () => setWalletModalOpen(false)
 
   const onClick = () => {
-    console.log('click')
     switchNetworkToArbitrum()
   }
 
