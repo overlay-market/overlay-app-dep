@@ -154,7 +154,7 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.ARBITRUM_GÖRLI]: 'Arbitrum Goerli Testnet',
 }
 
-const providerEth = ethers.getDefaultProvider()
+const providerEth = new ethers.providers.InfuraProvider('mainnet', process.env.REACT_APP_INFURA_KEY)
 
 function Web3StatusInner() {
   const {account, chainId, error} = useActiveWeb3React()
@@ -182,7 +182,9 @@ function Web3StatusInner() {
         const storedENS = localStorage.getItem(`ens-${account}`)
         if (storedENS) {
           if (storedENS === 'null') {
-            setEns(null)
+            const result = await providerEth.lookupAddress(account)
+            setEns(result)
+            localStorage.setItem(`ens-${account}`, result ?? 'null')
           } else {
             setEns(storedENS)
           }
