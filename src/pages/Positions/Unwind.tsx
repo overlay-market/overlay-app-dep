@@ -291,7 +291,7 @@ export function Unwind({
         history.push(`/closed-positions/${marketPositionId}-${numberOfUnwinds}/${positionId}`)
       })
       .catch(err => console.error('Error from handleUnwind: ', err))
-  }, [unwindCallback, onResetUnwindState])
+  }, [history, position, marketPositionId, positionId, unwindCallback, onResetUnwindState])
 
   const isUnwindAmountTooLow: boolean = useMemo(() => {
     if (Number(typedValue) < 0.01 && customInput) {
