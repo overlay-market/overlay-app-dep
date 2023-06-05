@@ -4,14 +4,15 @@ import {Box} from 'rebass/styled-components'
 export const PageContainer = styled.div<{maxWidth?: string}>`
   max-width: ${({maxWidth}) => (maxWidth ? maxWidth : '1200px')};
   margin: auto;
-  margin-top: 48px;
+  margin-top: 0;
+  margin-bottom: 48px;
   padding: 16px;
 
   > div {
     background: ${({theme}) => theme.dark.background} !important;
   }
 
-  ${({theme}) => theme.mediaWidth.minMedium`
+  ${({theme}) => theme.mediaWidth.minSmall`
     margin: 0 auto 48px;
   `}
 `
