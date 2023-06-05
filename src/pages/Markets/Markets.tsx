@@ -84,17 +84,17 @@ const Markets = () => {
         <StyledTable>
           <TableHead>
             <StyledTableHeaderRow>
-              <StyledHeaderCell width={1}>
+              <StyledHeaderCell width={1} id="marketIndex">
                 <TEXT.Supplemental>
                   <Trans>#</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
-              <StyledHeaderCell width={25}>
+              <StyledHeaderCell width={25} id="marketName">
                 <TEXT.Supplemental>
                   <Trans>Market</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
-              <StyledHeaderCell>
+              <StyledHeaderCell id="marketPrice">
                 <TEXT.Supplemental>
                   <Trans>Price</Trans>
                 </TEXT.Supplemental>
@@ -104,7 +104,7 @@ const Markets = () => {
                   <TEXT.Supplemental>7d</TEXT.Supplemental>
                 </Trans>
               </StyledHeaderCell> */}
-              <StyledHeaderCell>
+              <StyledHeaderCell id="marketFundingRate">
                 <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
                   <Trans>Funding</Trans>
                 </TEXT.SupplementalUnderlinedDashes>
@@ -112,7 +112,7 @@ const Markets = () => {
                   {infoTipDescriptions.fundingRate}
                 </ReactTooltip>
               </StyledHeaderCell>
-              <StyledHeaderCell>
+              <StyledHeaderCell id="marketOi">
                 <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
                   <Trans>OI Balance</Trans>
                 </TEXT.SupplementalUnderlinedDashes>
@@ -120,13 +120,13 @@ const Markets = () => {
                   {infoTipDescriptions.openInterest}
                 </ReactTooltip>
               </StyledHeaderCell>
-              <StyledHeaderCell align="center">
+              <StyledHeaderCell align="center" id="marketFeedLogo">
                 <TEXT.Supplemental>
                   <Trans>Oracle</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
               {!hide7dChart && (
-                <StyledHeaderCell align="center">
+                <StyledHeaderCell align="center" id="market7dChart">
                   <TEXT.Supplemental>
                     <Trans>7D Chart</Trans>
                   </TEXT.Supplemental>
