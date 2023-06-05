@@ -22,12 +22,12 @@ const OptionCard = styled(InfoCard as any)`
   border: none;
 `
 
-const CardHeader = styled.div`
+export const CardHeader = styled.div`
   justify-content: center;
   text-align: left;
 `
 
-const OptionCardClickable = styled(OptionCard as any)<{clickable?: boolean}>`
+export const OptionCardClickable = styled(OptionCard as any)<{clickable?: boolean}>`
   margin-top: 0;
   border: ${({active}) => (active ? '1px solid green !important' : '')};
   background: ${({active}) => (active ? '#154015 !important' : '')};
@@ -40,12 +40,12 @@ const OptionCardClickable = styled(OptionCard as any)<{clickable?: boolean}>`
   opacity: ${({disabled}) => (disabled ? '0.5' : '1')};
 `
 
-const CardText = styled.div`
+export const CardText = styled.div`
   display: flex;
   flex-direction: row;
 `
 
-const SubHeader = styled.div`
+export const SubHeader = styled.div`
   color: ${({theme}) => theme.dark.white};
   margin-top: 10px;
   font-size: 12px;
@@ -60,7 +60,7 @@ const Connected = styled.div`
   padding: 2px 4px;
 `
 
-const IconWrapper = styled.div<{size?: number | null}>`
+export const IconWrapper = styled.div<{size?: number | null}>`
   align-items: center;
   justify-content: center;
   & > img,
