@@ -455,7 +455,6 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
   const {buildData, inputError} = useDerivedBuildInfo()
   const estPrice = isLong ? estimatedAsk : estimatedBid
   const {callback: buildCallback, minPrice} = useBuildCallback(buildData, market?.id, estPrice, minCollateral, inputError) //change here
-  console.log({minPrice})
   const disableBuildButton: boolean = useMemo(() => {
     if (!typedValue || !parsedOvlBalance || !minCollateral || isLong === undefined || !estPrice) {
       return true
