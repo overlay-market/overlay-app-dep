@@ -20,6 +20,8 @@ export function useBuildState(): AppState['build'] {
   return useAppSelector((state) => state.build);
 }
 
+const slippageRegex: RegExp = /^(?:\d+(?:\.\d{0,2})?|\.\d{1,2})?$/;
+
 export function useBuildActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;
   onSelectLeverage: (selectedLeverage: string) => void;
@@ -53,10 +55,11 @@ export function useBuildActionHandlers(): {
 
   const onSetSlippage = useCallback(
     (setSlippageValue: DefaultTxnSettings | string) => {
-      if (Number(setSlippageValue) < 1 && setSlippageValue.length > 1) {
+      if (Number(setSlippageValue) < .01 && setSlippageValue.length > 3) {
+        console.log("HELLO", {setSlippageValue})
         dispatch(setSlippage({setSlippageValue: DefaultTxnSettings.DEFAULT_SLIPPAGE}))
       }
-      else {
+      if(slippageRegex.test(setSlippageValue)) {
         dispatch(setSlippage({ setSlippageValue }))
       }
     },
