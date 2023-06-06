@@ -38,7 +38,8 @@ export const MarketsStyledTableHeaderRow = styled(StyledTableHeaderRow)`
     display: none;
   }
 
-  th {
+  th,
+  td {
     padding: 8px;
   }
 

@@ -21,7 +21,8 @@ export const MarketsStyledTableRow = styled(StyledTableRow)`
     display: none;
   }
 
-  th {
+  th,
+  td {
     padding: 24px 8px;
   }
 
