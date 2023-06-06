@@ -56,8 +56,10 @@ export function useBuildActionHandlers(): {
   const onSetSlippage = useCallback(
     (setSlippageValue: DefaultTxnSettings | string) => {
       if (Number(setSlippageValue) < .01 && setSlippageValue.length > 3) {
-        console.log("HELLO", {setSlippageValue})
         dispatch(setSlippage({setSlippageValue: DefaultTxnSettings.DEFAULT_SLIPPAGE}))
+      }
+      if(setSlippageValue === '.') {
+        dispatch(setSlippage({ setSlippageValue }))
       }
       if(slippageRegex.test(setSlippageValue)) {
         dispatch(setSlippage({ setSlippageValue }))
