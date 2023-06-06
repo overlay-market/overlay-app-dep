@@ -14,6 +14,9 @@ import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 import ReactTooltip from 'react-tooltip'
 import {MarketChartMap} from '../../constants/markets'
+import {useAppSelector} from '../../state/hooks'
+import {AppState} from '../../state/state'
+import ChangeNetworkModal from '../../components/ConnectWalletModal/ChangeNetworkModal'
 
 const activeClassName = 'INACTIVE'
 
@@ -90,6 +93,7 @@ const Markets = () => {
   const {markets} = useTotalMarketsData()
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
 
   // toggle to hide 7d chart if data unavailable
   const hide7dChart = false
@@ -109,87 +113,91 @@ const Markets = () => {
   return (
     <PageContainer>
       <TableContainer component={Paper}>
-        <StyledTable smWidth="100%">
-          <TableHead>
-            <MarketsStyledTableHeaderRow>
-              <StyledHeaderCell width={1} smWidth={2} id="marketIndex">
-                <TEXT.Supplemental>
-                  <Trans>#</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-              <StyledHeaderCell width={25} smWidth={50} id="marketName">
-                <TEXT.Supplemental>
-                  <Trans>Market</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-              <StyledHeaderCell id="marketPrice">
-                <TEXT.Supplemental>
-                  <Trans>Price</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-              {/* <StyledHeaderCell>
-                <Trans>
-                  <TEXT.Supplemental>7d</TEXT.Supplemental>
-                </Trans>
-              </StyledHeaderCell> */}
-              <StyledHeaderCell id="marketFundingRate">
-                <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
-                  <Trans>Funding</Trans>
-                </TEXT.SupplementalUnderlinedDashes>
-                <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'funding info'}>
-                  {infoTipDescriptions.fundingRate}
-                </ReactTooltip>
-              </StyledHeaderCell>
-              <StyledHeaderCell id="marketOi">
-                <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
-                  <Trans>OI Balance</Trans>
-                </TEXT.SupplementalUnderlinedDashes>
-                <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'Balance info'}>
-                  {infoTipDescriptions.openInterest}
-                </ReactTooltip>
-              </StyledHeaderCell>
-              <StyledHeaderCell align="center" id="marketFeedLogo">
-                <TEXT.Supplemental>
-                  <Trans>Oracle</Trans>
-                </TEXT.Supplemental>
-              </StyledHeaderCell>
-              {!hide7dChart && (
-                <StyledHeaderCell align="center" id="market7dChart">
+        {chainId !== 1 ? (
+          <StyledTable smWidth="100%">
+            <TableHead>
+              <MarketsStyledTableHeaderRow>
+                <StyledHeaderCell width={1} smWidth={2} id="marketIndex">
                   <TEXT.Supplemental>
-                    <Trans>7D Chart</Trans>
+                    <Trans>#</Trans>
                   </TEXT.Supplemental>
                 </StyledHeaderCell>
-              )}
-            </MarketsStyledTableHeaderRow>
-          </TableHead>
-          <TableBody>
-            {marketsData.length > 0 &&
-              marketsData
-                ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
-                .sort(customSort)
-                .map((market: ParsedMarketStateDetails, index: number) => (
-                  <MarketsRow
-                    key={market.marketAddress}
-                    index={index + 1} //start count at 1
-                    marketId={market.marketAddress}
-                    marketName={market.marketName}
-                    midPrice={market.parsedMid}
-                    oiLong={market.parsedOiLong}
-                    oiShort={market.parsedOiShort}
-                    capOi={market.parsedCapOi}
-                    dailyFundingRate={market.parsedDailyFundingRate}
-                    annualFundingRate={market.parsedAnnualFundingRate}
-                    oracleLogo={market.oracleLogo}
-                    marketLogo={market.marketLogo}
-                    priceCurrency={market.priceCurrency}
-                    marketChartData={MarketChartMap[market.marketName!!]}
-                    hide7dChart={hide7dChart}
-                  />
-                ))}
-          </TableBody>
-        </StyledTable>
+                <StyledHeaderCell width={25} smWidth={50} id="marketName">
+                  <TEXT.Supplemental>
+                    <Trans>Market</Trans>
+                  </TEXT.Supplemental>
+                </StyledHeaderCell>
+                <StyledHeaderCell>
+                  <TEXT.Supplemental id="marketPrice">
+                    <Trans>Price</Trans>
+                  </TEXT.Supplemental>
+                </StyledHeaderCell>
+                {/* <StyledHeaderCell>
+                  <Trans>
+                    <TEXT.Supplemental>7d</TEXT.Supplemental>
+                  </Trans>
+                </StyledHeaderCell> */}
+                <StyledHeaderCell id="marketFundingRate">
+                  <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
+                    <Trans>Funding</Trans>
+                  </TEXT.SupplementalUnderlinedDashes>
+                  <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'funding info'}>
+                    {infoTipDescriptions.fundingRate}
+                  </ReactTooltip>
+                </StyledHeaderCell>
+                <StyledHeaderCell id="marketOi">
+                  <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
+                    <Trans>OI Balance</Trans>
+                  </TEXT.SupplementalUnderlinedDashes>
+                  <ReactTooltip place="bottom" type="info" effect="solid" textColor={'#FFFFFF'} backgroundColor="#000000" id={'Balance info'}>
+                    {infoTipDescriptions.openInterest}
+                  </ReactTooltip>
+                </StyledHeaderCell>
+                <StyledHeaderCell align="center" id="marketFeedLogo">
+                  <TEXT.Supplemental>
+                    <Trans>Oracle</Trans>
+                  </TEXT.Supplemental>
+                </StyledHeaderCell>
+                {!hide7dChart && (
+                  <StyledHeaderCell align="center" id="market7dChart">
+                    <TEXT.Supplemental>
+                      <Trans>7D Chart</Trans>
+                    </TEXT.Supplemental>
+                  </StyledHeaderCell>
+                )}
+              </MarketsStyledTableHeaderRow>
+            </TableHead>
+            <TableBody>
+              {marketsData.length > 0 &&
+                marketsData
+                  ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
+                  .sort(customSort)
+                  .map((market: ParsedMarketStateDetails, index: number) => (
+                    <MarketsRow
+                      key={market.marketAddress}
+                      index={index + 1} //start count at 1
+                      marketId={market.marketAddress}
+                      marketName={market.marketName}
+                      midPrice={market.parsedMid}
+                      oiLong={market.parsedOiLong}
+                      oiShort={market.parsedOiShort}
+                      capOi={market.parsedCapOi}
+                      dailyFundingRate={market.parsedDailyFundingRate}
+                      annualFundingRate={market.parsedAnnualFundingRate}
+                      oracleLogo={market.oracleLogo}
+                      marketLogo={market.marketLogo}
+                      priceCurrency={market.priceCurrency}
+                      marketChartData={MarketChartMap[market.marketName!!]}
+                      hide7dChart={hide7dChart}
+                    />
+                  ))}
+            </TableBody>
+          </StyledTable>
+        ) : (
+          <ChangeNetworkModal />
+        )}
       </TableContainer>
-      {marketsData.length === 0 && (
+      {marketsData.length === 0 && chainId !== 1 && (
         <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
           <Loader stroke="white" size="21px" />
         </FlexRow>
