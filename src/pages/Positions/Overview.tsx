@@ -10,9 +10,14 @@ import {formatBigNumber} from '../../utils/formatBigNumber'
 import {useMemo} from 'react'
 import {colors} from '../../theme/theme'
 
-const Container = styled.div`
+const Container = styled.div<{mt?: string}>`
   display: flex;
   flex-direction: column;
+  margin-top: 0;
+
+  ${({theme, mt}) => theme.mediaWidth.minMedium`
+    margin-top: ${mt ? `${mt}` : ''};
+  `}
 `
 
 export interface Props {
@@ -98,10 +103,8 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
   ]
 
   return tvlArray.length > 0 && unwinds ? (
-    <Container>
-      <TEXT.BoldStandardBody mt={marginTop} mb="16px">
-        {`${title}`}
-      </TEXT.BoldStandardBody>
+    <Container mt={marginTop}>
+      <TEXT.BoldStandardBody mb="16px">{`${title}`}</TEXT.BoldStandardBody>
       <Box>
         <Grid container spacing={2}>
           {cardsData.map(card => {
@@ -115,10 +118,8 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
       </Box>
     </Container>
   ) : (
-    <Container>
-      <TEXT.BoldStandardBody mt={marginTop} mb="16px">
-        {`${title}`}
-      </TEXT.BoldStandardBody>
+    <Container mt={marginTop}>
+      <TEXT.BoldStandardBody mb="16px">{`${title}`}</TEXT.BoldStandardBody>
       <Box>
         <TEXT.SupplementalHeader fontSize={14}>
           Nothing here yet. Open a position on the{' '}
