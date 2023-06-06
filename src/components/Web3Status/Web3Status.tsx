@@ -17,6 +17,7 @@ import Dropdown from './Dropdown'
 import ConnectWalletModal from '../ConnectWalletModal/ConnectWalletModal'
 import Loader from '../Loaders/Loaders'
 import {ethers} from 'ethers'
+import {switchNetworkToArbitrum} from '../../utils/switchNetworkToArbitrum'
 
 export const Web3StatusConnected = styled.div`
   display: flex;
@@ -150,7 +151,7 @@ export const NETWORK_LABELS: {[chainId in SupportedChainId | number]: string} = 
   [SupportedChainId.MAINNET]: 'Ethereum Mainnet',
   [SupportedChainId.GÖRLI]: 'Goerli Testnet',
   [SupportedChainId.RINKEBY]: 'Rinkeby Testnet',
-  [SupportedChainId.ARBITRUM]: 'Arbitrum One Mainnet',
+  [SupportedChainId.ARBITRUM]: 'Arbitrum One',
   [SupportedChainId.ARBITRUM_GÖRLI]: 'Arbitrum Goerli Testnet',
 }
 
@@ -240,6 +241,7 @@ function Web3StatusInner() {
       </Web3StatusConnected>
     )
   } else if (error && isUnsupportedChainIdError) {
+    switchNetworkToArbitrum()
     console.error('Network Error: ', error)
     // either wrong network or error
     return (
