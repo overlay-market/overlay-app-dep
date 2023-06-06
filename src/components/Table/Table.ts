@@ -1,10 +1,10 @@
 import styled from 'styled-components/macro'
 import {Table, TableCell, TableRow} from '@material-ui/core'
 
-export const StyledTable = styled(Table)`
+export const StyledTable = styled(Table)<{smWidth?: string}>`
   white-space: nowrap !important;
   table-layout: fixed !important;
-  width: 100%;
+  width: ${({smWidth}) => (smWidth ? `${smWidth}` : '')};
 
   ${({theme}) => theme.mediaWidth.minSmall`
     table-layout: fixed !important;
@@ -15,10 +15,10 @@ export const StyledTable = styled(Table)`
   `}
 `
 
-export const StyledTableCell = styled(TableCell)<{width?: number}>`
+export const StyledTableCell = styled(TableCell)<{width?: number; smWidth?: number}>`
   font-size: 14px;
   color: ${({theme}) => theme.dark.white} !important;
-  width: ${({width}) => (width ? `${width * 2}%` : 'auto')};
+  width: ${({smWidth}) => (smWidth ? `${smWidth}%` : 'auto')};
 
   ${({theme, width}) => theme.mediaWidth.minSmall`
     width: ${width ? `${width}%` : 'auto'};
@@ -38,33 +38,7 @@ export const StyledTableCellThin = styled(StyledTableCell)`
 export const StyledTableRow = styled(TableRow)`
   cursor: pointer;
   background: ${({theme}) => theme.dark.background};
-
-  #marketFundingRate,
-  #marketOi,
-  #marketFeedLogo,
-  #market7dChart {
-    display: none;
-  }
-
-  th {
-    padding: 24px 8px;
-  }
-
-  ${({theme}) => theme.mediaWidth.minSmall`
-    height: 69px;
-    
-    #marketFundingRate,
-    #market7dChart {
-      display: table-cell;
-    }
-  `}
-
-  ${({theme}) => theme.mediaWidth.minMedium`
-    #marketOi,
-    #marketFeedLogo {
-      display: table-cell;
-    }
-  `}
+  height: 69px;
 
   ${({theme}) => theme.mediaWidth.minMedium`
     height: auto;
@@ -92,28 +66,7 @@ export const StyledTableHeaderRow = styled(TableRow)`
   background: ${({theme}) => theme.dark.background};
   cursor: default;
 
-  #marketFundingRate,
-  #marketOi,
-  #marketFeedLogo,
-  #market7dChart {
-    display: none;
-  }
-
   th {
     padding: 8px;
   }
-
-  ${({theme}) => theme.mediaWidth.minSmall`
-    #marketFundingRate,
-    #market7dChart {
-      display: table-cell;
-    }
-  `}
-
-  ${({theme}) => theme.mediaWidth.minMedium`
-    #marketOi,
-    #marketFeedLogo {
-      display: table-cell;
-    }
-  `}
 `

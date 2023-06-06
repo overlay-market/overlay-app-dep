@@ -30,6 +30,33 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
+export const MarketsStyledTableHeaderRow = styled(StyledTableHeaderRow)`
+  #marketFundingRate,
+  #marketOi,
+  #marketFeedLogo,
+  #market7dChart {
+    display: none;
+  }
+
+  th {
+    padding: 8px;
+  }
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    #marketFundingRate,
+    #market7dChart {
+      display: table-cell;
+    }
+  `}
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    #marketOi,
+    #marketFeedLogo {
+      display: table-cell;
+    }
+  `}
+`
+
 const infoTipDescriptions = {
   openInterest: (
     <React.Fragment>
@@ -81,15 +108,15 @@ const Markets = () => {
   return (
     <PageContainer>
       <TableContainer component={Paper}>
-        <StyledTable>
+        <StyledTable smWidth="100%">
           <TableHead>
-            <StyledTableHeaderRow>
-              <StyledHeaderCell width={1} id="marketIndex">
+            <MarketsStyledTableHeaderRow>
+              <StyledHeaderCell width={1} smWidth={2} id="marketIndex">
                 <TEXT.Supplemental>
                   <Trans>#</Trans>
                 </TEXT.Supplemental>
               </StyledHeaderCell>
-              <StyledHeaderCell width={25} id="marketName">
+              <StyledHeaderCell width={25} smWidth={50} id="marketName">
                 <TEXT.Supplemental>
                   <Trans>Market</Trans>
                 </TEXT.Supplemental>
@@ -132,7 +159,7 @@ const Markets = () => {
                   </TEXT.Supplemental>
                 </StyledHeaderCell>
               )}
-            </StyledTableHeaderRow>
+            </MarketsStyledTableHeaderRow>
           </TableHead>
           <TableBody>
             {marketsData.length > 0 &&

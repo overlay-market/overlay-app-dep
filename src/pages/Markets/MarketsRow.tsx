@@ -1,4 +1,5 @@
 import {useMemo, useState, useEffect} from 'react'
+import styled from 'styled-components'
 import {StyledTableCellThin, StyledTableRow} from '../../components/Table/Table'
 import {FlexRow} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
@@ -9,6 +10,37 @@ import {AlertCircle} from 'react-feather'
 import {MarketChartData} from '../../constants/markets'
 import Chart7dCoin from './Chart7dCoin'
 import Chart7dNft from './Chart7dNft'
+
+export const MarketsStyledTableRow = styled(StyledTableRow)`
+  height: unset;
+
+  #marketFundingRate,
+  #marketOi,
+  #marketFeedLogo,
+  #market7dChart {
+    display: none;
+  }
+
+  th {
+    padding: 24px 8px;
+  }
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    height: 69px;
+    
+    #marketFundingRate,
+    #market7dChart {
+      display: table-cell;
+    }
+  `}
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    #marketOi,
+    #marketFeedLogo {
+      display: table-cell;
+    }
+  `}
+`
 
 type MarketsRowProps = {
   index: number
@@ -74,7 +106,7 @@ const MarketsRow = ({
   }, [dailyFundingRate])
 
   return (
-    <StyledTableRow hover={true} onClick={handleNavigate}>
+    <MarketsStyledTableRow hover={true} onClick={handleNavigate}>
       <StyledTableCellThin component="th" scope="row" id="marketIndex">
         {index}
       </StyledTableCellThin>
@@ -121,7 +153,7 @@ const MarketsRow = ({
           {marketChartData && !marketChartData.isNft && <Chart7dCoin marketChartData={marketChartData!!} />}
         </StyledTableCellThin>
       )}
-    </StyledTableRow>
+    </MarketsStyledTableRow>
   )
 }
 
