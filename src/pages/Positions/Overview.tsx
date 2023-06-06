@@ -106,7 +106,7 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
         <Grid container spacing={2}>
           {cardsData.map(card => {
             return (
-              <Grid item key={card.title} xs={3}>
+              <Grid item key={card.title} xs={12} sm={6} md={3}>
                 <OverviewCard title={card.title} icon={card.icon} value={card.value} valueColor={card.valueColor ?? '#E5F6FF'} />
               </Grid>
             )
