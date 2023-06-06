@@ -22,13 +22,18 @@ export const InterfaceWrapper = styled.div`
   flex-direction: column;
   z-index: 0;
   color: white;
-  padding: 0 16px 16px;
-  margin: 0 auto 32px;
-  max-width: 350px;
   position: static;
+  max-width: 375px;
+  padding: 0 16px;
+  margin-bottom: 48px;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    padding: 16px 0;
+    max-width: 350px;
+    margin: 0 auto 32px;
+  `}
 
   ${({theme}) => theme.mediaWidth.minMedium`
-    padding: 16px 0;
     position: relative;
     margin: 0 auto 48px;
   `}
