@@ -4,7 +4,7 @@ import {Table, TableCell, TableRow} from '@material-ui/core'
 export const StyledTable = styled(Table)<{smWidth?: string}>`
   white-space: nowrap !important;
   table-layout: fixed !important;
-  width: ${({smWidth}) => (smWidth ? `${smWidth}` : '')};
+  width: ${({smWidth}) => (smWidth ? `${smWidth}` : 'auto')} !important;
 
   ${({theme}) => theme.mediaWidth.minSmall`
     table-layout: fixed !important;
