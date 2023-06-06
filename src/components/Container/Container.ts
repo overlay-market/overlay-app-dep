@@ -25,7 +25,7 @@ export const InterfaceWrapper = styled.div`
   position: static;
   max-width: 375px;
   padding: 0 16px;
-  margin-bottom: 48px;
+  margin: 0 auto 48px;
 
   ${({theme}) => theme.mediaWidth.minSmall`
     padding: 16px 0;
