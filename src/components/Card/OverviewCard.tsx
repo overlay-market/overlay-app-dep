@@ -22,6 +22,8 @@ const CardIcon = styled.div`
   justify-content: center;
   width: 64px;
   height: 64px;
+  min-width: 64px;
+  min-height: 64px;
   background: #474747;
   border-radius: 50%;
   display: flex;
