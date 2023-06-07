@@ -13,6 +13,7 @@ import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
 import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
+import {ChevronDown} from 'react-feather'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.dark.white};
@@ -64,9 +65,63 @@ export const StyledLink = styled(NavLink).attrs({
   `};
 `
 
+const PowerCardLink = styled(StyledLink)`
+  background: linear-gradient(89.2deg, #d5b4ff -1.18%, #ffa2b9 26.07%, #ff648a 47.56%, #ffcc8f 64.85%, #d5b4ff 99.44%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+`
+
+const Dropdown = styled.div<{open: boolean}>`
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  text-decoration: none;
+  margin: auto 16px;
+  padding: 8px;
+  cursor: pointer;
+  background: ${({theme}) => theme.dark.grey4};
+  color: ${({theme}) => theme.dark.purple2};
+  transition: width 0.5s ease-in-out;
+  border-radius: ${({open}) => (open ? '8px 8px 0 0' : '8px')};
+  width: ${({open}) => (open ? '110px' : 'auto')};
+`
+
+const DropdownContent = styled.div`
+  display: flex;
+`
+
+const DropdownList = styled.div<{open: boolean}>`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: ${({open}) => (open ? 'flex' : 'none')};
+  flex-direction: column;
+  padding: 16px 8px;
+  border-radius: 0 0 8px 8px;
+  gap: 16px;
+  background: ${({theme}) => theme.dark.grey4};
+  width: ${({open}) => (open ? '110px' : 'auto')};
+`
+
+const DropdownItem = styled(StyledLink)`
+  margin: 0;
+`
+
+interface RotatingChevronProps {
+  open: boolean
+}
+
+export const RotatingChevron = styled(ChevronDown)<RotatingChevronProps>`
+  transform: ${props => (props.open ? 'rotate(180deg)' : 'rotate(0deg)')};
+  transition: transform ease-out 0.25s;
+`
+
 export default function Header() {
   const [darkMode] = useDarkModeManager()
   const [open, setOpen] = useState(false)
+  const [openDropdown, setOpenDropdown] = useState<boolean>(false)
   const menuId = 'main-menu'
 
   let location = useLocation().pathname
@@ -116,6 +171,43 @@ export default function Header() {
           <TEXT.Menu>Bridge</TEXT.Menu>
         </Trans>
       </StyledLink>
+
+      <PowerCardLink to={'/powercards'}>
+        <Trans>
+          <TEXT.Menu>Power Cards</TEXT.Menu>
+        </Trans>
+      </PowerCardLink>
+
+      <Dropdown open={openDropdown} onClick={() => setOpenDropdown(!openDropdown)}>
+        <DropdownContent>
+          <TEXT.Menu>Earn</TEXT.Menu>
+          <RotatingChevron open={openDropdown} height={20} width={20} />
+        </DropdownContent>
+
+        <DropdownList open={openDropdown}>
+          <DropdownItem to={'/stake'}>
+            <Trans>
+              <TEXT.Menu>Stake</TEXT.Menu>
+            </Trans>
+          </DropdownItem>
+          <DropdownItem to={'/leaderboard'}>
+            <Trans>
+              <TEXT.Menu>Leaderboard</TEXT.Menu>
+            </Trans>
+          </DropdownItem>
+          <DropdownItem to={'/referrals'}>
+            <Trans>
+              <TEXT.Menu>Referrals</TEXT.Menu>
+            </Trans>
+          </DropdownItem>
+        </DropdownList>
+      </Dropdown>
+      {/* <StyledLink to={'/bridge'}>
+        <Trans>
+          <TEXT.Menu>Earn</TEXT.Menu>
+        </Trans>
+      </StyledLink> */}
+
       {/* <StyledLink to={'/claimpage'}>
         <Trans>
           <TEXT.Menu>Claim</TEXT.Menu>
