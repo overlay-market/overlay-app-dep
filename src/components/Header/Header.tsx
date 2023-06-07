@@ -7,7 +7,7 @@ import {Image} from 'rebass'
 import {useDarkModeManager} from '../../state/user/hooks'
 import {FlexRow} from '../Container/Container'
 import {enableLock, disableLock} from '../../utils/scrollLock'
-import {TEXT} from '../../theme/theme'
+import {TEXT, colors} from '../../theme/theme'
 import More from '../More/More'
 import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
@@ -73,7 +73,7 @@ const PowerCardLink = styled(StyledLink)`
   text-fill-color: transparent;
 `
 
-const Dropdown = styled.div<{open: boolean}>`
+const Dropdown = styled.div<{open: boolean; active: boolean}>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -82,10 +82,10 @@ const Dropdown = styled.div<{open: boolean}>`
   padding: 8px;
   cursor: pointer;
   background: ${({theme}) => theme.dark.grey4};
-  color: ${({theme}) => theme.dark.purple2};
-  transition: width 0.5s ease-in-out;
+  color: ${({theme, active}) => (active ? theme.dark.blue2 : theme.dark.purple2)};
   border-radius: ${({open}) => (open ? '8px 8px 0 0' : '8px')};
-  width: ${({open}) => (open ? '110px' : 'auto')};
+  width: ${({open}) => (open ? '110px' : '50px')};
+  transition: width 0.5s ease-in-out;
 `
 
 const DropdownContent = styled.div`
@@ -96,13 +96,19 @@ const DropdownList = styled.div<{open: boolean}>`
   position: absolute;
   top: 100%;
   left: 0;
-  display: ${({open}) => (open ? 'flex' : 'none')};
+  display: flex;
   flex-direction: column;
-  padding: 16px 8px;
+  padding: ${({open}) => (open ? '8px 8px 16px 8px' : '0')};
   border-radius: 0 0 8px 8px;
   gap: 16px;
   background: ${({theme}) => theme.dark.grey4};
-  width: ${({open}) => (open ? '110px' : 'auto')};
+  overflow: hidden;
+  width: ${({open}) => (open ? '110px' : '50px')};
+  transition: width 0.5s ease-in-out;
+
+  a {
+    display: ${({open}) => (open ? 'flex' : 'none')};
+  }
 `
 
 const DropdownItem = styled(StyledLink)`
@@ -178,7 +184,11 @@ export default function Header() {
         </Trans>
       </PowerCardLink>
 
-      <Dropdown open={openDropdown} onClick={() => setOpenDropdown(!openDropdown)}>
+      <Dropdown
+        active={location === '/stake' || location === '/leaderboard' || location === '/referrals'}
+        open={openDropdown}
+        onClick={() => setOpenDropdown(!openDropdown)}
+      >
         <DropdownContent>
           <TEXT.Menu>Earn</TEXT.Menu>
           <RotatingChevron open={openDropdown} height={20} width={20} />
@@ -214,6 +224,9 @@ export default function Header() {
         </Trans>
       </StyledLink> */}
       <AccountContainer>
+        <TEXT.Menu color={colors(false).dark.tan2} marginRight={40}>
+          Buy OVL
+        </TEXT.Menu>
         <Web3Status />
         <More />
         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
