@@ -51,12 +51,13 @@ function useBuildCallArguments(
 
   if (!buildData || inputError || !marketContract || !price || !minCollateral) calldata = undefined
   else if (minCollateral > Number(buildData.typedValue)) calldata = undefined
+  else if (buildData.setSlippageValue === '.') calldata = undefined
   else {
-    let increasePercentage = Number(buildData.setSlippageValue) + 100
-    let decreasePercentage = 100 - Number(buildData.setSlippageValue)
+    let increasePercentage = (Number(buildData.setSlippageValue) + 100) * 100
+    let decreasePercentage = (100 - Number(buildData.setSlippageValue)) * 100
     let increaseNumerator = BigNumber.from(increasePercentage).toHexString()
     let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
-    let base = BigNumber.from(100).toHexString()
+    let base = BigNumber.from(100 * 100).toHexString()
 
     calldata = marketContract.interface.encodeFunctionData('build', [
       utils.parseUnits(buildData.typedValue),
