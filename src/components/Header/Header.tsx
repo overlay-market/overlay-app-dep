@@ -85,7 +85,7 @@ const Dropdown = styled.div<{open: boolean; active: boolean}>`
   color: ${({theme, active}) => (active ? theme.dark.blue2 : theme.dark.purple2)};
   border-radius: ${({open}) => (open ? '8px 8px 0 0' : '8px')};
   width: ${({open}) => (open ? '110px' : '50px')};
-  transition: width 0.5s ease-in-out;
+  transition: width 0.2s ease-in-out;
 `
 
 const DropdownContent = styled.div`
@@ -99,12 +99,14 @@ const DropdownList = styled.div<{open: boolean}>`
   display: flex;
   flex-direction: column;
   padding: ${({open}) => (open ? '8px 8px 16px 8px' : '0')};
-  border-radius: 0 0 8px 8px;
+  border-radius: ${({open}) => (open ? '0 0 8px 8px' : '8px')};
   gap: 16px;
   background: ${({theme}) => theme.dark.grey4};
   overflow: hidden;
   width: ${({open}) => (open ? '110px' : '50px')};
-  transition: width 0.5s ease-in-out;
+  width: ${({open}) => !open && '64px'};
+  height: ${({open}) => (open ? '83px' : '0px')};
+  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
 
   a {
     display: ${({open}) => (open ? 'flex' : 'none')};
