@@ -83,9 +83,36 @@ const Dropdown = styled.div<{open: boolean; active: boolean}>`
   cursor: pointer;
   background: ${({theme}) => theme.dark.grey4};
   color: ${({theme, active}) => (active ? theme.dark.blue2 : theme.dark.purple2)};
-  border-radius: ${({open}) => (open ? '8px 8px 0 0' : '8px')};
-  width: ${({open}) => (open ? '110px' : '50px')};
-  transition: width 0.2s ease-in-out;
+  border-radius: 8px;
+  width: 50px;
+  transition: width 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+
+  .dropdown-list {
+    padding: 0;
+    border-radius: 8px;
+    width: 64px;
+    height: 0px;
+
+    a {
+      display: none;
+    }
+  }
+
+  &:hover {
+    border-radius: 8px 8px 0 0;
+    width: 110px;
+
+    .dropdown-list {
+      padding: 8px 8px 16px 8px;
+      border-radius: 0 0 8px 8px;
+      width: 110px;
+      height: 83px;
+
+      a {
+        display: flex;
+      }
+    }
+  }
 `
 
 const DropdownContent = styled.div`
@@ -98,19 +125,10 @@ const DropdownList = styled.div<{open: boolean}>`
   left: 0;
   display: flex;
   flex-direction: column;
-  padding: ${({open}) => (open ? '8px 8px 16px 8px' : '0')};
-  border-radius: ${({open}) => (open ? '0 0 8px 8px' : '8px')};
   gap: 16px;
   background: ${({theme}) => theme.dark.grey4};
   overflow: hidden;
-  width: ${({open}) => (open ? '110px' : '50px')};
-  width: ${({open}) => !open && '64px'};
-  height: ${({open}) => (open ? '83px' : '0px')};
-  transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
-
-  a {
-    display: ${({open}) => (open ? 'flex' : 'none')};
-  }
+  transition: width 0.3s ease-in-out, height 0.2s ease-in-out, border-radius 0.3s ease-in-out;
 `
 
 const DropdownItem = styled(StyledLink)`
@@ -196,7 +214,7 @@ export default function Header() {
           <RotatingChevron open={openDropdown} height={20} width={20} />
         </DropdownContent>
 
-        <DropdownList open={openDropdown}>
+        <DropdownList className="dropdown-list" open={openDropdown}>
           <DropdownItem to={'/stake'}>
             <Trans>
               <TEXT.Menu>Stake</TEXT.Menu>
