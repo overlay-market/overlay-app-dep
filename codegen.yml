@@ -1,11 +1,11 @@
 overrideExisting: true
-schema: "https://api.studio.thegraph.com/query/46086/overlay-v2-subgraph-arbitrum/v2.0.16"
-documents: "src/**/**/!(*.d).{ts,tsx}"
+schema: 'https://api.studio.thegraph.com/query/46086/overlay-v2-subgraph-arbitrum/version/latest'
+documents: 'src/**/**/!(*.d).{ts,tsx}'
 generates:
   ./src/state/data/generated.ts:
     plugins:
       - typescript
       - typescript-operations
       - typescript-rtk-query:
-          importBaseApiFrom: "./slice"
+          importBaseApiFrom: './slice'
           exportHooks: true
