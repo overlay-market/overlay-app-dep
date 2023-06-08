@@ -73,7 +73,7 @@ const PowerCardLink = styled(StyledLink)`
   text-fill-color: transparent;
 `
 
-const Dropdown = styled.div<{open: boolean; active: boolean}>`
+const Dropdown = styled.div<{active: boolean}>`
   display: flex;
   flex-direction: column;
   position: relative;
@@ -84,13 +84,13 @@ const Dropdown = styled.div<{open: boolean; active: boolean}>`
   background: ${({theme}) => theme.dark.grey4};
   color: ${({theme, active}) => (active ? theme.dark.blue2 : theme.dark.purple2)};
   border-radius: 8px;
-  width: 50px;
+  width: 59px;
   transition: width 0.3s ease-in-out, border-radius 0.3s ease-in-out;
 
   .dropdown-list {
     padding: 0;
     border-radius: 8px;
-    width: 64px;
+    width: 59px;
     height: 0px;
 
     a {
@@ -98,9 +98,17 @@ const Dropdown = styled.div<{open: boolean; active: boolean}>`
     }
   }
 
+  .chevron {
+    transform: rotate(0deg);
+  }
+
   &:hover {
     border-radius: 8px 8px 0 0;
     width: 110px;
+
+    .chevron {
+      transform: rotate(180deg);
+    }
 
     .dropdown-list {
       padding: 8px 8px 16px 8px;
@@ -117,9 +125,10 @@ const Dropdown = styled.div<{open: boolean; active: boolean}>`
 
 const DropdownContent = styled.div`
   display: flex;
+  gap: 4px;
 `
 
-const DropdownList = styled.div<{open: boolean}>`
+const DropdownList = styled.div`
   position: absolute;
   top: 100%;
   left: 0;
@@ -135,19 +144,13 @@ const DropdownItem = styled(StyledLink)`
   margin: 0;
 `
 
-interface RotatingChevronProps {
-  open: boolean
-}
-
-export const RotatingChevron = styled(ChevronDown)<RotatingChevronProps>`
-  transform: ${props => (props.open ? 'rotate(180deg)' : 'rotate(0deg)')};
+export const RotatingChevron = styled(ChevronDown)`
   transition: transform ease-out 0.25s;
 `
 
 export default function Header() {
   const [darkMode] = useDarkModeManager()
   const [open, setOpen] = useState(false)
-  const [openDropdown, setOpenDropdown] = useState<boolean>(false)
   const menuId = 'main-menu'
 
   let location = useLocation().pathname
@@ -204,17 +207,13 @@ export default function Header() {
         </Trans>
       </PowerCardLink>
 
-      <Dropdown
-        active={location === '/stake' || location === '/leaderboard' || location === '/referrals'}
-        open={openDropdown}
-        onClick={() => setOpenDropdown(!openDropdown)}
-      >
+      <Dropdown active={location === '/stake' || location === '/leaderboard' || location === '/referrals'}>
         <DropdownContent>
           <TEXT.Menu>Earn</TEXT.Menu>
-          <RotatingChevron open={openDropdown} height={20} width={20} />
+          <RotatingChevron className="chevron" height={17} width={17} />
         </DropdownContent>
 
-        <DropdownList className="dropdown-list" open={openDropdown}>
+        <DropdownList className="dropdown-list">
           <DropdownItem to={'/stake'}>
             <Trans>
               <TEXT.Menu>Stake</TEXT.Menu>
