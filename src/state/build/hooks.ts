@@ -20,7 +20,7 @@ export function useBuildState(): AppState['build'] {
   return useAppSelector((state) => state.build);
 }
 
-const slippageRegex: RegExp = /^(?:\d+(?:\.\d{0,2})?|\.\d{1,2})?$/;
+const slippageRegex: RegExp = /^(?:\d{1,2}(?:\.\d{0,2})?|\.\d{1,2}|100(?:\.0{1,2})?)?$/;
 
 export function useBuildActionHandlers(): {
   onAmountInput: (typedValue: string | undefined) => void;

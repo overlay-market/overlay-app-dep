@@ -68,6 +68,13 @@ export const TransactionSettingsModal = ({
             Auto
           </TransactionSettingsButton>
         </FlexRow>
+        {Number(setSlippageValue) > 5 && (
+          <FlexRow padding="0px 16px 4px">
+            <TEXT.Supplemental color={colors(false).dark.red}>
+              Caution: High slippage. Your position may result in an unvaforable trade.
+            </TEXT.Supplemental>
+          </FlexRow>
+        )}
         {Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE && (
           <FlexRow padding="0px 16px 4px">
             <TEXT.Supplemental color={colors(false).dark.red}>minimum slippage is 0.05%</TEXT.Supplemental>
