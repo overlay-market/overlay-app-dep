@@ -77,7 +77,9 @@ export const TransactionSettingsModal = ({
         )}
         {Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE && (
           <FlexRow padding="0px 16px 4px">
-            <TEXT.Supplemental color={colors(false).dark.red}>minimum slippage is 0.05%</TEXT.Supplemental>
+            <TEXT.Supplemental color={colors(false).dark.red}>
+              Caution: Slippage too low. Slippage should be set to protocol minimum of 0.05%.
+            </TEXT.Supplemental>
           </FlexRow>
         )}
 
