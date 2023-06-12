@@ -13,6 +13,11 @@ export type Scalars = {
   BigDecimal: any;
   BigInt: any;
   Bytes: any;
+  /**
+   * 8 bytes signed integer
+   *
+   */
+  Int8: any;
 };
 
 
@@ -111,6 +116,7 @@ export type Build = {
   currentDebt: Scalars['BigInt'];
   isLong: Scalars['Boolean'];
   price: Scalars['BigInt'];
+  feeAmount: Scalars['BigInt'];
   collateral: Scalars['BigInt'];
   value: Scalars['BigInt'];
   timestamp: Scalars['BigInt'];
@@ -196,6 +202,14 @@ export type Build_Filter = {
   price_lte?: Maybe<Scalars['BigInt']>;
   price_in?: Maybe<Array<Scalars['BigInt']>>;
   price_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  feeAmount?: Maybe<Scalars['BigInt']>;
+  feeAmount_not?: Maybe<Scalars['BigInt']>;
+  feeAmount_gt?: Maybe<Scalars['BigInt']>;
+  feeAmount_lt?: Maybe<Scalars['BigInt']>;
+  feeAmount_gte?: Maybe<Scalars['BigInt']>;
+  feeAmount_lte?: Maybe<Scalars['BigInt']>;
+  feeAmount_in?: Maybe<Array<Scalars['BigInt']>>;
+  feeAmount_not_in?: Maybe<Array<Scalars['BigInt']>>;
   collateral?: Maybe<Scalars['BigInt']>;
   collateral_not?: Maybe<Scalars['BigInt']>;
   collateral_gt?: Maybe<Scalars['BigInt']>;
@@ -273,6 +287,7 @@ export enum Build_OrderBy {
   CurrentDebt = 'currentDebt',
   IsLong = 'isLong',
   Price = 'price',
+  FeeAmount = 'feeAmount',
   Collateral = 'collateral',
   Value = 'value',
   Timestamp = 'timestamp',
@@ -390,6 +405,7 @@ export enum Factory_OrderBy {
   Owner = 'owner',
   Markets = 'markets'
 }
+
 
 export type Liquidate = {
   __typename?: 'Liquidate';
@@ -1646,6 +1662,7 @@ export type Unwind = {
   fraction: Scalars['BigInt'];
   transferAmount: Scalars['BigInt'];
   pnl: Scalars['BigInt'];
+  feeAmount: Scalars['BigInt'];
   size: Scalars['BigInt'];
   mint: Scalars['BigInt'];
   collateral: Scalars['BigInt'];
@@ -1765,6 +1782,14 @@ export type Unwind_Filter = {
   pnl_lte?: Maybe<Scalars['BigInt']>;
   pnl_in?: Maybe<Array<Scalars['BigInt']>>;
   pnl_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  feeAmount?: Maybe<Scalars['BigInt']>;
+  feeAmount_not?: Maybe<Scalars['BigInt']>;
+  feeAmount_gt?: Maybe<Scalars['BigInt']>;
+  feeAmount_lt?: Maybe<Scalars['BigInt']>;
+  feeAmount_gte?: Maybe<Scalars['BigInt']>;
+  feeAmount_lte?: Maybe<Scalars['BigInt']>;
+  feeAmount_in?: Maybe<Array<Scalars['BigInt']>>;
+  feeAmount_not_in?: Maybe<Array<Scalars['BigInt']>>;
   size?: Maybe<Scalars['BigInt']>;
   size_not?: Maybe<Scalars['BigInt']>;
   size_gt?: Maybe<Scalars['BigInt']>;
@@ -1862,6 +1887,7 @@ export enum Unwind_OrderBy {
   Fraction = 'fraction',
   TransferAmount = 'transferAmount',
   Pnl = 'pnl',
+  FeeAmount = 'feeAmount',
   Size = 'size',
   Mint = 'mint',
   Collateral = 'collateral',
