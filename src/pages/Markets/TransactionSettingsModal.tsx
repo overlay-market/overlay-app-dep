@@ -71,7 +71,7 @@ export const TransactionSettingsModal = ({
         {Number(setSlippageValue) > 5 && (
           <FlexRow padding="0px 16px 4px">
             <TEXT.Supplemental color={colors(false).dark.red}>
-              Caution: High slippage. Your position may result in an unvaforable trade.
+              Caution: High slippage. Your position may result in an unfavorable trade.
             </TEXT.Supplemental>
           </FlexRow>
         )}
