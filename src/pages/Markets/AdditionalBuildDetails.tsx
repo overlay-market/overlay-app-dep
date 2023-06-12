@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
 import Loader from '../../components/Loaders/Loaders'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
-import {colors} from '../../theme/theme'
 import {getExplorerLink, ExplorerDataType} from '../../utils/getExplorerLink'
 import {shortenAddress} from '../../utils/web3'
 import {Icon} from '../../components/Icon/Icon'
@@ -167,7 +166,9 @@ export const AdditionalDetails = ({
 
       <AdditionalDetailRow>
         <PositionDetailType>Funding Rate</PositionDetailType>
-        <DetailValue color={colors(true).dark.green}>{fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}</DetailValue>
+        <DetailValue color={!(fundingRate?.toString()[0] === '-') ? '#FF648A' : '#5FD0AB'}>
+          {!fundingRate || fundingRate === 'loading' ? <Loader stroke="white" size="12px" /> : fundingRate}
+        </DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>
