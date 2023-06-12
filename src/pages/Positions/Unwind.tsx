@@ -9,7 +9,7 @@ import {Back} from '../../components/Back/Back'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {usePositionInfo} from '../../hooks/usePositionInfo'
 import {useUnwindCallback} from '../../hooks/useUnwindCallback'
-import {PositionDataV2, useCurrentWalletPositions, useCurrentWalletPositionsV2} from '../../state/build/hooks'
+import {useCurrentWalletPositionsV2} from '../../state/build/hooks'
 import {NumericalInputBottomText, NumericalInputContainer, NumericalInputDescriptor} from '../Markets/Build'
 import {useLiquidationPrice} from '../../hooks/useLiquidationPrice'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
@@ -86,13 +86,13 @@ export function Unwind({
   const [isTxnSettingsOpen, setTxnSettingsOpen] = useState<boolean>(false)
   const [customInput, setCustomInput] = useState<string>('')
   const {account} = useActiveWeb3React()
-  const {error, isLoading, positions, refetch} = useCurrentWalletPositionsV2(account)
+  const {isLoading, positions, refetch} = useCurrentWalletPositionsV2(account)
 
   useEffect(() => {
     refetch()
   }, [account, refetch, isLoading])
 
-  const {typedValue, selectedPositionId, setSlippageValue, txnDeadline} = useUnwindState()
+  const {typedValue, setSlippageValue, txnDeadline} = useUnwindState()
   const {onAmountInput, onSelectPositionId, onSetSlippage, onSetTxnDeadline, onResetUnwindState} = useUnwindActionHandlers()
   const isTxnSettingsAuto = useIsTxnSettingsAuto()
 
@@ -106,7 +106,7 @@ export function Unwind({
     if (description) return marketNameFromDescription(description, marketPositionId.substring(0, 42))
     if (baseToken === 'loading' && quoteToken === 'loading') return <Loader stroke="white" size="12px" />
     return `${baseToken}/${quoteToken}`
-  }, [description, baseToken, quoteToken])
+  }, [description, baseToken, marketPositionId, quoteToken])
 
   const baseTokenInfo = useToken(baseTokenAddress)
   const quoteTokenInfo = useToken(quoteTokenAddress)
@@ -203,16 +203,8 @@ export function Unwind({
   const showUnderwaterFlow =
     liquidationPriceResult && prices._mid ? (isLong ? liquidationPriceResult.gt(prices._mid) : liquidationPriceResult.lt(prices._mid)) : false
 
-  const {unwindData, parsedAmount, inputError} = useDerivedUnwindInfo()
-  const {callback: unwindCallback, error: unwindCallbackError} = useUnwindCallback(
-    unwindData,
-    position?.market.id,
-    typedValue,
-    value,
-    positionId,
-    isLong,
-    prices,
-  )
+  const {unwindData} = useDerivedUnwindInfo()
+  const {callback: unwindCallback} = useUnwindCallback(unwindData, position?.market.id, typedValue, value, positionId, isLong, prices)
 
   useEffect(() => {
     onResetUnwindState()
@@ -262,7 +254,8 @@ export function Unwind({
         if (!isNaN(Number(input))) onAmountInput('100')
       }
     },
-    [setCustomInput],
+
+    [setCustomInput, onAmountInput],
   )
 
   const handleQuickInput = (percentage: number) => {
@@ -281,9 +274,9 @@ export function Unwind({
     [onSelectPositionId],
   )
 
-  const handleClearInput = useCallback(() => {
-    onAmountInput('')
-  }, [onAmountInput])
+  // const handleClearInput = useCallback(() => {
+  //   onAmountInput('')
+  // }, [onAmountInput])
 
   const disableUnwindButton: boolean = useMemo(() => {
     return !unwindCallback || parseFloat(typedValue) === 0 ? true : false
@@ -298,7 +291,7 @@ export function Unwind({
         history.push(`/closed-positions/${marketPositionId}-${numberOfUnwinds}/${positionId}`)
       })
       .catch(err => console.error('Error from handleUnwind: ', err))
-  }, [unwindCallback, onResetUnwindState])
+  }, [history, position, marketPositionId, positionId, unwindCallback, onResetUnwindState])
 
   const isUnwindAmountTooLow: boolean = useMemo(() => {
     if (Number(typedValue) < 0.01 && customInput) {

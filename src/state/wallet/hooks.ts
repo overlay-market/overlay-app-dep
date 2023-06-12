@@ -4,13 +4,11 @@ import {Currency, CurrencyAmount, Ether, Token} from '@uniswap/sdk-core'
 import {ChainId} from '@sushiswap/sdk'
 import JSBI from 'jsbi'
 import {isAddress} from '../../utils/web3'
-// import { useAccountQuery } from '../data/enhanced';
 import {useActiveWeb3React} from '../../hooks/web3'
 import {useMulticall2Contract} from '../../hooks/useContract'
 import {useMultipleContractSingleData, useSingleContractMultipleData} from '../multicall/hooks'
 import {OVL, LL} from '../../constants/tokens'
 import ERC20_ABI from '../../constants/abis/erc20.json'
-import {SupportedChainId} from '../../constants/chains'
 
 /**
  * Returns a map of the given addresses to their eventually consistent ETH balances.

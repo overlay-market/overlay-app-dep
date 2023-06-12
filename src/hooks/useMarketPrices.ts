@@ -1,13 +1,7 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
-import {formatWeiToParsedNumber} from '../utils/formatWei'
-import {getNetworkLibrary} from '../connectors/connectors'
-import {NETWORK_URLS} from '../connectors/connectors'
-import {ethers} from 'ethers'
-import {SupportedChainId} from '../constants/chains'
 
 export function useMarketPrice(marketAddress?: string): any | undefined {
   const peripheryContract = useV1PeripheryContract()
@@ -38,8 +32,7 @@ export function useMarketPrice(marketAddress?: string): any | undefined {
  */
 export function useMarketMidPrices(marketAddresses?: string[][], blockNumber?: number | undefined) {
   const peripheryContract = useV1PeripheryContract()
-  const {chainId} = useActiveWeb3React()
-  const [midPrices, setMidPrices] = useState([])
+  const [midPrices] = useState([])
 
   useEffect(() => {
     if (!peripheryContract || !marketAddresses || !blockNumber) return

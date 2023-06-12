@@ -15,6 +15,7 @@ import PendingView from './PendingView'
 import WalletOption from './WalletOptions'
 import usePrevious from '../../hooks/usePrevious'
 import METAMASK_ICON from '../../assets/images/metamask.png'
+import {switchNetworkToArbitrum} from '../../utils/switchNetworkToArbitrum'
 
 export const ModalContent = styled.div`
   display: flex;
@@ -74,10 +75,9 @@ export default function ConnectWalletModal() {
   }, [walletModalOpen])
 
   const tryActivation = async (connector: AbstractConnector | undefined) => {
-    let name = ''
     Object.keys(SUPPORTED_WALLETS).map(key => {
       if (connector === SUPPORTED_WALLETS[key].connector) {
-        return (name = SUPPORTED_WALLETS[key].name)
+        return (SUPPORTED_WALLETS[key].name)
       }
       return true
     })
@@ -90,16 +90,18 @@ export default function ConnectWalletModal() {
     // }
 
     connector &&
-      activate(connector, undefined, true).catch(error => {
-        if (error instanceof UnsupportedChainIdError) {
-          activate(connector) // a little janky...can't use setError because the connector isn't set
-        } else {
-          setPendingError(true)
-        }
-      })
-      .then(() => {
-        localStorage.setItem('disconnected', "false");
-      })
+      activate(connector, undefined, true)
+        .catch(error => {
+          if (error instanceof UnsupportedChainIdError) {
+            switchNetworkToArbitrum()
+            activate(connector) // a little janky...can't use setError because the connector isn't set
+          } else {
+            setPendingError(true)
+          }
+        })
+        .then(() => {
+          localStorage.setItem('disconnected', 'false')
+        })
   }
 
   function getOptions() {

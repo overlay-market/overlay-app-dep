@@ -3,7 +3,7 @@ import {useV1PeripheryContract} from './useContract'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 import {BigNumber, utils, ethers} from 'ethers'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber} from '../utils/formatWei'
+import {formatBigNumberUsingDecimalsToNumber} from '../utils/formatWei'
 
 interface oiResult {
   formattedOi: number | undefined

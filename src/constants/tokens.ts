@@ -1,4 +1,4 @@
-import {Token, Ether, WETH9} from '@uniswap/sdk-core'
+import {Token, Ether} from '@uniswap/sdk-core'
 import {OVL_TOKEN_ADDRESS, LL_TOKEN_ADDRESS} from './addresses'
 import {SupportedChainId} from './chains'
 import ETHEREUM_LOGO from '../assets/images/ethereum-logo.png'

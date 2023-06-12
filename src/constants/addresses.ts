@@ -1,6 +1,5 @@
 import {SupportedChainId} from './chains'
 import {ChainId} from '@sushiswap/sdk'
-import {constructSameAddressMap} from '../utils/constructSameAddressMap'
 
 export type AddressMap = {[chainId: number]: string}
 

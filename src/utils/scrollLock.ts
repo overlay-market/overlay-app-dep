@@ -1,4 +1,4 @@
-let $body = <HTMLBodyElement>document.querySelector('body')
+let $body = document.querySelector('body') as HTMLBodyElement
 let scrollPosition = 0
 
 export const enableLock = () => {

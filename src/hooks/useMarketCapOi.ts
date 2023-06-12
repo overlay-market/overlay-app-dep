@@ -1,8 +1,5 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import {formatWeiToParsedNumber, formatBigNumberUsingDecimalsToNumber} from '../utils/formatWei'
-import {ethers} from 'ethers'
-import {useSingleContractMultipleData} from '../state/multicall/hooks'
 import {useBlockNumber} from '../state/application/hooks'
 import {useActiveWeb3React} from './web3'
 

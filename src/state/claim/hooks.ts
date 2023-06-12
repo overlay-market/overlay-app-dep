@@ -8,8 +8,7 @@ import {calculateGasMargin} from '../../utils/calculateGasMargin'
 import {useTransactionAdder} from '../transactions/hooks'
 import MERKLE_DISTRIBUTOR_ABI from '../../constants/abis/MerkleDistributor.json'
 import {BigNumberish, BigNumber} from 'ethers'
-import {ClaimId, MERKLE_DISTIBUTOR_ADDRESSES, MERKLE_PROOFS} from '../../constants/claims'
-import {SupportedChainId} from '../../constants/chains'
+import {MERKLE_DISTIBUTOR_ADDRESSES, MERKLE_PROOFS} from '../../constants/claims'
 
 function useMerkleDistributorContract(claimId: string) {
   return useContract(MERKLE_DISTIBUTOR_ADDRESSES[claimId], MERKLE_DISTRIBUTOR_ABI, true)
