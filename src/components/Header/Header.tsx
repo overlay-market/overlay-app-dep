@@ -13,7 +13,9 @@ import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
 import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
+import ArbitrumLogo from '../../assets/images/arbitrum-logo.png'
 import {ChevronDown} from 'react-feather'
+import HeaderHamburger from '../HeaderHamburger/HeaderHamburger'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.dark.white};
@@ -74,12 +76,12 @@ const PowerCardLink = styled(StyledLink)`
 `
 
 const Dropdown = styled.div<{active: boolean}>`
-  display: flex;
+  display: none;
   flex-direction: column;
   position: relative;
   text-decoration: none;
   margin: auto 16px;
-  padding: 8px;
+  padding: 8px 0 8px 8px;
   cursor: pointer;
   background: ${({theme}) => theme.dark.grey4};
   color: ${({theme, active}) => (active ? theme.dark.blue2 : theme.dark.purple2)};
@@ -111,7 +113,7 @@ const Dropdown = styled.div<{active: boolean}>`
     }
 
     .dropdown-list {
-      padding: 8px 8px 16px 8px;
+      padding: 8px 0px 16px 8px;
       border-radius: 0 0 8px 8px;
       width: 110px;
       height: 83px;
@@ -121,6 +123,10 @@ const Dropdown = styled.div<{active: boolean}>`
       }
     }
   }
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    display: flex;
+  `};
 `
 
 const DropdownContent = styled.div`
@@ -144,14 +150,34 @@ const DropdownItem = styled(StyledLink)`
   margin: 0;
 `
 
-export const RotatingChevron = styled(ChevronDown)`
+const RotatingChevron = styled(ChevronDown)`
   transition: transform ease-out 0.25s;
+`
+
+const PlatformLogo = styled.div<{src: string}>`
+  background: no-repeat center/contain url(${({src}) => src});
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 20px;
+  width: 20px;
+`
+
+const WalletMenu = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  gap: 8px;
+  background: ${({theme}) => theme.dark.grey4};
 `
 
 export default function Header() {
   const [darkMode] = useDarkModeManager()
   const [open, setOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuId = 'main-menu'
+
+  const NEW_HEADER_FLAG = true
 
   let location = useLocation().pathname
 
@@ -247,7 +273,16 @@ export default function Header() {
           Buy OVL
         </TEXT.Menu>
         <Web3Status />
-        <More />
+        {NEW_HEADER_FLAG ? (
+          <WalletMenu>
+            <PlatformLogo src={ArbitrumLogo} />
+            {/* <TEXT.Menu>Earn</TEXT.Menu> */}
+            <HeaderHamburger open={isMenuOpen} setOpen={setIsMenuOpen} />
+          </WalletMenu>
+        ) : (
+          <More />
+        )}
+
         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
       </AccountContainer>
       <SlideMenu open={open} setOpen={setOpen} />
