@@ -66,7 +66,7 @@ const Markets = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
   let chainId = useAppSelector((state: AppState) => state.application.chainId)
-  
+
   // toggle to hide 7d chart if data unavailable
   const hide7dChart = false
 
@@ -140,7 +140,7 @@ const Markets = () => {
               </StyledTableHeaderRow>
             </TableHead>
             <TableBody>
-              {marketsData.length > 0 &&
+              {marketsData.length === 0 &&
                 marketsData
                   ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
                   .sort(customSort)
@@ -169,7 +169,7 @@ const Markets = () => {
           <ChangeNetworkModal />
         )}
       </TableContainer>
-      {marketsData.length === 0 && chainId !== 1 && (
+      {marketsData.length > 0 && chainId !== 1 && (
         <FlexRow marginTop="32px" justifyContent="center !important" width="100%">
           <Loader stroke="white" size="21px" />
         </FlexRow>
