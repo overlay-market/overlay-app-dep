@@ -26,8 +26,9 @@ export const AppWrapper = styled.div`
   position: relative;
 `
 
+// Padding: footer height + 200px margin
 export const ContentWrapper = styled.div`
-  padding-bottom: 200px;
+  padding-bottom: 340px;
 `
 
 const App = () => {
