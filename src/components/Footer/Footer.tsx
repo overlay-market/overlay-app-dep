@@ -58,7 +58,9 @@ const Footer = () => {
     <StyledFooter>
       <LogoContainer>
         {/* Overlay */}
-        <Image src={OverlayLogoDark} alt="Overlay Logo" height={'auto'} width={'138px'} />
+        <StyledIconButton href={LINKS.LANDING} target="_blank">
+          <Image src={OverlayLogoDark} alt="Overlay Logo" height={'auto'} width={138} />
+        </StyledIconButton>
       </LogoContainer>
 
       <IconContainer>
