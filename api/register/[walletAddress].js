@@ -1,15 +1,17 @@
-import fetch from 'node-fetch'
-import {VercelRequest, VercelResponse} from '@vercel/node'
+// import fetch from 'node-fetch'
+// import {VercelRequest, VercelResponse} from '@vercel/node'
 
-enum StatusCode {
-  CREATED = 201,
+const fetch = require('node-fetch')
+
+const StatusCode = {
+  CREATED: 201,
 }
 
-enum RegisterResponseMessage {
-  CREATED = 'Address register successful',
+const RegisterResponseMessage = {
+  CREATED: 'Address register successful',
 }
 
-export default async function registerWalletAddressToChainalysis(req: VercelRequest, res: VercelResponse) {
+async function registerWalletAddressToChainalysis(req, res) {
   const {walletAddress} = req.query
 
   const bodyObject = {
@@ -29,3 +31,5 @@ export default async function registerWalletAddressToChainalysis(req: VercelRequ
     res.status(200).json({message: RegisterResponseMessage.CREATED})
   }
 }
+
+module.exports = registerWalletAddressToChainalysis
