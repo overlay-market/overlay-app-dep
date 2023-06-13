@@ -66,7 +66,7 @@ const Markets = () => {
   const marketDetails: AdditionalMarketData[] = useMarketDetails(markets)
   const {markets: marketsData}: MarketStateResults = useCurrentMarketState(marketDetails)
   let chainId = useAppSelector((state: AppState) => state.application.chainId)
-  
+
   // toggle to hide 7d chart if data unavailable
   const hide7dChart = false
 
@@ -159,7 +159,7 @@ const Markets = () => {
                       oracleLogo={market.oracleLogo}
                       marketLogo={market.marketLogo}
                       priceCurrency={market.priceCurrency}
-                      marketChartData={MarketChartMap[market.marketName!!]}
+                      marketChartData={MarketChartMap[market.marketName ?? '']}
                       hide7dChart={hide7dChart}
                     />
                   ))}
