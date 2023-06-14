@@ -4,6 +4,7 @@ import Web3ReactManager from '../components/Web3ReactManager/Web3ReactManager'
 import TermsOfServiceManager from '../components/TermsOfServiceModal/TermsOfServiceManager'
 import ChainalysisManager from '../components/ChainalysisManager/ChainanalysisManager'
 import Header from '../components/Header/Header'
+import Footer from '../components/Footer/Footer'
 import CurrentBlock from '../components/CurrentBlock/CurrentBlock'
 import Markets from './Markets/Markets'
 import {Market} from './Markets/Market'
@@ -22,6 +23,12 @@ export const AppWrapper = styled.div`
   height: 100%;
   min-height: 100vh;
   width: 100vw;
+  position: relative;
+`
+
+// padding-bottom: footer height + 200px margin
+export const ContentWrapper = styled.div`
+  padding-bottom: 340px;
 `
 
 const App = () => {
@@ -32,19 +39,22 @@ const App = () => {
         <TermsOfServiceManager>
           <Header />
           <Web3ReactManager>
-            <Switch>
-              <Route exact strict path="/" render={() => <Redirect to="/markets" />} />
-              <Route exact strict path="/markets" component={Markets} />
-              <Route exact strict path="/markets/:marketId" component={Market} />
-              <Route exact strict path="/positions" component={Positions} />
-              <Route exact strict path="/positions/:marketPositionId/:positionId" component={Unwind} />
-              <Route exact strict path="/closed-positions/:unwindId/:positionId" component={ClosedPosition} />
-              <Route exact strict path="/claim/:claimId" component={Claim} />
-              <Route exact strict path="/claimpage" component={ClaimPage} />
-              <Route exact strict path="/liquidate" component={Liquidate} />
-              <Route exact strict path="/bridge" component={Bridge} />
-            </Switch>
+            <ContentWrapper>
+              <Switch>
+                <Route exact strict path="/" render={() => <Redirect to="/markets" />} />
+                <Route exact strict path="/markets" component={Markets} />
+                <Route exact strict path="/markets/:marketId" component={Market} />
+                <Route exact strict path="/positions" component={Positions} />
+                <Route exact strict path="/positions/:marketPositionId/:positionId" component={Unwind} />
+                <Route exact strict path="/closed-positions/:unwindId/:positionId" component={ClosedPosition} />
+                <Route exact strict path="/claim/:claimId" component={Claim} />
+                <Route exact strict path="/claimpage" component={ClaimPage} />
+                <Route exact strict path="/liquidate" component={Liquidate} />
+                <Route exact strict path="/bridge" component={Bridge} />
+              </Switch>
+            </ContentWrapper>
           </Web3ReactManager>
+          <Footer />
         </TermsOfServiceManager>
       </ChainalysisManager>
       <CurrentBlock />

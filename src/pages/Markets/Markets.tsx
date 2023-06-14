@@ -187,7 +187,7 @@ const Markets = () => {
                       oracleLogo={market.oracleLogo}
                       marketLogo={market.marketLogo}
                       priceCurrency={market.priceCurrency}
-                      marketChartData={MarketChartMap[market.marketName!!]}
+                      marketChartData={MarketChartMap[market.marketName ?? '']}
                       hide7dChart={hide7dChart}
                     />
                   ))}
