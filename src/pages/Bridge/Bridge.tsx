@@ -26,8 +26,13 @@ const BridgeContainer = styled.div`
   flex-direction: column;
   margin: auto;
   max-width: 400px;
-  margin-top: 64px;
   color: white;
+  padding: 16px;
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    margin-top: 64px;
+    padding: 0;
+  `}
 `
 
 const Title = styled.div`

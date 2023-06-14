@@ -102,6 +102,8 @@ export const NumericalInputBottomText = styled(TEXT.Supplemental)`
   margin: 4px 0 24px auto !important;
 `
 
+export const MINIMUM_SLIPPAGE_VALUE = 0.05
+
 // @TO-DO: Break down BuildInterface into sub-components
 // separate out data fetching logic from view components
 
@@ -510,18 +512,36 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
         <ControlInterfaceHeadContainer>
           <TEXT.BoldHeader1>{marketName}</TEXT.BoldHeader1>
           <TEXT.StandardHeader1>{estimatedReceivedPrice ?? prices.mid}</TEXT.StandardHeader1>
-          <Icon
-            onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
-            size={24}
-            top={'18px'}
-            right={'0px'}
-            clickable={true}
-            position={'absolute'}
-            margin={'0 0 auto auto'}
-            transform={'rotate(90deg)'}
-          >
-            {isTxnSettingsOpen ? <X color={'#12B4FF'} /> : <Sliders color={'#B9BABD'} />}
-          </Icon>
+          {isTxnSettingsOpen ? (
+            <Icon
+              onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+              disabled={Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE}
+              size={24}
+              top={'18px'}
+              right={'0px'}
+              clickable={true}
+              position={'absolute'}
+              margin={'0 0 auto auto'}
+              transform={'rotate(90deg)'}
+              color={'#12B4FF'}
+            >
+              <X />
+            </Icon>
+          ) : (
+            <Icon
+              onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
+              size={24}
+              top={'18px'}
+              right={'0px'}
+              clickable={true}
+              position={'absolute'}
+              margin={'0 0 auto auto'}
+              transform={'rotate(90deg)'}
+              color={'#B9BABD'}
+            >
+              <Sliders />
+            </Icon>
+          )}
         </ControlInterfaceHeadContainer>
         <TransactionSettingsModal
           isTxnSettingsOpen={isTxnSettingsOpen}

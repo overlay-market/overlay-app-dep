@@ -11,6 +11,7 @@ import {useActiveWeb3React} from '../../hooks/web3'
 import {FlexRow} from '../Container/Container'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper} from '../More/More'
+import {Account} from './Web3Status'
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
@@ -42,6 +43,15 @@ export const TriangleButton = styled(Button)`
   height: 36px;
 `
 
+const WalletAddress = styled.div`
+  font-size: 12px;
+  font-weight: 400;
+  margin: auto 0 auto auto;
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+`
+
 interface RotatingTriangleProps {
   open: boolean
 }
@@ -65,16 +75,17 @@ const useStyles = makeStyles((theme: Theme) =>
 interface DropdownProps {
   connectedNetwork: String
   colorStatus: string
+  walletAddress?: string
 }
 
-export default function Dropdown({connectedNetwork, colorStatus}: DropdownProps) {
+export default function Dropdown({connectedNetwork, colorStatus, walletAddress}: DropdownProps) {
   const {deactivate, account} = useActiveWeb3React()
 
   const toggleWalletModal = useWalletModalToggle()
 
   const disconnectWallet = () => {
     deactivate()
-    localStorage.setItem('disconnected', "true");
+    localStorage.setItem('disconnected', 'true')
     window.location.reload()
   }
 
@@ -114,6 +125,7 @@ export default function Dropdown({connectedNetwork, colorStatus}: DropdownProps)
 
   return (
     <div className={classes.root}>
+      {walletAddress && <WalletAddress onClick={handleToggle}>{walletAddress}</WalletAddress>}
       <div>
         <TriangleButton ref={anchorRef} aria-controls={open ? 'menu-list-grow' : undefined} aria-haspopup="true" onClick={handleToggle}>
           <RotatingTriangle color={'white'} fill={'white'} height={8} width={20} open={open} />

@@ -216,26 +216,24 @@ function Web3StatusInner() {
         {account && chainId && !ovlBalance && <TokenBalance balance={0} network={NETWORK_LABELS[chainId]} />}
 
         <Account>
-          {ens ?? shortenAddress(account)}
-
           {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.MAINNET] && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'#10DCB1'} walletAddress={ens ?? shortenAddress(account)} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.ARBITRUM] && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} walletAddress={ens ?? shortenAddress(account)} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.GÖRLI] && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} walletAddress={ens ?? shortenAddress(account)} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.RINKEBY] && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} walletAddress={ens ?? shortenAddress(account)} />
           )}
 
           {chainId && NETWORK_LABELS[chainId] === NETWORK_LABELS[SupportedChainId.ARBITRUM_GÖRLI] && (
-            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} />
+            <Dropdown connectedNetwork={NETWORK_LABELS[chainId]} colorStatus={'yellow'} walletAddress={ens ?? shortenAddress(account)} />
           )}
         </Account>
       </Web3StatusConnected>
