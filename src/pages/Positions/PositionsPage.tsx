@@ -58,14 +58,49 @@ const useStyles = makeStyles((theme: Theme) =>
         },
       },
     },
-    selectMenu: {
-      marginLeft: '8px',
+    select: {
+      padding: '6.5px 10px',
       background: '#2E3343',
       borderRadius: '4px',
-      height: '30px',
-      color: '#F0F0F0',
-      fontFamily: 'Inter, sans-serif',
-      fontSize: '14px',
+      marginLeft: '8px',
+      boxSizing: 'border-box',
+      maxWidth: '104px',
+      whiteSpace: 'nowrap',
+
+      '&:hover': {
+        cursor: 'pointer',
+        borderBottomLeftRadius: 0,
+        borderBottomRightRadius: 0,
+        '& > $selectDropdown': {
+          display: 'block',
+        },
+        '& $chevron': {
+          transform: 'rotate(180deg)',
+        },
+      },
+    },
+    selectDropdown: {
+      position: 'absolute',
+      zIndex: 1,
+      top: '100%',
+      left: 0,
+      background: '#2E3343',
+      borderRadius: '0 0 4px 4px',
+      display: 'none',
+      '& > div': {
+        borderRadius: '4px',
+        padding: '6.5px 10px',
+        boxSizing: 'border-box',
+        width: '104px',
+        whiteSpace: 'nowrap',
+        '&:hover': {
+          boxShadow: '0px 0px 4px 2px rgba(180, 229, 255, 0.3)',
+        },
+      },
+    },
+    chevron: {
+      marginLeft: '8px',
+      transition: 'transform ease-out 0.25s',
     },
   }),
 )
@@ -120,7 +155,7 @@ export const RotatingTriangle = styled(Play)<RotatingTriangleProps>`
   transition: transform ease-out 0.25s;
 `
 
-const ROWS_PER_PAGE = [10, 20, 30, 40, 50]
+const ROWS_PER_PAGE = [10, 20, 40, 50]
 
 const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, positionStatus}: PositionsTableProps) => {
   const classes = useStyles()
@@ -132,13 +167,13 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
     setOpen(prevOpen => !prevOpen)
   }
 
-  const handleRowsPerPageChange = (event: React.ChangeEvent<{value: unknown}>) => {
-    setRowsPerPage(Number(event.target.value))
+  const handleRowsPerPageChange = (newValue: number) => {
+    setRowsPerPage(newValue)
   }
 
   return (
     <Container>
-      <TableContainer>
+      <TableContainer style={{overflow: 'visible'}}>
         <TEXT.BoldStandardBody mt={marginTop} mb="16px">
           {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
           {`${title}`}
@@ -168,6 +203,26 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
               <Pagination count={10} shape="rounded" className={classes.pagination} />
               <Box display="flex" alignItems="center" ml="28px">
                 <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
+                {/* Dropdown container */}
+                <Box position="relative" className={classes.select}>
+                  {/* Select */}
+                  <Box display="flex" alignItems="center">
+                    <TEXT.SmallBody color={colors(true).dark.white}>{rowsPerPage} / page</TEXT.SmallBody>
+                    <ChevronDown className={classes.chevron} color={colors(true).dark.white} strokeWidth={1} height={18} width={18} />
+                  </Box>
+
+                  {/* Dropdown */}
+                  <Box className={classes.selectDropdown}>
+                    {ROWS_PER_PAGE.map(
+                      option =>
+                        option !== rowsPerPage && (
+                          <div onClick={() => handleRowsPerPageChange(option)}>
+                            <TEXT.SmallBody>{option} / page</TEXT.SmallBody>
+                          </div>
+                        ),
+                    )}
+                  </Box>
+                </Box>
               </Box>
             </Box>
           )}
