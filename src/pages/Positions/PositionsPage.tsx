@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react'
-import {Play} from 'react-feather'
+import {ChevronDown, Play} from 'react-feather'
 import styled from 'styled-components'
-import {Button, Collapse, TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
+import {Box, Button, Collapse, TableBody, TableContainer, TableHead, Select, MenuItem} from '@material-ui/core'
 import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../components/Table/Table'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
@@ -15,6 +15,60 @@ import {OpenPosition} from './OpenPosition'
 import {UnwindsTransactions} from './UnwindsTransactions'
 import {LiquidatesTransactions} from './LiquidatesTransactions'
 import {Overview} from './Overview'
+import {Pagination} from '@material-ui/lab'
+import {makeStyles, createStyles, Theme} from '@material-ui/core/styles'
+import {colors} from '../../theme/theme'
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    pagination: {
+      '& .MuiPagination-ul': {
+        '& li:first-child .MuiButtonBase-root': {
+          padding: '10px',
+          background: '#2E3343',
+          marginLeft: '4px',
+        },
+        '& li:last-child .MuiButtonBase-root': {
+          padding: '10px',
+          background: '#2E3343',
+          marginRight: 0,
+        },
+      },
+      '& .MuiPaginationItem-root': {
+        fontFamily: 'Inter, sans-serif',
+        boxSizing: 'border-box',
+        color: '#C4C4C4',
+        fontSize: '14px',
+        padding: '6.5px 7.5px',
+        minWidth: 0,
+        width: '24px',
+        height: '30px',
+        margin: '0 6px',
+        '&:hover': {
+          boxShadow: '0px 0px 4px 2px rgba(180, 229, 255, 0.3)',
+        },
+      },
+      '& .Mui-selected': {
+        border: '1px solid #E5F6FF',
+        color: '#E5F6FF',
+      },
+      '& .MuiPaginationItem-ellipsis': {
+        '&:hover': {
+          boxShadow: 'none !important',
+        },
+      },
+    },
+    selectMenu: {
+      marginLeft: '8px',
+      background: '#2E3343',
+      borderRadius: '4px',
+      height: '30px',
+      color: '#F0F0F0',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '14px',
+    },
+  }),
+)
 
 const Container = styled.div`
   display: flex;
@@ -66,17 +120,25 @@ export const RotatingTriangle = styled(Play)<RotatingTriangleProps>`
   transition: transform ease-out 0.25s;
 `
 
+const ROWS_PER_PAGE = [10, 20, 30, 40, 50]
+
 const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, positionStatus}: PositionsTableProps) => {
+  const classes = useStyles()
   const {account} = useActiveWeb3React()
   const [open, setOpen] = useState<boolean>(true)
+  const [rowsPerPage, setRowsPerPage] = useState<number>(ROWS_PER_PAGE[0])
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen)
   }
 
+  const handleRowsPerPageChange = (event: React.ChangeEvent<{value: unknown}>) => {
+    setRowsPerPage(Number(event.target.value))
+  }
+
   return (
     <Container>
-      <TableContainer component={Paper}>
+      <TableContainer>
         <TEXT.BoldStandardBody mt={marginTop} mb="16px">
           {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
           {`${title}`}
@@ -101,6 +163,14 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
             </TableHead>
             <TableBody>{children}</TableBody>
           </StyledTable>
+          {children && (
+            <Box display="flex" justifyContent="flex-start" alignItems="center" paddingTop={'28px'} paddingBottom={'8px'}>
+              <Pagination count={10} shape="rounded" className={classes.pagination} />
+              <Box display="flex" alignItems="center" ml="28px">
+                <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
+              </Box>
+            </Box>
+          )}
         </Collapse>
       </TableContainer>
 
@@ -203,7 +273,7 @@ const Positions = () => {
       </PositionsTable>
       <PositionsTable
         title="Unwinds"
-        marginTop="50px"
+        marginTop="32px"
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'closed'}
@@ -215,7 +285,7 @@ const Positions = () => {
       </PositionsTable>
       <PositionsTable
         title="Liquidates"
-        marginTop="50px"
+        marginTop="32px"
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'liquidated'}
