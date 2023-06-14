@@ -94,7 +94,7 @@ export default function Header() {
   return (
     <HeaderContainer>
       <LogoContainer>
-        <IconButton href={LINKS.LANDING} target="_blank" style={{padding: 0}}>
+        <IconButton href="/" style={{padding: 0}}>
           {darkMode ? (
             <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo Light'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
           ) : (

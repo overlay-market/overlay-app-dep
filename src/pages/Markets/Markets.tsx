@@ -33,6 +33,34 @@ export const StyledNavLink = styled(NavLink).attrs({activeClassName})`
   }
 `
 
+export const MarketsStyledTableHeaderRow = styled(StyledTableHeaderRow)`
+  #marketFundingRate,
+  #marketOi,
+  #marketFeedLogo,
+  #market7dChart {
+    display: none;
+  }
+
+  th,
+  td {
+    padding: 8px;
+  }
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    #marketFundingRate,
+    #market7dChart {
+      display: table-cell;
+    }
+  `}
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    #marketOi,
+    #marketFeedLogo {
+      display: table-cell;
+    }
+  `}
+`
+
 const infoTipDescriptions = {
   openInterest: (
     <React.Fragment>
@@ -86,21 +114,21 @@ const Markets = () => {
     <PageContainer>
       <TableContainer component={Paper}>
         {chainId !== 1 ? (
-          <StyledTable>
+          <StyledTable smWidth="100%">
             <TableHead>
-              <StyledTableHeaderRow>
-                <StyledHeaderCell width={1}>
+              <MarketsStyledTableHeaderRow>
+                <StyledHeaderCell width={1} smWidth={2} id="marketIndex">
                   <TEXT.Supplemental>
                     <Trans>#</Trans>
                   </TEXT.Supplemental>
                 </StyledHeaderCell>
-                <StyledHeaderCell width={25}>
+                <StyledHeaderCell width={25} smWidth={50} id="marketName">
                   <TEXT.Supplemental>
                     <Trans>Market</Trans>
                   </TEXT.Supplemental>
                 </StyledHeaderCell>
                 <StyledHeaderCell>
-                  <TEXT.Supplemental>
+                  <TEXT.Supplemental id="marketPrice">
                     <Trans>Price</Trans>
                   </TEXT.Supplemental>
                 </StyledHeaderCell>
@@ -109,7 +137,7 @@ const Markets = () => {
                     <TEXT.Supplemental>7d</TEXT.Supplemental>
                   </Trans>
                 </StyledHeaderCell> */}
-                <StyledHeaderCell>
+                <StyledHeaderCell id="marketFundingRate">
                   <TEXT.SupplementalUnderlinedDashes data-for={'funding info'} data-tip={'funding info'}>
                     <Trans>Funding</Trans>
                   </TEXT.SupplementalUnderlinedDashes>
@@ -117,7 +145,7 @@ const Markets = () => {
                     {infoTipDescriptions.fundingRate}
                   </ReactTooltip>
                 </StyledHeaderCell>
-                <StyledHeaderCell>
+                <StyledHeaderCell id="marketOi">
                   <TEXT.SupplementalUnderlinedDashes data-for={'Balance info'} data-tip={'Balance info'}>
                     <Trans>OI Balance</Trans>
                   </TEXT.SupplementalUnderlinedDashes>
@@ -125,19 +153,19 @@ const Markets = () => {
                     {infoTipDescriptions.openInterest}
                   </ReactTooltip>
                 </StyledHeaderCell>
-                <StyledHeaderCell align="center">
+                <StyledHeaderCell align="center" id="marketFeedLogo">
                   <TEXT.Supplemental>
                     <Trans>Oracle</Trans>
                   </TEXT.Supplemental>
                 </StyledHeaderCell>
                 {!hide7dChart && (
-                  <StyledHeaderCell align="center">
+                  <StyledHeaderCell align="center" id="market7dChart">
                     <TEXT.Supplemental>
                       <Trans>7D Chart</Trans>
                     </TEXT.Supplemental>
                   </StyledHeaderCell>
                 )}
-              </StyledTableHeaderRow>
+              </MarketsStyledTableHeaderRow>
             </TableHead>
             <TableBody>
               {marketsData.length > 0 &&

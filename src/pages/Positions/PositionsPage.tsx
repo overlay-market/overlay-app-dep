@@ -76,15 +76,15 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
 
   return (
     <Container>
-      <TableContainer component={Paper}>
-        <TEXT.BoldStandardBody mt={marginTop} mb="16px">
-          {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
-          {`${title}`}
-          <TriangleButton onClick={handleToggle}>
-            <RotatingTriangle color={'white'} fill={'white'} height={10} width={10} open={open} />
-          </TriangleButton>
-        </TEXT.BoldStandardBody>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+      <TEXT.BoldStandardBody mt={marginTop} mb="16px">
+        {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
+        {`${title}`}
+        <TriangleButton onClick={handleToggle}>
+          <RotatingTriangle color={'white'} fill={'white'} height={10} width={10} open={open} />
+        </TriangleButton>
+      </TEXT.BoldStandardBody>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <TableContainer component={Paper}>
           <StyledTable>
             <TableHead>
               <StyledTableHeaderRow>
@@ -92,7 +92,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
                 </StyledHeaderChevron> */}
                 {positionColumns[positionStatus].map((column: string) => {
                   return (
-                    <StyledHeaderCell>
+                    <StyledHeaderCell width={20}>
                       <TEXT.SupplementalHeader>{column}</TEXT.SupplementalHeader>
                     </StyledHeaderCell>
                   )
@@ -101,8 +101,8 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
             </TableHead>
             <TableBody>{children}</TableBody>
           </StyledTable>
-        </Collapse>
-      </TableContainer>
+        </TableContainer>
+      </Collapse>
 
       {!account ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
