@@ -1,7 +1,7 @@
 import React, {useMemo, useState} from 'react'
 import {ChevronDown, Play} from 'react-feather'
 import styled from 'styled-components'
-import {Box, Button, Collapse, TableBody, TableContainer, TableHead, Select, MenuItem} from '@material-ui/core'
+import {Box, Button, Collapse, TableBody, TableContainer, TableHead} from '@material-ui/core'
 import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../components/Table/Table'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
@@ -129,6 +129,7 @@ interface PositionsTableProps {
   isUninitialized: boolean
   positionStatus: PositionStatus
   initialCollateral?: string
+  rows?: any[]
   // onClickColumn: {
   //   'Status': () => void
   // }
@@ -157,19 +158,51 @@ export const RotatingTriangle = styled(Play)<RotatingTriangleProps>`
 
 const ROWS_PER_PAGE = [10, 20, 40, 50]
 
-const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, positionStatus}: PositionsTableProps) => {
+const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionStatus, rows}: PositionsTableProps) => {
   const classes = useStyles()
   const {account} = useActiveWeb3React()
   const [open, setOpen] = useState<boolean>(true)
+  const [page, setPage] = useState<number>(1)
   const [rowsPerPage, setRowsPerPage] = useState<number>(ROWS_PER_PAGE[0])
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen)
   }
 
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value)
+  }
+
   const handleRowsPerPageChange = (newValue: number) => {
     setRowsPerPage(newValue)
+    setPage(1)
   }
+
+  const pageCount = useMemo(() => {
+    if (!rows) return 0
+
+    return Math.ceil(rows.length / rowsPerPage)
+  }, [rows, rowsPerPage])
+
+  const paginatedRows = useMemo(() => {
+    if (!rows) return null
+
+    const indexOfLastRow = page * rowsPerPage
+    const indexOfFirstRow = indexOfLastRow - rowsPerPage
+    const currentRows = rows.slice(indexOfFirstRow, indexOfLastRow)
+
+    return currentRows.map(row => {
+      if (positionStatus === 'open') {
+        return <OpenPosition position={row} columns={positionColumns['open']} />
+      } else if (positionStatus === 'closed') {
+        return <UnwindsTransactions transaction={row} columns={positionColumns['closed']} />
+      } else if (positionStatus === 'liquidated') {
+        return <LiquidatesTransactions transaction={row} columns={positionColumns['liquidated']} />
+      } else {
+        return null
+      }
+    })
+  }, [rows, page, rowsPerPage, positionStatus])
 
   return (
     <Container>
@@ -196,11 +229,11 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
                 })}
               </StyledTableHeaderRow>
             </TableHead>
-            <TableBody>{children}</TableBody>
+            <TableBody>{paginatedRows}</TableBody>
           </StyledTable>
-          {children && (
+          {!!rows?.length && (
             <Box display="flex" justifyContent="flex-start" alignItems="center" paddingTop={'28px'} paddingBottom={'8px'}>
-              <Pagination count={10} shape="rounded" className={classes.pagination} />
+              <Pagination count={pageCount} page={page} onChange={handlePageChange} shape="rounded" className={classes.pagination} />
               <Box display="flex" alignItems="center" ml="28px">
                 <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
                 {/* Dropdown container */}
@@ -237,7 +270,7 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">Fetching positions...</TEXT.StandardBody>
         </FlexRow>
-      ) : !children ? (
+      ) : !rows?.length ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">You have no {positionStatus} positions.</TEXT.StandardBody>
         </FlexRow>
@@ -320,36 +353,27 @@ const Positions = () => {
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'open'}
+        rows={openPositions}
         // onClickColumn={{Status: setNextStatusFilter}}
-      >
-        {openPositions && openPositions.length > 0
-          ? openPositions.map(position => <OpenPosition position={position} columns={positionColumns['open']} />)
-          : null}
-      </PositionsTable>
+      />
       <PositionsTable
         title="Unwinds"
         marginTop="32px"
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'closed'}
+        rows={unwindRows}
         // onClickColumn={{Status: setNextStatusFilter}}
-      >
-        {unwindRows && unwindRows.length > 0
-          ? unwindRows.map(transaction => <UnwindsTransactions transaction={transaction} columns={positionColumns['closed']} />)
-          : null}
-      </PositionsTable>
+      />
       <PositionsTable
         title="Liquidates"
         marginTop="32px"
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'liquidated'}
+        rows={liquidatedRows}
         // onClickColumn={{Status: setNextStatusFilter}}
-      >
-        {liquidatedRows && liquidatedRows.length > 0
-          ? liquidatedRows.map(transaction => <LiquidatesTransactions transaction={transaction} columns={positionColumns['liquidated']} />)
-          : null}
-      </PositionsTable>
+      />
     </PageContainer>
   )
 }
