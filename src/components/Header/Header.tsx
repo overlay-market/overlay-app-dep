@@ -13,6 +13,7 @@ import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
 import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
+import {LINKS} from '../../constants/links'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.dark.white};
@@ -93,7 +94,7 @@ export default function Header() {
   return (
     <HeaderContainer>
       <LogoContainer>
-        <IconButton href="https://overlay.market" target="_blank" style={{padding: 0}}>
+        <IconButton href="/" style={{padding: 0}}>
           {darkMode ? (
             <Image src={OverlayLogoOnlyDark} alt={'Overlay Logo Light'} height={'100%'} width={'100%'} minHeight={'30px'} minWidth={'30px'} />
           ) : (

@@ -220,7 +220,7 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
               <StyledTableHeaderRow>
                 {positionColumns[positionStatus].map((column: string) => {
                   return (
-                    <StyledHeaderCell>
+                    <StyledHeaderCell width={20}>
                       <TEXT.SupplementalHeader>{column}</TEXT.SupplementalHeader>
                     </StyledHeaderCell>
                   )
