@@ -45,24 +45,27 @@ function useBuildCallArguments(
   inputError: string | undefined,
 ) {
   let calldata: any
+  let minPrice: BigNumber | undefined = undefined
 
   const {account, chainId} = useActiveWeb3React()
   const marketContract = useMarketContract(marketAddress)
 
   if (!buildData || inputError || !marketContract || !price || !minCollateral) calldata = undefined
   else if (minCollateral > Number(buildData.typedValue)) calldata = undefined
+  else if (buildData.setSlippageValue === '.') calldata = undefined
   else {
-    let increasePercentage = Number(buildData.setSlippageValue) + 100
-    let decreasePercentage = 100 - Number(buildData.setSlippageValue)
+    let increasePercentage = (Number(buildData.setSlippageValue) + 100) * 100
+    let decreasePercentage = (100 - Number(buildData.setSlippageValue)) * 100
     let increaseNumerator = BigNumber.from(increasePercentage).toHexString()
     let decreaseNumerator = BigNumber.from(decreasePercentage).toHexString()
-    let base = BigNumber.from(100).toHexString()
+    let base = BigNumber.from(100 * 100).toHexString()
+    minPrice = buildData.isLong ? price.mul(increaseNumerator).div(base) : price.mul(decreaseNumerator).div(base)
 
     calldata = marketContract.interface.encodeFunctionData('build', [
       utils.parseUnits(buildData.typedValue),
       utils.parseUnits(buildData.selectedLeverage),
       buildData.isLong,
-      buildData.isLong ? price.mul(increaseNumerator).div(base) : price.mul(decreaseNumerator).div(base),
+      minPrice,
     ])
   }
 
@@ -81,9 +84,10 @@ function useBuildCallArguments(
         address: txn.address,
         calldata: calldata,
         value: txn.value,
+        minPrice: minPrice,
       },
     ]
-  }, [calldata, marketAddress, chainId, account, buildData, marketContract])
+  }, [calldata, marketAddress, chainId, account, buildData, marketContract, minPrice])
 }
 
 export function useBuildCallback(
@@ -96,6 +100,7 @@ export function useBuildCallback(
   state: BuildCallbackState
   callback: null | (() => Promise<string>)
   error: string | null
+  minPrice: (BigNumber | undefined)[]
 } {
   const {account, chainId, library} = useActiveWeb3React()
   const addTransaction = useTransactionAdder()
@@ -109,6 +114,7 @@ export function useBuildCallback(
         state: BuildCallbackState.INVALID,
         callback: null,
         error: 'Missing Dependencies',
+        minPrice: [],
       }
     }
 
@@ -183,7 +189,7 @@ export function useBuildCallback(
         if (!bestCallOption) {
           const errorCalls = estimatedCalls.filter((call): call is FailedCall => 'error' in call)
 
-          if (errorCalls.length > 0) throw 'ERROR ' + errorCalls[errorCalls.length - 1].error
+          if (errorCalls.length > 0) throw new Error('ERROR ' + errorCalls[errorCalls.length - 1].error)
           const firstNoErrorCall = estimatedCalls.find<BuildCallEstimate>((call): call is BuildCallEstimate => !('error' in call))
           if (!firstNoErrorCall) throw new Error('Unexpected error. Could not estimate gas for the build.')
           bestCallOption = firstNoErrorCall
@@ -238,6 +244,7 @@ export function useBuildCallback(
             }
           })
       },
+      minPrice: buildCalls.map(call => call.minPrice),
       error: null,
     }
   }, [buildData, marketAddress, library, account, chainId, buildCalls, addTransaction, addPopup, currentTimeForId, inputError])

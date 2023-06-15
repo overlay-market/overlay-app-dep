@@ -1,7 +1,6 @@
 import React, {useMemo} from 'react'
 import styled from 'styled-components'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
-import {formatBigNumberUsingDecimalsToString} from '../../utils/formatWei'
 import Loader from '../../components/Loaders/Loaders'
 import {ExternalLink} from '../../components/ExternalLink/ExternalLink'
 import {getExplorerLink, ExplorerDataType} from '../../utils/getExplorerLink'
@@ -65,21 +64,10 @@ const StyledLinkIcon = styled(LinkIconFeather)`
   margin-left: 4px;
 `
 export const AdditionalDetails = ({
-  isInverseMarket,
-  isLong,
-  baseToken,
-  quoteToken,
-  quoteTokenDecimals,
-  decimals,
-  typedValue,
-  estimatedBid,
-  estimatedAsk,
   bidPrice,
   askPrice,
-  midPrice,
   fee,
   oiCap,
-  capPayoff,
   oiLong,
   oiShort,
   slippageTolerance,
@@ -89,21 +77,10 @@ export const AdditionalDetails = ({
   marketAddress,
   feedAddress,
 }: {
-  isInverseMarket?: boolean | null
-  isLong?: boolean
-  baseToken?: string
-  quoteToken?: string
-  quoteTokenDecimals?: number
-  decimals?: number
-  typedValue?: string
-  estimatedBid?: any
-  estimatedAsk?: any
   bidPrice?: string | number | any
   askPrice?: string | number | any
-  midPrice?: string | number
   fee?: string | number
   oiCap?: number | null
-  capPayoff?: number
   oiLong?: number
   oiShort?: number
   priceImpact?: string
@@ -115,32 +92,6 @@ export const AdditionalDetails = ({
   feedAddress?: string
 }) => {
   const {chainId} = useActiveWeb3React()
-
-  const estimatedReceivedPrice: any = useMemo(() => {
-    if (isLong === undefined || estimatedBid === undefined || estimatedAsk === undefined) {
-      return null
-    }
-    // if (estimatedBid === undefined || estimatedAsk === undefined) return prices.mid;
-    if (decimals) {
-      return isLong
-        ? formatBigNumberUsingDecimalsToString(estimatedAsk, decimals, 4)
-        : formatBigNumberUsingDecimalsToString(estimatedBid, decimals, 4)
-    }
-    return isLong
-      ? formatBigNumberUsingDecimalsToString(estimatedAsk, quoteTokenDecimals, 4)
-      : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, 4)
-  }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals, decimals])
-
-  const priceImpact = useMemo(() => {
-    if (!estimatedReceivedPrice) return null
-    if (!typedValue || isLong === undefined || bidPrice === undefined || askPrice === undefined) return null
-    if (bidPrice === 'loading' || askPrice === 'loading') return <Loader stroke="white" size="12px" />
-
-    const priceImpactValue = isLong ? estimatedReceivedPrice - askPrice : bidPrice - estimatedReceivedPrice
-    const priceImpactPercentage = isLong ? (priceImpactValue / askPrice) * 100 : (priceImpactValue / bidPrice) * 100
-
-    return priceImpactPercentage.toFixed(2)
-  }, [estimatedReceivedPrice, typedValue, isLong, bidPrice, askPrice])
 
   const ShortenedAddresses = useMemo(() => {
     if (!marketAddress || !feedAddress)
@@ -169,16 +120,6 @@ export const AdditionalDetails = ({
       <AdditionalDetailRow>
         <PositionDetailType>Ask</PositionDetailType>
         <DetailValue>{askPrice === 'loading' ? <Loader stroke="white" size="12px" /> : askPrice}</DetailValue>
-      </AdditionalDetailRow>
-
-      <AdditionalDetailRow>
-        <PositionDetailType>Est. Received Price</PositionDetailType>
-        <DetailValue>{estimatedReceivedPrice ? estimatedReceivedPrice : '-'}</DetailValue>
-      </AdditionalDetailRow>
-
-      <AdditionalDetailRow>
-        <PositionDetailType>Price Impact</PositionDetailType>
-        <DetailValue>{priceImpact ? `${priceImpact}%` : `-`}</DetailValue>
       </AdditionalDetailRow>
 
       <AdditionalDetailRow>

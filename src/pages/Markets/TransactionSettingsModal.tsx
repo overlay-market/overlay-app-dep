@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import {FlexColumn, FlexRow} from '../../components/Container/Container'
-import {TEXT} from '../../theme/theme'
+import {TEXT, colors} from '../../theme/theme'
 import {NumericalInput} from '../../components/NumericalInput/NumericalInput'
 import {TransactionSettingsButton} from '../../components/Button/Button'
-import {NumericalInputContainer} from './Build'
+import {MINIMUM_SLIPPAGE_VALUE, NumericalInputContainer} from './Build'
 
 const TransactionSettingModal = styled.div<{isOpen?: boolean}>`
   display: ${({isOpen}) => (isOpen ? 'flex' : 'none')};
@@ -52,7 +52,7 @@ export const TransactionSettingsModal = ({
           <TEXT.Menu>Slippage Tolerance</TEXT.Menu>
         </FlexRow>
 
-        <FlexRow padding="0px 16px 16px">
+        <FlexRow padding="0px 16px 4px">
           <NumericalInputContainer width={'210px'} height={'40px'}>
             <NumericalInput value={setSlippageValue} onUserInput={onSetSlippage} align={'right'} />
             <NumericalInputDescriptor> % </NumericalInputDescriptor>
@@ -68,6 +68,20 @@ export const TransactionSettingsModal = ({
             Auto
           </TransactionSettingsButton>
         </FlexRow>
+        {Number(setSlippageValue) > 5 && (
+          <FlexRow padding="0px 16px 4px">
+            <TEXT.Supplemental color={colors(false).dark.red}>
+              Caution: High slippage. Your position may result in an unfavorable trade.
+            </TEXT.Supplemental>
+          </FlexRow>
+        )}
+        {Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE && (
+          <FlexRow padding="0px 16px 4px">
+            <TEXT.Supplemental color={colors(false).dark.red}>
+              Caution: Slippage too low. Slippage should be set to protocol minimum of 0.05%.
+            </TEXT.Supplemental>
+          </FlexRow>
+        )}
 
         {/* <FlexRow padding="8px 16px">
           <TEXT.Menu>Transaction Deadline</TEXT.Menu>

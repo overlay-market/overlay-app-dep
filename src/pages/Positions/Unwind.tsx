@@ -406,7 +406,7 @@ export function Unwind({
           </UnwindButton>
         )}
       </ControlInterfaceContainer>
-      <FlexColumn mt="48px">
+      <FlexColumn mt="48px" padding="0 16px">
         <AdditionalDetailRow
           detail={'Profit/Loss'}
           valueColor={parsedPnL !== undefined && parsedPnL !== 0 ? (parsedPnL < 0 ? '#FF648A' : '#10DCB1') : '#F2F2F2'}
@@ -423,7 +423,7 @@ export function Unwind({
         width={"fit-content"}
         clickableMargin={"auto"}
         > */}
-      <FlexColumn mt="48px">
+      <FlexColumn mt="48px" padding="0 16px">
         <AdditionalDetailRow detail={'Value'} value={value ? `${formatWeiToParsedNumber(value, 18, 4)} OVL` : 'loading'} />
         <AdditionalDetailRow detail={'Open Interest'} value={oi.formattedOi || oi.formattedOi === 0 ? oi.formattedOi : 'loading'} />
         <AdditionalDetailRow detail={'Leverage'} value={position?.leverage ? `${Number(position.leverage).toFixed(1)}x` : 'loading'} />
@@ -445,7 +445,7 @@ export function Unwind({
         />
       </FlexColumn>
 
-      <FlexColumn mt="48px">
+      <FlexColumn mt="48px" padding="0 16px">
         <AdditionalDetailRow detail={'Entry Price'} value={entryPrice ? `${entryPrice}` : 'loading'} />
         <AdditionalDetailRow detail={'Current Price'} value={bidPrice && askPrice ? (isLong ? bidPrice : askPrice) : 'loading'} />
         <AdditionalDetailRow detail={'Est. Received Price'} value={estimatedReceivedPrice ? estimatedReceivedPrice : 'loading'} />

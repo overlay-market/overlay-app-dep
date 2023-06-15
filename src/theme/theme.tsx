@@ -13,6 +13,15 @@ export const muiTheme = createTheme({
       },
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 576,
+      md: 992,
+      lg: 1200,
+      xl: 1400,
+    },
+  },
 })
 
 export const MEDIA_WIDTHS = {

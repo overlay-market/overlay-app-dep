@@ -6,6 +6,7 @@ const IconWrapper = styled.div<{
   color?: string
   transform?: string
   clickable?: boolean
+  disabled?: boolean
   position?: string
   top?: string
   right?: string
@@ -26,6 +27,7 @@ const IconWrapper = styled.div<{
   left: ${({left}) => left ?? left};
   bottom: ${({bottom}) => bottom ?? bottom};
   position: ${({position}) => (position ? position : 'auto')};
+  ${({disabled, theme}) => (disabled ? `color: ${theme.dark.grey2};` : '')};
 `
 
 type IconProps = {
@@ -35,6 +37,7 @@ type IconProps = {
   color?: string
   transform?: string
   clickable?: boolean
+  disabled?: boolean
   onClick?: (event: any) => any
   top?: string
   right?: string
@@ -43,7 +46,7 @@ type IconProps = {
   position?: string
 }
 
-export const Icon = ({size, margin, children, color, transform, clickable, onClick, top, right, left, bottom, position}: IconProps) => {
+export const Icon = ({size, margin, children, color, transform, clickable, onClick, top, right, left, bottom, position, disabled}: IconProps) => {
   return (
     <IconWrapper
       size={size}
@@ -51,7 +54,8 @@ export const Icon = ({size, margin, children, color, transform, clickable, onCli
       color={color}
       transform={transform}
       clickable={clickable}
-      onClick={onClick}
+      disabled={disabled}
+      onClick={disabled ? () => null : onClick}
       top={top}
       right={right}
       left={left}

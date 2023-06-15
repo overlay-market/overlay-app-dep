@@ -1,21 +1,28 @@
 import styled from 'styled-components/macro'
 import {Table, TableCell, TableRow} from '@material-ui/core'
 
-export const StyledTable = styled(Table)`
+export const StyledTable = styled(Table)<{smWidth?: string}>`
   white-space: nowrap !important;
   table-layout: fixed !important;
-  min-width: 1200px !important;
-  width: 100%;
+  width: ${({smWidth}) => (smWidth ? `${smWidth}` : 'auto')} !important;
 
   ${({theme}) => theme.mediaWidth.minSmall`
     table-layout: fixed !important;
   `}
+
+  ${({theme}) => theme.mediaWidth.minMedium`
+    min-width: 1200px !important;
+  `}
 `
 
-export const StyledTableCell = styled(TableCell)<{width?: number}>`
+export const StyledTableCell = styled(TableCell)<{width?: number; smWidth?: number}>`
   font-size: 14px;
   color: ${({theme}) => theme.dark.white} !important;
-  width: ${({width}) => (width ? `${width}%` : 'auto')};
+  width: ${({smWidth}) => (smWidth ? `${smWidth}%` : 'auto')};
+
+  ${({theme, width}) => theme.mediaWidth.minSmall`
+    width: ${width ? `${width}%` : 'auto'};
+  `}
 `
 
 export const StyledHeaderCell = styled(StyledTableCell)`
@@ -58,4 +65,8 @@ export const StyledTableRowNoPointer = styled(TableRow)`
 export const StyledTableHeaderRow = styled(TableRow)`
   background: ${({theme}) => theme.dark.background};
   cursor: default;
+
+  th {
+    padding: 8px;
+  }
 `
