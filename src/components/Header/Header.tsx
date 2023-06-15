@@ -86,7 +86,7 @@ const Dropdown = styled.div<{active: boolean}>`
   color: ${({theme, active}) => (active ? theme.dark.blue2 : theme.dark.purple2)};
   border-radius: 8px;
   width: 59px;
-  transition: width 0.3s ease-in-out, border-radius 0.3s ease-in-out;
+  transition: width 0.2 ease-in-out;
 
   .dropdown-list {
     padding: 0;
@@ -142,7 +142,7 @@ const DropdownList = styled.div`
   gap: 16px;
   background: ${({theme}) => theme.dark.grey4};
   overflow: hidden;
-  transition: width 0.3s ease-in-out, height 0.2s ease-in-out, border-radius 0.3s ease-in-out;
+  transition: width 0.2 ease-in-out;
 `
 
 const DropdownItem = styled(StyledLink)`
