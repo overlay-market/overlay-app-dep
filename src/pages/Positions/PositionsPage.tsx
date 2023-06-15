@@ -178,7 +178,7 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
         </TriangleButton>
       </TEXT.BoldStandardBody>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <TableContainer style={{overflow: 'visible'}}>
+        <TableContainer>
           <StyledTable>
             <TableHead>
               <StyledTableHeaderRow>
@@ -193,32 +193,32 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
             </TableHead>
             <TableBody>{paginatedRows}</TableBody>
           </StyledTable>
-          {!!rows?.length && (
-            <Box display="flex" justifyContent="flex-start" alignItems="center" paddingTop={'28px'} paddingBottom={'8px'}>
-              <Pagination count={pageCount} page={page} onChange={handlePageChange} />
-              <Box display="flex" alignItems="center" ml="28px">
-                <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
-                <Dropdown>
-                  <Box display="flex" alignItems="center">
-                    <TEXT.SmallBody color={colors(true).dark.white}>{rowsPerPage} / page</TEXT.SmallBody>
-                    <RotatingChevron className="chevron" color={colors(true).dark.white} strokeWidth={1} height={18} width={18} />
-                  </Box>
-
-                  <DropdownMenu className="dropdown-menu">
-                    {ROWS_PER_PAGE.map(
-                      option =>
-                        option !== rowsPerPage && (
-                          <div onClick={() => handleRowsPerPageChange(option)}>
-                            <TEXT.SmallBody>{option} / page</TEXT.SmallBody>
-                          </div>
-                        ),
-                    )}
-                  </DropdownMenu>
-                </Dropdown>
-              </Box>
-            </Box>
-          )}
         </TableContainer>
+        {!!rows?.length && (
+          <Box display="flex" justifyContent="flex-start" alignItems="center" paddingTop={'28px'} paddingBottom={'8px'}>
+            <Pagination count={pageCount} page={page} onChange={handlePageChange} />
+            <Box display="flex" alignItems="center" ml="28px">
+              <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
+              <Dropdown>
+                <Box display="flex" alignItems="center">
+                  <TEXT.SmallBody color={colors(true).dark.white}>{rowsPerPage} / page</TEXT.SmallBody>
+                  <RotatingChevron className="chevron" color={colors(true).dark.white} strokeWidth={1} height={18} width={18} />
+                </Box>
+
+                <DropdownMenu className="dropdown-menu">
+                  {ROWS_PER_PAGE.map(
+                    option =>
+                      option !== rowsPerPage && (
+                        <div onClick={() => handleRowsPerPageChange(option)}>
+                          <TEXT.SmallBody>{option} / page</TEXT.SmallBody>
+                        </div>
+                      ),
+                  )}
+                </DropdownMenu>
+              </Dropdown>
+            </Box>
+          </Box>
+        )}
       </Collapse>
 
       {!account ? (
