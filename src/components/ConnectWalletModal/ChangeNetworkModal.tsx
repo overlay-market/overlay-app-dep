@@ -1,25 +1,14 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import styled from 'styled-components/macro'
 import {X} from 'react-feather'
-import {isMobile} from 'react-device-detect'
-import {UnsupportedChainIdError} from '@web3-react/core'
-import {AbstractConnector} from '@web3-react/abstract-connector'
 import {TEXT} from '../../theme/theme'
 import {useActiveWeb3React} from '../../hooks/web3'
-import {injected} from '../../connectors/connectors'
-import {SUPPORTED_WALLETS} from '../../constants/wallet'
-import {ApplicationModal} from '../../state/application/actions'
-import {useModalOpen, useWalletModalToggle} from '../../state/application/hooks'
 import Modal from '../Modal/Modal'
-import PendingView from './PendingView'
-import WalletOption, {CardText, IconWrapper, SubHeader} from './WalletOptions'
-import usePrevious from '../../hooks/usePrevious'
-import METAMASK_ICON from '../../assets/images/metamask.png'
+import {CardText, IconWrapper} from './WalletOptions'
 import {NETWORK_LOGO} from '../../constants/tokens'
 import {SupportedChainId} from '../../constants/chains'
 import {NETWORK_LABELS} from '../Web3Status/Web3Status'
 import {ArrowRight} from 'react-feather'
-import {ethers} from 'ethers'
 import {switchNetworkToArbitrum} from '../../utils/switchNetworkToArbitrum'
 
 export const ModalContent = styled.div`
@@ -40,11 +29,6 @@ export const CloseIcon = styled.div`
     cursor: pointer;
     opacity: 0.7;
   }
-`
-
-const CurrencyLogo = styled.img`
-  height: 24px;
-  width: 24px;
 `
 
 export const CardHeader = styled.div`
@@ -84,16 +68,9 @@ export const OptionCardClickable = styled(OptionCard as any)<{clickable?: boolea
   opacity: ${({disabled}) => (disabled ? '0.5' : '1')};
 `
 
-const WALLET_VIEWS = {
-  OPTIONS: 'options',
-  OPTIONS_SECONDARY: 'options_secondary',
-  ACCOUNT: 'account',
-  PENDING: 'pending',
-}
-
 export default function ChangeNetworkModal() {
   const [walletModalOpen, setWalletModalOpen] = useState(true)
-  const {account, connector, chainId} = useActiveWeb3React()
+  const {chainId} = useActiveWeb3React()
   if (chainId !== 1) return <></>
 
   const toggleWalletModal = () => setWalletModalOpen(false)
