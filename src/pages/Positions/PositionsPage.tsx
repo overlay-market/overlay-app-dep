@@ -187,9 +187,9 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
   const paginatedRows = useMemo(() => {
     if (!rows) return null
 
-    const indexOfLastRow = page * rowsPerPage
-    const indexOfFirstRow = indexOfLastRow - rowsPerPage
-    const currentRows = rows.slice(indexOfFirstRow, indexOfLastRow)
+    const lastRowIndex = page * rowsPerPage
+    const firstRowIndex = lastRowIndex - rowsPerPage
+    const currentRows = rows.slice(firstRowIndex, lastRowIndex)
 
     return currentRows.map(row => {
       if (positionStatus === 'open') {
@@ -218,8 +218,6 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
           <StyledTable>
             <TableHead>
               <StyledTableHeaderRow>
-                {/* <StyledHeaderChevron>
-                </StyledHeaderChevron> */}
                 {positionColumns[positionStatus].map((column: string) => {
                   return (
                     <StyledHeaderCell>
@@ -358,7 +356,7 @@ const Positions = () => {
       />
       <PositionsTable
         title="Unwinds"
-        marginTop="32px"
+        marginTop="50px"
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'closed'}
@@ -367,7 +365,7 @@ const Positions = () => {
       />
       <PositionsTable
         title="Liquidates"
-        marginTop="32px"
+        marginTop="50px"
         isLoading={isPositionsLoading}
         isUninitialized={isUninitialized}
         positionStatus={'liquidated'}
