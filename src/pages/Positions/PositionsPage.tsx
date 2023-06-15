@@ -15,95 +15,8 @@ import {OpenPosition} from './OpenPosition'
 import {UnwindsTransactions} from './UnwindsTransactions'
 import {LiquidatesTransactions} from './LiquidatesTransactions'
 import {Overview} from './Overview'
-import {Pagination} from '@material-ui/lab'
-import {makeStyles, createStyles, Theme} from '@material-ui/core/styles'
 import {colors} from '../../theme/theme'
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    pagination: {
-      '& .MuiPagination-ul': {
-        '& li:first-child .MuiButtonBase-root': {
-          padding: '10px',
-          background: '#2E3343',
-          marginLeft: '4px',
-        },
-        '& li:last-child .MuiButtonBase-root': {
-          padding: '10px',
-          background: '#2E3343',
-          marginRight: 0,
-        },
-      },
-      '& .MuiPaginationItem-root': {
-        fontFamily: 'Inter, sans-serif',
-        boxSizing: 'border-box',
-        color: '#C4C4C4',
-        fontSize: '14px',
-        padding: '6.5px 7.5px',
-        minWidth: 0,
-        width: '24px',
-        height: '30px',
-        margin: '0 6px',
-        '&:hover': {
-          boxShadow: '0px 0px 4px 2px rgba(180, 229, 255, 0.3)',
-        },
-      },
-      '& .Mui-selected': {
-        border: '1px solid #E5F6FF',
-        color: '#E5F6FF',
-      },
-      '& .MuiPaginationItem-ellipsis': {
-        '&:hover': {
-          boxShadow: 'none !important',
-        },
-      },
-    },
-    select: {
-      padding: '6.5px 10px',
-      background: '#2E3343',
-      borderRadius: '4px',
-      marginLeft: '8px',
-      boxSizing: 'border-box',
-      maxWidth: '104px',
-      whiteSpace: 'nowrap',
-
-      '&:hover': {
-        cursor: 'pointer',
-        borderBottomLeftRadius: 0,
-        borderBottomRightRadius: 0,
-        '& > $selectDropdown': {
-          display: 'block',
-        },
-        '& $chevron': {
-          transform: 'rotate(180deg)',
-        },
-      },
-    },
-    selectDropdown: {
-      position: 'absolute',
-      zIndex: 1,
-      top: '100%',
-      left: 0,
-      background: '#2E3343',
-      borderRadius: '0 0 4px 4px',
-      display: 'none',
-      '& > div': {
-        borderRadius: '4px',
-        padding: '6.5px 10px',
-        boxSizing: 'border-box',
-        width: '104px',
-        whiteSpace: 'nowrap',
-        '&:hover': {
-          boxShadow: '0px 0px 4px 2px rgba(180, 229, 255, 0.3)',
-        },
-      },
-    },
-    chevron: {
-      marginLeft: '8px',
-      transition: 'transform ease-out 0.25s',
-    },
-  }),
-)
+import Pagination from '../../components/Pagination/Pagination'
 
 const Container = styled.div`
   display: flex;
@@ -156,10 +69,61 @@ export const RotatingTriangle = styled(Play)<RotatingTriangleProps>`
   transition: transform ease-out 0.25s;
 `
 
+const Dropdown = styled.div`
+  position: relative;
+  padding: 6.5px 10px;
+  background: ${({theme}) => theme.dark.grey4};
+  border-radius: 4px;
+  margin-left: 8px;
+  box-sizing: border-box;
+  max-width: 104px;
+  white-space: nowrap;
+
+  &:hover {
+    cursor: pointer;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    .dropdown-menu {
+      display: block;
+    }
+
+    .chevron {
+      transform: rotate(180deg);
+    }
+  }
+`
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  background: ${({theme}) => theme.dark.grey4};
+  border-radius: 0 0 4px 4px;
+  display: none;
+
+  > div {
+    border-radius: 4px;
+    padding: 6.5px 10px;
+    box-sizing: border-box;
+    width: 104px;
+    white-space: nowrap;
+
+    &:hover {
+      box-shadow: 0px 0px 4px 2px rgba(180, 229, 255, 0.3);
+    }
+  }
+`
+
+const RotatingChevron = styled(ChevronDown)`
+  margin-left: 8px;
+  transition: transform ease-out 0.25s;
+`
+
 const ROWS_PER_PAGE = [10, 20, 40, 50]
 
 const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionStatus, rows}: PositionsTableProps) => {
-  const classes = useStyles()
   const {account} = useActiveWeb3React()
   const [open, setOpen] = useState<boolean>(true)
   const [page, setPage] = useState<number>(1)
@@ -206,15 +170,15 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
 
   return (
     <Container>
-      <TableContainer style={{overflow: 'visible'}}>
-        <TEXT.BoldStandardBody mt={marginTop} mb="16px">
-          {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
-          {`${title}`}
-          <TriangleButton onClick={handleToggle}>
-            <RotatingTriangle color={'white'} fill={'white'} height={10} width={10} open={open} />
-          </TriangleButton>
-        </TEXT.BoldStandardBody>
-        <Collapse in={open} timeout="auto" unmountOnExit>
+      <TEXT.BoldStandardBody mt={marginTop} mb="16px">
+        {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
+        {`${title}`}
+        <TriangleButton onClick={handleToggle}>
+          <RotatingTriangle color={'white'} fill={'white'} height={10} width={10} open={open} />
+        </TriangleButton>
+      </TEXT.BoldStandardBody>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <TableContainer style={{overflow: 'visible'}}>
           <StyledTable>
             <TableHead>
               <StyledTableHeaderRow>
@@ -231,19 +195,16 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
           </StyledTable>
           {!!rows?.length && (
             <Box display="flex" justifyContent="flex-start" alignItems="center" paddingTop={'28px'} paddingBottom={'8px'}>
-              <Pagination count={pageCount} page={page} onChange={handlePageChange} shape="rounded" className={classes.pagination} />
+              <Pagination count={pageCount} page={page} onChange={handlePageChange} />
               <Box display="flex" alignItems="center" ml="28px">
                 <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
-                {/* Dropdown container */}
-                <Box position="relative" className={classes.select}>
-                  {/* Select */}
+                <Dropdown>
                   <Box display="flex" alignItems="center">
                     <TEXT.SmallBody color={colors(true).dark.white}>{rowsPerPage} / page</TEXT.SmallBody>
-                    <ChevronDown className={classes.chevron} color={colors(true).dark.white} strokeWidth={1} height={18} width={18} />
+                    <RotatingChevron className="chevron" color={colors(true).dark.white} strokeWidth={1} height={18} width={18} />
                   </Box>
 
-                  {/* Dropdown */}
-                  <Box className={classes.selectDropdown}>
+                  <DropdownMenu className="dropdown-menu">
                     {ROWS_PER_PAGE.map(
                       option =>
                         option !== rowsPerPage && (
@@ -252,13 +213,13 @@ const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionS
                           </div>
                         ),
                     )}
-                  </Box>
-                </Box>
+                  </DropdownMenu>
+                </Dropdown>
               </Box>
             </Box>
           )}
-        </Collapse>
-      </TableContainer>
+        </TableContainer>
+      </Collapse>
 
       {!account ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">

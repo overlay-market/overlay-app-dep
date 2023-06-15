@@ -13,7 +13,6 @@ import Burger from '../Hamburger/Hamburger'
 import SlideMenu from '../SlideMenu/SlideMenu'
 import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
-import {LINKS} from '../../constants/links'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.dark.white};
