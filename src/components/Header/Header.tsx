@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import {NavLink, useLocation} from 'react-router-dom'
+import {Link, NavLink, useLocation} from 'react-router-dom'
 import styled from 'styled-components/macro'
 import {IconButton} from '@material-ui/core'
 import {Trans} from '@lingui/macro'
@@ -153,6 +153,11 @@ const RotatingChevron = styled(ChevronDown)`
   transition: transform ease-out 0.25s;
 `
 
+export const UnstyledLink = styled(Link)`
+  color: unset;
+  text-decoration: none;
+`
+
 export default function Header() {
   const [darkMode] = useDarkModeManager()
   const [open, setOpen] = useState<boolean>(false)
@@ -251,9 +256,11 @@ export default function Header() {
         </Trans>
       </StyledLink> */}
       <AccountContainer>
-        <TEXT.Menu color={colors(false).dark.tan2} marginRight={40}>
-          Buy OVL
-        </TEXT.Menu>
+        <UnstyledLink to={'buy-ovl'}>
+          <TEXT.Menu color={colors(false).dark.tan2} marginRight={40}>
+            Buy OVL
+          </TEXT.Menu>
+        </UnstyledLink>
         <Web3Status />
         {NEW_HEADER_FLAG ? <WalletMenu /> : <More />}
         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />

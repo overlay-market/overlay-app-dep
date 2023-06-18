@@ -84,17 +84,25 @@ const SlippageContainer = styled.div`
   background: ${({theme}) => theme.dark.grey3};
 `
 const SubMenuContainer = styled.div`
-  & > div {
+  & > a > div {
     padding-left: 42px;
   }
 `
 
+const UnstyledAnchorTag = styled.a`
+  color: unset;
+  text-decoration: none;
+`
+
 const MenuLink = ({background, link, children}: {background?: string; link?: string; children: any}) => {
-  return (
-    <MenuItem onClick={() => (link ? window.open(link, '_blank') : null)} background={background}>
-      {children}
-    </MenuItem>
-  )
+  if (link) {
+    return (
+      <UnstyledAnchorTag href={link} target="_blank">
+        <MenuItem>{children}</MenuItem>
+      </UnstyledAnchorTag>
+    )
+  }
+  return <MenuItem background={background}>{children}</MenuItem>
 }
 
 const ModalContainer = styled.div`
