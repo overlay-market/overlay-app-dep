@@ -121,7 +121,7 @@ const RotatingChevron = styled(ChevronDown)`
   transition: transform ease-out 0.25s;
 `
 
-const ROWS_PER_PAGE = [10, 20, 40, 50]
+const ROWS_PER_PAGE = [2, 20, 40, 50]
 
 const PositionsTable = ({title, marginTop, isLoading, isUninitialized, positionStatus, rows}: PositionsTableProps) => {
   const {account} = useActiveWeb3React()
