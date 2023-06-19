@@ -1,4 +1,4 @@
-import React from 'react'
+import {MouseEventHandler} from 'react'
 import styled from 'styled-components'
 import {bool, func} from 'prop-types'
 
@@ -46,15 +46,15 @@ export const StyledBurger = styled.button<{open: boolean}>`
 
 type BurgerProps = {
   open: boolean
-  setOpen: Function
+  onClick: MouseEventHandler<HTMLButtonElement>
   props?: any
 }
 
-const HeaderHamburger = ({open, setOpen, ...props}: BurgerProps) => {
+const HeaderHamburger = ({open, onClick, ...props}: BurgerProps) => {
   const isExpanded = open ? true : false
 
   return (
-    <StyledBurger aria-label="Toggle menu" aria-expanded={isExpanded} open={open} onClick={() => setOpen(!open)} {...props}>
+    <StyledBurger aria-label="Toggle menu" aria-expanded={isExpanded} open={open} onClick={onClick} {...props}>
       <span />
       <span />
       <span />
@@ -64,7 +64,7 @@ const HeaderHamburger = ({open, setOpen, ...props}: BurgerProps) => {
 
 HeaderHamburger.propTypes = {
   open: bool.isRequired,
-  setOpen: func.isRequired,
+  onClick: func.isRequired,
 }
 
 export default HeaderHamburger

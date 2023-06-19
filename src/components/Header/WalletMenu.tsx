@@ -1,4 +1,4 @@
-import {useState, useCallback} from 'react'
+import {useState, useCallback, useRef, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import {FlexRow} from '../Container/Container'
 import {TEXT, colors} from '../../theme/theme'
@@ -35,6 +35,21 @@ const WalletMenuContainer = styled.div`
   background: ${({theme}) => theme.dark.grey4};
   position: relative;
   z-index: 100;
+  background: red;
+`
+
+const WalletMenuButton = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  border-radius: 8px;
+  gap: 8px;
+  background: ${({theme}) => theme.dark.grey4};
+  position: relative;
+  z-index: 100;
+  outline: none;
+  border: 0;
+  cursor: pointer;
 `
 
 const MenuContent = styled.div<{open?: boolean}>`
@@ -141,6 +156,13 @@ export default function WalletMenu() {
   const {setSlippageValue} = useBuildState()
   const {onSetSlippage} = useBuildActionHandlers()
 
+  const menuRef = useRef<HTMLDivElement>(null)
+  const buttonRef = useRef(null)
+
+  const showMenu = (val: boolean) => {
+    setIsMenuOpen(val)
+  }
+
   const handleResetTxnSettings = useCallback(
     (e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE)
@@ -148,15 +170,47 @@ export default function WalletMenu() {
     [onSetSlippage],
   )
 
+  useEffect(() => {
+    const closeMenu = (event: MouseEvent | TouchEvent) => {
+      // Check if the clicked element is outside the div
+      if (menuRef.current && !menuRef.current.contains(event.target as Node) && event.target !== document.getElementById('showButton')) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('click', closeMenu)
+
+    return () => {
+      document.removeEventListener('click', closeMenu)
+    }
+  }, [])
+
   return (
     <>
       <RelativeContainer>
-        <WalletMenuContainer>
+        <div onClick={() => showMenu(true)}>
+          <WalletMenuButton
+            id="showButton"
+            onClick={event => {
+              event.stopPropagation()
+              showMenu(true)
+            }}
+          >
+            <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
+            <HeaderHamburger
+              open={isMenuOpen}
+              onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                event.stopPropagation()
+                setIsMenuOpen(!isMenuOpen)
+              }}
+            />
+          </WalletMenuButton>
+        </div>
+        {/* <WalletMenuContainer>
           <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
-          {/* <TEXT.Menu>Earn</TEXT.Menu> */}
           <HeaderHamburger open={isMenuOpen} setOpen={setIsMenuOpen} />
-        </WalletMenuContainer>
-        <MenuContent open={isMenuOpen}>
+        </WalletMenuContainer> */}
+        <MenuContent open={isMenuOpen} ref={menuRef}>
           <MenuTitle open={isSubMenuOpen} onClick={() => (isSubMenuOpen ? setIsSubMenuOpen(false) : null)}>
             <ChevronLeft size={16} />
             <TEXT.SmallBody>Menu</TEXT.SmallBody>
