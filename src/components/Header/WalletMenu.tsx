@@ -98,7 +98,7 @@ const UnstyledAnchorTag = styled.a`
   text-decoration: none;
 `
 
-const MenuLink = ({background, link, children}: {background?: string; link?: string; children: any}) => {
+const MenuLink = ({background, link, onClick, children}: {background?: string; link?: string; onClick?: Function; children: any}) => {
   if (link) {
     return (
       <UnstyledAnchorTag href={link} target="_blank">
@@ -106,7 +106,11 @@ const MenuLink = ({background, link, children}: {background?: string; link?: str
       </UnstyledAnchorTag>
     )
   }
-  return <MenuItem background={background}>{children}</MenuItem>
+  return (
+    <MenuItem onClick={() => (onClick ? onClick() : null)} background={background}>
+      {children}
+    </MenuItem>
+  )
 }
 
 const ModalContainer = styled.div`
@@ -139,7 +143,7 @@ const StyledNumericalInputContainer = styled(NumericalInputContainer)`
 `
 
 export default function WalletMenu() {
-  const {account} = useActiveWeb3React()
+  const {deactivate, account} = useActiveWeb3React()
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false)
   const [isSlippageModalOpen, setIsSlippageModalOpen] = useState<boolean>(false)
@@ -147,6 +151,12 @@ export default function WalletMenu() {
   const {onSetSlippage} = useBuildActionHandlers()
 
   const menuRef = useRef<HTMLDivElement>(null)
+
+  const disconnectWallet = () => {
+    deactivate()
+    localStorage.setItem('disconnected', 'true')
+    window.location.reload()
+  }
 
   const showMenu = (val: boolean) => {
     setIsMenuOpen(val)
@@ -268,6 +278,11 @@ export default function WalletMenu() {
                   <TEXT.SmallBody marginLeft="8px">{setSlippageValue}%</TEXT.SmallBody>
                 </SlippageContainer>
               </SlippageItem>
+              {account && (
+                <MenuLink onClick={disconnectWallet}>
+                  <TEXT.SmallBody>Disconnect Wallet</TEXT.SmallBody>
+                </MenuLink>
+              )}
             </>
           )}
         </MenuContent>
