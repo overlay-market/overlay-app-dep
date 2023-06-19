@@ -158,6 +158,17 @@ export const UnstyledLink = styled(Link)`
   text-decoration: none;
 `
 
+const BuyOVLButtonContainer = styled.div`
+  display: flex;
+  margin-right: 40px;
+  align-items: center;
+`
+const SoonTag = styled.div`
+  padding: 4px 8px;
+  background: ${({theme}) => theme.dark.grey3};
+  border-radius: 8px;
+`
+
 export default function Header() {
   const [darkMode] = useDarkModeManager()
   const [open, setOpen] = useState<boolean>(false)
@@ -256,10 +267,15 @@ export default function Header() {
         </Trans>
       </StyledLink> */}
       <AccountContainer>
-        <UnstyledLink to={'buy-ovl'}>
-          <TEXT.Menu color={colors(false).dark.tan2} marginRight={40}>
-            Buy OVL
-          </TEXT.Menu>
+        <UnstyledLink to={'/'}>
+          <BuyOVLButtonContainer>
+            <TEXT.Menu color={colors(false).dark.tan2} marginRight="8px">
+              Buy OVL
+            </TEXT.Menu>
+            <SoonTag>
+              <TEXT.Supplemental>Soon!</TEXT.Supplemental>
+            </SoonTag>
+          </BuyOVLButtonContainer>
         </UnstyledLink>
         <Web3Status />
         {NEW_HEADER_FLAG ? <WalletMenu /> : <More />}
