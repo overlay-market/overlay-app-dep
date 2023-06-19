@@ -11,6 +11,7 @@ import {MINIMUM_SLIPPAGE_VALUE, NumericalInputContainer, NumericalInputDescripto
 import {NumericalInput} from '../NumericalInput/NumericalInput'
 import {useBuildActionHandlers, useBuildState} from '../../state/build/hooks'
 import {DefaultTxnSettings} from '../../state/build/actions'
+import {useActiveWeb3React} from '../../hooks/web3'
 
 const PlatformLogo = styled.div<{src: string; open?: boolean}>`
   background: no-repeat center/contain url(${({src}) => src});
@@ -24,18 +25,6 @@ const PlatformLogo = styled.div<{src: string; open?: boolean}>`
 
 const RelativeContainer = styled.div`
   position: relative;
-`
-
-const WalletMenuContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  border-radius: 8px;
-  gap: 8px;
-  background: ${({theme}) => theme.dark.grey4};
-  position: relative;
-  z-index: 100;
-  background: red;
 `
 
 const WalletMenuButton = styled.button`
@@ -150,6 +139,7 @@ const StyledNumericalInputContainer = styled(NumericalInputContainer)`
 `
 
 export default function WalletMenu() {
+  const {account} = useActiveWeb3React()
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false)
   const [isSlippageModalOpen, setIsSlippageModalOpen] = useState<boolean>(false)
@@ -157,7 +147,6 @@ export default function WalletMenu() {
   const {onSetSlippage} = useBuildActionHandlers()
 
   const menuRef = useRef<HTMLDivElement>(null)
-  const buttonRef = useRef(null)
 
   const showMenu = (val: boolean) => {
     setIsMenuOpen(val)
@@ -185,6 +174,22 @@ export default function WalletMenu() {
     }
   }, [])
 
+  useEffect(() => {
+    const fetchSlippage = async () => {
+      if (account) {
+        const storedSlippage = localStorage.getItem(`slippage`)
+        if (storedSlippage) {
+          onSetSlippage(storedSlippage || '1')
+        } else {
+          localStorage.setItem(`slippage`, setSlippageValue ?? '1')
+        }
+      }
+    }
+
+    fetchSlippage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account])
+
   return (
     <>
       <RelativeContainer>
@@ -206,10 +211,6 @@ export default function WalletMenu() {
             />
           </WalletMenuButton>
         </div>
-        {/* <WalletMenuContainer>
-          <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
-          <HeaderHamburger open={isMenuOpen} setOpen={setIsMenuOpen} />
-        </WalletMenuContainer> */}
         <MenuContent open={isMenuOpen} ref={menuRef}>
           <MenuTitle open={isSubMenuOpen} onClick={() => (isSubMenuOpen ? setIsSubMenuOpen(false) : null)}>
             <ChevronLeft size={16} />
