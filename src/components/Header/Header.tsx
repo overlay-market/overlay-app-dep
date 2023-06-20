@@ -176,6 +176,8 @@ export default function Header() {
   const menuId = 'main-menu'
 
   const NEW_HEADER_FLAG = true
+  const HIDE_POWER_CARDS = true
+  const HIDE_BUY_OVL = true
 
   let location = useLocation().pathname
 
@@ -225,11 +227,13 @@ export default function Header() {
         </Trans>
       </StyledLink>
 
-      <PowerCardLink to={'/powercards'}>
-        <Trans>
-          <TEXT.Menu>Power Cards</TEXT.Menu>
-        </Trans>
-      </PowerCardLink>
+      {HIDE_POWER_CARDS ? null : (
+        <PowerCardLink to={'/powercards'}>
+          <Trans>
+            <TEXT.Menu>Power Cards</TEXT.Menu>
+          </Trans>
+        </PowerCardLink>
+      )}
 
       <Dropdown active={location === '/stake' || location === '/leaderboard' || location === '/referrals'}>
         <DropdownContent>
@@ -267,16 +271,18 @@ export default function Header() {
         </Trans>
       </StyledLink> */}
       <AccountContainer>
-        <UnstyledLink to={'/'}>
-          <BuyOVLButtonContainer>
-            <TEXT.Menu color={colors(false).dark.tan2} marginRight="8px">
-              Buy OVL
-            </TEXT.Menu>
-            <SoonTag>
-              <TEXT.Supplemental>Soon!</TEXT.Supplemental>
-            </SoonTag>
-          </BuyOVLButtonContainer>
-        </UnstyledLink>
+        {HIDE_BUY_OVL ? null : (
+          <UnstyledLink to={'/'}>
+            <BuyOVLButtonContainer>
+              <TEXT.Menu color={colors(false).dark.tan2} marginRight="8px">
+                Buy OVL
+              </TEXT.Menu>
+              <SoonTag>
+                <TEXT.Supplemental>Soon!</TEXT.Supplemental>
+              </SoonTag>
+            </BuyOVLButtonContainer>
+          </UnstyledLink>
+        )}
         <Web3Status />
         {NEW_HEADER_FLAG ? <WalletMenu /> : <More />}
         <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
