@@ -118,6 +118,7 @@ const ModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 24px;
+  padding-bottom: 60px;
   flex: 1;
   position: relative;
   gap: 4px;
@@ -140,6 +141,8 @@ const StyledNumericalInputContainer = styled(NumericalInputContainer)`
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 0px;
+  width: 100px;
+  height: 40px;
 `
 
 export default function WalletMenu() {
@@ -162,7 +165,8 @@ export default function WalletMenu() {
     setIsMenuOpen(val)
   }
 
-  const handleResetTxnSettings = useCallback(
+  // Reset slippage value to default value
+  const handleResetSlippage = useCallback(
     (e: any) => {
       onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE)
     },
@@ -186,17 +190,19 @@ export default function WalletMenu() {
 
   useEffect(() => {
     const fetchSlippage = async () => {
-      if (account) {
-        const storedSlippage = localStorage.getItem(`slippage`)
-        if (storedSlippage) {
-          onSetSlippage(storedSlippage || '1')
-        } else {
-          localStorage.setItem(`slippage`, setSlippageValue ?? '1')
-        }
+      const storedSlippage = localStorage.getItem(`slippage`)
+      // When value is edited or not a valid number, set to default slippage value
+      if (storedSlippage && !isNaN(Number(storedSlippage))) {
+        onSetSlippage(storedSlippage || DefaultTxnSettings.DEFAULT_SLIPPAGE)
+      } else {
+        localStorage.setItem(`slippage`, setSlippageValue ?? DefaultTxnSettings.DEFAULT_SLIPPAGE)
       }
     }
 
     fetchSlippage()
+
+    // including storedSlippage and setSlippageValue on dependencies
+    // will cause infinite rendering
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account])
 
@@ -307,13 +313,13 @@ export default function WalletMenu() {
 
             <FlexRow style={{gap: 8}} justify="flex-end">
               <TEXT.StandardBody
-                onClick={handleResetTxnSettings}
-                color={colors(false).dark.grey1}
+                onClick={handleResetSlippage}
+                color={setSlippageValue === DefaultTxnSettings.DEFAULT_SLIPPAGE ? colors(false).dark.blue2 : colors(false).dark.grey1}
                 style={{textDecoration: 'underline', cursor: 'pointer'}}
               >
                 Auto
               </TEXT.StandardBody>
-              <StyledNumericalInputContainer width={'100px'} height={'40px'}>
+              <StyledNumericalInputContainer>
                 <NumericalInput value={setSlippageValue} onUserInput={onSetSlippage} align={'right'} />
                 <NumericalInputDescriptor> % </NumericalInputDescriptor>
               </StyledNumericalInputContainer>

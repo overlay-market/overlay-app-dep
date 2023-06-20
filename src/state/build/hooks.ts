@@ -65,7 +65,7 @@ export function useBuildActionHandlers(): {
         dispatch(setSlippage({ setSlippageValue }))
       }
 
-      localStorage.setItem(`slippage`, setSlippageValue ?? '1')
+      localStorage.setItem(`slippage`, setSlippageValue ?? DefaultTxnSettings.DEFAULT_SLIPPAGE)
     },
     [dispatch]
   )
