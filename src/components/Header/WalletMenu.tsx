@@ -173,6 +173,33 @@ export default function WalletMenu() {
     [onSetSlippage],
   )
 
+  const addTokenToMM = async () => {
+    const {ethereum} = window
+    if (ethereum && ethereum.request) {
+      try {
+        await ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            // params is expecting an array, even though the correct type is an object.
+            // @ts-ignore
+            type: 'ERC20',
+            options: {
+              address: '0x4305C4Bc521B052F17d389c2Fe9d37caBeB70d54',
+              symbol: 'OVL',
+              decimals: 18,
+              image: 'https://raw.githubusercontent.com/overlay-market/overlay-interface/staging/public/overlay-logo-white.png',
+            },
+          },
+        })
+      } catch (ex) {
+        // We don't handle that error for now
+        // Might be a different wallet than Metmask
+        // or user declined
+        console.error(ex)
+      }
+    }
+  }
+
   useEffect(() => {
     const closeMenu = (event: MouseEvent | TouchEvent) => {
       // Check if the clicked element is outside the div
@@ -272,7 +299,7 @@ export default function WalletMenu() {
               <MenuLink link={LINKS.GOVERNANCE}>
                 <TEXT.SmallBody>Governance</TEXT.SmallBody>
               </MenuLink>
-              <MenuLink>
+              <MenuLink onClick={addTokenToMM}>
                 <TEXT.SmallBody color={colors(false).dark.tan2}>Add OVL to Wallet</TEXT.SmallBody>
               </MenuLink>
 
