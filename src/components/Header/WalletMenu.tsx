@@ -227,11 +227,7 @@ export default function WalletMenu() {
     }
 
     fetchSlippage()
-
-    // including storedSlippage and setSlippageValue on dependencies
-    // will cause infinite rendering
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account])
+  }, [account, onSetSlippage, setSlippageValue])
 
   return (
     <>
