@@ -176,42 +176,61 @@ export default function WalletMenu() {
   const addTokenToMM = async () => {
     const {ethereum} = window
     if (ethereum && ethereum.request) {
-      try {
-        await ethereum.request({
-          method: 'wallet_addEthereumChain',
-          params: [
-            {
-              chainId: '0xa4b1', // Arbitrum One chain ID
-              chainName: 'Arbitrum One', // Arbitrum One network name
-              nativeCurrency: {
-                name: 'ETH',
-                symbol: 'ETH',
-                decimals: 18,
-              },
-              rpcUrls: ['https://arb1.arbitrum.io/rpc'], // Arbitrum One RPC endpoint
-              blockExplorerUrls: ['https://explorer.arbitrum.io/'], // Arbitrum One block explorer URL
-            },
-          ],
-        })
-        await ethereum.request({
-          method: 'wallet_watchAsset',
-          params: {
-            // params is expecting an array, even though the correct type is an object.
-            // @ts-ignore
-            type: 'ERC20',
-            options: {
-              address: '0x4305C4Bc521B052F17d389c2Fe9d37caBeB70d54',
-              symbol: 'OVL',
+      let networkSwitched = false
+
+      const chainId = '0xa4b1' // Arbitrum One chain ID
+      const networkAdded = await ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [
+          {
+            chainId,
+            chainName: 'Arbitrum One', // Arbitrum One network name
+            nativeCurrency: {
+              name: 'ETH',
+              symbol: 'ETH',
               decimals: 18,
-              image: 'https://raw.githubusercontent.com/overlay-market/overlay-interface/staging/public/overlay-logo-white.png',
             },
+            rpcUrls: ['https://arb1.arbitrum.io/rpc'], // Arbitrum One RPC endpoint
+            blockExplorerUrls: ['https://explorer.arbitrum.io/'], // Arbitrum One block explorer URL
           },
-        })
-      } catch (ex) {
-        // We don't handle that error for now
-        // Might be a different wallet than Metmask
-        // or user declined
-        console.error(ex)
+        ],
+      })
+
+      if (!networkAdded) {
+        try {
+          await ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{chainId: '0xa4b1'}], // Arbitrum One chain ID
+          })
+          networkSwitched = true
+        } catch (error) {
+          if ((error as any).code === 4902) {
+            console.error('User rejected network switch.')
+          } else {
+            console.error(error)
+          }
+        }
+
+        if (networkSwitched) {
+          try {
+            await ethereum.request({
+              method: 'wallet_watchAsset',
+              params: {
+                // params is expecting an array, even though the correct type is an object.
+                // @ts-ignore
+                type: 'ERC20',
+                options: {
+                  address: '0x4305C4Bc521B052F17d389c2Fe9d37caBeB70d54',
+                  symbol: 'OVL',
+                  decimals: 18,
+                  image: 'https://raw.githubusercontent.com/overlay-market/overlay-interface/staging/public/overlay-logo-white.png',
+                },
+              },
+            })
+          } catch (error) {
+            console.error(error)
+          }
+        }
       }
     }
   }
