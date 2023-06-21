@@ -178,6 +178,22 @@ export default function WalletMenu() {
     if (ethereum && ethereum.request) {
       try {
         await ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [
+            {
+              chainId: '0xa4b1', // Arbitrum chain ID
+              chainName: 'Arbitrum', // Arbitrum network name
+              nativeCurrency: {
+                name: 'ETH',
+                symbol: 'ETH',
+                decimals: 18,
+              },
+              rpcUrls: ['https://arb1.arbitrum.io/rpc'], // Arbitrum RPC endpoint
+              blockExplorerUrls: ['https://arbiscan.io'], // Arbitrum block explorer URL
+            },
+          ],
+        })
+        await ethereum.request({
           method: 'wallet_watchAsset',
           params: {
             // params is expecting an array, even though the correct type is an object.
