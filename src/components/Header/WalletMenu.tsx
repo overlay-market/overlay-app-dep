@@ -181,15 +181,15 @@ export default function WalletMenu() {
           method: 'wallet_addEthereumChain',
           params: [
             {
-              chainId: '0xa4b1', // Arbitrum chain ID
-              chainName: 'Arbitrum', // Arbitrum network name
+              chainId: '0xa4b1', // Arbitrum One chain ID
+              chainName: 'Arbitrum One', // Arbitrum One network name
               nativeCurrency: {
                 name: 'ETH',
                 symbol: 'ETH',
                 decimals: 18,
               },
-              rpcUrls: ['https://arb1.arbitrum.io/rpc'], // Arbitrum RPC endpoint
-              blockExplorerUrls: ['https://arbiscan.io'], // Arbitrum block explorer URL
+              rpcUrls: ['https://arb1.arbitrum.io/rpc'], // Arbitrum One RPC endpoint
+              blockExplorerUrls: ['https://explorer.arbitrum.io/'], // Arbitrum One block explorer URL
             },
           ],
         })
