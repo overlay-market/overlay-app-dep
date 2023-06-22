@@ -26,6 +26,10 @@ export type Scalars = {
 export type Account = {
   __typename?: 'Account';
   id: Scalars['ID'];
+  realizedPnl: Scalars['BigInt'];
+  numberOfUnwinds: Scalars['BigInt'];
+  numberOfLiquidatedPositions: Scalars['BigInt'];
+  numberOfOpenPositions: Scalars['BigInt'];
   positions: Array<Position>;
   builds: Array<Build>;
   unwinds: Array<Unwind>;
@@ -77,6 +81,38 @@ export type Account_Filter = {
   id_lte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Scalars['ID']>>;
   id_not_in?: Maybe<Array<Scalars['ID']>>;
+  realizedPnl?: Maybe<Scalars['BigInt']>;
+  realizedPnl_not?: Maybe<Scalars['BigInt']>;
+  realizedPnl_gt?: Maybe<Scalars['BigInt']>;
+  realizedPnl_lt?: Maybe<Scalars['BigInt']>;
+  realizedPnl_gte?: Maybe<Scalars['BigInt']>;
+  realizedPnl_lte?: Maybe<Scalars['BigInt']>;
+  realizedPnl_in?: Maybe<Array<Scalars['BigInt']>>;
+  realizedPnl_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfUnwinds?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_not?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_gt?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_lt?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_gte?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_lte?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfUnwinds_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfLiquidatedPositions?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidatedPositions_not?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidatedPositions_gt?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidatedPositions_lt?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidatedPositions_gte?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidatedPositions_lte?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidatedPositions_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfLiquidatedPositions_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfOpenPositions?: Maybe<Scalars['BigInt']>;
+  numberOfOpenPositions_not?: Maybe<Scalars['BigInt']>;
+  numberOfOpenPositions_gt?: Maybe<Scalars['BigInt']>;
+  numberOfOpenPositions_lt?: Maybe<Scalars['BigInt']>;
+  numberOfOpenPositions_gte?: Maybe<Scalars['BigInt']>;
+  numberOfOpenPositions_lte?: Maybe<Scalars['BigInt']>;
+  numberOfOpenPositions_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfOpenPositions_not_in?: Maybe<Array<Scalars['BigInt']>>;
   positions_?: Maybe<Position_Filter>;
   builds_?: Maybe<Build_Filter>;
   unwinds_?: Maybe<Unwind_Filter>;
@@ -89,6 +125,10 @@ export type Account_Filter = {
 
 export enum Account_OrderBy {
   Id = 'id',
+  RealizedPnl = 'realizedPnl',
+  NumberOfUnwinds = 'numberOfUnwinds',
+  NumberOfLiquidatedPositions = 'numberOfLiquidatedPositions',
+  NumberOfOpenPositions = 'numberOfOpenPositions',
   Positions = 'positions',
   Builds = 'builds',
   Unwinds = 'unwinds',
@@ -265,6 +305,10 @@ export enum Build_OrderBy {
   Id = 'id',
   Owner = 'owner',
   OwnerId = 'owner__id',
+  OwnerRealizedPnl = 'owner__realizedPnl',
+  OwnerNumberOfUnwinds = 'owner__numberOfUnwinds',
+  OwnerNumberOfLiquidatedPositions = 'owner__numberOfLiquidatedPositions',
+  OwnerNumberOfOpenPositions = 'owner__numberOfOpenPositions',
   Position = 'position',
   PositionId = 'position__id',
   PositionPositionId = 'position__positionId',
@@ -587,8 +631,16 @@ export enum Liquidate_OrderBy {
   Id = 'id',
   Owner = 'owner',
   OwnerId = 'owner__id',
+  OwnerRealizedPnl = 'owner__realizedPnl',
+  OwnerNumberOfUnwinds = 'owner__numberOfUnwinds',
+  OwnerNumberOfLiquidatedPositions = 'owner__numberOfLiquidatedPositions',
+  OwnerNumberOfOpenPositions = 'owner__numberOfOpenPositions',
   Sender = 'sender',
   SenderId = 'sender__id',
+  SenderRealizedPnl = 'sender__realizedPnl',
+  SenderNumberOfUnwinds = 'sender__numberOfUnwinds',
+  SenderNumberOfLiquidatedPositions = 'sender__numberOfLiquidatedPositions',
+  SenderNumberOfOpenPositions = 'sender__numberOfOpenPositions',
   Position = 'position',
   PositionId = 'position__id',
   PositionPositionId = 'position__positionId',
@@ -649,6 +701,13 @@ export type Market = {
   oiShort: Scalars['BigInt'];
   positions: Array<Position>;
   isShutdown: Scalars['Boolean'];
+  numberOfBuilds: Scalars['BigInt'];
+  totalBuildFees: Scalars['BigInt'];
+  numberOfUnwinds: Scalars['BigInt'];
+  totalUnwindFees: Scalars['BigInt'];
+  numberOfLiquidates: Scalars['BigInt'];
+  totalLiquidateFees: Scalars['BigInt'];
+  totalFees: Scalars['BigInt'];
 };
 
 
@@ -867,6 +926,62 @@ export type Market_Filter = {
   isShutdown_not?: Maybe<Scalars['Boolean']>;
   isShutdown_in?: Maybe<Array<Scalars['Boolean']>>;
   isShutdown_not_in?: Maybe<Array<Scalars['Boolean']>>;
+  numberOfBuilds?: Maybe<Scalars['BigInt']>;
+  numberOfBuilds_not?: Maybe<Scalars['BigInt']>;
+  numberOfBuilds_gt?: Maybe<Scalars['BigInt']>;
+  numberOfBuilds_lt?: Maybe<Scalars['BigInt']>;
+  numberOfBuilds_gte?: Maybe<Scalars['BigInt']>;
+  numberOfBuilds_lte?: Maybe<Scalars['BigInt']>;
+  numberOfBuilds_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfBuilds_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalBuildFees?: Maybe<Scalars['BigInt']>;
+  totalBuildFees_not?: Maybe<Scalars['BigInt']>;
+  totalBuildFees_gt?: Maybe<Scalars['BigInt']>;
+  totalBuildFees_lt?: Maybe<Scalars['BigInt']>;
+  totalBuildFees_gte?: Maybe<Scalars['BigInt']>;
+  totalBuildFees_lte?: Maybe<Scalars['BigInt']>;
+  totalBuildFees_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalBuildFees_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfUnwinds?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_not?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_gt?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_lt?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_gte?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_lte?: Maybe<Scalars['BigInt']>;
+  numberOfUnwinds_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfUnwinds_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalUnwindFees?: Maybe<Scalars['BigInt']>;
+  totalUnwindFees_not?: Maybe<Scalars['BigInt']>;
+  totalUnwindFees_gt?: Maybe<Scalars['BigInt']>;
+  totalUnwindFees_lt?: Maybe<Scalars['BigInt']>;
+  totalUnwindFees_gte?: Maybe<Scalars['BigInt']>;
+  totalUnwindFees_lte?: Maybe<Scalars['BigInt']>;
+  totalUnwindFees_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalUnwindFees_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfLiquidates?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidates_not?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidates_gt?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidates_lt?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidates_gte?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidates_lte?: Maybe<Scalars['BigInt']>;
+  numberOfLiquidates_in?: Maybe<Array<Scalars['BigInt']>>;
+  numberOfLiquidates_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalLiquidateFees?: Maybe<Scalars['BigInt']>;
+  totalLiquidateFees_not?: Maybe<Scalars['BigInt']>;
+  totalLiquidateFees_gt?: Maybe<Scalars['BigInt']>;
+  totalLiquidateFees_lt?: Maybe<Scalars['BigInt']>;
+  totalLiquidateFees_gte?: Maybe<Scalars['BigInt']>;
+  totalLiquidateFees_lte?: Maybe<Scalars['BigInt']>;
+  totalLiquidateFees_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalLiquidateFees_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalFees?: Maybe<Scalars['BigInt']>;
+  totalFees_not?: Maybe<Scalars['BigInt']>;
+  totalFees_gt?: Maybe<Scalars['BigInt']>;
+  totalFees_lt?: Maybe<Scalars['BigInt']>;
+  totalFees_gte?: Maybe<Scalars['BigInt']>;
+  totalFees_lte?: Maybe<Scalars['BigInt']>;
+  totalFees_in?: Maybe<Array<Scalars['BigInt']>>;
+  totalFees_not_in?: Maybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: Maybe<BlockChangedFilter>;
   and?: Maybe<Array<Maybe<Market_Filter>>>;
@@ -905,7 +1020,14 @@ export enum Market_OrderBy {
   OiLong = 'oiLong',
   OiShort = 'oiShort',
   Positions = 'positions',
-  IsShutdown = 'isShutdown'
+  IsShutdown = 'isShutdown',
+  NumberOfBuilds = 'numberOfBuilds',
+  TotalBuildFees = 'totalBuildFees',
+  NumberOfUnwinds = 'numberOfUnwinds',
+  TotalUnwindFees = 'totalUnwindFees',
+  NumberOfLiquidates = 'numberOfLiquidates',
+  TotalLiquidateFees = 'totalLiquidateFees',
+  TotalFees = 'totalFees'
 }
 
 /** Defines the order direction, either ascending or descending */
@@ -1164,6 +1286,10 @@ export enum Position_OrderBy {
   PositionId = 'positionId',
   Owner = 'owner',
   OwnerId = 'owner__id',
+  OwnerRealizedPnl = 'owner__realizedPnl',
+  OwnerNumberOfUnwinds = 'owner__numberOfUnwinds',
+  OwnerNumberOfLiquidatedPositions = 'owner__numberOfLiquidatedPositions',
+  OwnerNumberOfOpenPositions = 'owner__numberOfOpenPositions',
   Market = 'market',
   MarketId = 'market__id',
   MarketFeedAddress = 'market__feedAddress',
@@ -1187,6 +1313,13 @@ export enum Position_OrderBy {
   MarketOiLong = 'market__oiLong',
   MarketOiShort = 'market__oiShort',
   MarketIsShutdown = 'market__isShutdown',
+  MarketNumberOfBuilds = 'market__numberOfBuilds',
+  MarketTotalBuildFees = 'market__totalBuildFees',
+  MarketNumberOfUnwinds = 'market__numberOfUnwinds',
+  MarketTotalUnwindFees = 'market__totalUnwindFees',
+  MarketNumberOfLiquidates = 'market__numberOfLiquidates',
+  MarketTotalLiquidateFees = 'market__totalLiquidateFees',
+  MarketTotalFees = 'market__totalFees',
   InitialOi = 'initialOi',
   InitialDebt = 'initialDebt',
   InitialCollateral = 'initialCollateral',
@@ -1861,6 +1994,10 @@ export enum Unwind_OrderBy {
   Id = 'id',
   Owner = 'owner',
   OwnerId = 'owner__id',
+  OwnerRealizedPnl = 'owner__realizedPnl',
+  OwnerNumberOfUnwinds = 'owner__numberOfUnwinds',
+  OwnerNumberOfLiquidatedPositions = 'owner__numberOfLiquidatedPositions',
+  OwnerNumberOfOpenPositions = 'owner__numberOfOpenPositions',
   Position = 'position',
   PositionId = 'position__id',
   PositionPositionId = 'position__positionId',
@@ -2046,6 +2183,93 @@ export type PositionsQuery = (
       { __typename?: 'Market' }
       & Pick<Market, 'id'>
     ) }
+  )> }
+);
+
+export type NumberOfPositionsQueryVariables = Exact<{
+  account: Scalars['ID'];
+}>;
+
+
+export type NumberOfPositionsQuery = (
+  { __typename?: 'Query' }
+  & { account?: Maybe<(
+    { __typename?: 'Account' }
+    & Pick<Account, 'numberOfLiquidatedPositions' | 'numberOfOpenPositions' | 'numberOfUnwinds' | 'realizedPnl'>
+  )> }
+);
+
+export type OpenPositionsQueryVariables = Exact<{
+  account: Scalars['ID'];
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type OpenPositionsQuery = (
+  { __typename?: 'Query' }
+  & { account?: Maybe<(
+    { __typename?: 'Account' }
+    & { positions: Array<(
+      { __typename?: 'Position' }
+      & Pick<Position, 'id' | 'createdAtTimestamp' | 'currentOi' | 'entryPrice' | 'initialCollateral' | 'isLiquidated' | 'isLong' | 'leverage' | 'numberOfUniwnds' | 'positionId'>
+      & { market: (
+        { __typename?: 'Market' }
+        & Pick<Market, 'feedAddress' | 'id'>
+      ) }
+    )> }
+  )> }
+);
+
+export type UnwindsQueryVariables = Exact<{
+  account: Scalars['ID'];
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type UnwindsQuery = (
+  { __typename?: 'Query' }
+  & { account?: Maybe<(
+    { __typename?: 'Account' }
+    & { unwinds: Array<(
+      { __typename?: 'Unwind' }
+      & Pick<Unwind, 'collateral' | 'currentDebt' | 'currentOi' | 'fraction' | 'id' | 'isLong' | 'mint' | 'pnl' | 'price' | 'size' | 'timestamp' | 'transferAmount' | 'unwindNumber' | 'value'>
+      & { position: (
+        { __typename?: 'Position' }
+        & Pick<Position, 'createdAtTimestamp' | 'currentOi' | 'entryPrice' | 'id' | 'initialCollateral' | 'isLong' | 'leverage' | 'numberOfUniwnds' | 'positionId'>
+        & { market: (
+          { __typename?: 'Market' }
+          & Pick<Market, 'feedAddress' | 'id'>
+        ) }
+      ) }
+    )> }
+  )> }
+);
+
+export type LiquidatedPositionsQueryVariables = Exact<{
+  account: Scalars['ID'];
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type LiquidatedPositionsQuery = (
+  { __typename?: 'Query' }
+  & { account?: Maybe<(
+    { __typename?: 'Account' }
+    & { liquidates: Array<(
+      { __typename?: 'Liquidate' }
+      & Pick<Liquidate, 'collateral' | 'currentDebt' | 'currentOi' | 'id' | 'isLong' | 'mint' | 'price' | 'timestamp' | 'value'>
+      & { position: (
+        { __typename?: 'Position' }
+        & Pick<Position, 'createdAtTimestamp' | 'currentOi' | 'entryPrice' | 'fractionUnwound' | 'id' | 'initialCollateral' | 'isLong' | 'leverage'>
+        & { market: (
+          { __typename?: 'Market' }
+          & Pick<Market, 'feedAddress' | 'id'>
+        ) }
+      ) }
+    )> }
   )> }
 );
 
@@ -2245,6 +2469,112 @@ export const PositionsDocument = `
   }
 }
     `;
+export const NumberOfPositionsDocument = `
+    query numberOfPositions($account: ID!) {
+  account(id: $account) {
+    numberOfLiquidatedPositions
+    numberOfOpenPositions
+    numberOfUnwinds
+    realizedPnl
+  }
+}
+    `;
+export const OpenPositionsDocument = `
+    query openPositions($account: ID!, $first: Int, $skip: Int) {
+  account(id: $account) {
+    positions(
+      where: {isLiquidated: false, currentOi_gt: "0"}
+      orderBy: createdAtTimestamp
+      orderDirection: desc
+      first: $first
+      skip: $skip
+    ) {
+      id
+      createdAtTimestamp
+      currentOi
+      entryPrice
+      initialCollateral
+      isLiquidated
+      isLong
+      leverage
+      numberOfUniwnds
+      positionId
+      market {
+        feedAddress
+        id
+      }
+    }
+  }
+}
+    `;
+export const UnwindsDocument = `
+    query unwinds($account: ID!, $first: Int, $skip: Int) {
+  account(id: $account) {
+    unwinds(orderBy: timestamp, orderDirection: desc, first: $first, skip: $skip) {
+      collateral
+      currentDebt
+      currentOi
+      fraction
+      id
+      isLong
+      mint
+      pnl
+      price
+      size
+      timestamp
+      transferAmount
+      unwindNumber
+      value
+      position {
+        createdAtTimestamp
+        currentOi
+        entryPrice
+        id
+        initialCollateral
+        isLong
+        leverage
+        numberOfUniwnds
+        positionId
+        market {
+          feedAddress
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+export const LiquidatedPositionsDocument = `
+    query liquidatedPositions($account: ID!, $first: Int, $skip: Int) {
+  account(id: $account) {
+    liquidates(orderBy: timestamp, orderDirection: desc, first: $first, skip: $skip) {
+      collateral
+      currentDebt
+      currentOi
+      id
+      isLong
+      mint
+      price
+      timestamp
+      value
+      position {
+        createdAtTimestamp
+        currentOi
+        entryPrice
+        fractionUnwound
+        id
+        initialCollateral
+        isLong
+        leverage
+        market {
+          feedAddress
+          id
+        }
+      }
+    }
+  }
+}
+    `;
 
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
@@ -2263,9 +2593,21 @@ const injectedRtkApi = api.injectEndpoints({
     positions: build.query<PositionsQuery, PositionsQueryVariables | void>({
       query: (variables) => ({ document: PositionsDocument, variables })
     }),
+    numberOfPositions: build.query<NumberOfPositionsQuery, NumberOfPositionsQueryVariables>({
+      query: (variables) => ({ document: NumberOfPositionsDocument, variables })
+    }),
+    openPositions: build.query<OpenPositionsQuery, OpenPositionsQueryVariables>({
+      query: (variables) => ({ document: OpenPositionsDocument, variables })
+    }),
+    unwinds: build.query<UnwindsQuery, UnwindsQueryVariables>({
+      query: (variables) => ({ document: UnwindsDocument, variables })
+    }),
+    liquidatedPositions: build.query<LiquidatedPositionsQuery, LiquidatedPositionsQueryVariables>({
+      query: (variables) => ({ document: LiquidatedPositionsDocument, variables })
+    }),
   }),
 });
 
 export { injectedRtkApi as api };
-export const { useAccountQuery, useLazyAccountQuery, useAccountV2Query, useLazyAccountV2Query, useMarketQuery, useLazyMarketQuery, useMarketsQuery, useLazyMarketsQuery, usePositionsQuery, useLazyPositionsQuery } = injectedRtkApi;
+export const { useAccountQuery, useLazyAccountQuery, useAccountV2Query, useLazyAccountV2Query, useMarketQuery, useLazyMarketQuery, useMarketsQuery, useLazyMarketsQuery, usePositionsQuery, useLazyPositionsQuery, useNumberOfPositionsQuery, useLazyNumberOfPositionsQuery, useOpenPositionsQuery, useLazyOpenPositionsQuery, useUnwindsQuery, useLazyUnwindsQuery, useLiquidatedPositionsQuery, useLazyLiquidatedPositionsQuery } = injectedRtkApi;
 

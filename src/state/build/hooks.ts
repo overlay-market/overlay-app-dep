@@ -13,8 +13,9 @@ import {
 import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useAccountQuery, useAccountV2Query, usePositionsQuery } from "../data/generated";
+import { useAccountQuery, useAccountV2Query, useLiquidatedPositionsQuery, useNumberOfPositionsQuery, useOpenPositionsQuery, usePositionsQuery, useUnwindsQuery } from "../data/generated";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
+import { PositionStatus } from "../../pages/Positions/PositionsPage";
 
 export function useBuildState(): AppState['build'] {
   return useAppSelector((state) => state.build);
@@ -349,6 +350,131 @@ export function useCurrentWalletPositionsV2(
     positions: walletPositionsData.data?.account?.positions,
     refetch: walletPositionsData.refetch
   }
+}
+
+export interface numberOfPositionsData {
+  numberOfLiquidatedPositions: string
+  numberOfOpenPositions: string
+  numberOfUnwinds: string
+  realizedPnl: string
+}
+
+
+export function useNumberOfPositions(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  numberOfPositions: numberOfPositionsData | undefined
+  refetch: () => void
+} {
+  const numberOfPositionsData = useNumberOfPositionsFromSubgraph(address ? address : undefined)
+  return {
+    isLoading:  numberOfPositionsData.isLoading,
+    isFetching:  numberOfPositionsData.isFetching,
+    isUninitialized:  numberOfPositionsData.isUninitialized,
+    isError:  numberOfPositionsData.isError, 
+    error:  numberOfPositionsData.error,
+    numberOfPositions: numberOfPositionsData.data?.account as numberOfPositionsData | undefined,
+    refetch:  numberOfPositionsData.refetch
+  }
+}
+
+export function useNumberOfPositionsFromSubgraph(address: string | undefined | null) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useNumberOfPositionsQuery(accountAddress ? { account: accountAddress } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export function usePositions(
+  address: string | undefined | null,
+  first: number,
+  skip: number,
+  status: PositionStatus
+): {
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  positionsData: any | undefined
+  refetch: () => void
+} { 
+  let positionsQuery;
+
+  console.log('hello: ', address, first, skip, status)
+
+  if (status === PositionStatus.Open) {
+    positionsQuery = useOpenPositionsFromSubgraph;
+  } else if (status === PositionStatus.Closed) {
+    positionsQuery = useUnwindsFromSubgraph;
+  } else if (status === PositionStatus.Liquidated) {
+    positionsQuery = useLiquidatedPositionsFromSubgraph;
+  } else {
+    throw new Error(`Invalid position status: ${status}`);
+  }
+
+  const positions = positionsQuery(address ?? undefined, first, skip);
+  const positionsData = positions.data;
+
+  return {
+    isLoading: positions.isLoading,
+    isFetching: positions.isFetching,
+    isUninitialized: positions.isUninitialized,
+    isError: positions.isError, 
+    error: positions.error,
+    positionsData: positionsData,
+    refetch: positions.refetch
+  }
+}
+
+export function useOpenPositionsFromSubgraph(address: string | undefined | null, first: number, skip: number) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useOpenPositionsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export function useUnwindsFromSubgraph(address: string | undefined | null, first: number, skip: number) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useUnwindsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export function useLiquidatedPositionsFromSubgraph(address: string | undefined | null, first: number, skip: number) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useLiquidatedPositionsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
 }
 
 export function useCurrentWalletUnwinds(
