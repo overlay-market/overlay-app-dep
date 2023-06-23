@@ -13,7 +13,7 @@ import {
 import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useAccountQuery, useAccountV2Query, useLiquidatedPositionsQuery, useNumberOfPositionsQuery, useOpenPositionsQuery, usePositionsQuery, useUnwindsQuery } from "../data/generated";
+import { useAccountQuery, useAccountV2Query, useLiquidatedPositionsQuery, useNumberOfPositionsQuery, useOpenPositionsOverviewQuery, useOpenPositionsQuery, usePositionsQuery, useUnwindsQuery } from "../data/generated";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import { PositionStatus } from "../../pages/Positions/PositionsPage";
 
@@ -359,7 +359,6 @@ export interface PositionsTableDetails {
   realizedPnl: string
 }
 
-
 export function usePositionsTableDetails(
   address: string | undefined | null
 ):{
@@ -468,6 +467,48 @@ export function useLiquidatedPositionsFromSubgraph(address: string | undefined |
 
   return useLiquidatedPositionsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
     pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export interface OpenPositionOverviewData {
+  id: string;
+  positionId: string;
+  market: PositionMarketData;
+}
+
+export function useOpenPositionsOverview(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  openPositions: OpenPositionOverviewData[] | undefined
+  refetch: () => void
+} {
+  const openPositions = useOpenPositionsOverviewFromSubgraph(address ? address : undefined)
+  return {
+    isLoading: openPositions.isLoading,
+    isFetching: openPositions.isFetching,
+    isUninitialized: openPositions.isUninitialized,
+    isError: openPositions.isError, 
+    error: openPositions.error,
+    openPositions: openPositions.data?.account?.positions,
+    refetch: openPositions.refetch
+  }
+}
+
+export function useOpenPositionsOverviewFromSubgraph(address: string | undefined | null) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useOpenPositionsOverviewQuery(accountAddress ? { account: accountAddress } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 10000, 
     refetchOnMountOrArgChange: true, 
     refetchOnFocus: true,
     refetchOnReconnect: true,

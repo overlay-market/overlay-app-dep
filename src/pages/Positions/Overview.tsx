@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import OverviewCard from '../../components/Card/OverviewCard'
 import {Grid, Box} from '@material-ui/core'
-import {PositionDataV2} from '../../state/build/hooks'
+import {OpenPositionOverviewData, PositionDataV2} from '../../state/build/hooks'
 import {useTotalValueLocked} from '../../hooks/useTotalValueLocked'
 import {useTotalCost} from '../../hooks/useTotalCost'
 import {useTotalFees} from '../../hooks/useTotalFees'
@@ -22,7 +22,7 @@ const Container = styled.div<{mt?: string}>`
 
 export interface Props {
   marginTop: string
-  openPositions: PositionDataV2[] | undefined
+  openPositions: OpenPositionOverviewData[] | undefined
   unwinds: number
   realizedPnl: string
 }

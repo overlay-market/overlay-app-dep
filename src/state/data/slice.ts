@@ -298,6 +298,27 @@ export const api = createApi({
         },
       }),
     }),
+    openPositionsOverviewQuery: builder.query({
+      query: ({account}) => ({
+        document: gql`
+          query openPositionsOverview($account: ID!) {
+            account(id: $account) {
+              positions(where: {isLiquidated: false, currentOi_gt: "0"}, orderBy: createdAtTimestamp, orderDirection: desc) {
+                id
+                positionId
+                market {
+                  feedAddress
+                  id
+                }
+              }
+            }
+          }
+        `,
+        variables: {
+          account,
+        },
+      }),
+    }),
     unwindsQuery: builder.query({
       query: ({account, first, skip}) => ({
         document: gql`

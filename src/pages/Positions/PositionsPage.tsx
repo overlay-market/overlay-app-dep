@@ -7,7 +7,7 @@ import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {FlexRow} from '../../components/Container/Container'
-import {useCurrentWalletPositionsV2, usePositionsTableDetails, usePositionsTableData} from '../../state/build/hooks'
+import {usePositionsTableDetails, usePositionsTableData, useOpenPositionsOverview} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
 import {useMarketDetails} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
@@ -40,7 +40,6 @@ interface PositionsTableProps {
   title: string
   children?: React.ReactNode
   marginTop?: string
-  isLoading?: boolean
   positionStatus: PositionStatus
   initialCollateral?: string
   rowsCount: number
@@ -307,38 +306,11 @@ const PositionsTable = ({title, marginTop, positionStatus, rowsCount, marketsDat
 const Positions = () => {
   const {account} = useActiveWeb3React()
   const {positionsTableDetails} = usePositionsTableDetails(account)
-  const {isLoading: isPositionsLoading, positions} = useCurrentWalletPositionsV2(account)
+  const {openPositions} = useOpenPositionsOverview(account)
 
   const {markets} = useTotalMarketsData()
   const marketDetails = useMarketDetails(markets)
   const {markets: marketsData} = useCurrentMarketState(marketDetails)
-
-  const handledPositions = useMemo(() => {
-    if (!positions) return []
-    return positions.map(filteredPosition => {
-      const marketAddress = filteredPosition.market.id
-      const marketState = marketsData.filter(market => market.marketAddress === marketAddress)[0]
-
-      const positionStatus: PositionStatus = filteredPosition.isLiquidated
-        ? PositionStatus.Liquidated
-        : filteredPosition.currentOi === '0'
-        ? PositionStatus.Closed
-        : +filteredPosition.numberOfUniwnds > 0
-        ? PositionStatus.Open
-        : PositionStatus.Open
-
-      return {
-        ...marketState,
-        ...filteredPosition,
-        id: filteredPosition.id,
-        positionStatus,
-      }
-    })
-  }, [positions, marketsData])
-
-  const openPositions = useMemo(() => {
-    return handledPositions.filter(position => position.positionStatus === PositionStatus.Open)
-  }, [handledPositions])
 
   return (
     <PageContainer>
@@ -351,7 +323,6 @@ const Positions = () => {
       <PositionsTable
         title="Open Positions"
         marginTop="50px"
-        isLoading={isPositionsLoading}
         positionStatus={PositionStatus.Open}
         rowsCount={Number(positionsTableDetails?.numberOfOpenPositions ?? 0)}
         marketsData={marketsData}
@@ -359,7 +330,6 @@ const Positions = () => {
       <PositionsTable
         title="Unwinds"
         marginTop="50px"
-        isLoading={isPositionsLoading}
         positionStatus={PositionStatus.Closed}
         rowsCount={Number(positionsTableDetails?.numberOfUnwinds ?? 0)}
         marketsData={marketsData}
@@ -367,7 +337,6 @@ const Positions = () => {
       <PositionsTable
         title="Liquidates"
         marginTop="50px"
-        isLoading={isPositionsLoading}
         positionStatus={PositionStatus.Liquidated}
         rowsCount={Number(positionsTableDetails?.numberOfLiquidatedPositions ?? 0)}
         marketsData={marketsData}
