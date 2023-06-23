@@ -106,8 +106,9 @@ const MenuLink = ({background, link, onClick, children}: {background?: string; l
       </UnstyledAnchorTag>
     )
   }
+
   return (
-    <MenuItem onClick={() => (onClick ? onClick() : null)} background={background}>
+    <MenuItem onClick={event => (onClick ? onClick(event) : null)} background={background}>
       {children}
     </MenuItem>
   )
@@ -321,8 +322,13 @@ export default function WalletMenu() {
               <MenuLink link={LINKS.RISKS}>
                 <TEXT.SmallBody>Risks of Overlay</TEXT.SmallBody>
               </MenuLink>
-              <MenuLink>
-                <FlexRow justify="space-between" onClick={() => setIsSubMenuOpen(true)}>
+              <MenuLink
+                onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+                  event.stopPropagation()
+                  setIsSubMenuOpen(true)
+                }}
+              >
+                <FlexRow justify="space-between">
                   <TEXT.SmallBody>Community</TEXT.SmallBody>
                   <ChevronRight size={16} />
                 </FlexRow>
