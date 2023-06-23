@@ -1,6 +1,3 @@
-// import fetch from 'node-fetch'
-// import {VercelRequest, VercelResponse} from '@vercel/node'
-
 const fetch = require('node-fetch')
 
 const StatusCode = {
