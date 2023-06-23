@@ -352,7 +352,7 @@ export function useCurrentWalletPositionsV2(
   }
 }
 
-export interface numberOfPositionsData {
+export interface PositionsTableDetails {
   numberOfLiquidatedPositions: string
   numberOfOpenPositions: string
   numberOfUnwinds: string
@@ -360,7 +360,7 @@ export interface numberOfPositionsData {
 }
 
 
-export function useNumberOfPositions(
+export function usePositionsTableDetails(
   address: string | undefined | null
 ):{
   isLoading: boolean
@@ -368,18 +368,18 @@ export function useNumberOfPositions(
   isUninitialized: boolean
   isError: boolean
   error: unknown
-  numberOfPositions: numberOfPositionsData | undefined
+  positionsTableDetails: PositionsTableDetails | undefined
   refetch: () => void
 } {
-  const numberOfPositionsData = useNumberOfPositionsFromSubgraph(address ? address : undefined)
+  const positionsTableDetails = useNumberOfPositionsFromSubgraph(address ? address : undefined)
   return {
-    isLoading:  numberOfPositionsData.isLoading,
-    isFetching:  numberOfPositionsData.isFetching,
-    isUninitialized:  numberOfPositionsData.isUninitialized,
-    isError:  numberOfPositionsData.isError, 
-    error:  numberOfPositionsData.error,
-    numberOfPositions: numberOfPositionsData.data?.account as numberOfPositionsData | undefined,
-    refetch:  numberOfPositionsData.refetch
+    isLoading:  positionsTableDetails.isLoading,
+    isFetching:  positionsTableDetails.isFetching,
+    isUninitialized:  positionsTableDetails.isUninitialized,
+    isError:  positionsTableDetails.isError, 
+    error:  positionsTableDetails.error,
+    positionsTableDetails: positionsTableDetails.data?.account as PositionsTableDetails | undefined,
+    refetch:  positionsTableDetails.refetch
   }
 }
 
@@ -388,7 +388,7 @@ export function useNumberOfPositionsFromSubgraph(address: string | undefined | n
   let chainId = useAppSelector((state: AppState) => state.application.chainId)
 
   return useNumberOfPositionsQuery(accountAddress ? { account: accountAddress } : skipToken, {
-    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    pollingInterval: chainId === 42161 ? 30000 : 10000, 
     refetchOnMountOrArgChange: true, 
     refetchOnFocus: true,
     refetchOnReconnect: true,
@@ -396,7 +396,7 @@ export function useNumberOfPositionsFromSubgraph(address: string | undefined | n
   })
 }
 
-export function usePositions(
+export function usePositionsTableData(
   address: string | undefined | null,
   first: number,
   skip: number,
@@ -407,34 +407,32 @@ export function usePositions(
   isUninitialized: boolean
   isError: boolean
   error: unknown
-  positionsData: any | undefined
+  positionsTableData: any | undefined
   refetch: () => void
 } { 
-  let positionsQuery;
-
-  console.log('hello: ', address, first, skip, status)
+  let query;
 
   if (status === PositionStatus.Open) {
-    positionsQuery = useOpenPositionsFromSubgraph;
+    query = useOpenPositionsFromSubgraph;
   } else if (status === PositionStatus.Closed) {
-    positionsQuery = useUnwindsFromSubgraph;
+    query = useUnwindsFromSubgraph;
   } else if (status === PositionStatus.Liquidated) {
-    positionsQuery = useLiquidatedPositionsFromSubgraph;
+    query = useLiquidatedPositionsFromSubgraph;
   } else {
     throw new Error(`Invalid position status: ${status}`);
   }
 
-  const positions = positionsQuery(address ?? undefined, first, skip);
-  const positionsData = positions.data;
+  const res = query(address ?? undefined, first, skip);
+  const positionsTableData = res.data;
 
   return {
-    isLoading: positions.isLoading,
-    isFetching: positions.isFetching,
-    isUninitialized: positions.isUninitialized,
-    isError: positions.isError, 
-    error: positions.error,
-    positionsData: positionsData,
-    refetch: positions.refetch
+    isLoading: res.isLoading,
+    isFetching: res.isFetching,
+    isUninitialized: res.isUninitialized,
+    isError: res.isError, 
+    error: res.error,
+    positionsTableData,
+    refetch: res.refetch
   }
 }
 

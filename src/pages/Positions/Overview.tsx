@@ -23,12 +23,11 @@ const Container = styled.div<{mt?: string}>`
 export interface Props {
   marginTop: string
   openPositions: PositionDataV2[] | undefined
-  unwinds: {
-    pnl: string
-  }[]
+  unwinds: number
+  realizedPnl: string
 }
 
-export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
+export const Overview = ({marginTop, openPositions, unwinds, realizedPnl}: Props) => {
   const title = 'Overview'
 
   let tvlArray = []
@@ -63,20 +62,6 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
     return formatValue
   }, [totalValueLocked])
 
-  const pnl = useMemo(() => {
-    let formatValue = '0'
-    if (unwinds) {
-      let _formatValue = 0
-      for (let unwind of unwinds) {
-        _formatValue += +unwind.pnl / 10 ** 18
-      }
-      if (_formatValue) {
-        formatValue = _formatValue > 1 ? _formatValue.toFixed(2) : _formatValue.toFixed(6)
-      }
-    }
-    return formatValue
-  }, [unwinds])
-
   const cardsData = [
     {
       title: 'Open Positions',
@@ -90,9 +75,9 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
     },
     {
       title: 'Total Realized PnL',
-      value: `${unwinds ? (pnl ? pnl + ' OVL' : 'loading') : 'No unwinds yet'}`,
-      icon: +pnl < 0 ? 'down' : 'up',
-      valueColor: +pnl < 0 ? '#FF648A' : '#5FD0AB',
+      value: `${unwinds ? (realizedPnl ? realizedPnl + ' OVL' : 'loading') : 'No unwinds yet'}`,
+      icon: +realizedPnl < 0 ? 'down' : 'up',
+      valueColor: +realizedPnl < 0 ? '#FF648A' : '#5FD0AB',
     },
     {
       title: 'Unrealized PnL',
@@ -102,7 +87,7 @@ export const Overview = ({marginTop, openPositions, unwinds}: Props) => {
     },
   ]
 
-  return tvlArray.length > 0 && unwinds ? (
+  return tvlArray.length > 0 ? (
     <Container mt={marginTop}>
       <TEXT.BoldStandardBody mb="16px">{`${title}`}</TEXT.BoldStandardBody>
       <Box>
