@@ -289,7 +289,7 @@ export default function WalletMenu() {
         <MenuContent open={isMenuOpen} ref={menuRef}>
           <MenuTitle open={isSubMenuOpen} onClick={() => (isSubMenuOpen ? setIsSubMenuOpen(false) : null)}>
             <ChevronLeft size={16} />
-            <TEXT.SmallBody>Menu</TEXT.SmallBody>
+            <TEXT.SmallBody ml="4px">Menu</TEXT.SmallBody>
           </MenuTitle>
           {isSubMenuOpen ? (
             <>

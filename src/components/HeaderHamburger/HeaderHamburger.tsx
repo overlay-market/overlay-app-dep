@@ -24,11 +24,11 @@ export const StyledBurger = styled.button<{open: boolean}>`
 
   span {
     width: 17px;
-    height: ${({open}) => (open ? '1px' : '1px')};
+    height: ${({open}) => (open ? '2px' : '1px')};
     background: ${({theme, open}) => (open ? theme.dark.white : theme.dark.white)};
     transition: all 0.3s linear;
     position: relative;
-    transform-origin: 0px;
+    transform-origin: 0.5px;
 
     :first-child {
       transform: ${({open}) => (open ? 'rotate(45deg)' : 'rotate(0)')};
