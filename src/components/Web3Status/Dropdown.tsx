@@ -11,7 +11,6 @@ import {useActiveWeb3React} from '../../hooks/web3'
 import {FlexRow} from '../Container/Container'
 import {useWalletModalToggle} from '../../state/application/hooks'
 import {StyledPaper, StyledMenuList, StyledMenuItem, IconContainer, StyledPopper} from '../More/More'
-import {Account} from './Web3Status'
 
 export const Web3StatusMenuItem = styled(StyledMenuItem)`
   opacity: 1 !important;
