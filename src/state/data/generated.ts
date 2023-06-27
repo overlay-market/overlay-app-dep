@@ -1793,10 +1793,12 @@ export type Unwind = {
   isLong: Scalars['Boolean'];
   price: Scalars['BigInt'];
   fraction: Scalars['BigInt'];
+  fractionOfPosition: Scalars['BigInt'];
   transferAmount: Scalars['BigInt'];
   pnl: Scalars['BigInt'];
   feeAmount: Scalars['BigInt'];
   size: Scalars['BigInt'];
+  volume: Scalars['BigInt'];
   mint: Scalars['BigInt'];
   collateral: Scalars['BigInt'];
   value: Scalars['BigInt'];
@@ -1899,6 +1901,14 @@ export type Unwind_Filter = {
   fraction_lte?: Maybe<Scalars['BigInt']>;
   fraction_in?: Maybe<Array<Scalars['BigInt']>>;
   fraction_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  fractionOfPosition?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_not?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_gt?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_lt?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_gte?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_lte?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_in?: Maybe<Array<Scalars['BigInt']>>;
+  fractionOfPosition_not_in?: Maybe<Array<Scalars['BigInt']>>;
   transferAmount?: Maybe<Scalars['BigInt']>;
   transferAmount_not?: Maybe<Scalars['BigInt']>;
   transferAmount_gt?: Maybe<Scalars['BigInt']>;
@@ -1931,6 +1941,14 @@ export type Unwind_Filter = {
   size_lte?: Maybe<Scalars['BigInt']>;
   size_in?: Maybe<Array<Scalars['BigInt']>>;
   size_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  volume?: Maybe<Scalars['BigInt']>;
+  volume_not?: Maybe<Scalars['BigInt']>;
+  volume_gt?: Maybe<Scalars['BigInt']>;
+  volume_lt?: Maybe<Scalars['BigInt']>;
+  volume_gte?: Maybe<Scalars['BigInt']>;
+  volume_lte?: Maybe<Scalars['BigInt']>;
+  volume_in?: Maybe<Array<Scalars['BigInt']>>;
+  volume_not_in?: Maybe<Array<Scalars['BigInt']>>;
   mint?: Maybe<Scalars['BigInt']>;
   mint_not?: Maybe<Scalars['BigInt']>;
   mint_gt?: Maybe<Scalars['BigInt']>;
@@ -2022,10 +2040,12 @@ export enum Unwind_OrderBy {
   IsLong = 'isLong',
   Price = 'price',
   Fraction = 'fraction',
+  FractionOfPosition = 'fractionOfPosition',
   TransferAmount = 'transferAmount',
   Pnl = 'pnl',
   FeeAmount = 'feeAmount',
   Size = 'size',
+  Volume = 'volume',
   Mint = 'mint',
   Collateral = 'collateral',
   Value = 'value',
