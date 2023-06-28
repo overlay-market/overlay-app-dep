@@ -1,4 +1,4 @@
-import {useMemo, useCallback} from 'react'
+import {useMemo} from 'react'
 import {StyledTableRowNoPointer, StyledTableCell} from '../../components/Table/Table'
 import formatUnixTimestampToDate from '../../utils/formatUnixTimestampToDate'
 import {FlexRow} from '../../components/Container/Container'
@@ -18,6 +18,7 @@ export interface PositionProps {
     price: string
     timestamp: string
     value: string
+    size: string
     position: {
       id: string
       positionId: string
@@ -46,9 +47,8 @@ export interface PositionProps {
 }
 
 export const LiquidatesTransactions = ({transaction, columns}: PositionProps) => {
-  const {marketName, leverage, createdAtTimestamp, isLong, initialCollateral, entryPrice, priceCurrency, decimals, unwinds} = transaction.position
-  const {price, timestamp} = transaction
-  const BN_ONE = 10 ** 18
+  const {marketName, leverage, createdAtTimestamp, isLong, entryPrice, priceCurrency, decimals} = transaction.position
+  const {price, timestamp, size} = transaction
 
   const positionSide = useMemo(() => {
     if (isLong === null || isLong === undefined) return null
@@ -63,31 +63,15 @@ export const LiquidatesTransactions = ({transaction, columns}: PositionProps) =>
     return formatBigNumber(entryPrice, Number(decimals))
   }, [entryPrice, decimals])
 
-  const parsedBigStringUsingDecimals = useCallback(
-    (bigString: string, toFixed: boolean = false) => {
-      if (!decimals) return '-'
-      return toFixed ? formatBigNumber(bigString, Number(decimals)) : formatBigNumber(bigString, Number(decimals), Number(decimals))
-    },
-    [decimals],
-  )
-
   const parsedExitPrice = useMemo(() => {
     if (!price || decimals === undefined) return null
     return formatBigNumber(price, Number(decimals))
   }, [price, decimals])
 
-  const liquidateSize: string | undefined = useMemo(() => {
-    if (!initialCollateral) return undefined
-    let parsedInitialCollateral = parsedBigStringUsingDecimals(initialCollateral)
-    if (!parsedInitialCollateral) return undefined
-    let positionCost = +parsedInitialCollateral
-    if (!positionCost) return undefined
-    for (let i = 0; i < unwinds.length; i++) {
-      positionCost = +positionCost * (1 - +unwinds.filter(item => +item.unwindNumber === i)[0].fraction / BN_ONE)
-    }
-    let unwindAmount = +positionCost
-    return unwindAmount < 1 ? unwindAmount.toFixed(6) : unwindAmount.toFixed(2)
-  }, [initialCollateral, parsedBigStringUsingDecimals, BN_ONE, unwinds])
+  const parsedSize = useMemo(() => {
+    if (!size || decimals === undefined) return null
+    return formatBigNumber(size, Number(decimals))
+  }, [size, decimals])
 
   const sortedValues: any[] = useMemo(() => {
     interface Values {
@@ -103,7 +87,7 @@ export const LiquidatesTransactions = ({transaction, columns}: PositionProps) =>
 
     const values: Values = {
       Market: marketName,
-      Size: liquidateSize ? `${liquidateSize} OVL` : <Loader size="12px" />,
+      Size: parsedSize ? `${parsedSize} OVL` : <Loader size="12px" />,
       Position: (
         <FlexRow>
           <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
@@ -119,7 +103,6 @@ export const LiquidatesTransactions = ({transaction, columns}: PositionProps) =>
       return values[columnName]
     })
   }, [
-    liquidateSize,
     parsedClosedTimestamp,
     parsedExitPrice,
     columns,
@@ -130,6 +113,7 @@ export const LiquidatesTransactions = ({transaction, columns}: PositionProps) =>
     priceCurrency,
     parsedEntryPrice,
     parsedCreatedTimestamp,
+    parsedSize,
   ])
 
   return (
