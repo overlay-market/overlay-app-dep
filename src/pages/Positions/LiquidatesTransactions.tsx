@@ -5,7 +5,7 @@ import {FlexRow} from '../../components/Container/Container'
 import {formatBigNumber} from '../../utils/formatBigNumber'
 import Loader from '../../components/Loaders/Loaders'
 import {TEXT} from '../../theme/theme'
-import { Build, Liquidate, Unwind } from '../../state/build/hooks'
+import {Build, Liquidate, Unwind} from '../../state/build/hooks'
 
 export interface PositionProps {
   transaction: {
@@ -18,7 +18,7 @@ export interface PositionProps {
     price: string
     timestamp: string
     value: string
-    position: {  
+    position: {
       id: string
       positionId: string
       marketName?: string
@@ -45,25 +45,9 @@ export interface PositionProps {
   columns: string[]
 }
 
-export const LiquidatesTransactions = ({
-  transaction,
-  columns,
-}: PositionProps) => {
-  const {
-    marketName,
-    leverage,
-    createdAtTimestamp,
-    isLong,
-    initialCollateral,
-    entryPrice,
-    priceCurrency,
-    decimals,
-    unwinds,
-  } = transaction.position
-  const {
-    price,
-    timestamp,
-  } = transaction
+export const LiquidatesTransactions = ({transaction, columns}: PositionProps) => {
+  const {marketName, leverage, createdAtTimestamp, isLong, initialCollateral, entryPrice, priceCurrency, decimals, unwinds} = transaction.position
+  const {price, timestamp} = transaction
   const BN_ONE = 10 ** 18
 
   const positionSide = useMemo(() => {
@@ -72,19 +56,20 @@ export const LiquidatesTransactions = ({
   }, [isLong])
 
   const parsedCreatedTimestamp = formatUnixTimestampToDate(createdAtTimestamp)
-  const parsedClosedTimestamp =  formatUnixTimestampToDate(timestamp)
+  const parsedClosedTimestamp = formatUnixTimestampToDate(timestamp)
 
   const parsedEntryPrice = useMemo(() => {
     if (!entryPrice || decimals === undefined) return null
     return formatBigNumber(entryPrice, Number(decimals))
   }, [entryPrice, decimals])
 
-  const parsedBigStringUsingDecimals = useCallback((bigString: string, toFixed: boolean = false) => {
-    if (!decimals) return '-'
-    return (toFixed 
-    ? formatBigNumber(bigString, Number(decimals))
-    : formatBigNumber(bigString, Number(decimals), Number(decimals)))
-  }, [decimals])
+  const parsedBigStringUsingDecimals = useCallback(
+    (bigString: string, toFixed: boolean = false) => {
+      if (!decimals) return '-'
+      return toFixed ? formatBigNumber(bigString, Number(decimals)) : formatBigNumber(bigString, Number(decimals), Number(decimals))
+    },
+    [decimals],
+  )
 
   const parsedExitPrice = useMemo(() => {
     if (!price || decimals === undefined) return null
@@ -97,8 +82,8 @@ export const LiquidatesTransactions = ({
     if (!parsedInitialCollateral) return undefined
     let positionCost = +parsedInitialCollateral
     if (!positionCost) return undefined
-    for (let i=0; i < unwinds.length; i++) {
-      positionCost = +positionCost * (1 - (+unwinds.filter(item => +item.unwindNumber === i)[0].fraction / BN_ONE))
+    for (let i = 0; i < unwinds.length; i++) {
+      positionCost = +positionCost * (1 - +unwinds.filter(item => +item.unwindNumber === i)[0].fraction / BN_ONE)
     }
     let unwindAmount = +positionCost
     return unwindAmount < 1 ? unwindAmount.toFixed(6) : unwindAmount.toFixed(2)
@@ -106,44 +91,57 @@ export const LiquidatesTransactions = ({
 
   const sortedValues: any[] = useMemo(() => {
     interface Values {
-      [key: string]: string | JSX.Element | null | undefined;
-      Market?: string;
-      Size: string | JSX.Element;
-      Position: JSX.Element;
-      "Entry Price": string;
-      "Exit Price": string;
-      "Liquidated": string;
-      Created?: string;
+      [key: string]: string | JSX.Element | null | undefined
+      Market?: string
+      Size: string | JSX.Element
+      Position: JSX.Element
+      'Entry Price': string
+      'Exit Price': string
+      Liquidated: string
+      Created?: string
     }
 
     const values: Values = {
-      "Market": marketName, 
-      "Size": liquidateSize ? `${liquidateSize} OVL` : <Loader size="12px" />, 
-      "Position": <FlexRow>
-                    <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
-                    <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
-                  </FlexRow>, 
-      "Entry Price": `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`, 
-      "Exit Price": `${priceCurrency ? priceCurrency : ''}${parsedExitPrice ?? '-'}`, 
-      "Liquidated": parsedClosedTimestamp, 
-      "Created": parsedCreatedTimestamp,
+      Market: marketName,
+      Size: liquidateSize ? `${liquidateSize} OVL` : <Loader size="12px" />,
+      Position: (
+        <FlexRow>
+          <TEXT.Supplemental mr="4px">{leverage}x</TEXT.Supplemental>
+          <TEXT.BoldSupplemental color={isLong ? '#5FD0AB' : '#FF648A'}>{positionSide}</TEXT.BoldSupplemental>
+        </FlexRow>
+      ),
+      'Entry Price': `${priceCurrency ? priceCurrency : ''}${parsedEntryPrice ? parsedEntryPrice : '-'}`,
+      'Exit Price': `${priceCurrency ? priceCurrency : ''}${parsedExitPrice ?? '-'}`,
+      Liquidated: parsedClosedTimestamp,
+      Created: parsedCreatedTimestamp,
     }
-    return columns.map((columnName) => {
+    return columns.map(columnName => {
       return values[columnName]
     })
-  }, [liquidateSize, parsedClosedTimestamp, parsedExitPrice, columns, marketName, leverage, isLong, positionSide, priceCurrency, parsedEntryPrice, parsedCreatedTimestamp]) 
-
+  }, [
+    liquidateSize,
+    parsedClosedTimestamp,
+    parsedExitPrice,
+    columns,
+    marketName,
+    leverage,
+    isLong,
+    positionSide,
+    priceCurrency,
+    parsedEntryPrice,
+    parsedCreatedTimestamp,
+  ])
 
   return (
     <>
       <StyledTableRowNoPointer>
-        {
-          sortedValues.map((value) => {
-            return <StyledTableCell>
-            <TEXT.Supplemental>{value}</TEXT.Supplemental>
-          </StyledTableCell>
-          })
-        }
+        {sortedValues.map(value => {
+          return (
+            <StyledTableCell>
+              <TEXT.Supplemental>{value}</TEXT.Supplemental>
+            </StyledTableCell>
+          )
+        })}
       </StyledTableRowNoPointer>
     </>
   )
