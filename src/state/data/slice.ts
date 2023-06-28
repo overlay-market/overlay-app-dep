@@ -12,7 +12,7 @@ const CHAIN_SUBGRAPH_URL: Record<number, string> = {
   [SupportedChainId.RINKEBY]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-rinkeby',
   // [SupportedChainId.ARBITRUM]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arbitrum',
   // [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/proxy/46086/overlay-subgraph-arbitrum/v2.0.12',
-  [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/query/46086/overlay-subgraph-arbitrum/v2.2.6',
+  [SupportedChainId.ARBITRUM]: 'https://api.studio.thegraph.com/query/46086/overlay-subgraph-arbitrum/v2.2.7',
   [SupportedChainId.ARBITRUM_GÖRLI]: 'https://api.thegraph.com/subgraphs/name/bigboydiamonds/overlay-v1-subgraph-arb-goerli',
 }
 
@@ -380,6 +380,7 @@ export const api = createApi({
                 price
                 timestamp
                 value
+                size
                 position {
                   createdAtTimestamp
                   currentOi

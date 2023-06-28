@@ -457,6 +457,8 @@ export type Liquidate = {
   owner: Account;
   sender: Account;
   position: Position;
+  fractionOfPosition: Scalars['BigInt'];
+  size: Scalars['BigInt'];
   currentOi: Scalars['BigInt'];
   currentDebt: Scalars['BigInt'];
   isLong: Scalars['Boolean'];
@@ -540,6 +542,22 @@ export type Liquidate_Filter = {
   position_not_ends_with?: Maybe<Scalars['String']>;
   position_not_ends_with_nocase?: Maybe<Scalars['String']>;
   position_?: Maybe<Position_Filter>;
+  fractionOfPosition?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_not?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_gt?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_lt?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_gte?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_lte?: Maybe<Scalars['BigInt']>;
+  fractionOfPosition_in?: Maybe<Array<Scalars['BigInt']>>;
+  fractionOfPosition_not_in?: Maybe<Array<Scalars['BigInt']>>;
+  size?: Maybe<Scalars['BigInt']>;
+  size_not?: Maybe<Scalars['BigInt']>;
+  size_gt?: Maybe<Scalars['BigInt']>;
+  size_lt?: Maybe<Scalars['BigInt']>;
+  size_gte?: Maybe<Scalars['BigInt']>;
+  size_lte?: Maybe<Scalars['BigInt']>;
+  size_in?: Maybe<Array<Scalars['BigInt']>>;
+  size_not_in?: Maybe<Array<Scalars['BigInt']>>;
   currentOi?: Maybe<Scalars['BigInt']>;
   currentOi_not?: Maybe<Scalars['BigInt']>;
   currentOi_gt?: Maybe<Scalars['BigInt']>;
@@ -659,6 +677,8 @@ export enum Liquidate_OrderBy {
   PositionCreatedAtTimestamp = 'position__createdAtTimestamp',
   PositionCreatedAtBlockNumber = 'position__createdAtBlockNumber',
   PositionNumberOfUniwnds = 'position__numberOfUniwnds',
+  FractionOfPosition = 'fractionOfPosition',
+  Size = 'size',
   CurrentOi = 'currentOi',
   CurrentDebt = 'currentDebt',
   IsLong = 'isLong',
@@ -2300,7 +2320,7 @@ export type LiquidatedPositionsQuery = (
     { __typename?: 'Account' }
     & { liquidates: Array<(
       { __typename?: 'Liquidate' }
-      & Pick<Liquidate, 'collateral' | 'currentDebt' | 'currentOi' | 'id' | 'isLong' | 'mint' | 'price' | 'timestamp' | 'value'>
+      & Pick<Liquidate, 'collateral' | 'currentDebt' | 'currentOi' | 'id' | 'isLong' | 'mint' | 'price' | 'timestamp' | 'value' | 'size'>
       & { position: (
         { __typename?: 'Position' }
         & Pick<Position, 'createdAtTimestamp' | 'currentOi' | 'entryPrice' | 'fractionUnwound' | 'id' | 'initialCollateral' | 'isLong' | 'leverage'>
@@ -2615,6 +2635,7 @@ export const LiquidatedPositionsDocument = `
       price
       timestamp
       value
+      size
       position {
         createdAtTimestamp
         currentOi

@@ -1,5 +1,5 @@
 overrideExisting: true
-schema: 'https://api.studio.thegraph.com/query/46086/overlay-subgraph-arbitrum/version/latest'
+schema: 'https://api.studio.thegraph.com/query/46086/overlay-subgraph-arbitrum/v2.2.7'
 documents: 'src/**/**/!(*.d).{ts,tsx}'
 generates:
   ./src/state/data/generated.ts:
