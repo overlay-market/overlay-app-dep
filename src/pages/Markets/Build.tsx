@@ -43,7 +43,6 @@ import {useMarketName} from '../../hooks/useMarketName'
 import {useFractionOfCapOi} from '../../hooks/useFractionOfCapOi'
 import {useBid} from '../../hooks/useBid'
 import {useAsk} from '../../hooks/useAsk'
-import {OVL_TOKEN_ADDRESS} from '../../constants/addresses'
 import {marketNameFromDescription} from '../../constants/markets'
 import Loader from '../../components/Loaders/Loaders'
 import {MainDetails} from './MainBuildDetails'
@@ -171,11 +170,8 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
 
   const sigFigConstant = 4
 
-  const isInverseMarket = chainId && quoteTokenAddress ? quoteTokenAddress === OVL_TOKEN_ADDRESS[chainId] : null
-
   // @TO-DO: pull market attributes
   const capLeverage = market ? formatWeiToParsedNumber(market.capLeverage, 18, 2) : undefined
-  const capPayoff = market ? formatWeiToParsedNumber(market.capPayoff, 18, 2) : undefined
   const minCollateral = market ? formatWeiToParsedNumber(market.minCollateral, 18, 10) : undefined
 
   const ois = useMarketOi(marketId, baseTokenDecimals, quoteTokenDecimals)

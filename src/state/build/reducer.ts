@@ -50,7 +50,8 @@ export default createReducer<BuildState>(initialState, (builder) =>
       state.selectedLeverage = initialState.selectedLeverage;
       state.isLong = initialState.isLong;
       state.inputCurrency = initialState.inputCurrency;
-      state.setSlippageValue = initialState.setSlippageValue;
+      // Avoid resetting slippage value
+      // state.setSlippageValue = initialState.setSlippageValue;
       state.txnDeadline = initialState.txnDeadline;
     })
 );

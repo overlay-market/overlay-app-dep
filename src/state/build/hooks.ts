@@ -65,6 +65,8 @@ export function useBuildActionHandlers(): {
       if(slippageRegex.test(setSlippageValue)) {
         dispatch(setSlippage({ setSlippageValue }))
       }
+
+      localStorage.setItem(`slippage`, setSlippageValue ?? DefaultTxnSettings.DEFAULT_SLIPPAGE)
     },
     [dispatch]
   )

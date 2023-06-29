@@ -26,7 +26,9 @@ const StyledDialogOverlay = styled(AnimatedDialogOverlay)`
 const AnimatedDialogContent = animated(DialogContent)
 // destructure to not pass custom props to Dialog DOM element
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledDialogContent = styled(({minHeight, maxHeight, mobile, isOpen, width, ...rest}) => <AnimatedDialogContent {...rest} />).attrs({
+const StyledDialogContent = styled(({minHeight, maxHeight, mobile, isOpen, width, borderColor, boxShadow, ...rest}) => (
+  <AnimatedDialogContent {...rest} />
+)).attrs({
   'aria-label': 'dialog',
 })`
   overflow-y: auto;
@@ -34,8 +36,9 @@ const StyledDialogContent = styled(({minHeight, maxHeight, mobile, isOpen, width
   &[data-reach-dialog-content] {
     margin: auto;
     background-color: ${({theme}) => theme.dark.black};
-    border: 1px solid #12b4ff;
+    border: 1px solid ${({borderColor}) => borderColor ?? '#12b4ff'};
     box-shadow: 0 4px 8px 0 ${({theme}) => transparentize(0.95, theme.dark.background)};
+    box-shadow: ${({boxShadow, theme}) => boxShadow ?? `0 4px 8px 0 ${transparentize(0.95, theme.dark.background)}`};
     padding: 0px;
     width: 85vw;
     overflow-y: auto;
@@ -82,11 +85,23 @@ interface ModalProps {
   minHeight?: number | false
   maxHeight?: number
   width?: string
+  borderColor?: string
+  boxShadow?: string
   initialFocusRef?: React.RefObject<any>
   children?: React.ReactNode
 }
 
-export default function Modal({isOpen, onDismiss, width, minHeight = false, maxHeight = 90, initialFocusRef, children}: ModalProps) {
+export default function Modal({
+  isOpen,
+  onDismiss,
+  width,
+  minHeight = false,
+  maxHeight = 90,
+  borderColor,
+  boxShadow,
+  initialFocusRef,
+  children,
+}: ModalProps) {
   const fadeTransition = useTransition(isOpen, null, {
     config: {duration: 200},
     from: {opacity: 0},
@@ -130,6 +145,8 @@ export default function Modal({isOpen, onDismiss, width, minHeight = false, maxH
                 maxHeight={maxHeight}
                 mobile={isMobile}
                 width={width}
+                borderColor={borderColor}
+                boxShadow={boxShadow}
               >
                 {/* prevents the automatic focusing of inputs on mobile by the reach dialog */}
                 {!initialFocusRef && isMobile ? <div tabIndex={1} /> : null}

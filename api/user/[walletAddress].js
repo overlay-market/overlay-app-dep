@@ -1,31 +1,33 @@
-import fetch from 'node-fetch'
-import {VercelRequest, VercelResponse} from '@vercel/node'
+// import fetch from 'node-fetch'
+// import {VercelRequest, VercelResponse} from '@vercel/node'
 
-enum StatusCode {
-  FOUND = 200,
-  FORBIDDEN = 403,
-  NOT_FOUND = 404,
+const fetch = require('node-fetch')
+
+const StatusCode = {
+  FOUND: 200,
+  FORBIDDEN: 403,
+  NOT_FOUND: 404,
 }
 
-enum ErrorMessage {
-  FORBIDDEN = 'Invalid Token in Headers',
-  NOT_REGISTERED = 'Wallet address not registered.',
+const ErrorMessage = {
+  FORBIDDEN: 'Invalid Token in Headers',
+  NOT_REGISTERED: 'Wallet address not registered.',
 }
 
-export default async function getWalletAddressRiskInfo(req: VercelRequest, res: VercelResponse) {
+async function getWalletAddressRiskInfo(req, res) {
   const {walletAddress} = req.query
 
   const response = await fetch(`https://api.chainalysis.com/api/risk/v2/entities/${walletAddress}`, {
+    method: 'GET',
     headers: {
       Accept: 'application/json',
-      Token: `${process.env.REACT_APP_CHAINALYSIS_KEY_TEST}`,
+      Token: `${process.env.REACT_APP_CHAINALYSIS_KEY}`,
     },
   })
 
   if (response.status === StatusCode.FOUND) {
     const json = await response.json()
-    const {risk} = json
-    res.status(200).json({risk: risk})
+    res.status(200).json(json)
   }
 
   if (response.status === StatusCode.NOT_FOUND) {
@@ -36,3 +38,5 @@ export default async function getWalletAddressRiskInfo(req: VercelRequest, res: 
     res.status(200).json({error: ErrorMessage.FORBIDDEN})
   }
 }
+
+module.exports = getWalletAddressRiskInfo
