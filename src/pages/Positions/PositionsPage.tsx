@@ -7,7 +7,7 @@ import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {FlexRow} from '../../components/Container/Container'
-import {usePositionsTableDetails, usePositionsTableData, useOpenPositionsOverview} from '../../state/build/hooks'
+import {usePositionsTableDetails, usePositionsTableData} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
 import {useMarketDetails} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
@@ -306,7 +306,6 @@ const PositionsTable = ({title, marginTop, positionStatus, rowsCount, marketsDat
 const Positions = () => {
   const {account} = useActiveWeb3React()
   const {positionsTableDetails} = usePositionsTableDetails(account)
-  const {openPositions} = useOpenPositionsOverview(account)
 
   const {markets} = useTotalMarketsData()
   const marketDetails = useMarketDetails(markets)
@@ -316,8 +315,9 @@ const Positions = () => {
     <PageContainer>
       <Overview
         marginTop="50px"
-        openPositions={openPositions}
-        unwinds={Number(positionsTableDetails?.numberOfUnwinds ?? 0)}
+        account={account}
+        numberOfOpenPositions={Number(positionsTableDetails?.numberOfOpenPositions ?? 0)}
+        numberOfUnwinds={Number(positionsTableDetails?.numberOfUnwinds ?? 0)}
         realizedPnl={formatBigNumber(positionsTableDetails?.realizedPnl ?? '0', 18, 6) as string}
       />
       <PositionsTable

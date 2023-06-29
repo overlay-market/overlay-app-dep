@@ -2,7 +2,6 @@ import styled from 'styled-components'
 import {TEXT} from '../../theme/theme'
 import OverviewCard from '../../components/Card/OverviewCard'
 import {Grid, Box} from '@material-ui/core'
-import {OpenPositionOverviewData} from '../../state/build/hooks'
 import {useTotalValueLocked} from '../../hooks/useTotalValueLocked'
 import {useTotalCost} from '../../hooks/useTotalCost'
 import {useTotalFees} from '../../hooks/useTotalFees'
@@ -21,24 +20,19 @@ const Container = styled.div<{mt?: string}>`
 `
 
 export interface Props {
+  account: string | null | undefined
   marginTop: string
-  openPositions: OpenPositionOverviewData[] | undefined
-  unwinds: number
+  numberOfOpenPositions: number
+  numberOfUnwinds: number
   realizedPnl: string
 }
 
-export const Overview = ({marginTop, openPositions, unwinds, realizedPnl}: Props) => {
+export const Overview = ({account, marginTop, numberOfOpenPositions, numberOfUnwinds, realizedPnl}: Props) => {
   const title = 'Overview'
 
-  let tvlArray = []
-  if (openPositions) {
-    for (let position of openPositions) {
-      tvlArray.push({marketAddress: position.market.id, positionId: position.positionId})
-    }
-  }
-  const totalValueLocked = useTotalValueLocked(tvlArray)
-  const totalCost = useTotalCost(tvlArray)
-  const totalFees = useTotalFees(tvlArray)
+  const totalValueLocked = useTotalValueLocked(account)
+  const totalCost = useTotalCost(account)
+  const totalFees = useTotalFees(account)
 
   const upnl = useMemo(() => {
     let formatValue = 0
@@ -65,29 +59,29 @@ export const Overview = ({marginTop, openPositions, unwinds, realizedPnl}: Props
   const cardsData = [
     {
       title: 'Open Positions',
-      value: openPositions?.length.toString() ?? '0',
+      value: numberOfOpenPositions.toString(),
       icon: 'book',
     },
     {
       title: 'Total Locked',
-      value: `${tvlArray.length > 0 ? (tvl ? tvl + ' OVL' : 'loading') : 'No open positions'}`,
+      value: `${numberOfOpenPositions > 0 ? (tvl ? tvl + ' OVL' : 'loading') : 'No open positions'}`,
       icon: 'lock',
     },
     {
       title: 'Total Realized PnL',
-      value: `${unwinds ? (realizedPnl ? realizedPnl + ' OVL' : 'loading') : 'No unwinds yet'}`,
+      value: `${numberOfUnwinds > 0 ? (realizedPnl ? realizedPnl + ' OVL' : 'loading') : 'No unwinds yet'}`,
       icon: +realizedPnl < 0 ? 'down' : 'up',
       valueColor: +realizedPnl < 0 ? '#FF648A' : '#5FD0AB',
     },
     {
       title: 'Unrealized PnL',
-      value: `${tvlArray.length > 0 ? (upnl ? upnl + ' OVL' : 'loading') : 'No open positions'}`,
+      value: `${numberOfOpenPositions > 0 ? (upnl ? upnl + ' OVL' : 'loading') : 'No open positions'}`,
       icon: +upnl < 0 ? 'down' : 'up',
       valueColor: +upnl < 0 ? '#FF648A' : '#5FD0AB',
     },
   ]
 
-  return tvlArray.length > 0 ? (
+  return account ? (
     <Container mt={marginTop}>
       <TEXT.BoldStandardBody mb="16px">{`${title}`}</TEXT.BoldStandardBody>
       <Box>
