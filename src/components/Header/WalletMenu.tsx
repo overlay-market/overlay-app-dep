@@ -304,7 +304,11 @@ export default function WalletMenu() {
               showMenu(true)
             }}
           >
-            {account && chainId && supportedChainId ? <PlatformLogo open={isMenuOpen} src={NETWORK_ICONS[chainId]} /> : null}
+            {account && chainId && supportedChainId ? (
+              <PlatformLogo open={isMenuOpen} src={NETWORK_ICONS[chainId]} />
+            ) : (
+              supportedChainId && <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
+            )}
             <HeaderHamburger
               open={isMenuOpen}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
