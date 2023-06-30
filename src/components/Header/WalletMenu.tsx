@@ -3,6 +3,8 @@ import styled from 'styled-components/macro'
 import {FlexRow} from '../Container/Container'
 import {TEXT, colors} from '../../theme/theme'
 import ArbitrumLogo from '../../assets/images/arbitrum-logo.png'
+import EthereumLogo from '../../assets/images/ethereum-logo.png'
+import ArbitrumTestnetLogo from '../../assets/images/arbitrum-testnet-logo.png'
 import {ChevronLeft, ChevronRight, Settings, X} from 'react-feather'
 import HeaderHamburger from '../HeaderHamburger/HeaderHamburger'
 import {LINKS} from '../../constants/links'
@@ -12,6 +14,8 @@ import {NumericalInput} from '../NumericalInput/NumericalInput'
 import {useBuildActionHandlers, useBuildState} from '../../state/build/hooks'
 import {DefaultTxnSettings} from '../../state/build/actions'
 import {useActiveWeb3React} from '../../hooks/web3'
+import {SupportedChainId} from '../../constants/chains'
+import {useWalletModalToggle} from '../../state/application/hooks'
 
 const PlatformLogo = styled.div<{src: string; open?: boolean}>`
   background: no-repeat center/contain url(${({src}) => src});
@@ -67,10 +71,14 @@ const MenuTitle = styled.div<{open?: boolean}>`
   align-items: center;
 `
 
-const MenuItem = styled.div<{background?: string}>`
+const MenuItem = styled.div<{background?: string; clickable?: boolean}>`
   padding: 8px 20px;
-  cursor: pointer;
+  cursor: ${({clickable}) => (clickable ? 'pointer' : '')};
   background: ${({background}) => background};
+
+  :hover {
+    background: ${({theme, clickable, background}) => (clickable ? theme.dark.grey3 : background)};
+  }
 `
 
 const SlippageItem = styled.div`
@@ -101,13 +109,13 @@ const MenuLink = ({background, link, onClick, children}: {background?: string; l
   if (link) {
     return (
       <UnstyledAnchorTag href={link} target="_blank">
-        <MenuItem>{children}</MenuItem>
+        <MenuItem clickable>{children}</MenuItem>
       </UnstyledAnchorTag>
     )
   }
 
   return (
-    <MenuItem onClick={event => (onClick ? onClick(event) : null)} background={background}>
+    <MenuItem onClick={event => (onClick ? onClick(event) : null)} clickable={onClick ? true : false} background={background}>
       {children}
     </MenuItem>
   )
@@ -145,13 +153,31 @@ const StyledNumericalInputContainer = styled(NumericalInputContainer)`
   height: 40px;
 `
 
+const NETWORK_ICONS: {[chainId in SupportedChainId | number]: string} = {
+  [SupportedChainId.MAINNET]: EthereumLogo,
+  [SupportedChainId.ARBITRUM]: ArbitrumLogo,
+  [SupportedChainId.ARBITRUM_GÖRLI]: ArbitrumTestnetLogo,
+}
+
+const NETWORK_LABELS: {[chainId in SupportedChainId | number]: JSX.Element} = {
+  [SupportedChainId.MAINNET]: <TEXT.SmallBody>Ethereum Mainnet</TEXT.SmallBody>,
+  [SupportedChainId.ARBITRUM]: <TEXT.SmallBody>Arbitrum One</TEXT.SmallBody>,
+  [SupportedChainId.ARBITRUM_GÖRLI]: (
+    <FlexRow>
+      <TEXT.SmallBody>Arbitrum Goerli -</TEXT.SmallBody>
+      <TEXT.SmallBody color={colors(false).dark.red}>Testnet</TEXT.SmallBody>
+    </FlexRow>
+  ),
+}
+
 export default function WalletMenu() {
-  const {deactivate, account} = useActiveWeb3React()
+  const {deactivate, account, chainId} = useActiveWeb3React()
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false)
   const [isSlippageModalOpen, setIsSlippageModalOpen] = useState<boolean>(false)
   const {setSlippageValue} = useBuildState()
   const {onSetSlippage} = useBuildActionHandlers()
+  const toggleWalletModal = useWalletModalToggle()
 
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -276,7 +302,11 @@ export default function WalletMenu() {
               showMenu(true)
             }}
           >
-            <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
+            {account && chainId ? (
+              <PlatformLogo open={isMenuOpen} src={NETWORK_ICONS[chainId]} />
+            ) : (
+              <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
+            )}
             <HeaderHamburger
               open={isMenuOpen}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
@@ -294,8 +324,8 @@ export default function WalletMenu() {
           </MenuTitle>
           {isSubMenuOpen ? (
             <>
-              <MenuItem background={colors(false).dark.grey3}>
-                <TEXT.SmallBody>Community</TEXT.SmallBody>
+              <MenuItem background={colors(false).dark.grey5}>
+                <TEXT.BoldSmallBody>Community</TEXT.BoldSmallBody>
               </MenuItem>
               <SubMenuContainer>
                 <MenuLink link={LINKS.DISCORD}>
@@ -314,12 +344,24 @@ export default function WalletMenu() {
             </>
           ) : (
             <>
-              <MenuLink link={LINKS.ARBISCAN} background={colors(false).dark.grey3}>
-                <FlexRow style={{gap: '8px'}}>
-                  <PlatformLogo open={false} src={ArbitrumLogo} />
-                  <TEXT.SmallBody>Arbitrum One</TEXT.SmallBody>
-                </FlexRow>
-              </MenuLink>
+              {account && chainId ? (
+                <MenuLink background={colors(false).dark.grey5}>
+                  <FlexRow style={{gap: '8px'}}>
+                    <PlatformLogo open={false} src={NETWORK_ICONS[chainId]} />
+                    <TEXT.SmallBody>{NETWORK_LABELS[chainId]}</TEXT.SmallBody>
+                  </FlexRow>
+                </MenuLink>
+              ) : (
+                <MenuLink
+                  background={colors(false).dark.grey5}
+                  onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+                    event.stopPropagation()
+                    toggleWalletModal()
+                  }}
+                >
+                  <TEXT.BoldSmallBody style={{textDecoration: 'underline'}}>Connect Wallet</TEXT.BoldSmallBody>
+                </MenuLink>
+              )}
               <MenuLink link={LINKS.RISKS}>
                 <TEXT.SmallBody>Risks of Overlay</TEXT.SmallBody>
               </MenuLink>
