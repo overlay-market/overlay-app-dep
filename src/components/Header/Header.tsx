@@ -15,6 +15,8 @@ import Web3Status from '../Web3Status/Web3Status'
 import OverlayLogoOnlyDark from '../../assets/images/overlay-logo-only-no-background.png'
 import {ChevronDown} from 'react-feather'
 import WalletMenu from './WalletMenu'
+import MobileWalletMenu from './WalletMenuMobile'
+import SetSlippageModal from '../SetSlippageModal.tsx/SetSlippageModal'
 
 export const HeaderContainer = styled.div`
   color: ${({theme}) => theme.dark.white};
@@ -297,9 +299,10 @@ export default function Header() {
         )}
         <Web3Status />
         {NEW_HEADER_FLAG ? <WalletMenu /> : <More />}
-        <Burger open={open} setOpen={setOpen} aria-controls={menuId} />
+        {NEW_HEADER_FLAG ? <MobileWalletMenu /> : <Burger open={open} setOpen={setOpen} aria-controls={menuId} />}
       </AccountContainer>
       <SlideMenu open={open} setOpen={setOpen} />
+      <SetSlippageModal />
     </HeaderContainer>
   )
 }

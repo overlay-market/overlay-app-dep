@@ -1,21 +1,17 @@
-import {useState, useCallback, useRef, useEffect} from 'react'
+import {useState, useRef, useEffect} from 'react'
 import styled from 'styled-components/macro'
 import {FlexRow} from '../Container/Container'
 import {TEXT, colors} from '../../theme/theme'
 import ArbitrumLogo from '../../assets/images/arbitrum-logo.png'
 import EthereumLogo from '../../assets/images/ethereum-logo.png'
 import ArbitrumTestnetLogo from '../../assets/images/arbitrum-testnet-logo.png'
-import {ChevronLeft, ChevronRight, Settings, X} from 'react-feather'
+import {ChevronLeft, ChevronRight, Settings} from 'react-feather'
 import HeaderHamburger from '../HeaderHamburger/HeaderHamburger'
 import {LINKS} from '../../constants/links'
-import Modal from '../Modal/Modal'
-import {MINIMUM_SLIPPAGE_VALUE, NumericalInputContainer, NumericalInputDescriptor} from '../../pages/Markets/Build'
-import {NumericalInput} from '../NumericalInput/NumericalInput'
-import {useBuildActionHandlers, useBuildState} from '../../state/build/hooks'
-import {DefaultTxnSettings} from '../../state/build/actions'
+import {useBuildState} from '../../state/build/hooks'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {SupportedChainId} from '../../constants/chains'
-import {useWalletModalToggle} from '../../state/application/hooks'
+import {useSetSlippageModalToggle, useWalletModalToggle} from '../../state/application/hooks'
 
 const PlatformLogo = styled.div<{src: string; open?: boolean}>`
   background: no-repeat center/contain url(${({src}) => src});
@@ -29,6 +25,11 @@ const PlatformLogo = styled.div<{src: string; open?: boolean}>`
 
 const RelativeContainer = styled.div`
   position: relative;
+  display: none;
+
+  ${({theme}) => theme.mediaWidth.minSmall`
+    display: block;
+  `};
 `
 
 const WalletMenuButton = styled.button`
@@ -121,38 +122,6 @@ const MenuLink = ({background, link, onClick, children}: {background?: string; l
   )
 }
 
-const ModalContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 24px;
-  padding-bottom: 60px;
-  flex: 1;
-  position: relative;
-  gap: 4px;
-  background: ${({theme}) => theme.dark.background};
-`
-
-const CloseIcon = styled.div`
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  :hover {
-    cursor: pointer;
-    opacity: 0.7;
-  }
-`
-
-const StyledNumericalInputContainer = styled(NumericalInputContainer)`
-  border: 0;
-  background: #10131d;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 0px;
-  width: 100px;
-  height: 40px;
-`
-
 const NETWORK_ICONS: {[chainId in SupportedChainId | number]: string} = {
   [SupportedChainId.MAINNET]: EthereumLogo,
   [SupportedChainId.ARBITRUM]: ArbitrumLogo,
@@ -174,10 +143,9 @@ export default function WalletMenu() {
   const {deactivate, account, chainId} = useActiveWeb3React()
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false)
   const [isSubMenuOpen, setIsSubMenuOpen] = useState<boolean>(false)
-  const [isSlippageModalOpen, setIsSlippageModalOpen] = useState<boolean>(false)
   const {setSlippageValue} = useBuildState()
-  const {onSetSlippage} = useBuildActionHandlers()
   const toggleWalletModal = useWalletModalToggle()
+  const toggleSetSlippageModal = useSetSlippageModalToggle()
 
   const menuRef = useRef<HTMLDivElement>(null)
 
@@ -190,14 +158,6 @@ export default function WalletMenu() {
   const showMenu = (val: boolean) => {
     setIsMenuOpen(val)
   }
-
-  // Reset slippage value to default value
-  const handleResetSlippage = useCallback(
-    (e: any) => {
-      onSetSlippage(DefaultTxnSettings.DEFAULT_SLIPPAGE)
-    },
-    [onSetSlippage],
-  )
 
   const addTokenToMM = async () => {
     const {ethereum} = window
@@ -278,20 +238,6 @@ export default function WalletMenu() {
   }, [])
 
   const supportedChainId: boolean = Boolean(chainId && SupportedChainId[chainId])
-
-  useEffect(() => {
-    const fetchSlippage = async () => {
-      const storedSlippage = localStorage.getItem(`slippage`)
-      // When value is edited or not a valid number, set to default slippage value
-      if (storedSlippage && !isNaN(Number(storedSlippage))) {
-        onSetSlippage(storedSlippage || DefaultTxnSettings.DEFAULT_SLIPPAGE)
-      } else {
-        localStorage.setItem(`slippage`, setSlippageValue ?? DefaultTxnSettings.DEFAULT_SLIPPAGE)
-      }
-    }
-
-    fetchSlippage()
-  }, [account, onSetSlippage, setSlippageValue])
 
   return (
     <>
@@ -385,7 +331,7 @@ export default function WalletMenu() {
                 <TEXT.SmallBody color={colors(false).dark.tan2}>Add OVL to Wallet</TEXT.SmallBody>
               </MenuLink>
 
-              <SlippageItem onClick={() => setIsSlippageModalOpen(true)}>
+              <SlippageItem onClick={toggleSetSlippageModal}>
                 <SlippageContainer>
                   <Settings size={16} />
                   <TEXT.SmallBody>Slippage</TEXT.SmallBody>
@@ -402,54 +348,6 @@ export default function WalletMenu() {
           )}
         </MenuContent>
       </RelativeContainer>
-      <Modal
-        boxShadow={`0px 0px 12px 6px rgba(91, 96, 164, 0.25)`}
-        borderColor={`${colors(false).dark.blue2}80`}
-        isOpen={isSlippageModalOpen}
-        onDismiss={() => setIsSlippageModalOpen(false)}
-      >
-        <ModalContainer>
-          <CloseIcon onClick={() => setIsSlippageModalOpen(false)}>
-            <X color={'white'} height={24} width={24} />
-          </CloseIcon>
-          <TEXT.BoldHeader1>Slippage</TEXT.BoldHeader1>
-
-          <FlexRow justify="space-between" marginTop="40px">
-            <FlexRow style={{gap: 8}}>
-              <Settings size={16} color={colors(false).dark.white} />
-              <TEXT.StandardBody>Slippage</TEXT.StandardBody>
-            </FlexRow>
-
-            <FlexRow style={{gap: 8}} justify="flex-end">
-              <TEXT.StandardBody
-                onClick={handleResetSlippage}
-                color={setSlippageValue === DefaultTxnSettings.DEFAULT_SLIPPAGE ? colors(false).dark.blue2 : colors(false).dark.grey1}
-                style={{textDecoration: 'underline', cursor: 'pointer'}}
-              >
-                Auto
-              </TEXT.StandardBody>
-              <StyledNumericalInputContainer>
-                <NumericalInput value={setSlippageValue} onUserInput={onSetSlippage} align={'right'} />
-                <NumericalInputDescriptor> % </NumericalInputDescriptor>
-              </StyledNumericalInputContainer>
-            </FlexRow>
-          </FlexRow>
-          {Number(setSlippageValue) > 5 && (
-            <FlexRow>
-              <TEXT.Supplemental color={colors(false).dark.red}>
-                Caution: High slippage. Your position may result in an unfavorable trade.
-              </TEXT.Supplemental>
-            </FlexRow>
-          )}
-          {Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE && (
-            <FlexRow>
-              <TEXT.Supplemental color={colors(false).dark.red}>
-                Caution: Slippage too low. Slippage should be set to protocol minimum of 0.05%.
-              </TEXT.Supplemental>
-            </FlexRow>
-          )}
-        </ModalContainer>
-      </Modal>
     </>
   )
 }
