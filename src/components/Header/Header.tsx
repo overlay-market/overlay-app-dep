@@ -178,6 +178,7 @@ export default function Header() {
   const NEW_HEADER_FLAG = true
   const HIDE_POWER_CARDS = true
   const HIDE_BUY_OVL = true
+  const HIDE_EARN_DROPDOWN_FLAG = true
 
   let location = useLocation().pathname
 
@@ -235,30 +236,41 @@ export default function Header() {
         </PowerCardLink>
       )}
 
-      <Dropdown active={location === '/stake' || location === '/leaderboard' || location === '/referrals'}>
-        <DropdownContent>
-          <TEXT.Menu>Earn</TEXT.Menu>
-          <RotatingChevron className="chevron" height={17} width={17} />
-        </DropdownContent>
-
-        <DropdownList className="dropdown-list">
-          <DropdownItem to={'/stake'}>
-            <Trans>
-              <TEXT.Menu>Stake</TEXT.Menu>
-            </Trans>
-          </DropdownItem>
-          <DropdownItem to={'/leaderboard'}>
+      {HIDE_EARN_DROPDOWN_FLAG ? (
+        <>
+          {/* <StyledLink to={'/leaderboard'}>
             <Trans>
               <TEXT.Menu>Leaderboard</TEXT.Menu>
             </Trans>
-          </DropdownItem>
-          <DropdownItem to={'/referrals'}>
-            <Trans>
-              <TEXT.Menu>Referrals</TEXT.Menu>
-            </Trans>
-          </DropdownItem>
-        </DropdownList>
-      </Dropdown>
+          </StyledLink> */}
+        </>
+      ) : (
+        <Dropdown active={location === '/stake' || location === '/leaderboard' || location === '/referrals'}>
+          <DropdownContent>
+            <TEXT.Menu>Earn</TEXT.Menu>
+            <RotatingChevron className="chevron" height={17} width={17} />
+          </DropdownContent>
+
+          <DropdownList className="dropdown-list">
+            <DropdownItem to={'/stake'}>
+              <Trans>
+                <TEXT.Menu>Stake</TEXT.Menu>
+              </Trans>
+            </DropdownItem>
+            <DropdownItem to={'/leaderboard'}>
+              <Trans>
+                <TEXT.Menu>Leaderboard</TEXT.Menu>
+              </Trans>
+            </DropdownItem>
+            <DropdownItem to={'/referrals'}>
+              <Trans>
+                <TEXT.Menu>Referrals</TEXT.Menu>
+              </Trans>
+            </DropdownItem>
+          </DropdownList>
+        </Dropdown>
+      )}
+
       {/* <StyledLink to={'/bridge'}>
         <Trans>
           <TEXT.Menu>Earn</TEXT.Menu>

@@ -69,14 +69,14 @@ const MenuTitle = styled.div<{open?: boolean}>`
 `
 
 const MenuItem = styled.div<{background?: string}>`
-  padding: 8px 16px;
+  padding: 8px 20px;
   cursor: pointer;
   background: ${({background}) => background};
 `
 
 const SlippageItem = styled.div`
   display: flex;
-  padding: 8px 16px;
+  padding: 8px 20px;
 `
 const SlippageContainer = styled.div`
   cursor: pointer;
@@ -241,6 +241,7 @@ export default function WalletMenu() {
       // Check if the clicked element is outside the div
       if (menuRef.current && !menuRef.current.contains(event.target as Node) && event.target !== document.getElementById('showButton')) {
         setIsMenuOpen(false)
+        setIsSubMenuOpen(false)
       }
     }
 
@@ -282,6 +283,7 @@ export default function WalletMenu() {
               onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                 event.stopPropagation()
                 setIsMenuOpen(!isMenuOpen)
+                setIsSubMenuOpen(false)
               }}
             />
           </WalletMenuButton>
