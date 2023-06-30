@@ -277,6 +277,8 @@ export default function WalletMenu() {
     }
   }, [])
 
+  const supportedChainId: boolean = Boolean(chainId && SupportedChainId[chainId])
+
   useEffect(() => {
     const fetchSlippage = async () => {
       const storedSlippage = localStorage.getItem(`slippage`)
@@ -302,11 +304,7 @@ export default function WalletMenu() {
               showMenu(true)
             }}
           >
-            {account && chainId ? (
-              <PlatformLogo open={isMenuOpen} src={NETWORK_ICONS[chainId]} />
-            ) : (
-              <PlatformLogo open={isMenuOpen} src={ArbitrumLogo} />
-            )}
+            {account && chainId && supportedChainId ? <PlatformLogo open={isMenuOpen} src={NETWORK_ICONS[chainId]} /> : null}
             <HeaderHamburger
               open={isMenuOpen}
               onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
