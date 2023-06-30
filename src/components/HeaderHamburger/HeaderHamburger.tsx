@@ -12,7 +12,6 @@ export const StyledBurger = styled.button<{open: boolean}>`
   border: none;
   cursor: pointer;
   padding: 0;
-  z-index: 69;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;

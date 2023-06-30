@@ -35,7 +35,6 @@ const WalletMenuButton = styled.button`
   gap: 8px;
   background: ${({theme}) => theme.dark.grey4};
   position: relative;
-  z-index: 100;
   outline: none;
   border: 0;
   cursor: pointer;
