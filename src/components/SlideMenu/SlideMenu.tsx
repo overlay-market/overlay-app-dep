@@ -15,12 +15,12 @@ const StyledMenu = styled.nav<{open: boolean; height: number; width: number}>`
   height: 100vh;
   text-align: left;
   backdrop-filter: blur(40px);
-  width: 100%;
+  width: 80%;
   height: ${({height, open}) => `${height}`}px;
   position: fixed;
   top: 0;
   right: 0;
-  left: 0;
+  // left: 0;
   transition: 0.3s ease-in-out;
   overflow: hidden;
   opacity: ${({open}) => (open ? 1 : 0)};

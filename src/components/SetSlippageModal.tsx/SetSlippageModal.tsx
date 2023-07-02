@@ -44,6 +44,10 @@ const StyledNumericalInputContainer = styled(NumericalInputContainer)`
   height: 40px;
 `
 
+const StyledFlexRow = styled(FlexRow)`
+  min-height: 30px;
+`
+
 export default function SetSlippageModal() {
   const {account} = useActiveWeb3React()
   const setSlippageModalOpen = useModalOpen(ApplicationModal.SLIPPAGE)
@@ -107,20 +111,18 @@ export default function SetSlippageModal() {
             </StyledNumericalInputContainer>
           </FlexRow>
         </FlexRow>
-        {Number(setSlippageValue) > 5 && (
-          <FlexRow>
+        <StyledFlexRow>
+          {Number(setSlippageValue) > 5 && (
             <TEXT.Supplemental color={colors(false).dark.red}>
               Caution: High slippage. Your position may result in an unfavorable trade.
             </TEXT.Supplemental>
-          </FlexRow>
-        )}
-        {Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE && (
-          <FlexRow>
+          )}
+          {Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE && (
             <TEXT.Supplemental color={colors(false).dark.red}>
               Caution: Slippage too low. Slippage should be set to protocol minimum of 0.05%.
             </TEXT.Supplemental>
-          </FlexRow>
-        )}
+          )}
+        </StyledFlexRow>
       </ModalContainer>
     </Modal>
   )
