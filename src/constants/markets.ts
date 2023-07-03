@@ -11,6 +11,7 @@ import PudgyLogo from '../assets/images/tokens/pudgy-logo.avif'
 import PunkLogo from '../assets/images/tokens/punk-logo.png'
 import MiladyLogo from '../assets/images/tokens/milady-logo.avif'
 import MaycLogo from '../assets/images/tokens/mayc-logo.png'
+import BlueChipLogo from '../assets/images/tokens/Blue-Chip-NFT-logo.png'
 
 export type DescriptionNameMap = {[description: string]: string}
 export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
@@ -23,6 +24,8 @@ export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
   'AVAX / USD': 'AVAX / USD',
   'MATIC / USD': 'MATIC / USD',
   'MCap1000 Feed': 'MCap1000',
+  'CV Index': 'Crypto Volatility Index',
+  'NFT Blue Chip Total Market Cap-USD': 'NFT Blue Chip Index / USD',
   price: 'BAYC / WETH',
 }
 
@@ -64,6 +67,7 @@ export const MARKET_LOGO_FROM_BASE: MarketLogoMap = {
   PUNKS: PunkLogo,
   MILADY: MiladyLogo,
   MAYC: MaycLogo,
+  NFT: BlueChipLogo,
 }
 
 export type CurrencyMap = {[marketQuoteToken: string]: string}
@@ -133,6 +137,16 @@ export const MarketChartMap: {[name: string]: MarketChartData} = {
   },
   'MATIC / USD': {
     contractAddress: '0xa4a2b2000d447cc1086d15c077730008b0251ffd',
+    isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
+  },
+  'Crypto Volatility Index': {
+    contractAddress: '0xb58AFa4be9B13D896E81D5355C961D2c33172099'.toLowerCase(),
+    isNft: false,
+    schemaName: 'ethereum-mainnet-arbitrum-1',
+  },
+  'NFT Blue Chip Index / USD': {
+    contractAddress: '0x1a8220ac22762f08be1cd17ee3b6ffffe96c921c',
     isNft: false,
     schemaName: 'ethereum-mainnet-arbitrum-1',
   },

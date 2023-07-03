@@ -99,11 +99,7 @@ const Markets = () => {
   const hide7dChart = false
 
   // list of hidden markets from Markets page
-  const hiddenMarkets = [
-    '0x909d893d5e7f250659fa56c2ca2920760eebb17f',
-    '0x7c65c99ba1edfc94c535b7aa2d72b0f7357a676b',
-    '0x5114215415ee91ab5d973ba62fa9153ece1f6c5a',
-  ]
+  const hiddenMarkets = ['0x909d893d5e7f250659fa56c2ca2920760eebb17f']
 
   const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
     const order = ['MILADY / WETH', 'PUDGIES / WETH', 'PUNKS / WETH', 'BAYC / WETH', 'MAYC / WETH', 'AZUKI / WETH', 'WBTC / USD']
