@@ -12,6 +12,7 @@ import PunkLogo from '../assets/images/tokens/punk-logo.png'
 import MiladyLogo from '../assets/images/tokens/milady-logo.avif'
 import MaycLogo from '../assets/images/tokens/mayc-logo.png'
 import BlueChipLogo from '../assets/images/tokens/Blue-Chip-NFT-logo.png'
+import CVIXLogo from '../assets/images/tokens/Crypto-VIX-logo.png'
 
 export type DescriptionNameMap = {[description: string]: string}
 export const MARKET_NAME_FROM_DESCRIPTION: DescriptionNameMap = {
@@ -68,6 +69,7 @@ export const MARKET_LOGO_FROM_BASE: MarketLogoMap = {
   MILADY: MiladyLogo,
   MAYC: MaycLogo,
   NFT: BlueChipLogo,
+  Crypto: CVIXLogo,
 }
 
 export type CurrencyMap = {[marketQuoteToken: string]: string}
