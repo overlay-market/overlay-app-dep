@@ -102,7 +102,17 @@ const Markets = () => {
   const hiddenMarkets = ['0x909d893d5e7f250659fa56c2ca2920760eebb17f']
 
   const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
-    const order = ['MILADY / WETH', 'PUDGIES / WETH', 'PUNKS / WETH', 'BAYC / WETH', 'MAYC / WETH', 'AZUKI / WETH', 'WBTC / USD']
+    const order = [
+      'NFT Blue Chip Index / USD',
+      'Crypto Volatility Index',
+      'MILADY / WETH',
+      'PUDGIES / WETH',
+      'PUNKS / WETH',
+      'BAYC / WETH',
+      'MAYC / WETH',
+      'AZUKI / WETH',
+      'WBTC / USD',
+    ]
     for (let marketOrdered of order) {
       if (a.marketName === marketOrdered) return -1
       if (b.marketName === marketOrdered) return 1
