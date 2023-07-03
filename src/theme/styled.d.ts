@@ -5,6 +5,7 @@ export type Color = string
 export interface Colors {
   dark: {
     background: string
+    grey5: string
     grey4: string
     grey3: string
     grey2: string
