@@ -1,13 +1,13 @@
-import React, {useMemo, useState} from 'react'
-import {Play} from 'react-feather'
+import React, {useEffect, useMemo, useState} from 'react'
+import {ChevronDown, Play} from 'react-feather'
 import styled from 'styled-components'
-import {Button, Collapse, TableBody, TableContainer, TableHead, Paper} from '@material-ui/core'
+import {Box, Button, Collapse, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core'
 import {StyledTable, StyledHeaderCell, StyledTableHeaderRow} from '../../components/Table/Table'
 import {useActiveWeb3React} from '../../hooks/web3'
 import {PageContainer} from '../../components/Container/Container'
 import {TEXT} from '../../theme/theme'
 import {FlexRow} from '../../components/Container/Container'
-import {useCurrentWalletPositionsV2} from '../../state/build/hooks'
+import {usePositionsTableDetails, usePositionsTableData} from '../../state/build/hooks'
 import {useTotalMarketsData} from '../../state/markets/hooks'
 import {useMarketDetails} from '../../hooks/useMarketDetails'
 import {useCurrentMarketState} from '../../hooks/useCurrentMarketState'
@@ -15,6 +15,10 @@ import {OpenPosition} from './OpenPosition'
 import {UnwindsTransactions} from './UnwindsTransactions'
 import {LiquidatesTransactions} from './LiquidatesTransactions'
 import {Overview} from './Overview'
+import {colors} from '../../theme/theme'
+import Pagination from '../../components/Pagination/Pagination'
+import Loader from '../../components/Loaders/Loaders'
+import {formatBigNumber} from '../../utils/formatBigNumber'
 
 const Container = styled.div`
   display: flex;
@@ -36,18 +40,17 @@ interface PositionsTableProps {
   title: string
   children?: React.ReactNode
   marginTop?: string
-  isLoading: boolean
-  isUninitialized: boolean
   positionStatus: PositionStatus
   initialCollateral?: string
-  // onClickColumn: {
-  //   'Status': () => void
-  // }
+  rowsCount: number
+  marketsData: any
 }
 
-type PositionStatus = 'open' | 'closed' | 'liquidated'
-
-export const positionStatuses: PositionStatus[] = ['open', 'closed', 'liquidated']
+export enum PositionStatus {
+  Open = 'open',
+  Closed = 'closed',
+  Liquidated = 'liquidated',
+}
 
 export const TriangleButton = styled(Button)`
   padding: 0 !important;
@@ -66,53 +69,232 @@ export const RotatingTriangle = styled(Play)<RotatingTriangleProps>`
   transition: transform ease-out 0.25s;
 `
 
-const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized, positionStatus}: PositionsTableProps) => {
+const Dropdown = styled.div`
+  position: relative;
+  padding: 6.5px 10px;
+  background: ${({theme}) => theme.dark.grey4};
+  border-radius: 4px;
+  margin-left: 8px;
+  box-sizing: border-box;
+  max-width: 104px;
+  white-space: nowrap;
+
+  &:hover {
+    cursor: pointer;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    .dropdown-menu {
+      display: block;
+    }
+
+    .chevron {
+      transform: rotate(180deg);
+    }
+  }
+`
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 0;
+  background: ${({theme}) => theme.dark.grey4};
+  border-radius: 0 0 4px 4px;
+  display: none;
+
+  > div {
+    border-radius: 4px;
+    padding: 6.5px 10px;
+    box-sizing: border-box;
+    width: 104px;
+    white-space: nowrap;
+
+    &:hover {
+      box-shadow: 0px 0px 4px 2px rgba(180, 229, 255, 0.3);
+    }
+  }
+`
+
+const RotatingChevron = styled(ChevronDown)`
+  margin-left: 8px;
+  transition: transform ease-out 0.25s;
+`
+
+const StyledTableCell = styled(TableCell)`
+  text-align: center !important;
+`
+
+const ROWS_PER_PAGE = [10, 20, 40, 50]
+
+const PositionsTable = ({title, marginTop, positionStatus, rowsCount, marketsData}: PositionsTableProps) => {
   const {account} = useActiveWeb3React()
   const [open, setOpen] = useState<boolean>(true)
+  const [page, setPage] = useState<number>(1)
+  const [rowsPerPage, setRowsPerPage] = useState<number>(ROWS_PER_PAGE[0])
+  const {positionsTableData, isUninitialized, isLoading} = usePositionsTableData(account, rowsPerPage, (page - 1) * rowsPerPage, positionStatus)
+  const [showLoader, setShowLoader] = useState(false)
+
+  // Show loader only on page change
+  useEffect(() => {
+    setShowLoader(true)
+  }, [page])
+
+  useEffect(() => {
+    setShowLoader(false)
+  }, [positionsTableData])
 
   const handleToggle = () => {
     setOpen(prevOpen => !prevOpen)
   }
 
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value)
+  }
+
+  const handleRowsPerPageChange = (newValue: number) => {
+    setRowsPerPage(newValue)
+    setPage(1)
+  }
+
+  const pageCount = useMemo(() => {
+    return Math.ceil(rowsCount / rowsPerPage)
+  }, [rowsCount, rowsPerPage])
+
+  const paginatedRows = useMemo(() => {
+    if (!positionsTableData) return null
+
+    const rows =
+      positionStatus === PositionStatus.Open
+        ? positionsTableData.account?.positions
+        : positionStatus === PositionStatus.Closed
+        ? positionsTableData.account?.unwinds
+        : positionStatus === PositionStatus.Liquidated
+        ? positionsTableData.account?.liquidates
+        : []
+
+    return rows && rows.length > 0 ? (
+      <>
+        {rows.map((row: any) => {
+          const marketAddress = positionStatus === PositionStatus.Open ? row.market.id : row.position.market.id
+          const marketState = marketsData.filter((market: any) => market.marketAddress === marketAddress)[0]
+
+          if (positionStatus === PositionStatus.Open) {
+            return (
+              <OpenPosition
+                key={row.id}
+                position={{
+                  ...marketState,
+                  ...row,
+                }}
+                columns={positionColumns[PositionStatus.Open]}
+              />
+            )
+          } else if (positionStatus === PositionStatus.Closed) {
+            return (
+              <UnwindsTransactions
+                key={row.id}
+                transaction={{
+                  ...row,
+                  position: {
+                    ...marketState,
+                    ...row.position,
+                  },
+                }}
+                columns={positionColumns[PositionStatus.Closed]}
+              />
+            )
+          } else {
+            return (
+              <LiquidatesTransactions
+                key={row.id}
+                transaction={{
+                  ...row,
+                  position: {
+                    ...marketState,
+                    ...row.position,
+                  },
+                }}
+                columns={positionColumns[PositionStatus.Liquidated]}
+              />
+            )
+          }
+        })}
+      </>
+    ) : null
+  }, [positionStatus, marketsData, positionsTableData])
+
   return (
     <Container>
       <TEXT.BoldStandardBody mt={marginTop} mb="16px">
-        {/* {`${positionStatus.charAt(0).toUpperCase() + positionStatus.slice(1)} ${title}`} */}
         {`${title}`}
         <TriangleButton onClick={handleToggle}>
           <RotatingTriangle color={'white'} fill={'white'} height={10} width={10} open={open} />
         </TriangleButton>
       </TEXT.BoldStandardBody>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <TableContainer component={Paper}>
+        <TableContainer>
           <StyledTable>
             <TableHead>
               <StyledTableHeaderRow>
-                {/* <StyledHeaderChevron>
-                </StyledHeaderChevron> */}
                 {positionColumns[positionStatus].map((column: string) => {
                   return (
-                    <StyledHeaderCell width={20}>
+                    <StyledHeaderCell key={column} width={20}>
                       <TEXT.SupplementalHeader>{column}</TEXT.SupplementalHeader>
                     </StyledHeaderCell>
                   )
                 })}
               </StyledTableHeaderRow>
             </TableHead>
-            <TableBody>{children}</TableBody>
+            <TableBody>
+              {showLoader ? (
+                <TableRow>
+                  <StyledTableCell colSpan={positionColumns[positionStatus].length}>
+                    <Loader />
+                  </StyledTableCell>
+                </TableRow>
+              ) : (
+                paginatedRows
+              )}
+            </TableBody>
           </StyledTable>
         </TableContainer>
+        {paginatedRows && (
+          <Box display="flex" justifyContent="flex-start" alignItems="center" paddingTop={'28px'} paddingBottom={'8px'}>
+            <Pagination count={pageCount} page={page} onChange={handlePageChange} />
+            <Box display="flex" alignItems="center" ml="28px">
+              <TEXT.SmallBody color={colors(true).dark.grey2}>Show:</TEXT.SmallBody>
+              <Dropdown>
+                <Box display="flex" alignItems="center">
+                  <TEXT.SmallBody color={colors(true).dark.white}>{rowsPerPage} / page</TEXT.SmallBody>
+                  <RotatingChevron className="chevron" color={colors(true).dark.white} strokeWidth={1} height={18} width={18} />
+                </Box>
+
+                <DropdownMenu className="dropdown-menu">
+                  {ROWS_PER_PAGE.map(
+                    option =>
+                      option !== rowsPerPage && (
+                        <div key={option} onClick={() => handleRowsPerPageChange(option)}>
+                          <TEXT.SmallBody>{option} / page</TEXT.SmallBody>
+                        </div>
+                      ),
+                  )}
+                </DropdownMenu>
+              </Dropdown>
+            </Box>
+          </Box>
+        )}
       </Collapse>
 
       {!account ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">No wallet connected. </TEXT.StandardBody>
         </FlexRow>
-      ) : isUninitialized ? (
-        <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
-          <TEXT.StandardBody color="#858585">Fetching positions...</TEXT.StandardBody>
+      ) : isUninitialized || isLoading ? (
+        <FlexRow marginTop="32px" marginLeft="8px" justifyContent="center !important" width="100%">
+          <Loader />
         </FlexRow>
-      ) : !children ? (
+      ) : !paginatedRows ? (
         <FlexRow marginTop="32px" marginLeft="8px" justifyContent="left" width="100%">
           <TEXT.StandardBody color="#858585">You have no {positionStatus} positions.</TEXT.StandardBody>
         </FlexRow>
@@ -122,109 +304,43 @@ const PositionsTable = ({title, children, marginTop, isLoading, isUninitialized,
 }
 
 const Positions = () => {
-  // const [statusFilter, setStatusFilter] = useState<PositionStatus>('all')
   const {account} = useActiveWeb3React()
-  // const {isLoading: isPositionsLoading, isFetching, isUninitialized, positions} = useCurrentWalletPositions(account)
-  const {isLoading: isPositionsLoading, isUninitialized, positions} = useCurrentWalletPositionsV2(account)
+  const {positionsTableDetails} = usePositionsTableDetails(account)
 
   const {markets} = useTotalMarketsData()
   const marketDetails = useMarketDetails(markets)
   const {markets: marketsData} = useCurrentMarketState(marketDetails)
 
-  const handledPositions = useMemo(() => {
-    if (!positions) return []
-    return positions.map(filteredPosition => {
-      const marketAddress = filteredPosition.market.id
-      const marketState = marketsData.filter(market => market.marketAddress === marketAddress)[0]
-
-      const positionStatus = filteredPosition.isLiquidated
-        ? positionStatuses[2]
-        : filteredPosition.currentOi === '0'
-        ? positionStatuses[1]
-        : +filteredPosition.numberOfUniwnds > 0
-        ? positionStatuses[0]
-        : positionStatuses[0]
-
-      return {
-        ...marketState,
-        ...filteredPosition,
-        id: filteredPosition.id,
-        positionStatus,
-      }
-    })
-  }, [positions, marketsData])
-
-  const openPositions = useMemo(() => {
-    return handledPositions.filter(position => position.positionStatus === positionStatuses[0])
-  }, [handledPositions])
-
-  const unwindRows = useMemo(() => {
-    let rows = []
-    for (let position of handledPositions) {
-      for (let unwind of position.unwinds) {
-        let row = {
-          ...unwind,
-          position: position,
-        }
-        rows.push(row)
-      }
-    }
-    return rows.sort((a, b) => +b.timestamp - +a.timestamp)
-  }, [handledPositions])
-
-  const liquidatedRows = useMemo(() => {
-    let rows = []
-    for (let position of handledPositions) {
-      for (let liquidated of position.liquidates) {
-        let row = {
-          ...liquidated,
-          position: position,
-        }
-        rows.push(row)
-      }
-    }
-    return rows
-  }, [handledPositions])
-
   return (
     <PageContainer>
-      <Overview marginTop="50px" openPositions={openPositions} unwinds={unwindRows} />
+      <Overview
+        marginTop="50px"
+        account={account}
+        numberOfOpenPositions={Number(positionsTableDetails?.numberOfOpenPositions ?? 0)}
+        numberOfUnwinds={Number(positionsTableDetails?.numberOfUnwinds ?? 0)}
+        realizedPnl={formatBigNumber(positionsTableDetails?.realizedPnl ?? '0', 18, 6) as string}
+      />
       <PositionsTable
         title="Open Positions"
         marginTop="50px"
-        isLoading={isPositionsLoading}
-        isUninitialized={isUninitialized}
-        positionStatus={'open'}
-        // onClickColumn={{Status: setNextStatusFilter}}
-      >
-        {openPositions && openPositions.length > 0
-          ? openPositions.map(position => <OpenPosition position={position} columns={positionColumns['open']} />)
-          : null}
-      </PositionsTable>
+        positionStatus={PositionStatus.Open}
+        rowsCount={Number(positionsTableDetails?.numberOfOpenPositions ?? 0)}
+        marketsData={marketsData}
+      />
       <PositionsTable
         title="Unwinds"
         marginTop="50px"
-        isLoading={isPositionsLoading}
-        isUninitialized={isUninitialized}
-        positionStatus={'closed'}
-        // onClickColumn={{Status: setNextStatusFilter}}
-      >
-        {unwindRows && unwindRows.length > 0
-          ? unwindRows.map(transaction => <UnwindsTransactions transaction={transaction} columns={positionColumns['closed']} />)
-          : null}
-      </PositionsTable>
+        positionStatus={PositionStatus.Closed}
+        rowsCount={Number(positionsTableDetails?.numberOfUnwinds ?? 0)}
+        marketsData={marketsData}
+      />
       <PositionsTable
         title="Liquidates"
         marginTop="50px"
-        isLoading={isPositionsLoading}
-        isUninitialized={isUninitialized}
-        positionStatus={'liquidated'}
-        // onClickColumn={{Status: setNextStatusFilter}}
-      >
-        {liquidatedRows && liquidatedRows.length > 0
-          ? liquidatedRows.map(transaction => <LiquidatesTransactions transaction={transaction} columns={positionColumns['liquidated']} />)
-          : null}
-      </PositionsTable>
+        positionStatus={PositionStatus.Liquidated}
+        rowsCount={Number(positionsTableDetails?.numberOfLiquidatedPositions ?? 0)}
+        marketsData={marketsData}
+      />
     </PageContainer>
   )
 }

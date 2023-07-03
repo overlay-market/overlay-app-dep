@@ -1,23 +1,24 @@
 import {useEffect, useState, useMemo} from 'react'
 import {useV1PeripheryContract} from './useContract'
-import { ethers, BigNumber} from 'ethers'
+import {ethers, BigNumber} from 'ethers'
 import {useBlockNumber} from '../state/application/hooks'
-import {useActiveWeb3React} from './web3'
+import {useOpenPositionsFromSubgraph} from '../state/build/hooks'
 
-export function useTotalCost(positions: Array<{ marketAddress?: string, positionId?: string | number }>): BigNumber | undefined {
+export function useTotalCost(account: string | null | undefined): BigNumber | undefined {
   const peripheryContract = useV1PeripheryContract()
   const blockNumber = useBlockNumber()
-  const {account} = useActiveWeb3React()
   const [value, setValue] = useState<BigNumber>()
+  const {data} = useOpenPositionsFromSubgraph(account, 1000, 0)
 
   useEffect(() => {
-    if (!peripheryContract || positions.length <= 0 || !account || !blockNumber) return
+    let positions = data?.account?.positions
+    if (!peripheryContract || !positions || !account || !blockNumber) return
     ;(async () => {
       try {
         let totalValue = ethers.constants.Zero
         for (let position of positions) {
-          if (!position.marketAddress) continue
-          let _value = await peripheryContract.cost(position.marketAddress, account, position.positionId)
+          if (!position.market.id) continue
+          let _value = await peripheryContract.cost(position.market.id, account, position.positionId)
           totalValue = totalValue.add(_value)
         }
         setValue(totalValue)
@@ -25,8 +26,8 @@ export function useTotalCost(positions: Array<{ marketAddress?: string, position
         console.error('market inside useTotalValueLocked: ', positions)
       }
     })()
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [peripheryContract, JSON.stringify(positions), blockNumber, account])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [peripheryContract, JSON.stringify(data), blockNumber, account])
 
   return useMemo(() => {
     return value

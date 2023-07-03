@@ -13,8 +13,9 @@ import {
 import { AppState } from "../state";
 import { useActiveWeb3React } from "../../hooks/web3";
 import { useAppDispatch, useAppSelector } from "../hooks";
-import { useAccountQuery, useAccountV2Query, usePositionsQuery } from "../data/generated";
+import { useAccountQuery, useAccountV2Query, useLiquidatedPositionsQuery, useNumberOfPositionsQuery, useOpenPositionsOverviewQuery, useOpenPositionsQuery, usePositionsQuery, useUnwindsQuery } from "../data/generated";
 import { skipToken } from "@reduxjs/toolkit/dist/query";
+import { PositionStatus } from "../../pages/Positions/PositionsPage";
 
 export function useBuildState(): AppState['build'] {
   return useAppSelector((state) => state.build);
@@ -351,6 +352,170 @@ export function useCurrentWalletPositionsV2(
     positions: walletPositionsData.data?.account?.positions,
     refetch: walletPositionsData.refetch
   }
+}
+
+export interface PositionsTableDetails {
+  numberOfLiquidatedPositions: string
+  numberOfOpenPositions: string
+  numberOfUnwinds: string
+  realizedPnl: string
+}
+
+export function usePositionsTableDetails(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  positionsTableDetails: PositionsTableDetails | undefined
+  refetch: () => void
+} {
+  const positionsTableDetails = useNumberOfPositionsFromSubgraph(address ? address : undefined)
+  return {
+    isLoading:  positionsTableDetails.isLoading,
+    isFetching:  positionsTableDetails.isFetching,
+    isUninitialized:  positionsTableDetails.isUninitialized,
+    isError:  positionsTableDetails.isError, 
+    error:  positionsTableDetails.error,
+    positionsTableDetails: positionsTableDetails.data?.account as PositionsTableDetails | undefined,
+    refetch:  positionsTableDetails.refetch
+  }
+}
+
+export function useNumberOfPositionsFromSubgraph(address: string | undefined | null) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useNumberOfPositionsQuery(accountAddress ? { account: accountAddress } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 10000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export function usePositionsTableData(
+  address: string | undefined | null,
+  first: number,
+  skip: number,
+  status: PositionStatus
+): {
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  positionsTableData: any | undefined
+  refetch: () => void
+} { 
+  let query;
+
+  if (status === PositionStatus.Open) {
+    query = useOpenPositionsFromSubgraph;
+  } else if (status === PositionStatus.Closed) {
+    query = useUnwindsFromSubgraph;
+  } else if (status === PositionStatus.Liquidated) {
+    query = useLiquidatedPositionsFromSubgraph;
+  } else {
+    throw new Error(`Invalid position status: ${status}`);
+  }
+
+  const res = query(address ?? undefined, first, skip);
+  const positionsTableData = res.data;
+
+  return {
+    isLoading: res.isLoading,
+    isFetching: res.isFetching,
+    isUninitialized: res.isUninitialized,
+    isError: res.isError, 
+    error: res.error,
+    positionsTableData,
+    refetch: res.refetch
+  }
+}
+
+export function useOpenPositionsFromSubgraph(address: string | undefined | null, first: number, skip: number) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useOpenPositionsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export function useUnwindsFromSubgraph(address: string | undefined | null, first: number, skip: number) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useUnwindsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export function useLiquidatedPositionsFromSubgraph(address: string | undefined | null, first: number, skip: number) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useLiquidatedPositionsQuery(accountAddress ? { account: accountAddress, first, skip } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 1000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
+}
+
+export interface OpenPositionOverviewData {
+  id: string;
+  positionId: string;
+  market: PositionMarketData;
+}
+
+export function useOpenPositionsOverview(
+  address: string | undefined | null
+):{
+  isLoading: boolean
+  isFetching: boolean
+  isUninitialized: boolean
+  isError: boolean
+  error: unknown
+  openPositions: OpenPositionOverviewData[] | undefined
+  refetch: () => void
+} {
+  const openPositions = useOpenPositionsOverviewFromSubgraph(address ? address : undefined)
+  return {
+    isLoading: openPositions.isLoading,
+    isFetching: openPositions.isFetching,
+    isUninitialized: openPositions.isUninitialized,
+    isError: openPositions.isError, 
+    error: openPositions.error,
+    openPositions: openPositions.data?.account?.positions,
+    refetch: openPositions.refetch
+  }
+}
+
+export function useOpenPositionsOverviewFromSubgraph(address: string | undefined | null) {
+  const accountAddress = address ? address.toLowerCase() : undefined;
+  let chainId = useAppSelector((state: AppState) => state.application.chainId)
+
+  return useOpenPositionsOverviewQuery(accountAddress ? { account: accountAddress } : skipToken, {
+    pollingInterval: chainId === 42161 ? 30000 : 10000, 
+    refetchOnMountOrArgChange: true, 
+    refetchOnFocus: true,
+    refetchOnReconnect: true,
+    skip: false
+  })
 }
 
 export function useCurrentWalletUnwinds(
