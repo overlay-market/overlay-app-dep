@@ -66,6 +66,7 @@ export const Overview = ({account, marginTop, numberOfOpenPositions, numberOfUnw
       title: 'Total Locked',
       value: `${numberOfOpenPositions > 0 ? (tvl ? tvl + ' OVL' : 'loading') : 'No open positions'}`,
       icon: 'lock',
+      isOver1000OpenPositions: numberOfOpenPositions > 1000,
     },
     {
       title: 'Total Realized PnL',
@@ -78,6 +79,7 @@ export const Overview = ({account, marginTop, numberOfOpenPositions, numberOfUnw
       value: `${numberOfOpenPositions > 0 ? (upnl ? upnl + ' OVL' : 'loading') : 'No open positions'}`,
       icon: +upnl < 0 ? 'down' : 'up',
       valueColor: +upnl < 0 ? '#FF648A' : '#5FD0AB',
+      isOver1000OpenPositions: numberOfOpenPositions > 1000,
     },
   ]
 
@@ -89,7 +91,13 @@ export const Overview = ({account, marginTop, numberOfOpenPositions, numberOfUnw
           {cardsData.map(card => {
             return (
               <Grid item key={card.title} xs={12} sm={6} md={3}>
-                <OverviewCard title={card.title} icon={card.icon} value={card.value} valueColor={card.valueColor ?? '#E5F6FF'} />
+                <OverviewCard
+                  title={card.title}
+                  icon={card.icon}
+                  value={card.value}
+                  valueColor={card.valueColor ?? '#E5F6FF'}
+                  isOver1000OpenPositions={card.isOver1000OpenPositions}
+                />
               </Grid>
             )
           })}

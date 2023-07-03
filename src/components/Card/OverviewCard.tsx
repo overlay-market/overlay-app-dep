@@ -1,6 +1,6 @@
 import {Lock, Unlock, TrendingDown, TrendingUp, Book} from 'react-feather'
 import styled from 'styled-components'
-import {TEXT} from '../../theme/theme'
+import {TEXT, colors} from '../../theme/theme'
 
 const Container = styled.div`
   display: flex;
@@ -41,10 +41,11 @@ interface DataProps {
   icon: string
   value: string
   valueColor?: string
+  isOver1000OpenPositions?: boolean
 }
 
 const OverviewCard = (props: DataProps) => {
-  const {title, icon, value, valueColor} = props
+  const {title, icon, value, valueColor, isOver1000OpenPositions} = props
 
   return (
     <Container>
@@ -71,6 +72,16 @@ const OverviewCard = (props: DataProps) => {
         >
           {value}
         </TEXT.BoldNumber>
+        {isOver1000OpenPositions && (
+          <div style={{position: 'absolute', marginTop: '47px'}}>
+            <TEXT.Supplemental style={{whiteSpace: 'nowrap'}} color={colors(true).dark.red}>
+              Open Positions {'>'} 1000
+            </TEXT.Supplemental>
+            <TEXT.Supplemental style={{whiteSpace: 'nowrap'}} color={colors(true).dark.red}>
+              May output wrong value
+            </TEXT.Supplemental>
+          </div>
+        )}
       </CardContent>
     </Container>
   )
