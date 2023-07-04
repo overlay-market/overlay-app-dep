@@ -417,6 +417,12 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       : formatBigNumberUsingDecimalsToString(estimatedBid, quoteTokenDecimals, sigFigConstant)
   }, [isLong, estimatedBid, estimatedAsk, quoteTokenDecimals, decimals])
 
+  const headerPrice: string = useMemo(() => {
+    const price = estimatedReceivedPrice ?? prices.mid
+    const formattedPrice = price < 100000 ? price : Math.floor(price)
+    return Number(formattedPrice).toLocaleString()
+  }, [estimatedReceivedPrice, prices.mid])
+
   const priceImpact = useMemo(() => {
     if (!estimatedReceivedPrice) return null
     if (!typedValue || isLong === undefined || prices.bid === undefined || prices.ask === undefined) return null
@@ -507,7 +513,7 @@ export const BuildInterface = ({marketId}: {marketId: string}) => {
       <ControlInterfaceContainer onSubmit={(e: any) => e.preventDefault()} as={'form'}>
         <ControlInterfaceHeadContainer>
           <TEXT.BoldHeader1>{marketName}</TEXT.BoldHeader1>
-          <TEXT.StandardHeader1>{estimatedReceivedPrice ?? prices.mid}</TEXT.StandardHeader1>
+          <TEXT.StandardHeader1>{headerPrice}</TEXT.StandardHeader1>
           {isTxnSettingsOpen ? (
             <Icon
               onClick={() => setTxnSettingsOpen(!isTxnSettingsOpen)}
