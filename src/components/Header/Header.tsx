@@ -299,7 +299,7 @@ export default function Header() {
         )}
         <Web3Status />
         {NEW_HEADER_FLAG ? <WalletMenu /> : <More />}
-        {NEW_HEADER_FLAG ? <MobileWalletMenu /> : <Burger open={open} setOpen={setOpen} aria-controls={menuId} />}
+        {NEW_HEADER_FLAG ? <MobileWalletMenu open={open} setOpen={setOpen} /> : <Burger open={open} setOpen={setOpen} aria-controls={menuId} />}
       </AccountContainer>
       <SlideMenu open={open} setOpen={setOpen} />
       <SetSlippageModal />
