@@ -76,17 +76,25 @@ export default function SetSlippageModal() {
     fetchSlippage()
   }, [account, onSetSlippage, setSlippageValue])
 
+  const onClose = () => {
+    if (Number(setSlippageValue) < MINIMUM_SLIPPAGE_VALUE) {
+      onSetSlippage(MINIMUM_SLIPPAGE_VALUE.toString())
+    } else {
+      toggleSetSlippageModal()
+    }
+  }
+
   return (
     <Modal
       boxShadow={`0px 0px 12px 6px rgba(91, 96, 164, 0.25)`}
       borderColor={`${colors(false).dark.blue2}80`}
       isOpen={setSlippageModalOpen}
-      onDismiss={toggleSetSlippageModal}
+      onDismiss={onClose}
       minHeight={false}
       maxHeight={90}
     >
       <ModalContainer>
-        <CloseIcon onClick={toggleSetSlippageModal}>
+        <CloseIcon onClick={onClose}>
           <X color={'white'} height={24} width={24} />
         </CloseIcon>
         <TEXT.BoldHeader1>Slippage</TEXT.BoldHeader1>
