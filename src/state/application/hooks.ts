@@ -60,6 +60,10 @@ export function useTermsOfServiceModalToggle(): () => void {
   return useToggleModal(ApplicationModal.TERMS_OF_SERVICE)
 }
 
+export function useSetSlippageModalToggle(): () => void {
+  return useToggleModal(ApplicationModal.SLIPPAGE)
+}
+
 export function useTermsOfServiceStatus(): UserTermsOfServiceStatus {
   return useAppSelector(state => state.application.termsOfServiceStatus)
 }

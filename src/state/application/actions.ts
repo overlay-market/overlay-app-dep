@@ -22,6 +22,7 @@ export type PopupContent =
 export enum ApplicationModal {
   WALLET,
   TERMS_OF_SERVICE,
+  SLIPPAGE,
 }
 
 export enum UserTermsOfServiceStatus {
