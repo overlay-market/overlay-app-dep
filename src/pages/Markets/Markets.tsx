@@ -13,7 +13,7 @@ import {useCurrentMarketState, MarketStateResults, ParsedMarketStateDetails} fro
 import {TEXT} from '../../theme/theme'
 import MarketsRow from './MarketsRow'
 import ReactTooltip from 'react-tooltip'
-import {MarketChartMap} from '../../constants/markets'
+import {MarketChartMap, availableMarkets} from '../../constants/markets'
 import {useAppSelector} from '../../state/hooks'
 import {AppState} from '../../state/state'
 import ChangeNetworkModal from '../../components/ConnectWalletModal/ChangeNetworkModal'
@@ -99,7 +99,6 @@ const Markets = () => {
   const hide7dChart = false
 
   // list of hidden markets from Markets page
-  const hiddenMarkets = ['0x909d893d5e7f250659fa56c2ca2920760eebb17f']
 
   const customSort = (a: ParsedMarketStateDetails, b: ParsedMarketStateDetails): number => {
     const order = [
@@ -180,7 +179,7 @@ const Markets = () => {
             <TableBody>
               {marketsData.length > 0 &&
                 marketsData
-                  ?.filter(market => !hiddenMarkets.includes(market.marketAddress.toLowerCase()))
+                  ?.filter(market => availableMarkets.includes(market.marketAddress.toLowerCase()))
                   .sort(customSort)
                   .map((market: ParsedMarketStateDetails, index: number) => (
                     <MarketsRow
