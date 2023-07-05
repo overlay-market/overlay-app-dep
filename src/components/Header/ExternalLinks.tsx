@@ -25,7 +25,7 @@ const MenuTitle = styled.div<{open?: boolean}>`
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  padding: 8px 8px 16px 8px;
+  padding: 8px 16px;
   display: flex;
   align-items: center;
 `
